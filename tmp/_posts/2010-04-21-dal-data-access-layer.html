@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Refactoring: DAL и рефакторинг кода"
+date: 2010-04-21T14:52:00+03:00
+comments: false
+categories:
+ - Refactoring
+ - DAL
+---
+
+<div class='post'>
+<p>
+<a href="http://en.wikipedia.org/wiki/Data_access_layer">Data Access Layer</a> - уровень доступа к данным. DAL это абстракция, определяющая операции по работе с данными (часто опеределяемые как <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>) и скрывает за собой непосредсвенные детали того, как эти операции осуществляются. Наиболее частым источником данных выступает SQL сервер, поэтому методы DAL реализуют SQL запросы к серверу (select, insert, update, delete). В последнее время web-services также часто выступают как источники данных.
+</p>
+<p>
+При проектировании приложения DAL необходимо уделять самое пристальное внимание. В конце концов любой задача любого софта это - получить данные, обработать их и предоставить на их основе результат. В Visual Studio встаиваются средства, для облегчения создания DAL. Один из них <span style="font-style:italic;">Microsoft Entity Framework</span>. Рекомендую с ним <a href="http://www.codeguru.com/csharp/csharp/cs_linq/article.php/c15489">ознакомиться</a>.
+</p>
+<p>
+В этой статье я хочу посмотреть на DAL немного с другой стороны. Если вам приходилось сталкиватся с кодом, в котором логика приложения (бизнес-логика) перемешанна с кодом получения и обработки данных, это красный флажок, что код неообходимо рефакторить. Так вышло и в моем случае, в проекте над которым я сейчас работаю, не было уделено нужного внимаю DAL, поэтому часто в коде страниц можно было видеть примерно следующее.
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">useDimension = a.useDimension(ctx.Econ.GetAftaleNrFraOpsaetning(ctx, virkOpsaetning));<br><br>sql.Clear();<br>sql.Append(<font color="#A31515">"UPDATE ArdRapport SET Periode1Start="</font>).AddVal(periode1Start).Append(<font color="#A31515">", Periode1Slut="</font>).AddVal(periode1End).Append(<font color="#A31515">", Periode2Start="</font>).AddVal(periode2Start);<br>sql.Append(<font color="#A31515">", Periode2Slut="</font>).AddVal(periode2End);<br>sql.Append(<font color="#A31515">" WHERE Opsaetning="</font>).AddVal(usedOpsaetning).Append(<font color="#A31515">" AND AdminAftale="</font>).AddVal(adminaftale).Append(<font color="#A31515">" AND Rapportnr="</font>).AddVal(usedReport);<br>ctx.Econ.Db.ExecUpdate(ctx, sql);<br><br>sql.Clear();<br>sql.Append(<font color="#A31515">"UPDATE ArdRapportVirksomhed SET RegnskabsAar="</font>).AddVal(accountingyear);<br>sql.Append(<font color="#A31515">" WHERE Opsaetning="</font>).AddVal(usedOpsaetning).Append(<font color="#A31515">" AND AdminAftale="</font>).AddVal(adminaftale);<br>sql.Append(<font color="#A31515">" AND Rapport="</font>).AddVal(usedReport).Append(<font color="#A31515">" AND Id="</font>).AddVal(iCompany);<br>ctx.Econ.Db.ExecUpdate(ctx, sql);<br><br><br>sql.Clear();<br>sql.Append(<font color="#A31515">"SELECT VirksomhedsAftale FROM ArdRapportVirksomhed"</font>);<br>sql.Append(<font color="#A31515">" WHERE AdminAftale="</font>).AddVal(adminaftale);<br>sql.Append(<font color="#A31515">" AND Rapport="</font>).AddVal(usedReport);<br>sql.Append(<font color="#A31515">" AND Opsaetning="</font>).AddVal(usedOpsaetning);<br>sql.Append(<font color="#A31515">" AND Id="</font>).AddVal(iCompany);<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p/>
+<p>
+Какие основные негативные моменты связанны с использованием SQL запросов прямо со страницы.
+</p>
+<p>
+<ol>
+<li>
+Код становился абсолютно не читаем. SQL команды рябили в глазах, и страница превращалась в один большой SQL скрипт.
+</li>
+<li>
+Поддержка такого кода очень усложнялась. Особенно там, где SQL запросы использовались в циклах, разобрать и что-то исправить было очень сложно.
+</li>
+<li>
+Re-use SQL был не использовался, в результате чего, одни и теже кусочки просто копировались в нужное место, что приводило к дуплицированию кода.
+</li>
+<li>
+Страница получалась жестко связанна с источником данных, что затрудняло ее юнит тестирование (в некоторых случаях даже делала ее невозможной).
+</li>
+</ol>
+</p>
+<p>
+Естесвенно, прежде чем начать что-то менять, нужно было убедится в том, что ничего не будет поломанно, поэтому первым этапом было разработать как можно больше тестов к самой странице, чтобы снизить регрессию изменений (о том, как тестировать такие ASP.net страницы, я писал в прошлой <a href="http://abeletsky.blogspot.com/2010/03/legacy-aspnet.html">статье</a>)
+<p/>
+<p>
+После этого SQL код можно вынести в DAL классы. DAL класс, это самый обыкновенный класс, в методах которого идет непосредвенное обращение к источнику данных. Выглядит это примерно следующим образом,
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><br><font color="#0000ff">namespace</font> Company.AnnualReport.DAL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ClosingSheetData<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">readonly</font> ASPNetContext _context;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> ClosingSheetData(ASPNetContext context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context = context;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> IResultSet GetCompanyAgreement(<font color="#0000ff">int</font> agreementNumber, <font color="#0000ff">int</font> companyId, <font color="#0000ff">int</font> report, <font color="#0000ff">int</font> setup, <font color="#0000ff">int</font> template)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> sql = <font color="#0000ff">new</font> Sql();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">"SELECT VirksomhedsAftale FROM ArdRapportVirksomhed WHERE AdminAftale="</font>).AddVal(agreementNumber);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">" AND id="</font>).AddVal(companyId).Append(<font color="#A31515">" AND Rapport="</font>).AddVal(report);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">" AND Opsaetning="</font>).AddVal(setup).Append(<font color="#A31515">" AND Skabelon="</font>).AddVal(template);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IResultSet result = _context.Econ.Db.ExecQuery(_context, sql);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> result;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> UpdatePeriods(<font color="#2B91AF">DateTime</font>? periode1Start, <font color="#2B91AF">DateTime</font>? periode1End, <font color="#2B91AF">DateTime</font>? periode2Start, <font color="#2B91AF">DateTime</font>? periode2End, <font color="#0000ff">int</font> setup, <font color="#0000ff">int</font> adminAgreement, <font color="#0000ff">int</font> report)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> sql = <font color="#0000ff">new</font> Sql();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">"UPDATE ArdRapport SET Periode1Start="</font>).AddVal(periode1Start).Append(<font color="#A31515">", Periode1Slut="</font>).AddVal(periode1End).Append(<font color="#A31515">", Periode2Start="</font>).AddVal(periode2Start);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">", Periode2Slut="</font>).AddVal(periode2End);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sql.Append(<font color="#A31515">" WHERE Opsaetning="</font>).AddVal(setup).Append(<font color="#A31515">" AND AdminAftale="</font>).AddVal(adminAgreement).Append(<font color="#A31515">" AND Rapportnr="</font>).AddVal(report);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.Econ.Db.ExecUpdate(_context, sql);&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p/>
+<p>
+Т.е., внутри методов мы инкапсулируем весь SQL код, возвращая результаты (для select запросов) или имея void методы (для insert, update, delete).
+</p>
+<p>
+В результате переноса всего SQL кода в DAL класс, его надо интегрировать в страницу.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">private</font> ClosingSheetData _dataAccessor;</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+В методе Page_Load, мы просто инициализируем его новым объектом:
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Page entry point</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="sender"&#62;&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="e"&#62;&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">void</font> Page_Load(<font color="#0000ff">object</font> sender, <font color="#2B91AF">EventArgs</font> e)<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;_dataAccessor = <font color="#0000ff">new</font> ClosingSheetData(_context);<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Но в тестовом методе, лучше передавать его как аргумент.
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Page entry point (used for testing)</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="ctx"&#62;Context&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="controls"&#62;Dictionary of page controls&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="data"&#62;Page data class&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="sender"&#62;Sender object&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="e"&#62;Arguments&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;param name="postback"&#62;Postback flag&#60;/param&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> _Page_Load(ASPNetContext ctx, IDictionary&#60;<font color="#0000ff">string</font>, <font color="#0000ff">object</font>&#62; controls, ClosingSheetData data, <font color="#0000ff">object</font> sender, <font color="#2B91AF">EventArgs</font> e, <font color="#0000ff">bool</font> postback)<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// ...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dataAccessor = data;<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Код самой страницы, необходимо поменять, дабы вместо прямых обращений к базе мы делегировали вызов к _dataAccessor  объекту.
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">_useDimension = _reportDesigner.useDimension(_context.Econ.GetAftaleNrFraOpsaetning(_context, _virkOpsaetning));<br><br>_dataAccessor.UpdatePeriods(periodeStart, periodeEnd, <font color="#0000ff">null</font>, <font color="#0000ff">null</font>, setupId, adminAgreement, reportId);<br>_dataAccessor.UpdateFinancialYear(accountingyear, setupId, adminAgreement, reportId, companyId);<br>_dataAccessor.UpdateReportClosingSheetColumns(templateAdmin, templateId, setupId, adminAgreement, companyId, reportId);<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+По моему так гораздо лучше.
+</p>
+<p>
+Что достигается таким подходом?
+</p>
+<ol>
+<li>
+Код проще читать и понимать.
+</li>
+<li>
+Весь SQL находится в одном классе и его проще контролировать.
+</li>
+<li>
+Re-use кода также увеличился, так как повторно можно вызывать одни и теже методы.
+</li>
+<li>
+Тестировать страницы можно гораздо проще, так как имея возможность передачи data-класса внутрь страницы, в режиме запуска тестов его можно подменить mock-классом тем самым полностью отвязать страницу от базы данных.
+</li>
+</ol>
+<p>
+Рекомендую применять всегда, даже в не больших приложениях.
+</p>
+<p>
+Отдельно стоит отметить тестирование самого DAL. Как всегда, в выборе между тестировать и не тестировать, должен выбиратся только первый вариант. Но тут есть свои сложности. - тесты зависят от состояния базы данных, перед тестами это состояние нужно готовить, после тестов очищать, поддержка тразакционности тестов, изоляция тестов друг от друга, перформанс и т.д. Все эти аспекты нужно принимать к сведению, начиная тестирования DAL. Пусть эти сложности не останавливают вас от благих намерений...и как и везде необходимо идти про принципу самого простого пути, постепенно усложная фреймворк для тестирования DAL. Так в моем случае, мы просто делаем DbSetup классы, которые создают необходимую структуру данных а также могут ее очищать.
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#region</font> setup and teardown<br>&nbsp;&nbsp;&nbsp;&nbsp;[SetUp]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> SetUp()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dbSetup = <font color="#0000ff">new</font> R1UnitTest.Tests.ClosingSheetTests.DbSetup(_ctx);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dbSetup.Init();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TearDown]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> TearDown()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dbSetup.Clean();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#endregion</font> setup and teardown<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Для более детального рассмотрения аспектов тестирования, и вообще для вдохновления, рекомендую вот эти статьи
+</p>
+<a href="http://msdn.microsoft.com/en-us/magazine/cc163772.aspx">http://msdn.microsoft.com/en-us/magazine/cc163772.aspx</a><br/>
+<a href="http://www.4guysfromrolla.com/articles/040605-1.aspx">http://www.4guysfromrolla.com/articles/040605-1.aspx</a></div>

@@ -1,0 +1,15 @@
+---
+layout: post
+title: "ELMAH.MVC 2.0.1 Update is Out"
+date: 2012-08-16T20:01:00+03:00
+comments: false
+categories:
+ - ELMAH.MVC
+---
+
+<div class='post'>
+<p>    I've just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can't wait to share.<br />
+</p><h2>VB.NET projects support</h2><p>    For quite a while, I've been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I've just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
+</p><h2>Custom ELMAH route</h2><p>    Another demanded feature was to provide custom path to ELMAH controller. By default ELMAH is available under <code>/elmah</code>, which is nice, but sometimes you what to have a freedom to change it. It's now possible, <code>web.config</code> has additional configuration section, <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;</code>. By setting up elmah.mvc.route parameter, you can tweek a default one, like <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;secure/admin/errors&quot; /&gt;</code> for instance.<br />
+</p><h2>Besides of that...</h2><p>    ELMAH.MVC does not depend on WebActivator any longer. I've removed <code>App_Start.cs</code> code and used <a href="http://haacked.com/archive/2010/05/16/three-hidden-extensibility-gems-in-asp-net-4.aspx">PreApplicationStartMethodAttribute</a> attribute. That allows to make a package more tiny + actually made it possible to avoid separate NuGet package for VB.NET projects.<br />
+</p></div>

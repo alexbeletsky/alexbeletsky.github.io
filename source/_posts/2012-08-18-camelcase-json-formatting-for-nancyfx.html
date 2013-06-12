@@ -1,0 +1,65 @@
+---
+layout: post
+title: "CamelCase JSON Formatting for NancyFX Application"
+date: 2012-08-18T14:17:00+03:00
+comments: false
+categories:
+ - NancyFX
+---
+
+<div class='post'>
+<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I've spend yet another week playing with it. My original expectations were - I'll be super-duper-fast with it, since it's so comprehensive and powerful. One more time I have to admit - every technology has it's learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
+</p><p>    The good thing, it's very interesting to fight new challenges, and it's so cool that Nancy just "does not contain everything", but actually allows to customize things, as you wish to.<br />
+</p><h2>Nancy's default JSON formatter</h2><p>    Nancy is using <a href="https://github.com/grendello">Marek Habersack's</a> version <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Json/JsonSerializer.cs">JsonSerializer</a>, which is a smart wrapper on <a href="http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx">JavaScriptSerializer</a>. It works, fine.. but the problem, it does not provide any facilities to change default formatting settings. That would mean, if you have a module with method like that,<br />
+</p><pre class="brush: csharp">public class SitesModule : NancyModule
+{
+    public SitesModule() : base("/api/sites")
+    {
+        Get["/"] = parameters => Response.AsJson(new[] {new { Name = "Site 1", DeployStatus = "Deployed" }});
+    }
+}
+</pre><p>    You will get valid JSON, but it would serialize all C# properties, as they are:<br />
+</p><pre class="brush: plain">    "[{"Name":"Site 1","DeployStatus":"Deployed "}]"
+</pre><p>    Don't know about you, but it makes me sick too work with uppercase object fields in JavaScript. Fortunately, such advanced JavaScript serialization libraries as <a href="http://james.newtonking.com/pages/json-net.aspx">JSON.NET</a> has formatting features. So, our goal is to create custom serialize (based on JSON.NET) and integrate it to Nancy's pipeline.<br />
+</p><h2>    JSON.NET based serialization<br />
+</h2><p>    In order to do that, we need to implement special interface (guess it's name?) - <code>ISerializer</code>. Without further explanation, I just copy and paste code here:<br />
+</p><pre class="brush: csharp">public class JsonNetSerializer : ISerializer
+{
+    private readonly JsonSerializer _serializer;
+
+    public JsonNetSerializer()
+    {
+        var settings = new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        };
+
+        _serializer = JsonSerializer.Create(settings);
+    }
+
+    public bool CanSerialize(string contentType)
+    {
+        return contentType == &quot;application/json&quot;;
+    }
+
+    public void Serialize&lt;TModel&gt;(string contentType, TModel model, Stream outputStream)
+    {
+        using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
+        {
+            _serializer.Serialize(writer, model);
+            writer.Flush();
+        }
+    }
+}
+</pre><h2>Changing the configuration</h2><p>    NancyFX bootstrapper has a special method, which have to be overridden in order to change internal configuration. There is a very convenient helper, that is useful for changing some particular bits of config.<br />
+</p><pre class="brush: csharp">protected override NancyInternalConfiguration InternalConfiguration
+{
+    get
+    {
+        return NancyInternalConfiguration.WithOverrides(c => c.Serializers.Insert(0, typeof(JsonNetSerializer)));
+    }
+}
+</pre><p>    Please note, I'm inserting that to position 0, just to make sure it's *before* default <code>JsonSerializer</code> type, since AsJson() response formatter is using <code>FirstOrDefault</code> strategy to find corresponding serialize class. Just build and re-start your app, and from now your JSON's would be looking really good:<br />
+</p><pre class="brush: plain">    "[{"name":"Site 1","deployStatus":"Deployed "}]"
+</pre><p>    Much more better now!<br />
+</p></div>

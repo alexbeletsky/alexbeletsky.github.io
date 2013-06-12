@@ -1,0 +1,54 @@
+---
+layout: post
+title: "Blogging with a GitHub and Blogspot? Ideas?"
+date: 2010-07-27T22:54:00+03:00
+comments: false
+categories:
+ - GitHub
+ - AJAX
+ - Design
+---
+
+<div class='post'>
+<p>
+I do use Blogger as my blog engine and really like it. Right, as soon as you create your blog posts in 
+    HTML and do not use embedded editor it is perfectly fine! So, when I do new post I create a plain 
+    HTML in VS and after it is ready I copy paste it to blogspot and publish. Original 
+    HTML I commit special repository on github.  
+</p>
+<p>
+I liked that style of work as far I as I change nothing in posts. As I need change, I have to change original 
+    HTML, re-publish it on blogspot and commit again to github. After I did it 
+    several times, I started to think how to automate this? I came up this a simple 
+    idea, why do not load the content of post dynamically, by using a javascript? 
+</p>
+<p>
+It is no problem to do that, and I implemented a small script that performs exactly what I needed. I called this project <a href="http://github.com/alexanderbeletsky/GithubToBlogspot">GithubToBlogspot</a>. Its description:
+</p>
+<p>
+GithubToBlogspot is used for people who stores they blog article sources in HTML.
+Instead copy pasting HTML between blogspot and github, it should be possible to paste a simple script on a page and that 
+script would load a content.
+</p>
+<p>
+It utilized javascript GitHub API by: http://github.com/fitzgen/github-api
+</p>
+<p>
+First draft example looks like this,
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexanderbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Code itself is also really simple: it opens the blob, reads its data as HTML, extracts the body and put body to target div. That's it. All this done asynchronously, so as you open the blog you see progress image.. after data loaded it appears on screen.
+</p>
+<p>
+But I haven't taken into account several major considerations:
+<ul>
+<li>First, AJAX content is not crawlable by Google. It <a href="http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html">actually is</a>, but requires a changes that could not be done, since you are on 3rd party blog engine.</li>
+<li>
+Second, is with that dynamic loading RSS feed of blog will also be empty.
+</li>
+</ul> 
+</p>
+<p>
+I still want to accomplish this. I was thinking about different solutions, but have no solid one.. Do you know is it possible to accomplish something similar with no drawbacks I mentioned above. It would be great if you share you ideas! 
+</p></div>

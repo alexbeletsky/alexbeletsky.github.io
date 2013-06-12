@@ -1,0 +1,44 @@
+---
+layout: post
+title: "Analog of SVN branch switch for Git"
+date: 2011-08-01T11:16:00+03:00
+comments: false
+categories:
+ - Git
+ - Tips
+ - GitSVN
+---
+
+<div class='post'>
+<p>
+Working with Git in SVN based organization is <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">possible</a> and make a lot of benefits. Sources checked out once are now at you local repository, so all you do is commits, rebases and dcommits back to SVN. But sometimes you need to be able to switch to another SVN branch. You need something equivalent to "SVN switch" command inside Git environment.
+</p>
+<p>
+I’m been trying to switch to new branch, but I found no related information about that. I ended up this solution, I would like to share.
+</p>
+<ol>
+<li>Manually add new configuration into <code>~/.gitconfig</code>, for new SVN location</li>
+<pre>
+    [svn-remote "svn25"]
+        url = https://svn.server/branches/branch25
+        fetch = :refs/remotes/git-svn-25
+</pre>
+<li>Fetch changes from svn25</li>
+<pre>
+    git svn fetch svn25
+</pre>
+<li>Checkout that branch</li>
+<pre>
+    git checkout git-svn-25
+</pre>
+<li>Create new “master” branch</li>
+<pre>
+    git checkout -b master-25
+</pre>
+<li>
+Now, master-25 is your “master” for <code>branch25</code> SVN branch.
+</li>
+</ol>
+<p>
+You can merge you previous changes.. and continue to work with <code>master-25</code> as you worked with usual master.
+</p></div>

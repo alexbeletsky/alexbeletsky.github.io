@@ -1,0 +1,66 @@
+---
+layout: post
+title: "Latest version of ELMAH MVC controller"
+date: 2011-08-27T19:36:00+03:00
+comments: false
+categories:
+ - ELMAH.MVC
+ - Tools
+ - MVC
+ - Tips
+ - asp.net
+---
+
+<div class='post'>
+<p><a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">Integrating ELMAH to ASP.NET MVC in right way</a> is blog post I created sometime ago. It appears really popular, because a lot of people had the same issue as me and found solution I created really applicable. It was really cool to receive all that feedback! By the way, <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">elmah.mvc.controller</a> is my first github repository I got pull request! </p><p>Especially, I would like to thank to <a href="https://github.com/seba-i">Seba Illingworth</a> and <a href="http://twitter.com/#!/blowdart">Barry Dorrans</a> who found really nasty issues and helped to fix those. </p><p>The controller's code has been moved to github long time ago, but what I see many people just copy-past code from article into their solutions. The code I gave in previous post has been changed drastically, but instead of re-writting original post I decided to create new one. </p><h2>Latest version of ELMAH MVC controller</h2><p>So, after all modifications it looks like: </p><pre class="brush: csharp">namespace ElmahMvc.Areas.Admin.Controllers {
+    class ElmahResult : ActionResult {
+        private string _resouceType;
+
+        public ElmahResult(string resouceType) {
+            _resouceType = resouceType;
+        }
+
+        public override void ExecuteResult(ControllerContext context) {
+            var factory = new Elmah.ErrorLogPageFactory();
+
+            if (!string.IsNullOrEmpty(_resouceType)) {
+                var pathInfo = "/" + _resouceType;
+                context.HttpContext.RewritePath(FilePath(context), pathInfo, context.HttpContext.Request.QueryString.ToString());
+            }
+
+            var currentApplication = (HttpApplication)context.HttpContext.GetService(typeof(HttpApplication));
+            var currentContext = currentApplication.Context;
+
+            var httpHandler = factory.GetHandler(currentContext, null, null, null);
+            if (httpHandler is IHttpAsyncHandler) {
+                var asyncHttpHandler = (IHttpAsyncHandler)httpHandler;
+                asyncHttpHandler.BeginProcessRequest(currentContext, (r) => { }, null);
+            }
+            else {
+                httpHandler.ProcessRequest(currentContext);
+            }
+        }
+
+        private string FilePath(ControllerContext context) {
+            return _resouceType != "stylesheet" ? context.HttpContext.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : context.HttpContext.Request.Path;
+        }
+    }
+
+    public class ElmahController : Controller {
+        public ActionResult Index(string type) {
+            return new ElmahResult(type);
+        }
+    }
+}
+
+</pre><h2>How to use it in my application?</h2><p>Easy. Install ELMAH by NuGet, in package console </p><pre class="brush:plain"> Install-Package elmah
+</pre><p>It is optional (but preferable) to create new Area called Admin. Inside AreaRegistration.cs your should place routing for ELMAH controller: </p><pre class="brush: csharp">context.MapRoute(
+        "Admin_elmah",
+        "Admin/elmah/{type}",
+        new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
+    );
+</pre><p>Create ElmahController.cs (just from code above) and place to yours Areas/Admin/Controller folder, add file to project. Don't forget to change the namespace according to your project. </p><p>Configure ELMAH logging options (Memory, XML, SQL), use Web.Config of this <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">project</a> as example. Run application, and see that: </p><pre class="brush:plain"> /admin/elmah
+</pre><p>works.  </p><p>Optional (but very preferable) is to secure your controller with Authorize attribute: </p><pre class="brush: csharp"> [Authorize(Users = "Admin")]
+ public class ElmahController : Controller
+ {
+</pre><p>That's it. </p><h2>Known issues</h2><p>One current known issue - if I'm using <code>SqlErrorLog</code> as error log class and press "Download log" button on ELMAH dashboard, you've got empty result. Unfortunately, it does not work now, since <a href="http://code.google.com/p/elmah/issues/detail?id=230">issue</a> in ELMAH core that I hope will be fixed in nearest release. </p><h2>NuGet package for it? </h2><p>I didn't expect such popularity of that class, but now I seriosly think putting this on NuGet. I'll try to package that as soon as possible. </p></div>

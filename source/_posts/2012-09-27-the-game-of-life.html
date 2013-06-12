@@ -1,0 +1,44 @@
+---
+layout: post
+title: "The Game of Life"
+date: 2012-09-27T11:52:00+03:00
+comments: false
+categories:
+ - JavaScript
+ - Code Kata
+ - Clean Code
+ - TDD
+---
+
+<div class='post'>
+    <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
+    </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
+    </p>    <p>        To do not stay with my misery of missing event, I decided to "play" game of life at home. Trying to follow the rules of sessions, I started to write some JavaScript code. It's even hard to tell, how much fun I had during this implementation.<br />
+    </p>    <h2>Tests, code, tests</h2>    <p>        TDD is very recommended way of development in CodeRetreats. I love TDD and fortunately the game of life is very TDD friendly. It's all about the logic. Logic seems to be very simple and easy describe with tests. For my JavaScript testing I used to use <a href="http://pivotal.github.com/jasmine/">Jasmine</a> testing framework. Jasmine is BDD tests style, which was a little difficult to me at very beginning, but not I tend to write all my tests with BDD style.<br />
+    </p>    <p>        I've spent first two sessions for idea elaboration. At the end third session, I got something working. As I said, the process of writing that code was so fun to me, that I even decided to <a href="https://gist.github.com/3763692">gist</a> the code I created so far. <br />
+    </p>    <a href="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png" /><br />
+    </a><br />
+    <p>        My big disappointment after was that code is actually not working.<br />
+    </p>    <h2>Understanding the problem</h2>    <p>        Even if I had good tests suite, that showed my code works as expected the game was broken. And the issue is that I didn't understand the domain good enough. It took me 4 sessions (about 4 hours) to finally understand the game.<br />
+    </p>    <p>        I proved it once again for myself, there are no perfect code; the code you created at first time is probably broken (unless you understand the domain perfectly, but it's rarely happen in reality). It's OK to completely remove the code you created before and start from the beginning. And with each iteration you moving faster and faster.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png"><br />
+        <img src="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png" /><br />
+    </a><br />
+    <p>        Knowing the requirements I was able to create good test suite. <br />
+    </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it's state and position. The <a href="https://github.com/alexanderbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
+        <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
+    </a><br />
+    <p>        Again, I was so happy with code. It looked very readable as for me, without nested cycles and if-else statements.<br />
+    </p>    <h2>Visualisation</h2>    <p>        You can really understand if something works or not, only if you see it in action. I had to have some UI to see, how game is actually working. <br />
+    </p>    <p>        I've created very simple HTML based UI. The number of div's which change it's state, depending on cell state (alive or dead).<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        The visualization of results is very important part. It's only then I tried to run the game on 64x64 square, I realized that performance of my implementation is so terribly poor. It runs very slowly on Chrome, it makes IE10 die.<br />
+    </p>    <p>        It means that, all beautiful code, tests, specs and so on - is almost useless, than it comes to performance. My 2-pass algorithm, with a simple implementation is not "production" ready, if we talk about some real software. Unit tests are usually done on smaller sets of data. Visualisation and trying the things on larger set of data opens up the reality.<br />
+    </p>    <h2>Conclusions</h2>    <p>        As I already said, it's so much fun. It makes you feel like "back to roots", forget about your enterprise stuff and do some real work. Besides it's great TDD exercise. It's probably to big to be called code kata, but it is still great for sharping an axe. Focusing on simple design is important. But making things "visible" and running them in real mode is vital. <br />
+    </p>    <p>        The most important conclusion for me is: I'm still newbie developer, with so many areas to improve.<br />
+    </p></div>

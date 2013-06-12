@@ -1,0 +1,103 @@
+---
+layout: post
+title: "Approval Tests: Locking Down Legacy Code"
+date: 2011-12-14T19:06:00+02:00
+comments: false
+categories:
+ - Approvals
+ - Open source
+ - TDD
+---
+
+<div class='post'>
+<p>Suppose, you working on project with a lot of legacy code inside. I know it makes you sick, but as brave developer you want to improve things. You met that ugliest method in your life and only one thing you want to do - refactor it. But refactoring is dangerous procedure. For safe refactoring you need to have good test coverage. But wait, it is legacy code. You simply have no tests. What to do? Approvals have answer.<br />
+</p><h2>Legacy code is the code that...</h2><p>Works! Right, it is ugly, un-supportable, nothing you can easy change there. But the most wonderful feature of that code - it works for years. And first thing is to get advantage of that fact!<br />
+</p><p>Here is my "just for example" legacy method.<br />
+</p><pre class="brush: csharp">namespace Playground.Legacy
+{
+    public class HugeAndScarryLegacyCode
+    {
+        public static string TheUgliesMethodYouMightEverSeen(string s, int i, char c)
+        {
+            if (s.Length > 5)
+            {
+                s += "_some_suffix";
+            }
+
+            var r = new StringBuilder();
+            foreach (var k in s)
+            {
+                if ((int)k % i == 0)
+                {
+                    r.Append(c);
+                }
+                else
+                {
+                    if (k == c)
+                    {
+                        if (r.Length <= 2)
+                        {
+                            r.Append('a');
+                        }
+                        else
+                        {
+                            r.Append('b');
+                        }
+                    }
+                    if (k == '^')
+                    {
+                        r.Append('c');
+                    }
+                    else
+                    {
+                        r.Append(k);
+                    }
+                }
+            }
+
+            return r.ToString();
+        }
+    }
+}
+</pre>
+<p>(it's it ugly enough?)
+</p><p>It has a cycles, nested if-else case and all nice features of legacy code. We need to change it, but in the same time guarantee it would not be broken.
+</p><h2>Trying first simple test</h2><p>Supposing also, I'm not much in details of how exactly this function works.. So, I'm creating the test like:
+</p><pre class="brush: csharp">[Test]
+public void shoudl_work_some_how()
+{
+    Approvals.Approve(HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen("someinput", 10, 'c'));
+}
+</pre><p>I run it and got some result to approve:
+</p><a href="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg">
+<img src="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg" alt="approvals" />
+</a>
+<p>I approve that, cause I know that function works. But something inside tells you - that is not enough. Try to run in under the coverage: 
+</p><a href="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg">
+<img src="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg" alt="approvals" />
+</a>
+<p>That does not make me real confident with tests only one hit and coverage 76%. We have to create better tests cases.
+</p><h2>Use combinations of arguments</h2><p>Approvals include some tools to deal this case. Let's change out test and write something like,
+</p><pre class="brush: csharp">[Test]
+public void should_try_to_cover_it()
+{
+    var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+    var strings = new[] { "", "approvals", "xpdays", "^stangeword^" };
+
+    ApprovalTests.Combinations.Approvals.ApproveAllCombinations(
+        (s, i, c) => HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(s, i, c),
+        strings,
+        numbers,
+        chars);
+}
+</pre><p>With only few lines of code, I've got 1560 test cases and all of them are correct!
+</p><a href="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg">
+<img src="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg" alt="approvals" />
+</a>
+<p>Besides, I got pretty good coverage. Ideal, I would say. Now, if even one small change would happen, some of 1560 tests will notice that. </p><a href="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg">
+<img src="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg" alt="approvals" />
+</a>
+<h2>Locking down</h2><p>The process of controlling the legacy code in that way is called "Locking down". After the code is locked down, you have high confidence (read low risk) of breaking changes you introduce. Please note how low effort it was to create all that 1560 tests and how much value gained in that.
+</p><p>Notice, that test like <code>should_try_to_cover_it</code> is not supposed to "live forever". You probably even don't need to check it in to source control. You just do your job, either refactoring or changing that functionality and use Approvals to notify you as fast as possible of something goes wrong.
+</p></div>

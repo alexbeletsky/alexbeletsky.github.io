@@ -1,0 +1,66 @@
+---
+layout: post
+title: "Few Things I Learned From IdeaStrike Project"
+date: 2012-02-09T20:20:00+02:00
+comments: false
+categories:
+ - Applications
+ - GitHub
+ - Open source
+---
+
+<div class='post'>
+<p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It's very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have "product envy" inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />
+</p><p>My attention this time was attracted by <a href="">IdeaStrike</a> project. It suppose to be analog of <a href="">uservoice</a> for OS community. As always, first release was very fast and I was very curious what's inside. So, I cloned the <a href="https://github.com/Code52/Ideastrike">repo</a> and did small hacker session. I've spend some hours with it and would like to share some initial thoughts.<br />
+</p><h2>Build script is small and clean</h2><p>Project contains <code>build.cmd</code> as I run it downloaded all dependencies by NuGet, build web site and run all unit test. Basically, all you need for any small project. Then I looked inside, it turns out like:<br />
+</p><pre class="brush: plain">@echo Off
+set config=%1
+if "%config%" == "" (
+   set config=Debug
+)
+
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+</pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
+</p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
+</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that's also, just a C# code), so at application bootstrap you call the code like:<br />
+</p><pre class="brush: csharp">private static void DoMigrations()
+{
+    var settings = new IdeastrikeDbConfiguration();
+    var migrator = new DbMigrator(settings);
+    migrator.Update();
+}
+</pre><p>The database and schema will be automatically deployed on first application run.<br />
+</p><h2>Social login with Janrain</h2><p>As I clicked to Sign In button, I've been showed nice dialog to select my existing social account to login. <br />
+</p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
+</a><br />
+<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
+</p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that's the rule of pragmatic programmer.<br />
+</p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
+</p><h2>Nancy as web framework</h2><p>I've heard about Nancy many times, but it's only now I got a change to touch it. For me it's just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module's logic is placed inside the constructor:<br />
+</p><pre class="brush: csharp">public FeatureModule(IIdeaRepository ideas, IFeatureRepository features, IUserRepository users)
+    : base("/idea")
+{
+    _ideas = ideas;
+    _features = features;
+
+    this.RequiresAuthentication();
+
+    Post["/{idea}/feature"] = _ =>
+    {
+        int id = _.Idea;
+        var feature = new Feature
+                        {
+                            Time = DateTime.UtcNow,
+                            Text = Request.Form.feature,
+                            User = Context.GetCurrentUser(users)
+                        };
+        _features.Add(id, feature);
+
+        return Response.AsRedirect(string.Format("/idea/{0}#{1}", id, feature.Id));
+    };
+}
+</pre><p>Nancy application could be hosted as ASP.NET / WCF / Self hosted runtimes, it supports different View Engines (including Razor). In short, it is great ALT.NET tool and will find a lot of applications in different projects. More details on <a href="https://github.com/NancyFx/Nancy">Nancy</a> github account.<br />
+</p><h2>Conclusions</h2><p>IdeaStrike is great example of open source project you can learn something from. I would not say I got only positive impressions, moreover there are some obstacles that block me from my normal development flow. I'll try to share my observations on next blog posts.<br />
+</p><p>NancyFX, probably be my next web framework to learn, since I need to move out of ASP.NET MVC which is comfortable zone for me now. I'll be keep looking for IdeaStrike and hope to do some pull requests as well.<br />
+</p></div>

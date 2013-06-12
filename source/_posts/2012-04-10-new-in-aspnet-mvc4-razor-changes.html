@@ -1,0 +1,35 @@
+---
+layout: post
+title: "New in ASP.NET MVC4: Razor changes"
+date: 2012-04-10T21:35:00+03:00
+comments: false
+categories:
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>Razor has been changed a little with ASP.NET MVC 4 beta. It's not a kind of radical changes, but rather improvements that make developers happier. As for me, developers happier then you need to write less code to get the same function. It reminded me a ideal device, which is part of <a href="http://www.mindtools.com/pages/article/newCT_92.htm">TRIZ</a> theory. Ideal device is a device that does not exit, but does it function. By analogy, ideal code is the code that not exist but it's function exist. Razor is not that ideal, through.. But it's "more ideal" than previous version. <br />
+</p><h2>No more @Url.Content</h2><p>I got used to @Url.Content and used that for all CSS and JS references. Since it's to commonly used, developers decided to include it on a level of engine. Now, instead of<br />
+</p><pre class="brush: html">&lt;script src=&quot;@Url.Content(&quot;~/Scripts/Controls.js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>You simply can write,<br />
+</p><pre class="brush: html">&lt;script src=&quot;~/Scripts/Controls.js&quot;&gt;&lt;/script&gt;
+</pre><p>If Razor detects ~/ it would created an output identical to @Url.Content. Just got rid of several bytes within view files.<br />
+</p><h2>Conditions</h2><p>Conditions in attributes were pretty noisy. Have you ever create something like this?<br />
+</p><pre class="brush: html">&lt;div @{if (myClass != null) { &lt;text&gt;class=&quot;@myClass&quot;&lt;/text&gt; } }&gt;Content&lt;/div&gt;
+</pre><p>I had and I did not like it much. I usually ended up with creation of some simple HTML helper instead. With new Razor it a little simpler, not you can write<br />
+</p><pre class="brush: html">&lt;div class=&quot;@myClass&quot;&gt;Content&lt;/div&gt;
+</pre><p>If @myClass is null, it won't output class attribute at all. Very handy.<br />
+</p><h2>And a little more</h2><p>This is an update section I created after this post has been <a href="https://twitter.com/#!/scottgu/status/190133254060388352">twitted</a> by <a href="https://twitter.com/#!/scottgu">Scott Guthrie</a> and some valuable comments has been received.<br />
+</p><p><a href="https://twitter.com/#!/bradwilson">Brad Wilson</a> stated, conditions does not only support nullable types, but also booleans. Say, I have code:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;@ViewBag.Checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p>If the @ViewBag.Checked in null or false, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input type=&quot;checkbox&quot;/&gt;
+</pre><p>Else if @ViewBag.Checked is true, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p><a href="https://twitter.com/#!/HumanCompiler">Erik Porter</a> also mentioned the custom support for <code>data-*</code> attributes. Data attributes are little special, so even if you missing particular value you still want to have those as empty <code>data-role = ""</code>. So, if you have code like:<br />
+</p><pre class="brush: html">&lt;ul data-role=&quot;@ViewBag.ListRole&quot;&gt;
+&lt;/ul&gt;
+</pre><p>and @ViewBag.ListRole is null or false, data attribute will be eliminated. That's how it work in Beta. But for next releases <code>data-*</code> attributes will be treated specially, so even if value is null or false they will be rendered as empty ones.<br />
+</p><h2>Conclusions</h2><p>I haven't noticed any more changes so far. It's great to see that Razor has not been "frozen" and still improving. I like that view engine first of all by it's simplicity. So making it even more simple would definitely make it more attractive.<br />
+</p></div>

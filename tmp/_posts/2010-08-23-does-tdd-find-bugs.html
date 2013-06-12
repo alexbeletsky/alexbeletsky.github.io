@@ -1,0 +1,31 @@
+---
+layout: post
+title: "Does TDD find bugs?"
+date: 2010-08-23T09:36:00+03:00
+comments: false
+categories:
+ - TDD
+---
+
+<div class='post'>
+<p>
+No, of cause not. TDD doesn't find bugs in your application. This is a very frequent misconception about TDD, I would like to shed a light on it today.
+</p>
+<p>
+Why tests do not find bugs? Why applications created with TDD still has bugs?
+</p>
+<p>
+<b>Tests are replication of developers mind</b>. As good as problem understood, as good it could be tested, as good it could be solved. That means that tests and code are very <i>subjective</i>. It all depends on developer. If the requirement is treated wrong, or implemented not completely it will be a bug, even if all tests are passing. If developer is not aware of existing of some problem he won't be able to create a corresponding case/fix.     
+</p>
+<p>
+<b>Tests are limited</b>. It is just not possible to test everything. Especially in middle/big size applications. Even having a 100% coverage metrics, does not guarantee that code is 100% tested, it only means that existing test suite runs each line at least ones. There always be a corner cases, that are not really seen during requirements/implementation phase and could appear only on acceptance or maintanance. There are high chances to <i>miss something important</i> during development.  
+</p>
+<p>
+<b>Tests have a quality</b>. We frequently hear term code quality. Code quality is some measure that shows how easy code could be understood, changed. We all know that usage of design patterns, enterprise libraries, refactoring.. all of this aimed to improve code quality. Tests are also code, but easy to read and maintain <i>is not primary test quality factors</i>. Test quality is some measure of <i>how good test code is executing and asserting against production code</i>. Number of asserts is a simplest metric. As soon as tests doesn't have any assert in it, tests have no sence.. it useless. Quality highly depends on actual scenario of test, <i>as much smarter scenario is as much quality test is</i>.      
+</p>
+<p>
+<b>Tests are not intelligent</b>. Tests are code, created by developer, proves that functionality created works as expected at the <i>current moment on time</i>. Test suite is something that could produce a snapshot of particular functionality. They become very useful than they are created before code, because it guides through to solve problem and reach the goal, as well as they are useful after the code is created, minifying the risk of regression during any of code changes (fixes, refactoring, new functionality etc.). But test itself could not give any new information.
+</p>
+<p>
+Why TDD is still important, you might ask? Even if TDD still leave a room for bugs, it radically decreases overall number of bugs. First of all because many silly mistakes are being found during creation of tests and first tests runs. Second, that good number of tests creates a kind of bounds that helps to keep existing functionality in it.     
+</p></div>

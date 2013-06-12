@@ -1,0 +1,54 @@
+---
+layout: post
+title: "AgileBaseCamp Kiev 2011: Vitaly Stakhov: Working safety net"
+date: 2011-04-18T18:23:00+03:00
+comments: false
+categories:
+ - Agile
+ - Conference
+---
+
+<div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<p>
+<a href="http://twitter.com/#!/VitalyStakhov">Vitaly</a> is a .NET developer shared really nice ideas of the creation of "safety net" with unit tests. He works in software delevelopment shop with no testers in it. Having that they manage to keep quality on acceptable level by means of test driven development practices and implemenation of safety net of tests around the product code base.
+</p>
+<p>
+Many of TDD practitioner's have heard this term before, but not a lot of have full understanding of it. In general "Safety Net" does not mean 100% code coverage, it either don't nesserely mean to follow "test first" principles in creation of code. Safety net is a methaphor of net used by acrobats in circus. Acrobats are doing dangerous tricks close to cicrus ceil (that's a bit high).. As more complex trick is more chances to fall down, but as you fall on safety net you would be still alive. So, with safety net you fail, but not die.
+</p>
+<p>
+Another good methor about the actual position of safety net. If it put to low (close to the floor), resiliency of net might not be enought to compensate your kinetic energy during fall.. if it is put to high (close to ceil), it start to loose it sense and only interfere of making tricks.
+</p>
+<p>
+Let's one more time see, why we using TDD and work so hard to create tests:
+</p>
+<ul>
+<li><strong>test driven design</strong> - indeed by having testable code you really much affect <a href="http://www.beletsky.net/2010/10/test-driven-design-and-levels-of.html">code design</a>. Design is key factor through the all life-cycle of project</li>
+<li><strong>safety net creation</strong> - in other hand we do testing to follow "cover my ass" principle, having a good test coverage makes us feel really confortable and confident with application</li>
+</ul>
+<p>
+In real life those to factors could contradict itself. When we originally create the code with TDD we are typically put too much details in test cases. We do verify for methods calls, expected exceptions, argument values etc. It works perfectly at the beginning. But as soon as we start to do refactoring it might turn to situation then a lot of cases became red, just because of implementation details changed! It leads to situation then the changes are applied, application still in workable state.. but tests are failed (safety net is put to high). That makes tests to be fragile.. fragile tests are bad, because it make to feel like "tests are not useful".. so such tests are typically deleted, commented out, skipped. All of these is just a putting safety net low, close to floor. As for me this is even more dangerous then putting it too high.
+</p>
+<p>
+What to do? The the of mitigation this is all the time controlling safety net position. It is very useful to distinguish 2 types of tests:
+</p>
+<ul>
+<li>Interaction - tests that we basically create on "design" stage of application (detailed tests)</li>
+<li>Component - tests that we basically create to change safety net position (behavior tests)</li>
+</ul>
+<p>
+The point is the interaction tests are "classical" unit tests that we create for particular method/class. It works great of design stage of development, time there we have no model at all, we don't know how internal structure would like etc. But as it said, the problem is that interaction tests are to much detailed. And as soon as small implementation detail is changed, those tests became red (I found a little analogy with blog post I did recently about <a href="http://www.beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">Functional tests</a>).
+</p>
+<p>
+To mitigate that we look on same problem with different view - components. With components tests we move focus from details to behavior. For instance if in case of moving money from one account to another, we are not particularly interested in what methods called, but we interested that amount is really moved. Type of test that actually tests that is called component.
+</p>
+<p>
+As soon as component test is defined we are no longer interested in interaction tests. Interactions tests became overhead and only slows done the process of development by continues fixes of failed tests. So, as we already have component tests is just possible to remove interaction tests at all.
+</p>
+<p>
+Back to our safety net analogy - with a lot of Interaction (detailed) cases, we are putting net to high, we should move it lower by getting rid of too detailed cases. To compensate that, it is important to have behavior test that would verify that application state still in workable state. This should be really careful and continues process.
+</p></div>

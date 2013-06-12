@@ -1,0 +1,61 @@
+---
+layout: post
+title: "Approval Tests, Alternative View on Test Automation"
+date: 2011-12-11T01:19:00+02:00
+comments: false
+categories:
+ - Tools
+ - Approvals
+ - Open source
+ - TDD
+---
+
+<div class='post'>
+<p><a href="https://sourceforge.net/projects/approvaltests/">Approval Tests</a> or simply Approvals in a framework created by <a href="http://twitter.com/#!/LlewellynFalco">Llewellyn Falco</a> and <a href="http://dangilkerson.users.sourceforge.net/">Dan Gilkerson</a>, providing support for .NET, Java, PHP and Ruby. It is not yet another unit testing framework like NUnit or MbUnit etc., instead those frameworks are used to run approval tests.<br />
+</p><p>Broadly speaking, software is nothing more as virtual box there we put some inputs and expect on outputs. The outputs could be produces by zillion ways. Those ways are differ by its implementation. Unit tests are too much focusing on implementation. Thats why unit tests might fail even if you have working code, or otherwise. Approvals are focusing on output.<br />
+</p><h2>How it works?</h2><p>Let's take a look on a very simple case. Say, I have a class <code>ShoppingCart</code>. I can add some products inside the shopping cart, confirm my purchase. I expect that total price is calculated for me. <br />
+</p><pre class="brush: csharp">[TestFixture]
+[UseReporter(typeof(DiffReporter))]
+public class ShoppingCartTests {
+
+    [Test]
+    public void should_calculate_the_total_price_for_shopping_cart() {
+        // do
+        var shoppingCart = new ShoppingCart();
+        shoppingCart.Add(new Product { Id = "iPad", Price = 500 });
+        shoppingCart.Add(new Product { Id = "Mouse", Price = 20 });
+        shoppingCart.Confirm();
+
+        // verify
+        Approvals.Approve(shoppingCart);
+    }
+}
+</pre><p>What happens if I run this test? If I'm running it first time it fails. No matter it works or doesn't. Framework simply don't know that yet. To understand how much correct that code is, it will actually ask you, to utilized human primary power - recognition.   <br />
+</p><p>In that case it will open the TortoiseDiff application and show actual and expected outputs.<br />
+</p><a href="https://lh5.googleusercontent.com/-la_QjhoPxSc/TuPoxAXVteI/AAAAAAAAH0w/MdWZ0OAcalk/s779/Diff.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-la_QjhoPxSc/TuPoxAXVteI/AAAAAAAAH0w/MdWZ0OAcalk/s779/Diff.jpg" /><br />
+</a><br />
+<p>Here, I'm able just read that: "Ok, I have 2 products in my cart..one iPod and one Mouse, iPods costs 500 smth and mouse is 20 smth.. and the total price is 520 - looks good! I approve that result!".<br />
+</p><p>Technically the approving is just copying actual output file to expected. As soon as test passed, actual file output is deleted and approved file resides near test code file, so you just check it in source control.<br />
+</p><p>If then the shopping cart is modified and something goes wrong. There would be a failure. In case of unit tests, that would be multiple failure of different cases and it might be not so easy to understand what's exactly wrong. For approval test, it would be one failure. And the cool thing that I have a difference that shows there exactly the deviation is. <br />
+</p><a href="https://lh3.googleusercontent.com/-CTO2HOQGoDs/TuPo7nJ1U8I/AAAAAAAAH04/ycao7SUf78s/s720/Diff2.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-CTO2HOQGoDs/TuPo7nJ1U8I/AAAAAAAAH04/ycao7SUf78s/s720/Diff2.jpg" /><br />
+</a><br />
+<h2>Where it works?</h2><p>It is not only the simple objects you can approve. What's the cool thing, you can approval against the different sources: objects, enumerables, files, HTML, XML etc. On a more high level: WpfForm, WinForm, ASP.NET Page. <br />
+</p><p>For instance, code for ASP.NET:<br />
+</p><pre class="brush: csharp">[Test]
+public void should_have_approved_layout() {
+    ApprovalTests.Asp.Approvals.ApproveUrl("http://localhost:62642/customer/");
+}
+</pre><p>Or for WPF form<br />
+</p><pre class="brush: csharp">[Test]
+public void should_have_approved_layout() {
+    ApprovalTests.Wpf.Approvals.Approve(new Form());
+}
+</pre><p>With WPF and Win forms is that it's able to serialize them into images, so the actual and expected results are actually images, so it is easy to track the differences (TortoiseDiff can do that).<br />
+</p><h2>When it works?</h2><p>It works best when you deal with 2 things: UI and legacy code.<br />
+</p><p>Testing of UI is always a difficult part. But what you typically need is: make sure that UI is not changed and if changed, where exactly is happening. Apporvals solves that nicely. It is only one line of code test, to test ASP.NET page for instance. <br />
+</p><p>Legacy is another story: you have no tests there at all, but you have to change code to implement new feature or refactor. The interesting thing about legacy code - It works! It works for years, no matter how it written (remember, virtual box). And this is a very great advantage of that code. With approvals, with only one test you can get all possible outputs (HTML, XLM, JSON, SQL or whatever output it could be) and approve, because you know - it works! After you have such test and approved result you are really much safe with a refactoring, since now you "locked down" all existing behavior.<br />
+</p><p>Approvals are not something you need to run all the time, like units or integration tests. It more like handy tool. You create approval tests, you do your job and at the end of the day it might happen - you no longer needed, so you can just throw it away.<br />
+</p><h2>Want to hear more?</h2><p>Just go and listen to <a href="http://herdingcode.com/?p=329">this</a> Herding Code podcast episode, or visit project <a href="https://sourceforge.net/projects/approvaltests/">web site</a> or join me at 17 December on <a href="http://xpdays.com.ua/program/">XP Days Ukraine</a> conference in Kiev, where I'm going to have a speech dedicated to Approvals.<br />
+</p></div>

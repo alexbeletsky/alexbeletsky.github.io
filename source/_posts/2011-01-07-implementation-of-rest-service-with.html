@@ -1,0 +1,190 @@
+---
+layout: post
+title: "Implementation of REST service with ASP.NET MVC"
+date: 2011-01-07T00:39:00+02:00
+comments: false
+categories:
+ - GitHub
+ - MVC
+ - REST
+ - asp.net
+---
+
+<div class='post'>
+<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I'll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into "API epoch", customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he's just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let's implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I've created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexanderbeletsky/rest.mvc.example">github</a> (please don't be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
+public partial class RestExampleDataContext : System.Data.Linq.DataContext
+{
+    // implementation...  
+
+</pre><pre class="brush: csharp;">[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogPosts")]
+public partial class BlogPost : INotifyPropertyChanging, INotifyPropertyChanged
+{
+    // implementation
+</pre><p>I've added simple data to database that will be used by tests: </p><pre class="brush: sql">insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-1', 'My post 1', 'This is first post', CAST('2011-01-01' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 2', 'This is second post', CAST('2011-01-02' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 3', 'This is third post', CAST('2011-01-03' as datetime), 'alexander.beletsky');
+</pre><h2>API Interface</h2><p>The interface we are going to implement, looks like this: </p><pre class="brush: plain">http://localhost/api/v1/posts/get/{posturl}
+http://localhost/api/v1/posts/all/{username}
+http://localhost/api/v1/posts/post/{username}
+http://localhost/api/v1/posts/delete/{username}/{posturl}
+</pre><p>For all of these interface methods, I'm adding integration javascript <a href="https://github.com/alexanderbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don't have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) "API". It is really similar with Area, by it's structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: "It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action". So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let's take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
+
+namespace Web.API.v1
+{
+    public class ApiV1Registration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get { return "ApiV1"; }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            context.MapRoute(
+                "ApiV1_posts",
+                "api/v1/posts/{action}/{userName}/{postUrl}",
+                new { controller = "APIV1", postUrl = UrlParameter.Optional });
+        }
+    }
+}
+</pre><h2>API Controller</h2><p>After routing is defined, it is time to add actual hander - controller class. Initially it would be empty, with out any action. Just initialization of <code>context</code> object. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    public class ApiV1Controller : Controller
+    {
+        private RestExampleDataContext _context = new RestExampleDataContext();
+        
+        // actions..
+    }
+}
+</pre><h2>API Actions implementation</h2><p>We've complete infrastructure to start implementation. Solution, Project, Interface, Tests, Routing, Controller.. now it is time for Actions. </p><h3>Get all posts method</h3><p><pre>http://localhost/api/v1/posts/all/{username}
+</pre></p><p>It receives <code>username</code> as parameter and expected to return all blog posts belong to this user. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult All(string userName)
+{
+    var posts = _context.BlogPosts.Where(p => p.CreatedBy == userName);
+
+    return Json(
+        new { success = true, data = new { posts = posts.ToList() } }, JsonRequestBehavior.AllowGet
+    );
+}
+</pre><p>Signature of action method said: respond to <code>HttpGet</code> verb, get all records with corresponding userName and return as Json.  </p><p><code>Json</code> method of Controller class is really cool feature of MVC2 framework. It receives anonymous type object and serialize it Json. So, the <code>new { success = true, data = new { posts = posts.ToList() } }</code> object will be serialized into: </p><pre class="brush: csharp">{"success":true,"data":{"posts":[{"Id":1,"Url":"my-post-1","Title":"My post 1","Body":"This is first post","CreatedDate":"\/Date(1293832800000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":2,"Url":"my-post-2","Title":"My post 2","Body":"This is second post","CreatedDate":"\/Date(1293919200000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":3,"Url":"my-post-2","Title":"My post 3","Body":"This is third post","CreatedDate":"\/Date(1294005600000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}}]}}
+</pre><p>Nice and clean. </p><p>Take a note to <code>JsonRequestBehavior.AllowGet</code>. This is a special flag, you have to pass to <code>Json</code> method, if it is being called from GET handler method. This is done to prevent <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx">Json Hijacking</a> type of attack. So, actually if your API call returns user sensitive data, you should consider POST instead of GET.  </p><p>Let's re-run test suite and see that first test is green now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s1600/api-tests-firstpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s400/api-tests-firstpass.png" border="0" alt=""id="Img3" /></a> <h3>Create new post method</h3><pre>http://localhost/api/v1/posts/all/{username}
+</pre><p>It receives <code>username</code> as parameter and blog post content in POST body as payload. Code is: </p><pre class="brush: csharp">[HttpPost]
+public JsonResult Post(string userName, PostDescriptorModel post)
+{
+    var blogPost = new BlogPost {
+        CreatedBy = userName,
+        CreatedDate = DateTime.Now,
+        Title = post.Title,
+        Body = post.Body,
+        Url = CreatePostUrl(post.Title) 
+    };
+
+    _context.BlogPosts.InsertOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, url = blogPost.Url });
+}
+
+private string CreatePostUrl(string title)
+{
+    var titleWithoutPunctuation = new string(title.Where(c => !char.IsPunctuation(c)).ToArray());
+    return titleWithoutPunctuation.ToLower().Trim().Replace(" ", "-");
+}
+</pre><p>where <code>PostDescriptorModel</code> is </p><pre class="brush: csharp">namespace Web.API.v1.Models
+{
+    public class PostDescriptorModel
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+}
+</pre><p>If you try to run this example just like that, you will see that <code>PostDescriptorModel</code> instance will be null. MVC2 could not handle Json payload. But if you google a little you find article by Phil Haack, where he addresses exactly the same issue - <a href="http://haacked.com/archive/2010/04/15/sending-json-to-an-asp-net-mvc-action-method-argument.aspx">Sending JSON to an ASP.NET MVC Action Method Argument</a>. Support of Json as action method is implemented in MVC Futures 2 library (library that contains useful extensions, that are not yet part of framework but will be there with big chances). Download it by this <a href="http://aspnet.codeplex.com/releases/view/41742#DownloadId=110348">link</a> add reference to project and in Global.asax.cs add <code>JsonValueProviderFactory</code>: </p><pre class="brush: csharp">protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+
+    RegisterRoutes(RouteTable.Routes);
+
+    ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
+    // ...
+</pre><p><strong>Important:</strong> </p><ul><li>In case you are using MVC3 framework, you do not need to include MVC Futures assembly, since <code>JsonValueProviderFactory</code> is already included into MVC3.</li>
+</ul><p>If I try to re-run the tests, I'll see that "create new post" test is still red. That's because "get post" API method is still not implemented. </p><h3>Get post by url method</h3><pre>http://localhost/api/v1/posts/get/{posturl}
+</pre><p>It receives <code>post</code> as post url and return blog post object in response. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Get(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    return Json(
+        new { success = true, data = blogPost }, JsonRequestBehavior.AllowGet);
+}
+</pre><p>Last red test is "delete post test", so let's implement delete API call. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s1600/api-tests-secondpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s400/api-tests-secondpass.png" border="0" alt=""id="Img4" /></a> <h3>Delete post by url method</h3><p><pre>http://localhost/api/v1/posts/delete/{posturl}
+</pre></p><p>It receives <code>post</code> as post url and return status in response. Code is: </p><pre class="brush: csharp">[HttpDelete]
+public JsonResult Delete(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    _context.BlogPosts.DeleteOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, data = (string)null });
+}
+</pre><p>Now all tests are green. Fantastic! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s1600/api-tests-allpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s400/api-tests-allpass.png" border="0" alt=""id="Img5" /></a> <h2>Handle Json Errors</h2><p>What happens if exception thrown with-in API method? Let's create a test and see: </p><pre class="brush: js">test("fail method test", function () {
+
+    var method = 'posts/fail';
+    var data = null;
+    var type = 'GET';
+    var params = ['alexander.beletsky'];
+
+    var call = createCallUrl(this.url, method, params);
+
+    api_test(call, type, data, function (result) {
+        ok(result.success == false, method + " expected to be failed");
+        same(result.message, "The method or operation is not implemented.");
+    });
+});
+</pre><p>And add implementation of failed method: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>If I run the test, I'll see such result: </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s1600/api-tests-exception.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s400/api-tests-exception.png" border="0" alt=""id="Img6" /></a> <p>This is not very greceful. It is expected that Json response would contain <code>false</code> in <code>success</code> attribute and <code>message</code> would contain actual exception message. </p><p>Of cause, it is possible to wrap all methods in <code>try / catch</code> code block and return corresponding Json in <code>catch</code> block, but this violates DRY (don't repeat yourself) principle and makes code ugly. It is much more better to use MVC2 method attributes for that. </p><p>So, we define new attribute that would handle error and in case of exception thrown with-in Action method, this exception will be wrapped in Json object and returned as a response. </p><pre class="brush: csharp">namespace Web.Infrastructure
+{
+    public class HandleJsonError : ActionFilterAttribute
+    {
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
+            {
+                filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                filterContext.Result = new JsonResult()
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        success = false,
+                        message = filterContext.Exception.Message,
+                    }
+                };
+                filterContext.ExceptionHandled = true;
+            }
+        }
+    }
+}
+</pre><p>Add this attribute to method definition: </p><pre class="brush: csharp">[HttpGet]
+[HandleJsonError]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>And I'm happy to see that all tests are passing now! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s1600/api-tests-allpassed.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s400/api-tests-allpassed.png" border="0" alt=""id="Img7" /></a> <p>Since we need similar behavior for all API calls it is better to add this attribute to class, instead of method. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    [HandleJsonError]
+    public class ApiV1Controller : Controller
+    {
+        // code..
+</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexanderbeletsky/rest.mvc.example">https://github.com/alexanderbeletsky/rest.mvc.example</a>.  </p></div>

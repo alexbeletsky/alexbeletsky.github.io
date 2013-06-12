@@ -1,0 +1,39 @@
+---
+layout: post
+title: "CS101 Building a Search Engine: Week 3"
+date: 2012-05-07T12:58:00+03:00
+comments: false
+categories:
+ - SearchEngine
+ - Udacity
+ - CS101
+---
+
+<div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>Yesterday, I've concluded Unit 3 of <a href="http://www.udacity.com/">CS101 Building Search Engine</a> class. I had a little lag, since I've been to little vacation at the beginning of previous week, so got a chance to get back to class only Thursday. So, I still have one homework task in my to-do list.<br />
+</p><p>It's been an interesting unit, through it's still very basic one. I'm little more confident with Python, getting powered by knowledge of collections, indexes etc. Again, I'm really pleased with language simplicity. Just few code snippets I like,<br />
+</p><pre class="brush: python"># creates generic list
+        some_list = []
+        
+        # add something inside
+        some_list.append(1)
+        some_list.append('z')
+        some_list.append([3,2,1])
+        
+        # iterate by for loop
+        for e in some_list:
+            pass
+            
+        # or with while
+        while some_list:
+            e = some_list.pop()
+        
+        # get index of element
+        index = some_list.index(1)
+    </pre><p>I also started to familiarize with functional style of Python programming. You can find some good inputs <a href="http://docs.python.org/howto/functional.html">here</a>. Everything look very interesting so far.<br />
+</p><p>This week we moved further with "real" implementation of web crawler. Instead of going by the set of quizzes I went my own path and created my implementation of simple crawler. So, what it does currently is go from 'seed' page and collect all links it's able to find on target pages and related pages. I went a little far, since I made it run on real web requests, instead of test data that current unit supposes. If you are interested code could be found <a href="https://gist.github.com/2626946">here</a>.<br />
+</p><p>Still I pretend as CS101 student trying to apply only knowledge I got through latest weeks. It's great exercise I believe, showing some gaps in my education or concept understanding.  <br />
+</p><p>Homework was interesting as well. <a href="http://www.crunchbase.com/person/anna-patterson">Anna Patterson</a> was a starring guest for homework session. Together with Anna we tried to improve crawler with some real life requirements, like max_pages and max_depth parameter to prevent crawler to stay in indefinite loop. Anna is great expert in this field, so for each homework task I highly recommend to check the answer, a lot of interesting details there.<br />
+</p></div>

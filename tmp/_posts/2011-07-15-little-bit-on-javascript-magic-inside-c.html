@@ -1,0 +1,59 @@
+---
+layout: post
+title: "A little bit on Javascript magic inside C# code"
+date: 2011-07-15T17:28:00+03:00
+comments: false
+categories:
+ - JavaScript
+ - CSharp
+---
+
+<div class='post'>
+<p>
+C# and Javascript are both my favorite languages. I believe that those two are best languages in a world (perhaps I haven't started to learn Ruby). With a quite long practice in Javascript, you start to feel real power of dynamic language. Even more, you are so much get used for particular code constructions that you try to do the same things in C#.
+</p>
+<p>
+This is something you might do in javascript a lot. Consider that code, 
+</p>
+<a href="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png">
+<img src="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png" alt="code" />
+</a>
+<p>
+Method <code>createConfig</code> takes options object, dynamically construct <code>config</code> object and returns it back to client. Maybe it is the best example, but shows - I dynamically able to construct an object, just putting new properties into it.
+</p>
+<p>
+Now, let's try to do that same with C#. Believe me or not, but I can do exactly (OK, mostly exactly) code with C#.
+</p>
+<a href="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png">
+<img src="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png" alt="code" />
+</a>
+<p>
+We can play "Find a difference" game here. Anyway, what I can say: <strong>"anonymous types + dynamic + ExtendoObject"</strong>, is a magic spell that turn you C# code into Javascript.
+</p>
+<ul>
+<li>
+With <a href="http://msdn.microsoft.com/en-us/library/bb397696.aspx">Anonymous Types</a> you easy get a notion of JavaScript dynamic object, just use <code>new { MyProp = 1 }</code> JavaScript analog <code>{ MyProp: 1 }</code>.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/dd264741.aspx">Dynamic</a> would tell to compiler - "Do not check my type now, let Runtime do that". So, with dynamic objects you can do <code>obj.MyProp</code>, compiler would allow this code, existence of property would be checked on runtime, if absent - exception will be thrown.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/system.dynamic.expandoobject.aspx">ExpandoObject</a> is a super-power of .NET, allows you to construct object at runtime. You can see, that I just assign new property, that property would be dynamically added to <code>config</code> object.
+</li>
+</ul>
+<p>
+Life would not be so interesting if every thing is so easy. My first implementation failed to work, in line <code>if (option.Ip || option.Proto)</code> then I called <code>createConfig</code> with object that actually contains no such properties. As I said above, dynamic simply throws an exception if property is missing. I could wrap code in some <code> try / catch</code> cases, but it would be to ugly and magic would gone. We have to extend our magic formula with one component - Reflection. So, let's pronounce spell again, <strong>"anonymous types + dynamic + ExtendoObject + Reflection"</strong> and check out final secret piece of code.
+</p>
+<p>
+<code>DynamicProxy</code> is simple wrapper around the dynamic, it overloads [] operator and check availability of property using Reflection.
+</p>
+<a href="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png">
+<img src="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png" alt="code" />
+</a>
+<p>
+That's it. I've made C# code look like and behave like JavaScript, utilizing power of .NET platform. As always, you can find a source code on github - <a href="https://github.com/alexanderbeletsky/csharp-js">csharp-js</a>.
+</p>
+<h2>Disclaimer</h2>
+<p>
+You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :). 
+</p></div>

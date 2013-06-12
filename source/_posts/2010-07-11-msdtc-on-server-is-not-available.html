@@ -1,0 +1,27 @@
+---
+layout: post
+title: "MSDTC on server is not available exception"
+date: 2010-07-11T20:00:00+03:00
+comments: false
+categories:
+ - Tips
+---
+
+<div class='post'>
+<p>
+During implementation of Linq to SQL of Entities application you can see such exception:
+</p>
+<p>
+<i>System.Data.SqlClient.SqlException : MSDTC on server 'SRV\5118CF33-D353-46' is unavailable.</i>
+</p>
+<p>
+Generally it means that there are several transactions is being created in application and they have to be managed by a special service, called "Distributed Transactions Coordinator" that is by default is not started. So, the quickest solution is just to start the service manually. Go to Start -> Control Panel -> Administrative Tools -> Services and start "Distributed Transactions Coordinator". If it is required by your configuration you can set it as "Automatic" startup type, to run at as your server up.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TDn5EzrqpfI/AAAAAAAAG2c/Lv_H5U6cOyQ/s1600/services.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TDn5EzrqpfI/AAAAAAAAG2c/Lv_H5U6cOyQ/s400/services.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5492695081543181810" /></a>
+<p>
+But please be sure <b>what you are doing</b>, because this exception could also show some issues in application. As soon as it is appeared after some code changes, you have to clearly understand that involvement of Distributed Coordinator is expected behaviour. 
+</p>
+<p>
+What happened to me with my Linq to SQL application is following: there are two 
+    classes that create instance of DataModel class, first one is DbSetup that responsible for some preparation of data for tests, second is Repository object. DbSetup was also opening a TransactionScope object, to rollback all data that is being created during tests. This what created a problem - as soon as TransactionScope opened in scope of DataModel within DbSetup class, DataModel created in Repository was treated by runtime as a part of another transaction. That's why runtime starting to request "Distributed Transactions Coordinator" to manage transactions. So, in unit test code I changed the constructor of Repository to accept DataModel created in DbSetup as constructor argument, so only one "transacted" DataModel object used in application. That solved my problem, without starting up coordinator.   
+</p></div>

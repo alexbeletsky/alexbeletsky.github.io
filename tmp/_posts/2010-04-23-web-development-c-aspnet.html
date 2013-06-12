@@ -1,0 +1,36 @@
+---
+layout: post
+title: "Web development: cтруктура приложения ASP.NET"
+date: 2010-04-23T17:19:00+03:00
+comments: false
+categories:
+ - asp.net
+---
+
+<div class='post'>
+<p>Вступительная статья в серии общих рекомендаций при построении веб приложений на ASP.net (C#). </p><p>Пересмотрев не один способ организации проектов веб приложений, хочу предложить один из наиболее простых и удобных. </p><br />
+<b>Организация исходного кода проекта</b> <br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/S9GtXcsbYDI/AAAAAAAAGkg/DPPtal4bPEo/s1600/concept.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 369px; height: 400px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/S9GtXcsbYDI/AAAAAAAAGkg/DPPtal4bPEo/s400/concept.jpg" border="0" alt="" id="BLOGGER_PHOTO_ID_5463338441328255026" /></a> <p><span style="font-style:italic;">WebAppilcation</span> - стандартное ASP.net приложение. При разработке следует старатся делать веб приложение, как можно "тоньше". По сути это View, поэтому не должно быть ничего кроме: <br />
+- разметки страниц - клиентского java script кода - кастомных контролов <br />
+<br />
+<p>Код объекта страницы должен делегировать вызов к соответвующему объекту BLL. Допускается также выполнение минимальной серверной валидации на странице. </p><br />
+<p><span style="font-style:italic;">Company.Product.BLL</span> - библиотека классов, содержащая в себе реализацию бизнес логики приложения. Все функции, которые реализует приложение содержатся именно здесь. Добавлнение новой функции в продукт, это добаление нового (или модификация существующего) класса БЛ, тестирование этого класса и последующая интеграция на соответсвующую веб страницу. </p><br />
+<p><span style="font-style:italic;">Company.Product.BLL.Tests</span> - библиотека классов, содержащая в себе реализацию тестов BLL. Так как все классы BLL проектируются таким образом, что взаимодействие с View и Data Model происходят на уровне интерфейсов (конструктор бизнесс объекта получает объекты View и DataModel, через соответвующие интерфейсы), то внутри тестов удобно использовать mock-объекты. Это позволяет реализовать и протестировать бизнес объект, еще до того, как мы имеем саму страницу (View) и также класс модели данных (Data Model). Более того, при таком подходе именно бизнес объект диктует, каким именно должен быть интерфейс View и Data Model чтобы отвечать поставленным требованиям. Идя по пути </p><br />
+<p>Требования - Тесты - Бизнес объект - Данные - Отображение </p><br />
+<p>мы приходите к работающей реализации наболее коротким путем. </p><br />
+<p><span style="font-style:italic;">Company.Product.DAL</span> - библиотека классов, содержащая реализацию DAL. Именно она содержит в себе классы Data Model (упомянутые выше), которые используют классы BLL. Я предпочитаю выносить DAL в отдельную сборку, подчеркивая требования паттерна MVC о разделении - модели, отображения и контролера, а также для удобства в работе (над DAL-ом может работать разработчик, в не зависимости от остальных частей приложения, реализовывая интерфейсы требующиеся бизнес объектом). </p><br />
+<p><span style="font-style:italic;">Company.Product.DAL.Tests</span> - библиотека классов, содержащая в себе реализацию тестов классов DAL. При тестировании DAL желательно избегать mock'ов, а тестировать на той среде, где будет выполянятся приложение (SQL server, Web service, .NET remoting etc). В противном случае есть риск привращения тестирования в полный фейк. Держать тесты DAL отдельно от тестов BLL также удобно, так как, как правило, время работы тестов DAL намного привышает BLL, а перезапускать тесты BLL приходится чаще. </p><br />
+<p><span style="font-style:italic;">Company.Product.Views</span> - библиотека классов, содержащая интрефейсы отображений, использующихся в приложении. Так как реализовывать отображения будут конкретные станицы или контролы из WebApplication, ничего кроме декларации интерфейсов, в этом проекте не будет. </p><br />
+<p><span style="font-style:italic;">WebApplication.Tests</span> - библиотека классов содержащая тесты страниц веб приложения. Наверное самая главная тестовая сборка. Именно она ответсвенна за интеграционное тестирование сайта. Существуют 2 типа тестирования: <br />
+- Web Server based - Web Server less <br />
+</p><p><span style="font-style:italic;">Web Server based</span>, более сложные требуещие запущенного IIS, отправляющие реальные HTTP запросы страницы и проверяющиее респонс. Довольно тяжеловесные, но наиболее приближенные к реальному условию использования. <span style="font-style:italic;">Web Server les</span>s, способ тестирования без веб сервера (я описал его в одной их прошлых <a href="http://abeletsky.blogspot.com/2010/03/legacy-aspnet.html">статей</a>), простой и удобный, но больше отдаленный от реальности. </p><br />
+<span style="font-weight:bold;">Связи между проектами.</span> <br />
+<p>Теперь необходимо установить правильные ссылки (references) между проектами. Символ "->" будет означать "имеет ссылку на". <br />
+<blockquote><code><font size="2" face="Courier New" color="black">Company.Product.BLL.Tests -<font color="#0000ff">&#62;</font> Company.Product.BLL<br />
+Company.Product.DAL.Tests -<font color="#0000ff">&#62;</font> Company.Product.DAL<br />
+Company.Product.BLL -<font color="#0000ff">&#62;</font> Company.Product.DAL, Company.Product.Views<br />
+WebApplication.Tests -<font color="#0000ff">&#62;</font> WebAppilcation<br />
+WebAppilcation -<font color="#0000ff">&#62;</font> Company.Product.BLL, Company.Product.DAL, Company.Product.Views<br />
+</font><br />
+<font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote><br />
+</p><p>Это скелет, на основании которого, можно строить почти любое data-driven приложение, используя ASP.net в качестве фрейморка, MVC как основопологающий паттерн и TDD как методику разработки. </p><br /></div>

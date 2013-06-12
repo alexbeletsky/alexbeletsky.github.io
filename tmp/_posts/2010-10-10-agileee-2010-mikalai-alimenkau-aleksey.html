@@ -1,0 +1,103 @@
+---
+layout: post
+title: "Agileee 2010: Mikalai Alimenkau & Aleksey Solntsev: How to be proud when you are done"
+date: 2010-10-10T15:51:00+03:00
+comments: false
+categories:
+ - Agile
+---
+
+<div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TLG25hCUk4I/AAAAAAAAG-I/yXctFAvRicc/s1600/DSC03695.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TLG25hCUk4I/AAAAAAAAG-I/yXctFAvRicc/s400/DSC03695.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5526399316997215106" /></a>
+<p>
+The speech by two guys for <a href="http://xpinjection.com/">XPInjection.com</a> who shared they knowledge on such important Agile concept of Done. I was really interested in this speech since this is something that we also trying to use as common practice in our company. 
+</p>
+<h2>Introduction</h2>
+<p>
+Software development involves a lot people: developers, customers, management. And everybody has own "dreams" (or goals). Such differentiation of goals could lead to hidden (or opened) conflicts, misunderstanding of business and development, wrong communication and as a result - failure of project. But if we try to look it with another prospective, everybody is actually have one goal - delivery of product. Developers happy to see their work done, managers happy to see it is in budget and met customer criteria's and so on. So in general everybody has one common goal. 
+</p>
+<p>
+The way of managing one common understanding is the way of creation of Definition Of Done (DOD).
+</p>
+<h2>Typical scenarios caused by lack of DOD</h2>
+<h3>"Uncommited stuff"</h3>
+<p>
+Developer declare work as done, but sources are not committed to SCM. Developers definition of done - it works on my machine. 
+</p>
+<h3>"Useless build"</h3>
+<p>
+Customer said - let's deploy on production. Developer said - we still have a lot stuff to work on, merge, tests, DB migration scripts etc. Customer Done is different.
+</p>
+<h3>"Unstable velocity"</h3>
+<p>
+Customer - Well done, our velocity increased to 32 SP, let's used for next fixed. Master - I have a lot small bugs to , documentation. Customer - how we change our velocity. Master - let's say it is 20. Developers lack understanding of done.
+</p>
+<h3>"Unverified tasks"</h3>
+<p>
+Customer - there is a crash on form, have somebody tried to work before me. Developers - oops, it was quick fix, haven't tested it well. I'll just do another quick fix for that.
+</p>
+<h3>"Forgoten requirements"</h3>
+<p>
+Customer - my site is very slow, let's discuss it on next meeting. Master - who did the performance testing? Aaaa.. no body. Non functional requirements are forgotten.
+</p>
+<h2>What is definition of Done?</h2>
+<p>
+Definition of Done: is a contract (number of rules) between different parties of how to treat particular actives state of completeness.
+</p>
+<h2>How to start?</h2>
+<p>
+If you decided to start with with DOD, you need some initial guidelines of implementation, what should you do to "define" DOD?
+</p>
+<ul>
+<li>Take it from previous project (but it have to be done carefully, project are different)</li>
+<li>Brainstorming, having code quality in mind (start from technical stuff)</li>
+<li>Brainstorming, having business problems and wishes</li>
+</ul>
+<p>
+The process of creation of DOD is brainstorming, you have to understand your need, you problems, your goals to create DOD.
+</p>
+<h2>Who should define</h2>
+<p>
+Team + Customer have to decide on definition of done.
+</p>
+<p>What usually happens, as for me, that DOD is created by Team only, because customer (or PO) is not really exited to do that, so this activity is usually skipped, but only understands the importance and consequences in case of major project issues. That's why it is Scum Master job to involve customers (PO's) as much as possible.</p>
+<h2>When to define</h2>
+<p>
+Ideally at the start of the project. But in case of something wrong, you have to stop and re-implement definition of done, to prevent the problem. Retrospective is good time for changing DOD.
+</p>
+<h2>Where to store</h2>
+<p>
+Definition of done is document. Electronic versions is stored in SCM, on wiki site. Printed version have to be 'before eyes' of Team/SM/PO. It is a good idea to put a copy near board, so everyone sees it on stand-up meeting etc.
+</p>
+<h2>Different levels of granularity</h2>
+<p>
+DOD could not cover all aspects of project. So it have to be granulated. DOF for Release, DOD Iteration, DOF for feature, DOF for task and so on.
+</p>
+<h2>How to control DOF</h2>
+<h3>Automation</h3>
+<p>
+Automate everything you can - of possible try to automate rules from DOF (like using a hook in SVN to control comment). Add static analyzer to build (code quality).
+</p>
+<h3>Fixed workflow</h3>
+<p>
+Define a workflow in issue tracking system. As code review: workflow have to be changed to make a 'Code review' as mandatory state.
+</p>
+<h3>Responsible persons</h3>
+<p>
+Execution of DOD is not possible without responsible persons. Scrum Master (person responsible for process), Team Leader, QA. It should be one person!
+</p>
+<h2>Typical problems</h2>
+<ul>
+<li>No common understanding - definition of Done have to be reviewed from time to time, to make everyone clear</li>
+<li>No commitment - I understand it is imprortant.. but I ignore it. Everybody have to agree. Good idea is to show DOF for job candidates on interview</li>
+<li>Unrealistic criteria - for instance 100% of code coverage</li>
+<li>Too ideal DOD - you try thing about everything, it is hard to apply. From time to time, clean up DOD</li>
+<li>Partially done tasks are accepted - typically on transion. this is a problem, don't lie yourself</li>
+<li>"Broken windows" principle - if someone start to ignore rule, eveybody start to ignore it</li>
+<li>"Development only" DOF - care only about development side of process, forget rest (doc, QA, deployment)</li>
+</ul></div>

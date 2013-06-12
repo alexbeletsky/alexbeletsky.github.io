@@ -1,0 +1,87 @@
+---
+layout: post
+title: "Clean tests with SharpTestsEx"
+date: 2011-03-12T10:25:00+02:00
+comments: false
+categories:
+ - Tools
+ - Open source
+ - Clean Code
+ - TDD
+---
+
+<div class='post'>
+<p>
+I was recently been adding NUnit to one of mine project's and noticed one interesting framework in <a href="http://nuget.codeplex.com/">Nuget</a> channel. It is <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a> by <a href="http://twitter.com/#!/fabiomaulo">Fabio Maulo</a> and its primary goal is to make your assertions shorter, cleaner and easy to read.
+</p>
+To start with, it is just enough to install it through Nuget (or manually) and add using statement in your test class file.
+<p>
+<pre class="brush: csharp">
+using SharpTestsEx;
+</pre>
+<p>
+SharpTestsEx would add number of <code>Should()</code> extension methods. Suppose you have such case:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    Assert.That(result, Is.Equal("&lt;div&gt;&lt;/div&gt;"), "expected and actual results are different");
+}
+</pre>
+<p>
+With SharpTestsEx I'm changing assert part of test to,
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    result.Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+Note, it is much shorter and mostly plain English sentence: <i>result should be equal to something</i>.. The assertion message for this test is really clean and sufficient, so you mostly won't needed and custom messages.
+</p>
+<p>
+If I go further and implement extension method for this <code>Compile</code> method:
+</p>
+<pre class="brush: csharp">
+static class CompilerTestExtension
+{
+    public static string Compile(this string expression)
+    {
+        var c = new Compiler();
+        return с.Compile(expression);
+    }
+}
+</pre>
+<p>
+My tests case would be just one line of code:
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange / act / assert
+    "div".Compile().Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+This is very short and clean notation of test case, even not technical person could read this. You can do more complicated assertions, combining them by <code>And</code> / <code>Not</code> conditions. There are also bunch of useful extensions for strings, sequences.
+</p>
+</p>
+Additional information on project <a href="http://sharptestex.codeplex.com/">site</a> as well as author <a href="http://fabiomaulo.blogspot.com/search/label/SharpTestEx">blog</a>.
+</p></div>

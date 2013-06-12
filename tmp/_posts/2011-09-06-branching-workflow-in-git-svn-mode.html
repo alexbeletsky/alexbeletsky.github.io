@@ -1,0 +1,26 @@
+---
+layout: post
+title: "Branching Workflow in Git-SVN Mode"
+date: 2011-09-06T17:42:00+03:00
+comments: false
+categories:
+ - Git
+ - Tips
+ - GitSVN
+---
+
+<div class='post'>
+<p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
+<pre>git checkout -b master-nd-177   
+</pre><li>Do your work here, performing as many commits as you need</li>
+<pre>get commit -a -m "some intermediate commit.."
+</pre><li>Now, as you are ready to be merged you to SVN, you checkout and rebase master (to get latest SVN changes from it)</li>
+<pre>git checkout master
+    git svn rebase
+</pre><li>You can simply merge 2 branches, but with simple merge you will get all commits history that you probably don't need in SVN at all. You squash to compress number of commits into one nice looking commit object</li>
+<pre>git merge --squash master-nd-177
+</pre><li>It would merge up all changes from master-nd-177 into master. All you need to do is commit</li>
+<pre>git commit -m "ND-177 completed"
+</pre><li>And dcommit changes to SVN server</li>
+<pre>git svn dcommit
+</pre></ol><p>That's six basic steps makes really straightforward workflow for everyday usage. </p></div>

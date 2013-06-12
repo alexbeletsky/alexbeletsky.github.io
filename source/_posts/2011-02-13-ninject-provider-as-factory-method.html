@@ -1,0 +1,114 @@
+---
+layout: post
+title: "Ninject provider as factory method"
+date: 2011-02-13T19:22:00+02:00
+comments: false
+categories:
+ - Tools
+ - MVC
+ - Tips
+ - asp.net
+ - Design
+ - Trackyt.net
+---
+
+<div class='post'>
+<p>
+<a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
+</p>
+<p>
+I was implementing small feature recently. As user registered on site, he receives confirmation email and registration details. Pretty common functionality along the sites. So, I add next application service <code>INotificationService</code> that took responsibility of sending email message to user. Nothing special, nothing complex. 
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationService : INotificationService
+    {
+        private IEMailService _emailService;
+
+        public NotificationService(IEMailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        public void NotifyUserOnRegistration(string usersEmail, string password)
+        {
+            var emailMessage = CreateEmailMessageForUser(usersEmail, password);
+            _emailService.SendEmail(emailMessage, "support");
+        }
+
+        //...
+</pre>
+<p>
+As I've tested and integrated it to application, everything were just fine. Till the time I reset database and re-run tests. The problem, that <code>INotificationService</code> itself depends on <code>IEmailService</code> that uses <code>ICredentialsRepository</code> to extract email server credentials (account, password, settings) from database. After database is reset, <code>Credentials</code> table is just empty and <code>IEmailService</code> throws exception that there are no credentials, so send email is impossible. I could not add credentials as SQL to database script, since it depend on configuration and exposes private password. Do it manually after each reset of database is boring task. Furthermore, I don't want my application to send any emails as I just do some development testing.
+</p>
+<p>
+The obvious design workaround is - define <code>INotificationServiceFactory</code> that responsible for <code>NotificationService</code> instantiation. Factory decides, if application run in <code>debug</code> mode, just stub of <code>NotificationService</code> is used, otherwise real implementation is used.
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationServiceFactory : INotificationServiceFactory
+    {
+        public INotificationService GetService()
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                // just stub..
+                return new NotificationServiceForDebug();
+            }
+
+            // here I need to pass EmailService to constructor
+            return new NotificationService ( // ??? );
+        }
+
+        // ...
+</pre>
+<p>
+But it is not so easy as it seems to.. Here the problem: <code>NotificationService</code> have to accept <code>EmailService</code>, that have to be created created by DI framework (I could not create it by <code>new</code> since I loose all benefits of inversion of control). So, in factory I need to have a <code>IKernel</code> object - Ninject core object, for instantiating of objects from Inversion of Control container. It should be extended with constructor taking <code>IKernel</code> as argument.
+</p>
+<p>Issues:</p>
+<ul>
+<li><strong>Circular dependency</strong> - factory is defined in Core assembly, kernel is defined in Web application.. Web application references Core, to make it work now Core need to reference Web (it is actually possible, but very ugly.. I try to avoid such things).</li>
+<li><strong>Additional references</strong> - now Core also need to reference Ninject, to make it compliable.</li>
+<li><strong>Violation of Dependency inversion principle</strong> - <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">one</a> of the <a href="http://en.wikipedia.org/wiki/Solid_(object-oriented_design)">SOLID</a> principles of object oriented systems. Model must not depend on infrastructure.</li>
+</ul>
+<p>
+Fortunately Ninject provides functionality to avoid issues mentioned above! Instead of binding to exact type, like
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationServiceFactory&gt;().To&lt;NotificationServiceFactory&gt;();
+
+</pre>
+<p>
+I can bind creation of type to Provider:
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationService&gt;().ToProvider&lt;TrackyNotificationServiceProvider&gt;();
+
+</pre>
+<p>
+Provider is class that implement <a href="https://github.com/ninject/ninject/wiki/Providers,-Factory-Methods-and-the-Activation-Context">IProvider</a> interface, which is actually just one method <code>CreateInstance</code>. CreateInstance, receives <code>IContext</code> object as parameter that contains <code>IKernel</code>. <code>TrackyNotificationServiceProvider</code> is placed on same level as the rest of Ninject infrastructure code is placed. Model remains clear and exact and do not mess up with infrastructure code.
+</p>
+<pre class="brush: csharp">
+namespace Web.Infrastructure
+{
+    public class TrackyNotificationServiceProvider : Provider&lt;INotificationService&gt; 
+    {
+        protected override INotificationService CreateInstance(IContext context)
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                return new NotificationServiceForDebug();
+            }
+
+            return new NotificationService(context.Kernel.Get&lt;IEMailService&gt;());
+        }
+    }
+}
+</pre>
+<p>
+Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
+</p></div>

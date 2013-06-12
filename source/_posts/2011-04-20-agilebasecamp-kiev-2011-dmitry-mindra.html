@@ -1,0 +1,124 @@
+---
+layout: post
+title: "AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET"
+date: 2011-04-20T12:05:00+03:00
+comments: false
+categories:
+ - Agile
+ - Conference
+---
+
+<div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<p>
+<a href="http://kiev.agilebasecamp.org/mindra/">Dmitry Mindra</a> prepared very nice speech dedicated to <a href=http://en.wikipedia.org/wiki/Design_by_Contract">Code Contracts</a>. He opens ideas what the Code Contacts are and more important how to "Design by contract". This speech has been especially interested to me, since I never heard/used such type of design.
+</p>
+<h2>Design by contract in short</h2>
+<p>
+Desing by contracts has been introduced by <a href="http://en.wikipedia.org/wiki/Bertrand_Meyer">Bertrand Mayer</a>. He is one of original creator of Eiffel language. No surprise that first time contract's have been added in Eiffel. The contract consists on 3 parts: Preconditions/Postconditions/Invariants.
+</p>
+<ul>
+<li><strong>Preconditions</strong> - check that client does everything OK</li>
+<li><strong>Postconditions</strong> - check that server does everything OK</li>
+<li><strong>Invariant</strong> - check that state of object valid for next call</li>
+</ul>
+<p>
+In Eiffel you have special sections in each method called (require, do, post) there it is possible to put contract definition.
+</p>
+<p>
+By specifying the contract we specify exact constraints for code. Typically methods have some input parameters and return some results to outside world. For instance we have class <code>Account</code> with method <code>Withdraw</code>, we are expecting that argument that <code>Withdraw</code> receives are always positive and return results also is greater than zero. 
+</p>
+<h2>Wait, I can already specify contract with my beloved exceptions</h2>
+<p>
+Many of us, get used to write such code..
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ if (amountToWithdraw == null)
+ {
+  throw new ArgumentException("amountToWithdraw");
+ }
+ 
+ if (amountToWithdraw.Value <= 0)
+ {
+  throw new ArgumentException("amountToWithdraw.Value");
+ }
+ 
+ var result = //.. calculate operation here.. ;
+ 
+ if (result.Value <= 0)
+ {
+  throw new AccountOperationException();
+ }
+ 
+ return result;
+}
+</pre>
+<p>
+It is definitely the way of creation robust application (in case of all those conditions are tested and client code properly handles exceptions). But is has several drawbacks:
+</p>
+<ul>
+<li>It is only run-time mechanism</li>
+<li>It is not possible to turn on or turn off the exceptions</li>
+<li>This type of contract is "method-wide", but how can you specify "class-wide" contract?</li>
+<li>All of if / throw statements are "code-garbage" that make it difficult to read</li>
+</ul>
+<h2>What we have in .NET?</h2>
+<p>
+The Common Language Runtime (CLR) team is introducing a library to allow programming with contracts in the Microsoft .NET Framework 4. Adding them as a library allows all .NET languages to take advantage of contracts. This is different from Eiffel or Spec#, a language from Microsoft Research (research.microsoft.com/en-us/projects/specsharp/), where the contracts are baked into the language. Code Contracts System in .NET consists of 4 parts: 
+</p>
+<ul>
+<li><code>System.Diagnostics.Contracts</code> contract library where <code>Contract</code> class is defined.</li>
+<li><code>ccrewrite.exe</code> tool that modifies the Microsoft Intermediate Language (MSIL) instructions of an assembly to place the contract checks where they belong.</li>
+<li><code>cccheck.exe</code> contract static checker, that examines code without executing it and tries to prove that all of the contracts are satisfied.</li>
+<li><code>ccrefgen.exe</code> which will create separate contract reference assemblies that contain only the contracts.
+</ul>
+<h2>Why is it useful?</h2>
+<p>
+Let's rewrote the previous example with code contracts:
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ // preconditions..
+ Contract.Requires&lt;NullReferenceException&gt;(amountToWithdraw);
+ Contract.Requires(amountToWithdraw.Value);
+
+ // action
+ var result = //.. calculate operation here.. ;
+ 
+ // postconditions 
+ Contract.Ensures(result.Value <= 0);
+ 
+ return result;
+}
+</pre>
+<p>
+I like the style, because this code a little reminds me TDD AAA (arrange/act/assert) pattern, code side is smaller and we are getting benefits of .NET Code Contracts.
+</p>
+<p>
+What benefits here?
+</p>
+<ul>
+<li>Static code analysis - during the compilation code is checked for contracts, if somewhere I wrote <code>account.Withdraw(null)</code> it would be immediately caught by cccheck.exe</li>
+<li>Runtime execution - if error is missed on compilation time, it would be caught on run time and proper exception is thrown</li>
+<li>I could configure to include or exclude contracts check at final assembly</li>
+</ul>
+<h2>Ok, I want to use it</h2>
+<p>
+To have a full support of Code Contracts you have to have .NET framework 4.0 and Visual Studio Premium or Ultimate. So, Code contracts are pretty expensive stuff. As far as I get from Dmitry speech it is possible to use <code>System.Diagnostics.Contracts</code> but limited capabilities are enabled only.
+</p>
+<p>
+So, contract are great for building Life-critical and High-robust application where the quality / cost ratio makes sense for you.
+</p>
+<h2>Materials</h2>
+<ul style="list-style: none outside none;">
+<li><a href="http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed">http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/magazine/ee236408.aspx">http://msdn.microsoft.com/en-us/magazine/ee236408.aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/devlabs/dd491992">http://msdn.microsoft.com/en-us/devlabs/dd491992</a></li>
+</ul></div>

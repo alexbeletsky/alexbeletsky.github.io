@@ -1,0 +1,49 @@
+---
+layout: post
+title: "ASP.NET MVC controller's action with name View()"
+date: 2011-02-15T19:59:00+02:00
+comments: false
+categories:
+ - MVC
+ - Tips
+ - asp.net
+---
+
+<div class='post'>
+<p>
+If you want to have action with name <code>View</code> in your controller, you will meet a small problem. Base class of any controller <code>Controller</code> already contains a method, with same name (and it is overloaded):
+</p>
+<pre class="brush: csharp">
+protected internal ViewResult View();
+protected internal ViewResult View(IView view);
+protected internal ViewResult View(object model);
+protected internal ViewResult View(string viewName);
+</pre>
+<p>
+So, you code like this:
+</p>
+<pre class="brush: csharp">
+public ActionResult View(string url)
+{
+    // some action logic...
+
+    return View();
+}
+</pre>
+<p>
+Won't complied, because you are adding method with same signature (name and parameters list). You have 2 options here: gave up to compiler and rename action, to something new like <code>ViewPost</code> or insist and try to make it happen.
+</p>
+<p>
+Fortunately C# have beautiful feature for doing this. It is <a href="http://msdn.microsoft.com/en-us/library/435f1dw2.aspx">new Modifier</a>. It hides the member on base class and explicitly says, that now your method is substituting it. So, everything you need is basically this: 
+</p>
+<pre class="brush: csharp">
+new public ActionResult View(string url)
+{
+    // some action logic...
+
+    return View();
+}
+</pre>
+<p>
+It will make application compliable and work as expected.
+</p></div>

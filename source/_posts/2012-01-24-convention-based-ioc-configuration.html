@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Convention based IoC configuration"
+date: 2012-01-24T16:54:00+02:00
+comments: false
+categories:
+ - Tools
+ - Tips
+ - Clean Code
+---
+
+<div class='post'>
+<p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
+</p><h2>What's are conventions?<br />
+</h2><p><a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over configuration</a> is very popular trend nowadays. Many frameworks trying to adopt it, including ASP.NET MVC. In short, that means you are relying on some front-know conventions, like names of files, folder or classes and system does something meaningful, based on those conventions. Like, all controllers in ASP.NET MVC should have "Controller" postfix, so the framework is able to find and <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">instantiate</a> it. <br />
+</p><p>Conventions make a developer's life a little easier, you are no longer spending efforts on configuration, instead following some simple rules. <br />
+</p><h2>What we have for IoC?<br />
+</h2><p>My <a href="http://en.wikipedia.org/wiki/Shuhari">"Shu"</a> level of IoC containers learning was configuration based. This is something you learn at very beginning. So, in case of Ninject, sooner of later you have huge file with dependencies configuration: <br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Bind&lt;ISettingsManager&gt;().To&lt;SettingsManager&gt;();
+ kernel.Bind&lt;IDirectoryProvider&gt;().To&lt;DirectoryProvider&gt;().InSingletonScope();
+ kernel.Bind&lt;ISetupFactory&gt;().To&lt;SetupFactory&gt;();
+ kernel.Bind&lt;ITargetsObjectBuilder&gt;().To&lt;DefaultTargetsObjectBuilder&gt;();
+ kernel.Bind&lt;ITargetsBuilder&gt;().To&lt;TargetsBuilder&gt;();
+ kernel.Bind&lt;IBounceFactory&gt;().To&lt;BounceFactory&gt;();
+ kernel.Bind&lt;ITargetsRetriever&gt;().To&lt;TargetsRetriever&gt;();
+ kernel.Bind&lt;IConfigObjectBuilder&gt;().To&lt;ConfigObjectBuilder&gt;();
+ kernel.Bind&lt;ILoggerFactory&gt;().To&lt;LoggerFactory&gt;();
+ kernel.Bind&lt;IHashService&gt;().To&lt;HashService&gt;();
+ kernel.Bind&lt;IAuthentication&gt;().To&lt;Authentication&gt;();
+ kernel.Bind&lt;IConfigurationsFactory&gt;().To&lt;ConfigurationsFactory&gt;();
+ 
+ // More, more, more...
+}
+</pre><p>As more your application grows, as more services, repositories, factories you have. As long <code>RegisterServices</code> method becomes longer, as more you forgot to correct correct it after some new dependency added, so you see YSOD during application run.<br />
+</p><p>But please, put your attention to interface and class names. What we have here - <code>ISettingsManager</code> and <code>SettingsManager</code>; <code>IDirectoryProvider</code> and <code>DirectoryProvider</code>.. <code>ILoggerFactory</code> and <code>LoggerFactory</code>. Do you see pattern here? Exactly, it is ["I" + entity name] for interfaces and [entity name] for implementation.<br />
+</p><p>Here we go for <a href="http://en.wikipedia.org/wiki/Shuhari">"Ha"</a> level of IoC and apply convention based configuration.<br />
+</p><h2>Convention over configuration</h2><p>Let's take an advance of the fact above and shrink our configuration code. First of all, you need to get great extension for Ninject, called <a href="http://nuget.org/packages/ninject.extensions.conventions/2.2.0.5">ninject.extensions.conventions</a>.<br />
+</p><p>After the package is installed, the simples Ninject start-up code ever would be:<br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromCallingAssembly();
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><p>What it does? It has an abstraction called "scanner". You instruct scanner what to do. In this example, I said - take calling assembly and bind all interfaces to implementation class having Default conventions. The default conventions are ones that I shown above. <br />
+</p><p>That's it, all those lines of code are simply gone away, since we rely on conventions and Ninject is aware how to deal with those conventions. If you added new dependency and followed convention, nothing you should do manually any more.<br />
+</p><h2>I have some questions!?</h2><p>Ok, typically you have something little more complex. I'll try to predict some questions you might have.<br />
+</p><h3>I have a lot of assemblies in my application, but want only particular ones to be scanned?</h3><p>You can easily use only assemblies that matches particular patterns, like:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><h3>Is it only default conventions I can use?</h3><p>No, you can specify your own rules. Scanner has <code>BindWith</code> method, that receives <code>IBindingGenerator</code> type. You can implement your own binding generator for custom conventions.<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><h3>What if I have several cases of convention violations?</h3><p>You are still able to bind in exactly same way as before:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+
+    // classes that violates conventions
+    kernel.Bind&lt;IMyInterface&gt;().To&lt;MyImpl&gt;();
+}
+</pre><h3>What is I have dependencies in different assemblies?</h3><p>Best thing is to go with Ninject modules. First, correct the scanner:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+                        scanner.AutoLoadModules();
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><p>Now, each assembly should include module instance:<br />
+</p><pre class="brush: csharp">namespace Candidate.Core
+{
+    public class CoreModule : NinjectModule
+    {
+        public override void Load()
+        {
+            // place convention-violation classes here
+   // Bind&amp;lt;IMyInterface&amp;gt;().To&amp;lt;MyImpl&amp;gt;();
+        }
+    }
+}
+</pre><p>Another one good feature of Convention based IoC is - "Config and forget". Once done, use always and forget about manual binding once and for all.<br />
+</p><p>I've heard about this on <a href="http://www.beletsky.net/2011/12/xp-days-ukraine-2011.html">XP Days 2011</a> conference, by <a href="https://twitter.com/#!/ploeh">Mark Seemann</a>. I think it's nice approach.. I adopt it and going to use in my projects.<br />
+</p></div>

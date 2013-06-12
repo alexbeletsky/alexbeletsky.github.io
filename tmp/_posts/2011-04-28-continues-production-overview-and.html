@@ -1,0 +1,75 @@
+---
+layout: post
+title: "Continuous Delivery: Overview and benefits"
+date: 2011-04-28T22:50:00+03:00
+comments: false
+categories:
+ - Continuous
+---
+
+<div class='post'>
+<p>
+First time I've heard about continuous production systems about 5 years ago. I was amazed with simple idea, not only build binaries and run tests against it but: generate documentation, deploy and release! Wow. But that time, I've been working on product that distributed on CD's and it was not really easy to build Continuous Production around that. Web changed the way of distribution of software - you need only to update one "place" and all users would immediately receive latest version. Continuous Production very much suites web product development and month ago I've created my own Continues Production configuration and now would like to share some thoughts and that topic.
+</p>
+<h2>(Integration + Deployment) * Continues = (Continuous Production)</h2>
+<p>
+As for me, formula of continuous production is simple.. Decide how to do integration, decide how to do deployment and make it run continuously. The process is triggered by event. Event is raised by some event source.
+</p>
+<h2>What I used for that?</h2>
+<p>
+It is basically 4 components: <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> for Integration and Deployment. <a href="http://jenkins-ci.org/">Jenkins</a> as build server. <a href="http://github.com">Github</a> as event source and SCM. 
+</p>
+<p>
+You should check my previous posts about configuration of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a>. It rather simple and allowed me version all assemblies and database, build all binaries and web site, run tests and put all build artifacts to single package. It also generates deployment and database migration scripts.
+</p>
+<p>
+I was really happy about <a href="http://jenkins-ci.org/">Jenkins</a>. It is easy to install, understand and configure. Even it is Java application, it allows you to work with .NET and contains infinite number of plugins for every need (Batch build, Nant, Git, Svn, Msbuild etc).
+</p>
+<h2>Why should I use that?</h2>
+<p>
+Ok, to explain you the value, I would describe my production process <strong>Before</strong> and <strong>After</strong> implementation of CP.
+</p>
+<h3>Before</h3>
+<ol>
+<li>Prepare release branch and merge all required changes there</li>
+<li>Update version in uppercut.config</li>
+<li>Commit changes to SCM</li>
+<li>Run build.bat</li>
+<li>FTP package to deployment server</li>
+<li>RDP to deployment server</li>
+<li>Unpackage .zip content to temp folder</li>
+<li>Manually backup <em>staging</em> database</li>
+<li>Stop Stage Web site in IIS manager</li>
+<li>Run migration scripts for <em>staging</em> database</li>
+<li>Run deployment scripts for <em>staging</em> environment</li>
+<li>Run Stage Web site in IIS manager</li>
+<li>Test manually that on <em>staging</em> server, that build works fine</li>
+<li>If something missed (note it is 60% of all cases) go to 1</li>
+<li>Manually backup <em>production</em> database</li>
+<li>Stop Production Web site in IIS manager</li>
+<li>Run migration scripts for <em>production</em> database</li>
+<li>Run deployment scripts for <em>production</em> environment</li>
+<li>Run Production Web site in IIS manager</li>
+<li>Test manually that on <em>production</em> server, that build works fine</li>
+</ol>
+<p>
+Depending on how much lucky I'm that took from 0.5 hour to 1.5 hour to update production server. Moreover, because it is all manual changes Down time of web site was about 3-5 minutes. Sad figures.
+</p>
+<h3>After</h3>
+<ol>
+<li>Prepare release branch and merge all required changes there</li>
+<li>Update version in uppercut.config</li>
+<li>Commit changes to SCM</li>
+</ol>
+<p>
+That's it! The rest is steps is being automated by CP server. 
+</p>
+<p>
+It takes from 1 to 2 minutes total. Down time of site is now only 1 second. That means velocity of "going live" improved in 45x, site down time improved 300x. Taking into account that I spent near 10 hours to configure whole system, I would say - that was pretty good investment on time. My staging server is being updated every time I push new code changes, so I could immediately test it and correct. Production server update run manually, as soon as I got stable release branch with only one button click.
+</p>
+<h2>Further reading</h2>
+<ul>
+<li>Setup and run <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">http://www.beletsky.net/2011/05/continues-production-setup-and-run.html</a></li>
+<li>Make it work <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">http://www.beletsky.net/2011/05/continuous-production-make-it-work.html</a>
+
+</ul></div>

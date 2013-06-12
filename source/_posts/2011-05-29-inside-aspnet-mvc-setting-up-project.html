@@ -1,0 +1,73 @@
+---
+layout: post
+title: "Inside ASP.NET MVC: Setting up project for hacking"
+date: 2011-05-29T20:58:00+03:00
+comments: false
+categories:
+ - InsideMVC
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>
+As we <a href="http://www.beletsky.net/2011/05/inside-aspnet-mvc-part-1-packing-bags.html">already got</a> debug assembly and pdb file, it it time to create a test project that would be a sandbox for all experiments. This would be classic MVC application, but we going to substitute release version of MVC framework with our locally built version, which allows us easily debug it.
+</p>
+<h2>Create new project</h2>
+<p>
+Let's create new project. It would be MVC 3 Application:
+</p>
+<!-- newproject.png -->
+<a href="https://lh3.googleusercontent.com/-1wuOdUmqbUI/TeKIMTnbcUI/AAAAAAAAHcM/-kBRSXGB0bc/s720/newproject.png">
+<img src="https://lh3.googleusercontent.com/-1wuOdUmqbUI/TeKIMTnbcUI/AAAAAAAAHcM/-kBRSXGB0bc/s720/newproject.png" alt="new project" />
+</a>
+<p>
+On a second step just select "Empty" in "Select template" dialog. "Razor" would be for view engine.
+</p>
+<h2>Correct system.web assemblies section</h2>
+<p>
+Go to <code>web.config</code> of a new project and comment out <code>System.Web.Mvc</code> and <code>System.Web.WebPages</code> assemblies. By doing that we saying: "those 2 assemblies are no longer a part of compilation of our application".
+</p>
+<!-- webconfig.png -->
+<a href="https://lh3.googleusercontent.com/-Va0g0ltK6WE/TeKIMjzGltI/AAAAAAAAHcQ/dyR3mI2B1B4/webconfig.png">
+<img src="https://lh3.googleusercontent.com/-Va0g0ltK6WE/TeKIMjzGltI/AAAAAAAAHcQ/dyR3mI2B1B4/webconfig.png" alt="web.config" />
+</a>
+<p>
+<strong>UPDATE:</strong> If you do just that, later you will get an exception from Razor assemblies, about wrong type cast. To avoid that, it is even better to remove all assemblies in this section, plus Find/Replace PublicKeyToken=31bf3856ad364e35 to PublicKeyToken=null. That would do not make application to search GAC for missing assemblies and load locally built ones.
+</p>
+<h2>Correct application references</h2>
+<p>
+Now, remove existing references for <code>System.Web.Mvc</code> and <code>System.Web.WebPages</code> and put locally built ones instead. Right click on references project section and browse to the Debug folder of mvc3-rtm build directory. Try to build application now, it should be build without any issues.
+</p>
+<a href="https://lh4.googleusercontent.com/-ZxDsNTzlZ8w/TeKIMIG5lgI/AAAAAAAAHcE/f-RS0YrnwXM/addreferences.png">
+<img src="https://lh4.googleusercontent.com/-ZxDsNTzlZ8w/TeKIMIG5lgI/AAAAAAAAHcE/f-RS0YrnwXM/addreferences.png" alt="setup" />
+</a>
+<h2>Home controller</h2>
+<p>
+Further steps are pretty simple, just add a test controller - <code>HomeController</code> with <code>Index</code> action. Add just a simple view for that.
+</p>
+<!-- controller.png -->
+<a href="https://lh5.googleusercontent.com/-WMscnqODvIU/TeKIMHyuGBI/AAAAAAAAHcA/-3W-2nlB_RQ/controller.png">
+<img src="https://lh5.googleusercontent.com/-WMscnqODvIU/TeKIMHyuGBI/AAAAAAAAHcA/-3W-2nlB_RQ/controller.png" alt="controller" />
+</a>
+<h2>Check it out!</h2>
+<p>
+Place a breakpoint into action method and press F5 to start debugger. Now you we've got a full stack trace that allows to see every aspect of MVC world.
+</p>
+<!-- stack.png -->
+<a href="https://lh5.googleusercontent.com/-H0makF0CB_4/TeKIMbLt2bI/AAAAAAAAHcI/0nhnBobKnuA/stack.png">
+<img src="https://lh5.googleusercontent.com/-H0makF0CB_4/TeKIMbLt2bI/AAAAAAAAHcI/0nhnBobKnuA/stack.png" alt="stack" />
+</a>
+<h2>Conclusion</h2>
+<p>
+The setup is easy and allows to jump in very quick. If you got any issues with that, please let me know.
+</p>
+<h2>
+What is next?
+</h2>
+<p>
+Next I will hack the entry point of MVC application called <code>MvcHandler</code> and understand how it works.
+</p>
+<p>
+Please stay tuned.
+</p></div>

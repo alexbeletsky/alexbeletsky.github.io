@@ -1,0 +1,88 @@
+---
+layout: post
+title: "Roundhouse your database"
+date: 2010-10-26T18:14:00+03:00
+comments: false
+categories:
+ - Tools
+ - Tips
+ - Open source
+---
+
+<div class='post'>
+<p>
+As you started to use <a href="http://code.google.com/p/uppercut">UppercuT</a> for your builds, it is definitely worth to try worth to try <a href="http://code.google.com/p/roundhouse/">RoundhousE</a> for versioning, deployment, migration of your database. 
+</p>
+<h2>RoundhousE - setup and usage</h2>
+<p>
+Let's begin, just to to project web site and download latest package. Package contains documentation (just some draft version, not yet completed), samples and framework itself.
+</p>
+<p>
+Initially I spent sometime to make samples run. Documentation said that it has been developed and tested with SQL 2008 Server and there is no information that it would run on SQL 2008 Express Edition. After several fail/repeat sessions I was happy to see that it actually could work with Express edition as well!
+</p>
+<h3>Before you start</h3>
+<p>
+Before you start, you have to change something in you SQL Express configuration. Go to <code>Start -> All programs -> Microsoft SQL Server 2008 -> Configuration Tools -> SQL Server Configuration Manager</code>. There you have to configure your SQL instance Network Configuration, to be able with "Named Pipes" protocol. So, go to <code>Protocols for &#60;%INSTANCE_NAME%&#62;</code> and enable <code>Named Pipes</code>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s1600/sqlconfig.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 301px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s400/sqlconfig.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5532373566257895026" /></a>
+<h3>UppercuT configuration</h3>
+<p>
+Now you have to change something into UppercuT config. First you have to modify <code>LOCAL.settings</code> (file that is used for generation of deployment scripts). You have to supply <code>server.database</code> (in case of local Express it would be .\SQLEXPRESS), <code>database.name</code> the name of your db. 
+</p>
+<p>
+After small changes is required for <code>UppercuT.config</code>. First, <code>folder.database</code> I just used "db", short and clear.
+</p>
+<p>
+Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+</p>
+<h3>DB folder layout and content</h3>
+<p>
+Now, you have to create folder that would contain all sql scripts. I places it in the same level as <code>docs</code>, <code>lib</code> etc (but it could be placed to <code>src</code> folder as well). So, please folder with name "db".
+</p>
+<p>
+Documentation currently lacks information about folder layout, but from samples it is pretty clear:
+</p>
+<ul>
+<li><strong>functions</strong> - sql for functions definitions</li>
+<li><strong>permissions</strong> - setup permissions for database</li>
+<li><strong>sprocs</strong> - stored procedures definition</li>
+<li><strong>up</strong> - update scripts (create, drop, alter tables and records here)</li>
+<li><strong>views</strong> - views definition</li>
+</ul>
+<p>
+If your application doesn't currently use stored procedures or view.. it is OK to just leave those folders empty.
+</p>
+<h3>Deployment options</h3>
+<p>
+You have 3 options of deployment: by Nant, by MSBuild or by RH executable. It does not actually matters what to choose, all options are equal by its functionality. I choose executable, because it lightweight and only one file (please not that it would be included to deployment package).
+</p>
+<p>
+To go with RH you have to copy it from RoundhousE packages into yours deployment folder. So, you will have <code>deployment/rh/rh.exe</code>.
+</p>
+<h3>Correction of deployment scripts</h3>
+<p>
+Deployment scripts are ones that will be used on production to update database. They are created based on templates and settings you set. You have to modify yours <code>DBDeployment.bat</code> file. Since I use <code>rh.exe</code> I created template for it. It simply runs <code>rh.exe</code> that does the rest of work. 
+</p>
+<script src="http://gist.github.com/645211.js"> </script>
+<p>
+Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+</p>
+<h3>Running RoundhousE</h3>
+<p>
+As soon as build application, go to <code>code_drop</code> folder you can run <code>LOCAL.BEDeployment.bat</code> and RounhousE will setup database with version it.
+</p>
+<p>
+That's basically it! As soon as its configured you can easily add new scripts to db folder, RoundhousE will handle changes of them.
+</p>
+<h3>Additional scripts I use</h3>
+<p>
+There are something that I added for my personal needs. If I do build on new environment, I would like to create database first. For such purpose I created <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/initdb.bat"><code>initdb.bat</code></a>, so build procedure on clean environment would be:
+</p>
+<ol>
+<li>run build.bat</li>
+<li>run initdb.bat</li>
+<li>run test.bat all</li>
+</ol>
+<p>
+I also created script to reset database,  <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/resetdb.bat"><code>resetdb.bat</code></a> drops existing database and just creates new instance. This very useful during development, if you database became "dirty". 
+</p></div>

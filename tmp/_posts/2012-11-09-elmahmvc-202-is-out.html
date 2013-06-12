@@ -1,0 +1,22 @@
+---
+layout: post
+title: "ELMAH.MVC 2.0.2 is out"
+date: 2012-11-09T17:21:00+02:00
+comments: false
+categories:
+ - ELMAH.MVC
+---
+
+<div class='post'>
+    <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It's in particular useful, than you already setup some configuration inside the app, so you don't want default behavior.<br />
+</p><p>Inside the <code>web.config</code> file you will find a configuration setting for that.<br />
+</p><pre class="brush: plain">&lt;appSettings&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandler&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandleErrorFilter&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.requiresAuthentication&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.allowedRoles&quot; value=&quot;*&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;
+&lt;/appSettings&gt;
+    </pre><p>It is <code>elmah.mvc.disableHandleErrorFilter</code>. By default it's `false`, meaning `HandleErrorAttribute()` from ELMAH.MVC is used. To disable it, just set <code>true</code> to this setting.<br />
+</p><p>And btw, it's already 30.000 downloads of NuGet package! Huge number, thanks a lot for all users and contributors.<br />
+</p></div>

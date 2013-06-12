@@ -1,0 +1,78 @@
+---
+layout: post
+title: "Prevention of JS/CSS content to be cached"
+date: 2011-04-22T18:50:00+03:00
+comments: false
+categories:
+ - JavaScript
+ - MVC
+ - Tips
+ - asp.net
+---
+
+<div class='post'>
+<p>
+To do not waste a time in pauses between <a href="http://www.beletsky.net/search/label/Agile">AgileBaseCamp</a> talks I've created an utility that I wish to have, but had not time to do. It is very simple and solves caching issue for CSS and JS that we all suffered many times. Because every modern browsers try to cache static content, to make site rendering faster, we having trap then CSS or JS is being updated, but after deployment on production customers still see no results, because they use previous versions of files.
+</p>
+<h2>Classical way</h2>
+<p>
+Classical way of solving the issue is to add version info to content url and update it after each production update.
+</p>
+<pre class="brush: html">    
+&lt;link rel=&quot;stylesheet&quot; href=&quot;Content/public.css?v=123&quot; type=&quot;text/css&quot; media=&quot;all&quot; /&gt;
+&lt;script src=&quot;Scripts/script.js?v=123&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+<p>
+The problem is that you have to remember to update version manually, before each deployment to production. That was something I was doing a lot and now decieded to automate it.
+</p>
+<h2>Better way</h2>
+<p>
+Idea is very simple, create a helper that would use version from assembly and append version to resource. Now, in markup I wrote:
+</p>
+<pre class="brush: html">
+&lt;link rel=&quot;stylesheet&quot; href=&quot;@Url.ContentWithVersion(&quot;~/Content/public.css&quot;)&quot; type=&quot;text/css&quot; media=&quot;all&quot; /&gt;
+&lt;script src=&quot;@Url.ContentWithVersion(&quot;~/Scripts/script.js&quot;)&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+<h2>Code</h2>
+<pre class="brush: csharp">
+namespace Web.Helpers.Extensions
+{
+    public static class UrlContentWithVersionExtension
+    {
+        private static string _currentAssemblyVersion;
+
+        public static string ContentWithVersion(this UrlHelper helper, string path)
+        {
+            var contentPath = helper.Content(path);
+            var assemblyVersionString = GetAssemblyVersionString();
+
+            return string.Format("{0}?ver={1}", contentPath, assemblyVersionString);
+        }
+
+        private static string GetAssemblyVersionString()
+        {
+            if (_currentAssemblyVersion == null)
+            {
+                var currentAssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                _currentAssemblyVersion = currentAssemblyVersion.ToString().Replace(".", "");
+            }
+
+            return _currentAssemblyVersion;
+        }
+    }
+}
+</pre>
+<p>
+And don't forget that each page that uses the extension method, should include this namespace:
+</p>
+<pre class="brush: html">
+&lt;!-- For MVC2 --&gt;
+&lt;%@Import Namespace=&quot;Web.Helpers.Extensions&quot; %&gt;
+
+&lt;!-- For MVC3 (Razor) --&gt;
+@using Web.Helpers.Extensions
+</pre>
+<h2>Example of usage</h2>
+<p>
+As always all code is on github, so extension itself is <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Helpers/Extensions/UrlContentWithVersionExtension.cs">here</a>. And commit there I integrated changes is <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef38ebcd1230404b9e5c62877e256aff7e95ad64">here</a> (would be useful to review, before your actual changes).
+</p></div>

@@ -1,0 +1,1 @@
+rake install["myown"] && rake generate && rake preview

@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Failed to generate user instance of SQL Server exception"
+date: 2010-08-25T20:58:00+03:00
+comments: false
+categories:
+ - Tips
+---
+
+<div class='post'>
+<p>
+If you just switched from ASP.net development server to IIS, you might appear to see such exception from data access layer of application:
+</p>
+<p><i>Failed to generate a user instance of SQL Server due to failure in retrieving the user's local application data path. Please make sure the user has a local user profile on the computer. The connection will be closed.</i></p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s1600/failed.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 245px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s400/failed.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5509408753737877410" /></a>
+<p>
+Don't panic, it is easy to fix. Go to Internet Information Services (IIS) Manager console panel. Check out what Application Pool is set for your application, in Basic settings. It would probably be ASP.NET 4.0 Classic. Go to Application Pools section, select ASP.NET 4.0 Classic and go to Advanced Settings. In Advanced Settings. In Process Model, Identity - ApplicationPoolIdentiry would be selected.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s1600/apppool-before.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s400/apppool-before.png" border="0" alt=""id="Img1" /></a>
+<p>
+ You must change it with a credentials of user that has physical access to App_Data folder of application.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s1600/apppool-after.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s400/apppool-after.png" border="0" alt=""id="Img2" /></a>
+<p>
+You should restart IIS and start application again.
+</p></div>

@@ -1,0 +1,182 @@
+---
+layout: post
+title: "Testing: Тестирование legacy ASP.NET страниц (Web Server less testing)"
+date: 2010-03-30T21:22:00+03:00
+comments: false
+categories:
+ - asp.net
+ - TDD
+---
+
+<div class='post'>
+<div>В этой статье я хочу показать решение, которое применил при тестирования legacy asp.net кода. Т.е. кода который был разработан без тестов, и уже перешел тот этап, когда небольшие изменения давали регрессионные ошибки.</div><div></div><div>Я сформулировал цель примерно так: "юнит тестирование любой из страниц, возможность подготовить необходимые входные данные, последующая валидация значений в контролах, а также валидация объекта Http.Response". <p/></div><div><b> </b></div><div><b>Проблемы.</b></div><div><p/></div><div>Какие проблемы я встретил при разработке первого теста.</div><div></div><div>1. <i>Page</i> зависит от <i>Http.Context</i> и не может работать без него (в большинстве случаев).</div><div>2. <i>Page_Load</i> метод (entry point страницы) <i>protected </i>метод и не может быть вызван на прямую из теста.</div><div>3. Контролы помещенные на страницу инициализиются asp.net рантаймом (в контесте веб-приложения),  поэтому при создании объекта страницы вне контекста, они все равны <i>null</i>.</div><div>4. <i>Page</i> может быть создан для загрузки страницы, и в тоже время для <i>Postback</i>. </div><div><p/></div><div><b> Часть 1 Http.Context</b></div><div><b> <p/></b></div><div>В одном из блогов, я наткнулся на очень интересный класс - <a href="http://haacked.com/archive/2007/06/19/unit-tests-web-code-without-a-web-server-using-httpsimulator.aspx">HttpSimulator</a>. <i>HttpSimulator</i> позволяет, "подменить" <i>Http.Context</i> объект, для страницы так, как будто она запускается веб сервером.   Сделан и задокументирован он классно, и идельно подходил для решения первой проблемы. Более детально можно ознакомится в блоге Haacked.<span class="Apple-style-span"   style="font-family:monospace;font-size:100%;"><span class="Apple-style-span"  style=" white-space: pre;font-size:13px;"><span class="Apple-style-span"   style="font-family:Georgia, serif;font-size:130%;"><span class="Apple-style-span"  style=" white-space: normal;font-size:16px;"> </span></span></span></span><pre class="csharpcode"><span class="rem">/// &lt;summary&gt;</span>
+<span class="rem">/// Validates that page is loaded with no exceptions</span>
+<span class="rem">/// &lt;/summary&gt;</span>
+[Test]
+<span class="kwrd">public</span> <span class="kwrd">void</span> Smoke()
+{
+<span class="kwrd">using</span> (var simulator = <span class="kwrd">new</span> HttpSimulator(<span class="str">"/"</span>, <span class="str">@"c:\inetpub\"))
+{
+var request = simulator.SimulateRequest(new Uri(@"</span>http:<span class="rem">//localhost/rd2010/ard2/closingsheet.aspx?company=0"));</span>
+var page = <span class="kwrd">new</span> ard_closingsheet();
+var context = <span class="kwrd">new</span> ASPNetContext(HttpContext.Current);</pre>После создания объекта request, <i>HttpContext.Current</i> корректно проинициализирован, и может быть использован в тесте.</div><div><p/></div><b>Часть 2 Page_Load method</b><div><b> <p/></b><i>Page_Load </i>является закрытым методом, поэтому его нельзя напрямую вызвать из теста. Чтобы обойти это, я добавил еще один метод <i>_Page_Load</i>, специально для тестирования. Реализация находится в <i>_Page_Load</i>, а <i>Page_Load </i>просто делегирует вызов к нему.</div><div><p/><b>Часть 3 Page Controls</b></div><div><b> <p/></b>Если попробывать создать объект страницы и вызвать <i>_Page_Load</i>, то скорее всего будет <i>NullReferenceException</i>, так как объекты контролов на странице не инициализированны, так как страница запускается вне Web контекста. Необходимо иметь возможность подменить реальные контролы тестовыми, во время запуска тестов, и сохранить прежнюю функциональность во время работы приложения. Я пошел по самому простому пути: для тестов подготовить control-context (контейнер содержащий контролы), доступ к контролу на странице делать не на прямую, а через оберточную функцию. Создание control-context в тесте:<pre class="csharpcode"><span class="kwrd">private</span> <span class="kwrd">static</span> IDictionary&lt;<span class="kwrd">string</span>, <span class="kwrd">object</span>&gt; CreateControlList()
+{
+var controlList = <span class="kwrd">new</span> Dictionary&lt;<span class="kwrd">string</span>, <span class="kwrd">object</span>&gt;
+          {
+              {<span class="str">"closingsheet_company"</span>, <span class="kwrd">new</span> HtmlSelect()},
+              {<span class="str">"closingsheet_accountingyear"</span>, <span class="kwrd">new</span> HtmlSelect()},
+              {<span class="str">"closingsheet_periode1"</span>, <span class="kwrd">new</span> TextBox()},
+              {<span class="str">"cbxHideRowsWithZeros"</span>, <span class="kwrd">new</span> CheckBox()},
+              {<span class="str">"textAffiliated"</span>, <span class="kwrd">new</span> HtmlGenericControl()},
+              {<span class="str">"lblPostentries"</span>, <span class="kwrd">new</span> HtmlGenericControl()},
+              {<span class="str">"iconline_seperator_1"</span>, <span class="kwrd">new</span> HtmlTableCell()},
+              {<span class="str">"iconline_seperator_2"</span>, <span class="kwrd">new</span> HtmlTableCell()},
+              {<span class="str">"ColumnsHeaders"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ColumnsHeadersLeft"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ColumnsHeadersRight"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ColumnsData"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ClosingSheetLeft"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ClosingSheetRight"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"ClosingSheetBalanceTable"</span>, <span class="kwrd">new</span> HtmlTable()},
+              {<span class="str">"rowcount"</span>, <span class="kwrd">new</span> HtmlInputHidden()},
+              {<span class="str">"company"</span>, <span class="kwrd">new</span> HtmlInputHidden()},
+              {<span class="str">"hidexportExcel"</span>, <span class="kwrd">new</span> HtmlInputHidden()},
+              {<span class="str">"sortarrow_account"</span>, <span class="kwrd">new</span> HtmlImage()},
+              {<span class="str">"sortarrow_code"</span>, <span class="kwrd">new</span> HtmlImage()},
+              {<span class="str">"filterselectimg"</span>, <span class="kwrd">new</span> HtmlImage()}
+          };
+<span class="kwrd">return</span> controlList;
+}</pre>_Page_Load будет принимать контекст как параметер, и сохранять ссылку на него:<span class="Apple-style-span"   style="font-family:monospace;font-size:100%;"><span class="Apple-style-span"  style=" white-space: pre;font-size:13px;"><span class="Apple-style-span"   style="font-family:Georgia, serif;font-size:130%;"><span class="Apple-style-span"  style=" white-space: normal;font-size:16px;"> </span></span></span></span><pre class="csharpcode"><span class="rem">// used for testing..</span>
+<span class="kwrd">public</span> <span class="kwrd">void</span> _Page_Load(ASPNetContext ctx, IDictionary&lt;<span class="kwrd">string</span>, <span class="kwrd">object</span>&gt; controls, <span class="kwrd">object</span> sender, EventArgs e, <span class="kwrd">bool</span> postback)
+{
+   _controlList = controls;</pre>На страницу добавим метод доступа к контролу через контекст:<span class="Apple-style-span"   style="font-family:monospace;font-size:100%;"><span class="Apple-style-span"  style=" white-space: pre;font-size:13px;"><span class="Apple-style-span"   style="font-family:Georgia, serif;font-size:130%;"><span class="Apple-style-span"  style=" white-space: normal;font-size:16px;"> </span></span></span></span><pre class="csharpcode"><span class="kwrd">private</span> <span class="kwrd">object</span> GetControl(<span class="kwrd">string</span> s)
+{
+<span class="kwrd">   if</span> (_controlList == <span class="kwrd">null</span>)
+<span class="kwrd">       return</span> <span class="kwrd">null</span>;
+
+<span class="kwrd">   object</span> control = <span class="kwrd">null</span>;
+  _controlList.TryGetValue(s, <span class="kwrd">out</span> control);
+
+<span class="kwrd">    return</span> control;
+}</pre>Также необходимо изменить код страницы так, чтобы доступ контролам шел не напрямую, а через метод.. вот так:<span class="Apple-style-span"   style="font-family:monospace;font-size:100%;"><span class="Apple-style-span"  style=" white-space: pre;font-size:13px;"><span class="Apple-style-span"   style="font-family:Georgia, serif;font-size:130%;"><span class="Apple-style-span"  style=" white-space: normal;font-size:16px;"> </span></span></span></span><pre class="csharpcode">((HtmlImage)GetControl(<span class="str">"sortarrow_account"</span>)).Src = <span class="str">"img/sortarrow_down.gif"</span>;</pre>Наконец, чтобы страница работала в продакшн моде, нужно подготовить аналогичный контекст, который будет содержать ссылки на реальные контролы страницы. После всех изменения, Page_Load страницы выглядит так:<pre class="csharpcode"><span class="kwrd">protected</span> <span class="kwrd">void</span> Page_Load(<span class="kwrd">object</span> sender, EventArgs e)
+{
+var controlList = <span class="kwrd">new</span> Dictionary&lt;<span class="kwrd">string</span>, <span class="kwrd">object</span>&gt;
+                    {
+                        {<span class="str">"closingsheet_company"</span>, closingsheet_company},
+                        {<span class="str">"closingsheet_accountingyear"</span>, closingsheet_accountingyear},
+                        {<span class="str">"closingsheet_periode1"</span>,closingsheet_periode1},
+                        {<span class="str">"cbxHideRowsWithZeros"</span>, cbxHideRowsWithZeros},
+                        {<span class="str">"textAffiliated"</span>, textAffiliated},
+                        {<span class="str">"lblPostentries"</span>, lblPostentries},
+                        {<span class="str">"iconline_seperator_1"</span>, iconline_seperator_1},
+                        {<span class="str">"iconline_seperator_2"</span>, iconline_seperator_2},
+                        {<span class="str">"ColumnsHeaders"</span>, ColumnsHeaders},
+                        <span class="rem">//{"ColumnsHeadersLeft", ColumnsHeadersLeft},</span>
+                        <span class="rem">//{"ColumnsHeadersRight", ColumnsHeadersRight},</span>
+                        {<span class="str">"ColumnsData"</span>, ColumnsData},
+                        {<span class="str">"ClosingSheetLeft"</span>, ClosingSheetLeft},
+                        {<span class="str">"ClosingSheetRight"</span>, ClosingSheetRight},
+                        {<span class="str">"ClosingSheetBalanceTable"</span>, ClosingSheetBalanceTable},
+                        {<span class="str">"rowcount"</span>, rowcount},
+                        {<span class="str">"company"</span>, company},
+                        {<span class="str">"hidexportExcel"</span>, hidexportExcel},
+                        {<span class="str">"sortarrow_account"</span>, sortarrow_account},
+                        {<span class="str">"sortarrow_code"</span>, sortarrow_code},
+                        {<span class="str">"filterselectimg"</span>, filterselectimg}
+                    };
+
+var postback = Page.IsPostBack;
+
+<span class="kwrd">using</span> (ASPNetContext ctx = <span class="kwrd">new</span> ASPNetContext(Context))
+{
+  _Page_Load(ctx, controlList, sender, e, postback);
+}
+}
+</pre><p/><b>Часть 4 Postbacks</b> <p/><div></div><div>Страница дожна быть протестирована как на загрузку, так и на постбэк, поэтому я добавил еще один параметер, который решает эту проблему. Пример можно видеть сверху.</div><div></div><div>Вот и все! Страница готова для тестирования.</div><div></div><div>Несколько тестов для примера.</div><div><p/></div><div><b>Тесты, тесты, тесты</b></div><div><p/></div><div>Первый, самый простой тест, который показывает что загрузка страницы происходит без исключений:<span class="Apple-style-span"   style="font-family:monospace;font-size:100%;"><span class="Apple-style-span"  style=" white-space: pre;font-size:13px;"><span class="Apple-style-span"   style="font-family:Georgia, serif;font-size:130%;"><span class="Apple-style-span"  style=" white-space: normal;font-size:16px;"> </span></span></span></span><pre class="csharpcode"><span class="rem">/// &lt;summary&gt;</span>
+<span class="rem">/// Validates that page is loaded with no exceptions</span>
+<span class="rem">/// &lt;/summary&gt;</span>
+[Test]
+<span class="kwrd">public</span> <span class="kwrd">void</span> Smoke()
+{
+<span class="kwrd">using</span> (var simulator = <span class="kwrd">new</span> HttpSimulator(<span class="str">"/"</span>, <span class="str">@"c:\inetpub\"))
+{
+   var request = simulator.SimulateRequest(new Uri(@"</span>http:<span class="rem">//localhost/rd2010/ard2/closingsheet.aspx?company=0"));</span>
+   var page = <span class="kwrd">new</span> ard_closingsheet();
+   var context = <span class="kwrd">new</span> ASPNetContext(HttpContext.Current);
+
+   <span class="rem">//INIT</span>
+   var sessionVariables = CreateSessionVariables();
+   var controls = CreateControlList();
+   InitContext(context, sessionVariables);
+
+   <span class="rem">//ACT / POST</span>
+   page._Page_Load(context, controls, <span class="kwrd">new</span> <span class="kwrd">object</span>(), <span class="kwrd">new</span> EventArgs(), <span class="kwrd">false</span>);
+}
+}</pre></div>Второй более сложный, он загружает страницу, проверяет корректность формата и значений вывода.<pre class="csharpcode"><span class="rem">/// &lt;summary&gt;</span>
+<span class="rem">/// Validates the amount in result column for account</span>
+<span class="rem">///</span>
+<span class="rem">/// &lt;/summary&gt;</span>
+[Test]
+<span class="kwrd">public</span> <span class="kwrd">void</span> SheetCorrectValue()
+{
+ <span class="kwrd">using</span> (var simulator = <span class="kwrd">new</span> HttpSimulator(<span class="str">"/"</span>, <span class="str">@"c:\inetpub\"))
+ {
+     var request = simulator.SimulateRequest(new Uri(@"</span>http:<span class="rem">//localhost/rd2010/ard2/closingsheet.aspx?company=0"));</span>
+     var page = <span class="kwrd">new</span> ard_closingsheet();
+     var context = <span class="kwrd">new</span> ASPNetContext(HttpContext.Current);
+
+     <span class="rem">//INIT</span>
+     var sessionVariables = CreateSessionVariables();
+     var controls = CreateControlList();
+     InitContext(context, sessionVariables);
+
+     <span class="rem">//ACT</span>
+     page._Page_Load(context, controls, <span class="kwrd">new</span> <span class="kwrd">object</span>(), <span class="kwrd">new</span> EventArgs(), <span class="kwrd">false</span>);
+
+     <span class="rem">//POST</span>
+     var closingSheetLeft = (HtmlTable)controls[<span class="str">"ClosingSheetLeft"</span>];
+     var data = (HtmlTable)controls[<span class="str">"ColumnsData"</span>];
+     <span class="rem">// 0 - account, 2 - control holds account number..find a account with name "Debtors"</span>
+     <span class="kwrd">int</span> row = GetRowNumberWithValue(closingSheetLeft, 0, 2, <span class="str">"1100"</span>);
+     <span class="kwrd">string</span> cellValue = GetCellValue(data, row, 0, 0);
+
+     <span class="rem">// Expected 4 cells, as 4 colums in template (it gives now 6, as 2 additional columns present)</span>
+     Assert.Equals(cellValue, <span class="str">"12,750.00"</span>);
+ }
+}</pre>Использование <i>HttpRespose</i> и <i>Postback</i><div><pre class="csharpcode"><span class="rem">/// &lt;summary&gt;</span>
+<span class="rem">/// Same as SheetColumnsNumber but it validates cvs data (as input to Excel report)</span>
+<span class="rem">///</span>
+<span class="rem">/// &lt;/summary&gt;</span>
+[Test]
+<span class="kwrd">public</span> <span class="kwrd">void</span> ExcelColumnsNumber()
+{
+   <span class="rem">// Do a post back and set hidexportExcel to true, output will be in http response</span>
+   <span class="kwrd">using</span> (var simulator = <span class="kwrd">new</span> HttpSimulator(<span class="str">"/"</span>, <span class="str">@"c:\inetpub\"))
+   {
+       var request =
+           simulator.SimulateRequest(new Uri(@"</span>http:<span class="rem">//localhost/rd2010/ard2/closingsheet.aspx?closingsheet_accountingyear=2009&amp;closingsheet_periode1="));</span>
+       var page = <span class="kwrd">new</span> ard_closingsheet();
+       var context = <span class="kwrd">new</span> ASPNetContext(HttpContext.Current);
+
+       <span class="rem">//INIT</span>
+       var sessionVariables = CreateSessionVariables();
+       var controls = CreateControlList();
+       InitContext(context, sessionVariables);
+
+       <span class="rem">//ACT (with post)</span>
+       page._Page_Load(context, controls, <span class="kwrd">new</span> <span class="kwrd">object</span>(), <span class="kwrd">new</span> EventArgs(), <span class="kwrd">false</span>);
+       ((HtmlInputHidden) controls[<span class="str">"hidexportExcel"</span>]).Value = <span class="str">"true"</span>;
+       <span class="rem">// page is recreated and we do post pack</span>
+       page = <span class="kwrd">new</span> ard_closingsheet();
+       page._Page_Load(context, controls, <span class="kwrd">new</span> <span class="kwrd">object</span>(), <span class="kwrd">new</span> EventArgs(), <span class="kwrd">true</span>);
+
+       <span class="rem">//POST</span>
+       <span class="kwrd">string</span> response = request.ResponseText;
+
+       <span class="kwrd">string</span>[] cvsLines = response.Split(<span class="str">'\n'</span>);
+       <span class="kwrd">string</span>[] colums = cvsLines[0].Split(<span class="str">';'</span>);
+
+       <span class="rem">// report contains of 14 columns for now, but of them are redudant..</span>
+       Assert.Equals(colums.Length, 12);
+   }
+}</pre></div>Метод опробован и используется для тестирования старых и новых страниц, без необходимости использования каких либо дополнительный фреймворков, и веб сервера. <div></div><div>Также для более продвинутых случаев, в конкст контров можно укладывать mock-объекты, использовать из в тесте и на странице по своему усмотрению. <p/><p/></div></div></div>

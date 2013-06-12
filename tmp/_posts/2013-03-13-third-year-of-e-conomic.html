@@ -1,0 +1,21 @@
+---
+layout: post
+title: "Third Year of E-conomic"
+date: 2013-03-13T20:29:00+02:00
+comments: false
+categories:
+ - E-conomic
+ - Life
+---
+
+<div class='post'>
+<p>That's my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I've heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
+	<!-- more -->
+    </p>    <p>        So, what's interesting about? Alright, it begins with <a href="http://www.e-conomic.com/">E-conomic</a> company, which through about 10 years on market gathered huge experience in online accounting. The primary target audience for all that years were professional accounters and administrators that have pretty solid knowledge what the accounting is. But due influence of internet economy and small-business grow there appeared high demand on simple accounting software, that could be easily understood even for non-professional accounters. That's were we saw the opportunity. That's then the <a href="https://debitoor.com/">Debitoor</a> born.<br />
+    </p>    <p>        Technologically it's been very innovative for us, too. As I <a href="http://www.beletsky.net/2012/03/second-year-of-e-conomic.html">wrote</a> last year, the March was the month we tried how good different technologies might work for us. The decision were taking up to full JavaScript stack - <a href="http://nodejs.org/">node.js</a> and <a href="http://www.mongodb.org/">MongoDB</a> as backend, <a href="http://backbonejs.org/">Backbone.js</a> as front end technologies.<br />
+    </p>    <p>        So, near the April we have a working product running .NET + MSSQL, that was on production and customers started to use, we decided to switch backend from .NET to Node.js. The HTTP API interfaces were "copied" from ASP.NET MVC implementation to exactly the same but on Express.js. The difference was in the way how ASP.NET MVC and Express.js is serving the HTML responses, so we have to re-desing the way how front-end application is being initialized and started. Since the low coupling of our front end to ASP.NET features, the rest of Backbone.js application remained absolutely the same.<br />
+    </p>    <p>        All existing data has been exported to JSON files and been imported to MongoDB through the existing API. That gave us a chance to make some performance measuring and we definitely we happy about. Average HTTP request were handled in ~100ms that was a quite big boost comparing to previous platform.<br />
+    </p>    <p>        Front-end is being involved as well. We've been switched to Single Page Application (SPA) architecture client side and there is no way back. With Node.js backend we easily moved application to cloud, all static resources to CloudFront that affected initial load time as a result made application to look and feel incredibly fast.<br />
+    </p>    <p>        But the most important is - users love it! We've got plenty of sign-ups during the day, from different countries as Germany, Spain, Great Britain, Columbia etc., recently we've started premium campaign, and the premium users joins us. UI/UX are tweeked all the time, based on future application vision and A/B tests.<br />
+    </p>    <p>        All that makes me feel - your work is important and you do something valuable.. and that is exactly what keeps me working on <a href="http://www.e-conomic.com/">E-conomic</a>. It's interesting and make sense - that's all I need.        <br />
+    </p></div>

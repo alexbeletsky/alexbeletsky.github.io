@@ -1,0 +1,122 @@
+---
+layout: post
+title: "NancyFX Migration from 0.9 to 0.10"
+date: 2012-02-29T12:16:00+02:00
+comments: false
+categories:
+ - Open source
+---
+
+<div class='post'>
+<p>Recently, I've <a href="https://github.com/Code52/Ideastrike/pull/92">upgraded</a> IdeaStrike project from NancyFX 0.9 to the latest 0.10 version. There were some very unclear moments, fortunately due to great support of <a href="">@thecodejunkie</a> and <a href="">@grumpydev</a> they are solved. As a result, the <a href="https://github.com/NancyFx/Nancy/issues/520">issue 520</a> was born, that contains a lot of text inside. I'll try to sum up all important things into one blog post.<br />
+</p><h2>Running update</h2><p>With NuGet updating dependencies is very easy, just run in package manager console:<br />
+</p><pre class="brush: plain">    PM> update-package
+</pre><p>It will give you the information about the upgrade process, it should be very smooth, so the end you will see:<br />
+</p><pre class="brush: plain">Successfully uninstalled 'Nancy.Hosting.Aspnet 0.9.0'.
+Updating 'Nancy.Testing' from version '0.9.0' to '0.10.0' in project 'IdeaStrike.Tests'.
+Successfully removed 'Nancy.Testing 0.9.0' from IdeaStrike.Tests.
+Successfully removed 'Nancy 0.9.0' from IdeaStrike.Tests.
+Successfully added 'Nancy 0.10.0' to IdeaStrike.Tests.
+Successfully installed 'Nancy.Testing 0.10.0'.
+Successfully added 'Nancy.Testing 0.10.0' to IdeaStrike.Tests.
+Successfully uninstalled 'Nancy.Testing 0.9.0'.
+The directory is not empty.
+
+Successfully uninstalled 'Nancy 0.9.0'.
+</pre><h2>Fixing compilation errors</h2><p>As you try to build the project after upgrade, it would fail because of compilation issues.<br />
+</p><p>If you using Nancy bootstrapper and overriding <code>RequestStratup</code> method, you will see that method had changed the signature: <br />
+</p><pre class="brush: csharp">    // in 0.9
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines);
+
+    // in 0.10
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines, NancyContext context)
+</pre><p>So, it now receives additional parameter - NancyContext.<br />
+</p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
+</p><pre class="brush: csharp">    // in 0.9
+    public IEnumerable&lt;string&gt; AcceptLanguage { get; }
+    
+    // in 0.10
+    public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
+</p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
+</p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
+    ---- Nancy.RequestExecutionException : Oh noes!
+    -------- Nancy.ViewEngines.ViewNotFoundException : Unable to locate view '404'. Currently available view engine extensions: sshtml,html,htm,cshtml,vbhtml
+    at Nancy.Testing.PassThroughErrorHandler.Handle(HttpStatusCode statusCode, NancyContext context)
+    at Nancy.NancyEngine.CheckErrorHandler(NancyContext context)
+    at Nancy.NancyEngine.HandleRequest(Request request)
+    at Nancy.Testing.Browser.HandleRequest(String method, String path, Action1 browserContext)
+    at Nancy.Testing.Browser.Get(String path, Action1 browserContext)
+    at IdeaStrike.Tests.IdeaStrikeSpecBase1.Get(String path, Action1 browserContext) in D:\Development\Projects\Ideastrike\tests\IdeaStrike.Tests\IdeaStrikeSpecBase.cs:line 85
+</pre><p>That was a mystery. All of those tests were fine, but suddenly stopped to work in 0.10. <br />
+</p><p>The reason was very interesting. Those tests for views were actually <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4157010">never run</a>. It's been unseen for 2 reasons: Nancy 0.9 failed silently about missing view, IdeaStrike unit tests never tested view content.<br />
+</p><p>To make those run, the <code>IdeaStrikeSpecBase</code> have to be setup with <code>IRootPathProvider</code>. IRootPathProvider, provides the path root for modules, so views could be located, based on default conventions. I finished up with this implementation:<br />
+</p><pre class="brush: csharp">public class CustomRootPathProvider : IRootPathProvider
+{
+    public string GetRootPath()
+    {
+        return Path.GetDirectoryName(typeof(IdeastrikeBootstrapper).Assembly.Location);
+    }
+}
+</pre><p>This root provider is used with spec base class configuration:<br />
+</p><pre class="brush: csharp">public IdeaStrikeSpecBase()
+{
+ Bootstrapper = new ConfigurableBootstrapper(with =&gt;
+ {
+  with.Module&lt;TModule&gt;();
+  with.Dependencies(_Users.Object, _Ideas.Object, _Features.Object, _Activity.Object, _Settings.Object, _Images.Object);
+  with.DisableAutoRegistration();
+  with.NancyEngine&lt;NancyEngine&gt;();
+  with.RootPathProvider&lt;CustomRootPathProvider&gt;(); // <- Here
+ });
+}
+</pre>
+<p>So, we are saying that root is the same folder as IdeaStike assembly. The problem is that location depends on actual Test runner. In case of NCrunch, it would be some deeply hidden folder in user\AppData\Local\Temp, in case of ReSharper runner it would be temp ASP.NET folder. That's a little annoying.
+</p><p>Tests were still red, since neither NCrush nor ReSharper is copying actual views into target folder. Fortunately, I found this great <a href="http://iamnotmyself.com/2012/01/03/testing-rendered-output-of-nancyfx-with-the-razor-view-engine-gotchas/">article</a>, explaining NancyFX view testing gotchas. I ended up with just saying “Copy if newer” for views under test, so they are in the same folder as target binary. That's not cool, but currently I see no other option.
+</p><p>After those changes, tests became green, so I run the application. No surprise, it failed to start.
+</p><h2>Fixing runtime errors</h2><p>At the first run, I got nothing more as bunch of Razor compilation errors:
+</p><pre class="brush: plain">    Error Compiling Template: (51, 18) The name 'Url' does not exist in the current context)
+    Error Compiling Template: (61, 33) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (68, 26) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (78, 7) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (83, 31) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (88, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (103, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (118, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (132, 25) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (234, 19) The name 'Url' does not exist in the current context)
+</pre><p>The proposed <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4153006">solution</a> that NancyRazorViewBase should always be specified with generic parameter.
+</p><pre class="brush: csharp">    // in 0.9
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
+
+    // in 0.10 
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
+    &ensp;
+</pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
+</p><pre class="brush: plain">    Error Compiling Template: (83, 1) The type 'System.Web.IHtmlString' is defined in an assembly that is not referenced. You must add a reference to assembly 'System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.)
+</pre><p>NancyFX is being developed to be independent of <code>System.Web</code>. It was not totally true for 0.9 with Razor support, but it has been fixed in 0.10. That of cause, brings some surprises. So, if your application is using Razor view engine, you need to do <a href="">following</a>:
+</p><ul>    <li>update all usages of IHtmlString to use Nancy.ViewEngines.Razor.IHtmlString</li>
+    <li>update all usages of McvHtmlString to use Nancy.ViewEngines.Razor.NonEncodedHtmlString</li>
+    <li>let the razor engine know about system.web (in case if HttpContext is used in layout)</li>
+</ul><pre class="brush: plain">&lt;razor disableAutoIncludeModelNamespace=&quot;false&quot;&gt;
+    &lt;assemblies&gt;
+        &lt;add assembly=&quot;System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+    &lt;/assemblies&gt;
+    &lt;namespaces&gt;
+        &lt;add namespace=&quot;System.Web&quot; /&gt;
+    &lt;/namespaces&gt;
+&lt;/razor&gt;
+</pre><h2>Changing the Partial views</h2><p>After these steps were done, application finally started. But some page gave runtime exception:
+</p><pre class="brush: plain">Server Error in '/' Application.
+
+Sequence contains no elements
+
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+
+Exception Details: System.InvalidOperationException: Sequence contains no elements
+</pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:
+</p><pre class="brush: csharp">    @Html.Partial("Shared/Templates/upload.html")
+    @Html.Partial("Shared/Templates/download.html")
+</pre><p>The reason turned out to be really <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4179548">simple</a>. All templates in IdeaStrike project were using .html extension. For 0.10 it required to be .cshtml. So, renaming from .html to .cshtml made the IdeaStrike up and running again.
+</p></div>

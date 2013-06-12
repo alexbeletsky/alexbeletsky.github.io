@@ -1,0 +1,74 @@
+---
+layout: post
+title: "Approval Tests: Locking down an output"
+date: 2012-01-06T17:52:00+02:00
+comments: false
+categories:
+ - Approvals
+---
+
+<div class='post'>
+<p>        We have <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">seen</a> how Approval Tests are useful for locking down some legacy code. You might say, that on practice we are having much more bigger problem, like some code that executes queries against the database. We need somehow to be able to work with that code, without worries of brake it down. Approvals could help here. <br />
+    </p>    <h2>The case</h2>    <p>        Again I just imagine some legacy code that works with DB, it might look something like that:<br />
+    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
+{
+ private static Connection _connection;
+
+ public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
+ {
+  if (!IsConnectionOpened())
+  {
+   OpenConnection();
+  }
+
+  var connection = GetConnection();
+
+  var value = HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(parameterOne, parameterTwo, 'c');
+
+  var query = string.Format(&quot;INSERT INTO TableName (SomeColumn) VALUES ({0})&quot;, value);
+  connection.ExecuteQuery(query);
+ }
+
+    // ...
+    </pre>    <p>        The <code>MethodThatProduceSomeResults</code> takes some arguments, call another method to get value and then store value to database. It will be problematic to tests what exactly is happening there. We might consider approach to check the difference in <code>TableName</code> before code execution and after, but we will go smarter and easier way. <br />
+    </p>    <p>        Let's prepare the test for that code.<br />
+    </p>    <h2>Tests</h2>    <p>        The great thing with Approvals is the tests are really elegant. Just 2 steps - DO and VERIFY.<br />
+    </p>    <pre class="brush: csharp">[Test]
+public void should_be_able_to_test()
+{
+ // DO
+ var some = new ClassThatOutputsSomething();
+ some.MethodThatProduceSomeResults('some_input', 221);
+
+ // VERIFY
+ Approvals.Approve(...);
+}
+    </pre>    <p>        But you can see, the problem here is that we don't have any return value of that method. Instead, it does something inside and keep that action in secret. We need some how to log all internal activities and than verify that log. <code>Approval.Utilities</code> contains exactly what we need.<br />
+    </p>    <pre class="brush: csharp">[Test]
+public void should_be_able_to_test()
+{
+ // DO
+ var output = ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder();
+ new ClassThatOutputsSomething().MethodThatProduceSomeResults('some_input', 221);
+
+ // VERIFY
+ Approvals.Approve(output);
+}
+    </pre>    <p>        I have just added logger <code>ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder</code> and do approve against it. But if I run this test I could see that output is just empty. Sure, we need to change <code>MethodThatProduceSomeResults</code> a little.<br />
+    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
+{
+ private static Connection _connection;
+
+ public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
+ {
+        // ...
+
+        connection.ExecuteQuery(query);
+        ApprovalUtilities.SimpleLogger.Logger.Event(query);
+ }
+    </pre>    <p>        So, in the place where query is being executed, we placed the logger and put exact some query inside it. Now if I run the test I will got application output, that I will approve and use those approved results after. <br />
+    </p>    <p>        I'm not limited with only one place I could put logger. On practice, would more that one places to grab the results, as well as more that one argument for <code>MethodThatProduceSomeResults</code> method. By analysis of particular practical case, it is possible to place logger exactly where it's needed, plus prepare best matching inputs. Just for example: after code examination it might happen that <code>parameterOne</code> is ProductId, but <code>parameterTwo</code> is ProductPrice. In my test I could query the database to select all products and prices and call <code>MethodThatProduceSomeResults</code> in loop, to get all potential output. That approved test will give me much confidence during refactoring.<br />
+    </p>    <h2>Conclusion</h2>    <p>        Locking down output is very powerful technique, you can use it for any kind of objects that are "hidden" inside legacy classes, like SQL or console outputs.  <br />
+    </p>    <p>        On <a href="http://herdingcode.com/?p=329">Herding Code</a> episode <a href="https://twitter.com/#!/LlewellynFalco">Llewellyn</a> describes the case of some legacy project he worked on. There was a kind of report generator and it's code was just a big mess. He did copy of production database and put it in "Read-Only" mode. By running the report, he was able to find all places where code was accessing DB, since exception is thrown in that place. Putting in just the same log instructions as I did above, he managed to grab all SQL queries that run for that particular report. Everything were just in one file.<br />
+    </p>    <p>        That's the good example of reaching 100% code coverage just with one test.<br />
+    </p></div>

@@ -1,0 +1,260 @@
+---
+layout: post
+title: "Baby steps to Backbone.js: Exploring collections"
+date: 2013-03-27T17:51:00+02:00
+comments: false
+categories:
+ - Backbone.js
+ - BabyStepsBackbone
+---
+
+<div class='post'>
+    <p>        After initial introduction to Backbone's <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
+    <!-- more -->
+    </p>    <p>        In small application we are doing through that series we have collection of feedbacks. But before I show how to integrate collection into the app, I want to make sure you understand all collection properties right. We'll do that by TDD'ing the collection and exploring it's behavior.<br />
+    </p>    <h2>Collection construction</h2>    <p>        So, to create collection we need to extend <code>Backbone.Collection</code> object,<br />
+    </p>    <pre class="brush: js">var FeedbackCollection = Backbone.Collection.extend({
+    model: Feedback,
+    url: '/feedback'
+});
+    </pre>    <p>        Here we just specified the URL for collection persistence and the model, of which the collection would consists of. Let's prepare the test suite for collection stories,<br />
+    </p>    <pre class="brush: js">describe('FeedbackCollection.js spec', function () {
+    var collection;
+});
+    </pre>    <p>        And create our first specification,<br />
+    </p>    <pre class="brush: js">describe('when constructing', function () {
+    describe('just empty', function () {
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
+
+        it('should be created', function () {
+            expect(collection).toBeDefined();
+        });
+    });
+</pre>    <p>        Just to make sure, our definition is fine and we are able to instantiate new collection object.<br />
+    </p>    <p>        <code>FeedbackCollection</code> constructor have few optional arguments - <code>models</code>, <code>options</code>. Models, could be either arrays of objects, or array of Backbone.Models. In case of object, collection constructor would "turn" them to models (taking the type we specified on collection definition) and add those models to collection. <br />
+    </p>    <pre class="brush: js">describe('with objects', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        or,<br />
+    </p>    <pre class="brush: js">describe('with models', function () {
+    beforeEach(function () {
+        var models = [
+            new Feedback({email: 'a@a.com', website: 'a.com', feedback: 'hello'}),
+            new Feedback({email: 'b@b.com', website: 'b.com', feedback: 'good bye'})
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        Both things are equivalent. Moreover, typically it's only unit tests you need to initialize collections that way, so I usually prefer first option.<br />
+    </p>    <p>        The <code>options</code> parameter, could contain the type of model that collection contain. So, if collection does not specify <code>model</code> property, <code>Backbone.Model</code> will be created by default.<br />
+    </p>    <pre class="brush: js">describe('with options', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models);   // not specifying model
+    });
+
+    it('should be created', function () {
+        expect(collection).toBeDefined();
+    });
+
+    it('should have models of Backbone.Model type', function () {
+        expect(collection.models[0].constructor).toBe(Backbone.Model);
+    });
+</pre>    <p>        You can override that by passing <code>{model: MyModel}</code> options object,<br />
+    </p>    <pre class="brush: js">describe('while passing model option', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models, { model: Feedback });
+    });
+
+    it('should have models of Feedback type', function () {
+        expect(collection.models[0].constructor).toBe(Feedback);
+    });
+});
+</pre>    <p>        Despite of that possibility I really rare use that in practice. It's better to simply specify model type in collection definition, that makes code easy to understand.<br />
+    </p>    <h2>Accessing collection elements</h2>    <p>        After collection has been constructed, it's possible to access internal models. There are several ways of doing that.<br />
+    </p>    <p>        The simplest one is by index,<br />
+    </p>    <pre class="brush: js">describe('when accessing collection elements', function () {
+    var first, second, models;
+
+    describe('by index', function () {
+        beforeEach(function () {
+            models = [
+                {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+                {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+            ];
+            collection = new FeedbackCollection(models);
+        });
+
+        beforeEach(function () {
+            first = collection.at(0);
+            second = collection.at(1);
+        });
+
+        it('should get first model by index', function () {
+            expect(first.toJSON()).toEqual(models[0]);
+        });
+
+        it('should get second model by index', function () {
+            expect(second.toJSON()).toEqual(models[1]);
+        });
+    });
+</pre>    <p>        Even it possible, in real apps you probably don't know the index of model you need to get from collection, since they might come from server in unpredictable order. So, instead of index, getting by id is more appropriate way.<br />
+    </p>    <pre class="brush: js">describe('by id', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    beforeEach(function () {
+        first = collection.get('feedback-1');
+        second = collection.get('feedback-2');
+    });
+
+    it('should get first model by id', function () {
+        expect(first.toJSON()).toEqual(models[0]);
+    });
+
+    it('should get second model by id', function () {
+        expect(second.toJSON()).toEqual(models[1]);
+    });
+});
+</pre>    <p>        And finally, something that I being trapped many time while starting up with Backbone - indexers on collection, does not work.<br />
+    </p>    <pre class="brush: js">describe('indexer does not work', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be undefined', function () {
+        expect(collection[0]).not.toBeDefined();
+    });
+});
+</pre>    <h2>Adding and removing items</h2>    <p>        Next, we need to understand to how to add and remove items from collections.<br />
+    </p>    <p>        There are 2 ways of adding item into backbone collection: <code>add</code>, <code>push</code>. They are very similar, but there are difference between those. The add method takes a model or array of models and the options you can specify the position there the item should be interred to. Push method, would simply add new item to the end of collection.<br />
+    </p>    <pre class="brush: js">describe('by add method', function () {
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with index specified', function () {
+        beforeEach(function () {
+            collection.add({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}, {at: 0});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-2 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-2');
+        });
+    });
+});
+</pre>    <p>        By push,<br />
+    </p>    <pre class="brush: js">describe('by push method', function () {
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with next push', function () {
+        beforeEach(function () {
+            collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-1 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-1');
+        });
+    });
+});
+</pre>    <p>        Please note, that <code>push</code> recieves the same options as <code>add</code>, but it's just a short-cut for <code>add</code> method (take a look how it's <a href="https://github.com/documentcloud/backbone/blob/master/backbone.js#L747">implemented</a>, to make it completely clear)<br />
+    </p>    <p>        For removing the items, we also have 2 methods: <code>remove</code>, <code>pop</code>. They are opposite symmetrical to the <code>add</code>, <code>push</code>. Remove, removes specified model from collection, pop removes the last model in collection. This is shown by following specification,<br />
+    </p>    <pre class="brush: js">describe('when removing items', function () {
+    beforeEach(function () {
+        collection = new FeedbackCollection();
+    });
+
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+    });
+
+    describe('by remove method', function () {
+        beforeEach(function () {
+            var model = collection.get('feedback-1');
+            collection.remove(model);
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-1')).not.toBeDefined();
+        });
+    });
+
+    describe('by pop method', function () {
+        beforeEach(function () {
+            collection.pop();
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-2')).not.toBeDefined();
+        });
+    });
+});
+</pre>    <h2>Conclusions</h2>    <p>        We've just gone for a very basic features of Backbone.Collection type. Next time, we'll explore more about collections as events it produces, fetching and persisting data to server.<br />
+    </p></div>

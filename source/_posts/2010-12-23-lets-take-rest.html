@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Let's take a REST"
+date: 2010-12-23T07:28:00+02:00
+comments: false
+categories:
+ - MVC
+ - REST
+ - asp.net
+ - Design
+---
+
+<div class='post'>
+<p>
+Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
+</p>
+<h2>What is REST?</h2>
+<p>
+It is rather style or pattern of development resource-oriented web applications. Beauty of REST is that its really easy to understand and basically you are using REST everyday but may not noticing that. REST works on top of HTTP protocol, but is is not protocol itself. It seems to me that it actually appears with HTTP/1.1 but only with <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> work it became well understood, defined and attractive.
+</p>
+<p>
+REST popularized by such applications as twitter, flickr, bloglines, technorati etc. And of cause, by <a href="http://rubyonrails.org/">Ruby On Rails</a> framework.
+</p>
+<h2>Unique ID</h2>
+<p>
+Unique ID is key concept in REST. Everything in Web is resource, every resource must be addressed, each address is unique.
+</p>
+<p>
+Here are examples of ID. Of cause in a world of HTTP ID's are URI's (Unified Recourse Identifiers):
+</p>
+<p>
+<code>
+http://mysite.com/blog/page/1<br />
+http://mysite.com/blop/post/my-first-post
+</code>
+</p>
+<h2>What is representation and state transfer?</h2>
+<p>
+Let's see the first URI, it point for first page on some blog. As a client I ask for resource, <strong>representation</strong> of resource is returned back to client. By receiving the representation client <strong>transfers</strong> (changes) to particular <strong>state</strong>. As I ask for next resource, next representation of resource is back. The new representation changes the client application into yet another state. Between previous and next state, client stays is <strong>rest</strong> mode. Thus, the client application transfers state with each resource representation. That forms concept of - Representational State Transfer.
+</p>
+<p>
+It doesn't depend what exact representation is, it could be: HTML, XML, JSON, RSS etc. 
+</p>
+<h2>Recourses and actions</h2>
+<p>
+You can do a different actions to resources. REST achitecture maps CRUD (Create, Read, Update, Delete) to the set of operations supported by the web service using HTTP methods (e.g., POST, GET, PUT or DELETE). 
+</p>
+<table>
+        <tr>
+            <th>URI</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/page/1</td>
+            <td>GET</td>
+            <td>
+            Gets the representation of resouce. Get request does not change the state of server.
+            Typically you do not submit any data in GET request. 
+            You can read the URL like, "get page 1 from blog located at http://mysite.com"
+            </td>
+
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry</td>
+            <td>POST</td>
+            <td>
+            Posts the changed state of resouce. With post you can change the state of server.
+            Post contains data in POST body. It is up to web server how to treat and use this data.
+            You can read URI like, "post an entry to entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/changename/211</td>
+            <td>PUT</td>
+            <td>
+            Updates some existing resouces. PUT is similar to POST, since it changes web server state and contains data in body. You can do different change actions that would update resource. Typically recourse identified by ID, like 211.
+            You can read URI like, "update an entry with Id 211, by changing its name, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>        
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/211</td>
+            <td>DELETE</td>
+            <td>
+            Deletes some existing resouces. DELETE changes web server state but typically contains no data in body.
+            You can read URI like, "delete an entry with Id 211, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+</table>
+<h2>Logical and Physical URL's</h2>
+<p>
+If you do a lot of classic ASP.net programming you probably get used that URL reflects physical structure of application. For instance, <code>http://mysite.com/index.aspx</code> corresponds to <code>c:\inetpub\wwwroot\mysite\index.aspx</code>. In REST style URL stand not for physical, but logical URL. It means, <code>http://mysite.com/blog/post/1</code> doesn't have to have <code>c:\inetpub\wwwroot\mysite\blog\post\1</code> file with static content. 
+</p>
+<p>
+Clean and logical URL's one of the attractive points of REST. It moves away from ugly URL's like <code>http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?s=books&ie=UTF8&qid=1293077887&sr=1-1</code>.
+</p>
+<p>
+From implementation point of view: to allow REST style URL for ASP.net applications you should either create your own <a href="http://intertwingly.net/wiki/pie/RestAspNetExample">HttpHandler</a> or use already created start-kits and frameworks, like <a href="http://aspnet.codeplex.com/releases/view/24644">WCF REST starter kit</a>, <a href="http://trac.caffeine-it.com/openrasta/">OpenRasta</a>.
+</p>
+<h2>REST vs. SOAP</h2>
+<p>
+Sure, REST is not first who approaches issue of using recourses in Web, it rather trendier new kind in a block. We know bunch of web technologies, SOAP, WSDL, ATOM, WS-*, WCF, ODATA and many many more.. So, what are the difference?  
+</p>
+<p>
+Major difference is that all above are <strong>protocols</strong>, but REST is <strong>style</strong>. This has pros and cons. Protocol's are more strict and heavyweight, with a number of rules, formats etc. SOAP is using XML as data exchange format, REST could work any format depending on client needs. SOAP is using its own security model, REST relies on HTTP and web server security. SOAP requires tools, REST learning curve is small and less less reliance on tools. SOAP designed to handle distributed computing environments, REST assumes a point-to-point communication model. 
+</p>
+<p>
+But my opinion is simplicity always win against complexity. Key popularity of REST is because is simple, easy understand by developers and as a result - implemented in applications. My believe that SOAP and other heavyweight protocols will slightly die more and applications will be using REST. 
+</p>
+<h2>ASP.net MVC and REST</h2>
+<p>
+Developers of ASP.net MVC framework designed it to be REST compatible. In the level of framework, there is an URL routing system (<code>System.Web.Routing</code>) that allows you easily follow REST design principles. It gives you total control over your URL schema and its mapping to your controllers and actions, with no need to conform to any predefined pattern.
+</p>
+<p>
+So, basically ASP.net MVC web applications development is: create a controller class (<code>LoginController</code> for instance), implement number of actions (<code>Index</code>, <code>CheckCredentials</code>) and map those actions to particular URL. For instance <code>http://mysite.com/login</code> mapped to <code>LoginController.Index</code> method, that handles GET request from server and return View, containing Login form. <code>http://mysite.com/login/check</code> mapped to <code>LoginController.CheckCredentials</code> method, that handles POST and checks users credentials.
+</p>
+<p>
+It is much more easier to create web applications API's with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
+</p></div>

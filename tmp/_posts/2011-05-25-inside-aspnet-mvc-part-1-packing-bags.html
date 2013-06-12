@@ -1,0 +1,115 @@
+---
+layout: post
+title: "Inside ASP.NET MVC: Packing bags for journey"
+date: 2011-05-25T22:57:00+03:00
+comments: false
+categories:
+ - InsideMVC
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>
+I'm big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC are very intuitive, you don't have to go thought pages of documentation to do some basic stuff. I do not use MVC on my primary work yet (unfortunately) but my small <a href="http://trackyt.net">project</a> became very nice sandbox to play around and learn stuff. 
+</p>
+<p>
+I definitely learned something thought the year of hooked up with MVC. But feel I still miss a lot of details. Moreover, my hackers curiosity always force to look - "what is inside?".
+</p>
+<p>
+Great stuff about ASP.NET MVC project is that is open source. It is been released as open source and remain open source project till version 3.0.. In fact, it is very easy to start learning framework from inside! This what I'm going to do. I would like to go depth and hope that journey would be interesting and valuable.
+</p>
+<p>
+Today I'll to prepare everything I need for journey. I would be happy if you join me, so we would help each other along the way :).
+</p>
+<h2>Getting out source code</h2>
+<p>
+That's easy. Just google for "MVC3 source code" and it would bring you directly to <a href="http://aspnet.codeplex.com/releases/view/58781">ASP.NET Codeplex</a> site.
+</p>
+<p>
+Download <code>mvc3-rtm-sources.zip</code>. Unpack the archive and you will see the solution file <code>WebRuntime.sln</code> and 2 folders: <code>mvc3</code> and <code>webpages</code>. Layout of both folders are similar:
+</p>
+<pre>
+    /--- bin
+    /--- src
+    /--- tests
+    /--- tools
+</pre>
+<p>
+Source code package is pretty much organized. Solution does not using NuGet, btw :)
+</p>
+<h2>Meet the solution</h2>
+<p>
+It's time open up solution! Fire up Visual Studio and open <code>WebRuntime.sln</code>. Let the journey begins! 
+</p>
+<p>
+Nothing fancy there. Minimal number of solution folders, just <code>MVC</code> and <code>WebPages</code>. Each of folder contains a bunch of projects in it. In nearest future we would be much interested in one <code>System.Web.Mvc</code> - heart of MVC framework.
+</p>
+<!-- solution.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png" alt="solution" />
+</a>
+<h2>Build it</h2>
+<p>
+Don't waste any time and just build the solution. As it usually happened to me, with OSS projects - you always have some issues during build. It is not the case for MVC. Build runs smoothly as possible. The output is being placed in <code>mvc3/bin/debug</code> folder. So, as soon as build finished check it out and see for content.
+</p>
+<!-- output.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png" alt="output" />
+</a>
+<h2>Run tests</h2>
+<p>
+All TDD lovers would be really pleased with a number of tests in solution. There is 5004 tests actually, solid number of tests. No surprise <code>MsTest</code> framework is used. Let's just try to run them!
+</p>
+<p>
+In menu Test -> Run -> Tests in Current Context. Here we go.. It took a bit time to run all. I was a little disappointed to see that some tests are failing.
+</p>
+<p>
+I did an inspection of failures and found out that all of them are actually related to my Local Settings. I use "Ukrainian Locale" that means time format, decimal point symbol etc. are differs from "United States Local". It's a quite common issue of units, workaround could be a simply change your locale to the one that rest development team uses. The rests of tests run's just fine!
+</p>
+<!-- tests.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png" alt="tests" />
+</a>
+<h2>Conclusions</h2>
+<p>
+So, my initial impression are: 
+</p>
+<ul>
+<li>Easy to build and start up</li>
+<li>Code looks really nice</li>
+<li>Code style a little differs from default C# especially in with "{"</li>
+<!-- code.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png" alt="code"/>
+</a>
+<li>Tests following AAA pattern really nicely</li>
+<!-- test.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png" alt="test" />
+</a>
+<li>Code contracts are not used, but code pretty defensive with check for <code>null</code> arguments etc.</li>
+<!-- exception.png -->
+<a href="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png">
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png" alt="exception" />
+</a>
+<li>All members are with "_" underscore - I like that :)</li>
+<li>Methods are small and clean</li>
+</ul>
+<p>
+What I don't like to far:
+</p>
+<ul>
+<li>Solution is quite big - I would be happy to have separation between MVC part and WebPages (if it is possible)</li>
+<li>Tests are really slow. Suite run for 3-4 minutes (upd: I blame MsTest runner for that, with TD.NET all tests passed for 89 sec's)</li>
+<li>Already found some comments that lie (one more point to try to avoid comments if possible)</li>
+</ul>
+<h2>
+What is next?
+</h2>
+<p>
+Next, I will setup a test project which allow us to fully get in deep of details and see how it work.
+</p>
+<p>
+Please stay tuned.
+</p></div>

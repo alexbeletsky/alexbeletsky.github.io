@@ -1,0 +1,132 @@
+---
+layout: post
+title: "Refactoring to testability"
+date: 2011-02-21T10:33:00+02:00
+comments: false
+categories:
+ - Refactoring
+ - TDD
+---
+
+<div class='post'>
+<p>
+Suppose you are working on some web <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">REST</a> API adapter. It would be basically one class with bunch of methods. Each method would represent each supported API call. Through the implementation you would probably landed with something like this,
+</p>
+<pre class="brush: csharp">
+public class ApiAdapter
+{
+    private HttpClient _client;
+    private RequestFormatHelper _requestFormatHelper;
+    private ResponseFormatHelper _responseFormatHelper;
+
+    // ...
+    
+    public ApiAdapter()
+    {
+        _client = new HttpClient(/* ... */);
+        _requestFormatHelper = RequestFormatHelper(/* ... */);
+        _responseFormatHelper = ResponseFormatHelper(/* ... */);
+    }
+
+    void CreateNewTask(Task task)
+    {
+        // implementation
+    }
+
+    void DeleteTask(Task task)
+    {
+        // implementation
+    }
+
+    // rest of methods...
+}
+</pre>
+<p>
+Nevertheless, the code works it has several code smells: 
+</p>
+<ul>
+<li>
+<strong>High cohesion</strong> - the relation between objects are really strong. Objects are aggregated and aggregation is the one of strongest types of links between objects. 
+</li>
+<li>
+<strong>Violation of <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/Closed principle</a></strong> - one of the SOLID object oriented design principles.
+</li>
+<li>
+<strong>Lack of testability</strong> - if you decide to unit test this code, you will be in problem. Unit testing is supposed to be done in <a href="http://c2.com/cgi/wiki?UnitTestIsolation">isolation</a>. Having high cohesion code you can't get required level of isolation. Moreover it is not possible to substitute concrete class with <a href="http://en.wikipedia.org/wiki/Mock_object">mock object</a> by using some famous JMock, RhinoMocks or Moq.
+</li>
+<li>
+<strong>Lack of flexibility</strong> - if you decide to change implementation of some of depended objects, say <code>ResponseFormatHelper</code> you would probably change the implementation of <code>ApiAdapter</code> as well.
+</li>
+</ul>
+<p>
+If you think that you code is not testable or flexible, don't waste your time.. apply the power of refactoring.
+</p>
+<p>
+What to do? It is basically very simple to correct such code, you just need to follow this:
+</p>
+<ul>
+<li>
+<strong>Always hide the details behind the interface</strong> - all behavior objects must conform to particular interface. Other objects must refer to another object only with knowledge of the interface. In terms of programming languages, if you pass object to client code you must always pass it by interface (e.g <code>public SomeAction(IHttpClient client, Type type, Data data);</code>.
+</li>
+<li>
+<strong>Use dependency injection for louse coupled code</strong> - try to avoid to create depended object by <code>new</code>, inject the dependency by constructor of public property. (e.g <code>public ApiAdapter(IHttpClient client, IRequestFormatHelper requestHelper, IResponseFormatHelper responseHelper)</code>.
+</li>
+</ul>
+<p>
+How the code might look after refactoring:
+</p>
+<pre class="brush: csharp">
+public interface IHttpClient
+{
+    void WebCall(/*...*/);
+}
+
+public interface IRequestFormatHelper
+{
+    string Format(/*...*/);
+}
+
+public interface IResponseFormatHelper
+{
+    string Format(/*...*/);
+}
+
+
+public class ApiAdapter
+{
+    private IHttpClient _client;
+    private IRequestFormatHelper _requestFormatHelper;
+    private IResponseFormatHelper _responseFormatHelper;
+
+    // ...
+
+    public ApiAdapter(IHttpClient client, IRequestFormatHelper requestFormatHelper, IResponseFormatHelper responseFormatHelper)
+    {
+        _client = client;
+        _requestFormatHelper = requestFormatHelper;
+        _responseFormatHelper = requestFormatHelper;
+    }
+</pre>
+<p>
+Now, you can easily test this code using mocks, like this simple test:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void CreateNewTask_SendPutRequest_WithJson()
+{
+    // arrange
+    var client = new Mock&lt;IHttpClient&gt;();
+    var requestFormatter = new Mock&lt;IRequestFormatHelper&gt;();
+    var responseFormater = new Mock&lt;responseFormatHelper&gt;();
+
+    // act 
+    var api = new ApiAdapter(client, requestFormatter, responseFormater);
+    api.CreateTask (new Task());
+
+    // arrange
+    client.Verify(client.WebCall(/*...*/)).Called().WithArguments(/*...*/;
+}
+</pre>
+<p>
+And change any details of injected objects, without any changes in <code>ApiAdapter</code>. Refactoring to testablity is important, as much testable code you got as much flexible code you got.
+</p></div>

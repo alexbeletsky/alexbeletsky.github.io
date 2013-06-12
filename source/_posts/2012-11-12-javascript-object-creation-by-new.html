@@ -1,0 +1,36 @@
+---
+layout: post
+title: "JavaScript Object Creation by New Operator"
+date: 2012-11-12T15:50:00+02:00
+comments: false
+categories:
+ - JavaScript
+ - Tips
+---
+
+<div class='post'>
+<p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
+    </p>    <pre class="brush: js">function Person (name) {
+    this.name = name;
+}
+
+var person = new Person('John Smith');
+console.log(person.name);
+    </pre>    <p>        If you try to run this code, you will see 'John Smith' in console. Now, try to delete new operator.<br />
+    </p>    <p>        Instead of 'John Smith' you will see undefined. Why?<br />
+    </p>    <p>        The difference is that without new operator it is just function call. During the call `this` points global namespace. If you running the code in browser, global namespace is bind to `window`.<br />
+    </p>    <p>        It's important to understand how new operator works. Internally, operator new is converted to NEW(Person, 'John Smith');. It does several things.<br />
+    </p>    <ol>        <li>Creates new native object and initializes the __proto__ of object by function.prototype.</li>
+        <li>Calls function, applying newly created object as value for <code>this</code>.</li>
+        <li>Returns newly created object.</li>
+    </ol>    <p>        It can be expressed in this kind of pseudo-code:<br />
+    </p>    <pre class="brush: js">function NEW(f) {
+    var obj = { '__proto__': f.prototype };
+    f.apply(obj, arguments.slice(1));
+    return obj;
+}
+</pre>    <p>        (It's a bit more complex actually, for details check this <a href="http://stackoverflow.com/questions/6750880/javascript-how-does-new-work-internally">great answer</a> on SO).<br />
+    </p>    <p>        It means that during function call with `new operator()`, <code>this</code> always points to a new object, created based on function prototype. You can initialize the properties of new object inside the function. It's no longer a simple function, but it is constructing function, or more simply - constructor.<br />
+    </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
+    </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
+    </p></div>

@@ -1,0 +1,214 @@
+---
+layout: post
+title: "Web development: Реализация объекта данных"
+date: 2010-05-10T20:40:00+03:00
+comments: false
+categories:
+ - DDD
+ - DAL
+ - Linq
+ - TDD
+---
+
+<div class='post'>
+В прошлой статье мы начали расматривать разработку бизнес функции сайта, руководствуюсь правилами DDD (Domain Driven Development) для подхода к решению, и TDD (Test Driven Development) как средства реализации. В итоге мы получили протестированный бизнес объект и определили два интерфейса, View (отображения) и Data (данных).
+<br />
+<br />
+В этой статье мы реализуем Data объект. 
+<br />
+<br />
+Итак, требуемый интерфейс:
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;"><span style="color: blue;">namespace</span> Company.Product.DAL<br />{<br />&nbsp;&nbsp;<span style="color: blue;">public</span> <span style="color: blue;">interface</span> IRegistrationData<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">bool</span> IsUserExists(<span style="color: blue;">string</span> email);<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">void</span> RegisterUser(<span style="color: blue;">string</span> email, <span style="color: blue;">string</span> secret, <span style="color: blue;">string</span> password);<br />&nbsp;&nbsp;}<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+Начнем с первого, основого теста, предпологающего, что объект реализующий интерефейс уже существуют:
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">[Test]<br /><span style="color: blue;">public</span> <span style="color: blue;">void</span> Smoke()<br />{<br />&nbsp;&nbsp;<span style="color: blue;">var</span> t = <span style="color: blue;">new</span> RegistrationData();<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+Сгенирируем новый класс. И добавим первый тест:<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">[Test]<br /><span style="color: blue;">public</span> <span style="color: blue;">void</span> RegisterUser()<br />{<br />&nbsp;&nbsp;<span style="color: green;">//INIT</span><br />&nbsp;&nbsp;<span style="color: blue;">var</span> register = <span style="color: blue;">new</span> RegistrationData();<br /><br />&nbsp;&nbsp;<span style="color: green;">//ACT</span><br />&nbsp;&nbsp;register.RegisterUser(<span style="color: #a31515;">"email"</span>, <span style="color: #a31515;">"sec"</span>, <span style="color: #a31515;">"pass"</span>);<br /><br />&nbsp;&nbsp;<span style="color: green;">//POST</span><br />&nbsp;&nbsp;Assert.That(register.IsUserExists(<span style="color: #a31515;">"email"</span>), Is.True);<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+Тесты не будут проходить, потому как оба метода выбрасывают исключения.<br />
+<br />
+<br />
+Мы вплотную подошли к вопросы реализации DAL. Прежде чем мы начнем, рассмотрим возможные фреймворки для реализации:<br />
+<br />
+- ADO.net<br />
+<br />
+- Linq to SQL<br />
+<br />
+- Entities<br />
+<br />
+- other ORM<br />
+<br />
+<br />
+<h3>ADO.net</h3>
+<br />
+<br />
+Классический подход к базам данных в .Net приложениях. Использование <a href="http://msdn.microsoft.com/en-us/library/e80y5yhx(VS.80).aspx">ADO.net</a> можно назвать низкоуровневым подходом к базам данных, которые предполагает ручное создание соединения, составление и выполение SQL иструкций. Как правило поверх ADO.net API создается ряд оберток, облегчающий эти задачи. На сеголняший день использование чистого ADO.net является крайне тяжеловесным, и по возможности его надо изберать.<br />
+<br />
+<br />
+<h3>Linq to Sql</h3><br />
+<br />
+<br />
+Сам по себе Linq появился в .Net начная с версии 3.5. Это акромним к Language-Integrated Query, и предстявляет собой встроенные средства в .Net языки (C#, VB, F#) по доступу  и манипуляции данных. Linq позволяет прозрачно и одинаково работать с тами источниками данных как ADO.net, .Net коллекции, XML документы. Будучи поразительно простым по своиму синтаксису, язык запросов Linq предоствляет действительно широкие возможности. Инструкциями select, from, where напоминающий SQL код, производятся как выборки и трансформации данных. <a href="http://msdn.microsoft.com/en-us/library/bb425822.aspx">Linq to SQL</a> включает в себя ORM (object relation management) с удобным дизайнером встроеным в IDE Visual Studio.<br />
+<br />
+<br />
+<h3>Entities framework</h3><br />
+<br />
+<br />
+Появился в .Net 3.5 SP1 и впринципе является эволюционным витком ADO.net. Более сложный нежели Linq to Sql, в свою очередь обладает большими возможностями, в частности, в отличии от того же Linq to Sql, в <a href="http://msdn.microsoft.com/en-us/library/aa697427(VS.80).aspx">Entities</a> существует поддержка связей M-M. Лично я не сталкивался с ним слишком близко, поэтому не могу сказать многое, но судя по записям в MSDN и блогам, именно Entities будет более поддержан в следующих версиях .Net, и позиционируется как основное средство работы с данными в .Net приложениях.<br />
+<br />
+<br />
+<h3>Other ORM</h3><br />
+<br />
+<br />
+Из возможных вариантов может быть, <a href="http://nhforge.org/">NHibernate</a> и <a href="http://subsonicproject.com/">SubSonic</a>. NHibernate это порт фреймворка Hibernate Java. SubSonic разработка <a href="http://blog.wekeroad.com/">Роба Конери</a> работающего в Microsoft. При всей взрослости Hibernate для Java, NHibernate не смог достич его уровня. Лично мой опыт опыт показывает, что по возможности от NHibernate надо отказыватся (если несколько лет назад его использование могло быть оправданно, то с перешним наличием ORM фреймворков нет). SubSonic выпустил уже 3ю версию, и объединяет вокруг себя довольно большой комьюнити и функциональных возможностей. Оба проекта используют open source модель. Если бы нужно было выбирать между NHibernate и SubSonic, я бы более склонялся ко второму.<br />
+<br />
+<br />
+Если опиратся на технологии Microsoft, то выбор ложится между Linq to Sql и Entities Framework. Сравнение возможностей можно посмотреть в этой <a href="http://stackoverflow.com/questions/8676/entity-framework-vs-linq-to-sql">статье</a>. Правило примерно следующее: для малых и средних приложений, с не очень сложной структурой данных выбираем Linq to Sql, в противном случае Entities Framework.<br />
+<br />
+<br />
+Мой выбор Linq to Sql.<br />
+<br />
+<br />
+<h2>База данных</h2><br />
+<br />
+<br />
+Добавим новую базу данных в проект. В WebApplication, в App_Data добавляем websitedb.mdf. Это пока что пустая база не сожержащая ни одной таблицы. <br />
+<br />
+<br />
+<a href="http://1.bp.blogspot.com/_stL4bIIuRUs/S-hLF5TrNDI/AAAAAAAAGmM/rHLazE_aMQI/s1600/dal-newdbadded.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469704312096240690" src="http://1.bp.blogspot.com/_stL4bIIuRUs/S-hLF5TrNDI/AAAAAAAAGmM/rHLazE_aMQI/s400/dal-newdbadded.jpg" style="cursor: hand; cursor: pointer; display: block; height: 400px; margin: 0px auto 10px; text-align: center; width: 319px;" /></a><br />
+<br />
+<br />
+Добавим первую таблицу, Users. Это простая таблица сожержащая Id, Email, SecretPhase, Password.<br />
+<br />
+<br />
+<a href="http://4.bp.blogspot.com/_stL4bIIuRUs/S-hLVzp-4eI/AAAAAAAAGmU/qx6Zv4GiK6g/s1600/dal-dbstructure.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469704585457099234" src="http://4.bp.blogspot.com/_stL4bIIuRUs/S-hLVzp-4eI/AAAAAAAAGmU/qx6Zv4GiK6g/s400/dal-dbstructure.jpg" style="cursor: hand; cursor: pointer; display: block; height: 196px; margin: 0px auto 10px; text-align: center; width: 400px;" /></a><br />
+<br />
+<br />
+<h2>Модель данных</h2><br />
+<br />
+<br />
+Теперь, когда таблица уже готова, мы можем сгенерировать классы доступа. В проекте Company.Product.DAL добавим новый элемент Linq To Sql Classes<br />
+<br />
+<br />
+<a href="http://3.bp.blogspot.com/_stL4bIIuRUs/S-hLjLI02VI/AAAAAAAAGmc/nElFvDvLtSQ/s1600/dal-adddatamodel.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469704815098779986" src="http://3.bp.blogspot.com/_stL4bIIuRUs/S-hLjLI02VI/AAAAAAAAGmc/nElFvDvLtSQ/s400/dal-adddatamodel.jpg" style="cursor: hand; cursor: pointer; display: block; height: 241px; margin: 0px auto 10px; text-align: center; width: 400px;" /></a><br />
+<br />
+<br />
+Пустой Linq to Sql Classes файл будет добавлен в проект (WebSite.dbml). Теперь добавим класс, который будет замаплен на таблицу Users. Для это мы просто перетягиваем таблицу Users из Solution Explorer в дизайн панель dbml.<br />
+<br />
+<br />
+<a href="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hLwK3X98I/AAAAAAAAGmk/qGOoUUFeBac/s1600/dal-datamodeldesign.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469705038363883458" src="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hLwK3X98I/AAAAAAAAGmk/qGOoUUFeBac/s400/dal-datamodeldesign.jpg" style="cursor: hand; cursor: pointer; display: block; height: 210px; margin: 0px auto 10px; text-align: center; width: 400px;" /></a><br />
+<br />
+<br />
+Теперь сделаем небольшие настройки. Правой кнопкой щекнем по полю Id, и устновим следующие свойства: <br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">Access: Private<br />Auto Generate Values: True</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+<br />
+<a href="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hMDIyjJvI/AAAAAAAAGms/dACuYOuN97Y/s1600/dal-idcolproperties.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469705364224288498" src="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hMDIyjJvI/AAAAAAAAGms/dACuYOuN97Y/s400/dal-idcolproperties.jpg" style="cursor: hand; cursor: pointer; display: block; height: 400px; margin: 0px auto 10px; text-align: center; width: 300px;" /></a><br />
+<br />
+<br />
+Тем самым мы запретим непосредственный доступ к полю Id, а также сделаем его автогенерируемым.<br />
+<br />
+<br />
+Теперь посмотрим на код, который мы получили в результате. <br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;"><span style="color: blue;">namespace</span> Company.Product.DAL<br />{<br />&nbsp;&nbsp;<span style="color: green;">// .</span><br />&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;[System.Data.Linq.Mapping.DatabaseAttribute(Name=<span style="color: #a31515;">"websitedb"</span>)]<br />&nbsp;&nbsp;<span style="color: blue;">public</span> <span style="color: blue;">partial</span> <span style="color: blue;">class</span> WebSiteModelDataContext : System.Data.Linq.DataContext<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">//...</span><br />&nbsp;&nbsp;}<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+WebSiteModelDataContext - класс представляющий entry point Linq to Sql classes. Через <a href="http://msdn.microsoft.com/en-us/library/system.data.linq.datacontext.aspx">DataContext</a> осуществляется доступ ко всем классам даныых (mapped classes). Инстанциирование этого класса это дешевая операция, поэтому объект DataContext обычно создается в скоупе методов, или коротко живущих классов инкапсулирующих операции с базами данных. <br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;"><span style="color: blue;">namespace</span> Company.Product.DAL<br />{<br />&nbsp;&nbsp;<span style="color: blue;">public</span> <span style="color: blue;">class</span> RegistrationData : IRegistrationData<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;WebSiteModelDataContext _model = <span style="color: blue;">new</span> WebSiteModelDataContext();<br />&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">//...</span></span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+Классы записей в базе данных:<br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">[Table(Name=<span style="color: #a31515;">"dbo.Users"</span>)]<br /><span style="color: blue;">public</span> <span style="color: blue;">partial</span> <span style="color: blue;">class</span> User<br />{&nbsp;<br />&nbsp;&nbsp;<span style="color: blue;">private</span> <span style="color: blue;">int</span> _Id;&nbsp;<br />&nbsp;&nbsp;<span style="color: blue;">private</span> <span style="color: blue;">string</span> _Email;<br />&nbsp;&nbsp;<span style="color: blue;">private</span> <span style="color: blue;">string</span> _SecretPhrase;<br />&nbsp;&nbsp;<span style="color: blue;">private</span> <span style="color: blue;">string</span> _Password;<br />&nbsp;<br />&nbsp;&nbsp;<span style="color: blue;">public</span> User()<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;}<br />&nbsp;<br />&nbsp;&nbsp;<span style="color: green;">//...</span><br />&nbsp;<br />&nbsp;&nbsp;[Column(Storage=<span style="color: #a31515;">"_Id"</span>, DbType=<span style="color: #a31515;">"Int NOT NULL IDENTITY"</span>, IsDbGenerated=<span style="color: blue;">true</span>)]<br />&nbsp;&nbsp;<span style="color: blue;">private</span> <span style="color: blue;">int</span> Id<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">get</span><br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">return</span> <span style="color: blue;">this</span>._Id;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">set</span><br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">if</span> ((<span style="color: blue;">this</span>._Id != <span style="color: blue;">value</span>))<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">this</span>._Id = <span style="color: blue;">value</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;<span style="color: green;">//...</span><br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+User - класс представляющий кортеж в таблице Users. Все свойства аттрибутированны согласно определениям в базе данных. Очень просто читается, и с ним без труда можно разобратся. Кстати, даже если таблица называется Users то класс данных все равно имеет название User, что вполне логично и корректно.<br />
+<br />
+<br />
+Одним из замечательных свойств DataContext класса, является то, что он полностью инкапсулируют в себе конфигурацию, поэтому не нужно вручную возится с web.config, и вообще с какими либо настройками.<br />
+<br />
+<br />
+<h2>Реализация RegistrationData класса</h2><br />
+<br />
+<br />
+Ну вот, все готово, чтобы вернутся к тестам и реализации методов RegistrationData. Метод RegisterUser должен создать новую запись в базе данных, а IsUserExists проверить сущесвует ли запись с заданным электронным адресом. Эти два очень простых метода:<br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;"><span style="color: blue;">public</span> <span style="color: blue;">bool</span> IsUserExists(<span style="color: blue;">string</span> email)<br />{<br />&nbsp;&nbsp;<span style="color: blue;">var</span> user = _model.Users.Single(p =&gt; p.Email == email);<br />&nbsp;&nbsp;<span style="color: blue;">return</span> user != <span style="color: blue;">null</span>;<br />}<br /><br /><span style="color: blue;">public</span> <span style="color: blue;">void</span> RegisterUser(<span style="color: blue;">string</span> email, <span style="color: blue;">string</span> secret, <span style="color: blue;">string</span> password)<br />{<br />&nbsp;&nbsp;<span style="color: blue;">var</span> user = <span style="color: blue;">new</span> User()<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;Email = email,<br />&nbsp;&nbsp;&nbsp;&nbsp;SecretPhrase = secret,<br />&nbsp;&nbsp;&nbsp;&nbsp;Password = password<br />&nbsp;&nbsp;};<br /><br />&nbsp;&nbsp;_model.Users.InsertOnSubmit(user);<br />&nbsp;&nbsp;_model.SubmitChanges();<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+RegisterUser создает новый объект User, инициалирует поля и передает его в модель. Метод SubmitChanges осуществялет непосредвенную запись данных в базу. <br />
+<br />
+<br />
+IsUserExists обращается к таблице Users и пытается излечь единственную запись, имейл которой совпадает с заданным.<br />
+<br />
+<br />
+Если мы попробуем запустить тест сейчас, то получим исключение, о том что в таблице отсутвует primary key. Перейдем в дизайнер и назначим поле Email - Primary Key. <br />
+<br />
+<br />
+<a href="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hMQyBsvXI/AAAAAAAAGm0/hCKQe7tRT8k/s1600/dal-primarykey.jpg" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"><img alt="" border="0" id="BLOGGER_PHOTO_ID_5469705598631984498" src="http://2.bp.blogspot.com/_stL4bIIuRUs/S-hMQyBsvXI/AAAAAAAAGm0/hCKQe7tRT8k/s400/dal-primarykey.jpg" style="cursor: hand; cursor: pointer; display: block; height: 159px; margin: 0px auto 10px; text-align: center; width: 400px;" /></a><br />
+<br />
+<br />
+Теперь, при запуске тестов порядок.<br />
+<br />
+<br />
+Хотя в бизнес объекте мы всегда проверяем, есть ли пользователь с таким и-мейлом перед тем как провести регистрацию, мы должны протестировать такой случай и убедится, что это не возможно.<br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">[Test]<br /><span style="color: blue;">public</span> <span style="color: blue;">void</span> RegisterUserTwice()<br />{<br />&nbsp;&nbsp;<span style="color: green;">//INIT</span><br />&nbsp;&nbsp;<span style="color: blue;">var</span> register = <span style="color: blue;">new</span> RegistrationData();<br /><br />&nbsp;&nbsp;<span style="color: blue;">try</span><br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">//ACT</span><br />&nbsp;&nbsp;&nbsp;&nbsp;register.RegisterUser(<span style="color: #a31515;">"email"</span>, <span style="color: #a31515;">"sec"</span>, <span style="color: #a31515;">"pass"</span>);<br />&nbsp;&nbsp;&nbsp;&nbsp;register.RegisterUser(<span style="color: #a31515;">"email"</span>, <span style="color: #a31515;">"sec"</span>, <span style="color: #a31515;">"pass"</span>);<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;<span style="color: blue;">catch</span> (DuplicateKeyException e)<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">//OK</span><br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">return</span>;<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;<span style="color: green;">//POST</span><br />&nbsp;&nbsp;Assert.Fail();<br />}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+<br />
+Запусим тест, и получим зеленый результат.<br />
+<br />
+<br />
+<h2>Улучшения тестов</h2><br />
+<br />
+<br />
+Даже если тесты прошли успешно, уже на втором запуске они покраснеют. Все дело в том, что запись email-sec-pass уже существует, повторная запись не возможна. Я уже писал в одной их статей, что основной задачей тестирования в DAL является корректная подготовка и очистка базы. Если подготовка в данном случае не нужна, то очистка это как раз то, что мешает тестам быть повторяемым. К счастью в Linq to Sql есть хорошо продуманная система <a href="http://msdn.microsoft.com/en-us/library/bb386995.aspx">транзакций</a>, частным видом которой есть неявные трансакции. В неявных трансакциях во время вызова SubmitChanges происходит, и если вызов происходит в скоупе трансакции то фактическая запись данных не будет осществлятся пока транзакция не будет завершена. Для использования неявных трансакций существует класс помошник <a href="http://msdn.microsoft.com/en-us/library/system.transactions.transactionscope.aspx">TransactionScope</a>.  <br />
+<br />
+<br />
+Поменяем код тестов таким образом,<br />
+<br />
+<br />
+<blockquote>
+<code><span style="color: black; font-family: 'Courier New'; font-size: small;">[TestFixture]<br /><span style="color: blue;">public</span> <span style="color: blue;">class</span> RegistrationDataTests<br />{<br />&nbsp;&nbsp;TransactionScope _transaction;<br /><br />&nbsp;&nbsp;[SetUp]<br />&nbsp;&nbsp;<span style="color: blue;">public</span> <span style="color: blue;">void</span> Setup()<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;_transaction = <span style="color: blue;">new</span> TransactionScope();<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;[TearDown]<br />&nbsp;&nbsp;<span style="color: blue;">public</span> <span style="color: blue;">void</span> TearDown()<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">if</span> (_transaction != <span style="color: blue;">null</span>)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_transaction.Dispose();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_transaction = <span style="color: blue;">null</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;}</span><br /><span style="color: grey; font-size: xx-small;">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><span style="color: grey; font-size: xx-small;">Source Code Highlighter</span></a>.</span></code></blockquote>
+<br />
+<br />
+<br />
+SetUp и TearDown методы соответвенно вызываются перед и после каждого теста, т.е. для каждого теста мы создаем новую трансакцию, после выполнения разрушаем ее без коммита изменений. Таким образом данные созданные в тесте в базу данных не попадают.<br />
+<br />
+<br />
+<h2>Заключение</h2><br />
+<br />
+<br />
+Ну вот, второй важный шаг завершен.. и теперь у нас есть, как бизнес объект, так и объект данных. Нам осталось добавить код отображения, интерировать все воедино, что мы сделаем в следующих статьях.<br />
+<br />
+<br />
+<br /></div>

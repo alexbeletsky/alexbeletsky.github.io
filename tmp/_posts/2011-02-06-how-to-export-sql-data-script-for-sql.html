@@ -1,0 +1,69 @@
+---
+layout: post
+title: "How to export SQL data script for SQL Express 2008 R2"
+date: 2011-02-06T15:33:00+02:00
+comments: false
+categories:
+ - Tips
+ - DAL
+---
+
+<div class='post'>
+<p>
+Before deployment of new version of my application I wanted to make sure that everything is alright, by doing development test on my machine. I backed up production database and copied it my local environment. Task was easy, restore database from backup and run all unit/integration tests, run the smoke test of application manually. But as I started to restore database I got such error from my SQL Express Management Studio: 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s1600/sqlerror.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 149px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s400/sqlerror.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5570569906084188642" /></a>
+<pre>
+<code>
+TITLE: Microsoft SQL Server Management Studio
+------------------------------
+
+Restore failed for Server 'LOCAL\SQLEXPRESS'.  (Microsoft.SqlServer.SmoExtended)
+
+------------------------------
+ADDITIONAL INFORMATION:
+
+System.Data.SqlClient.SqlError: The database was backed up on a server running version 10.50.1600. That version is incompatible with this server, which is running version 10.00.2531. Either restore the database on a server that supports the backup, or use a backup that is compatible with this server. (Microsoft.SqlServer.Smo)
+</code>
+</pre>
+<p>
+Basically it meant that my production and local environment are different. On production I have SQL Express 2008 R2, locally I have SQL Express 2008. It was a surprise to me, cause my <a href="http://www.microsoft.com/web/downloads/platform.aspx">WebPI</a> shows me that I'm upgraded up to R2.
+</p>
+<p>
+Anyway, I had no time to upgrade my local environment and I did very simple workaround that might work for you as you don't have very big database to handle.
+</p>
+<p>
+There is a feature of SQL Express (and Server) that allows you to export your database as SQL script and you can run this script on local SQL instance and got exactly same version.
+</p>
+<p>
+It is easy taks, but by doing that initially I successfully exported schema only, but not data itself. So, script generated didn't contain and INSERT statement. As it turns out you have to change some default options, to export both schema and data. Follow the instructions: 
+</p>
+<ol>
+<li>
+Expand your database list and right click on target database.
+</li>
+<li>
+Select "Tasks" -> "Generate Scripts" context menu item. Generate scripts wizard will open.
+</li>
+<li>
+Press "Next" on welcome screen and select your database from databases list.<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s1600/selectdb.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s400/selectdb.png" border="0" alt=""id="Img1" /></a>
+</li>
+<li>
+Make sure you checked option "Script all object in selected database" if you want to script all db. In case you need only some particular table you might consider to select it later. Click "Next".
+</li>
+<li>
+On Script option step, make sure to select "Script Data" option (this is exactly what I missed and didn't understand why data is not present in final script).
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s1600/scriptdata.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s400/scriptdata.png" border="0" alt=""id="Img2" /></a>
+</li>
+<li>
+Proceed to the end of wizard to complete it.
+</li>
+</ol>
+<p>
+At the end you will got SQL script with schema and data that you can run on SQL Express 2008 and got exactly the same database as on R2. 
+</p>
+<p>
+This helped me quickly to workaround "version incompatibility" issue, hope it might help you as well.
+</p></div>

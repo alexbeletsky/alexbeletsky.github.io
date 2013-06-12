@@ -1,0 +1,26 @@
+---
+layout: post
+title: "My little experience with GitHub collaboration"
+date: 2010-07-19T19:00:00+03:00
+comments: false
+categories:
+ - GitHub
+ - Social
+---
+
+<div class='post'>
+<p>
+Recently I've started my tiny project. For this project I required access to GitHub by it's open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I've opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I'm not very experienced in that). That was a good news!
+</p>
+<p>
+But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I've considered it as my change to do first fork!
+</p>
+<p>
+Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I've decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
+</p>
+<p>
+After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I've done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
+</p>
+<p>
+That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
+</p></div>

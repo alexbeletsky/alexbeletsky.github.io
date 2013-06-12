@@ -1,0 +1,37 @@
+---
+layout: post
+title: "Why I'm Not Using Bundling.. Yet"
+date: 2012-04-04T18:32:00+03:00
+comments: false
+categories:
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I'm doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
+</p><h2>It's contra-intuitive</h2><p>Maybe the 'contra-intuitive' is not exact word that reflects my frustration. What I mean, it does not do what you might expect by default. Remember I described two methods RegisterTemplateBundles() and EnableDefaultBundles()? It was really unclear to me what they do until I looked into code. Modern frameworks tend to be as less surprise as possible, but not in case of <code>System.Web.Optimizations</code>. <br />
+</p><h2>Development and production mode</h2><p>The fact it does not take into account 'Debug' and 'Release' mode is also very confusing. As same as in point above, I have a different expectations how it should behave. For 'Debug' mode it simply should do nothing - no optimization, no compression. For release mode it should do as much as possible to minify the number of HTTP request. It turns out that you have to create some code on your own to make it happen. <br />
+</p><h2>Bundling is bad during debugging</h2><p>While you in development mode you do debug, no surprise here. Having FireBug or Chrome Development tools it's very easy to debug javascript, you can pick up any file and place breakpoint inside.<br />
+</p><a href="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png" alt="chrome development" /><br />
+</a><br />
+<p>It is no so easy with bundling, cause it will package all your files in one big chunk, so you need to open and find right place there. Since the total number of line could be huge there, it's turns to be big deal.<br />
+</p><p>As a workaround you have to have a copies of references, one you using on development and ones you use on production.<br />
+</p><pre class="brush: csharp">&lt;!-- Development --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;     
+
+&lt;!-- Production 
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+--&gt;
+</pre><h2>It's not well ironed</h2><p>Since it's very young obviously it has some problems. <br />
+</p><p>Be honest, I haven't seen on my own but one of the comments in my previous post described the issue with minification of CSS files that include <code>-ie-</code> specific selectors. That's probably not only one issue found.<br />
+</p><h2>What did I expect?</h2><p>To do not have only critics I try to put some constructive part in post as well. Ok, so I see it should work to meet my needs? <br />
+</p><p>First of all, it should be implemented as simple HTML razor helpers. You just specify the name of bundle there, like "scripts/js" and that's it. Helper is smart enough to understand what is active environment at the moment. In case of 'Debug' it expanded to a bunch of script references or links, for JS and CSS respectively. In 'Release' mode it's indeed refers the bundle, so it's packaged and minified for best performance.<br />
+</p><p>You might say, that 1. this is out of scope for <code>System.Web.Optimization</code> framework 2. you can create this behavior easily on your own. This is right, but in the same time if you deal with ASP.NET MVC4 you have some expectation that is should work right and you are not forced to invent the wheel again, so you have kind of consistency between numerous projects.<br />
+</p><p>I've been thinking about to create something like that, but during the chat with fellow developer <a href="">@andrexx</a> about bundling and he showed me something interesting. <a href="https://twitter.com/#!/tdupont750">Tom DuPont</a> has already implemented something that's really reflects my needs. It's the <a href="http://www.tomdupont.net/2012/03/configuring-bundles-in-mvc-4.html">way</a> of configuring bundles both from code and web.config. It looks like a very handy tool.<br />
+</p></div>

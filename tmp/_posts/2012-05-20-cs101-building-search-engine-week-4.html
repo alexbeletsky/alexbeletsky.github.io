@@ -1,0 +1,32 @@
+---
+layout: post
+title: "CS101 Building a Search Engine: Week 4"
+date: 2012-05-20T14:50:00+03:00
+comments: false
+categories:
+ - SearchEngine
+ - Udacity
+ - CS101
+---
+
+<div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>I've got completed Unit 4 of course during this week. It's getting more and more interesting and the crawler we building there getting more complicated. <br />
+</p><p>This week we got through the basic data structures, mainly based on lists. The most interesting thing was an index data structure, thought. We've built the simple page indexer. Now the result of crawling is not simply the list of crawled links, but instead is index that keeps track of content (as word) and the URL where the word is mention. If some of you don't know what the index is, the simplest explanation is get just to open any technical book. At the end of the book you will see "Index" section. By looking for information you have to option. Either go from one page to another, finding keyword appearance.. or go to index and see exact pages, where this keyword is mentioned. Indices are essential for quick search of data.<br />
+</p><p>The index that my crawler produce, crawling the <a href="http://www.udacity.com/cs101x/index.html">test page</a> is:<br />
+</p><pre class="brush: python">[['This', ['http://www.udacity.com/cs101x/index.html']], 
+   ['is', ['http://www.udacity.com/cs101x/index.html']], 
+   ['a', ['http://www.udacity.com/cs101x/index.html']], 
+   ['test', ['http://www.udacity.com/cs101x/index.html']], 
+   ['page', ['http://www.udacity.com/cs101x/index.html']], 
+   ['for', ['http://www.udacity.com/cs101x/index.html']], 
+   ['learning', ['http://www.udacity.com/cs101x/index.html']], 
+   ['to', ['http://www.udacity.com/cs101x/index.html', 'http://www.udacity.com/cs101x/crawling.html']], 
+   ['crawl!', ['http://www.udacity.com/cs101x/index.html']]
+   # ...
+    </pre><p>I went a little above the given task and improved the crawler with "clean-up html tags" functionality. So, I get the body part of document, strip out all HTML tags and then index the content. The latest version of crawler is in this <a href="https://gist.github.com/2757731">gist</a>.<br />
+</p><p>We also looked on some Internet fundamentals as: bandwidth, latency, traceroutes and protocols. <br />
+</p><p>I haven't yet started any project on python except the crawler one. With implementing the of more complex applications I start to feel the lack of IDE with debugger. I currently use Sublime Text 2 + print statement as my IDE and debugger tool. It might be time to look for something better.<br />
+</p><p>Everything is going fine so far, except the fact I'm being late for one week. The final exam is going to be posted at 27th of May and it will take one week to have a change to pass it. So, I've got a goal to complete 2 units through this week. The half of course is done! <br />
+</p></div>

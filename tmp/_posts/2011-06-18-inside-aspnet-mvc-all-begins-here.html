@@ -1,0 +1,104 @@
+---
+layout: post
+title: "Inside ASP.NET MVC: All begins here - MvcHanlder"
+date: 2011-06-18T18:46:00+03:00
+comments: false
+categories:
+ - InsideMVC
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>
+<a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">Last time</a> we explored a way of HTTP request from the IIS up to <code>MvcHanlder</code>. Then <code>UrlRouting</code> module match URL we registered in <code>Application_Start()</code>, it gets corresponding <code>IRouteHandler</code> class and calls for <code>GetHttpHandler</code> method. In ASP.NET MVC URL <code>IRouteHandler</code> interface is implemented by <code>MvcRouteHandler</code> class which return <code>MvcHanlder</code> instance. The actual MVC story begins exactly in <code>MvcHanlder</code> internals.
+</p>
+<h2>Generic overview</h2>
+<p>
+We know that HttpHandlers are special objects that handles requests and produce a response. <code>MvcHanlder</code> produce nothing by itself. Instead, it uses <code>ControllerBuilder</code> object for creating <code>Controller</code> and call controller <code>Execute</code> method. It is <code>Execute</code> method responsibility to find corresponding action, call action and wrap action return result it HTTP response.
+</p>
+<a href="https://lh5.googleusercontent.com/-oJHL461Fj-w/TfzI2KJsFaI/AAAAAAAAHe0/MDVtQS77gGw/handler.declaration.1.png">
+<img src="https://lh5.googleusercontent.com/-oJHL461Fj-w/TfzI2KJsFaI/AAAAAAAAHe0/MDVtQS77gGw/handler.declaration.1.png" alt="mvc handler declaration" />
+</a>
+<p>
+As you can see, it implements 3 interfaces: <code>IHttpHandler</code>, <code>IHttpAsyncHandler</code> and <code>IRequiresSessionState</code>. The handler could operate in 2 modes: sync and async, depending on caller. ASP.NET frameworks <code>ProcessRequestInternal</code> method try to utilize asynchronous mode of work first.
+</p>
+<p>
+The constructor of <code>MvcHanlder</code> receives <code>RequestContext</code> class, that is part of System.Web.Routing and contains information about <code>HttpContext</code>.  
+</p>
+<h2>Synchronous and Asynchronous modes</h2>
+<p>
+Of course, the details of operation in synchronous and asynchronous modes are differ from each other, but main algorithm of work is exactly the same.. Let's first see how it operates in sync mode.
+</p>
+<h2>Process the request</h2>
+<p>
+Due to <code>IHttpHandler</code> interface, <code>MvcHanlder</code> expected to support one property and one method:
+</p>
+<a href="https://lh4.googleusercontent.com/-GCULpCDs5Uk/TfzI1RGGfpI/AAAAAAAAHeo/XZ3FTPT_jMI/handler.declaration.2.png">
+<img src="https://lh4.googleusercontent.com/-GCULpCDs5Uk/TfzI1RGGfpI/AAAAAAAAHeo/XZ3FTPT_jMI/handler.declaration.2.png" alt="mvc handler declaration" />
+</a>
+<p>
+<code>IsReusable</code> is always false, meaning that for each request the runtime would create new instance of handler. <code>ProcessRequest</code> receives <code>HttpContext</code> and basically delegates call to internal <code>ProcessRequest</code> method.
+</p>
+<a href="https://lh3.googleusercontent.com/-D3MUti1Eh7g/TfzI3RIRXXI/AAAAAAAAHe8/ADmoHG1wnQo/handler.declaration.3.png">
+<img src="https://lh3.googleusercontent.com/-D3MUti1Eh7g/TfzI3RIRXXI/AAAAAAAAHe8/ADmoHG1wnQo/handler.declaration.3.png" alt="mvc handler declaration" />
+</a>
+<p>
+Notice to the first line.. <code>HttpContext</code> is being wrapped with <code>HttpContextWrapper</code> and casted to <code>HttpContexBase</code>. Rest of code never (mostly) using <code>HttpContext</code> directly, but through <code>HttpContexBase</code>. The <code>HttpContexBase</code> have been introduced to improve testability of ASP.NET applications, since <code>HttpContext</code> is unable to be mocked.
+</p>
+<h2>ControllerBuilder, ControllerFactory, Controller</h2>
+<p>
+Let's see inside the <code>ProcessRequest</code> method to see how exactly the controller is being constructed and called.
+</p>
+<a href="https://lh5.googleusercontent.com/-hGQmALFmXyw/TfzI1BGwhQI/AAAAAAAAHek/Ts_T-BAo85U/handler.declaration.4.png">
+<img src="https://lh5.googleusercontent.com/-hGQmALFmXyw/TfzI1BGwhQI/AAAAAAAAHek/Ts_T-BAo85U/handler.declaration.4.png" alt="mvc handler declaration" />
+</a>
+<p>
+The call is wrapped with a little security handler, that would do perform the check for Trust settings, before calling internal action. Inside the action <code>IController</code> and <code>IControllerFactory</code> are being declared and initialized in <code>ProcessRequestInit</code> method.
+</p>
+<a href="https://lh4.googleusercontent.com/-8WV5t8II9XU/TfzI1qyxG8I/AAAAAAAAHes/PB4NiaWZJts/handler.declaration.5.png">
+<img src="https://lh4.googleusercontent.com/-8WV5t8II9XU/TfzI1qyxG8I/AAAAAAAAHes/PB4NiaWZJts/handler.declaration.5.png" alt="mvc handler declaration" />
+</a>
+<p>
+First, it puts MVC version information into HTTP response header, removes optional parameters from routes (one we mark with <code>UrlParameter.Optional</code>) and gets the name of controller from <code>RequestContext</code>. Remember, in global.asax we define URL pattern like "{controller}/{action}/{index}", so in case of such URL <code>products/search/122</code> the <code>GetRequiredString</code> will return "products".
+</p>
+<p>
+<code>ControllerBuilder</code> is a singleton and factory method that creates <code>IControllerFactory</code> instance. 
+</p>
+<p>
+<code>ControllerFactory</code> is responsible for creation of controller by given name. 
+</p>
+<p>
+The <code>ProcessRequestInit</code> gets the factory from <code>ControllerBuilder</code>, ask factory to create controller by the name from URL and returns results back to <code>ProcessRequest</code>.
+</p>
+<p>
+Here we also could see good example of comments that lies.. "// Instantiate the controller and call Execute" - maybe sometime ago that was true, but not its false since Execute is not called here. 
+</p>
+<h2>Execution</h2>
+<p>
+As soon as controller factory and controller are successfully created, <code>ProcessRequest</code> calls for controller <code>Execute</code> method. Now, it is controller responsibility to produce the output and we will see how it does that in next "Inside MVC" posts. Execution is wrapped inside <code>try / finally</code> block and finalize code will release the controller by calling <code>ReleaseContoller</code> method of factory.
+</p>
+<h2>Meanwhile in Asynchronous...</h2>
+<p>
+In async world the things are bit more complex. There are no one single method, but 2 instead. <code>BeginProcessRequest</code> and <code>EndProcessRequest</code>.
+</p>
+<p>
+The request initialization and creation of factory and controller is exactly the same. The difference in execution, for async controller 2 delegates are being created, 
+</p>
+<a href="https://lh3.googleusercontent.com/--qjZrorgG88/TfzI1xDv_dI/AAAAAAAAHew/RvZm0UMDQ8k/handler.declaration.7.png">
+<img src="https://lh3.googleusercontent.com/--qjZrorgG88/TfzI1xDv_dI/AAAAAAAAHew/RvZm0UMDQ8k/handler.declaration.7.png" alt="mvc handler declaration" />
+</a>
+<p>
+In fact, that than the request execution begins, <code>beginDelegate</code> is called that would call <code>BeginExecute</code> of the controller. At the end of request <code>endDelegate</code> called that would call <code>EndExecute</code> of controller.
+</p>
+<h2>What about tests?</h2>
+<p>
+That was a great surprise to me that <code>MvcHandler</code> is well unit tested. All aspects of its work are covered with corresponding tests.. I've heard a lot of developers complains like, "oh, it is so low-level code.. could not test it". But MVC team, proof it is wrong. <code>HttpContexBase</code> could be easy mocked, so no excuse of not writing unit tests for modules/handlers. As I said in into, test code is really clean, following AAA principle's, so I got a lot of pleasure of looking inside.
+</p>
+<p>
+BTW, they are using <a href="http://code.google.com/p/moq/wiki/QuickStart">Moq</a> framework for mocking, that I personally like as well :).
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">Inside ASP.NET MVC: Route to MvcHandler</a>
+Next: <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a>
+</p></div>

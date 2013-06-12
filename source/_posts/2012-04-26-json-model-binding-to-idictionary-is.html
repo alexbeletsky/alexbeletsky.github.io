@@ -1,0 +1,38 @@
+---
+layout: post
+title: "JSON Model Binding to IDictionary<> is Broken"
+date: 2012-04-26T09:39:00+03:00
+comments: false
+categories:
+ - MVC
+ - asp.net
+---
+
+<div class='post'>
+<p>Yesterday, I've been creating small web service based on existing ASP.NET MVC infrastructure. The task was really simple. Web service itself should be just a proxy for existing internal API. The API method takes a <code>Dictionary</code> that contains some fields. So, I've created a data model like that.<br />
+</p><pre class="brush: csharp">public class Notification
+{
+ public int Id { get; set; }
+ public string Recipient { get; set; }
+ public IDictionary&lt;string, string&gt; Fields { get; set; }
+}
+    </pre><p>and simple HttpPost handler, like<br />
+</p><pre class="brush: csharp">[HttpPost]
+public ActionResult Send(string token, Notification notification)
+{
+    // ...
+}
+    </pre><p>the payload posted to method is:<br />
+</p><pre class="brush: plain">{"id":32,"recipient":"a@a.com","fields": { "EMAIL": "a@a.com"} }
+
+    </pre><p>I've tried to test the method, but the <code>Fields</code> property of model was always <code>null</code>. First I thought I got a problem somewhere in JSON payload, but after sometime I saw that everything is correct. <br />
+</p><p>Google showed I'm not alone, so the issue been <a href="http://stackoverflow.com/questions/4710729/post-json-dictionary">raised</a> on SO. Darin Dimitrov responded that this is a bug of <code>JsonValueProviderFactory</code>. In the same time, some comments below contained the link for a bug <a href="http://connect.microsoft.com/VisualStudio/feedback/details/636647/make-jsonvalueproviderfactory-work-with-dictionary-types-in-asp-net-mvc">reported</a>, that was already stated as Fixed. <br />
+</p><p>I forgot to mention that I did that stuff on ASP.NET MVC 2. I decided to try that on ASP.NET MVC 3, since I got the sources and if it works I can try to backport the fix into our MVC 2 infrastructure. <br />
+</p><p>With my great disappointment it fails in exactly same way for ASP.NET MVC 3. That's not funny anymore. I blamed <code>JavaScriptSerializer</code>, JSON serializer that used inside the <code>JsonValueProviderFactory</code> that it simply not able to handle Dictionaries right. I knew that ASP.NET Web API is using Newtonsoft JSON.NET framework, which is really powerful for serialization/deserialization of JSON.<br />
+</p><p>So, I run VS 2011 and create test <code>ApiController</code> that receives the model with <code>IDictionary</code> inside. What do you think happen? Ok, the model is no longer <code>null</code>, but it contains Dictionary with count of elements equals to zero. Fail.<br />
+</p><pre class="brush: csharp">public void Post(Notification notification)
+{
+    // ...
+}
+    </pre><p>I re-raised <a href="http://aspnetwebstack.codeplex.com/workitem/99">issue</a> again, now on ASP.NET Web Stack site on <a href="http://aspnetwebstack.codeplex.com/">Codeplex</a>. I also tried to quickly write the unit test that show the existence of problem, but it's not that easy to do that, so it requires some time. Hope I can do that later.<br />
+</p></div>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: "Git with SVN, what the benefits are?"
+date: 2011-07-13T08:50:00+03:00
+comments: false
+categories:
+ - Git
+ - GitSVN
+---
+
+<div class='post'>
+<p>
+My previous <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">post</a> about starting up of using Git inside on SVN organization appeared to be really attractive, I received many questions through <a href="http://twitter.com/#!/alexbeletsky">twitter</a> and <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">dzone</a>. All of them are really interesting and I going to do a separate posting on that, but primary question is "Why, oh why?".  
+</p>
+<p>
+So, what actual benefits I see by using approach of git-svn?
+</p>
+<p>
+First, let's see the root, what kind of VCS Git is? It is distributed one. The distribution basically means that each developer host the repository on it's own machine. Not a working copy as in SVN case, but real repository with all corresponding functionality - commits, reverts, branches, merges etc. You are not longer depend on server, even if sever is not available you still able to continue your job. 
+</p>
+<p>
+Since you have your local repository, you can do whatever you want without interfering the rest of the world. In SVN all operations like commit or branch creation or tag - they are global one. As soon as you created branch for instance, everybody will notice that; if you committed something, everybody will notice that. In many organizations SVN has policies, like you have access only for some branches.. you can't create branches, only by request to admin etc. But, what I basically do on my job - I want to try out something (new idea or apply some refactoring) without disturbing a lot of people, I want that quickly. It perfectly works with Git, I create the branch just by one command, work inside (means do what ever number of commits I want) and if I think I'm ready, merge it back to master and push changes to SVN.
+</p>
+<p>
+Remember you last merge operation with SVN? If you haven't seen 'Tree conflict' type of conflict, you are not SVN user. I've seen them a lot and many people suffer much of it! This type of conflict happens because SVN keeping and tracking information about folder in which file is placed. Git does not do that, it is basically content tracking system - Git cares about content of the file, not file it self. Since the information about content (blob) and filesystem information (tree) is separated each of other, you will never get a 'Tree conflict' in Git.
+</p>
+<p>
+By the fact that branches and merges are very easy in Git you are getting one really cool bonus. Have you ever been in situation then in a middle of your flow, then tens files are already changed, but you still struggling with task, your boss is contacting you saying - 'Hey, we have critical bug, required to be fixed now'? Such things make you a little uncomfortable, you already got some changes, but they are not 'commitable'.. you could not throw it away, because some value is already there, but you need to get SVN update and start to fix bug. With git, you can switch from one task to another with out any problems. You just commit your results (even if they are not compliable or tests are red, who cares - it's yours repository) create another branch for bugfix and start to work.  
+</p>
+<p>
+To summarize that a little I would say that my personal benefits of starting using Git are: 
+</p>
+<ul>
+<li><strong>Isolation</strong> - do whatever I want, whenever I want</li>
+<li><strong>Merges</strong> - forget about 'Tree conflicts'</li>
+<li><strong>Task switching</strong> - no more, "please wait till I commit this, so I can start to work on that"</li>
+<li><strong>Fun</strong> - it is interesting to me to learn new system and to change a mind how VCS can work</li>
+</ul></div>

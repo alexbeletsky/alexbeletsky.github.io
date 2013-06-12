@@ -1,0 +1,120 @@
+---
+layout: post
+title: "Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well"
+date: 2010-10-10T16:59:00+03:00
+comments: false
+categories:
+ - Agile
+ - TDD
+---
+
+<div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s1600/DSC03703.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s400/DSC03703.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5526416986874802578" /></a>
+<p>
+One of few technical speeches on this conference. <a href="http://pragmatists.pl/en/about_us.php">Pawel</a> discusses a vision of production clean code, with a clean tests as key factor of creation good software. That was very interesting and rather quick, so I did only few notes of it.
+</p>
+<h2>Introduction</h2>
+<p>
+"Most important stuff is to create a clean code - Robert C. Martin (Uncle Bob)"
+</p>
+<p>
+Writing a clean code is important! Everybody knows that, but not everybody actually produce clean code. Writing a tests is vital to create reliable, maintable, code. It is a common issue of many developers to forget that tests code quality as such important as production code. 
+</p>
+<p>
+Then we do write tests, we have to be sure that we are:
+</p>
+<ul>
+<li>writing tests that are reliable</li>
+<li>writing tests that they are document code</li>
+<li>writing tests that they are maintainable</li>
+<li>writing tests that they are readable</li>
+</ul>
+<p>
+Writing good code/tests is a hard work! That require time and practice.
+</p>
+<h2>What test do give?</h2>
+<p>
+We are spending an effort on tests (a lot of efforts, actually). Why do we do that?
+</p>
+<ul>
+<li>Be in safe net, awareness of what you did</li>
+<li>TDD leads to a Test driven Design!</li>
+<li>TDD increasing development speed</li>
+<li>TDD produce documentation</li>
+</ul>
+<h2>Problems</h2>
+<p>
+The more tests you have, more problem you have with them. So, at some point of time it stop to be a documentation. 
+</p>
+<p>
+This is especially matters then you have a lot of integration tests, that could affect each other, provide massive failures without giving clear understanding what is wrong. 
+</p>
+<h2>Process</h2>
+<p>
+What's the process of creation the tests, following TDD rules? 
+</p>
+<ul>
+<li>Think First</li>
+<li>Trivial First</li> 
+<li>Test specifies "what", implementation says "how"</li>
+<li>You need different levels of tests (unit, integration, end-to-end)</li>
+</ul>
+<h2>Conventions</h2>
+<p>
+Something that helps to produce clean tests. 
+</p>
+<ul>
+<li>Coherent naming of tests classes</li>
+<li>Coherent naming of tests</li>
+<li>Test classes names focus more on functionality</li>
+</ul>
+<h2>Comments</h2>
+<p>
+If you feel you must comment, something wrong with you code. Tests have to be document itself.
+</p>
+<p>
+Some useful //give, //when, //then (//arrange, //act, //assert).
+</p>
+<h2>Test setup (Given part of test)</h2>
+<p>
+DRY (Dont repeat yourself) is major. We usually repeat the setup code for each tests. Have to be extracted to methods, that could be easily reused. Method name should reflect its meaning.
+</p>
+<h2>Behavior Driven Development</h2>
+<p>
+It is on top of TDD, we define behaviour. It reflects a user stories that business people create. Focuses, why code should exists. Code have to be a value for customer. Naming is important, language you use reflects the way you think. Naming in code is the same as names by the business people. In BDD we say Examples, Not Tests.
+</p>
+<p>
+By the way, someone suggested good BDD tool for .NET, <a href="http://specflow.org/">http://specflow.org/</a>
+</p>
+<h2>BDD rules</h2>
+<ul>
+<li>tests names should be sentences</li>
+<li>simple constant template of sentence help to focus in the tests on one thing</li>
+</ul>
+<h2>A-TDD</h2>
+<p>
+Acceptance TDD. Scenarios have to written by business people (or at least with them nearby).
+</p>
+<h2>Tests smells</h2>
+<p>Factors that shows something is wrong with test</p>
+<ul>
+<li>Long setup</li>
+<li>Long tests</li>
+<li>Many assertions</li>
+<li>To many tests methods</li>
+</ul>
+<h2>Maintainable tests</h2>
+<p>
+Some rules must be followed according to have maintainable tests.
+</p>
+<ul>
+<li>Reuse assertion, create "business" assertions</li>
+<li>Reuse object construction methods</li>
+<li>Reuse test setup</li>
+<li>Tests should not depend on environment and order of executions</li>
+</ul></div>

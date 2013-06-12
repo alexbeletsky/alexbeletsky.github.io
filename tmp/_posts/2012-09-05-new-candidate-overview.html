@@ -1,0 +1,32 @@
+---
+layout: post
+title: "New Candidate Overview"
+date: 2012-09-05T21:56:00+03:00
+comments: false
+categories:
+ - Candidate
+---
+
+<div class='post'>
+<p>        It's been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven't managed to make huge progress on project so far, but I got something to show.<br />
+    </p>    <h2>        Overall application architecture<br />
+    </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
+    </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
+    </p>    <p>        The primary application change is that it's no longer IIS application, but just standalone app.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>    So, you just launch an .exe file, after application warm up, candidate is available at <a href="#">http://localhost:12543</a>.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        To simplify a life a bit (and do not harm they eyes of users) I'm using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> CSS framework and happy with it.<br />
+    </p>    <h2>Server side</h2>    <p>        <a href="https://github.com/NancyFx/Nancy">NancyFX</a> is very lightweight framework, but it requires some skills. So far, I met <a href="http://www.beletsky.net/search/label/NancyFX">several</a> interesting challenges, that has been successfully solved. But, Nancy does it job and does it pretty well.<br />
+    </p>    <p>        <a href="http://ravendb.net/">RavenDB</a> initial impressions are really positive. I'm currently doing very basic functionality (as inserting, querying and deletion of documents). But, indeed working with document oriented database feels much simple and native for C# developer. Forget about any SQL, schemas, ORM's - store and restore POCO's, that all you need to know. RavenDB API is very clear and intuitive. <br />
+    </p>    <p>        I used embedded version of RavenDB, which suites me best - since I want to minimize an effort for application installation.<br />
+    </p>    <p>        As I said above, server side exposes HTTP API which receives and responds with JSON based payload. There would be some interfaces for starting/stopping the deployment tasks.. but the rest is happening in client.<br />
+    </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: "I will never ever writing 'scripts' in front-end, instead I'll be doing browser powered applications". Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones's main entities you build front-end apps in similar way as it would be desktop applications.<br />
+    </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I'm using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone's views as kind of widgets (or modules).<br />
+    </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don't need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
+    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
+    </p></div>

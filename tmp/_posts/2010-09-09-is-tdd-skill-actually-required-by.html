@@ -1,0 +1,73 @@
+---
+layout: post
+title: "Is TDD skill actually required by employers?"
+date: 2010-09-09T20:47:00+03:00
+comments: false
+categories:
+ - TDD
+---
+
+<div class='post'>
+<p>
+Is TDD popular among developers? Do managers knows about benefits of TDD? Are employers really looking for TDD skilled people? 
+</p>
+<p>
+I was thinking about such kind of questions and decided to perform my initial research. My research was quite simple, I wanted to check popular job looking sites and review latest job offers, especially for "skills" sections. How many of employers actually seek for developers who know/use/love TDD. Since I'm geek I would not do it manually, so I've written an application for that. Crawler that could get data from job looking sites and store it to DB for further analisys. I already got the data and would like to share it in this post.    
+</p>
+<h2>How it works?</h2>
+<p>
+Like any other crawler it has one big cycle that makes a web requests to site, 
+    gets response, extracts the links and data from response, stores data somewhere. It proceeds as soon as relevant data is present on pages. Vacancy crawler does a search request, extracts links for all vacancy pages. As soon as link extracted, it does request to vacancy page. It analyzes the body of vacancy description by very simple method: searching for a keywords it text. So, to detect is TDD skill required or not, crawler try to match some words from vocabulary. 
+    Similar approach used to understand what technology skills (.NET, Java, C++) is required. At final it creates a record contains site name, position, technology used and TDD demand flag and stores data to database. 
+</p>
+<h2>Source of information</h2>
+<p>
+I've taken two sites as source of information. First, <a href="http://rabota.ua">RabotaUa</a> (Ukrainian one, Ukraine is 
+    one of big players of IT outsourcing in Europe, so data will be really relevant). Second one, I wanted to pick up from USA, but it was difficult to find it, since I'm not aware of its popularity, reputation and so on. I even asked question of <a href="http://stackoverflow.com/questions/3645579/developers-job-looking-site-in-us-closed">StackOverflow</a>, but my question was closed. I choose <a href="http://www.prgjobs.com">JobsForProgrammers</a> as one of google suggested.
+</p>
+<h2>RabotaUa results</h2>
+<p>
+I've extracted 978 records from <a href="http://rabota.ua">RabotaUa</a>. It is latest, actual, recently posted job offers. 150 of 987 vacancies contained requirements for TDD skills.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s1600/rabotaua.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s400/rabotaua.pie.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5514972151647040130" /></a>
+<p>
+How many of TDD skills required per technology? 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s1600/rabotaua.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s400/rabotaua.chart.png" border="0" alt=""id="Img1" /></a>
+<h2>PrgJobs results</h2>
+<p>
+I've extracted 1000 records from <a href="http://www.prgjobs.com">JobsForProgrammers</a>. Crawler could proceed more, but I've noticed that on latest pages, site contains not really relevant data, not developers jobs and offers with short and not always adequate description. So, I still consider to crawle some other USA site for data. Anyway, here are results. Only 69 of 1000 requires TDD, 7%! 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s1600/prgjob.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s400/prgjob.pie.png" border="0" alt=""id="Img2" /></a>
+<p>
+Technologies breakdown, also a bit strange. Match for technology were difficult, for several reasons. Job description headline, usually contained to generic description (as Software Developer, Web developer and so on), job description body contained multiskills requirements (like C++/Perl, or C#/Java, VB.NET/Java) that current version of crawler could not handle properly.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s1600/prgjob.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s400/prgjob.chart.png" border="0" alt=""id="Img3" /></a>
+<h2>Conclusions</h2>
+<p>
+To be honest, I would not expect such data. I thought 40-60% should ask for TDD, but we see that it is less than 16% from 
+    Ukranian data source and less than 7% for USA. For me, as TDD follower this is really disappointing results.  I realize that such results are very simple and rough, could not be used for some real life analytics, but it gives 
+    a vision, for sure.    
+</p>
+<p>
+Also I plan to do several technical blogs with details of implementation of Crawler, I've created for this report.
+</p>
+<p>
+Please let me know, what you think about such results, what further improvements could be done for more fine results, what other data sources could be used?
+</p>
+<h2>Update</h2>
+<p>
+<ul>
+<li>
+<a href="http://www.beletsky.net/2010/09/update-is-tdd-skill-actually-required.html">Analisys of Careers.StackOverflow job site</a>
+</li>
+<li>
+<a href="http://www.beletsky.net/2010/09/crawling-web-sites-with-htmlagilitypack.html">Crawling a web sites with HtmlAgilityPack</a>
+</li>
+<li>
+<a href="http://www.beletsky.net/2010/09/regex-to-match-words-in-dictionary-on.html">
+Regex to match a words in dictionary on page body
+</a>
+</li>
+</ul>
+</p></div>

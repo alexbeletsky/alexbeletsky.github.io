@@ -1,0 +1,107 @@
+---
+layout: post
+title: "How to start using Git in SVN-based organization"
+date: 2011-06-29T22:04:00+03:00
+comments: false
+categories:
+ - GitHub
+ - Git
+ - GitSVN
+---
+
+<div class='post'>
+<p>
+I've been using Git about a year now, immediately after creation my <a href="https://github.com/alexanderbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
+</p>
+<p>
+You are probably aware about all good thing with Git. If you still don't you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well. 
+</p>
+<p>
+After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues "Are you ready to go with Git?" you would probably hear "No!". It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
+</p>
+<p>
+Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I'm talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>. 
+</p>
+<p>
+Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I'll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.  
+</p>
+<h2>Setup you environment</h2>
+<ul>
+<li>
+Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a> 
+</li>
+<li>
+Setup local user information, example
+<pre>
+    git config --global user.name “alexander.beletsky”
+    git config --global user.email “alexander.beletsky@gmail.com”
+</pre>
+</li>
+<li>
+If you are on Windows and doing only-Windows development, it is recommended to turn off <code>autocrlf</code>
+<pre>
+    git config core.autocrlf false
+</pre>
+</li>
+</ul>
+<h2>Checking out code from SVN repository</h2>
+<ul>
+<li>
+Run git clone command (it might take some time, depending on repository and history size)
+<pre>
+    git svn clone https://mysvnserver/repo 
+</pre>
+</li>
+</ul>
+<p>
+As clone finished, you will see that new folder <code>repo</code> created with the content of your SVN repository. Now, this folder is actually Git repository + you local sources copy. Try to run <code>git log</code> inside the repository and you will see that all your history are there!
+</p>
+<h2>Let's do some work</h2>
+<p>
+Now, suppose you start to work on some bugfix. By default, git repository contains one branch called <code>master</code>. Good style is do not do direct commits into master at all, just keep it as synchronization point between SVN repository and your local repository. So, to do actual job you to create branch.
+</p>
+<pre>
+    git checkout -b bugfix-id-1453
+</pre>
+<p>
+This command will create new branch called <code>bugfix-id-1453</code> and immediately switch to it. If you haven't noticed how that happened - please welcome to git's high performance world.
+</p>
+<p>
+You changed some file and ready to commit. In git it's a 2 steps operation. First, you need to put content to stage.. second, you store the content in new commit object.
+</p>
+<pre>
+    git add .
+    git commit -m "issue has been fixed"
+</pre>
+<h2>Commit changes back to SVN</h2>
+<p>
+You've fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world. 
+</p>
+<p>
+Checkout your master branch:
+</p>
+<pre>
+    git checkout master
+</pre>
+<p>
+Get the latest changes from SVN:
+</p>
+<pre>
+    git svn rebase
+</pre>
+<p>
+Now SVN server and local master branch are identical. We have to merge our fix into master:
+</p>
+<pre>
+    git merge bugfix-id-1453
+</pre>
+<p>
+Now master contains previous SVN state + new fix. We have to synchronize local repository and SVN server:
+</p>
+<pre>
+    git svn dcommit
+</pre>
+<h2>Conclusions</h2>
+<p>
+Git-svn is perfect tool to start using git without radical changes in organization. It gives everybody change to try it out, how much it really fits your needs. I'm having a big pleasure now of working with Git. I'm not saying it's ideal smooth process, sure I met some difficulties. But for me those difficulties are nothing comparing the benefits I'm getting with it.
+</p></div>

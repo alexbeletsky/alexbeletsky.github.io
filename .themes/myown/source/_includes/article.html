@@ -1,0 +1,42 @@
+  {% if index %}
+  <h1 class="title pure-u-1">
+    {% if post.external-url %}
+    <a href="{{ post.external-url }}">
+    {% else %}
+    <a href="{{ root_url }}{{ post.url }}">
+    {% endif %}
+      {% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">{% include post/date.html %}{{ time }}</div>
+    <div class="tags icon-tag-2">{% include post/categories.html %}</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      {{ content | excerpt }}
+      {% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
+      {% if excerpted == 'true' %}
+        <div class="show-more pure-u-1">
+          <a href="{{ root_url }}{{ post.url }}">{{ site.excerpt_link }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <h1 class="title pure-u-1">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">{% include post/date.html %}{{ time }}</div>
+    <div class="tags icon-tag-2">{% include post/categories.html %}</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      {{ content }}
+      {% include post/sharing.html %}
+      {% include post/author.html %}
+    </div>
+  </div>
+{% endif %}
