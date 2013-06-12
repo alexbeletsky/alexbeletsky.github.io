@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CS101 Building a Search Engine: Week 5 and 6</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="CS101 Building a Search Engine: Week 5 and 6 May 31st, 2012 CS101, SearchEngine, Udacity Disclaimer: this blog post expresses some impressions and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-5-and.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">CS101 Building a Search Engine: Week 5 and 6</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-31T17:28:00+03:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        <small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+        </small><br />
+    </p>    <p>        With a quite delay I&#8217;ve concluded units 5 and 6. I&#8217;m in a big rush now, since the exam week is already started, but I&#8217;ve not yet completed Unit 7. Fortunately, Unit 7 is not technical one, but rather common computer science education, that helps to shape all knowledge received through seven weeks together.     <br />
+    </p>    <p>        I would say that those 2 units is something where I start to feel some complexity. In Unit 5 we focused on making things faster, basically by introduction more advanced data structures for the same job. We went from a list based index implementation to self-implemented hash table and then utilized the Python dictionary type. Again, abstracting out of many simple things is what good developer should always do, but I was surprised how many things I forgot about main properties of hash functions and hash tables. We were also did a very basic algorithms analysis stuff. <br />
+    </p>    <p>        Unit 6 is a real computer science. Besides of the playing with recursive algorithms we did more advanced things as graph theory. All of that was a fundamentals for implementing Pang Ranking mechanism. We used famous Google&#8217;s (Larry Page&#8217;s) algorithm that everybody heard of <a href="http://en.wikipedia.org/wiki/PageRank">PageRank</a>. This is where my brains start to heat. Will be honest with you, I still missing it&#8217;s some parts, so it will take some time get the clear picture about it.  <br />
+    </p>    <p>        So, the crawler starts to have real search engine features. Not only extracting links and indexing the keywords, that&#8217;s definitely not enough for search engine. But building the links graph and computing page ranks, that then used in lookup functions to provide the best choice on search keyword. It&#8217;s very simplified but working model of something that Google have (probably something that Google <a href="http://infolab.stanford.edu/~backrub/google.html">might have</a> back in 1998).  <br />
+    </p>    <p>        Python. I like language more and more and start to feel some confidence. In the same time there are several things that I dislike. Not so serious, almost cosmetic.. but something that a little bugs me a little.<br />
+    </p>    <p>        Anyway, I have only few days now to submit my exam works. I already glanced on exam tasks and they don&#8217;t appear to much complex, so I have good chances to be in time with it. Wish me a good luck! I&#8217;ll update you as soon as I got any results! <br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-5-and.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-5-and.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

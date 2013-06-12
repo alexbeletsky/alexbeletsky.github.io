@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: KievAltNet | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/kievaltnet/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Kiev ALT.NET Re-launch with Jimmy Bogard]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard.html"/>
+    <updated>2012-11-27T10:16:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>Good news, <a href="http://kievalt.net/">Kiev ALT.NET</a> community! One of the best know ALT.NET developers <a href="http://twitter.com/jbogard">Jimmy Bogard</a> is visiting us on December 11. It's been awhile since the last meetup we had, so it's just great time to gather again and listen to the presentation Jimmy prepared for us.<br />
+</p><p>There will be a talk with intriguing name <i>"Real World Polyglot Persistence"</i>. Here is the short description of it.<br />
+</p><blockquote>It always sounds easy - "use the best tool for the job". With very isolated systems, it's easy to decide RDBMS for one application, Redis for another and Cassandra for somethings else. When it comes time to building systems with multiple persistent stores, we're met with challenges in integration, existing applications, and push back from IT administrators. In this session, we'll look at the multitude of challenges of achieving polyglot persistence nirvana, and strategies for addressing associated risks.<br />
+</blockquote><p>I don't know about you, but for me it sound extremely interesting.<br />
+</p><p>Meetup will take place in <a href="http://ciklum.net/">Ciklum</a>, the most spectacular place in Kiev - <a href="http://www.ciklum.com/upload/iblock/41b/Ciklum_SkyPoint_Kyiv_20Floor.jpg">Sky Point</a> at 19-00. As always, <a href="http://ciklum.net/">Ciklum</a> happily agreed host us. <br />
+</p><p>Participation is completely free, but you have to register before. Registration is available <a href="https://docs.google.com/spreadsheet/viewform?formkey=dDlsSS1QenUyMVVkRWM3RmJKZzB1Wnc6MQ">here</a>.<br />
+</p><p>The information support by our good friend at <a href="http://wp7rocks.com/">wp7rocks.com</a>.<br />
+</p><img src="https://si0.twimg.com/profile_images/1246801773/Headshot3.png" /><br />
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
+    <updated>2012-02-27T10:30:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
+</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
+</p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
+<p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday's is just great initiative by Ciklum company. I's free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
+</p><p>I had two talks there. First one about "Continuous Delivery" that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
+</p><p>Another one is for logging and tracking unhandled exceptions in ASP.NET / ASP.NET MVC application based on ELMAH. I showed some basics features as well easiness of ELMAH integration to ASP.NET MVC with <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> NuGet package. It was very light and funny talk, especially discussing Troy Hunt's <a href="http://www.troyhunt.com/2012/01/aspnet-session-hijacking-with-google.html">ELMAH attack</a>. <br />
+<script src="http://speakerdeck.com/embed/4f49e9bd2270a2002200a29c.js"></script><br />
+<p>I also really much enjoyed <a href="http://samarskyy.blogspot.com/">Anton Samarskyy</a> talk on jQuery deffered objects and Vitaly Koval did great hacking session of WinRT.<br />
+</p><p>I some of you been listening to me on those speeches and still have any questions or concerns, feel free to contact me by comments or through <a href="http://twitter.com/alexbeletsky">twitter</a>. See you next time!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Kiev ALT.NET Community Thoughts]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/12/kiev-altnet-community-thoughts.html"/>
+    <updated>2011-12-03T11:52:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/12/kiev-altnet-community-thoughts</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>I've just reviewed blog posts I created thought that year and realized that I miss very important piece of information here. Something that literally changed my developers life. And I'm talking about <a href="http://kievalt.net/">Kiev ALT.NET</a> community.<br />
+</p><p>From my first join at the beginning of the year I amazed with very cool and friendly atmosphere there. I tried to visit every meeting and each of them brought some value for me. And the most valuable asset I got there is people I met. Those guys simply rock.<br />
+</p><a href="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg" alt="kiev alt.net" /><br />
+</a><br />
+<p><a href="http://twitter.com/chaliy">Mike Chaliy</a>, the leader of community does exceptional job. I could imagine how hard could it be to do all organization work and he does that very well. <br />
+</p><p>What's important, Mike involved me to do my own speech. I remember that first time when I was sharing my experience with <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Deployment</a> based on Chuck Norris tools and Jenkins. That was a good start and I did several more speeches after. I would say it happened only because of Kiev ALT.NET.<br />
+</p><p>Getting of knowledge for me is not only books, podcasts and just coding practice. But also, discussions, questions and speeches. I this is definitely productive way of learning. <br />
+</p><p>So, I'm very thankful to Kiev ALT.NET for that positive feel of progress, pleasure of communication with smart guys and fun time of after parties.I wish a long life for community and try to help it as much as I can.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

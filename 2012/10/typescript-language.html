@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Looking at TypeScript</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Looking at TypeScript Oct 5th, 2012 JavaScript, Mind, TypeScript Four days ago my twitter has been nuked. The bomb has exploded after TypeScript &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/10/typescript-language.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Looking at TypeScript</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-05T21:24:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/typescript/'>TypeScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
+</p><p>For ones who missed the video (I can&#8217;t believe you did) I shortly describe - TypeScript in new open source project, by Microsoft. It&#8217;s leader <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a> is very famous developer (my bad, I always forget his name), creator of C# and one of the persons who most influenced .NET platform. TypeScript compiled down to JavaScript, but it introduce the types checking during compilation, so it could be called &#8216;static typed language&#8217;.<br />
+</p><p>First of all, TypeScript is definitely <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">not the first language</a>, that complies to JavaScript. It&#8217;s not the first one that augments JavaScript with new statements like class, interface or module. So, what&#8217;s so interesting on it?<br />
+</p><p>I&#8217;ve been using static type languages for about 10 years. I&#8217;ve very much got used to compiler error messages and truly believed that it helps to build applications. Meaning, the complier is first guard towards the &#8216;good&#8217; code. To the code that could be called reliable, error free. <br />
+</p><p>But situation much changed after I start programming JavaScript. <br />
+</p><p>I feel myself quite productive with using of using JavaScript. Of cause, there are some best practice & patters are collected nowadays, we have better tools, faster engines and JavaScript has been so much adopted by community. But JavaScript is indeed, so powerful language. I really like the dynamic typing, that bit more forces to unit testing, making code changes more easy in the same time creating some very beautiful code structures.<br />
+</p><p>I know that some people are saying, &#8220;we don&#8217;t need any static typing for JavaScript; please don&#8217;t change the language&#8221;. Such developers could be called &#8220;purists&#8221;. And they are absolutely right - if you feel confidence in something you do, you should not change the way you do it. <br />
+</p><p>In another hand, I came to conclusion that it&#8217;s not dynamic types that makes me productive with JavaScript, but rather the experience I gathered with programming lately. It&#8217;s always only experience, that allows you to work faster, better quality and had fun of your job.<br />
+<p>And it&#8217;s absolutely not about Static vs. Dynamic languages.<br />
+</p><p>Static types are not useless, though. I think, in average it reduces the chances of bug introduction into the code. That&#8217;s at least what I&#8217;ve seen so far. And that&#8217;s why &#8220;purists&#8221; are running JSLint. Basically, Static Types should provide better application quality. This is of cause not completely true, since we know great software written in Python and poor systems written in C++.<br />
+</p><p>It&#8217; about the engineers who build that software.<br />
+</p><p>In my opinion the TypeScript will grow. It would have it&#8217;s own army of fans, like CoffeeScript have or Ruby have. The code that TypeScript outputs is nice and clean, that make easy of debugging it. TypeScript is designed to be closer to ECMAScript6 (Harmony), so in near future the pure JavaScript would start to look like TypeScript.<br />
+</p><p>TypeScript is interesting project and open minded guys will like one. <br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/10/typescript-language.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/10/typescript-language.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

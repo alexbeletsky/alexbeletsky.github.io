@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Life | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Third Year of E-conomic]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
+    <updated>2013-03-13T20:29:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>That's my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I've heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
+    <!-- more -->
+    </p>    <p>        So, what's interesting about? Alright, it begins with <a href="http://www.e-conomic.com/">E-conomic</a> company, which through about 10 years on market gathered huge experience in online accounting. The primary target audience for all that years were professional accounters and administrators that have pretty solid knowledge what the accounting is. But due influence of internet economy and small-business grow there appeared high demand on simple accounting software, that could be easily understood even for non-professional accounters. That's were we saw the opportunity. That's then the <a href="https://debitoor.com/">Debitoor</a> born.<br />
+    </p>    <p>        Technologically it's been very innovative for us, too. As I <a href="http://www.beletsky.net/2012/03/second-year-of-e-conomic.html">wrote</a> last year, the March was the month we tried how good different technologies might work for us. The decision were taking up to full JavaScript stack - <a href="http://nodejs.org/">node.js</a> and <a href="http://www.mongodb.org/">MongoDB</a> as backend, <a href="http://backbonejs.org/">Backbone.js</a> as front end technologies.<br />
+    </p>    <p>        So, near the April we have a working product running .NET + MSSQL, that was on production and customers started to use, we decided to switch backend from .NET to Node.js. The HTTP API interfaces were "copied" from ASP.NET MVC implementation to exactly the same but on Express.js. The difference was in the way how ASP.NET MVC and Express.js is serving the HTML responses, so we have to re-desing the way how front-end application is being initialized and started. Since the low coupling of our front end to ASP.NET features, the rest of Backbone.js application remained absolutely the same.<br />
+    </p>    <p>        All existing data has been exported to JSON files and been imported to MongoDB through the existing API. That gave us a chance to make some performance measuring and we definitely we happy about. Average HTTP request were handled in ~100ms that was a quite big boost comparing to previous platform.<br />
+    </p>    <p>        Front-end is being involved as well. We've been switched to Single Page Application (SPA) architecture client side and there is no way back. With Node.js backend we easily moved application to cloud, all static resources to CloudFront that affected initial load time as a result made application to look and feel incredibly fast.<br />
+    </p>    <p>        But the most important is - users love it! We've got plenty of sign-ups during the day, from different countries as Germany, Spain, Great Britain, Columbia etc., recently we've started premium campaign, and the premium users joins us. UI/UX are tweeked all the time, based on future application vision and A/B tests.<br />
+    </p>    <p>        All that makes me feel - your work is important and you do something valuable.. and that is exactly what keeps me working on <a href="http://www.e-conomic.com/">E-conomic</a>. It's interesting and make sense - that's all I need.        <br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Second Year of E-conomic]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/03/second-year-of-e-conomic.html"/>
+    <updated>2012-03-13T19:40:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/03/second-year-of-e-conomic</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Yeah, it's been 2 years since I joined the <a href="http://www.e-conomic.com/">e-conomic</a> company. As it was <a href="http://www.beletsky.net/2011/03/my-first-year-in-company.html">last year</a>, this year e-conomic still plays very important role in my life, so I'll spent some time to write this blog post.<br />
+</p><p>Well, a lot of things changed I would say. Some people came, some people left. Teams rotating all the time, I'm no longer work with guys I used to work last year. We are doing revolutionary things there, no doubts. It doesn't mean, we are creating new search engines or inventing new type of computer. No, we are revolutionizing ourselves much.. doing the same type of products, but doing it differently.<br />
+</p><p>Remember I wrote about how <a href="http://www.beletsky.net/2011/12/why-new-technologies-move-your-product.html">technologies helps to move product faster</a> - that was an example of radical changes in framework and tools we did to successfully deliver the product. I believe something happened last year, something that gave much pulse for changes. And that pulse still affects us. We went much further of changing for Web Forms to MVC or jQuery to Backbone.js. Recently our back-end team finished up POC of using <a href="http://nodejs.org/">node.js</a> + <a href="http://www.mongodb.org/">MongoDB</a> as our perspective server side technology stack. And they actually proved that it will work for us. <br />
+</p><p>From my perspective, e-conomic much improved in this year. And this is of cause happened, because people how work in e-conomic improved. Without any hesitate, I would say that currently we have the strongest team ever. Both Danish and Ukrainian parts. It's amazing how smooth the technologies change was, how fast new concepts been adopted, how motivated and hardworking guys joined together. <br />
+</p><p>We've been empowered not only by engineers, but also with our newly assembled UI/UX team. No secret, everybody want to work with beautiful things. I equally appreciate both the quality of code and quality of design. And this is want UI/UX team care about. And this is fantastic job as for me. We are changing the design quite regularly and each iteration it turns better and better. Colors, fonts, usability tricks - that's something that gives a life to modern web applications.   <br />
+</p><p>As usually the developers see only the tip of iceberg of whole company business, but I really hope that all good stuff that's happening inside engineering department will find it's reflection in quality of service, usability and user happiness.. that at the end of the day bring the company more users and more money. Sure, the things are moved not only by developers. I would say, we are doing the easiest job. Our PO's and Stakeholders - that's where ideas are coming from. The quality of those "ideas" are directly proportional to output quality. And this quality is getting better and better each day.<br />
+</p><p>We are doing finishing strokes on new product, called <a href="http://debitoor.com/">Debitoor.com</a>. It's amazing application and I hope it will find it's audience very fast. <br />
+</p><p>So, I'll say goodbye to the past year and look forward for new journeys in next one.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sayonara Nippon]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/11/sayonara-nippon.html"/>
+    <updated>2011-11-12T21:34:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/11/sayonara-nippon</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>I've just got back from the most wonderful country I ever been to - Japan. <br />
+</p><a href="https://lh5.googleusercontent.com/-JQHNK-xBJqE/Tr7JuF_SRNI/AAAAAAAAHzk/UsxHzEvgek8/s620/Gates.jpg?gl=UA"><br />
+<img src="https://lh5.googleusercontent.com/-JQHNK-xBJqE/Tr7JuF_SRNI/AAAAAAAAHzk/UsxHzEvgek8/s620/Gates.jpg?gl=UA" alt="japan gates" /><br />
+</a><br />
+<p>Japan is really different from everything I got used to. Differences are everywhere, from traffic direction to people behavior. But in general Japan is well developed, high cultural country with interesting history.<br />
+</p><p>Tokyo is huge, but the same is <a href="http://www.tokyometro.jp/en/">Tokyo Metropolitan</a> which is really complex, but makes travel from one part of city to another very fast. First day we have a lot of problems to understand metropolitan labyrinths, but with a little practice it does not look so scary anymore. Btw, I've never seen very over crowded stations and trains, even if you travel in rush hour. Comparing to Kyiv metro, Tokyo one is very expensive, where you pay as much as you go.  <br />
+</p><a href="https://lh4.googleusercontent.com/-MSLfarHSstA/Tr7Jv5PqImI/AAAAAAAAHzs/nSskJV4W5Ac/s620/metro.JPG?gl=UA"><br />
+<img src="https://lh4.googleusercontent.com/-MSLfarHSstA/Tr7Jv5PqImI/AAAAAAAAHzs/nSskJV4W5Ac/s620/metro.JPG?gl=UA" alt="tokyo metropolitan" /><br />
+</a><br />
+<p>People there are very kind, ready to help you. But the problem is communication. Very few Japanese can speak English. Usual dialog is something like. "Do you speak English?", "A little.." and then nothing, even if you try to use as elementary words as possible. So, language barrier is very high. But as soon as they understood your problem, be sure you gonna get help. Once we've lost in metropolitan and one lady went out from station with ask, contacted metropolitan officer and explained our further actions. Such scenario happened several times.<br />
+</p><a href="https://lh6.googleusercontent.com/-Yzz0uvSJ0Rc/Tr7JtvG9fkI/AAAAAAAAHzc/Vh8w20Qfjbc/s620/food.JPG?gl=UA"><br />
+<img src="https://lh6.googleusercontent.com/-Yzz0uvSJ0Rc/Tr7JtvG9fkI/AAAAAAAAHzc/Vh8w20Qfjbc/s620/food.JPG?gl=UA" alt="noodles" /><br />
+</a><br />
+<p>Food is very delicious and relatively not expensive. Chinese and Japanese dishes are usually available together in restaurants. But if you want to go with sushi, you have to find specialized one. There are absolutely not a problem to eat in Tokyo. In each corner you could find small restaurants and cafeterias where you will be able to find what you like. Food is available mostly everywhere, including metro stations.     <br />
+</p><a href="https://lh6.googleusercontent.com/-oPJTvUilLkA/Tr7JxUvajTI/AAAAAAAAHz0/ipwdXzxSFcE/s620/tree.JPG?gl=UA"><br />
+<img src="https://lh6.googleusercontent.com/-oPJTvUilLkA/Tr7JxUvajTI/AAAAAAAAHz0/ipwdXzxSFcE/s620/tree.JPG?gl=UA" alt="tokyo park" /><br />
+</a><br />
+<p>Tokyo is concrete and wires jungle, but there are several great parks inside. They are beauty and calm. It is easy to find a bench to sit and observe spectacular views. It is great to relax body and mind there.<br />
+</p><p>I would not say I've seen a lot, but I really enjoyed with everything I saw. <br />
+</p><p>Sayonara Nippon! Hope to visit you again in a while.. Best luck to you!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to be better developer or 3 accounts rule]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/07/how-to-be-better-developer-or-3.html"/>
+    <updated>2011-07-22T16:46:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/07/how-to-be-better-developer-or-3</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Oh no, not again! - you might think. Yet another Mr.SmartyPants are going to share his own vision of how to improve in development.
+</p>
+<p>I'll say very obvious thing - if you are going to be great in something, you have to do that a lot. Like, if you going to be a great snowboarder you have to ride a lot; If you going to be great mathematician you have to solve a lot of problems; If you going to be great developer you simply have to do a lot programming :). 
+</p>
+<p>
+The road from "good to great" is long and difficult, you could not be great in one year.. or ten, or even whole life. But what you definitely can do, be a better. Only realizing that you are better than yesterday (month, year ago) is a great benefit, believe me.  
+</p>
+<p>
+But just the fact of knowing "I need to do something a lot" would hardly could help you to progress. What you need to have is <strong>indicators</strong>. Simple criteria's that make you understand what your progress is. Are doing great or you suck?
+</p>
+<p>
+Three account's that I created almost year ago, help me to get those indicators.
+</p>
+<ul>
+<li>
+<strong>github.com</strong> - producing of code, that what we do. you have to have github to store all code you produce, doesn't matter it is a product or tool or just a <a href="https://gist.github.com/">gist</a> you created to help someone - it have to be stored. with a github you should be able to see how much you coding are changing through the time. you should review you last year code and think "Oh, God I suck a lot!".
+</li>
+<li>
+<strong>blogger.com</strong> - besides of code writing, you have to share your technical thoughts. the blog, is a great motivator for seeking and sharing knowledge. as well as coding, blogging requires much skills. I see some relation between producing good code and good post. blog would also help you to look back, to remind you problems you was thinking of.. and how much you were right on that? is your opinion changed on some topics or not?
+</li>
+<li>
+<strong>stackoverflow.com</strong> - if you can't explain something to another, you don't understand it. giving an answers is extremely difficult, especially in such competitive environment as stackoverflow. the time I created account there I was not able to give any answer in meaningful time. I just had not enough skills for that. stackoverflow is great indicator, since it contains a reputation system.
+</li>
+</ul>
+<p>
+Well, do you think it is useful? It works for me and I'm going to proceed. 
+</p>
+<p>
+PS. That's my 100 post for this blog.. and that's my Friday before week vacation.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET developers disease]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease.html"/>
+    <updated>2011-03-22T14:06:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/MVC etc. So, I do a lot of interviews nowadays and I found out interesting fact. I've noticed symptoms of disease many of many ASP.net guys suffer from. The people who spent a lot of time with WebForms do not really understand web.
+</p>
+<p>
+Originally WebForms has been designed in perspective to be conveniently used by Visual Basic developers. Ones who created UI in designers and put logic of application into control event handlers methods. That was a good idea because that gave possibility to many people switch to web world, without too much 
+    harm their own world of Windows programming (controls, events, handlers). That worked great, because all you have to understand is Page Lifecycle, be aware of controls that Microsoft created for you and be able to drag the control in WYSIWYG editor. The application created in this way was mostly fine, because it was to far to Web 2.0, AJAX, CSS and HTML revolutions.
+</p>
+<p>
+Time has passed. Web stepped far away from a <code>form</code> with <code>submit</code> button and tables for everything, into rich UI applications with complex client side code, styled up with CSS. WebForms issues appeared really seriously, because it too much abstracted you from "what is actually going on". WebForms controls generated HTML for you, did a server side validation. You could tweak a bit of CSS on server side as well. But this is a not controlling of your application, but rather adapting to "old-school" type of web development with ASP.net. With such level of abstraction you were loosing many important things.
+</p>
+<p>
+I'm not saying the WebForms is bad. I'm saying that WebForms did a bad joke for the people who do not try to see bit far from their nose. If you open your eyes you would see how much web development is far from ASP.net WebForms development. Modern web development is actually started on client side. You have to understand HTML/JS really fine to be efficient in it. You might not be a designer, but you have to be able to style up your HTML from UI mock in PSD. You should understand REST and AJAX to make go from web page to web application. And the issue is - the most ASP.net developers do not know these things. They think that knowing a C# or VB.net is much OK for creation of web application and the rest is work for front-end developers. 
+</p>
+<p>
+Guys, seriously.. If you think: "HTML is easy, I could do learn in 5 mins", "CSS is nothing to do..", "I don't want to do javascript" - you have those symptoms. Please try to markup the page that might look like <a href="http://onehub.com/">that</a>, enchase it with CSS3 transitions and shadows. Try to use jQuery for handling UI. You will see it is not easy at all. And basically your knowledge on C# does not make help you. I would say, it might be even harder than you application server side. Knowing how to do things with WebForms is great, but you should not be only limited to WebForms.
+</p>
+<p>
+So, if your CV says you are <i>web developer</i>, please make sure that your are really able to do <i>web products</i>. Do not limit your self to "client-side" or "server-side" developer, it does not work any more. Be universal, look for the same things in a different angles, that helps sometimes. 
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

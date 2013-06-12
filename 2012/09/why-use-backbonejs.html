@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why Use Backbone.js?</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Why Use Backbone.js? Sep 7th, 2012 Backbone.js, JavaScript Even JavaScript language and front-end development has been much matured recent time, I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/09/why-use-backbonejs.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Why Use Backbone.js?</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-07T18:30:00+03:00" pubdate data-updated="true">Sep 7<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Even JavaScript language and front-end development has been much matured recent time, I still see a lot of confusion about usage of different frameworks and libraries.<br />
+    </p>    <p>        For a half of year I use Backbone.js and feel much satisfied with it. It&#8217;s very popular library, probably because of personal popularity of the creator of Backbone.js <a href="http://en.twitter.com/jashkenas">Jeremy Ashkenas</a>, very much known also as author of CoffeScript language.<br />
+    </p>    <h2>Frameworks and libraries</h2>    <p>        There are differences between frameworks and libraries. In one sentence, &#8220;library is then you call some code, framework is then your code is called from somewhere&#8221;. The Backbone.js is clearly library. You usually have a lot of different options with libraries and less with frameworks. It&#8217;s very minimalistic, actually.<br />
+    </p>    <p>        At core it only contains of only 4 components (Model, Collection, View, Router). This minimalism is both power and weak side of Backbone.js. The power is that you can build things whatever you like, Backbone fits the experience really smoothly. In the same time, you are really confused the time you just started, since you simply don&#8217;t understand how to make everything work together properly.<br />
+    </p>    <h2>The essence of Backbone.js</h2>    <p>        In one of the podcasts with Jeremy, he said &#8220;Backbone is something that almost every developer will come to theirselves.. dealing with JavaScript applications for a while&#8221;. I could not agree more. If you have previous experience in programming and you see the value of architecture and design, you will definitely start to invent something similar to Backbone.<br />
+    </p>    <p>        After some time spend of development jQuery based application you will realize many fundamental issues, like: data does not belong to DOM, events are not limited on jQuery and so on. But the main issue is jQuery apps usually violates the &#8220;Single Responsibility Principle&#8221;, mixing and manipulation with data and views in the same time. Experienced developers, tries to eliminate SRP issues as soon as possible, almost naturally coming to MVC pattern.<br />
+    </p>    <p>        In essence the Backbone is a way to structure you application better. It makes clear de-coupling between data and views that render that data. It&#8217;s nothing more than that.<br />
+    </p>    <h2>Abstracting things out</h2>    <p>        Programming is a matter of abstractions. As better abstractions you have as better code you have. <br />
+    </p>    <p>        Every application works with data. The data does not appear in browser just like that, it have to fetched from somewhere. It&#8217;s also have to be persisted somewhere. The data could be changed and you have to validate that change is right. If some part of data is changing, you want to be notified on that change. Notice that, this is a very common functionality you want to keep between all data classes - initialization, validation, persistence. This is where the <code>Backbone.Model</code> comes out. With <code>Backbone.Model</code> all that things are already &#8220;in the box&#8221; you just need to apply your own strategies of implementation.<br />
+    </p>    <p>        You typically don&#8217;t deal with one instance of model. REST interfaces are usually expose something like <code>/api/tasks</code> or <code>/api/photos</code> and so on. You need to group the models into collections. Collection (similar to model) are able fetch and persist itself, all it needs to know is the actual type of Model and URL. This is where <code>Backbone.Collection</code> shies. You are keeping all models close together, if some model become destroyed the collection will be updated, so it always in consistent state.<br />
+    </p>    <p>        With view is basically render your models as DOM structure. So, the <code>Backbone.View</code> is abstraction with primarily method - <code>render</code>. Backbone does not say, how exactly you are going to do that. You can create handcrafted HTML and append it DOM, or use some templating mechanisms. Instead, it provides you convenient methods for listening to view events (like clicks, focusout or any other DOM supported events). Inside the handlers you either could update related model or apply some changes to view parts, whatever.<br />
+    </p>    <p>        And finally <code>Backbone.Router</code> is a facility to building, so called Single Page Applications (SPA). SPA&#8217;s most popular example is GMail. You browsing emails, writing and sending - without and page reloads. What&#8217;s changing is only hash part of URL (like #inbox, #sent, #all). Router is handling hash change events and triggers registered handler. Inside the handler, you can initialize the corresponding application.<br />
+    </p>    <h2>Don&#8217;t repeat yourself</h2>    <p>        Now, please let me know. How many times did you create (read copy-n-paste) the code for RESTful data persistence? How many times, you did you create code for validation? How many hours you spend for looking for some event listener provoking the bug in your app and hiding somewhere among 200 .js files?<br />
+    </p>    <p>        If your answer, more that 2 - stop doing that. Don&#8217;t repeat yourself - reuse. And better - reuse from best.<br />
+    </p>    <h2>Conclusions</h2>    <p>        There are great solutions, created by people experienced than me, amplified by huge community behind. <a href="https://github.com/documentcloud/backbone">Backbone.js</a> is one best representatives of such solutions. Having a something that I could rely on, that works good and there <a href="http://stackoverflow.com/questions/tagged/backbone.js">places</a> to get help is very strong reason for me, to keep doing that, instead of re-invent wheel yet another time.<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/09/why-use-backbonejs.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/09/why-use-backbonejs.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

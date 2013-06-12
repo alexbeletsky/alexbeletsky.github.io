@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: BeerNCode | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/beerncode/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Greg Young and Rinat Abdulin Visited Kyiv]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited.html"/>
+    <updated>2011-10-25T09:47:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>It finally happened, <a href="http://codebetter.com/gregyoung/">Greg Young</a> and <a href="http://abdullin.com/">Rinat Abdulin</a> have been guesting Kyiv for almost the week. <br />
+</p><p>Initially we've gathered on <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting. The format a little changed that time, but I would say that was really interesting meeting. Greg introduced one of the project he currently working on <a href="http://continuoustests.com/">http://continuoustests.com/</a> that now referenced as "Mighty Moose". "Mighty Moose" appear to be really powerful tool that tracks both code and tests changes, and in case of changes taking place it automatically re-runs all related test cases. So, we've grabbed the latest version on MM and played with it a bit. MM is officially in betta now and gonna to be release soon, so did a small contribution by submitting some bugs found on a fly. I also really much enjoyed the quick demonstration of <a href="https://github.com/gregoryyoung/Simple.Testing">Simple.Testing</a> framework. It worth to have a separate blog post on that, but in short - it is BDD style framework that literally produce plain English specifications as it's output. It's indeed very simple - just several hundreds LOC's, but very impressive.<br />
+</p><p>But of cause, the main event was <a href="http://www.facebook.com/event.php?eid=268332313185736">Free Event Centric Weekend</a>. It is very hard to describe what was there just in this short post. You might check out some tweets on <a href="http://twitter.com/#!/search/eventcentric">#eventcentric</a> channel. Greg and Rinat were sharing their huge experience on CQRS/DDD and I would say that was extremely interesting. I'm not using either CQRS or DDD on my daily work, so a lot of new concept's I've heard are still really unknown to me, but I'm happy I looked behind the curtain. Greg is <a href="http://martinfowler.com/bliki/ShuHaRi.html">Ri</a> level developer - he is simply breaking the concepts. Seriously, I was blown away with some of the statements and my brain is still "damaged" with everything I heard there.<br />
+</p><a href="https://lh4.googleusercontent.com/-_2de-YNoo-0/TqZWzXugX3I/AAAAAAAAHm0/_zNc09RHImQ/s720/eventcentic.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-_2de-YNoo-0/TqZWzXugX3I/AAAAAAAAHm0/_zNc09RHImQ/s720/eventcentic.jpg" alt="Eventcentric meeting in Kyiv" style="width: 620px" /><br />
+</a><br />
+<p>Besides of that we had several cool evenings, drinking beers. I would say that was great week and I'm really happy to meet you guys. I would also say big thanks to <a href="http://kievalt.net/">KievAltNet</a>, <a href="http://www.luxoft.com/">Luxoft</a> with support they provided to make this happen. I know this in not your last visit to Kiev, so see you soon! <br />
+</p><p>ps. As more you know as more unknown you are able to see...<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Power of Close Collaboration]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/10/power-of-close-collaboration.html"/>
+    <updated>2011-10-05T20:06:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/10/power-of-close-collaboration</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The collaboration and communication is very important in solving problems. As much better collaboration you have as much fast you are able to handle different issue. As closer people to each other, as better they able to work. That's why I think that distributed teams even if they consists of great engineers could not work 100% of their potential. Lags in communications, language barrier, loose of body languages etc. makes it 80% for best cases.<br />
+</p><p>As you might know I'm currently working on <a href="https://github.com/alexanderbeletsky/candidate.net">candidate.net</a> project. I really want to release that and according to my original plans I was really close to do that. But, suddenly my application just stopped to work. I'll skip details of bug, but it was a ship killer. Application was not able to clone/pull github repositories. The only thing that happened between periods of working and non-working states is that I upgraded my Windows 7 up to SP1.<br />
+</p><p>Even if I had great support by <a href="http://twitter.com/#!/ukraitor">@ukraitor</a> who forked my project recently, we were not able to solve it (remember, distributed teams - he is from Odessa, far from me). I was pulling out my hair and mostly lost a hope to solve that. But I decided to share the problem on latest <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting we had this Tuesday.<br />
+</p><p>It is usually hard to explain your problem. Along the process, I think to myself - "those people are pretty far from problem context, could they indeed help me?". The simple answer is "Yes, they can". Never underestimate the people around you.<br />
+</p><p>During 2 hours we've been able to try different scenarios, discuss some potential issues and finally found a clue! I was so happy about that, at least my work moved from a dead point. I'm sure, I could not complete it by my own (in reasonable time). <br />
+</p><p>So, my point is: if you are in work project - immediately share you problem with colleagues don't make yourself <a href="http://www.beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html">completely stucked</a>. If you work on your own project - it is better if you find a collaborator, if you don't have one you might find a local group, like <a href="http://kyivbeerncode.org/">Beer && Code</a> or talk to your developers friends whatever. <br />
+</p><p>Remember, as closer the collaborator is as better. Special thank's today goes to <a href="http://twitter.com/#!/chaliy">@chaliy</a> who helped to solve the issue.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

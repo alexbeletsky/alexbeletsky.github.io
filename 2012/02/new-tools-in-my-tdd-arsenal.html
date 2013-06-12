@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>New Tools in My TDD Arsenal</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="New Tools in My TDD Arsenal Feb 2nd, 2012 Clean Code, Mocks, TDD, Tools Recently my TDD arsenal has been enhanced with 3 new cool tools, which I&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">New Tools in My TDD Arsenal</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-02T11:36:00+02:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/mocks/'>Mocks</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I&#8217;m about to share with you. More precisely it one tool and two frameworks. Let&#8217;s go for it.<br />
+</p><h2>NCrunch<br />
+</h2><p><a href="http://www.ncrunch.net/">NCrunch</a> is just amazing extension for Visual Studio created by <a href="https://twitter.com/#!/remcomulder">@remcomulder</a>. It automatically detects all your tests and re-running those as soon as source code changes happen. Forget about manual test re-running, it&#8217;s just waste of time. You even do not need to press Ctrl + S, just continue coding as you usually do. <br />
+</p><p>Initially I had big doubts about such kind of tools, but NCrunch changed my mind. It supports major unit test frameworks NUnit, XUnit, MSpec etc. Besides of that it allows to collect code coverage metrics (and show it just in VS editor), run tests under debugger, supports multi-core systems etc.<br />
+</p><p>In short, NCruch is something that makes your TDD very smooth, allowing to focusing on important things and forgot about some routine.<br />
+</p><a href="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg" alt="ncrunch" /><br />
+</a><br />
+<h2>NSubstitute<br />
+</h2><p>I stick to <a href="http://code.google.com/p/moq/">Moq</a> for quite awhile and saw no reason to switch it.. Till I saw <a href="http://nsubstitute.github.com/">NSubsitute</a>. I hardly could imagine someone who staring &#8220;yet another mocking framework project&#8221;, it looks like absolute non-sense.. But <a href="https://github.com/nsubstitute">those</a> guys proves me wrong.<br />
+</p><p>Well, what&#8217;s so new there? First of all it have very clean API. No more <code>new Mock()</code> or <code>MockGenerator.GenerateMock()</code>, creation of test doubles are nothing more as <code>Substitute.For&lt;IEntityToMock&gt;()</code>. Mocking properties, multiple return values, events etc. in very easy fashion. Check out their <a href="http://nsubstitute.github.com/help/getting-started/">getting started</a> materials for further info. <br />
+</p><p>Best feature as for me, that by using extension methods they got rid of lambdas for setting up mocks. It makes test code more readable and clean. See this small <a href="https://gist.github.com/1722396">gist</a> there I placed just some Moq and NSubstitue tests together.<br />
+</p><p>I would not say that Rhino or Moq is now much worse that NSubstitute.. No, I would just say NSubstitute is a little better. Even same functionality, with less amount of code is already big argument for me.<br />
+</p><pre class="brush: csharp">[Test]
+public void should_send_an_email_if_users_signs_up_nsub()
+{ 
+ // arrange
+ var emailService = Substitute.For&lt;IEMailService&gt;();
+ var controller = new LoginController(emailService);
+
+ // act
+ controller.SignUp(new SignUpModel { Email = &quot;a@a.com&quot;, Password = &quot;xxx&quot; });
+
+ // assert
+ emailService.Received().SendEmail(Arg.Any&lt;EmailMessage&gt;(), &quot;current&quot;);
+}
+</pre><h2>FluentAssertions<br />
+</h2><p>Again, for years I followed classic NUnit&#8217;s <code>Assert.That()</code> method. I also played a bit with <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a>, but FluentAssertions by <a href="https://twitter.com/#!/ddoomen">@ddoomen</a> is going to change that.<br />
+</p><p>FluentAssertions are based on extension methods and allows you to get rid of Assert.That call and just wrote your assertion directly to object. Here some example: <br />
+</p><pre class="brush: csharp">{
+    // NUnit.Assert style..
+    Assert.That(result, Is.EqualTo(3));
+
+    // FluentAssert style..
+    result.Should().Be(3);
+}
+</pre><p>This is very simple example. The power of FluentAssertions arise then you need to have either multiple assertions or assertions on complex objects. Multiple assertion could be combined by <code>And</code>, like:<br />
+</p><pre class="brush: csharp">{
+    "somestring".Should().Contain("some").And.HaveLength(10);
+}
+</pre><p>It also provides great support for working with Collections, DateTimes, Guids, Exceptions, XML etc. Project is hosted on codeplex, here is <a href="http://fluentassertions.codeplex.com/documentation">documentation</a>. Easy start, easy go.<br />
+</p><h2>Conclusions</h2><p>Now, I&#8217;m sharpening my axe on those tools and have very nice impressions so far. Special thanks goes to <a href="https://twitter.com/#!/skalinets">@skalinets</a> who introduced me with those tools.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

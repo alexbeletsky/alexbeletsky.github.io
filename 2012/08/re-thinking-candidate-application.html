@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Re-thinking Candidate application</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Re-thinking Candidate application Aug 7th, 2012 Candidate I&#8217;ve released 0.0.1 version of Candidate pretty long time ago. I was actually quite &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/08/re-thinking-candidate-application.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Re-thinking Candidate application</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-07T10:05:00+03:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/candidate/'>Candidate</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>   I&#8217;ve released 0.0.1 version of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> pretty long time ago. I was actually quite happy how the things went, before I collected some initial feedback. Even, if I can see the application useful, almost all responders had a different opinion. Let&#8217;s briefly see the major concerns.<br />
+</p><h2>IIS hosting</h2><p>    Original idea of Candidate was that it works as usual ASP.NET application, hosted under IIS. That worked really bad, though. Candidate is performing a some operations that requires extended permissions (for git, msbuild, file system operations etc.). That means that IIS web site has to be configured to run under under your personal account (or any other administrative account, with set-up SSH keys, access to msbuild etc). <br />
+</p><p>    All of that created a bit of overhead. First of all, Candidate has to be installed and configured on IIS. Even, it is possible to create kind of installer to automate this job, it does not sound good. In other hand, some people might have very strict policies on their machines, so it is not even possible to change any kind of IIS settings under it.<br />
+</p><p>    So, it turned out to be bad idea for this particular application.<br />
+</p><h2>Deployment scenarios</h2><p>    The primary deployment scenario that implemented in Candidate is local one. It means, it&#8217;s able to build and test the site and deploy it to local IIS. I did so, since I use the same scenario for deployment of <a href="http://trackyt.net/">trackyt.net</a>, which is hosted on VPS and deployed by Jenkins running on the same server.<br />
+</p><p>    But many people are not using VPS, but rather sharing hosting there they are not even able to install any kind of other software. So, they are more interested in <i>remote</i> deployment, not <i>local</i> one. With the re-invention of <a href="http://www.windowsazure.com/en-us/">Azure</a>, you might consider scenarios of deployment existing web application to it seamlessly.<br />
+</p><p>    Local deployments was a good for prototype, but not good at all for product.<br />
+</p><h2>Technical stuff</h2><p>    I stick to framework named <a href="https://github.com/alexanderbeletsky/bounce">Bounce</a>. It&#8217;s very powerful product, that basically allows to write a deployment scripts in .NET languages. Then I originally saw it, I thought it&#8217;s great since it does everything I need, including git operations, msbuild and IIS sites deployment. Even more, Bounce is the one of the best .NET code I ever seen, so respect to <a href="https://github.com/refractalize">refractalize</a>.<br />
+</p><p>    But.. Bounce, is not that good for long perspective. It required to create a lot of <a href="https://github.com/alexanderbeletsky/candidate/tree/master/Candidate.Core/Configurations">configuration code</a>, hard to change logging options and further extension.<br />
+</p><p>    For a long running product I need more lightweight and robust approach.<br />
+</p><h2>Starting it over again</h2><p>    Considering all things above, I decided to re-start the project, almost from the scratch.<br />
+</p><p>    It would be based on 3 different technologies, that in my opinion are agile enough to allow me to build what I want. <br />
+</p><ul>    <li><strong>NancyFX</strong> - will be used as application host. Currently Nancy is 0.11 version, that has a lot of improvements comparing to 0.9 that I used. The main reason to choose that, is Nancy allows to create self-hosted application. It&#8217;s basically .exe application, that you can run and it starts the HTTP server. I plan to have all-in-one executable, that do not require any installations and will prepare all required infrastructure and first run. That would solve both installation and IIS limitations problem.<br />
+    </li>
+    <li><strong>RavenDB</strong> - as application document storage. In previous version I didn&#8217;t use any kind of database at all, being happy with simple <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Settings/SettingsManager.cs">SettingsManager</a> to store .NET objects into JSON files. The reason is that I didn&#8217;t have any dependencies on any software (as SQL Express). With Raven it is possible to use Embedded mode, so it does not require any service running, just the assemblies.<br />
+    </li>
+    <li><strong>PowerShell</strong> - as deployment scripts. No more VCS, build, test and deploy code in C#. I plan to have a generic PowerShell scripts that would be easy to run and maintain. With a PowerShell I hope to extend the deployment scenarios to support Local, FTP, MS Deploy, Azure deployments.</li>
+</ul><p>    Unfortunately, I&#8217;m not yet proficient with any of these technologies. It makes me very exited to learn something new. I&#8217;ve already created a <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">branch</a> where some basic infrastructure is prepared. My goal would be create first prototype in 2 - 3 weeks.<br />
+</p><p>    And I want to appreciate everyone who provided feedback and useful technical suggestions. I hope it would turn in something good.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/08/re-thinking-candidate-application.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/08/re-thinking-candidate-application.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

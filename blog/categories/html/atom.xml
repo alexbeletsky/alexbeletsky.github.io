@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: HTML | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/html/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Developing Web Applications Faster]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster.html"/>
+    <updated>2012-08-20T12:20:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    If you haven't seen Bret Victor's <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
+</p><p>    As a developers, we do code. Applying Victor's principle, ideally we should have this code immediately running and showing it's results of execution. Some experimental IDE's like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> is trying to adopt this principle now. <br />
+</p><p>    If you develop web applications, you spend much time working with HTML/CSS/JS, which being executed by browser. The typical workflow, is to open your text editor, correct some mark-up or javascript code, then switch to browser, press F5 and see the results. It doesn't sound like a big job, but believe me, it's getting annoying and boring in very short time.<br />
+</p><h2>LiveReload comes to help</h2><p>    Ideal workflow is something like, you apply changes to JS, press Ctrl + S in your text editor and browser get's immediately reloaded, showing the results of execution. That's sounds really cool and fortunately there is great solution for that. It's called <a href="https://github.com/mockko/livereload">LiveReload</a> from <a href="https://github.com/andreyvit">Andrey Tarantsov</a>.<br />
+</p><p>    It can be installed as either a <code>&lt;script type=&quot;javascript&quot; scr=&quot;/libs/livereload.js&quot;&gt;&lt;/script&gt;</code> tag in your app, or as a browser plug-in. I prefer the plug-in way, since it could work with any app and requires no code modifications. There plugins for <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&ved=0CFYQFjAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fjnihajbhpnppcggbcgedagnkighmdlei&ei=Ld8xUOzuD8bhtQaThIGYAw&usg=AFQjCNGfX_zDQVCEb-jaq2-TSiR7TqxQWw&sig2=039AdwBtqrpgzbt-irnUcQ">Chrome</a>, <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&sqi=2&ved=0CEMQFjAA&url=https%3A%2F%2Faddons.mozilla.org%2Fen-us%2Ffirefox%2Faddon%2Flivereload%2F&ei=f98xUMPVM4rTtAbVioHgAg&usg=AFQjCNGsE_l-orw8MwyGW9mcQ2-y8H2F5Q&sig2=lYx9rMgyuI2384_1y2MZ8w">FireFox</a> and <a href="http://download.livereload.com/2.0.8/LiveReload-2.0.8.safariextz">Safari</a>.<br />
+</p><p>    How does it work? Take a look on a diagram.<br />
+</p><a href="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png" style="width: 620px"/><br />
+</a><br />
+<p>    The LiveReload plug-in (or livereload.js script) expect's that there is Web Socket Server, where it connects to and start to listen for changes. Web Socket Server is responsible for tracking changes and if changes occurred, it send the package of data with information about the changes, back to the web socket. LiveReload receives the data and reloads the browser.<br />
+</p><p>    As you installed plug-in and pressed "LR" button, it's gonna light green if connection to server is successful, otherwise it will pop-up the message, that server is not available.<br />
+</p><a href="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png" style="width: 620px"/><br />
+</a><br />
+<p>    So, to make LiveReload work properly we have to provide an Web Socket Server, that conforms to LiveReload interface. <br />
+</p><h2>LiveReload + Sublime Text 2</h2><p>    There is a great plug-in for Sublime Text 2, from <a href="https://github.com/dz0ny">Janez Troha</a> called, <a href="https://github.com/dz0ny/LiveReload-sublimetext2">LiveReload-sublimetext2</a>. It's get easily installed through standard ST2 package installer (package name is "LiveReload"). Basically, it instantiate Web Socket Server inside the sublime, listening to editors event's and push data to socket.<br />
+</p><p>    As soon as it's installed, and browser connected to it, you can now modify any HTML/JS/CSS file. As file get changed and saved, you will see LiveReload-sublimetext2 will immediately send the command and browser got refreshed.<br />
+</p><a href="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png"><br />
+    <img src="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png" style="width: 620px"/><br />
+</a><br />
+<p>    When I first time tried that, I could not believe how smooth it was. Can't even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
+</p><h2>LiveReload + any IDE</h2><p>    "Any IDE" in my case means Visual Studio, where I spent some time if I'm not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
+</p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I'm not much that comfortable with Ruby, so I went Node.js way.<br />
+</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It's written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexanderbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
+</p><pre class="brush: plain">    @echo off
+    node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
+</pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />
+</p><a href="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png" style="width: 620px"/><br />
+</a><br />
+<p>    Not everything so perfect with that approach, though. There are 2 reasons, why I did not finally like that:<br />
+</p><ol>    <li>It is slow. Internally node-livereload uses <code>fs.watchFile</code>, which is quite slow (at least on Windows). That mean's if you save the file, it takes 1-1.5 seconds for browser to refresh.<br />
+    </li>
+    <li>Does not catch up new files. You have to restart server, to make it watch newly created files.<br />
+    </li>
+</ol><h2>Mixing things up</h2><p>    There reasons above prevent me to go on with <a href="https://github.com/josh/node-livereload">node-livereload</a>. So, even if I work on .NET-based application, I do C# in Visual Studio, but HTML/CSS/JS in Sublime, having the all it's benefits. So, I basically have 2 things opened side-by-side.<br />
+</p><a href="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png" style="width: 620px"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    I felt much productivity boost with LiveReload. I have Sublime opened on one monitor and Chrome + WebKit Tools on another. As soon I change something, I see the results immediately, catching up errors in console as early as possible. It works so great then you TDD'ing your JavaScript code, as you write tests and implementation and it's been re-run with each save (like a continues testing with AutoTest, NCrunch etc.).<br />
+</p><p>    That works very fine to me, I don't want to press F5 anymore. Do you?<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites.html"/>
+    <updated>2012-02-21T11:15:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
+</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
+</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
+</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I'm changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
+</p><p>Great thing is that you see how it's done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id's, applying the styles by element Id. The code was awful and styles applied on #id's were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
+</p><p>With OOCSS you rely on classed. Here some example,<br />
+</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
+ &lt;div class=&quot;row smaller-fonts&quot;&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>Look, no #id's - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
+</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It's really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it's content based on screen size.<br />
+</p><p>Here is a quote of Foundation documentation.<br />
+</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don't give a specific structural style to should be within a container, row and column.<br />
+</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost "plain" English in HTML.<br />
+</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;eight columns&quot;&gt;
+      Eight columns
+    &lt;/div&gt;
+    &lt;div class=&quot;four columns&quot;&gt;
+      Four columns     
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
+</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can't get good site appearance if buttons and forms are ugly. I usually spend a lot of time on "beautifying" those, but still unhappy with results at the end of the day. With Foundation it's easier. You got nice styles from the box. <br />
+</p><p>Forms:<br />
+</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
+</a><br />
+<p>Buttons:<br />
+</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
+</a><br />
+<p>Recently, I've <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
+</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That's different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
+</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
+</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
+</a><br />
+<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it's place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
+</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I'm about to create bunch of "ready-to-use" Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

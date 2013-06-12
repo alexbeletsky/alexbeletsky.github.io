@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ELMAH.MVC | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/elmah-dot-mvc/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH.MVC 2.0.2 is out]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out.html"/>
+    <updated>2012-11-09T17:21:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It's in particular useful, than you already setup some configuration inside the app, so you don't want default behavior.<br />
+</p><p>Inside the <code>web.config</code> file you will find a configuration setting for that.<br />
+</p><pre class="brush: plain">&lt;appSettings&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandler&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandleErrorFilter&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.requiresAuthentication&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.allowedRoles&quot; value=&quot;*&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;
+&lt;/appSettings&gt;
+    </pre><p>It is <code>elmah.mvc.disableHandleErrorFilter</code>. By default it's `false`, meaning `HandleErrorAttribute()` from ELMAH.MVC is used. To disable it, just set <code>true</code> to this setting.<br />
+</p><p>And btw, it's already 30.000 downloads of NuGet package! Huge number, thanks a lot for all users and contributors.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH.MVC 2.0.1 Update is Out]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out.html"/>
+    <updated>2012-08-16T20:01:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    I've just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can't wait to share.<br />
+</p><h2>VB.NET projects support</h2><p>    For quite a while, I've been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I've just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
+</p><h2>Custom ELMAH route</h2><p>    Another demanded feature was to provide custom path to ELMAH controller. By default ELMAH is available under <code>/elmah</code>, which is nice, but sometimes you what to have a freedom to change it. It's now possible, <code>web.config</code> has additional configuration section, <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;</code>. By setting up elmah.mvc.route parameter, you can tweek a default one, like <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;secure/admin/errors&quot; /&gt;</code> for instance.<br />
+</p><h2>Besides of that...</h2><p>    ELMAH.MVC does not depend on WebActivator any longer. I've removed <code>App_Start.cs</code> code and used <a href="http://haacked.com/archive/2010/05/16/three-hidden-extensibility-gems-in-asp-net-4.aspx">PreApplicationStartMethodAttribute</a> attribute. That allows to make a package more tiny + actually made it possible to avoid separate NuGet package for VB.NET projects.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH.MVC v.2.0.0 - Release Candidate]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate.html"/>
+    <updated>2012-06-13T18:42:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        I've just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I'm about to spent sometime with testing and collecting feedback before it's availability.<br />
+    </p>    <p>        I think ELMAH.MVC is getting it's shape. Hopefully it will be as easy to use as indented.<br />
+    </p>    <h2>Changes highlights</h2>    <p>        Quickly recap the major and breaking changes of ELMAH.MVC 2.0.<br />
+    </p>    <h3>Deployed as class library</h3>    <p>        First noticeable change is that ELMAH.MVC is no longer deployed as several source files, having new Area and Elmah controller inside. The the sake of compatibility and reach functionality it is now deployed as <code>Elmah.Mvc.dll</code>. It's using David's Ebbo <a href="https://nuget.org/packages/WebActivator">WebActivator</a> project to bootstrap itself, registering routes and global filters.<br />
+    </p>    <h3>New URL to access ELMAH dashboard</h3>    <p>        In 2.0 ELMAH is accessed by <code>/elmah</code> route (not <code>/admin/elmah</code> as it was in previous versions). There are several reasons for that. First one is because of new 'Admin' area is not created anymore, second is the really strange behavior is ASP.NET MVC default routing rules. <br />
+    </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it's shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it's already included into package.<br />
+    </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it's own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
+    </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
+    </p>    <h3>Logging with customError="On"</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
+    </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
+            </p>        </div>    </div></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH.MVC v2.0 is coming]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming.html"/>
+    <updated>2012-06-09T17:36:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
+    </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
+    </p>    <h2>What will be changed?</h2>    <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is really simple one, actually delivered as 2 C# code files. It creates new ASP.NET MVC area and register route to ElmahController, which is just an adapter to ELMAH LogFactory. It worked very smooth, but with more functionality this approach no longer work.<br />
+    </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it's a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
+    </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don't know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it's still nice step towards compatibility. <br />
+    </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won't appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I've collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It's a good time to get rid of those.<br />
+    </p>    <h2>What's the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I've created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I'll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I'll update NuGet package as soon as possible.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
+    <updated>2012-02-27T10:30:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
+</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
+</p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
+<p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday's is just great initiative by Ciklum company. I's free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
+</p><p>I had two talks there. First one about "Continuous Delivery" that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
+</p><p>Another one is for logging and tracking unhandled exceptions in ASP.NET / ASP.NET MVC application based on ELMAH. I showed some basics features as well easiness of ELMAH integration to ASP.NET MVC with <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> NuGet package. It was very light and funny talk, especially discussing Troy Hunt's <a href="http://www.troyhunt.com/2012/01/aspnet-session-hijacking-with-google.html">ELMAH attack</a>. <br />
+<script src="http://speakerdeck.com/embed/4f49e9bd2270a2002200a29c.js"></script><br />
+<p>I also really much enjoyed <a href="http://samarskyy.blogspot.com/">Anton Samarskyy</a> talk on jQuery deffered objects and Vitaly Koval did great hacking session of WinRT.<br />
+</p><p>I some of you been listening to me on those speeches and still have any questions or concerns, feel free to contact me by comments or through <a href="http://twitter.com/alexbeletsky">twitter</a>. See you next time!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using ASP.NET MVC Validation Mechanism without ASP.NET MVC</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Using ASP.NET MVC Validation Mechanism without ASP.NET MVC Jan 10th, 2012 Tips, asp.net I get used to DataAnnotations for model validation very &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Using ASP.NET MVC Validation Mechanism without ASP.NET MVC</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-10T21:30:00+02:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />
+</p><p>During implementation of some feature for <a href="https://github.com/alexanderbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
+</p><h2>Basic start</h2><p>Assume you have such model:<br />
+</p><pre class="brush: csharp">public class SimpleModel
+{
+ [Required]
+ public string SomeProperty { get; set; }
+ 
+ [Range(0,50)]
+ public int SomeAnotherProperty { get; set; }
+}
+    </pre><p>If your goal is just to get answer &#8220;yes or no&#8221;, you can create such function:<br />
+</p><pre class="brush: csharp">public bool ValidateSimpleModel(SimpleModel validate)
+{
+ return Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), null);
+}
+    </pre><p><a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validator.aspx">Validator</a> is a static class in DataAnnotations namespace. It takes target object, validation context and validation results collection. But due, to it just &#8220;tries&#8221; to perform validation, most of all parameters could be null.<br />
+</p><h2>Use validation results</h2><p>If you need more specific information, like which field is exactly invalid you need to have <code>ICollection&lt;ValidationResult&gt;</code><br />
+</p><pre class="brush: csharp">public ICollection&lt;ValidationResult&gt; ValidateSimpleModel(SimpleModel validate)
+{
+ var validationResults = new List&lt;ValidationResult&gt;();
+ Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), validationResults);
+ 
+ return validationResults;
+}
+    </pre><p>In case of invalid object it would return non-empy collection of <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validationresult.aspx">ValidationResult</a>, that would contain all relevant information.<br />
+</p><h2>Wrapping up to extension method</h2><p>Finally, you can create simple extension extension method and apply DataAnnotations validation to any kind of object:<br />
+</p><pre class="brush: csharp">public static class ValidatorExtensions
+{
+    public static bool TryValidateObject(this object validate)
+    {
+        return Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), null);
+    }
+}
+    </pre><p>So, the model could just have IsValid() method, like:<br />
+</p><pre class="brush: csharp">public bool IsValid()
+{
+ return this.TryValidateObject();
+}
+    </pre><p>It works great for such simple task I need to accomplish.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

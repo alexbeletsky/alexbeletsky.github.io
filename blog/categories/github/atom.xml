@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GitHub | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/github/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github as blogging platform]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
+    <updated>2013-05-16T18:55:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how's while I create some code. It's just hard to blog about. As you didn't do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    <!-- more -->
+    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what's going on there. So, I put some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don't write much documentation, but during writing it I realized that it's a kind of blog post or tutorial I'm writing immediately after I created something.<br />
+    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It's so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it's the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/issues">questions</a>. <br />
+    </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
+    </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH.MVC v2.0 is coming]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming.html"/>
+    <updated>2012-06-09T17:36:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
+    </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
+    </p>    <h2>What will be changed?</h2>    <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is really simple one, actually delivered as 2 C# code files. It creates new ASP.NET MVC area and register route to ElmahController, which is just an adapter to ELMAH LogFactory. It worked very smooth, but with more functionality this approach no longer work.<br />
+    </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it's a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
+    </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don't know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it's still nice step towards compatibility. <br />
+    </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won't appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I've collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It's a good time to get rid of those.<br />
+    </p>    <h2>What's the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I've created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I'll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I'll update NuGet package as soon as possible.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Github for Windows - Yay!]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay.html"/>
+    <updated>2012-05-21T23:44:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        For quite long time Windows users of github had a huge envy towards <a href="http://mac.github.com/">Github for Mac</a> - the application that makes work with github based repositories as simple as possible. A lot of people, especially ones who are not familiar with Git, experiencing some issues with github initially. No surprise, extensive command-line, SSH, public/private keys - might sound scary for GUI addicted persons. <br />
+    </p>    <p>       December 2011, Phil Haack <a href="http://haacked.com/archive/2011/12/07/hello-github.aspx">joined</a> github.. so, the world hold the breath, to see what actually will be done by Phil and team to improve overall Github experience on Windows. And the day has come! Today <a href="http://windows.github.com/">Github:Windows</a> is officially shipped.<br />
+    </p>    <h2>What's the point?</h2>    <p>        As well as Mac users, Windows users are also much got used to UI. For long time, if you want to deal with Git on windows, you have to go and install <a href="http://code.google.com/p/msysgit/">msysgit</a>. It's a great product and works great actually, but you have to spend some time of learning of Git to do very basics operations. Moreover, if you hadn't had any experience with distributed version control systems - you'll be to much confused by new words like: pull, push, clone, fork, cherry-pick and so on. <a href="http://windows.github.com/">Github for Windows</a> is about to fix that.<br />
+    </p>    <h2>Go ahead and install it</h2>    <p>        Installation is very easy. Just click the <a href="http://github-windows.s3.amazonaws.com/setup.exe">download</a> link, to get web setup file. Two things are gonna installed on you machine: Github client itself and Git shell - the powershell command line for git.<br />
+    </p>    <h2>        Github for Windows client<br />
+    </h2>    <p>        At the first run it will do some configuration stuff. It will ask you for github credentials.<br />
+    </p>    <img src="https://lh6.googleusercontent.com/-b82cqlo96-4/T7qZuUkKYeI/AAAAAAAAIuA/JeqiYMu_sNM/s1024/page-1.png" style="width: 620px" /><br />
+    <p>        As you logged on, it will show you some basic account information.<br />
+    </p>    <img src="https://lh3.googleusercontent.com/-cF3gaHlxPYE/T7qZuqR6clI/AAAAAAAAIuI/gE6-xxhKd58/s1024/page-2.png" style="width: 620px" /><br />
+    <p>        It will also add new public SSH key your account. That was a little unexpected as I received email notification for github about that. The information that it's gonna do that, probably should be mentioned during setup. <br />
+    </p>    <p>        Then it tries to locate all repositories. It scans the home folder, but I don't keeping repositories there (just some temp copies), so I unselected everything.<br />
+    </p>    <img src="https://lh6.googleusercontent.com/-E-6YmkuP9M8/T7qZufRug-I/AAAAAAAAIuE/ifq-o89_Eio/s1024/page-3.png" style="width: 620px" /><br />
+    <p>        As I tried to go straight and create new repository the application crashed. Oppps.. It reproduced several times, but after gone. Anyway, I contacted <a href="mailto:support@github.com">support@github.com</a> with detailed steps and info.    <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-v4EcFQZzPeo/T7qZvPSQdmI/AAAAAAAAIuQ/FYaM5NvP8_c/s1024/page-4.png" style="width: 620px" /><br />
+    <p>        Finally, after I changed the default folder and wait till it's completed scanned (that took about 3 mins on my machine), I got client working.<br />
+    </p>    <img src="https://lh3.googleusercontent.com/-VWSpIa020_g/T7qZvVqLnTI/AAAAAAAAIuc/xSuOGL0NWJs/s1024/page-6.png" style="width: 620px" /><br />
+    <p>        Even if I'm not huge fan of METRO style - I was really pleased with UI. It looks very nice, application works fast and responsive. It takes almost no effort to overview application features.. everything is very intuitive.<br />
+    </p>    <p>        It's of course not the perfect. I tried to do some commits, that seems to be fine.. but sync of the repo failed. It also fails to switch the branches in 95% cases.<br />
+    </p>    <h2>Git Shell for command line</h2>    <p>        Next good addition is Git Shell, powered by PowerShell (nice!). It utilizes famous <a href="https://github.com/dahlbyk/posh-git">posh-git</a> project. The most useful features for me now: 'Tab' support that provides suggestion for the command and 'Stats' that are shown at command prompt, showing current repository state. There are probably a lot of other cool things there, that I haven't discovered yet.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-HOCSvGnNXnQ/T7qhpOr91rI/AAAAAAAAIu0/xwFjs8dvw_Q/s678/page-7.png" style="width: 620px" /><br />
+    <p>        If you are fan of Bash, or pure Cmd.. or custom stuff (as <a href="http://sourceforge.net/projects/console/">Console 2</a>) it very easy to change that, right in application configuration.<br />
+    </p>    <h2>Conclusions</h2>    <p>        Even if it's just first release, it's very solid and a lot of features already there. Issues exist, but I hope it will be cleared out soon.<br />
+    </p>    <p>        What make me a little wonder, that the project is not open sourced? I hope it's just the question of time, I'm pretty sure that a lot of people are waiting to see what's inside and submit some pull requests.<br />
+    </p>    <p>        Will I personally use that product? Probably, not. I've spent too many time in Command-line of my favorite <a href="http://www.farmanager.com/download.php?l=en">Far Manager</a>, that UI is more noise that help. What I will use is Git Shell, thought. I've heard a lot about posh-git, now it's  time to try.<br />
+    </p>    <p>    But for all people, who are just starting using Github on Window - <a href="http://windows.github.com/">Github:Windows</a> would be my first recommendation.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A year with Git]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/05/year-with-git.html"/>
+    <updated>2012-05-20T13:43:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/05/year-with-git</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
+</p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
+</p><p>    I think we followed "Baby steps to.." strategy of Git adoption. Our baby steps to Git, were small, accurate and quite long. But at the end of the day, I'm happy to say - we are pure Git organization now. Moreover, some of our projects are hosted as public and private repositories under the <a href="https://github.com/organizations/e-conomic">e-conomic</a> organization github account.<br />
+</p><h2>Retrospective</h2><p>    So, let's make a kind of retrospective seeing what things were happening.<br />
+</p><ol>    <li><strong>Git-SVN mode</strong>. As described in original article, the best way to try Git inside the organization is go to Git-SVN mode. It will allow to use SVN as primary repo, but allow Git features like local branching, cool merging, stashes and other stuff described <a href="http://www.beletsky.net/2011/07/git-with-svn-what-benefits-are.html">here</a>.<br />
+    </li>
+    <li><strong>People awareness</strong>. Started by just few developers the information about the Git had spread along mates in our department. Some were very enthusiastic about that, some not. But anyway, it got attention of our many people including our CTO. The greatest thing is that initiative has not been cancelled, instead we start to think of some kind of plan that might bring us into pure Git world. <br />
+    </li>
+    <li><strong>Planning</strong>. Our plan including different evaluations, choosing between Git or HG, local or cloud hosting, Centralized or De-centralized mode etc. During this planning sessions we also identified some infrastructure dependencies that blocked switch to Git. We have so called "Language System" the application helping our copyrighters and translators to change the content of app. It's been creating assuming that SVN used, doing checkouts and commits where. Another thing is that our deployment procedure happened to be SVN dependent. Obviously, it have to be changed to work with Git. But the most priority had "Education" task. Everybody should be able to work with Git. <br />
+    </li>
+    <li><strong>Execution</strong>. Planning is easy, execution is hard. We did initial education as a series of meetings were the basics are described. Fortunately, almost as teams contained the git-aware person who were initial knowledge keeper. Some important details being moved to company's Wiki. The problems we start to have local infrastructure setup. Being Windows organization we tried to setup primary repository and server on Windows box. Keeping that short, I just say - don't do that. It's not trivial at all, to configure Git server there, setup the accounts and permissions and make it work with TeamCity. We tried different scenarios of Git hosting on IIS, including <a href="https://github.com/jakubgarfield/Bonobo-Git-Server">Bonobo-Git-Server</a> or <a href="https://github.com/JeremySkinner/git-dot-aspx">Git-Dot</a> but all had it's own limitations, blocking us of full-feature Git usage.<br />
+    </li>
+    <li><strong>Trying github</strong>. In parallel, one team that was starting out new project and was quite independent tried to host sources in cloud. Github is obvious choice here. I think, that was a great experience and this project is still hosted on github. We tried, so called <a href="https://github.com/blog/674-introducing-organizations">"organization"</a> mode. It ideally fits small software development shops. Easy start, easy go.<br />
+    </li>
+    <li><strong>Linux local server</strong>. Failed to run it properly on Windows we had to switch to Linux box. It's being deployed as virtual box, that is more than enough for Git server. That solved a lot of infrastructural issues, including authentications & permissions as well as CI problems. As I can see the effort to setup it was not so big (if compare to effort spend to make the same on Windows, it would be closer to 0). Setup once, it just start to work.  <br />
+    </li>
+    <li><strong>Mirroring repositories</strong>. The setup of local central server was the first great milestone. Even if all the developers might start to use it instead of SVN, the infrastructural problems that I mentioned in #3 were not yet solved. So, we did a partial decision. The developers are switching to Git repository, but the deployments and language works are still done on SVN repository. So it's not so frequent operations, it's possible to synchronize the Git and SVN between each other. It means, all new code started to appear in Git, but once a week (or often) all changes set are being pushed to SVN. This is of course an overhead and required some manual work.. But it was only one way for us.<br />
+    </li>
+    <li><strong>Fixing the dependencies</strong>. It took some time while everybody got comfortable with Git. Our Wiki has extended with some policies of working with Git. We mainly follow <a href="http://nvie.com/posts/a-successful-git-branching-model/">"A successful Git branching model"</a> keeping the feature in local branches, having remote branches for code review etc. After our deployment dependency has been fixed, we were able to push the code to production very fast. I think it's almost a year passed to now clearly understand benefit of Git not just theoretically, but practically. And that was amazing experience, as so for me.<br />
+    </li>
+    <li><strong>Pure git world</strong>. After the last dependency has been fixed, we happily entered the "Pure Git Environment" world. The SVN server has been stopped. All developers, DevOps and copyrighters are Git users now.<br />
+    </li>
+</ol><h2>It took a while...</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
+</p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
+</p><h2>What's next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to "pure Github" environment from here. Sure, now this transaction having it's own dependencies. But let's see what's happen during next year. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Few Things I Learned From IdeaStrike Project]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike.html"/>
+    <updated>2012-02-09T20:20:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It's very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have "product envy" inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />
+</p><p>My attention this time was attracted by <a href="">IdeaStrike</a> project. It suppose to be analog of <a href="">uservoice</a> for OS community. As always, first release was very fast and I was very curious what's inside. So, I cloned the <a href="https://github.com/Code52/Ideastrike">repo</a> and did small hacker session. I've spend some hours with it and would like to share some initial thoughts.<br />
+</p><h2>Build script is small and clean</h2><p>Project contains <code>build.cmd</code> as I run it downloaded all dependencies by NuGet, build web site and run all unit test. Basically, all you need for any small project. Then I looked inside, it turns out like:<br />
+</p><pre class="brush: plain">@echo Off
+set config=%1
+if "%config%" == "" (
+   set config=Debug
+)
+
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+</pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
+</p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
+</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that's also, just a C# code), so at application bootstrap you call the code like:<br />
+</p><pre class="brush: csharp">private static void DoMigrations()
+{
+    var settings = new IdeastrikeDbConfiguration();
+    var migrator = new DbMigrator(settings);
+    migrator.Update();
+}
+</pre><p>The database and schema will be automatically deployed on first application run.<br />
+</p><h2>Social login with Janrain</h2><p>As I clicked to Sign In button, I've been showed nice dialog to select my existing social account to login. <br />
+</p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
+</a><br />
+<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
+</p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that's the rule of pragmatic programmer.<br />
+</p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
+</p><h2>Nancy as web framework</h2><p>I've heard about Nancy many times, but it's only now I got a change to touch it. For me it's just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module's logic is placed inside the constructor:<br />
+</p><pre class="brush: csharp">public FeatureModule(IIdeaRepository ideas, IFeatureRepository features, IUserRepository users)
+    : base("/idea")
+{
+    _ideas = ideas;
+    _features = features;
+
+    this.RequiresAuthentication();
+
+    Post["/{idea}/feature"] = _ =>
+    {
+        int id = _.Idea;
+        var feature = new Feature
+                        {
+                            Time = DateTime.UtcNow,
+                            Text = Request.Form.feature,
+                            User = Context.GetCurrentUser(users)
+                        };
+        _features.Add(id, feature);
+
+        return Response.AsRedirect(string.Format("/idea/{0}#{1}", id, feature.Id));
+    };
+}
+</pre><p>Nancy application could be hosted as ASP.NET / WCF / Self hosted runtimes, it supports different View Engines (including Razor). In short, it is great ALT.NET tool and will find a lot of applications in different projects. More details on <a href="https://github.com/NancyFx/Nancy">Nancy</a> github account.<br />
+</p><h2>Conclusions</h2><p>IdeaStrike is great example of open source project you can learn something from. I would not say I got only positive impressions, moreover there are some obstacles that block me from my normal development flow. I'll try to share my observations on next blog posts.<br />
+</p><p>NancyFX, probably be my next web framework to learn, since I need to move out of ASP.NET MVC which is comfortable zone for me now. I'll be keep looking for IdeaStrike and hope to do some pull requests as well.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

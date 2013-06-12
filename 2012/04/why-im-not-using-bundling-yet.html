@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why I'm Not Using Bundling.. Yet</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Why I'm Not Using Bundling.. Yet Apr 4th, 2012 MVC, asp.net Last time I a posted some initial info about Bundling and Minification abilities of MVC4 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Why I'm Not Using Bundling.. Yet</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-04T18:32:00+03:00" pubdate data-updated="true">Apr 4<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I&#8217;m doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
+</p><h2>It&#8217;s contra-intuitive</h2><p>Maybe the &#8216;contra-intuitive&#8217; is not exact word that reflects my frustration. What I mean, it does not do what you might expect by default. Remember I described two methods RegisterTemplateBundles() and EnableDefaultBundles()? It was really unclear to me what they do until I looked into code. Modern frameworks tend to be as less surprise as possible, but not in case of <code>System.Web.Optimizations</code>. <br />
+</p><h2>Development and production mode</h2><p>The fact it does not take into account &#8216;Debug&#8217; and &#8216;Release&#8217; mode is also very confusing. As same as in point above, I have a different expectations how it should behave. For &#8216;Debug&#8217; mode it simply should do nothing - no optimization, no compression. For release mode it should do as much as possible to minify the number of HTTP request. It turns out that you have to create some code on your own to make it happen. <br />
+</p><h2>Bundling is bad during debugging</h2><p>While you in development mode you do debug, no surprise here. Having FireBug or Chrome Development tools it&#8217;s very easy to debug javascript, you can pick up any file and place breakpoint inside.<br />
+</p><a href="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png" alt="chrome development" /><br />
+</a><br />
+<p>It is no so easy with bundling, cause it will package all your files in one big chunk, so you need to open and find right place there. Since the total number of line could be huge there, it&#8217;s turns to be big deal.<br />
+</p><p>As a workaround you have to have a copies of references, one you using on development and ones you use on production.<br />
+</p><pre class="brush: csharp">&lt;!-- Development --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;     
+
+&lt;!-- Production 
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+--&gt;
+</pre><h2>It&#8217;s not well ironed</h2><p>Since it&#8217;s very young obviously it has some problems. <br />
+</p><p>Be honest, I haven&#8217;t seen on my own but one of the comments in my previous post described the issue with minification of CSS files that include <code>-ie-</code> specific selectors. That&#8217;s probably not only one issue found.<br />
+</p><h2>What did I expect?</h2><p>To do not have only critics I try to put some constructive part in post as well. Ok, so I see it should work to meet my needs? <br />
+</p><p>First of all, it should be implemented as simple HTML razor helpers. You just specify the name of bundle there, like &#8220;scripts/js&#8221; and that&#8217;s it. Helper is smart enough to understand what is active environment at the moment. In case of &#8216;Debug&#8217; it expanded to a bunch of script references or links, for JS and CSS respectively. In &#8216;Release&#8217; mode it&#8217;s indeed refers the bundle, so it&#8217;s packaged and minified for best performance.<br />
+</p><p>You might say, that 1. this is out of scope for <code>System.Web.Optimization</code> framework 2. you can create this behavior easily on your own. This is right, but in the same time if you deal with ASP.NET MVC4 you have some expectation that is should work right and you are not forced to invent the wheel again, so you have kind of consistency between numerous projects.<br />
+</p><p>I&#8217;ve been thinking about to create something like that, but during the chat with fellow developer <a href="">@andrexx</a> about bundling and he showed me something interesting. <a href="https://twitter.com/#!/tdupont750">Tom DuPont</a> has already implemented something that&#8217;s really reflects my needs. It&#8217;s the <a href="http://www.tomdupont.net/2012/03/configuring-bundles-in-mvc-4.html">way</a> of configuring bundles both from code and web.config. It looks like a very handy tool.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

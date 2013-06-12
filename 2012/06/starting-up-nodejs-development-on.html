@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Starting Up Node.js Development on Windows</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Starting Up Node.js Development on Windows Jun 27th, 2012 NodeJs, Tools Node.js is very interesting platform, it allows to unleash your internal &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2012/06/starting-up-nodejs-development-on.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Starting Up Node.js Development on Windows</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-27T20:40:00+03:00" pubdate data-updated="true">Jun 27<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nodejs/'>NodeJs</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
+</p><p>    If you are .NET developer addicted to Visual Studio, you might feel a little frustration about joining new camp. Primarily, because of lacking proper development environment. This is not quite true. You can setup very solid development environment for Node.js on Windows box.<br />
+</p><h2>Installing node.js</h2><p>    Node.js is nothing more as node.exe file. It&#8217;s very easy to install with latest installer available on <a href="http://nodejs.org">nodejs.org</a> web site. <br />
+</p><p>    Installing the software is always a little mess. You have to download, un-package, run.. go different wizards - it&#8217;s boring! Do you remember how you life changed after NuGet release? What if say, you can do exactly the same thing, but instead of installing .NET packages, you can install software. This is possible by brilliant project called <a href="http://chocolatey.org/">Chocolatey</a>.<br />
+</p><p>    After <a href="http://chocolatey.org/">Chocolatey</a> is setup, you can easily install any <a href="http://chocolatey.org/packages">package</a> you like, including one for <a href="http://chocolatey.org/packages/nodejs">node.js</a>. <br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            c:&gt; cinst nodejs<br />
+        </p>    </div></div><p>    Nice and easy.<br />
+</p><h2>Trying things out</h2><p>    As Chocolatey installed node, it should be available in your PATH. So, fire up new cmd window and put &#8216;node&#8217; in command line. node.exe acts as javascript interpreter, so you can directly put some code in console. Here is simple example of Fibonacci number&#8217;s calculation in node.<br />
+</p><a href="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png"><br />
+    <img src="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png" alt="node.js command line"/><br />
+</a><br />
+<p>    Instead of typing the code into interpreter console, you can save it to local file &#8216;fib.js&#8217; and run it with node.<br />
+</p><a href="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png"><br />
+    <img src="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png" alt="node.js command line 2"/><br />
+</a><br />
+<h2>Setting up development environment</h2><p>    Basically all you need with node.js is command line and text editor. Any text editor you like. You just code in you favorite one and then switch to command line to start up application, like &#8216;node app.js&#8217;. <br />
+</p><p>    You can go further this minimalistic setup, thought. I&#8217;ll show the best options I&#8217;ve tried so far.<br />
+</p><h3>Sublime Text 2</h3><p>    <a href="http://www.sublimetext.com/2">Sublime Text 2</a> is a superior development-oriented text editor. Even with plain installation it&#8217;s very useful. Available on many platforms, including Windows makes it really &#8216;must-have&#8217; tool for any developer. <br />
+</p><p>    You can turn Sublime Text 2 into quite powerful node.js IDE with plug called <a href="https://github.com/tanepiper/SublimeText-Nodejs">SublimeText-NodeJs</a>.<br />
+</p><p>    It provides with basic code completion functionality.<br />
+</p><a href="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    But it also gives you ability to simply run node.js scripts inside the editor and see resulted output.<br />
+</p><a href="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png"><br />
+    <img src="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    Just inside the editor you able to access &#8216;npm&#8217; and &#8216;node&#8217; command line, so it&#8217;s pretty possible to work with project without leaving text Sublime at all. Reality is a little different, thought.<br />
+</p><p>    You can handle pretty big projects inside Sublime. It is able to open folders, providing great file navigation options. Pressing &#8216;Ctrl+P&#8217; will bring navigation console. Start typing the file name and relevant suggestion will appear.<br />
+</p><a href="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png"><br />
+    <img src="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    As well, you can easily navigate inside javascript file, by functions or object properties. Press &#8216;Ctrl+P&#8217; after put &#8216;@&#8217; sign and type function name.<br />
+</p><a href="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<h3>JetBrains Web Storm</h3><p>    JetBrains produces great <a href="http://www.jetbrains.com/products.html">products</a> including <a href="http://www.jetbrains.com/webstorm/index.html">Web Storm</a>. Web Storm is full feature IDE from a world-class vendor. Being HTML/CSS/JS editor, it could be easily adopted for Node.js development. <br />
+</p><a href="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    With a WebStorm you just create a new project, place javascript files inside and configure IDE to run Node.js configuration. You have ready to use presets, including one for node.<br />
+</p><a href="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    As you start to work with any Node.js internal modules (as http, fs etc.) WebStorm would propose to download sources and index them to be able to produce IntelliSence-like suggestions. I was really happy to see how fast and precise it works.<br />
+</p><a href="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png"><br />
+    <img src="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    Besides of that, you are getting all JetBrains IDE&#8217;s goodness - Refactoring, Integration with VCS, Code Formatting, Navigation etc. But the most sweet feature as for me is - Debugging. Just place the break point in the line you want to halt and press &#8216;Debug&#8217; button.<br />
+</p><a href="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png"><br />
+    <img src="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<p>   App would run and debugger will stop on breakpoint, showing current Frames, Local or Watched variables. <br />
+</p><a href="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png"><br />
+    <img src="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<h3>Microsoft Web Matrix 2</h3><p>    New kid in the block of Node.js development on Windows is <a href="http://jbeckwith.com/2012/06/07/node-js-meet-webmatrix-2/">Web Matrix 2</a>, currently beta version.<br />
+</p><a href="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png"><br />
+    <img src="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix 2 is a lightweight IDE suitable for ASP.NET, PHP, HTML development. It&#8217;s easy to install it by Web Installer. As soon as it&#8217;s installed, you can pretty nice templates for Node.js applications.<br />
+</p><a href="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png"><br />
+    <img src="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix works differently. As Sublime and WebStorm depend on &#8216;node.exe&#8217; and work directly with it, Web Matrix uses another component, called <a href="https://github.com/tjanczuk/iisnode/">iisnode</a>. IISNode is a host of node.js on IIS web server. This approach of course brings a lot of <a href="https://github.com/tjanczuk/iisnode/wiki">benefits</a>, but in the same way it might give you some limitations of IIS itself. Web Matrix comes with IIS Express web server, which is perfect for web development. One very obvious benefit of using &#8216;iisnode&#8217; is that you no longer need to restart &#8216;node.exe&#8217; process manually, as you changing sources.<br />
+</p><p>    But let&#8217;s go back to IDE itself. As for IntelliSence it much more worse that WebStorm and even Sublime, I would say. It works really strange, for instance knowing nothing about embedded node components. <br />
+</p><a href="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png"><br />
+    <img src="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    No internal debugger, no refactoring tools. The code editor is more than good enough. Almost the same user experience as Visual Studio. <br />
+</p><p>    Besides of the code editor, you create databases and different report for sites.<br />
+</p><a href="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png"><br />
+    <img src="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    Even with plugins, Sublime Text 2 still more text editor than IDE. Definitely, more than good enough text editor, but still. I personally using it. First of all, because I like.. second, because I would like to be closer to &#8216;node.exe&#8217; at least at the period I&#8217;m learning the platform. Available as unlimited trial for now, makes it really attractive.<br />
+</p><p>    WebStorm, no doubt is the most valuable player now. It works great, even If I heard some rumors that it sucks a little on Linux. This should be the choice for professional development. It costs money.<br />
+</p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It&#8217;s much more closer to Microsoft technologies, like IIS, Azure etc.<br />
+</p><p>    So, what to pick up you might ask?<br />
+</p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2012/06/starting-up-nodejs-development-on.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2012/06/starting-up-nodejs-development-on.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

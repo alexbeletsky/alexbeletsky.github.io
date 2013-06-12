@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Web development: ASP.NET Ajax, ScriptManager to recover a password</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Web development: ASP.NET Ajax, ScriptManager to recover a password Jun 27th, 2010 AJAX, DDD, asp.net Remember a site we started to create in &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2010/06/web-development-aspnet-ajax.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Web development: ASP.NET Ajax, ScriptManager to recover a password</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-27T00:58:00+03:00" pubdate data-updated="true">Jun 27<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/ddd/'>DDD</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+Remember a site we started to create in previous articles. What we&#8217;ve got is simple web application, 
+    with a registration functionality. During registration you submit email, password and secret phrase. We going to use this secret phrase today to recover forgotten passwords. Functionality is bit artifictial but my goal is to demonstrate usage of ASP.NET Ajax framework, namely ScripManager object as very usefully component for ajaxifying your applications.
+<br />
+<br />
+<h2>Preparation</h2>
+<br />
+I&#8217;ve added another page called ForgetPassword.aspx, it looks like this:
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ5PtqTslI/AAAAAAAAG1I/r47hme6j7LA/s1600/forgetpass.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 252px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ5PtqTslI/AAAAAAAAG1I/r47hme6j7LA/s400/forgetpass.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5487206506859573842" /></a>
+<br />
+<br />
+<a href="http://msdn.microsoft.com/en-us/magazine/cc163354.aspx">Script Manager</a> is really powerfull component and one of major feature is how it simplifies working with web services. So, let&#8217;s add ScriptManager to application. The place to do that are typically MasterPage to make ScrpitManager be accessible from every content page. It have to be placed in &#8216;form&#8217; with runat=&#8221;server&#8221; attribute, otherwise runtime exception will appear on page loading.
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">class</font><font color="#0000ff">="content"</font><font color="#0000ff">&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="left"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">form</font> <font color="#ff0000">id</font><font color="#0000ff">="form1"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">asp:ScriptManager</font> <font color="#ff0000">ID</font><font color="#0000ff">="ScriptManager"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">Scripts</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">asp:ScriptReference</font> <font color="#ff0000">Path</font><font color="#0000ff">="~/js/forgetpassword.js"</font> <font color="#ff0000">ScriptMode</font><font color="#0000ff">="Auto"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">Scripts</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">Services</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">asp:ServiceReference</font> <font color="#ff0000">Path</font><font color="#0000ff">="~/services/ForgetPassword.asmx"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">Services</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">asp:ScriptManager</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">asp:ContentPlaceHolder</font> <font color="#ff0000">ID</font><font color="#0000ff">="ContentPlaceHolder1"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">asp:ContentPlaceHolder</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">form</font><font color="#0000ff">&#62;</font>&nbsp;<br>&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font>&nbsp;&nbsp;<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Script Manager contains two references - ScriptReference, ServerReference. It is a declarative way to add references, in the same time it is possible to do it programmatically (that is more complicated). What you need to do is to add such declarations, the rest will be done by control. Next, we will add forgetpassword.js script to script folder and new web service instance to services folder. Now, application ready for AJAX!
+<br />
+<br />
+<h2>Ajaxify It</h2>
+<br />
+Before we do something more serious let&#8217;s check that setup we created are actually working. Go to webservice code (ForgetPassword.asmx.cs):
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> WebApplication.Services<br>{<br>&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Summary description for ForgetPassword</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br>&nbsp;&nbsp;[WebService(Namespace = <font color="#A31515">"http://tempuri.org/"</font>)]<br>&nbsp;&nbsp;[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]<br>&nbsp;&nbsp;[System.ComponentModel.ToolboxItem(<font color="#0000ff">false</font>)]<br>&nbsp;&nbsp;<font color="#008000">// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. </font><br>&nbsp;&nbsp;[System.Web.Script.Services.ScriptService]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ForgetPassword : System.Web.Services.WebService<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;[WebMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> HelloWorld()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#A31515">"Hello World"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Please note, there is attribute of service class [System.Web.Script.Services.ScriptService] that must be uncommented as soon as webservice is being used from java script code. Do not forget to uncomment it. And simple method is present there, HelloWorld that just returns a string. On a ForgetPassword.aspx page we have such form:
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">asp:Content</font> <font color="#ff0000">ID</font><font color="#0000ff">="Content2"</font> <font color="#ff0000">ContentPlaceHolderID</font><font color="#0000ff">="ContentPlaceHolder1"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font>Please fill form below<font color="#0000ff">&#60;/</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">class</font><font color="#0000ff">="box"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font>Email: <font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;&#60;</font><font color="#800000">asp:TextBox</font> <font color="#ff0000">ID</font><font color="#0000ff">="EmailText"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">asp:TextBox</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font>Secret Phrase: <font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font> <font color="#0000ff">&#60;</font><font color="#800000">asp:TextBox</font> <font color="#ff0000">ID</font><font color="#0000ff">="SecretPhraseText"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">asp:TextBox</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font>&#38;nbsp<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font> <font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="forgot"</font> <font color="#ff0000">type</font><font color="#0000ff">="button"</font> <font color="#ff0000">value</font><font color="#0000ff">="Forget password"</font> <font color="#ff0000">class</font><font color="#0000ff">="button"</font> <font color="#ff0000">onclick</font><font color="#0000ff">="onForgotPasswordClick()"</font><font color="#0000ff">/&#62;</font>&nbsp; <br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">span</font> <font color="#ff0000">id</font><font color="#0000ff">="Password"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">span</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">asp:Content</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+By pressing on &#8216;forget&#8217; button onForgotPasswordClick() javascript function will be called (this is the place where we would do AJAX calls). Currently the code is really simple:
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> onForgotPasswordClick() {<br>&nbsp;&nbsp;WebApplication.Services.ForgetPassword.HelloWorld(onMethodSucceeded, onMethodFailed);<br>}<br><br><font color="#0000ff">function</font> onMethodSucceeded(results, args) {<br>&nbsp;&nbsp;alert(results);<br>}<br><br><font color="#0000ff">function</font> onMethodFailed(error) {<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+One one line of code in onForgotPasswordClick() do a bit complex things. It register a call to web service (you have to reference web service with a full class name), HelloWorld does not have any arguments, so we are passing nothing, but register 2 callback functions. One that will be called on successfull finish of AJAX call, second will be called on any failure. Even it might seems no so &#8216;magic&#8217; ones who created AJAX application without any frameworks would notice how less code have to be created to accomplish this. Finally, we displaying results in alert window. Just run application, click &#8216;Forgot password&#8217; button and see:
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ5086ObnI/AAAAAAAAG1Q/Rd-q5Uhr68k/s1600/helloworld.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 251px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ5086ObnI/AAAAAAAAG1Q/Rd-q5Uhr68k/s400/helloworld.png" border="0" alt=""id="Img1" /></a>
+<br />
+<br />
+<h2>Real work</h2>
+<br />
+As soon as we see its OK, let&#8217;s do some real work. If users email and secret pharase matches corresponding record in database, we going to show user password on screen without reloading of page. We will add new business object and implementation for recovery of password. I would just paste tests and code of business object (as it is really small and simple one), the rest implementation you will be able to see by going to GitHub. (for ones who followed my previous articlies - I&#8217;ve done some refactoring switching to Repository pattern for DAL, since it is more correct and reusable way of working with data, please see details in code).
+<br />
+<br />
+Tests:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> NUnit.Framework;<br><font color="#0000ff">using</font> Company.Product.BLL.Tests.Mocks;<br><font color="#0000ff">using</font> NUnit.Framework.SyntaxHelpers;<br><font color="#0000ff">using</font> Company.Product.DAL;<br><br><font color="#0000ff">namespace</font> Company.Product.BLL.Tests<br>{<br>&nbsp;&nbsp;[TestFixture]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ForgotPasswordTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> ForgotPasswordDataMock();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT/POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> c = <font color="#0000ff">new</font> ForgotPassword(data);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> RestorePassword_NoUser()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> ForgotPasswordDataMock();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> forgot = <font color="#0000ff">new</font> ForgotPassword(data);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> password = forgot.RestorePassword(<font color="#A31515">"no such user"</font>, <font color="#A31515">"secret"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(password, Is.Null, <font color="#A31515">"It is not possible to return password for non-existing user."</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> RestorePassword_WrongSecretPhrase()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> ForgotPasswordDataMock();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> forgot = <font color="#0000ff">new</font> ForgotPassword(data);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.InsertUser(<font color="#0000ff">new</font> User() { Email = <font color="#A31515">"user@a.com"</font>, Password = <font color="#A31515">"password"</font>, SecretPhrase = <font color="#A31515">"correct secret"</font> });<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> password = forgot.RestorePassword(<font color="#A31515">"user@a.com"</font>, <font color="#A31515">"wrong secret"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(password, Is.Null, <font color="#A31515">"It is not possible to return password if wrong secret phrase used."</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> RestorePassword_CorrectUserAndSecret()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> ForgotPasswordDataMock();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> forgot = <font color="#0000ff">new</font> ForgotPassword(data);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expectedPassword = <font color="#A31515">"password"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.InsertUser(<font color="#0000ff">new</font> User() { Email = <font color="#A31515">"user@a.com"</font>, Password = expectedPassword, SecretPhrase = <font color="#A31515">"correct secret"</font> });<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> password = forgot.RestorePassword(<font color="#A31515">"user@a.com"</font>, <font color="#A31515">"correct secret"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(password, Is.EqualTo(expectedPassword), <font color="#A31515">"Wrong password value returned."</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Code:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Company.Product.DAL;<br><br><font color="#0000ff">namespace</font> Company.Product.BLL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ForgotPassword<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> IUsersRepository _data;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> ForgotPassword(IUsersRepository data)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_data = data;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> RestorePassword(<font color="#0000ff">string</font> email, <font color="#0000ff">string</font> secret)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = _data.FindUserByEmail(email);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (user == <font color="#0000ff">null</font>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (user.SecretPhrase == secret)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> user.Password;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+After it is ready and tested we are going to integrate with object to Web Service method call.
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">/// &#60;summary&#62;</font><br><font color="#008000">/// Summary description for ForgetPassword</font><br><font color="#008000">/// &#60;/summary&#62;</font><br>[WebService(Namespace = <font color="#A31515">"http://tempuri.org/"</font>)]<br>[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]<br>[System.ComponentModel.ToolboxItem(<font color="#0000ff">false</font>)]<br><font color="#008000">// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. </font><br>[System.Web.Script.Services.ScriptService]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> ForgotPasswordService : System.Web.Services.WebService<br>{<br>&nbsp;&nbsp;[WebMethod]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> RestorePassword(<font color="#0000ff">string</font> email, <font color="#0000ff">string</font> secret)<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> forgotPassword = <font color="#0000ff">new</font> ForgotPassword(<font color="#0000ff">new</font> UsersRepository());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> forgotPassword.RestorePassword(email, secret);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+After that it is time to use Web Service from javascript code. I&#8217;m using <a href="http://jqueryui.com/">jQuery</a> library to work with divs, classes and so on. jQuery does not require any special to add about it, it is so popular that it has been included to VS 2010 and Microsoft is <a href="http://www.microsoft.com/Presspass/press/2010/mar10/03-16MIX10Day2PR.mspx">contributing</a> to jQuery as well. Code uses simple and cool effect of fadeOut slideDown effect, just to make application bit more attactive.
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> onForgotPasswordClick() {<br>&nbsp;&nbsp;<font color="#0000ff">var</font> email = $(<font color="#A31515">'#email'</font>).val();<br>&nbsp;&nbsp;<font color="#0000ff">var</font> secret = $(<font color="#A31515">'#secret'</font>).val();<br><br>&nbsp;&nbsp;$(<font color="#A31515">"#resultsdiv"</font>).fadeOut(<font color="#A31515">"fast"</font>, <font color="#0000ff">function</font>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;removeClasses();<br>&nbsp;&nbsp;&nbsp;&nbsp;WebApplication.Services.ForgotPasswordService.RestorePassword(email, secret, onMethodSucceeded, onMethodFailed);&nbsp;&nbsp;<br>&nbsp;&nbsp;});&nbsp;&nbsp;<br>}<br><br><font color="#0000ff">function</font> onMethodSucceeded(results, args) {<br>&nbsp;&nbsp;<font color="#0000ff">var</font> password = results;<br><br>&nbsp;&nbsp;<font color="#0000ff">if</font> (password == <font color="#0000ff">null</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).addClass(<font color="#A31515">"red"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).html(<font color="#A31515">"Your email or secret phrase is invalid"</font>);&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).addClass(<font color="#A31515">"green"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).html(<font color="#A31515">"Your password: "</font> + password);<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;$(<font color="#A31515">"#resultsdiv"</font>).slideDown(<font color="#A31515">"fast"</font>);<br>}<br><br><font color="#0000ff">function</font> onMethodFailed(error) {<br>}<br><br><font color="#0000ff">function</font> removeClasses() {<br>&nbsp;&nbsp;<font color="#0000ff">if</font> ($(<font color="#A31515">"#results"</font>).hasClass(<font color="#A31515">"green"</font>)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).removeClass(<font color="#A31515">"green"</font>);<br>&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> ($(<font color="#A31515">"#results"</font>).hasClass(<font color="#A31515">"red"</font>)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).removeClass(<font color="#A31515">"red"</font>);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote><br />
+<br />
+<h2>Results</h2>
+<br />
+As soon as I input some wrong data into email/secret phase control, I&#8217;ll see fadding out div that informs me about problem. Like that,
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ6CkSb6rI/AAAAAAAAG1Y/zEBpoU-wqEw/s1600/real-forgetpass.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 252px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ6CkSb6rI/AAAAAAAAG1Y/zEBpoU-wqEw/s400/real-forgetpass.png" border="0" alt=""id="Img2" /></a>
+<br />
+<br />
+But if I put correct values where, I&#8217;ll get my password back:
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ6PBrttTI/AAAAAAAAG1g/iiJV3ATah3o/s1600/real-forgetpasscorrect.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 252px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TCZ6PBrttTI/AAAAAAAAG1g/iiJV3ATah3o/s400/real-forgetpasscorrect.png" border="0" alt=""id="Img3" /></a>
+<br />
+<br />
+<h2>Conclusions</h2>
+<br />
+Nowadays it is even hard to imagine serious web application with out AJAX. It is mostly everywhere. Because of such usabilty and popularity a lot of vendors proposing tools and framework to hanlde common AJAX issues. And of cause, tools for working with AJAX is started to be included to .NET framework. ScriptManager is only one part of it framework. For futher exploration I would recomend to look on ASP.net AJAX Toolkit that is build upon .Net framework abilitites and propose a lot of interesting controls. Moreover, it is <a href="http://ajaxcontroltoolkit.codeplex.com/SourceControl/list/changesets">open source</a> and you can go ahead and hack it or contribute it.
+<br />
+<br />
+<h2>Sources</h2>
+<br />
+<p>
+Sources are available on GitHub: <a href="http://github.com/alexanderbeletsky/Concept">http://github.com/alexanderbeletsky/Concept</a>
+</p>
+
+<!-- AddThis Button BEGIN -->
+<div><a expr:addthis:title='data:post.title' expr:addthis:url='data:post.url' class='addthis_button'><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c30246f249329c8"></script></div>
+<!-- AddThis Button END --></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2010/06/web-development-aspnet-ajax.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2010/06/web-development-aspnet-ajax.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

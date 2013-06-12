@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mocks | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/mocks/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html"/>
+    <updated>2012-02-02T11:36:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />
+</p><h2>NCrunch<br />
+</h2><p><a href="http://www.ncrunch.net/">NCrunch</a> is just amazing extension for Visual Studio created by <a href="https://twitter.com/#!/remcomulder">@remcomulder</a>. It automatically detects all your tests and re-running those as soon as source code changes happen. Forget about manual test re-running, it's just waste of time. You even do not need to press Ctrl + S, just continue coding as you usually do. <br />
+</p><p>Initially I had big doubts about such kind of tools, but NCrunch changed my mind. It supports major unit test frameworks NUnit, XUnit, MSpec etc. Besides of that it allows to collect code coverage metrics (and show it just in VS editor), run tests under debugger, supports multi-core systems etc.<br />
+</p><p>In short, NCruch is something that makes your TDD very smooth, allowing to focusing on important things and forgot about some routine.<br />
+</p><a href="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg" alt="ncrunch" /><br />
+</a><br />
+<h2>NSubstitute<br />
+</h2><p>I stick to <a href="http://code.google.com/p/moq/">Moq</a> for quite awhile and saw no reason to switch it.. Till I saw <a href="http://nsubstitute.github.com/">NSubsitute</a>. I hardly could imagine someone who staring "yet another mocking framework project", it looks like absolute non-sense.. But <a href="https://github.com/nsubstitute">those</a> guys proves me wrong.<br />
+</p><p>Well, what's so new there? First of all it have very clean API. No more <code>new Mock()</code> or <code>MockGenerator.GenerateMock()</code>, creation of test doubles are nothing more as <code>Substitute.For&lt;IEntityToMock&gt;()</code>. Mocking properties, multiple return values, events etc. in very easy fashion. Check out their <a href="http://nsubstitute.github.com/help/getting-started/">getting started</a> materials for further info. <br />
+</p><p>Best feature as for me, that by using extension methods they got rid of lambdas for setting up mocks. It makes test code more readable and clean. See this small <a href="https://gist.github.com/1722396">gist</a> there I placed just some Moq and NSubstitue tests together.<br />
+</p><p>I would not say that Rhino or Moq is now much worse that NSubstitute.. No, I would just say NSubstitute is a little better. Even same functionality, with less amount of code is already big argument for me.<br />
+</p><pre class="brush: csharp">[Test]
+public void should_send_an_email_if_users_signs_up_nsub()
+{ 
+ // arrange
+ var emailService = Substitute.For&lt;IEMailService&gt;();
+ var controller = new LoginController(emailService);
+
+ // act
+ controller.SignUp(new SignUpModel { Email = &quot;a@a.com&quot;, Password = &quot;xxx&quot; });
+
+ // assert
+ emailService.Received().SendEmail(Arg.Any&lt;EmailMessage&gt;(), &quot;current&quot;);
+}
+</pre><h2>FluentAssertions<br />
+</h2><p>Again, for years I followed classic NUnit's <code>Assert.That()</code> method. I also played a bit with <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a>, but FluentAssertions by <a href="https://twitter.com/#!/ddoomen">@ddoomen</a> is going to change that.<br />
+</p><p>FluentAssertions are based on extension methods and allows you to get rid of Assert.That call and just wrote your assertion directly to object. Here some example: <br />
+</p><pre class="brush: csharp">{
+    // NUnit.Assert style..
+    Assert.That(result, Is.EqualTo(3));
+
+    // FluentAssert style..
+    result.Should().Be(3);
+}
+</pre><p>This is very simple example. The power of FluentAssertions arise then you need to have either multiple assertions or assertions on complex objects. Multiple assertion could be combined by <code>And</code>, like:<br />
+</p><pre class="brush: csharp">{
+    "somestring".Should().Contain("some").And.HaveLength(10);
+}
+</pre><p>It also provides great support for working with Collections, DateTimes, Guids, Exceptions, XML etc. Project is hosted on codeplex, here is <a href="http://fluentassertions.codeplex.com/documentation">documentation</a>. Easy start, easy go.<br />
+</p><h2>Conclusions</h2><p>Now, I'm sharpening my axe on those tools and have very nice impressions so far. Special thanks goes to <a href="https://twitter.com/#!/skalinets">@skalinets</a> who introduced me with those tools.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

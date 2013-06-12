@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: E-conomic | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/e-conomic/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
+    <updated>2013-04-14T14:35:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
+    <content type="html"><![CDATA[<div class='post'>
+        <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
+</p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don't do .NET development more than 1.5 years for now. It's not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
+</p><h2>WTH?</h2><p>I work in E-conomic company and about 2 years ago we decided to build new product. <br />
+</p><p>Till that time we've learned hard few things: plain jQuery applications is mess, building new shinny product on out-dated infrastructure is bad idea.<br />
+</p><p>So, we've started with front-end by choosing Backbone.js as our foundation, later on we've decided to switch our API server from .NET to Node.js.<br />
+</p><p>It appears we got full JavaScript stack on that product and I involved in JavaScript more and more each day.<br />
+<!-- more -->
+</p><h2>I thought I know JavaScript</h2><p>That time I mistakenly thought, I can do JS programming. Sure, I understood jQuery selectors, concept of callback and even why we need 'var me = this;' trick in code.<br />
+</p><p>But the reality was a bit different. Now, listening to podcasts and reading some blogs, I understood that I've been to 'classic' trap on C#/Java developer switching to JavaScript. Languages and frameworks requires time to learn.<br />
+</p><h2>Long hard way of learning</h2><p>I had to spend the time to learn new stuff. I would say the best source of information was the code written by my <a href="https://github.com/e-conomic?tab=members">colleagues</a>. We have great team, so initially I were just reviewing the code following some patterns. I also spent time of peering famous OS projects like underscore and Backbone.js.<br />
+</p><p>JavaScript  <a href="http://shop.oreilly.com/product/9780596517748.do">Good Parts</a>, opened my eyes on few important things as well.<br />
+</p><p>There are 3 aspects that changed my mind on JavaScript.<br />
+</p><h3>JavaScript is dynamic language</h3><p>Let's be clear. If someone in 2003 tell me I'm going to program dynamic language and will be happy about, I would never believe that. I was programming C++ and truly believed in types. Types as I was thinking is only way to tackle complexity of software.<br />
+</p><p>Even though, I still think about some advantages of static vs. dynamic languages, my opinion has changed radically.<br />
+</p><p>Dynamic languages are great. I feel I more solve problems rather than designing types (or usually hierarchy of types). Consider that, instead of thinking about the name for next "ProxyAbstractFactoryManager" I'm writing functions that do stuff.<br />
+</p><h3>Frictionless development</h3><p>I was compiling applications for whole my life. Just to run some simple thing I need to compile and link. It's usually not a problem at all, but depends on project infrastructure it can take a lot of time. Sooner or later you start to hate builds.<br />
+</p><p>With JavaScript application, you simply should run it. It starting fast so the gap between "write the line of code" and "check the results" became very small.<br />
+</p><p>Instead of heavyweight IDE's I became Sublime Text 2 user. After years in VS you simply could not understand how to write code without IntellySense. But practice shows it's really possible. <br />
+</p><h3>Node.js</h3><p>To be honest with you, I was very skeptical regarding Node.js initially. But again, practice showed different results. It's been proved that Node.js is very suitable for our product. We are running API server on Node.js and it performs really nice.<br />
+</p><p>Later I started to learn what Node.js platform offers and I was really surprised with it's abilities.<br />
+<p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
+</p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
+</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+<h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one "language context". I would not call a huge problem, but usually context switching from one language to another can take something.<br />
+</p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I'm selecting JavaScript.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Third Year of E-conomic]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
+    <updated>2013-03-13T20:29:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>That's my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I've heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
+    <!-- more -->
+    </p>    <p>        So, what's interesting about? Alright, it begins with <a href="http://www.e-conomic.com/">E-conomic</a> company, which through about 10 years on market gathered huge experience in online accounting. The primary target audience for all that years were professional accounters and administrators that have pretty solid knowledge what the accounting is. But due influence of internet economy and small-business grow there appeared high demand on simple accounting software, that could be easily understood even for non-professional accounters. That's were we saw the opportunity. That's then the <a href="https://debitoor.com/">Debitoor</a> born.<br />
+    </p>    <p>        Technologically it's been very innovative for us, too. As I <a href="http://www.beletsky.net/2012/03/second-year-of-e-conomic.html">wrote</a> last year, the March was the month we tried how good different technologies might work for us. The decision were taking up to full JavaScript stack - <a href="http://nodejs.org/">node.js</a> and <a href="http://www.mongodb.org/">MongoDB</a> as backend, <a href="http://backbonejs.org/">Backbone.js</a> as front end technologies.<br />
+    </p>    <p>        So, near the April we have a working product running .NET + MSSQL, that was on production and customers started to use, we decided to switch backend from .NET to Node.js. The HTTP API interfaces were "copied" from ASP.NET MVC implementation to exactly the same but on Express.js. The difference was in the way how ASP.NET MVC and Express.js is serving the HTML responses, so we have to re-desing the way how front-end application is being initialized and started. Since the low coupling of our front end to ASP.NET features, the rest of Backbone.js application remained absolutely the same.<br />
+    </p>    <p>        All existing data has been exported to JSON files and been imported to MongoDB through the existing API. That gave us a chance to make some performance measuring and we definitely we happy about. Average HTTP request were handled in ~100ms that was a quite big boost comparing to previous platform.<br />
+    </p>    <p>        Front-end is being involved as well. We've been switched to Single Page Application (SPA) architecture client side and there is no way back. With Node.js backend we easily moved application to cloud, all static resources to CloudFront that affected initial load time as a result made application to look and feel incredibly fast.<br />
+    </p>    <p>        But the most important is - users love it! We've got plenty of sign-ups during the day, from different countries as Germany, Spain, Great Britain, Columbia etc., recently we've started premium campaign, and the premium users joins us. UI/UX are tweeked all the time, based on future application vision and A/B tests.<br />
+    </p>    <p>        All that makes me feel - your work is important and you do something valuable.. and that is exactly what keeps me working on <a href="http://www.e-conomic.com/">E-conomic</a>. It's interesting and make sense - that's all I need.        <br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Company Days 2012 in E-conomic]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic.html"/>
+    <updated>2012-09-20T16:58:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        Company Days is a yearly event in E-conomic, then all employees gather together. It's usually happen in the middle of September, the time than Copenhagen is especially beautiful. It's been great week, primarily because of opportunity to meet guys whom we work very close to. Besides the developers, primarily located in Denmark and Ukraine, business and operational people from UK, Sweden, Norway, Spain, Germany etc. are also coming, so it makes very cool international environment.<br />
+    </p>    <p>        This year was a little special, since we had additional fun. Our CTO had organized the hackathon. The whole day event, supposed to create some valuable hacks for E-conomic product. All developers has been spitted on pairs and extended with business representatives. I had a team of 4 people - 2 developers and 2 business guys. Started at early morning near the blackboard, it was so nice to be part of process where the value is born in such extremely short period. We finally selected the idea, which seems to be very cool in terms of business and realistic in terms of one day implementation.<br />
+    </p>    <p>        It's been a long day of developing, debugging, demonstration and changes. Our product owners were always near us, giving both valuable feedback and supplying us with coffee and Danish chocolate sweets (that worked so good to me, since I needed sugar all the time). About 22.00 we got something that looks like a demo version of feature we wanted to produce. We've spent near 1 hour more, to show everything to PO's and fix some small bugs. I felt very tired at the end.<br />
+    </p>    <p>        Next day at 14.00 was big time of presentations. That was the funnies part. I have to admit, there was several really great hacks. In the same time some our PO's are so cool of selling things that they turned the presentation into real show (kind of TV market, I would say). Everybody had a great joy, especially after words like "I've been asking for this feature for 2 year, and those guys created it in 16 hours". It's a bit of irony, but a bit of true as well. I know the jury that included CEO, CTO, Head of PO's etc., we definitely happy to see the results and some hacks will be turned into the products really soon.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-LsnSDGvzOrQ/UFsfQmfY5GI/AAAAAAAAJIQ/82qUi0631-A/s720/IMG_5365.JPG"><br />
+        <img src="https://lh6.googleusercontent.com/-LsnSDGvzOrQ/UFsfQmfY5GI/AAAAAAAAJIQ/82qUi0631-A/s720/IMG_5365.JPG" style="width: 620px" /><br />
+    </a><br />
+    <p>        Apart from the hackathon, we had traditional speeches of CEO, Marketing people and guys from other departments. There was also a bit more activities, including jogging in which I took a part and did 8km distance. And of cause, Friday boat trip and party in restaurant. Party was so cool, that I almost missed my flight in the morning (but that's a completely different story).<br />
+    </p>    <p>        I would like to say thanks for everybody involved, I was happy to meet you guys once more.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Three month without .NET code]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code.html"/>
+    <updated>2012-07-11T13:29:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    It's not farewell letter in style of "Goodbye .NET". But, I just realized that I haven't created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />
+</p><p>    I love .NET and love C# language. C# is probably one of the best language I ever programmed with. I think that .NET is my comfort zone. Web technologies as ASP.NET MVC, Web API, NancyFX are great. But, as I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">said</a> long time ago server side development is not enough to create cool web apps.<br />
+</p><h2>Front-end development</h2><p>    For modern web application, the front-end part became as equally important as back-end. In <a href="http://www.e-conomic.com/">e-conomic</a> we are doing large scale JavaScript applications. According to <a href="http://addyosmani.com/">Addy Osmani's</a> definition, the large scale JavaScript applications are:<br />
+</p><blockquote>non-trivial applications requiring significant developer effort to maintain, where most heavy lifting of data manipulation and display falls to the browser.<br />
+</blockquote><p>    This is exactly definition of application we released just few days ago, <a href="https://www.debitoor.de/">debitoor.de</a>. And if you are doing front-end, the JavaScript is your friend. Actually, you don't even have a choice.. It's either JavaScript or some another language that could be compiled down to JavaScript as <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="https://github.com/clojure/clojurescript/">ClojureScript</a> or <a href="http://www.dartlang.org/">Dart</a> languages. The importance of JavaScript, it's common adoption, growing of community knowledge base made Scott Hanselman call JavaScript <a href="http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx">assembly language for web</a>. <br />
+</p><p>    We've chosen <a href="http://backbonejs.org/">Backbone</a> as front end development framework. With a backbone JavaScript code became to have structure. Having a proper code structure is vital for any project. I've started to learn Backbone and even I still thinking it's too minimalistic and non-complete, I believe that was a huge step forward.<br />
+</p><p>    Having implemented and stabilized HTTP API for application, almost all new features implementation was at front end. That means, new features for product were actually born in JavaScript code.<br />
+</p><h2>Back-end development</h2><p>    As might know from my earlier <a href="http://www.beletsky.net/2011/12/why-new-technologies-move-your-product.html">post</a> we've chosen ASP.NET MVC to build our HTTP API on. That worked well at the beginning, but later decision were taken to move out the API to Node.js platform. So, another team started to work on new API project, basically implementing existing API interfaces from ASP.NET MVC in Node.js.<br />
+</p><p>    Being wisely architected, our front-end did not have major ASP.NET MVC dependencies. We did not use any specific features (like Razor) or anything else just in sake of minification of efforts during switching back-end platform. And I would say it worked really well.<br />
+</p><p>    Node.js based API built on <a href="http://expressjs.com/">Express.js</a> framework, that suites nice for such kind of work. There is a great blog post about <a href="http://nodeguide.com/convincing_the_boss.html">convincing</a> you boss to use <a href="http://nodejs.org/">Node.js</a>. Node.js + <a href="http://www.mongodb.org/">MondoDB</a> is very suitable for JSON API applications, for several reasons. First of all is performance, Node.js is known for it's async I/O operations that is so perfect for web. Second is simplicity (relational simplicity, of course). Serving JSON objects inside JavaScript, storing/restoring them as MongoDB documents makes the platform and approaches very solid.<br />
+</p><p>    So, the new stuff from HTTP API also got born of JavaScript code. Check out nice post of <a href="https://plus.google.com/107092994415731288478/posts">Allan Ebdrup</a> (one of the Node.js inspiration guys inside e-conomic) about our experience with <a href="http://techtalk.e-conomic.com/developing-with-node-js-and-mongodb-part-i/">Node.js and MongoDB</a>.<br />
+</p><h2>How does it feel like?</h2><p>    So, I've started to work almost all the time for front-end having Sublime Text 2 + Chrome Developers Tools as IDE. It was a really unusual at the beginning, after many years in Visual Studio. <br />
+</p><p>    I feel myself more productive with JavaScript now. I write the code with JavaScript construction and sometimes thinking myself "how would I do in C#?" and it feels like in C# it would be much harder. I like dynamic nature of language.<br />
+</p><p>    Besides the coding I have pleasure of new infrastructure. Setting up .NET solution, containing ~80 projects, long build process, setup of MS SQL and re-staring of IIS.. All of that made a lot of idle time, read wasted time. I'm in idle, during waiting till build is finished.. or waiting 30 sec while IIS update AppDomain if I rebuild and press F5. It easily can take up to 2 hours per working day just wasted. <br />
+</p><p>    Node.js + MongoBD environment is extremely easy to setup, amazingly fast to work with. I'm restaring the application in 1 sec, just by stopping node process and running it again. With a tools like <a href="https://github.com/remy/nodemon/">nodemon</a>, you don't even need to do that. Just save the code and after a sec, press F5 in browser to test it. All of that are increases general developers happiness.<br />
+</p><p>    JavaScript is difficult language and Node.js is new platform that requires respect and time to learn. Node.js is probably one of the best <a href="http://nodejs.org/api/">documented</a> projects I ever worked with. Besides, it's open source. It means you can learn from sources. I haven't dig inside Node.js code itself, but I did look inside the Express.js then I had an issue and I found the answer as I see how particular method works.<br />
+</p><p>    Even though, Backbone.js code and Node.js code are completely different stuff, having the same language both front-end and back-end is great thing. In particular it minimizes the language context-switching then you do coding. It's possible to apply similar patterns and practices both ends.<br />
+</p><h2>Conclusions</h2><p>    Being a JavaScript developer works good for me so far. I opened just entire new world and would like to explore it more. I hope JavaScript would be my comfort zone some day.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A year with Git]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/05/year-with-git.html"/>
+    <updated>2012-05-20T13:43:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/05/year-with-git</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
+</p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
+</p><p>    I think we followed "Baby steps to.." strategy of Git adoption. Our baby steps to Git, were small, accurate and quite long. But at the end of the day, I'm happy to say - we are pure Git organization now. Moreover, some of our projects are hosted as public and private repositories under the <a href="https://github.com/organizations/e-conomic">e-conomic</a> organization github account.<br />
+</p><h2>Retrospective</h2><p>    So, let's make a kind of retrospective seeing what things were happening.<br />
+</p><ol>    <li><strong>Git-SVN mode</strong>. As described in original article, the best way to try Git inside the organization is go to Git-SVN mode. It will allow to use SVN as primary repo, but allow Git features like local branching, cool merging, stashes and other stuff described <a href="http://www.beletsky.net/2011/07/git-with-svn-what-benefits-are.html">here</a>.<br />
+    </li>
+    <li><strong>People awareness</strong>. Started by just few developers the information about the Git had spread along mates in our department. Some were very enthusiastic about that, some not. But anyway, it got attention of our many people including our CTO. The greatest thing is that initiative has not been cancelled, instead we start to think of some kind of plan that might bring us into pure Git world. <br />
+    </li>
+    <li><strong>Planning</strong>. Our plan including different evaluations, choosing between Git or HG, local or cloud hosting, Centralized or De-centralized mode etc. During this planning sessions we also identified some infrastructure dependencies that blocked switch to Git. We have so called "Language System" the application helping our copyrighters and translators to change the content of app. It's been creating assuming that SVN used, doing checkouts and commits where. Another thing is that our deployment procedure happened to be SVN dependent. Obviously, it have to be changed to work with Git. But the most priority had "Education" task. Everybody should be able to work with Git. <br />
+    </li>
+    <li><strong>Execution</strong>. Planning is easy, execution is hard. We did initial education as a series of meetings were the basics are described. Fortunately, almost as teams contained the git-aware person who were initial knowledge keeper. Some important details being moved to company's Wiki. The problems we start to have local infrastructure setup. Being Windows organization we tried to setup primary repository and server on Windows box. Keeping that short, I just say - don't do that. It's not trivial at all, to configure Git server there, setup the accounts and permissions and make it work with TeamCity. We tried different scenarios of Git hosting on IIS, including <a href="https://github.com/jakubgarfield/Bonobo-Git-Server">Bonobo-Git-Server</a> or <a href="https://github.com/JeremySkinner/git-dot-aspx">Git-Dot</a> but all had it's own limitations, blocking us of full-feature Git usage.<br />
+    </li>
+    <li><strong>Trying github</strong>. In parallel, one team that was starting out new project and was quite independent tried to host sources in cloud. Github is obvious choice here. I think, that was a great experience and this project is still hosted on github. We tried, so called <a href="https://github.com/blog/674-introducing-organizations">"organization"</a> mode. It ideally fits small software development shops. Easy start, easy go.<br />
+    </li>
+    <li><strong>Linux local server</strong>. Failed to run it properly on Windows we had to switch to Linux box. It's being deployed as virtual box, that is more than enough for Git server. That solved a lot of infrastructural issues, including authentications & permissions as well as CI problems. As I can see the effort to setup it was not so big (if compare to effort spend to make the same on Windows, it would be closer to 0). Setup once, it just start to work.  <br />
+    </li>
+    <li><strong>Mirroring repositories</strong>. The setup of local central server was the first great milestone. Even if all the developers might start to use it instead of SVN, the infrastructural problems that I mentioned in #3 were not yet solved. So, we did a partial decision. The developers are switching to Git repository, but the deployments and language works are still done on SVN repository. So it's not so frequent operations, it's possible to synchronize the Git and SVN between each other. It means, all new code started to appear in Git, but once a week (or often) all changes set are being pushed to SVN. This is of course an overhead and required some manual work.. But it was only one way for us.<br />
+    </li>
+    <li><strong>Fixing the dependencies</strong>. It took some time while everybody got comfortable with Git. Our Wiki has extended with some policies of working with Git. We mainly follow <a href="http://nvie.com/posts/a-successful-git-branching-model/">"A successful Git branching model"</a> keeping the feature in local branches, having remote branches for code review etc. After our deployment dependency has been fixed, we were able to push the code to production very fast. I think it's almost a year passed to now clearly understand benefit of Git not just theoretically, but practically. And that was amazing experience, as so for me.<br />
+    </li>
+    <li><strong>Pure git world</strong>. After the last dependency has been fixed, we happily entered the "Pure Git Environment" world. The SVN server has been stopped. All developers, DevOps and copyrighters are Git users now.<br />
+    </li>
+</ol><h2>It took a while...</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
+</p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
+</p><h2>What's next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to "pure Github" environment from here. Sure, now this transaction having it's own dependencies. But let's see what's happen during next year. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

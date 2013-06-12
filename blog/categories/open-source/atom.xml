@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Open source | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github as blogging platform]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
+    <updated>2013-05-16T18:55:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how's while I create some code. It's just hard to blog about. As you didn't do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    <!-- more -->
+    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what's going on there. So, I put some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don't write much documentation, but during writing it I realized that it's a kind of blog post or tutorial I'm writing immediately after I created something.<br />
+    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It's so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it's the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/issues">questions</a>. <br />
+    </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
+    </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
+    <updated>2013-04-24T06:11:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
+</p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
+<!-- more -->
+</p><p>That's how the <a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> born.<br />
+</p><h2>Backbone.js + Express.js SPA boilerplate</h2><p>The project is a <a href="http://expressjs.com/">Express.js</a> application using <a href="http://backbonejs.org/">Backbone.js</a> as front-end framework. The idea is you just simply clone it, remove non needed routes and application and build something on your own.<br />
+</p><p>I won't put to much details in a blog post, since <a href="https://github.com/alexanderbeletsky/backbone-express-spa">repo</a> neat readme section. Just several facts:<br />
+</p><ul><li><strong>Minimal and simple</strong> - pure Backbone code, no plugins. For some real needs plugins are required anyway and you are free to include whatever you want.</li>
+<li><strong>AMD modules with RequireJS</strong> - modularity is key factor for large-scale apps, <a href="http://requirejs.org/">RequireJS</a></li>
+<li><strong>Concept of Application</strong> - to group all view, models, collection related to one application unit in one place.</li>
+<li><strong>Handlebars template</strong> - using <a href="http://handlebarsjs.com/">Handlebars</a> as template engine.</li>
+</ul><h2>Further work</h2><p>It's not yet completely done. I want to create more meaningful app, show some layouts principles + prepare readme section of building application for production.<br />
+</p><p>I'm also thinking of putting some examples of unit tests both for Express.js and Backbone.js.<br />
+</p><h2>Conclusions</h2><p>Check the <a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> out. If you like it, please give some stars or shout in twitter. I would be really happy to see some pull requests for improving applications or infrastructure. So, if you want to join - you are welcome!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NancyFX Migration from 0.9 to 0.10]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/nancyfx-migration-from-09-to-010.html"/>
+    <updated>2012-02-29T12:16:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/nancyfx-migration-from-09-to-010</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Recently, I've <a href="https://github.com/Code52/Ideastrike/pull/92">upgraded</a> IdeaStrike project from NancyFX 0.9 to the latest 0.10 version. There were some very unclear moments, fortunately due to great support of <a href="">@thecodejunkie</a> and <a href="">@grumpydev</a> they are solved. As a result, the <a href="https://github.com/NancyFx/Nancy/issues/520">issue 520</a> was born, that contains a lot of text inside. I'll try to sum up all important things into one blog post.<br />
+</p><h2>Running update</h2><p>With NuGet updating dependencies is very easy, just run in package manager console:<br />
+</p><pre class="brush: plain">    PM> update-package
+</pre><p>It will give you the information about the upgrade process, it should be very smooth, so the end you will see:<br />
+</p><pre class="brush: plain">Successfully uninstalled 'Nancy.Hosting.Aspnet 0.9.0'.
+Updating 'Nancy.Testing' from version '0.9.0' to '0.10.0' in project 'IdeaStrike.Tests'.
+Successfully removed 'Nancy.Testing 0.9.0' from IdeaStrike.Tests.
+Successfully removed 'Nancy 0.9.0' from IdeaStrike.Tests.
+Successfully added 'Nancy 0.10.0' to IdeaStrike.Tests.
+Successfully installed 'Nancy.Testing 0.10.0'.
+Successfully added 'Nancy.Testing 0.10.0' to IdeaStrike.Tests.
+Successfully uninstalled 'Nancy.Testing 0.9.0'.
+The directory is not empty.
+
+Successfully uninstalled 'Nancy 0.9.0'.
+</pre><h2>Fixing compilation errors</h2><p>As you try to build the project after upgrade, it would fail because of compilation issues.<br />
+</p><p>If you using Nancy bootstrapper and overriding <code>RequestStratup</code> method, you will see that method had changed the signature: <br />
+</p><pre class="brush: csharp">    // in 0.9
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines);
+
+    // in 0.10
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines, NancyContext context)
+</pre><p>So, it now receives additional parameter - NancyContext.<br />
+</p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
+</p><pre class="brush: csharp">    // in 0.9
+    public IEnumerable&lt;string&gt; AcceptLanguage { get; }
+    
+    // in 0.10
+    public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
+</p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
+</p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
+    ---- Nancy.RequestExecutionException : Oh noes!
+    -------- Nancy.ViewEngines.ViewNotFoundException : Unable to locate view '404'. Currently available view engine extensions: sshtml,html,htm,cshtml,vbhtml
+    at Nancy.Testing.PassThroughErrorHandler.Handle(HttpStatusCode statusCode, NancyContext context)
+    at Nancy.NancyEngine.CheckErrorHandler(NancyContext context)
+    at Nancy.NancyEngine.HandleRequest(Request request)
+    at Nancy.Testing.Browser.HandleRequest(String method, String path, Action1 browserContext)
+    at Nancy.Testing.Browser.Get(String path, Action1 browserContext)
+    at IdeaStrike.Tests.IdeaStrikeSpecBase1.Get(String path, Action1 browserContext) in D:\Development\Projects\Ideastrike\tests\IdeaStrike.Tests\IdeaStrikeSpecBase.cs:line 85
+</pre><p>That was a mystery. All of those tests were fine, but suddenly stopped to work in 0.10. <br />
+</p><p>The reason was very interesting. Those tests for views were actually <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4157010">never run</a>. It's been unseen for 2 reasons: Nancy 0.9 failed silently about missing view, IdeaStrike unit tests never tested view content.<br />
+</p><p>To make those run, the <code>IdeaStrikeSpecBase</code> have to be setup with <code>IRootPathProvider</code>. IRootPathProvider, provides the path root for modules, so views could be located, based on default conventions. I finished up with this implementation:<br />
+</p><pre class="brush: csharp">public class CustomRootPathProvider : IRootPathProvider
+{
+    public string GetRootPath()
+    {
+        return Path.GetDirectoryName(typeof(IdeastrikeBootstrapper).Assembly.Location);
+    }
+}
+</pre><p>This root provider is used with spec base class configuration:<br />
+</p><pre class="brush: csharp">public IdeaStrikeSpecBase()
+{
+ Bootstrapper = new ConfigurableBootstrapper(with =&gt;
+ {
+  with.Module&lt;TModule&gt;();
+  with.Dependencies(_Users.Object, _Ideas.Object, _Features.Object, _Activity.Object, _Settings.Object, _Images.Object);
+  with.DisableAutoRegistration();
+  with.NancyEngine&lt;NancyEngine&gt;();
+  with.RootPathProvider&lt;CustomRootPathProvider&gt;(); // <- Here
+ });
+}
+</pre>
+<p>So, we are saying that root is the same folder as IdeaStike assembly. The problem is that location depends on actual Test runner. In case of NCrunch, it would be some deeply hidden folder in user\AppData\Local\Temp, in case of ReSharper runner it would be temp ASP.NET folder. That's a little annoying.
+</p><p>Tests were still red, since neither NCrush nor ReSharper is copying actual views into target folder. Fortunately, I found this great <a href="http://iamnotmyself.com/2012/01/03/testing-rendered-output-of-nancyfx-with-the-razor-view-engine-gotchas/">article</a>, explaining NancyFX view testing gotchas. I ended up with just saying “Copy if newer” for views under test, so they are in the same folder as target binary. That's not cool, but currently I see no other option.
+</p><p>After those changes, tests became green, so I run the application. No surprise, it failed to start.
+</p><h2>Fixing runtime errors</h2><p>At the first run, I got nothing more as bunch of Razor compilation errors:
+</p><pre class="brush: plain">    Error Compiling Template: (51, 18) The name 'Url' does not exist in the current context)
+    Error Compiling Template: (61, 33) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (68, 26) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (78, 7) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (83, 31) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (88, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (103, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (118, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (132, 25) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (234, 19) The name 'Url' does not exist in the current context)
+</pre><p>The proposed <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4153006">solution</a> that NancyRazorViewBase should always be specified with generic parameter.
+</p><pre class="brush: csharp">    // in 0.9
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
+
+    // in 0.10 
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
+    &ensp;
+</pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
+</p><pre class="brush: plain">    Error Compiling Template: (83, 1) The type 'System.Web.IHtmlString' is defined in an assembly that is not referenced. You must add a reference to assembly 'System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.)
+</pre><p>NancyFX is being developed to be independent of <code>System.Web</code>. It was not totally true for 0.9 with Razor support, but it has been fixed in 0.10. That of cause, brings some surprises. So, if your application is using Razor view engine, you need to do <a href="">following</a>:
+</p><ul>    <li>update all usages of IHtmlString to use Nancy.ViewEngines.Razor.IHtmlString</li>
+    <li>update all usages of McvHtmlString to use Nancy.ViewEngines.Razor.NonEncodedHtmlString</li>
+    <li>let the razor engine know about system.web (in case if HttpContext is used in layout)</li>
+</ul><pre class="brush: plain">&lt;razor disableAutoIncludeModelNamespace=&quot;false&quot;&gt;
+    &lt;assemblies&gt;
+        &lt;add assembly=&quot;System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+    &lt;/assemblies&gt;
+    &lt;namespaces&gt;
+        &lt;add namespace=&quot;System.Web&quot; /&gt;
+    &lt;/namespaces&gt;
+&lt;/razor&gt;
+</pre><h2>Changing the Partial views</h2><p>After these steps were done, application finally started. But some page gave runtime exception:
+</p><pre class="brush: plain">Server Error in '/' Application.
+
+Sequence contains no elements
+
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+
+Exception Details: System.InvalidOperationException: Sequence contains no elements
+</pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:
+</p><pre class="brush: csharp">    @Html.Partial("Shared/Templates/upload.html")
+    @Html.Partial("Shared/Templates/download.html")
+</pre><p>The reason turned out to be really <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4179548">simple</a>. All templates in IdeaStrike project were using .html extension. For 0.10 it required to be .cshtml. So, renaming from .html to .cshtml made the IdeaStrike up and running again.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites.html"/>
+    <updated>2012-02-21T11:15:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
+</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
+</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
+</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I'm changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
+</p><p>Great thing is that you see how it's done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id's, applying the styles by element Id. The code was awful and styles applied on #id's were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
+</p><p>With OOCSS you rely on classed. Here some example,<br />
+</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
+ &lt;div class=&quot;row smaller-fonts&quot;&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>Look, no #id's - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
+</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It's really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it's content based on screen size.<br />
+</p><p>Here is a quote of Foundation documentation.<br />
+</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don't give a specific structural style to should be within a container, row and column.<br />
+</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost "plain" English in HTML.<br />
+</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;eight columns&quot;&gt;
+      Eight columns
+    &lt;/div&gt;
+    &lt;div class=&quot;four columns&quot;&gt;
+      Four columns     
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
+</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can't get good site appearance if buttons and forms are ugly. I usually spend a lot of time on "beautifying" those, but still unhappy with results at the end of the day. With Foundation it's easier. You got nice styles from the box. <br />
+</p><p>Forms:<br />
+</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
+</a><br />
+<p>Buttons:<br />
+</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
+</a><br />
+<p>Recently, I've <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
+</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That's different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
+</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
+</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
+</a><br />
+<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it's place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
+</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I'm about to create bunch of "ready-to-use" Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released.html"/>
+    <updated>2012-02-14T07:37:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
+ </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />
+ </p> <a href="http://alexanderbeletsky.github.com/candidate/"><br />
+  <img src="https://lh5.googleusercontent.com/-WIUMqyz3naI/TznyBp-dQbI/AAAAAAAAH4A/exqlfJUQr8o/s1024/screenshot-1.jpg" alt="candidate web site" style="width: 620px;" /><br />
+ </a><br />
+ <h2>  What's the goal?<br />
+ </h2> <p>  Thinking about nearest "competitors" in this area I would re-call <a href="http://www.paulstovell.com/octopus/intro">Octopus</a> by <a href="https://twitter.com/#!/paulstovell">Paul Stovell</a>. Octopus uses Build Server / Tentacle (Agent) architecture principal, while Candidate is simple Agent architecture - you host it the same machine as your environment is (stage, production) providing both integration and deployment functionality.<br />
+ </p> <p>  My goal is stabilize and improve Candidate through this year, so it fulfill different requirements including performance and scalability. I switched all my projects to use Candidate now, so it would give me some initial feedback.<br />
+ </p> <p>  Nevertheless, Candidate may turn out to be a powerful deployment application I'm still thinking about "Deployement as Service" product like <a href="https://appharbor.com/">AppHabor</a> and <a href="http://www.heroku.com/">Heroku</a> or <a href="http://travis-ci.org/">Travis-CI</a> as it was <a href=
+  "http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">original</a> idea.<br />
+ </p> <h2>  What's next?<br />
+ </h2> <p>  Following the principle "Build product X to learn technology Y" I'm going to proceed with Candidate to shape following areas that I wish to improve now:<br />
+ </p> <ul>  <li>Processes, threads, synchronization in .NET</li>
+  <li>Async, Tasks library</li>
+  <li>Robust applications architecture</li>
+  <li>Different deployment scenarios for .NET platform</li>
+ </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I'm looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
+ </p> <p>  I also try to target UI / UX issues as much as possible.<br />
+ </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
+ </p> <p>  Thanks for you help.<br />
+ </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mind | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/mind/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github as blogging platform]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
+    <updated>2013-05-16T18:55:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how's while I create some code. It's just hard to blog about. As you didn't do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    <!-- more -->
+    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what's going on there. So, I put some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don't write much documentation, but during writing it I realized that it's a kind of blog post or tutorial I'm writing immediately after I created something.<br />
+    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It's so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it's the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/issues">questions</a>. <br />
+    </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
+    </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
+    <updated>2013-04-14T14:35:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
+    <content type="html"><![CDATA[<div class='post'>
+        <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
+</p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don't do .NET development more than 1.5 years for now. It's not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
+</p><h2>WTH?</h2><p>I work in E-conomic company and about 2 years ago we decided to build new product. <br />
+</p><p>Till that time we've learned hard few things: plain jQuery applications is mess, building new shinny product on out-dated infrastructure is bad idea.<br />
+</p><p>So, we've started with front-end by choosing Backbone.js as our foundation, later on we've decided to switch our API server from .NET to Node.js.<br />
+</p><p>It appears we got full JavaScript stack on that product and I involved in JavaScript more and more each day.<br />
+<!-- more -->
+</p><h2>I thought I know JavaScript</h2><p>That time I mistakenly thought, I can do JS programming. Sure, I understood jQuery selectors, concept of callback and even why we need 'var me = this;' trick in code.<br />
+</p><p>But the reality was a bit different. Now, listening to podcasts and reading some blogs, I understood that I've been to 'classic' trap on C#/Java developer switching to JavaScript. Languages and frameworks requires time to learn.<br />
+</p><h2>Long hard way of learning</h2><p>I had to spend the time to learn new stuff. I would say the best source of information was the code written by my <a href="https://github.com/e-conomic?tab=members">colleagues</a>. We have great team, so initially I were just reviewing the code following some patterns. I also spent time of peering famous OS projects like underscore and Backbone.js.<br />
+</p><p>JavaScript  <a href="http://shop.oreilly.com/product/9780596517748.do">Good Parts</a>, opened my eyes on few important things as well.<br />
+</p><p>There are 3 aspects that changed my mind on JavaScript.<br />
+</p><h3>JavaScript is dynamic language</h3><p>Let's be clear. If someone in 2003 tell me I'm going to program dynamic language and will be happy about, I would never believe that. I was programming C++ and truly believed in types. Types as I was thinking is only way to tackle complexity of software.<br />
+</p><p>Even though, I still think about some advantages of static vs. dynamic languages, my opinion has changed radically.<br />
+</p><p>Dynamic languages are great. I feel I more solve problems rather than designing types (or usually hierarchy of types). Consider that, instead of thinking about the name for next "ProxyAbstractFactoryManager" I'm writing functions that do stuff.<br />
+</p><h3>Frictionless development</h3><p>I was compiling applications for whole my life. Just to run some simple thing I need to compile and link. It's usually not a problem at all, but depends on project infrastructure it can take a lot of time. Sooner or later you start to hate builds.<br />
+</p><p>With JavaScript application, you simply should run it. It starting fast so the gap between "write the line of code" and "check the results" became very small.<br />
+</p><p>Instead of heavyweight IDE's I became Sublime Text 2 user. After years in VS you simply could not understand how to write code without IntellySense. But practice shows it's really possible. <br />
+</p><h3>Node.js</h3><p>To be honest with you, I was very skeptical regarding Node.js initially. But again, practice showed different results. It's been proved that Node.js is very suitable for our product. We are running API server on Node.js and it performs really nice.<br />
+</p><p>Later I started to learn what Node.js platform offers and I was really surprised with it's abilities.<br />
+<p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
+</p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
+</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+<h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one "language context". I would not call a huge problem, but usually context switching from one language to another can take something.<br />
+</p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I'm selecting JavaScript.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pair Programming Takes Double Effort]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/pair-programming-takes-double-effort.html"/>
+    <updated>2012-11-23T19:12:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/pair-programming-takes-double-effort</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Pair programming is very known as efficient technique of writing code. Originally appeared as one of key XP practices, it got a lot of traction. You can find many publication about Pair Programming and seems everybody clearly understands it's value. Being a XP trainer and visiting conferences related to engineering practices I usually see such situation: the question goes to the crowd "How many of you do practice Pair Programming?" and I can give a bet, only few hands will appear.. very few people are actually practicing Pair Programming. Why?<br />
+    </p>    <p>        Because Pair Programming is damn hard!<br />
+    </p>    <p>        There could be 2 situations with PP: first one, then both guys are completely different levels of skills - it turns to be that one (more experienced) is writing and thinking all the time, another one is almost watcher helping to find a grammar errors in code comments. At the end of the day you got 2 mans powers producing 1 mans power work. Easy journey.<br />
+    </p>    <p>        Second one is different, is then 2 guys are same or equally same level. Working in such pair could be compared to wresting. You literally have to fight to move on. All the time you under pressure of another man's opinion, usually strong one. You struggle much to get consensus on different topics. You are talking all the time and arguing all the time. Sure, you got shinny-working-super-cool results much more faster by working such pair. <br />
+    </p>    <p>        But there is a problem - after 3-4 hours of working that way you will be completely exhausted. Believe me, you are absolutely useless after 4 hours session of true Pair Programming. Thinking, focusing, arguing, writing, testing, debugging over and over again. It takes a lot of energy. Working a 40 hours week in strong pair will let you feel like 80 hours week. There is also psychological side as well: 2 persons could not match each over, so working in pair would be like hell. <br />
+    </p>    <p>        Pair programming takes double effort. You should not plan PP session for a whole day, half day as maximum. In my opinion it's not valuable to do every task in pair, simply it's not productive. Pick up most difficult ones, ones that requires cross-functional expertise or most risky ones. As problem well kick-started, rest of things might go in parallel. <br />
+    </p>    <p>        I really like Pair Programming, but I would not use it as day-to-day practice as XP suggests. Most of the time, it's more efficient to work alone.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Looking at TypeScript]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/10/typescript-language.html"/>
+    <updated>2012-10-05T21:24:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/10/typescript-language</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
+</p><p>For ones who missed the video (I can't believe you did) I shortly describe - TypeScript in new open source project, by Microsoft. It's leader <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a> is very famous developer (my bad, I always forget his name), creator of C# and one of the persons who most influenced .NET platform. TypeScript compiled down to JavaScript, but it introduce the types checking during compilation, so it could be called 'static typed language'.<br />
+</p><p>First of all, TypeScript is definitely <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">not the first language</a>, that complies to JavaScript. It's not the first one that augments JavaScript with new statements like class, interface or module. So, what's so interesting on it?<br />
+</p><p>I've been using static type languages for about 10 years. I've very much got used to compiler error messages and truly believed that it helps to build applications. Meaning, the complier is first guard towards the 'good' code. To the code that could be called reliable, error free. <br />
+</p><p>But situation much changed after I start programming JavaScript. <br />
+</p><p>I feel myself quite productive with using of using JavaScript. Of cause, there are some best practice & patters are collected nowadays, we have better tools, faster engines and JavaScript has been so much adopted by community. But JavaScript is indeed, so powerful language. I really like the dynamic typing, that bit more forces to unit testing, making code changes more easy in the same time creating some very beautiful code structures.<br />
+</p><p>I know that some people are saying, "we don't need any static typing for JavaScript; please don't change the language". Such developers could be called "purists". And they are absolutely right - if you feel confidence in something you do, you should not change the way you do it. <br />
+</p><p>In another hand, I came to conclusion that it's not dynamic types that makes me productive with JavaScript, but rather the experience I gathered with programming lately. It's always only experience, that allows you to work faster, better quality and had fun of your job.<br />
+<p>And it's absolutely not about Static vs. Dynamic languages.<br />
+</p><p>Static types are not useless, though. I think, in average it reduces the chances of bug introduction into the code. That's at least what I've seen so far. And that's why "purists" are running JSLint. Basically, Static Types should provide better application quality. This is of cause not completely true, since we know great software written in Python and poor systems written in C++.<br />
+</p><p>It' about the engineers who build that software.<br />
+</p><p>In my opinion the TypeScript will grow. It would have it's own army of fans, like CoffeeScript have or Ruby have. The code that TypeScript outputs is nice and clean, that make easy of debugging it. TypeScript is designed to be closer to ECMAScript6 (Harmony), so in near future the pure JavaScript would start to look like TypeScript.<br />
+</p><p>TypeScript is interesting project and open minded guys will like one. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Company Days 2012 in E-conomic]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic.html"/>
+    <updated>2012-09-20T16:58:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        Company Days is a yearly event in E-conomic, then all employees gather together. It's usually happen in the middle of September, the time than Copenhagen is especially beautiful. It's been great week, primarily because of opportunity to meet guys whom we work very close to. Besides the developers, primarily located in Denmark and Ukraine, business and operational people from UK, Sweden, Norway, Spain, Germany etc. are also coming, so it makes very cool international environment.<br />
+    </p>    <p>        This year was a little special, since we had additional fun. Our CTO had organized the hackathon. The whole day event, supposed to create some valuable hacks for E-conomic product. All developers has been spitted on pairs and extended with business representatives. I had a team of 4 people - 2 developers and 2 business guys. Started at early morning near the blackboard, it was so nice to be part of process where the value is born in such extremely short period. We finally selected the idea, which seems to be very cool in terms of business and realistic in terms of one day implementation.<br />
+    </p>    <p>        It's been a long day of developing, debugging, demonstration and changes. Our product owners were always near us, giving both valuable feedback and supplying us with coffee and Danish chocolate sweets (that worked so good to me, since I needed sugar all the time). About 22.00 we got something that looks like a demo version of feature we wanted to produce. We've spent near 1 hour more, to show everything to PO's and fix some small bugs. I felt very tired at the end.<br />
+    </p>    <p>        Next day at 14.00 was big time of presentations. That was the funnies part. I have to admit, there was several really great hacks. In the same time some our PO's are so cool of selling things that they turned the presentation into real show (kind of TV market, I would say). Everybody had a great joy, especially after words like "I've been asking for this feature for 2 year, and those guys created it in 16 hours". It's a bit of irony, but a bit of true as well. I know the jury that included CEO, CTO, Head of PO's etc., we definitely happy to see the results and some hacks will be turned into the products really soon.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-LsnSDGvzOrQ/UFsfQmfY5GI/AAAAAAAAJIQ/82qUi0631-A/s720/IMG_5365.JPG"><br />
+        <img src="https://lh6.googleusercontent.com/-LsnSDGvzOrQ/UFsfQmfY5GI/AAAAAAAAJIQ/82qUi0631-A/s720/IMG_5365.JPG" style="width: 620px" /><br />
+    </a><br />
+    <p>        Apart from the hackathon, we had traditional speeches of CEO, Marketing people and guys from other departments. There was also a bit more activities, including jogging in which I took a part and did 8km distance. And of cause, Friday boat trip and party in restaurant. Party was so cool, that I almost missed my flight in the morning (but that's a completely different story).<br />
+    </p>    <p>        I would like to say thanks for everybody involved, I was happy to meet you guys once more.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

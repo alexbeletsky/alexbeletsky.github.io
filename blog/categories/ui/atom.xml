@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: UI | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/ui/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles.html"/>
+    <updated>2012-03-07T14:54:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
+</p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>Unfortunately Foundation does not support LESS from the package, so I need to move colors and layout into corresponding .LESS files, so after it's just possible to have a basic <a href="https://github.com/alexanderbeletsky/foundstyles/tree/master/default">template</a> which is possible to customize with own colors.  <br />
+</p><p>As for now, I've created only 3 templates: <a href="http://foundstyles.com/bladesofsteel/">Blades Of Steel</a>, <a href="http://foundstyles.com/evergreen/">Evergreen Tree</a> and <a href="http://foundstyles.com/coffeenmilk/">Coffee and Milk</a>.<br />
+</p><a href="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>I had a lot of joy making those styles. Making web designs and playing with colors is my next hobby, I think. Through, those styles are really simple ones, I'm going to add more eventually. Since the project is just hosted on <a href="https://github.com/alexanderbeletsky/foundstyles">github</a> you are able to push you own styles. If you feel inspired, I would be really happy for submissions.<br />
+</p><p>Nearest plans are apply some fixes for IE (both site and styles) and just go ahead and produce some more. Hope it could be useful for you guys.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites.html"/>
+    <updated>2012-02-21T11:15:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
+</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
+</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
+</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I'm changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
+</p><p>Great thing is that you see how it's done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id's, applying the styles by element Id. The code was awful and styles applied on #id's were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
+</p><p>With OOCSS you rely on classed. Here some example,<br />
+</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
+ &lt;div class=&quot;row smaller-fonts&quot;&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>Look, no #id's - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
+</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It's really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it's content based on screen size.<br />
+</p><p>Here is a quote of Foundation documentation.<br />
+</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don't give a specific structural style to should be within a container, row and column.<br />
+</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost "plain" English in HTML.<br />
+</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;eight columns&quot;&gt;
+      Eight columns
+    &lt;/div&gt;
+    &lt;div class=&quot;four columns&quot;&gt;
+      Four columns     
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
+</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can't get good site appearance if buttons and forms are ugly. I usually spend a lot of time on "beautifying" those, but still unhappy with results at the end of the day. With Foundation it's easier. You got nice styles from the box. <br />
+</p><p>Forms:<br />
+</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
+</a><br />
+<p>Buttons:<br />
+</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
+</a><br />
+<p>Recently, I've <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
+</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That's different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
+</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
+</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
+</a><br />
+<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it's place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
+</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I'm about to create bunch of "ready-to-use" Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

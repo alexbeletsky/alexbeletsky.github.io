@@ -1,0 +1,877 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Subtext: Open source blogging engine project Sep 1st, 2010 Open source One of my previous posts I mentioned a Subtext as open source project that I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/blog/page/17/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/09/subtext-open-source-blogging-engine.html">
+    
+      Subtext: Open source blogging engine project</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-01T10:44:00+03:00" pubdate data-updated="true">Sep 1<span>st</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+One of my previous <a href="http://www.beletsky.net/2010/06/gallio-runs-mbunit-tests-very-slowly.html">posts</a> I mentioned a Subtext as open source project that I keep eye, recently. Originally created by <a href="http://haacked.com/">Phil Haack</a>, one of the authors of ASP.net MVC framework. I though about contribution for some of open source project for long time, so first time I saw Subtext I realized that it could be good one to try.
+</p>
+<p>
+Project is hosted on <a href="http://code.google.com/p/subtext/">Google Code</a>, using SVN as source control system. So, it is easy to get read access to Subtext repository. Currently Subtext is actively developed by <a href="http://codeclimber.net.nz/">Simone</a>, managed by Phil. It is still supported by community, so everyone is able to submit a patch.
+</p>
+<p>
+What I liked about Subtext itself:
+</p>
+<ul>
+<li>
+<b>Easy to use</b>. Clear installation procedure, clear interfaces. Easy, because of simplicity.
+</li>
+<li>
+<b>Proven by time</b>. It is already 2.6 release of Subtext now. Quite mature, developed about 5 years years.
+</li>
+<li>
+<b>Used in community</b>. Many bloggers hosts their blogs on Subtext.
+</li>
+</ul>
+<p>
+But of cause I was attracted mostly by its code. I really liked how Subtext solution done and try to extract some good practices and approaches to my personal knowledge base. Code quality is high, it is clearly seen what architecture approaches did author used, how it is breakdown thought components and layers. I was happy to see a lot of unit tests created.
+</p>
+<p>
+I&#8217;m hacking Subtext now. I try to understand how it works, what technologies used, what issues exists. I like how it goes, because I feel &#8220;follow the master&#8221; concept, during work on Subtext. So, it is one of my first experience of working on open source projects, I would like to describe, what my contribution is:   
+</p>
+<ul>
+<li>
+<b>Find new bugs</b>. Yeap, I do little tester job here. I click through the application and submit new issues to tracker.  
+</li>
+<li>
+<b>Little fixes</b>. As I found some problem and it is quite clear, I submit a patch for it. 
+</li>
+<li>
+<b>Verification of fixes</b>. I try to look through latest fixes made and verify them.
+</li>
+<li>
+<b>Feature request proposal</b>. As I see something lack, it is possible to do a feature request. Sure, as soon as it is accepted, you are free to submit a patch with implementation.
+</li>
+</ul>
+<p>
+I like how it goes. I&#8217;ve already submitted several patches, hope it is not the end. Unfortunately, I could not spend as much time as I want.. but at least. I hope it will be a good experience, both for me and Subtext.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/javascript-html-and-css-i-need-it.html">
+    
+      JavaScript, HTML and CSS.. I need it!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-27T15:03:00+03:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve never been working close to UI during my career, neither as Win32 developer nor as Web developer. I was focused on business logic and architecture rather than user interfaces, moreover developing UI was not the best things that I liked to do.
+</p>
+<p>
+In my previous job I met javascript first time. It wasn&#8217;t in context of web application, but rather a custom logic for desktop software. It was very unusual to me, since I&#8217;ve had few experience with dynamic languages. But as I met javascript closer, more and more and like it. I find dynamic languages are more flexible to describe objects. With no static check you could not rely on messages from complier, if you have a mistake on you code, it is only runtime than you catch it, so it forces you to do unit tests. Unit testing in dynamic languages is more simple and easy to use. You can do any type of mocking, construct a tests objects in run time, easy emulate user interface events.
+</p>
+<p>
+As soon as you good C# developer, understand ASP.net/MVC, RDBMS, enterprise applications design, your values is less, than you lack a HTML/CSS when you do web. I&#8217;ve never treated HTML/CSS as important skill, thinking as I needed I could learn it in 1 day. I was wrong, it not so easy as I thought. Of cause, they are declarative, with no logic, conditions, runtime, but they are <i>languages</i> and requires respect. Sure, it is not so difficult to start with some HTML/CSS than with C#/ASP.net, but as always - experience matters. 
+</p>
+<p>
+Some years ago, I&#8217;ve started to play a guitar a bit. Tuning of guitar was the greatest problem I had, before I&#8217;ve been presented with tuner device. With a little bit experience I was able to tune slightly untuned guitar.. so if some string is close to tune, I could adjust it. But if it is totally untuned, I just could not catch it up. I&#8217;m having the same issue with HTML/CSS and JavaScript now. I could do fixes, create something simple, add something to existing application. So, I could adjust. Problems begins then I try to do something from scratch. I spend to much time, looking for examples and tutorials to do really simple things (especially with CSS). I could not tune.   
+</p>
+<p>
+I want to improve my knowledge in this area, now I understand that I really need it. 
+</p>
+<p>
+I want to ask you today, what resources, books, online tutorials you use and recommend for HTML/CSS/JavaScript area. What was you experience of education it it?
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/failed-to-generate-user-instance-of-sql.html">
+    
+      Failed to generate user instance of SQL Server exception</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-25T20:58:00+03:00" pubdate data-updated="true">Aug 25<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+If you just switched from ASP.net development server to IIS, you might appear to see such exception from data access layer of application:
+</p>
+<p><i>Failed to generate a user instance of SQL Server due to failure in retrieving the user&#8217;s local application data path. Please make sure the user has a local user profile on the computer. The connection will be closed.</i></p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s1600/failed.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 245px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s400/failed.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5509408753737877410" /></a>
+<p>
+Don&#8217;t panic, it is easy to fix. Go to Internet Information Services (IIS) Manager console panel. Check out what Application Pool is set for your application, in Basic settings. It would probably be ASP.NET 4.0 Classic. Go to Application Pools section, select ASP.NET 4.0 Classic and go to Advanced Settings. In Advanced Settings. In Process Model, Identity - ApplicationPoolIdentiry would be selected.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s1600/apppool-before.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s400/apppool-before.png" border="0" alt=""id="Img1" /></a>
+<p>
+ You must change it with a credentials of user that has physical access to App_Data folder of application.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s1600/apppool-after.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s400/apppool-after.png" border="0" alt=""id="Img2" /></a>
+<p>
+You should restart IIS and start application again.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/does-tdd-find-bugs.html">
+    
+      Does TDD find bugs?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-23T09:36:00+03:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+No, of cause not. TDD doesn&#8217;t find bugs in your application. This is a very frequent misconception about TDD, I would like to shed a light on it today.
+</p>
+<p>
+Why tests do not find bugs? Why applications created with TDD still has bugs?
+</p>
+<p>
+<b>Tests are replication of developers mind</b>. As good as problem understood, as good it could be tested, as good it could be solved. That means that tests and code are very <i>subjective</i>. It all depends on developer. If the requirement is treated wrong, or implemented not completely it will be a bug, even if all tests are passing. If developer is not aware of existing of some problem he won&#8217;t be able to create a corresponding case/fix.     
+</p>
+<p>
+<b>Tests are limited</b>. It is just not possible to test everything. Especially in middle/big size applications. Even having a 100% coverage metrics, does not guarantee that code is 100% tested, it only means that existing test suite runs each line at least ones. There always be a corner cases, that are not really seen during requirements/implementation phase and could appear only on acceptance or maintanance. There are high chances to <i>miss something important</i> during development.  
+</p>
+<p>
+<b>Tests have a quality</b>. We frequently hear term code quality. Code quality is some measure that shows how easy code could be understood, changed. We all know that usage of design patterns, enterprise libraries, refactoring.. all of this aimed to improve code quality. Tests are also code, but easy to read and maintain <i>is not primary test quality factors</i>. Test quality is some measure of <i>how good test code is executing and asserting against production code</i>. Number of asserts is a simplest metric. As soon as tests doesn&#8217;t have any assert in it, tests have no sence.. it useless. Quality highly depends on actual scenario of test, <i>as much smarter scenario is as much quality test is</i>.      
+</p>
+<p>
+<b>Tests are not intelligent</b>. Tests are code, created by developer, proves that functionality created works as expected at the <i>current moment on time</i>. Test suite is something that could produce a snapshot of particular functionality. They become very useful than they are created before code, because it guides through to solve problem and reach the goal, as well as they are useful after the code is created, minifying the risk of regression during any of code changes (fixes, refactoring, new functionality etc.). But test itself could not give any new information.
+</p>
+<p>
+Why TDD is still important, you might ask? Even if TDD still leave a room for bugs, it radically decreases overall number of bugs. First of all because many silly mistakes are being found during creation of tests and first tests runs. Second, that good number of tests creates a kind of bounds that helps to keep existing functionality in it.     
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/web-development-lightweight-ajax.html">
+    
+      Web development: Lightweight AJAX thought jQuery, JSon.net and HttpHandlers</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-09T09:43:00+03:00" pubdate data-updated="true">Aug 9<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+If you are about to start using AJAX in your ASP.net application, you will be pointed to some existing frameworks, like: <a href="http://www.asp.net/ajax">ASP.net AJAX</a>, <a href="http://anthem-dot-net.sourceforge.net/">Anthem.net</a> or something else. That is a probably a good idea to use time-proven things, but you also might have a reasons not do that. First of all, if you are new to AJAX and you need to educate yourself with it, using frameworks in not good, because it hides a lot of details of &#8220;how it works&#8221;. Second reason, that you might not want to overhead with additional frameworks, to make it as lightweight as possible. If you are about to implement some simple AJAX operations, then jQuery for client code, Json.net to handle JSON on server side and ASP.net HttpHandler is all that you need!   
+</p>
+<p>
+Let&#8217;s briefly review each of these components: 
+<ul>
+<li>
+<a href="http://jquery.com/">jQuery</a> - everybody knows jQuery, it is the best javascript framework, created by <a href="http://ejohn.org/">John Resig</a>.
+</li>
+<li>
+<a href="http://james.newtonking.com/pages/json-net.aspx">Json.net</a> - just create and easy to use framework of serialize/deserialize .net objects to JSON, created by <a hreaf="http://james.newtonking.com/">James Newton-King</a>.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/5c67a8bd(VS.71).aspx">Generic Handlers</a> - part of ASP.net framework. With some level of simplicity HttpHanlers could be called a page without any overhead (like a Page with no HTML code and only Page_Load method), that is ideally serves as a handler for AJAX calls.
+</li>
+</ul>
+</p>
+<h2>Preparation</h2>
+<p>
+    We going to create a simple admin page that could: get list of all users 
+    registered in system and quick new user. I&#39;ll use the same project that I used 
+    in my previous web development articles, called Concept, so as always you could 
+    get a source code on github. 
+</p>
+<h2>Generic Handler implementation</h2>
+<p>
+I web project I&#8217;ve added new folder, called handlers that would contain all handlers code we wish to have. Add new 
+    &quot;Generic Handker&quot; item into this folder, and call it users.ashx.
+<!-- userhandler.png --> 
+</p>
+<p>
+The skeleton code of handler will look like that:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Web;<br><font color="#0000ff">using</font> Company.Product.DAL;<br><font color="#0000ff">using</font> Company.Product.BLL;<br><br><font color="#0000ff">namespace</font> WebApplication.handlers<br>{<br>&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Summary description for users</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> users : IHttpHandler<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> UsersOperations _operations = <font color="#0000ff">new</font> UsersOperations(<font color="#0000ff">new</font> UsersRepository());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> ProcessRequest(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context.Response.ContentType = <font color="#A31515">"application/json"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> respose = <font color="#0000ff">string</font>.Empty;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> function = context.Request[<font color="#A31515">"function"</font>];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">switch</font> (function)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">case</font> <font color="#A31515">"list"</font>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;respose = CreateListReponse(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">break</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">case</font> <font color="#A31515">"add"</font>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;respose = CreateAddUserResponse(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">break</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context.Response.Write(respose);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> CreateAddUserResponse(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _operations.InsertUser(context.Request[<font color="#A31515">"Email"</font>], context.Request[<font color="#A31515">"SecretPhrase"</font>], context.Request[<font color="#A31515">"Password"</font>]);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> CreateListReponse(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _operations.GetAllUsers();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">bool</font> IsReusable<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">get</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Two important thing here: first, we declare context.Response.ContentType = &#8220;application/json&#8221;; meaning that body response will contain json code. 
+    Second, request will contain a <i>function</i> parameter, that would contain exact function 
+    name we want to call. It our case it will be just 2 functions, list and add.
+</p>
+<h2>Serialization of data</h2>
+<p>
+Json.net made a serialization of .NET objects to Json very easy. It supports all main types and collections, it also extendable for your custom needs. Code that returns the list of all users:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Company.Product.BLL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> UsersOperations<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> IUsersRepository _data;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> UsersOperations(IUsersRepository data)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_data = data;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> GetAllUsers()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> JsonConvert.SerializeObject(<font color="#0000ff">new</font> { status = <font color="#A31515">"success"</font>, data = _data.GetAll() });<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> InsertUser(<font color="#0000ff">string</font> email, <font color="#0000ff">string</font> secret, <font color="#0000ff">string</font> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = <font color="#0000ff">new</font> User { Email = email, SecretPhrase = secret, Password = password };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_data.InsertUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> JsonConvert.SerializeObject(<font color="#0000ff">new</font> { status = <font color="#A31515">"success"</font>, data = user.Id });<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Users repository GetAll() method returns IEnumerable of User. JsonConvert understands such data types, so able to perform serialization not problem. 
+</p>
+<h2>Aspx code</h2>
+<p>
+In aspx I utilize functionality of $.ajax call, as well as very nice component called <a href="http://jquery.malsup.com/block/">blockUI</a>, that works upon jQuery and helping to block interaction during AJAX calls, as well as creation of simple modal dialogs.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font>&#60;%@ Page Title="" Language="C#" MasterPageFile="~/Concept.Master" AutoEventWireup="true"<br>&nbsp;&nbsp;CodeBehind="UserOperations.aspx.cs" Inherits="WebApplication.UserOperationsView" %&#62;</font><br><br><font color="#0000ff">&#60;</font><font color="#800000">asp:Content</font> <font color="#ff0000">ID</font><font color="#0000ff">="Content1"</font> <font color="#ff0000">ContentPlaceHolderID</font><font color="#0000ff">="head"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> listOfUsers() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: <font color="#A31515">"/handlers/users.ashx?function=list"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeSend: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).slideUp();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success: <font color="#0000ff">function</font> (response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (response.status == <font color="#A31515">"success"</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listOfUserCallback(response);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> listOfUserCallback(response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> html = <font color="#A31515">"&#60;ul&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> key <font color="#0000ff">in</font> response.data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html += <font color="#A31515">"&#60;li&#62;"</font> + response.data[key].Id + <font color="#A31515">": "</font> + response.data[key].Email + <font color="#A31515">"&#60;/li&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html += <font color="#A31515">"&#60;/ul&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).html(html);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).slideDown();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> showDialog() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI({ message: $(<font color="#A31515">"#adduserdialog"</font>) });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> closeDialog() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> addUser() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = {};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.Email = $(<font color="#A31515">"input#email"</font>).val();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.Password = $(<font color="#A31515">"input#password"</font>).val();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.SecretPhrase = $(<font color="#A31515">"input#phrase"</font>).val();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: <font color="#A31515">"/handlers/users.ashx?function=add"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeSend: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI({ message: <font color="#A31515">"&#60;h1&#62;Adding new user, please wait...&#60;/h1&#62;"</font> });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: user,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success: <font color="#0000ff">function</font> (response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (response.status == <font color="#A31515">"success"</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addUserCallback(response);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> addUserCallback(response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//renew list of user:</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listOfUsers();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;$().ready(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).hide();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//setup handlers</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"a#list"</font>).click(listOfUsers);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"a#add"</font>).click(showDialog);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//setup dialog</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"input#adduser"</font>).click(addUser);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"input#cancel"</font>).click(closeDialog);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">asp:Content</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">asp:Content</font> <font color="#ff0000">ID</font><font color="#0000ff">="Content2"</font> <font color="#ff0000">ContentPlaceHolderID</font><font color="#0000ff">="ContentPlaceHolder1"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="adduserdialog"</font> <font color="#ff0000">style</font><font color="#0000ff">="display: none; cursor: default"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="email"</font> <font color="#ff0000">type</font><font color="#0000ff">="text"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secret phrase:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="phrase"</font> <font color="#ff0000">type</font><font color="#0000ff">="text"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="password"</font> <font color="#ff0000">type</font><font color="#0000ff">="password"</font> <font color="#0000ff">/&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">type</font><font color="#0000ff">="button"</font> <font color="#ff0000">id</font><font color="#0000ff">="adduser"</font> <font color="#ff0000">value</font><font color="#0000ff">="Add user"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">type</font><font color="#0000ff">="button"</font> <font color="#ff0000">id</font><font color="#0000ff">="cancel"</font> <font color="#ff0000">value</font><font color="#0000ff">="Cancel"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="left"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="box"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">p</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Admin operations:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">p</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">a</font> <font color="#ff0000">id</font><font color="#0000ff">="list"</font> <font color="#ff0000">href</font><font color="#0000ff">="#"</font><font color="#0000ff">&#62;</font>List of users<font color="#0000ff">&#60;/</font><font color="#800000">a</font><font color="#0000ff">&#62;&#60;</font><font color="#800000">br</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">a</font> <font color="#ff0000">id</font><font color="#0000ff">="add"</font> <font color="#ff0000">href</font><font color="#0000ff">="#"</font><font color="#0000ff">&#62;</font>Add new user<font color="#0000ff">&#60;/</font><font color="#800000">a</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="right"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="results"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">asp:Content</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Putting all together</h2>
+<p>
+Now let&#8217;s review everything in conjuction. We have generic handler, that receives http request. It uses request &#8220;function&#8221; to understand what function is requested by user. Based on function type it delegates the call to business object, called UsersOperations. UserOperations relies on UserRepository to work with data, so it get or insert the data and return results as JSON strings. JSON is created by serialization of .NET objects into JSON objects by means of Json.net library. Client receives the output in asynchronous callbacks, checks the status of operation and dynamically creates HTML code. blockUI component help to block user interaction with UI during asynchronous calls, also &#8220;create new user&#8221; modal dialog is created by means of blockUI. 
+</p>
+<p>
+Such approach serves really great for simple AJAX applications, on pure ASP.net, jQuery. Check out sources on <a href="http://github.com/alexanderbeletsky/Concept">Github</a>.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/7-links-challenge-from-probloggernet.html">
+    
+      7 links challenge from Problogger.net</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-01T11:17:00+03:00" pubdate data-updated="true">Aug 1<span>st</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;m not doing blogging for a long time, event if I started on march of 2008 I had a great pause in it. Originally I started a blog in Russian, but later I&#8217;ve decided to switch to English, mainly because I wanted to my colleagues from Denmark to read my blog.. and probably got bit wider audience.
+</p>
+<p>
+<a href="http://www.problogger.net/">Problogger.net</a> is a great place for bloggers. Even if you don&#8217;t plan to get money from your blog (as me) there are great number of tips/tricks for bloggers, as well as some inspiring information. I&#8217;ve started to read it recently I found it very interesting.
+</p>
+<p>
+<a href="http://www.problogger.net/archives/2005/01/06/about-darren/">Daren Rowse</a> is a man behing Problogger.net, professional blogger who live in Melbourne, Australia. He announced <a href="http://www.problogger.net/archives/2010/07/16/take-the-7-link-challenge-today/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+ProbloggerHelpingBloggersEarnMoney+(ProBlogger:+Helping+Bloggers+Earn+Money)">7 Links challenge</a>. I also decided to pick it up. Here we go:
+</p>
+<p>
+<ul>
+<li><b>First post - </b><a href="http://www.beletsky.net/2008/03/blog-post.html">Первое сообщение</a> it was a small introduction of myself to the world, as well as setting up objectives for this blog. It was in Russian, so what I said there is that I going to write about challenges that I met in my development course everyday, to keep and share the knowledge I got. I still doing that.. I think.</li>
+<li><b>The post I enjoyed writing the most -</b> I have a lot of fun during my blogging (even if sometimes it is hard to finish up some post) I enjoyed the <a href="http://www.beletsky.net/2010/07/github-social-coding.html">GitHub Social coding</a> the most. It was my first, not so technical, with elements of philosophy post.. I liked that!</li>
+<li>
+<b>A post which had a great discussion - </b> I haven&#8217;t created a post that really attracted big attention and discussion. I&#8217;m OK with that, I still think 
+    I create one. 
+</li>
+<li><b>A post  on someone else’s blog that you wish you’d written -</b> This is the one that <a href="http://disqus.com/shmonder/">Anton Litvinenko</a> created recently, called <a href="http://blog.devpulse.com/post/871510417/the-biggest-demotivator-for-programmer">The biggest demotivator for programmer</a>. Nicely written and describing very actual things for every developer. It is not only me, who liked that it was in top of dzone.com for several days.</li>
+<li><b>A post with a title I am proud of - </b> Hard to say may be <a href="http://www.beletsky.net/2010/07/no-back-up-fail.html">No back up&#8230; Fail!</a>. Don&#8217;t know why, but I liked the most.</li>
+<li>
+<b>A post that you wish more people had read -</b> It might be the set of my first blog posts, related to TDD. I&#8217;ve tried to describe my vision of TDD and why I like it. It was in Russian and my first bloggin experience.. but anyway <a href="http://www.beletsky.net/2008/03/1.html">Разработка ведомая тестированием. Часть 1. Описание</a>. And also I tried to find some ideas in <a href="http://www.beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas.html">Blogging with a GitHub and Blogspot? Ideas?</a>.
+</li>
+<li>
+<b>My most helpful/visited post -</b> so far it is <a href="http://www.beletsky.net/2010/06/ddd-implementation-of-repository.html">DDD, Implementation of Repository pattern with Linq to SQL</a> that I created after discussion of Repositories on <a href="http://forums.asp.net/">asp.net forum</a> that I try to read/write periodically.
+</li>
+</ul>
+</p>
+<p>
+This is it.. You can also join such challenge, please do that.
+</p>
+<p>
+Happy blogging!
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/blogging-with-github-and-blogspot-ideas.html">
+    
+      Blogging with a GitHub and Blogspot? Ideas?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-27T22:54:00+03:00" pubdate data-updated="true">Jul 27<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I do use Blogger as my blog engine and really like it. Right, as soon as you create your blog posts in 
+    HTML and do not use embedded editor it is perfectly fine! So, when I do new post I create a plain 
+    HTML in VS and after it is ready I copy paste it to blogspot and publish. Original 
+    HTML I commit special repository on github.  
+</p>
+<p>
+I liked that style of work as far I as I change nothing in posts. As I need change, I have to change original 
+    HTML, re-publish it on blogspot and commit again to github. After I did it 
+    several times, I started to think how to automate this? I came up this a simple 
+    idea, why do not load the content of post dynamically, by using a javascript? 
+</p>
+<p>
+It is no problem to do that, and I implemented a small script that performs exactly what I needed. I called this project <a href="http://github.com/alexanderbeletsky/GithubToBlogspot">GithubToBlogspot</a>. Its description:
+</p>
+<p>
+GithubToBlogspot is used for people who stores they blog article sources in HTML.
+Instead copy pasting HTML between blogspot and github, it should be possible to paste a simple script on a page and that 
+script would load a content.
+</p>
+<p>
+It utilized javascript GitHub API by: http://github.com/fitzgen/github-api
+</p>
+<p>
+First draft example looks like this,
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexanderbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Code itself is also really simple: it opens the blob, reads its data as HTML, extracts the body and put body to target div. That&#8217;s it. All this done asynchronously, so as you open the blog you see progress image.. after data loaded it appears on screen.
+</p>
+<p>
+But I haven&#8217;t taken into account several major considerations:
+<ul>
+<li>First, AJAX content is not crawlable by Google. It <a href="http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html">actually is</a>, but requires a changes that could not be done, since you are on 3rd party blog engine.</li>
+<li>
+Second, is with that dynamic loading RSS feed of blog will also be empty.
+</li>
+</ul> 
+</p>
+<p>
+I still want to accomplish this. I was thinking about different solutions, but have no solid one.. Do you know is it possible to accomplish something similar with no drawbacks I mentioned above. It would be great if you share you ideas! 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/json-jsonp-and-same-origin-policy-issue.html">
+    
+      JSON / JSONP and Same Origin policy issue</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-22T17:17:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+First of all, what the JSON is? It is very, very simple! JSON  acronym of a JavaScript Object Notation. It is a data interchange format, analog of XML. It became very popular because of AJAX applications, which receive a data from web services called from a javascript. Web services typically use XML as format of exchanging data, that works great because of SOAP standard and so on.. But in javascript client application you had to put additional effort of parsing XML data, and create an XML to post to web service. JSON simplifies it, because it is native to javascript.
+</p>
+<p>
+JSON is a serialization of javascript object to string. It based on javascript basic types as Number, String, Boolean, Array, Object and null and looks like that: 
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">{<br>&nbsp;&nbsp; <font color="#A31515">"id"</font>: 1023,<br>&nbsp;&nbsp; <font color="#A31515">"description"</font>: <font color="#A31515">"new assigment"</font>,<br>&nbsp;&nbsp; <font color="#A31515">"data"</font>: {<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"size"</font>: 117,<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"url"</font>: <font color="#A31515">"/local/data/jhsr2kk"</font><br>&nbsp;&nbsp; }<br> }</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+As you receive such string from web service (for instance) you can just evaluate it (with eval() function) and use as javascipt object. (I have to mention that direct using of eval() is not recommended way since security issues, all modern browsers have built-in JSON parsers and you can use that. Best way is to use a libraries, like <a href="http://jquery.com/">jQuery</a> or <a href="http://www.prototypejs.org/">Prototype</a> and hides such details from you).
+</p>
+<p>
+JSON exchanging of data works great as soon as your application and data source service are in one domain. As you want to receive some data outside of your domain, it simply won&#8217;t work (it actually works, with IE but it gives security notification and does not work in Chrome at all). This because of <a href="http://en.wikipedia.org/wiki/Same_origin_policy">Same origin policy</a>, security concept that disallow such operations. So, as you considered to do something like, 
+<blockquote><code><font size="2" face="Courier New" color="black">$.getJSON(<font color="#A31515">"http://external.com/json"</font>, <font color="#0000ff">function</font>(data) { });</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+you will not get any result. There are a different approaches of workaround of same policy origin (please check nice <a href="http://www.wait-till-i.com/2010/01/10/loading-external-content-with-ajax-using-jquery-and-yql/">article</a> on that), but as you know that web service supports JSON, JSONP comes to help.
+</p>
+<p>
+JSONP is a JSON with padding (or it also called JSON with prefix). With JSONP you are specifying URL and callback function, like http://external.com/json?callback=f. This must be put into script tag.
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="http://external.com/json?callback=f"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">function</font> f(data) {<br><br>}<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+It is allowed and works perfectly fine. 
+</p>
+<p>
+But what if you need a dynamic calls? It is also not a problem, it is possible to create script tag dynamically and attach it to DOM. A nice way of doing that. I&#8217;ve seen in <a href="http://github.com/alexanderbeletsky/github-api/blob/master/github.js">github-api</a> project. Original code is from here, I just removed some details and made it more reusable.  
+<blockquote><code><font size="2" face="Courier New" color="black">(<font color="#0000ff">function</font> (globals) {<br>&nbsp;&nbsp;<font color="#0000ff">var</font> json = {<br>&nbsp;&nbsp;&nbsp;&nbsp;__jsonp_callbacks: {},<br>&nbsp;&nbsp;&nbsp;&nbsp;call: <font color="#0000ff">function</font> (url, callback, context) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> id = +<font color="#0000ff">new</font> Date;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> script = <font color="#0000ff">document</font>.createElement(<font color="#A31515">"script"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json.__jsonp_callbacks[id] = <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete json.__jsonp_callbacks[id];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback.apply(context, arguments);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> prefix = <font color="#A31515">"?"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (url.indexOf(<font color="#A31515">"?"</font>) &#62;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix = <font color="#A31515">"&#38;"</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url += prefix + <font color="#A31515">"callback="</font> + encodeURIComponent(<font color="#A31515">"json.__jsonp_callbacks["</font> + id + <font color="#A31515">"]"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;script.setAttribute(<font color="#A31515">"src"</font>, url);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">document</font>.getElementsByTagName(<font color="#A31515">'head'</font>)[0].appendChild(script);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;globals.json = json;<br>})(window);<br>&nbsp;&nbsp;</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Example of usage:
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;!</font><font color="#800000">DOCTYPE</font> <font color="#ff0000">html</font> <font color="#ff0000">PUBLIC</font> <font color="#0000ff">"-//W3C//DTD XHTML 1.0 Transitional//EN"</font> <font color="#0000ff">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</font><font color="#0000ff">&#62;</font><br><br><font color="#0000ff">&#60;</font><font color="#800000">html</font> <font color="#ff0000">xmlns</font><font color="#0000ff">="http://www.w3.org/1999/xhtml"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">title</font><font color="#0000ff">&#62;</font>Test page<font color="#0000ff">&#60;/</font><font color="#800000">title</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="json.js"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&#60;/head&#62;<br>&#60;body&#62;<br>&#60;script type=<font color="#A31515">"text/javascript"</font>&#62;<br>&nbsp;&nbsp;json.call(<font color="#A31515">"http://ws.geonames.org/citiesJSON?north=44.1&#38;south=-9.9&#38;east=-22.4&#38;west=55.2&#38;lang=de"</font>, <font color="#0000ff">function</font> (data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> d = data;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">html</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+This code very useful for small &#8220;depends-on-nothing&#8221; applications. Of cause jQuery has its own support of JSONP, so as soon as you already using jQuery you should consider <a href="http://api.jquery.com/jQuery.getJSON/">$.getJSON</a> for your needs. 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/no-back-up-fail.html">
+    
+      No back up&#8230; Fail!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-21T12:29:00+03:00" pubdate data-updated="true">Jul 21<span>st</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+It might seem that investment into UPS is a big deal.. as far as you lost a data after power outage.
+</p>
+<p>
+Yesterday I was in such situatation. Outage of power was only for 1-2 seconds, but it was enough to my PC. It turned off and after I turned it on again, BIOS was not able to detect my hard drives. I&#8217;ve got 2 drives on my PC, but none of them is detected.
+</p>
+<p>
+I&#8217;ve completed no fine diagnosis yet, and still hope that hard drives are OK or at least, I could restore something. Fortunately, last times I more use my notebook for work, so all latest information is there. On a PC I&#8217;ve got my all my old projects (with local SVN server, no backed up some service) a lot of books, photos and music. Photos would be the most painful thing to loose.  
+</p>
+<p>
+You always can hear about importance of backup but does not take it seriously as soon it does not happen to you. It happened to me and now I feel not so great. For now I&#8217;m thinking of how to minimize or avoid such in future. For sure, spending about 200 bucks for UPS doesn&#8217;t sound bad idea now. I would also finally buy additional space on google to store all photos in picassa with original size, so you will always have a backup. All important projects, documents other artifacts, should be on copied on services (Google Docs, Google Code, github etc.). Music, videos and so on is backed up for external USB hard drive. Now, it is not so expensive.. and there is a chance that this hard drive could also be corrupted, but it is better than nothing.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/my-little-experience-with-github.html">
+    
+      My little experience with GitHub collaboration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-19T19:00:00+03:00" pubdate data-updated="true">Jul 19<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/social/'>Social</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Recently I&#8217;ve started my tiny project. For this project I required access to GitHub by it&#8217;s open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I&#8217;ve opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I&#8217;m not very experienced in that). That was a good news!
+</p>
+<p>
+But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I&#8217;ve considered it as my change to do first fork!
+</p>
+<p>
+Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I&#8217;ve decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
+</p>
+<p>
+After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I&#8217;ve done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
+</p>
+<p>
+That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/18/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/16/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

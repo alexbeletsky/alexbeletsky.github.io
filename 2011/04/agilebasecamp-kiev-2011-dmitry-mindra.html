@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET Apr 20th, 2011 Agile, Conference Disclaimer: text below is compilation of notes I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/04/agilebasecamp-kiev-2011-dmitry-mindra.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-20T12:05:00+03:00" pubdate data-updated="true">Apr 20<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<p>
+<a href="http://kiev.agilebasecamp.org/mindra/">Dmitry Mindra</a> prepared very nice speech dedicated to <a href=http://en.wikipedia.org/wiki/Design_by_Contract">Code Contracts</a>. He opens ideas what the Code Contacts are and more important how to &#8220;Design by contract&#8221;. This speech has been especially interested to me, since I never heard/used such type of design.
+</p>
+<h2>Design by contract in short</h2>
+<p>
+Desing by contracts has been introduced by <a href="http://en.wikipedia.org/wiki/Bertrand_Meyer">Bertrand Mayer</a>. He is one of original creator of Eiffel language. No surprise that first time contract&#8217;s have been added in Eiffel. The contract consists on 3 parts: Preconditions/Postconditions/Invariants.
+</p>
+<ul>
+<li><strong>Preconditions</strong> - check that client does everything OK</li>
+<li><strong>Postconditions</strong> - check that server does everything OK</li>
+<li><strong>Invariant</strong> - check that state of object valid for next call</li>
+</ul>
+<p>
+In Eiffel you have special sections in each method called (require, do, post) there it is possible to put contract definition.
+</p>
+<p>
+By specifying the contract we specify exact constraints for code. Typically methods have some input parameters and return some results to outside world. For instance we have class <code>Account</code> with method <code>Withdraw</code>, we are expecting that argument that <code>Withdraw</code> receives are always positive and return results also is greater than zero. 
+</p>
+<h2>Wait, I can already specify contract with my beloved exceptions</h2>
+<p>
+Many of us, get used to write such code..
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ if (amountToWithdraw == null)
+ {
+  throw new ArgumentException("amountToWithdraw");
+ }
+ 
+ if (amountToWithdraw.Value <= 0)
+ {
+  throw new ArgumentException("amountToWithdraw.Value");
+ }
+ 
+ var result = //.. calculate operation here.. ;
+ 
+ if (result.Value <= 0)
+ {
+  throw new AccountOperationException();
+ }
+ 
+ return result;
+}
+</pre>
+<p>
+It is definitely the way of creation robust application (in case of all those conditions are tested and client code properly handles exceptions). But is has several drawbacks:
+</p>
+<ul>
+<li>It is only run-time mechanism</li>
+<li>It is not possible to turn on or turn off the exceptions</li>
+<li>This type of contract is &#8220;method-wide&#8221;, but how can you specify &#8220;class-wide&#8221; contract?</li>
+<li>All of if / throw statements are &#8220;code-garbage&#8221; that make it difficult to read</li>
+</ul>
+<h2>What we have in .NET?</h2>
+<p>
+The Common Language Runtime (CLR) team is introducing a library to allow programming with contracts in the Microsoft .NET Framework 4. Adding them as a library allows all .NET languages to take advantage of contracts. This is different from Eiffel or Spec#, a language from Microsoft Research (research.microsoft.com/en-us/projects/specsharp/), where the contracts are baked into the language. Code Contracts System in .NET consists of 4 parts: 
+</p>
+<ul>
+<li><code>System.Diagnostics.Contracts</code> contract library where <code>Contract</code> class is defined.</li>
+<li><code>ccrewrite.exe</code> tool that modifies the Microsoft Intermediate Language (MSIL) instructions of an assembly to place the contract checks where they belong.</li>
+<li><code>cccheck.exe</code> contract static checker, that examines code without executing it and tries to prove that all of the contracts are satisfied.</li>
+<li><code>ccrefgen.exe</code> which will create separate contract reference assemblies that contain only the contracts.
+</ul>
+<h2>Why is it useful?</h2>
+<p>
+Let&#8217;s rewrote the previous example with code contracts:
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ // preconditions..
+ Contract.Requires&lt;NullReferenceException&gt;(amountToWithdraw);
+ Contract.Requires(amountToWithdraw.Value);
+
+ // action
+ var result = //.. calculate operation here.. ;
+ 
+ // postconditions 
+ Contract.Ensures(result.Value <= 0);
+ 
+ return result;
+}
+</pre>
+<p>
+I like the style, because this code a little reminds me TDD AAA (arrange/act/assert) pattern, code side is smaller and we are getting benefits of .NET Code Contracts.
+</p>
+<p>
+What benefits here?
+</p>
+<ul>
+<li>Static code analysis - during the compilation code is checked for contracts, if somewhere I wrote <code>account.Withdraw(null)</code> it would be immediately caught by cccheck.exe</li>
+<li>Runtime execution - if error is missed on compilation time, it would be caught on run time and proper exception is thrown</li>
+<li>I could configure to include or exclude contracts check at final assembly</li>
+</ul>
+<h2>Ok, I want to use it</h2>
+<p>
+To have a full support of Code Contracts you have to have .NET framework 4.0 and Visual Studio Premium or Ultimate. So, Code contracts are pretty expensive stuff. As far as I get from Dmitry speech it is possible to use <code>System.Diagnostics.Contracts</code> but limited capabilities are enabled only.
+</p>
+<p>
+So, contract are great for building Life-critical and High-robust application where the quality / cost ratio makes sense for you.
+</p>
+<h2>Materials</h2>
+<ul style="list-style: none outside none;">
+<li><a href="http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed">http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/magazine/ee236408.aspx">http://msdn.microsoft.com/en-us/magazine/ee236408.aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/devlabs/dd491992">http://msdn.microsoft.com/en-us/devlabs/dd491992</a></li>
+</ul></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/04/agilebasecamp-kiev-2011-dmitry-mindra.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/04/agilebasecamp-kiev-2011-dmitry-mindra.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TDD | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/tdd/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
+    <updated>2012-12-19T21:52:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>Previous time, we've implemented a Backbone model and wrote some meaningful tests for it.<br />
+</p><p>Next very important Backbone's entry to test is View.<br />
+</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don't have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
+</p><h2>What to test?</h2><p>You should focus on such things: <br />
+</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
+<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
+<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
+<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
+</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It's typically that view tests are catching most regression issues.<br />
+</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don't need any special HTML on test page, since view holding all it's DOM structure inside <code>this.el</code>. By means of jQuery, it's easy to change DOM values or trigger events.<br />
+</p><p>Since view also holds reference to model, it's easy to check model's attributes changes or spying on particular models methods.<br />
+</p><p>First red test,<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView();
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
+</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
+</p><pre class="brush: js">describe('when view is initialized', function () {
+
+    describe('without model', function () {
+
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView();
+            }).toThrow(new Error('model is required'));
+        });
+
+    });
+
+    describe('without default feedback', function () {
+            
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView({model: new Backbone.Model() });
+            }).toThrow(new Error('feedback is required'));
+        });
+    });
+
+});
+    </pre><p>To turn from Red to Green, let's add <code>initialize</code> function to view,<br />
+</p><pre class="brush: js">initialize: function (options) {
+
+    if (!this.model) {
+        throw new Error('model is required');
+    }
+
+    if (!(options && options.feedback)) {
+        throw new Error('feedback is required');
+    }
+
+    this.feedback = options.feedback;
+},
+    </pre><p>Btw, after that change it's required to fix previous test, since it start to fail.<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Now, let's test how rendering works.<br />
+</p><pre class="brush: js">describe('when view is rendered', function () {
+
+    beforeEach(function () {
+        view.render();
+    });
+
+    it ('should email field be empty', function () {
+        expect(view.$el.find('input#email')).toHaveValue('');
+    });
+
+    it ('should website field be empty', function () {
+        expect(view.$el.find('input#website')).toHaveValue('');
+    });
+
+    it ('should feedback field with default feedback', function () {
+        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
+    });
+
+});
+</pre><p>Here and after I'm using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
+</p><p>We've tested initialization and rendering, now let's test last aspect, model changes and persistence.<br />
+</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
+</p><pre class="brush: js">describe('when form is submitted', function () {
+
+    describe('no inputs are filled', function () {
+
+        beforeEach(function () {
+            view.$el.find('#email').val('').trigger('change');
+            view.$el.find('#feedback').val('').trigger('change');
+        });
+
+        beforeEach(function () {
+            view.$el.find('#submit').trigger('click');
+        });
+
+        it('email field should be invalidated', function () {
+            expect(view.$el.find('.control-group.email')).toHaveClass('error');
+        });
+
+        it('feedback field should be invalidated', function () {
+            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+        });
+
+        it('website field should be valid', function () {
+            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+        });
+
+    });
+</pre><p>That's cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
+</p><pre class="brush: js">describe('only email field filled', function () {
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('email field should be valid', function () {
+        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
+    });
+
+    it('feedback field should be invalidated', function () {
+        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+    });
+
+    it('website field should be valid', function () {
+        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+    });
+
+});
+</pre><p>And finally, if view is filled correctly,<br />
+</p><pre class="brush: js">describe('email and feedback filled', function () {
+
+    beforeEach(function () {
+        spyOn(view.model, 'save').andCallThrough();
+    });
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('some feedback').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('should show no errors', function () {
+        expect(view.$el.find('.error').length).toBe(0);
+    });
+
+    it('should save model', function () {
+        expect(view.model.save).toHaveBeenCalled();
+    });
+
+});
+</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
+</p><p>I'm skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
+</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how "deep" you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of models]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing.html"/>
+    <updated>2012-11-22T11:54:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
+        </p>        <p>            By the end of the day, it's only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
+        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let's setup our testing infrastructure.<br />
+        </p>        <h2>Folders and files</h2>        <p>            We'll have a new folder called `spec`. Inside the spec folder, I'll have `models` and `views` folders that would contain tests for models and views.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
+            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
+        </a><br />
+        <h2>Tests runner</h2>        <p>            I'll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It's very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
+        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
+        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Sources --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Specs --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
+    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let's review the Jasmine test skeleton.<br />
+        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
+    var value;
+
+    beforeEach(function () {
+        value = 1;
+    });
+
+    it ('should fail', function () {
+        expect(value).toBe(0);
+    });
+
+    describe('when value is changed', function () {
+        beforeEach(function () {
+            value = 0;
+        });
+
+        it ('should pass', function () {
+            expect(value).toBe(0);
+        })
+    });
+});
+</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it's both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
+        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let's test that.<br />
+        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
+    var model;
+
+    beforeEach(function () {
+        model = new Feedback();
+    });
+
+    describe('when model is validating', function () {
+        var errors;
+    });
+});
+</pre>        <p>            This is something to start with. It does not do any asserts, so now we'll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
+        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
+    beforeEach(function () {
+        errors = model.validate({});
+    });
+
+    it ('should have 2 errors', function () {
+        expect(errors.length).toBe(2);
+    });
+
+    it ('should have email fields as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[1].name).toBe('feedback');
+    });
+});
+</pre>        <p>            It's is possible that user put email, but forgot about feedback.<br />
+        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ email: 'a@a.com'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[0].name).toBe('feedback');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
+        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ feedback: 'TDD is awesome'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have email field as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
+        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
+            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
+        </a><br />
+        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model's is pretty simple thing. It's nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
+        </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Game of Life]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/09/the-game-of-life.html"/>
+    <updated>2012-09-27T11:52:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/09/the-game-of-life</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
+    </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
+    </p>    <p>        To do not stay with my misery of missing event, I decided to "play" game of life at home. Trying to follow the rules of sessions, I started to write some JavaScript code. It's even hard to tell, how much fun I had during this implementation.<br />
+    </p>    <h2>Tests, code, tests</h2>    <p>        TDD is very recommended way of development in CodeRetreats. I love TDD and fortunately the game of life is very TDD friendly. It's all about the logic. Logic seems to be very simple and easy describe with tests. For my JavaScript testing I used to use <a href="http://pivotal.github.com/jasmine/">Jasmine</a> testing framework. Jasmine is BDD tests style, which was a little difficult to me at very beginning, but not I tend to write all my tests with BDD style.<br />
+    </p>    <p>        I've spent first two sessions for idea elaboration. At the end third session, I got something working. As I said, the process of writing that code was so fun to me, that I even decided to <a href="https://gist.github.com/3763692">gist</a> the code I created so far. <br />
+    </p>    <a href="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png" /><br />
+    </a><br />
+    <p>        My big disappointment after was that code is actually not working.<br />
+    </p>    <h2>Understanding the problem</h2>    <p>        Even if I had good tests suite, that showed my code works as expected the game was broken. And the issue is that I didn't understand the domain good enough. It took me 4 sessions (about 4 hours) to finally understand the game.<br />
+    </p>    <p>        I proved it once again for myself, there are no perfect code; the code you created at first time is probably broken (unless you understand the domain perfectly, but it's rarely happen in reality). It's OK to completely remove the code you created before and start from the beginning. And with each iteration you moving faster and faster.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png"><br />
+        <img src="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png" /><br />
+    </a><br />
+    <p>        Knowing the requirements I was able to create good test suite. <br />
+    </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it's state and position. The <a href="https://github.com/alexanderbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
+        <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
+    </a><br />
+    <p>        Again, I was so happy with code. It looked very readable as for me, without nested cycles and if-else statements.<br />
+    </p>    <h2>Visualisation</h2>    <p>        You can really understand if something works or not, only if you see it in action. I had to have some UI to see, how game is actually working. <br />
+    </p>    <p>        I've created very simple HTML based UI. The number of div's which change it's state, depending on cell state (alive or dead).<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        The visualization of results is very important part. It's only then I tried to run the game on 64x64 square, I realized that performance of my implementation is so terribly poor. It runs very slowly on Chrome, it makes IE10 die.<br />
+    </p>    <p>        It means that, all beautiful code, tests, specs and so on - is almost useless, than it comes to performance. My 2-pass algorithm, with a simple implementation is not "production" ready, if we talk about some real software. Unit tests are usually done on smaller sets of data. Visualisation and trying the things on larger set of data opens up the reality.<br />
+    </p>    <h2>Conclusions</h2>    <p>        As I already said, it's so much fun. It makes you feel like "back to roots", forget about your enterprise stuff and do some real work. Besides it's great TDD exercise. It's probably to big to be called code kata, but it is still great for sharping an axe. Focusing on simple design is important. But making things "visible" and running them in real mode is vital. <br />
+    </p>    <p>        The most important conclusion for me is: I'm still newbie developer, with so many areas to improve.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Approval Testing for ELMAH.MVC project]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/06/using-approval-testing-for-elmahmvc.html"/>
+    <updated>2012-06-16T15:23:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/06/using-approval-testing-for-elmahmvc</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    During the ELMAH.MVC 2.0 preparation I had a bit challenging task. As I <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">mentioned</a>, I was about to adopt some code from <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandox</a> project. The 2.0 release included some new features, but what was important to me is make sure I keep previous ELMAH.MVC functionality.<br />
+</p><p>    In case you are following my blog, you probably read about <a href="http://www.beletsky.net/search/label/Approvals">Approval.Test</a> framework, which I personally like and recommend to my fellow developers. I did some posts, there I tried to show some Approvals benefits. Today, I'll show some real-life use case.<br />
+</p><h2>Installing by NuGet</h2><p>    Last time I played with Approvals, the binaries were only available at SourseForge project page. It is not convenient at all. I was happy to see the tweet from <a href="http://twitter.com/#!/llewellynfalco">Llewellyn Falco</a>, he mentioned that ApprovalTests are now available on <a href="http://nuget.org/packages/ApprovalTests">NuGet</a>. So, installation now as easy as:<br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            PM&gt; Install-Package ApprovalTests<br />
+        </p>    </div></div><h2>Thinking of test</h2><p>I had to have some kind of assurance, that I will not break existing ELMAH pages after I switch to new ELMAH controller. Basically, I need to have some 'Master Database' that would contain all logged errors and I need to grab all possible output that is being generated by ELMAH error log page handler. <br />
+</p><p>This is what perfectly match the 'Locking Down' testing strategy. In locking down testing, you try to get all possible system output, and approve it. In my case, I wanted to approve that all HTTP calls to ELMAH pages, like '/elmah', '/elmah/stylesheet', '/elmah/rss' and so on, still work as they worked before, meaning producing the same output as they produced before.  <br />
+</p><h2>Test implementation</h2><p>For my 'do' step of the the test, I need to collect all possible applications output. I already know all URL's, so I just fired up the site with ELMAH.MVC 1.3.2 version installed. I configured the site to use XML files for storing the tests, so I can easily copy them before each test run. That made a kind of 'Master Database' for me.<br />
+</p><p>For the verification, all I need to have is <code>ApprovalTests.Approvals.Verify()</code>.<br />
+</p><pre class="brush: csharp">[UseReporter(typeof(DiffReporter))]
+public class ElmahMvcTests
+{
+ private const string ElmahMvcAppUrl = &quot;http://localhost:49800/elmah&quot;;
+
+ [Test]
+ public void lock_elmah_mvc_pages()
+ {
+  // do
+  var content = new StringBuilder();            
+  var pages = new[] 
+      {
+       ElmahMvcAppUrl,
+       ElmahMvcAppUrl + &quot;/&quot;,
+       ElmahMvcAppUrl + &quot;/stylesheet&quot;,
+       ElmahMvcAppUrl + &quot;/rss&quot;,
+       ElmahMvcAppUrl + &quot;/digestrss&quot;,
+       ElmahMvcAppUrl + &quot;/detail?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
+       ElmahMvcAppUrl + &quot;/json?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
+       ElmahMvcAppUrl + &quot;/xml?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;
+      };
+
+  foreach (var page in pages)
+  {
+   content.Append(GetContent(page));
+  }
+
+  // verify
+  ApprovalTests.Approvals.Verify(content.ToString());
+ }
+</pre><p>The <code>GetContent()</code> is responsible for getting page content. It could be as simple as <code>ApprovalTests.Asp.AspApprovals.GetUrlContents(url)</code>, but you might get in the trap, as I did so.<br />
+</p><h2>Dealing dynamic data</h2><p>The trap is called 'Dynamic Data'. Dynamic data is every dynamic part of you output. In my case, the dynamic part was a server time generated by ELMAH and putting into page footer. Of cause, even if I run the test and approve the results, on a next test run I still have red test, since I have differences in a seconds of timestamps in footer. It's annoying, but nothing  you can do about it.<br />
+</p><p>My solution was simple. Since I actually don't care about those timestamps at all, I can simple cut it away from output. The rest of the document, including structure and content would remain the same, so testing quality will not be lower. <br />
+</p><p>So, the <code>GetContent()</code> method will look as follows,<br />
+</p><pre class="brush: csharp">private string GetContent(string url)
+{
+ return RemoveFooter(ApprovalTests.Asp.AspApprovals.GetUrlContents(url));
+}
+
+private string RemoveFooter(string content)
+{
+ var pattern = &quot;&lt;p id=\&quot;Footer\&quot;&gt;(.*)&lt;/p&gt;&quot;;
+ return new Regex(pattern).Replace(content, string.Empty);
+}
+</pre><h2>Approving the results</h2><p>After I had stable test output, I safely approved that test. Approving in terms of ApprovalTest framework, is simple copy of Accepted file into Approved file.<br />
+</p><p>Now the system got into 'Locked' state and I'm safe to do the changes. This is something as Llewellyn mentioned 100% test coverage with one test. Indeed, having only one test and spent 10 minutes to create it I covered huge piece of functionality.<br />
+</p><h2>Keep that safe</h2><p>After I applied all my changes, I re-run approval test to see how it works. I was happy to see, that I'm still generating the same output as it was before. It means, the system still functions as it's expected. All routes works, generated content does not have differences inside. Cool!<br />
+</p><p>As I <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">said</a> earlier, you don't need to keep the test for all time. In my case, as I completed my refactoring and saw that code still works (and of cause, manually tested the application), it's OK just to delete approval test. No longer needed.<br />
+</p><p><a href="http://approvaltests.sourceforge.net/">Approval.Tests</a> are really shines for a scenarios like that. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Is TDD Required Skill? - Two Years Later]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/06/is-tdd-required-skill-two-years-later.html"/>
+    <updated>2012-06-05T21:00:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/06/is-tdd-required-skill-two-years-later</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>            Two years ago I've concluded an interesting research. I was thinking how much employers care about hiring developers with TDD skills while looking for suitable candidates. As output of this research I've created a <a href="https://github.com/alexanderbeletsky/TddDemand">simple crawler</a>, that is able to crawl vacancy web sites and perform the simple analysis does this vacancy description require TDD skill or not. As well, I've created some <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">blog posts</a>, where I did share results + some technical issues I met during building this crawler. <br />
+        </p>        <p>            At the weekend, I've decided to repeat this experiment. The code of crawler worked perfectly, except some correction I had to apply to conform the markup changes of sites that happed through these two years. Leaving the technical part of this blog post, I want to share the results with you.    <br />
+        </p>        <h2>What was at 2010?</h2>        <p>            Let's recap what it was at 2010. I've crawled 978 records from <a href="http://rabota.ua">rabota.ua</a> site and 150 of 978 (about 15%) contained TDD requirement. For <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> the results was a little better, ~23% (49 of 212) contained some mention on TDD. <br />
+        </p>        <p>            The quote from 2 year ago report:<br />
+        </p>        <blockquote>            .. such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.<br />
+        </blockquote>        <p>            I believe the awareness of TDD and general software quality got higher along the way. But let's see the figures of 2012.<br />
+        </p>        <h2>What we have in 2012?</h2>        <p>            This time I got a litle more data. 1067 records of <a href="http://rabota.ua">rabota.ua</a> and 560 records of <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a>. But what about demand? <br />
+        </p>        <p>            All right, it's only 77 vacancies of 1067 is requiring TDD, which is 7.22% in <a href="http://rabota.ua">rabota.ua</a>. <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> has 127 vacancies requiring TDD which is 22.68%.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png"><img src="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png" style="width: 620px"/></a><br />
+        <p>            The technologies breakdown is follows. Java leads as a technology with the highest demand on TDD. During this post creation I thought that my results does include JavaScript, which gain much popularity recently. It's interesting to see what's there.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png"><img src="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png" style="width: 620px"/></a><br />
+        <h2>Conclusions</h2>        <p>            Ukrainian market demand lowered almost twice. USA market demand is stable, with a little change which is almost the noise.<br />
+        </p>        <ul>            <li>Ukraine: 2010 -> 15.34%, 2012 -> 7.22% ( -8.12% )</li>
+            <li>USA: 2010 -> 23.11%, 2012 -> 22.68% ( -0.43% )</li>
+        </ul>        <p>            I can see very low demand on TDD in C/C++ field. Almost equal demand between Java and .NET with a slight win of Java. <br />
+        </p>        <p>            I personally wanted to see different figures. Anyway, it was interesting to see actual results and restored some code that worked 2 years ago. Probably this analysis required to be done more frequently to have a kind of valuable statistics.  <br />
+        </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

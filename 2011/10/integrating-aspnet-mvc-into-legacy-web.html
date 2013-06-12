@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating ASP.NET MVC Into Legacy Web Site</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Integrating ASP.NET MVC Into Legacy Web Site Oct 30th, 2011 MVC, Tips, asp.net For some quite long time I naively thought that it is not possible ( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/10/integrating-aspnet-mvc-into-legacy-web.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Integrating ASP.NET MVC Into Legacy Web Site</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-30T09:05:00+02:00" pubdate data-updated="true">Oct 30<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>For some quite long time I naively thought that it is not possible (or at least very difficult) to make ASP.NET MVC stuff work on a Web Site project. But, my latest <a href="http://www.beletsky.net/search/label/InsideMVC">hacking of MVC</a> opened another perspectives. There are no any difficulties with ASP.NET MVC on Web Sites. I&#8217;ll share an experience of integration ASP.NET MVC in my work project legacy Web Site.<br />
+</p><h2>Pre-conditions</h2><p>In my case I integrated ASP.NET MVC2, since we are still running on .NET 3.5. If you are running .NET 4.0 the best is to go with ASP.NET MVC3 already. The difference of setup would not be huge, just in proper versions of assemblies.<br />
+</p><p>I assume you already have ASP.NET MVC2 framework on your machine (if you have VS2010 - you definitely have one), if no just go that <a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=22079">link</a> and install it.<br />
+</p><h2>Web config changes</h2><p>MVC assembly have to be added to <code>web.config</code>. Since the MVC infrastructure heavily depends on Routing mode, it have to be put to <code>web.config</code> as well.<br />
+</p><p>Register MVC assemblies:<br />
+</p><pre class="brush: xml">&lt;compilation defaultLanguage=&quot;c#&quot; debug=&quot;true&quot;&gt;
+ &lt;assemblies&gt;
+  &lt;add assembly=&quot;System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot;/&gt;
+
+  &lt;!-- Your application specific assemblies--&gt;
+        ...
+
+  &lt;!-- ASP.NET MVC --&gt;
+  &lt;add assembly=&quot;System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+ &lt;/assemblies&gt;
+&lt;/compilation&gt;
+</pre><p>Namespaces:<br />
+</p><pre class="brush: xml">&lt;pages enableViewStateMac=&quot;false&quot; enableViewState=&quot;false&quot; validateRequest=&quot;true&quot; viewStateEncryptionMode=&quot;Never&quot;&gt;
+  &lt;controls&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI.WebControls&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;/controls&gt;
+  
+  &lt;-- ASP.NET MVC --&gt;
+  &lt;namespaces&gt;
+    &lt;add namespace=&quot;System.Web.Mvc&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Ajax&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Html&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Routing&quot;/&gt;
+    &lt;add namespace=&quot;System.Linq&quot;/&gt;
+    &lt;add namespace=&quot;System.Collections.Generic&quot;/&gt;
+    &lt;add namespace=&quot;Microsoft.Web.Mvc&quot;/&gt;
+  &lt;/namespaces&gt;
+&lt;/pages&gt;
+</pre><p>Register URLRouting module and handler.<br />
+</p><pre class="brush: xml">&lt;system.webServer&gt;
+  &lt;validation validateIntegratedModeConfiguration=&quot;false&quot;/&gt;
+  &lt;modules&gt;
+ ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingModule&quot; type=&quot;System.Web.Routing.UrlRoutingModule, System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot; /&gt;
+  &lt;/modules&gt;
+  &lt;handlers&gt;
+    ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingHandler&quot; preCondition=&quot;integratedMode&quot; verb=&quot;*&quot; path=&quot;UrlRouting.axd&quot; type=&quot;System.Web.HttpForbiddenHandler, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+  &lt;/handlers&gt;
+&lt;/system.webServer&gt;
+</pre><h2>Global.asax changes</h2><p>You would be probably have <code>global.asax</code> without code-behind class. It&#8217;s not a problem, all you need is slightly change the <code>Application_Start()</code> method. Basically you can go and register routes there, as you do in any ASP.NET MVC application. But I didn&#8217;t do that. Instead, I used the advantages of <a href="http://msdn.microsoft.com/en-us/library/ee671793.aspx">Areas</a> feature of MVC2, since it makes better logical grouping. So, my <code>global.asax</code> are:<br />
+</p><pre class="brush: csharp">public void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+}
+</pre><h2>Models, Views, Controllers</h2><p>In typical ASP.NET MVC application you have 3 folders, for - Models, Views, Controllers. Models/Controllers are C# code, views are .aspx pages. With a Web Site you typically place code into <code>App_Code</code> folder. But you should not do that. Instead, it it better to create a separate class library project that would hold your models and controllers. Views would be placed under corresponding Area folder.<br />
+</p><h2>New project for Models/Controllers</h2><p>Just create a new class library project with such folder structure:<br />
+</p><a href="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png"><br />
+<img src="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png" alt="asp.net mvc class library" /><br />
+</a><br />
+<p>The most important - it should contain Area Registration class inside. This is the one that suppose to register all router for your application:<br />
+</p><pre class="brush: csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.Mvc;
+
+namespace Sba.Web.Areas.Sales
+{
+ public class SalesAreaRegistration : AreaRegistration 
+ {
+  public override string AreaName
+  {
+   get 
+   {
+    return "Sales";
+   }
+  }
+
+  public override void RegisterArea(AreaRegistrationContext context)
+  {
+            // All routes are here..
+
+   context.MapRoute(
+    "Sba_Sales",
+    "sba/sales/{controller}/{action}/{id}",
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+   );
+  }
+ }
+}
+</pre><p>That&#8217;s it. Now you implement Controller/Models in usual way and able to add unit tests project for new assembly.<br />
+</p><p>Make sure that assembly will be placed into to Web Site <code>/Bin</code> folder. I simply added <code>../Site/Bin</code> as project output directory. At the site initialization and <code>Application_Start()</code> call of Global.asax, all <code>AreaRegistration</code> instances would be created and routes being registered.<br />
+</p><h2>Views</h2><p>Views have to be placed in the Web Site folder itself. MVC has several rules for views placements, so you have to follow them. Views for controllers that are part of Area&#8217;s have to be places into <code>Site/Areas/AreaName/Views</code>, the common stuff line master pages are in <code>Site/Views/Shared</code>. It is very important that each View folder must contain the <code>web.config</code> inside. You can either pick it up from default MVC2 application of just grab from <a href="https://gist.github.com/1325577">gist</a>.<br />
+</p><a href="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png"><br />
+<img src="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png" alt="views folder structure" /><br />
+</a><br />
+<h2>IIS configuration</h2><p>Our application previously worked in &#8220;Classic&#8221; mode. Even thought, it is possible to run MVC on &#8220;Classic&#8221; I would not really recommend it to do and if production environment allows, just switch you application pool to &#8220;Integrated mode&#8221;.   <br />
+</p><a href="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png"><br />
+<img src="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png" alt="iis application pool config" /><br />
+</a><br />
+<p>After you did it, you can go and run you application. If you setup basic Home controller and view, you should be able to access it by given route. If you receiving 403 HTTP error check:<br />
+</p><ul><li>Are you really on integrated mode?</li>
+<li>Are there any physical folders that the same as you routing, e.g /sba/sales route and /site/sba/sales folder? In such case you either should correct the routing or change site folder structure.</li>
+</ul><h2>Session is Null issue</h2><p>Moving along and starting implementation of some real controllers, we&#8217;ve got very strange <code>NullReferenceException</code> problem. After bit debugging it turned out that <code>HttpContext.Current.Session</code> is null in controller actions. That&#8217;s the common problem for legacy web sites. It is very well described in this <a href="http://stackoverflow.com/questions/218057/httpcontext-current-session-is-null-when-routing-requests">stackoverflow</a> answer. So, you just need to add one more section into <code>web.config</code> file.<br />
+</p><pre class="brush: xml">&lt;configuration&gt;
+  ...
+  &lt;system.webServer&gt;
+    ...
+    &lt;modules&gt;
+      &lt;remove name=&quot;Session&quot; /&gt;
+      &lt;add name=&quot;Session&quot; type=&quot;System.Web.SessionState.SessionStateModule&quot;/&gt;
+      ...
+    &lt;/modules&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+</pre><p>After all of those configuration changes your Web Site is fully adopted to ASP.NET MVC framework usage. So, just go ahead and feel the awesomeness of MVC!<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/10/integrating-aspnet-mvc-into-legacy-web.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/10/integrating-aspnet-mvc-into-legacy-web.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

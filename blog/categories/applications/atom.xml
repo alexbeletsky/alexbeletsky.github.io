@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Applications | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/applications/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on.html"/>
+    <updated>2013-03-31T18:52:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        It's my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can't guess which projects will be popular or not.. and the second, that it's hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - "Likeastore"<br />
+    <!-- more -->
+    </p>    <h2>Idea behind</h2>    <p>        All of us having at least those 3 accounts: facebook, twitter and github. And all of those are continuous stream of information. If you have an interesting network, it probably produces interesting content so you do much of likes/favorites/stars (stories, tweets, or interesting gihub repos). The problem, it's very difficult to keep this information ordered - you typically remember you heard something interesting, but could not remember the source of it.<br />
+    </p>    <p>        "Likeastore" is aimed to fix this problem. Integrating wish different services it's keeping your "likes" information in good order, with nice search and smart categorizing.<br />
+    </p>    <img src="https://lh5.googleusercontent.com/-AaH9Nrnr54o/UVhZihO3yjI/AAAAAAAAR1Y/FhtHcOksuik/s988/login.png" style="width: 620px" alt="likeastore login screen"/><br />
+    <h2>What we did?</h2>    <p>        We basically allow "Likeastore" to connect all those application by their open API and collect the information from it. We transform the information into something generic and grouping it together. So, the users are having all information up-to-date in nice and clear dashboard.<br />
+    </p>    <p>        Originally we had ambition to have a kinda real-time. In the way, I favorited the tweet and "Likeastore" almost immediately got the information. We had to drop it. The reason is API's of popular applications are very quoted. You simply cannot do more request that in quota, otherwise you just banned.<br />
+    </p>    <p>        So, nethertheless of similar projects, we don't want to make next social network of bookmarks. Instead, we want to build easy to use and powerful information keeper. Something, that help you to have things in order.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-cHk7Pdbyus8/UVhZisS6e5I/AAAAAAAAR1g/-3uXVV28rL0/s988/setup.png" style="width: 620px" alt="likeastore setup screen"/><br />
+    <h2>How we did it?</h2>    <p>        In fact, we've build a "thrown-out" prototype. The <a href="https://github.com/organizations/likeastore">code</a> is a shitty inside, so we bit far of nearest production. But, we've created an interesting application. We split on 2 + 1, two backend (me and <a href="https://github.com/voronianski">@voronianski</a>) and one front-end guy (<a href="https://github.com/mamant">@mamant</a>). Sat closely and worked shoulder-to-shoulder for next 22 hours. <br />
+    </p>    <p>        From the very beginning I had very clear vision of stuff we need to do. I could imagine architecture and UI principles. And as soon I shared that the teammates accepted that really fine and provided high quality feedback and collaboration. That helped us to have a strong team in my perspective.<br />
+    </p>    <p>        All of us are JS developers, so no doubt we've taken a JavaScript stack as default. Node.js, powered by Express.js at the backend and Backbone.js front end. Sometimes it's tricky, but in fact - it's powerful combination. <br />
+    </p>    <h2>A bit of tech info</h2>    <p>        We are having 2 main architectural units: core and connectors. Core, is Express.js application having both serving static content and providing API. The API itself, consists on public and private parts. Public part is aimed our web client (or potentiall apps), where the private is used to communicated connectors.<br />
+    </p>    <p>        Connectors are just very simple HTTP services, which perform the handshake with core and then post back all data they have collected through API's. That means, we have 3 connectors now - twitter, github and facebook. Facebook, became a quite difficult to integrated with, so we currently dropped it.<br />
+    </p>    <p>        We are having <a href="http://couchdb.apache.org/">CouchDB</a> as our storage. We took it, because <a href="https://github.com/voronianski">@voronianski</a> had some good experience with. That appeared to be a very lucky decision. CouchDB is very interesting NoSQL solution. It's storage model has few interesting features. One of them is "merge-update". Means, you can post exactly same set of information many times, but CouchDB would not create new entities. It would merge identical documents into one. That simplied connectors very much, since they no longer need to track only new information, but could post back just a transformed bulk of information from API's.<br />
+    </p>    <p>        Initially, we all agreed - our UI will never be default Bootstrap theme. It's overused and impress no more as toilet door. That's where <a href="https://github.com/mamant">@mamant</a> apply his best skills. He carefully worked all our screens making a it look nice and original. <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-XSXpDhEuX9Y/UVhZjLe7w6I/AAAAAAAAR1k/HI6xIJQnUXc/s988/dashboard.png" style="width: 620px" alt="likeastore dashboard screen"/><br />
+    <h2>Presentation and feedback</h2>    <p>        Without few features we did demo-able version in time. We have concluded few major fixes, just before the deadline. <br />
+    </p>    <p>        I did a presentation of app in short way, without anything unimportant (at least I wish to think so) and we had received great feedback. People liked the idea, so we've collected 32 voices that brought us 2nd place.<br />
+    </p>    <p>        That gives a much of inspiration for further work! All of us are very enthusiastic to make the stuff done. It's a lot of work, actually.<br />
+    </p>    <p>        I just want to say thank you to all organizers of this event, it was nicely handled. And to the team, for making it fun and interesting.<br />
+    </p>    <p>        Stay tuned for release of "Likeastore", check out <a href="https://github.com/likeastore">sources</a> in a meanwhile.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Few Things I Learned From IdeaStrike Project]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike.html"/>
+    <updated>2012-02-09T20:20:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It's very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have "product envy" inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />
+</p><p>My attention this time was attracted by <a href="">IdeaStrike</a> project. It suppose to be analog of <a href="">uservoice</a> for OS community. As always, first release was very fast and I was very curious what's inside. So, I cloned the <a href="https://github.com/Code52/Ideastrike">repo</a> and did small hacker session. I've spend some hours with it and would like to share some initial thoughts.<br />
+</p><h2>Build script is small and clean</h2><p>Project contains <code>build.cmd</code> as I run it downloaded all dependencies by NuGet, build web site and run all unit test. Basically, all you need for any small project. Then I looked inside, it turns out like:<br />
+</p><pre class="brush: plain">@echo Off
+set config=%1
+if "%config%" == "" (
+   set config=Debug
+)
+
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+</pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
+</p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
+</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that's also, just a C# code), so at application bootstrap you call the code like:<br />
+</p><pre class="brush: csharp">private static void DoMigrations()
+{
+    var settings = new IdeastrikeDbConfiguration();
+    var migrator = new DbMigrator(settings);
+    migrator.Update();
+}
+</pre><p>The database and schema will be automatically deployed on first application run.<br />
+</p><h2>Social login with Janrain</h2><p>As I clicked to Sign In button, I've been showed nice dialog to select my existing social account to login. <br />
+</p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
+</a><br />
+<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
+</p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that's the rule of pragmatic programmer.<br />
+</p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
+</p><h2>Nancy as web framework</h2><p>I've heard about Nancy many times, but it's only now I got a change to touch it. For me it's just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module's logic is placed inside the constructor:<br />
+</p><pre class="brush: csharp">public FeatureModule(IIdeaRepository ideas, IFeatureRepository features, IUserRepository users)
+    : base("/idea")
+{
+    _ideas = ideas;
+    _features = features;
+
+    this.RequiresAuthentication();
+
+    Post["/{idea}/feature"] = _ =>
+    {
+        int id = _.Idea;
+        var feature = new Feature
+                        {
+                            Time = DateTime.UtcNow,
+                            Text = Request.Form.feature,
+                            User = Context.GetCurrentUser(users)
+                        };
+        _features.Add(id, feature);
+
+        return Response.AsRedirect(string.Format("/idea/{0}#{1}", id, feature.Id));
+    };
+}
+</pre><p>Nancy application could be hosted as ASP.NET / WCF / Self hosted runtimes, it supports different View Engines (including Razor). In short, it is great ALT.NET tool and will find a lot of applications in different projects. More details on <a href="https://github.com/NancyFx/Nancy">Nancy</a> github account.<br />
+</p><h2>Conclusions</h2><p>IdeaStrike is great example of open source project you can learn something from. I would not say I got only positive impressions, moreover there are some obstacles that block me from my normal development flow. I'll try to share my observations on next blog posts.<br />
+</p><p>NancyFX, probably be my next web framework to learn, since I need to move out of ASP.NET MVC which is comfortable zone for me now. I'll be keep looking for IdeaStrike and hope to do some pull requests as well.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My application for 10KAppart competition]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/08/my-application-for-10kappart.html"/>
+    <updated>2011-08-24T10:37:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/08/my-application-for-10kappart</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Recently, I've met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
+</p>
+<p>
+I've spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexanderbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge. 
+</p>
+<p>
+I did it a style of weekend project, started up Friday evening, I've spend 3 hours to complete github API adapter and application logic. As always, hard part was - design.
+</p>
+<p>
+Even I a bit improved my design skill through this year.. still it is big challenge. I choose light blue color for main color and dark blue as auxiliary. I went with <a href="http://www.google.com/webfonts#ChoosePlace:select">Google Web Fonts</a> that I used before and was happy with results. Playing out with colors and gradients, I came up with such front page:
+</p>
+<a href="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg">
+<img src="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg" alt="code" />
+</a>
+<p>
+With much help of <a href="http://twitter.com/#!/Porosyaka">Sasha</a> we have designed badges part of application. I still not 100% happy, but at least it was quite fast.
+</p>
+<a href="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg">
+<img src="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg" alt="code" />
+<p>
+</a>
+After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart. 
+</p>
+<p>
+I've been waiting about 4 days, to receive an answer. Meanwhile, I've seen that new application are being posted.. but not mine. Finally, they responded to me saying "Sorry, but Google Web Fonts are not allowed". That was actually my bad, but I haven't thought that are treated as 3rd party. Anyway, I had to switch to <a href="http://typekit.com/">TypeKit</a> very fast. I didn't get same results as with Web Fonts, but I had no time for finding perfect match and reapplied again.
+</p>
+<p>
+It finally available here - <a href="http://10k.aneventapart.com/Entry/Details/512">http://10k.aneventapart.com/Entry/Details/512</a>
+</p>
+<p>
+I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexanderbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

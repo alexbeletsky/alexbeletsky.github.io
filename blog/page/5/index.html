@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Is TDD Required Skill? - Two Years Later Jun 5th, 2012 TDD Two years ago I&#8217;ve concluded an interesting research. I was thinking how much &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/blog/page/5/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/is-tdd-required-skill-two-years-later.html">
+    
+      Is TDD Required Skill? - Two Years Later</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-05T21:00:00+03:00" pubdate data-updated="true">Jun 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            Two years ago I&#8217;ve concluded an interesting research. I was thinking how much employers care about hiring developers with TDD skills while looking for suitable candidates. As output of this research I&#8217;ve created a <a href="https://github.com/alexanderbeletsky/TddDemand">simple crawler</a>, that is able to crawl vacancy web sites and perform the simple analysis does this vacancy description require TDD skill or not. As well, I&#8217;ve created some <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">blog posts</a>, where I did share results + some technical issues I met during building this crawler. <br />
+        </p>        <p>            At the weekend, I&#8217;ve decided to repeat this experiment. The code of crawler worked perfectly, except some correction I had to apply to conform the markup changes of sites that happed through these two years. Leaving the technical part of this blog post, I want to share the results with you.    <br />
+        </p>        <h2>What was at 2010?</h2>        <p>            Let&#8217;s recap what it was at 2010. I&#8217;ve crawled 978 records from <a href="http://rabota.ua">rabota.ua</a> site and 150 of 978 (about 15%) contained TDD requirement. For <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> the results was a little better, ~23% (49 of 212) contained some mention on TDD. <br />
+        </p>        <p>            The quote from 2 year ago report:<br />
+        </p>        <blockquote>            .. such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.<br />
+        </blockquote>        <p>            I believe the awareness of TDD and general software quality got higher along the way. But let&#8217;s see the figures of 2012.<br />
+        </p>        <h2>What we have in 2012?</h2>        <p>            This time I got a litle more data. 1067 records of <a href="http://rabota.ua">rabota.ua</a> and 560 records of <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a>. But what about demand? <br />
+        </p>        <p>            All right, it&#8217;s only 77 vacancies of 1067 is requiring TDD, which is 7.22% in <a href="http://rabota.ua">rabota.ua</a>. <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> has 127 vacancies requiring TDD which is 22.68%.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png"><img src="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png" style="width: 620px"/></a><br />
+        <p>            The technologies breakdown is follows. Java leads as a technology with the highest demand on TDD. During this post creation I thought that my results does include JavaScript, which gain much popularity recently. It&#8217;s interesting to see what&#8217;s there.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png"><img src="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png" style="width: 620px"/></a><br />
+        <h2>Conclusions</h2>        <p>            Ukrainian market demand lowered almost twice. USA market demand is stable, with a little change which is almost the noise.<br />
+        </p>        <ul>            <li>Ukraine: 2010 -> 15.34%, 2012 -> 7.22% ( -8.12% )</li>
+            <li>USA: 2010 -> 23.11%, 2012 -> 22.68% ( -0.43% )</li>
+        </ul>        <p>            I can see very low demand on TDD in C/C++ field. Almost equal demand between Java and .NET with a slight win of Java. <br />
+        </p>        <p>            I personally wanted to see different figures. Anyway, it was interesting to see actual results and restored some code that worked 2 years ago. Probably this analysis required to be done more frequently to have a kind of valuable statistics.  <br />
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/7-weeks-with-python.html">
+    
+      7 Weeks With Python</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-02T20:15:00+03:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/python/'>Python</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            During my <a href="http://www.beletsky.net/search/label/CS101">CS101</a> class I first time meet Python. That&#8217;s not completely true, since I played a bit Python before, but I had a chance to see Python in action only during this course. In short, that was really pleasant meet up and I hope it will grown up to prolonged and mutual relationships. I will share some &#8216;likes&#8217; and &#8216;dislikes&#8217; about Python, which I would think you find interesting.<br />
+        </p>        <h2>What I liked in Python&#8230;</h2>        <p>            Python is very well known language with great reputation and community around it. Big companies, including Google, using python to build enterprise level applications. Hackers love Python cause it combines both simplicity and power. You can do any kind of application development including desktop and web applications. All the time is being compared to Ruby, which is for me ends up to something like <a href="http://grokcode.com/746/dear-python-why-are-you-so-ugly/">this</a> only.<br />
+        </p>        <h3>No IDE development</h3>        <p>            You don&#8217;t need any kind of fancy IDE to start up with Python. Sure, IDE is something that makes development more efficient, so if you going to do a lot of programming with Python including debugging you should probably pick one. But for now, I&#8217;m totally happy with Sublime Text 2 as IDE.  <br />
+        </p>        <a href="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png"><img src="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png" alt="Sublime Text 2 for Python" style="width: 620px"/></a><br />
+        <h3>Easy to learn</h3>        <p>            If you know some OO language like C++ or Java, it will be quick jump to Python. Python is object-oriented language but with support of different paradigms as procedural and even functional programming. The basic concepts of variables, conditions and control flow are the same as you get used to. Of course, you spend sometime to know the fundaments - like, how to compare things, how to calculate length of string or list, how to put element into dictionary. Sometimes, I still refer to documentation, but in general all that things are easy to remember with practice.<br />
+        </p>        <h3>Interpretation and dynamic typing</h3>        <p>            Python is interpretator. You never mention the type of object as you declare it or use it. You might apply different operations on object, it would be evaluated on runtime. There are different opinions (holy wars) on Static vs. Dynamic, but as for me with Dynamic languages the overall development velocity is higher. First of all, you don&#8217;t spend any time for compilation, which in case of big solutions could be really high. Second, as you are only to able to check results as code executed (even if you just misspell variable name you will know about it only if this code section is evaluated), you are more focused on unit tests and TDD to catch up obvious issues, which in general makes development faster.  <br />
+        </p>        <h3>Built in types</h3>        <p>            Python has complete built-in types system. For numbers you can use different types, as <code>int</code>, <code>float</code>, <code>long</code>, <code>complex</code>. The type is evaluated on runtime,<br />
+        </p>        <pre class="brush: python">            i = 0               # integer
+            j = 1.0             # float
+            x = complex(1, -1)  # complex
+        </pre>        <p>            Strings are everything inside the &#8221; quotes,<br />
+        </p>        <pre class="brush: python">            str = "I'm string"
+        </pre>        <p>            Btw, during the course I got conclusion that list is the most flexible data structure. Everything you need, you can build upon lists. Lists are nicely handled with Python,<br />
+        </p>        <pre class="brush: python">            l = [ 1, 2, 'three', [4, 5], [[6, 7], 8]   
+        </pre>        <p>            Lists are non-optimal for searches, so if you do a lot of searches you might consider using dictionary,<br />
+        </p>        <pre class="brush: python">            d = { 'one': 1, 'two': 2, 'three': [3] }
+        </pre>        <p>            Each type has it&#8217;s own set of methods. Strings including common operations as concatenation, trimming, substring found etc. For list and dictionaries there are bunch of useful stuff as getting iterators, pushing and poping of elements.<br />
+        </p>        <h3>Syntax and Code styles</h3>        <p>            Syntax and Code styles are commonly another topic of holy war. Fortunately, Python leaves very few room for that. First of all - no semicolons. Second, Python uses indentation as part of language syntax. So, poorly indented code would simply won&#8217;t work.  <br />
+        </p>        <pre class="brush: python">            def my_method_name(arg1, arg2):
+                return arg1 < arg2              # right
+                
+            def my_method_name(arg1, arg2):
+            return arg1 < arg                   # won't work!
+            
+            def my_method(arg1, arg2):
+                if arg1 < arg2:
+                    return arg1 + arg2          # right
+            
+                if arg1 == arg2:
+                print arg2                      # won't work!
+        </pre>
+        <p>            Basically, everything that is after &#8220;:&#8221; have to be indented. This is for <code>if</code>, <code>while</code>, <code>for</code> etc. Using tab instead of curvy braces (or any other symbol or term) is really nice idea, allowing to keep code in the same format and &#8216;forcing&#8217; one and solid code guidelines along the projects and teams.
+        </p>        <h2>What I disliked in Python&#8230;</h2>        <p>            There are no perfect things, moreover perfect languages. Developers have their own habits and opinions on different things. In Python I see several things that makes me little uncomfortable about.
+        </p>        <h2>Naming consistency</h2>        <p>            It sounds like Python adopts C code styles for naming of methods and variables, like <code>longes_cycle</code> or <code>def make_it_work()</code>. But in reality a lot of methods are violating those rules. For instance some methods of dictionary type: <code>fromkeys()</code>, <code>iteritems()</code>, <code>setdefault()</code>. In the same time dict contains the method: <code>has_key()</code>.
+        </p>        <p>            That&#8217;s very annoying. Especially if you don&#8217;t have any IDE with names suggesting, it makes it really hard to remember.
+        </p>        <h2>Booleans and None</h2>        <p>            Almost the same as in topic above. Having the C-style (with a lower first symbol) language designers decided to have a special cases. 
+        </p>        <pre class="brush: python">            a = True        # why not true ?
+            b = False       # why not false ?
+            x = None        # none ?
+        </pre>        <p>            So, in code which is in general lower case, those True/False/None looking really strange.
+        </p>        <pre class="brush: python">            def proc3(input_list):
+                if len(input_list) == 0:
+                    return None
+
+                for i in range(0, len(input_list)):
+                    for j in range(0, len(input_list)):
+                        if input_list[i] == input_list[j] and i != j:
+                            return False
+                return True
+        </pre>        <h3>OO but not OO</h3>        <p>            Being OO language, Python still relies on some procedural concepts. The good example is calculation of string length. I would expect, that string corresponding method <code>len()</code> or something, but instead we are having &#8216;global&#8217; function that does that. 
+        </p>        <pre class="brush: python">            s = "I'm string"
+            print len(s)        # why not s.len() ?
+        </pre>        <p>            <code>len()</code> is overloaded for other types, it would work for list and dictionaries as well,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            d = { 1: 1, 2: 2, 3: 3 }
+            
+            print len(l)
+            print len(d)
+        </pre>        <p>            In the same manner, if you what to get reverse iterator for collection, I would assume there corresponding method that returns that iterator. Bad guess,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            for e in reverse(l):    # why l.reverse()
+                print e
+        </pre>        <h3>__init__() method</h3>        <p>            Trying out classes in Python first you need to understand is how to construct an object. Python has constructor, that look like that, 
+        </p>        <pre class="brush: python">            class MyClass:
+                def __init__(self, a, b):
+                    self.a = a
+                    self.b = b
+        </pre>        <p>            I could understand it would be <code>init</code> or <code>_init</code> or <code>constructor</code>, but I will probably never understand <code>__init__</code> with 2 underscores before and after. It&#8217;s ugly.
+        </p>        <h2>Conclusions</h2>        <p>            I&#8217;m about to enroll to next Udactity courses, so my Python journey continues. I hope to get more in language and standard library.
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/cs101-building-search-engine-week-5-and.html">
+    
+      CS101 Building a Search Engine: Week 5 and 6</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-31T17:28:00+03:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        <small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+        </small><br />
+    </p>    <p>        With a quite delay I&#8217;ve concluded units 5 and 6. I&#8217;m in a big rush now, since the exam week is already started, but I&#8217;ve not yet completed Unit 7. Fortunately, Unit 7 is not technical one, but rather common computer science education, that helps to shape all knowledge received through seven weeks together.     <br />
+    </p>    <p>        I would say that those 2 units is something where I start to feel some complexity. In Unit 5 we focused on making things faster, basically by introduction more advanced data structures for the same job. We went from a list based index implementation to self-implemented hash table and then utilized the Python dictionary type. Again, abstracting out of many simple things is what good developer should always do, but I was surprised how many things I forgot about main properties of hash functions and hash tables. We were also did a very basic algorithms analysis stuff. <br />
+    </p>    <p>        Unit 6 is a real computer science. Besides of the playing with recursive algorithms we did more advanced things as graph theory. All of that was a fundamentals for implementing Pang Ranking mechanism. We used famous Google&#8217;s (Larry Page&#8217;s) algorithm that everybody heard of <a href="http://en.wikipedia.org/wiki/PageRank">PageRank</a>. This is where my brains start to heat. Will be honest with you, I still missing it&#8217;s some parts, so it will take some time get the clear picture about it.  <br />
+    </p>    <p>        So, the crawler starts to have real search engine features. Not only extracting links and indexing the keywords, that&#8217;s definitely not enough for search engine. But building the links graph and computing page ranks, that then used in lookup functions to provide the best choice on search keyword. It&#8217;s very simplified but working model of something that Google have (probably something that Google <a href="http://infolab.stanford.edu/~backrub/google.html">might have</a> back in 1998).  <br />
+    </p>    <p>        Python. I like language more and more and start to feel some confidence. In the same time there are several things that I dislike. Not so serious, almost cosmetic.. but something that a little bugs me a little.<br />
+    </p>    <p>        Anyway, I have only few days now to submit my exam works. I already glanced on exam tasks and they don&#8217;t appear to much complex, so I have good chances to be in time with it. Wish me a good luck! I&#8217;ll update you as soon as I got any results! <br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/limit-of-keystrokes.html">
+    
+      The Limit of Keystrokes</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-26T15:03:00+03:00" pubdate data-updated="true">May 26<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code-kata/'>Code Kata</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Some time ago I&#8217;ve posted an article called <a href="http://www.beletsky.net/2011/07/how-to-be-better-developer-or-3.html">How to be better developer or 3 accounts rule</a> where I shared my vision on importance of having some accounts if you care about professionalism and mastery. The basic idea there is you have to produce a lot, you have to write a lot. You have to write code, write blog posts and help people on forums.<br />
+</p><p>If you have seen one of the latest Scott Hanselman&#8217;s <a href="http://www.hanselman.com/blog/ItsNotWhatYouReadItsWhatYouIgnoreVideoOfScottHanselmansPersonalProductivityTips.aspx">Productivity Tips</a> video, you probably heard nice metaphor about the &#8220;Limit of Keystrokes&#8221;. It sounds really funny, Scott saying - &#8220;everybody is having limited count of keystokes, if you reach you count - you dead&#8221;. That means, we have to think on each keystroke we do with much care. <br />
+</p><p>And the most efficient usage of keystrokes is for learning. Reading is very important, but nowadays there are so many information that you just not able to consume everything. That&#8217;s why recently I&#8217;ve unsubscribed a lot of RSS channels in my Google Reader, I think I will filter the Twitter as well. Instead, I try to read as few things as possible. Not only read, but try them on practice. Just write some small code to try the idea, pattern, approach of framework. Turning the theory in practice is something that gives me much fun and satisfaction.<br />
+</p><p>Yesterday, we were doing Coding Dojo with good friend of mine <a href="http://twitter.com/skalinets">@skalinets</a> on <a href="http://agilebasecamp.org/">Agile Base Camp</a> conference. Instead of going my default language (which is C# for now) I paired the PHP guy. We were doing String Calculator kata in PHP. It was so great! First of all, I amazed how much PHP improved since the last time I looked on it (about 10 years ago), second is that I used my keystrokes to learn something new. <br />
+</p><p>Writing the code for fun and learning has a huge value. This is definitely good investment of the keystrokes.  <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/github-for-windows-yay.html">
+    
+      Github for Windows - Yay!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-21T23:44:00+03:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        For quite long time Windows users of github had a huge envy towards <a href="http://mac.github.com/">Github for Mac</a> - the application that makes work with github based repositories as simple as possible. A lot of people, especially ones who are not familiar with Git, experiencing some issues with github initially. No surprise, extensive command-line, SSH, public/private keys - might sound scary for GUI addicted persons. <br />
+    </p>    <p>       December 2011, Phil Haack <a href="http://haacked.com/archive/2011/12/07/hello-github.aspx">joined</a> github.. so, the world hold the breath, to see what actually will be done by Phil and team to improve overall Github experience on Windows. And the day has come! Today <a href="http://windows.github.com/">Github:Windows</a> is officially shipped.<br />
+    </p>    <h2>What&#8217;s the point?</h2>    <p>        As well as Mac users, Windows users are also much got used to UI. For long time, if you want to deal with Git on windows, you have to go and install <a href="http://code.google.com/p/msysgit/">msysgit</a>. It&#8217;s a great product and works great actually, but you have to spend some time of learning of Git to do very basics operations. Moreover, if you hadn&#8217;t had any experience with distributed version control systems - you&#8217;ll be to much confused by new words like: pull, push, clone, fork, cherry-pick and so on. <a href="http://windows.github.com/">Github for Windows</a> is about to fix that.<br />
+    </p>    <h2>Go ahead and install it</h2>    <p>        Installation is very easy. Just click the <a href="http://github-windows.s3.amazonaws.com/setup.exe">download</a> link, to get web setup file. Two things are gonna installed on you machine: Github client itself and Git shell - the powershell command line for git.<br />
+    </p>    <h2>        Github for Windows client<br />
+    </h2>    <p>        At the first run it will do some configuration stuff. It will ask you for github credentials.<br />
+    </p>    <img src="https://lh6.googleusercontent.com/-b82cqlo96-4/T7qZuUkKYeI/AAAAAAAAIuA/JeqiYMu_sNM/s1024/page-1.png" style="width: 620px" /><br />
+    <p>        As you logged on, it will show you some basic account information.<br />
+    </p>    <img src="https://lh3.googleusercontent.com/-cF3gaHlxPYE/T7qZuqR6clI/AAAAAAAAIuI/gE6-xxhKd58/s1024/page-2.png" style="width: 620px" /><br />
+    <p>        It will also add new public SSH key your account. That was a little unexpected as I received email notification for github about that. The information that it&#8217;s gonna do that, probably should be mentioned during setup. <br />
+    </p>    <p>        Then it tries to locate all repositories. It scans the home folder, but I don&#8217;t keeping repositories there (just some temp copies), so I unselected everything.<br />
+    </p>    <img src="https://lh6.googleusercontent.com/-E-6YmkuP9M8/T7qZufRug-I/AAAAAAAAIuE/ifq-o89_Eio/s1024/page-3.png" style="width: 620px" /><br />
+    <p>        As I tried to go straight and create new repository the application crashed. Oppps.. It reproduced several times, but after gone. Anyway, I contacted <a href="mailto:support@github.com">support@github.com</a> with detailed steps and info.    <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-v4EcFQZzPeo/T7qZvPSQdmI/AAAAAAAAIuQ/FYaM5NvP8_c/s1024/page-4.png" style="width: 620px" /><br />
+    <p>        Finally, after I changed the default folder and wait till it&#8217;s completed scanned (that took about 3 mins on my machine), I got client working.<br />
+    </p>    <img src="https://lh3.googleusercontent.com/-VWSpIa020_g/T7qZvVqLnTI/AAAAAAAAIuc/xSuOGL0NWJs/s1024/page-6.png" style="width: 620px" /><br />
+    <p>        Even if I&#8217;m not huge fan of METRO style - I was really pleased with UI. It looks very nice, application works fast and responsive. It takes almost no effort to overview application features.. everything is very intuitive.<br />
+    </p>    <p>        It&#8217;s of course not the perfect. I tried to do some commits, that seems to be fine.. but sync of the repo failed. It also fails to switch the branches in 95% cases.<br />
+    </p>    <h2>Git Shell for command line</h2>    <p>        Next good addition is Git Shell, powered by PowerShell (nice!). It utilizes famous <a href="https://github.com/dahlbyk/posh-git">posh-git</a> project. The most useful features for me now: &#8216;Tab&#8217; support that provides suggestion for the command and &#8216;Stats&#8217; that are shown at command prompt, showing current repository state. There are probably a lot of other cool things there, that I haven&#8217;t discovered yet.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-HOCSvGnNXnQ/T7qhpOr91rI/AAAAAAAAIu0/xwFjs8dvw_Q/s678/page-7.png" style="width: 620px" /><br />
+    <p>        If you are fan of Bash, or pure Cmd.. or custom stuff (as <a href="http://sourceforge.net/projects/console/">Console 2</a>) it very easy to change that, right in application configuration.<br />
+    </p>    <h2>Conclusions</h2>    <p>        Even if it&#8217;s just first release, it&#8217;s very solid and a lot of features already there. Issues exist, but I hope it will be cleared out soon.<br />
+    </p>    <p>        What make me a little wonder, that the project is not open sourced? I hope it&#8217;s just the question of time, I&#8217;m pretty sure that a lot of people are waiting to see what&#8217;s inside and submit some pull requests.<br />
+    </p>    <p>        Will I personally use that product? Probably, not. I&#8217;ve spent too many time in Command-line of my favorite <a href="http://www.farmanager.com/download.php?l=en">Far Manager</a>, that UI is more noise that help. What I will use is Git Shell, thought. I&#8217;ve heard a lot about posh-git, now it&#8217;s  time to try.<br />
+    </p>    <p>    But for all people, who are just starting using Github on Window - <a href="http://windows.github.com/">Github:Windows</a> would be my first recommendation.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/cs101-building-search-engine-week-4.html">
+    
+      CS101 Building a Search Engine: Week 4</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-20T14:50:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>I&#8217;ve got completed Unit 4 of course during this week. It&#8217;s getting more and more interesting and the crawler we building there getting more complicated. <br />
+</p><p>This week we got through the basic data structures, mainly based on lists. The most interesting thing was an index data structure, thought. We&#8217;ve built the simple page indexer. Now the result of crawling is not simply the list of crawled links, but instead is index that keeps track of content (as word) and the URL where the word is mention. If some of you don&#8217;t know what the index is, the simplest explanation is get just to open any technical book. At the end of the book you will see &#8220;Index&#8221; section. By looking for information you have to option. Either go from one page to another, finding keyword appearance.. or go to index and see exact pages, where this keyword is mentioned. Indices are essential for quick search of data.<br />
+</p><p>The index that my crawler produce, crawling the <a href="http://www.udacity.com/cs101x/index.html">test page</a> is:<br />
+</p><pre class="brush: python">[['This', ['http://www.udacity.com/cs101x/index.html']], 
+   ['is', ['http://www.udacity.com/cs101x/index.html']], 
+   ['a', ['http://www.udacity.com/cs101x/index.html']], 
+   ['test', ['http://www.udacity.com/cs101x/index.html']], 
+   ['page', ['http://www.udacity.com/cs101x/index.html']], 
+   ['for', ['http://www.udacity.com/cs101x/index.html']], 
+   ['learning', ['http://www.udacity.com/cs101x/index.html']], 
+   ['to', ['http://www.udacity.com/cs101x/index.html', 'http://www.udacity.com/cs101x/crawling.html']], 
+   ['crawl!', ['http://www.udacity.com/cs101x/index.html']]
+   # ...
+    </pre><p>I went a little above the given task and improved the crawler with &#8220;clean-up html tags&#8221; functionality. So, I get the body part of document, strip out all HTML tags and then index the content. The latest version of crawler is in this <a href="https://gist.github.com/2757731">gist</a>.<br />
+</p><p>We also looked on some Internet fundamentals as: bandwidth, latency, traceroutes and protocols. <br />
+</p><p>I haven&#8217;t yet started any project on python except the crawler one. With implementing the of more complex applications I start to feel the lack of IDE with debugger. I currently use Sublime Text 2 + print statement as my IDE and debugger tool. It might be time to look for something better.<br />
+</p><p>Everything is going fine so far, except the fact I&#8217;m being late for one week. The final exam is going to be posted at 27th of May and it will take one week to have a change to pass it. So, I&#8217;ve got a goal to complete 2 units through this week. The half of course is done! <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/year-with-git.html">
+    
+      A year with Git</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-20T13:43:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    It&#8217;s almost a year ago, I&#8217;ve posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
+</p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
+</p><p>    I think we followed &#8220;Baby steps to..&#8221; strategy of Git adoption. Our baby steps to Git, were small, accurate and quite long. But at the end of the day, I&#8217;m happy to say - we are pure Git organization now. Moreover, some of our projects are hosted as public and private repositories under the <a href="https://github.com/organizations/e-conomic">e-conomic</a> organization github account.<br />
+</p><h2>Retrospective</h2><p>    So, let&#8217;s make a kind of retrospective seeing what things were happening.<br />
+</p><ol>    <li><strong>Git-SVN mode</strong>. As described in original article, the best way to try Git inside the organization is go to Git-SVN mode. It will allow to use SVN as primary repo, but allow Git features like local branching, cool merging, stashes and other stuff described <a href="http://www.beletsky.net/2011/07/git-with-svn-what-benefits-are.html">here</a>.<br />
+    </li>
+    <li><strong>People awareness</strong>. Started by just few developers the information about the Git had spread along mates in our department. Some were very enthusiastic about that, some not. But anyway, it got attention of our many people including our CTO. The greatest thing is that initiative has not been cancelled, instead we start to think of some kind of plan that might bring us into pure Git world. <br />
+    </li>
+    <li><strong>Planning</strong>. Our plan including different evaluations, choosing between Git or HG, local or cloud hosting, Centralized or De-centralized mode etc. During this planning sessions we also identified some infrastructure dependencies that blocked switch to Git. We have so called &#8220;Language System&#8221; the application helping our copyrighters and translators to change the content of app. It&#8217;s been creating assuming that SVN used, doing checkouts and commits where. Another thing is that our deployment procedure happened to be SVN dependent. Obviously, it have to be changed to work with Git. But the most priority had &#8220;Education&#8221; task. Everybody should be able to work with Git. <br />
+    </li>
+    <li><strong>Execution</strong>. Planning is easy, execution is hard. We did initial education as a series of meetings were the basics are described. Fortunately, almost as teams contained the git-aware person who were initial knowledge keeper. Some important details being moved to company&#8217;s Wiki. The problems we start to have local infrastructure setup. Being Windows organization we tried to setup primary repository and server on Windows box. Keeping that short, I just say - don&#8217;t do that. It&#8217;s not trivial at all, to configure Git server there, setup the accounts and permissions and make it work with TeamCity. We tried different scenarios of Git hosting on IIS, including <a href="https://github.com/jakubgarfield/Bonobo-Git-Server">Bonobo-Git-Server</a> or <a href="https://github.com/JeremySkinner/git-dot-aspx">Git-Dot</a> but all had it&#8217;s own limitations, blocking us of full-feature Git usage.<br />
+    </li>
+    <li><strong>Trying github</strong>. In parallel, one team that was starting out new project and was quite independent tried to host sources in cloud. Github is obvious choice here. I think, that was a great experience and this project is still hosted on github. We tried, so called <a href="https://github.com/blog/674-introducing-organizations">&#8220;organization&#8221;</a> mode. It ideally fits small software development shops. Easy start, easy go.<br />
+    </li>
+    <li><strong>Linux local server</strong>. Failed to run it properly on Windows we had to switch to Linux box. It&#8217;s being deployed as virtual box, that is more than enough for Git server. That solved a lot of infrastructural issues, including authentications & permissions as well as CI problems. As I can see the effort to setup it was not so big (if compare to effort spend to make the same on Windows, it would be closer to 0). Setup once, it just start to work.  <br />
+    </li>
+    <li><strong>Mirroring repositories</strong>. The setup of local central server was the first great milestone. Even if all the developers might start to use it instead of SVN, the infrastructural problems that I mentioned in #3 were not yet solved. So, we did a partial decision. The developers are switching to Git repository, but the deployments and language works are still done on SVN repository. So it&#8217;s not so frequent operations, it&#8217;s possible to synchronize the Git and SVN between each other. It means, all new code started to appear in Git, but once a week (or often) all changes set are being pushed to SVN. This is of course an overhead and required some manual work.. But it was only one way for us.<br />
+    </li>
+    <li><strong>Fixing the dependencies</strong>. It took some time while everybody got comfortable with Git. Our Wiki has extended with some policies of working with Git. We mainly follow <a href="http://nvie.com/posts/a-successful-git-branching-model/">&#8220;A successful Git branching model&#8221;</a> keeping the feature in local branches, having remote branches for code review etc. After our deployment dependency has been fixed, we were able to push the code to production very fast. I think it&#8217;s almost a year passed to now clearly understand benefit of Git not just theoretically, but practically. And that was amazing experience, as so for me.<br />
+    </li>
+    <li><strong>Pure git world</strong>. After the last dependency has been fixed, we happily entered the &#8220;Pure Git Environment&#8221; world. The SVN server has been stopped. All developers, DevOps and copyrighters are Git users now.<br />
+    </li>
+</ol><h2>It took a while&#8230;</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
+</p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
+</p><h2>What&#8217;s next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to &#8220;pure Github&#8221; environment from here. Sure, now this transaction having it&#8217;s own dependencies. But let&#8217;s see what&#8217;s happen during next year. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/cs101-building-search-engine-week-3.html">
+    
+      CS101 Building a Search Engine: Week 3</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-07T12:58:00+03:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>Yesterday, I&#8217;ve concluded Unit 3 of <a href="http://www.udacity.com/">CS101 Building Search Engine</a> class. I had a little lag, since I&#8217;ve been to little vacation at the beginning of previous week, so got a chance to get back to class only Thursday. So, I still have one homework task in my to-do list.<br />
+</p><p>It&#8217;s been an interesting unit, through it&#8217;s still very basic one. I&#8217;m little more confident with Python, getting powered by knowledge of collections, indexes etc. Again, I&#8217;m really pleased with language simplicity. Just few code snippets I like,<br />
+</p><pre class="brush: python"># creates generic list
+        some_list = []
+        
+        # add something inside
+        some_list.append(1)
+        some_list.append('z')
+        some_list.append([3,2,1])
+        
+        # iterate by for loop
+        for e in some_list:
+            pass
+            
+        # or with while
+        while some_list:
+            e = some_list.pop()
+        
+        # get index of element
+        index = some_list.index(1)
+    </pre><p>I also started to familiarize with functional style of Python programming. You can find some good inputs <a href="http://docs.python.org/howto/functional.html">here</a>. Everything look very interesting so far.<br />
+</p><p>This week we moved further with &#8220;real&#8221; implementation of web crawler. Instead of going by the set of quizzes I went my own path and created my implementation of simple crawler. So, what it does currently is go from &#8216;seed&#8217; page and collect all links it&#8217;s able to find on target pages and related pages. I went a little far, since I made it run on real web requests, instead of test data that current unit supposes. If you are interested code could be found <a href="https://gist.github.com/2626946">here</a>.<br />
+</p><p>Still I pretend as CS101 student trying to apply only knowledge I got through latest weeks. It&#8217;s great exercise I believe, showing some gaps in my education or concept understanding.  <br />
+</p><p>Homework was interesting as well. <a href="http://www.crunchbase.com/person/anna-patterson">Anna Patterson</a> was a starring guest for homework session. Together with Anna we tried to improve crawler with some real life requirements, like max_pages and max_depth parameter to prevent crawler to stay in indefinite loop. Anna is great expert in this field, so for each homework task I highly recommend to check the answer, a lot of interesting details there.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/cs101-building-search-engine-week-2.html">
+    
+      CS101 Building a Search Engine: Week 2</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-28T11:31:00+03:00" pubdate data-updated="true">Apr 28<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>This week I&#8217;ve concluded Unit 2 of <a href="http://www.udacity.com/">CS101 Building Search Engine</a> class. As a previous one it was very basic. We did went thought programming fundamentals on <code>if</code> statements, <code>while</code> loops, conditions and boolean operations. In contrast to Unit 1, I haven&#8217;t got any really new information for me. All the information given very nicely, preparing listener to do some more serious stuff. <br />
+</p><p>I think I started to get used to Python a little bit. Unfortunately I do not practice it much now, so I have to find simple project that I could accomplish in Python, besides the search engine. As always doing code katas is very nice for introduction to any new language, so I can do that. <br />
+</p><p>Homework was simple enough, but again as last time I got one problem that made me think some extra time. This is &#8220;median search&#8221; issue. Say, you are given 3 numbers - (1,2,3). Median is the one between bigger and smaller number, in this case it&#8217;s &#8220;2&#8221;. In (9,3,6) it&#8217;s &#8220;6&#8221; and in (7,8,7) it&#8217;s &#8220;7&#8221;. As a previous time I started with something I don&#8217;t suppose to know, like lists and sorting. Solving this problem just with knowledge I got so far more problematic. So, I spent some time on that.. and was really happy than I found simple and nice solution for that. You should try to solve that, pretending you know only procedures and conditional operations.  <br />
+</p><p>Now, I&#8217;m looking forward for Unit 3. It&#8217;s still basic, but there we suppose to create some simple crawler. I hope it will be fun!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/json-model-binding-to-idictionary-is.html">
+    
+      JSON Model Binding to IDictionary<> is Broken</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-26T09:39:00+03:00" pubdate data-updated="true">Apr 26<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Yesterday, I&#8217;ve been creating small web service based on existing ASP.NET MVC infrastructure. The task was really simple. Web service itself should be just a proxy for existing internal API. The API method takes a <code>Dictionary</code> that contains some fields. So, I&#8217;ve created a data model like that.<br />
+</p><pre class="brush: csharp">public class Notification
+{
+ public int Id { get; set; }
+ public string Recipient { get; set; }
+ public IDictionary&lt;string, string&gt; Fields { get; set; }
+}
+    </pre><p>and simple HttpPost handler, like<br />
+</p><pre class="brush: csharp">[HttpPost]
+public ActionResult Send(string token, Notification notification)
+{
+    // ...
+}
+    </pre><p>the payload posted to method is:<br />
+</p><pre class="brush: plain">{"id":32,"recipient":"a@a.com","fields": { "EMAIL": "a@a.com"} }
+
+    </pre><p>I&#8217;ve tried to test the method, but the <code>Fields</code> property of model was always <code>null</code>. First I thought I got a problem somewhere in JSON payload, but after sometime I saw that everything is correct. <br />
+</p><p>Google showed I&#8217;m not alone, so the issue been <a href="http://stackoverflow.com/questions/4710729/post-json-dictionary">raised</a> on SO. Darin Dimitrov responded that this is a bug of <code>JsonValueProviderFactory</code>. In the same time, some comments below contained the link for a bug <a href="http://connect.microsoft.com/VisualStudio/feedback/details/636647/make-jsonvalueproviderfactory-work-with-dictionary-types-in-asp-net-mvc">reported</a>, that was already stated as Fixed. <br />
+</p><p>I forgot to mention that I did that stuff on ASP.NET MVC 2. I decided to try that on ASP.NET MVC 3, since I got the sources and if it works I can try to backport the fix into our MVC 2 infrastructure. <br />
+</p><p>With my great disappointment it fails in exactly same way for ASP.NET MVC 3. That&#8217;s not funny anymore. I blamed <code>JavaScriptSerializer</code>, JSON serializer that used inside the <code>JsonValueProviderFactory</code> that it simply not able to handle Dictionaries right. I knew that ASP.NET Web API is using Newtonsoft JSON.NET framework, which is really powerful for serialization/deserialization of JSON.<br />
+</p><p>So, I run VS 2011 and create test <code>ApiController</code> that receives the model with <code>IDictionary</code> inside. What do you think happen? Ok, the model is no longer <code>null</code>, but it contains Dictionary with count of elements equals to zero. Fail.<br />
+</p><pre class="brush: csharp">public void Post(Notification notification)
+{
+    // ...
+}
+    </pre><p>I re-raised <a href="http://aspnetwebstack.codeplex.com/workitem/99">issue</a> again, now on ASP.NET Web Stack site on <a href="http://aspnetwebstack.codeplex.com/">Codeplex</a>. I also tried to quickly write the unit test that show the existence of problem, but it&#8217;s not that easy to do that, so it requires some time. Hope I can do that later.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/6/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

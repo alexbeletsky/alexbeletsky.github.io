@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Trackyt.net | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/trackyt-dot-net/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Retrospective of Trackyt.net or Best Project I Ever Accomplished]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best.html"/>
+    <updated>2012-12-01T16:11:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        It's been to years ago, I've <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I've cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
+    </p>    <p>        This project is first attempt to release something. I had some pet projects before, but never ever made them done. Trackyt.net started as simple application to learn some JavaScript programming and HTML. It turns out to be much, much, much more. Even it seems to be very simple, but I've spent a lot of energy on it.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png"><br />
+        <img src="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png" style="width: 620px"/><br />
+    </a><br />
+    <p>        The product did not gather any meaningful amount of users neither good amount of traffic. For almost 2 years I was investing money/time on it. So, from the first sight it might appear as failed project.<br />
+    </p>    <p>        Any kind of business should be evaluated in terms of assets. It's not necessarily means money. Or more correctly, it does not meant "direct" money. I had no paying customers and I actually never thought to sell the product. But, I can prove it - every hour I spent on the project got back to me as value. And the most valuable asset for developer is skill, of cause.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png" style="width: 620px"/><br />
+    </a><br />
+    <p>        I'll try to analyze what actually happened:<br />
+    </p>    <ul>        <li><strong>Web development and design:</strong> even my professional involvement into web applications, did not give me a feeling of web development. I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">blame</a> ASP.NET Web Forms for that, but I realized that I lack that kind of skill. That was my first project were I did everything by myself, all HTML/CSS/JS were handmade, not stupid WebControls. My eyes opened on how many things I did not understand, how difficult the front-end might be. Crafting of UI is a huge pleasure for me, I simply like beautiful things. 2 years after I will never call Trackyt.net beautiful, but it was a great point to start.<br />
+            <p>                <i>Outcome</i>: I overstepped the uncertainty and fears of front-end. During the JavaScript programming. I've seen a lot of value in front-end MVC frameworks, so I had no doubts of moving from jQuery based apps to Backbone.js (or other MV*) frameworks. I did a <a href="https://speakerdeck.com/alexanderbeletsky">several speeches</a> of JavaScript applications development and got really cool feedback on it.<br />
+            </p>        </li>
+        <li><strong>Test driven development:</strong> practicing TDD for quite long years already, so Trackyt.net was not my first project were I applied the technique. The difference was that usually the we work with some legacy code at work, so TDD could be difficult to apply. Starting that project I had strong opinion on TDD and literally TDD'ed everything. UI, Controllers, Repositories.. JavaScript and C#. That was so great experience, I never felt on any other projects. During Trackyt.net I think I moved from <a href="http://martinfowler.com/bliki/ShuHaRi.html">Shu</a> to <a href="</a>">Ha</a> level of testing. Now, I <a href="http://www.beletsky.net/2011/11/develop-with-tests.html">more clearly</a> see what and when should I test to stay in good shape of application.<br />
+        </li>
+        <p>            <i>Outcome</i>: currently I'm professional TDD trainer at <a href="http://xpinjection.com/">XP Injection</a> and Trackyt.net much influenced that it happened. I share my experience with guys I show some examples of code there. I <a href="http://www.beletsky.net/search/label/TDD">wrote</a> a bunch of blog posts on TDD and it's Trackyt.net who gave most inputs and insights. I've <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">implemented</a> integration tests for my API based FuncUnit and that blog post became the part of <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and still remains one of the best reads in my blog. I've learned UI testing and <a href="http://www.beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">formed</a> my opinion on that.
+        </p>        <li><strong>ASP.NET MVC:</strong> Never used ASP.NET MVC before, I armed with <a href="http://books.google.com.ua/books/about/Pro_ASP_NET_MVC_2_Framework.html?hl=uk&id=lFSPoYt9deAC">great book</a> by Steven Sanderson I've started to learn new framework. And Trackyt.net was main playground. Starting up with MVC2 and lately ported it to MVC3 I had a chance to play different aspects of framework. ASP.NET MVC was my first serious step into web development world.<br />
+        </li>
+        <p>            <i>Outcome:</i> I became a huge fan of this technology, learning it from deep and <a href="http://www.beletsky.net/search/label/InsideMVC">posting</a> information on it. I had a few speeches about ASP.NET MVC.. and the biggest one on MS SWIT 2012, there ~300 persons were listened to me. Then the company I worked to were deciding about back-end technology for API of new product I helped to integrate ASP.NET MVC into existing web site and we successfully built API on it. I assisted my team mates to understand the framework, it was not difficult at all, since I knew the stuff. Currently I have a <a href="http://xpinjection.com/trainings/mvc-net-development/">training course</a> on ASP.NET MVC as well and already conducted some.
+        </p>        <li><strong>API oriented architecture:</strong> popularized by Twitter and GMail, the architecture and having RESTfull JSON based service behind and the JavaScript-driven application on front-end, was my high-level architecture for Trackyt.net. <br />
+            <p>                <i>Outcome:</i> I successfully used the same ideas on other projects and it worked really well. For now I'm consulting few companies that tries to adopt same ideas. The most popular <a href="http://www.beletsky.net/2011/01/implementation-of-rest-service-with.html">post</a> in my blog is about build REST(like) services with ASP.NET MVC. <br />
+            </p>        </li>
+        <li><strong>Continuous Delivery:</strong> being annoyed by manual update of production environment I've <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">built</a> simple continuous delivery pipeline that worked really great for me. During the way I've met such great tools as Jenkins, UppercuT, RoundhousE etc. That was my first try of this approach and I felt huge power and advantages of Continuous Delivery. Slightly it became one of the professional areas of interests for me.<br />
+        </li>
+        <p>            <i>Outcome:</i> Continuous Delivery and <a href="https://github.com/chucknorris">Chuck Norris</a> tools was the topic of my first talk on <a href="http://kievalt.net/">KievALT.NET</a>. Since then I became an active participant of community and I really like it. Also, I'm talking about things like RoundhousE on my other speeches and trainings and I got a lot of pleasure than people stand by saying: "You know, we've tried that and it worked so nice, thanks a lot".
+        </p>        <li><strong>Code base:</strong> the code base of application is rather small. There is C#, JavaScript, SQL and some NAnt scripts. A lot of things I used there I still copy and paste (or at least taking a look) from Trackyt.net to my current projects. It became a kind of cook book, from there I could quickly pick up some recipe. <br />
+        </li>
+        <p>            <i>Outcome:</i> I didn't thought above that initially, but Trackyt.net codebase also helping me to see what improvements I've made so far. For instance, I reviewed the API controllers recently and realized that I would never write anything like that. Having some code that you produced year or two ago you peer and compare gives some really interesting insights. Besides of application code itself, I've made an C# API adapter and the most significant outcome is <a href="https://github.com/alexanderbeletsky/elmah.mvc">ELMAH.MVC</a>.
+        </p>    </ul>    <p>        Concluding this, I would say - Trackyt.net changed the things radically. I've became a speaker on <a href="http://kievalt.net/">KievALT.NET</a> and <a href="http://xpinjection.com/uadevclub/">UADevClub</a> communities, my blog received an <a href="http://java.dzone.com/users/alexanderb">MVB</a> status, I improved my skills and knowledge and I do trainings and consulting. Basically, I've "rebooted" developer inside me and saw my way of constant learning and improving.<br />
+    </p>    <p>        Looking back I definitely say - it was only possible because of Trackyt.net.<br />
+    </p>    <p>        Without any doubts, that was the most successful project to me!<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject provider as factory method]]></title>
+    <link href="http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method.html"/>
+    <updated>2011-02-13T19:22:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+<a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
+</p>
+<p>
+I was implementing small feature recently. As user registered on site, he receives confirmation email and registration details. Pretty common functionality along the sites. So, I add next application service <code>INotificationService</code> that took responsibility of sending email message to user. Nothing special, nothing complex. 
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationService : INotificationService
+    {
+        private IEMailService _emailService;
+
+        public NotificationService(IEMailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        public void NotifyUserOnRegistration(string usersEmail, string password)
+        {
+            var emailMessage = CreateEmailMessageForUser(usersEmail, password);
+            _emailService.SendEmail(emailMessage, "support");
+        }
+
+        //...
+</pre>
+<p>
+As I've tested and integrated it to application, everything were just fine. Till the time I reset database and re-run tests. The problem, that <code>INotificationService</code> itself depends on <code>IEmailService</code> that uses <code>ICredentialsRepository</code> to extract email server credentials (account, password, settings) from database. After database is reset, <code>Credentials</code> table is just empty and <code>IEmailService</code> throws exception that there are no credentials, so send email is impossible. I could not add credentials as SQL to database script, since it depend on configuration and exposes private password. Do it manually after each reset of database is boring task. Furthermore, I don't want my application to send any emails as I just do some development testing.
+</p>
+<p>
+The obvious design workaround is - define <code>INotificationServiceFactory</code> that responsible for <code>NotificationService</code> instantiation. Factory decides, if application run in <code>debug</code> mode, just stub of <code>NotificationService</code> is used, otherwise real implementation is used.
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationServiceFactory : INotificationServiceFactory
+    {
+        public INotificationService GetService()
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                // just stub..
+                return new NotificationServiceForDebug();
+            }
+
+            // here I need to pass EmailService to constructor
+            return new NotificationService ( // ??? );
+        }
+
+        // ...
+</pre>
+<p>
+But it is not so easy as it seems to.. Here the problem: <code>NotificationService</code> have to accept <code>EmailService</code>, that have to be created created by DI framework (I could not create it by <code>new</code> since I loose all benefits of inversion of control). So, in factory I need to have a <code>IKernel</code> object - Ninject core object, for instantiating of objects from Inversion of Control container. It should be extended with constructor taking <code>IKernel</code> as argument.
+</p>
+<p>Issues:</p>
+<ul>
+<li><strong>Circular dependency</strong> - factory is defined in Core assembly, kernel is defined in Web application.. Web application references Core, to make it work now Core need to reference Web (it is actually possible, but very ugly.. I try to avoid such things).</li>
+<li><strong>Additional references</strong> - now Core also need to reference Ninject, to make it compliable.</li>
+<li><strong>Violation of Dependency inversion principle</strong> - <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">one</a> of the <a href="http://en.wikipedia.org/wiki/Solid_(object-oriented_design)">SOLID</a> principles of object oriented systems. Model must not depend on infrastructure.</li>
+</ul>
+<p>
+Fortunately Ninject provides functionality to avoid issues mentioned above! Instead of binding to exact type, like
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationServiceFactory&gt;().To&lt;NotificationServiceFactory&gt;();
+
+</pre>
+<p>
+I can bind creation of type to Provider:
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationService&gt;().ToProvider&lt;TrackyNotificationServiceProvider&gt;();
+
+</pre>
+<p>
+Provider is class that implement <a href="https://github.com/ninject/ninject/wiki/Providers,-Factory-Methods-and-the-Activation-Context">IProvider</a> interface, which is actually just one method <code>CreateInstance</code>. CreateInstance, receives <code>IContext</code> object as parameter that contains <code>IKernel</code>. <code>TrackyNotificationServiceProvider</code> is placed on same level as the rest of Ninject infrastructure code is placed. Model remains clear and exact and do not mess up with infrastructure code.
+</p>
+<pre class="brush: csharp">
+namespace Web.Infrastructure
+{
+    public class TrackyNotificationServiceProvider : Provider&lt;INotificationService&gt; 
+    {
+        protected override INotificationService CreateInstance(IContext context)
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                return new NotificationServiceForDebug();
+            }
+
+            return new NotificationService(context.Kernel.Get&lt;IEMailService&gt;());
+        }
+    }
+}
+</pre>
+<p>
+Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testing REST services with javascript]]></title>
+    <link href="http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript.html"/>
+    <updated>2010-12-30T08:28:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
+</p>
+<p>
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn't do any tests, basically because I didn't know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests. 
+</p>
+<h2>Simple framework</h2>
+<p>
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:  
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Internal If/else statement could be extended with some specific result codes you might expect. If API call has been finished successfully, result JSON object will be parsed and submitted to a test callback.
+</p>
+<p>
+Also, I found useful to create a small helper function that would construct API call signature, based on URL, method and parameters:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Setup the environment</h2>
+<p>
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application). 
+</p>
+<p>
+Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;module(<font color="#A31515">"v11 api tests"</font>, {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// setup method will authenticate to v.1.1. API by calling 'authenticate'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// it will store apiToken, so rest of tests could reuse that</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;setup: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.url = <font color="#A31515">'api/v1.1/'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.apiToken = <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// authenticate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'authenticate'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { email: <font color="#A31515">'tracky@tracky.net'</font>, password: <font color="#A31515">'111111'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(<font color="#0000ff">this</font>.url + method, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me.apiToken = result.data.apiToken;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(me.apiToken.length == 32, <font color="#A31515">"invalid api token"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Module holds <code>API URL</code> and <code>token</code>, so they are reusable through the rest of tests. If setup failed to authenticate, all tests would be failed because they could not use any call without <code>token</code>.
+</p>
+<h2>Testing methods</h2>
+<p>
+I have a number of REST style methods in my API:
+</p>
+<p>
+<code>
+http://trackyt.net/api/v1.1/token/tasks/all <br />
+http://trackyt.net/api/v1.1/token/tasks/add <br />
+http://trackyt.net/api/v1.1/token/tasks/delete/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/start/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/stop/112 <br />
+</code>
+</p>
+<p>
+and so on..
+</p>
+<p>
+I'll give some examples of tests, so you will be able to follow main idea:
+</p>
+<p>
+Get all task call test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Get all task call receives deterministic response test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks returns all required fields"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> task = result.data.tasks[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.id !== undefined, <font color="#A31515">"Id field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.description !== undefined, <font color="#A31515">"Description field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.status !== undefined, <font color="#A31515">"Status field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.createdDate !== undefined, <font color="#A31515">"CreatedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.startedDate !== undefined, <font color="#A31515">"StartedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.stoppedDate !== undefined, <font color="#A31515">"StoppedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Add new task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"task add method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/add'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { description: <font color="#A31515">'new task 1'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.task.id &#62; 0, <font color="#A31515">"id for first item is wrong"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Delete task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Rest of tests are available on <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas. 
+</p>
+<h2>Running tests</h2>
+<p>
+As any kind of qUnit tests they could be easily run in browser. 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
+<p>
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>. 
+</p>
+<h2>Debugging the tests</h2>
+<p>
+Sure, you need to be able to run tests under debugger to see what might went wrong. For debuging test code, there is nothing better than <a href="http://getfirebug.com/">FireBug</a>. Just place the breakpoint on a line you need, press F5 to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s1600/firebugdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 129px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s400/firebugdebug.png" border="0" alt=""id="Img1" /></a>
+<p>
+ If you need to debug actual API implementation code (which in my case is C#/ASP.net MVC application), I start the web site under debugger (F5 in VS2010), place breakpoint in corresponding method and press F5 in browser to to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s1600/vsdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 154px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s400/vsdebug.png" border="0" alt=""id="Img2" /></a>
+<h2>Conclusions</h2>
+<p>
+I liked the idea of those integration tests by means of javascript. I was happy to get final results: the interface is more strict and more corresponds to REST principles. It is much more faster to write tests with javascript instead of C# or Java. Just compare <a href="https://gist.github.com/b0a261d6c88fafe5afeb">this</a> and <a href="https://gist.github.com/759517">this</a> and feel the difference. Write less, get more.
+</p>
+<p>
+As javascript could be treated as "pseudo language", since it is easy to read it - API test suite could be used as a developers documentation. If you need to do a call, check the corresponding test, everything there.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[You stucked? Stop and ask for help!]]></title>
+    <link href="http://alexanderbeletsky.github.io/2010/11/you-stucked-stop-and-ask-for-help.html"/>
+    <updated>2010-11-26T13:24:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2010/11/you-stucked-stop-and-ask-for-help</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+I've been working on one task for last several days. In a product I work there is feature that looks like Excel - template editor. User is able to put a data to sheets and do some simple calculation with formulas (SUM, MUL etc.). This functionality has been created far ago and worked fine. But recently we've changed our engine and now we support not only "plain" data structure, but expanded one - when user is able to say - "this column or row is expanded with such data". Data size is dynamic and could be predicted while template edition and SUM function have to take into account that data is expanded.
+</p>
+<p>
+So, I've created a number of test cases that cover new functionality and implemented simple mechanism that process formula like SUM(A1:B2) and adjust start and finish indexes according to size of expansion. At the beginning that <code>AdjustIndexes</code> function were small and easy to read, it just perform simple calculation based on current row/current column, original indexes places and some information from expanded data. 
+</p>
+<p>
+But after a demo we've found some bugs: if several expansions present in template - it fails. If not expanded data comes after expanded it fails and some more..
+</p>
+<p>
+I've extended tests cases with all found issues and start to attack problem. I start to adjust <code>AdjustIndexes</code> to work with new cases. And after a while I've completed it, but this function started to look scary - a lot of nested if-else cases, calculation of indexes, += operations etc. OK, I thought.. it could be refactored later, so I did a checkin. My happiness was not long, because while developers tests I just found another bug. OK, usual stuff - test and fix. Let's go.
+</p>
+<p>
+Meanwhile I've already spent about 6 hours on that. At stand-up I said - "it seems to be alright, only one case is failing now, I'm finishing up and commit". But I was wrong. As I changed the function to work with new case, new case became green but existing ones became red.. I fell stress that task originally estimated for 1 day is now 1.5 and supposed to be about 2 days. I wanted to do quickly, so started to play a game - "Change something, re-run the tests if GREEN - you win!" (such approach actually works some time as soon as you got good test cases and double check the results). Already created function became more scary and what is worse - it does not satisfied all tests. I lost the control of it and only one I understand - "I do not now understand this function works now.. It does something wrong and I have to go with another idea to solve the problem".
+</p>
+<p>
+It was about 10 hours spend on that. I started to lose the game, but just didn't want to give up. I need another idea, I need another approach.. I need additional data structures that would help to map original table indexes to expanded ones, I need to change the engine to fill those mapping, I need to change <code>AdjustIndexes</code> function to take mapping into account. I felt a little tired and stressed but proceed with coding like crazy. 
+</p>
+<p>
+14 hours passes, late evening, and I was finishing up my <code>Mapping</code> mechanism, while I was contacted by my teammate Carsten - "How is it going with SUM?". I've explained my issues, my approach and my status, but basically it was like - "It is not yet done". But he said that it seems like I'm doing something wrong and proposed another algorithm of doing this adjustment, with no other additional data structures. I probably was to tired to understand everything there, so he just said "Wait for 30 minutes, I'll do some code and show to?".  I've been shocked, something I worked for 14 already he want to do in 0.5 hour? OK.  
+</p>
+<p>
+He sent his first solution. Hopefully it was only one function to change I could easily integrated and re-run all test cases I had so far. Most of them were failed at first try. We started a pair session and after several run/fix/test sessions it started to work! All tests are green! It works in application.. Function is quite small and easy to read.
+</p>
+<p>
+Yeahh.. that was such great work (respect to Carsten) and so such shame on me. 15 hours.. vs 40 minutes.. 30 lines of code vs. 300.. one point of integration vs. many. I've been defeated.
+</p>
+<p>
+When I finished it up and went a street to walk with dog, I've tried to find at lest something positive in all this situation. And you know what? I can up with one another feature to <a href="http://trackyt.net">trackyt.net</a>. 
+</p>
+<p>
+If you have a task in progress and you spend 12 (8, 6 or even 4) hours, task is became red and interacts with user:
+</p>
+<ul>
+<li>Take a rest, re-think</li>
+<li>Ask for help</li>
+</ul>
+<p>
+That would prevent my situation somehow. It will try to say to you "Man, you probably stucked with that, ask some one to take a look".. This seems to be obvious, but if you are in hurry you are not just doing that hoping to handle everything by yourself. This is not good. I was happy about such idea and lesson learned, so back to home with good mood already :).
+</p>
+<p>
+Have you been to such situation, do you think it's valuable if you have some stopwatch and notifier that would push you shoulder and say "Stop now ask for help!" ?
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[I've released my own product - Trackyt.net]]></title>
+    <link href="http://alexanderbeletsky.github.io/2010/11/ive-release-my-own-product-trackytnet.html"/>
+    <updated>2010-11-24T07:53:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2010/11/ive-release-my-own-product-trackytnet</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+I've not been blogging for awhile, not because I'm too lazy but because I've spent all the time for my own first release. And today I'm very happy, proud and excited to announce that <a href="http://www.trackyt.net">Trackyt.net</a> is now available online. 
+</p>
+<p>
+<a href="http://www.trackyt.net">Trackyt.net</a> is a simple time management application. I've chosen this idea while I was working on my self-study project, just because it is well known, something I can use for myself. Latter on I started to feel that I see a bigger picture, bigger product that I want to build, where time tracking is just a small part of. That time I created first draft of <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/wiki/Project-Roadmap-2010---2011">Product Roadmap</a> and now I try to follow it. That was mainly been influenced how we work in my current <a href="http://www.e-conomic.com/">company</a> what tools and process we are using.
+</p>
+<p>
+It is a spare time project. At the beginning I spent no more that 3-4 hours per week mainly on weekends. But last several month's when I've been approaching release dates I put almost all my free time on that.
+</p>
+<p>
+Project is already on milestone 2, "Look & Feel Release" and supposed to be public. Nevertheless the time and effort it is still <a href="http://en.wikipedia.org/wiki/Minimum_viable_product">MVP</a>. It's primary functionality could be described in one sentence: "give you task a name; add new task on dashboard; start timer as you started to work on this task and release timer as you stopped; submit task on server;". Originally I haven't planned to go in a public availability with that. It was just a playground for HTML/CSS, MVC 2, jQuery. So, even now it lacks some common site functionality as mail notifications, remember me and so on.
+</p>
+<p>
+I were inspired by some other small projects that people releasing just for fun. I like that someone working to have own "footprint" in web having a product placed there. I like that way of learning the things not only from books but from practical exercises. I like to have something to care, plan, enhance, develop. I hope that I would be receiving feedbacks that might would make a product better. 
+</p>
+<p>
+It is <a href="http://www.trackyt.net/Home/Faq#OpenSource">open source</a>. You can crawl the <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net">repository</a> and find something interesting for you. It would be great if you fork it and push some changes. I continue to make it open sources as far as I can do.
+</p>
+<p>
+Site design have been created by Sasha. She have never tried a web design before this project. We've started together with simple tutorials and articles, replicating some existing site designs, learning photoshop. I was happy to see how fast she delivered first results. Even if we usually have completely different vision on things we came to one result. So, during the project we also formed a nice team of developer and designer. 
+</p>
+<p>
+So, as soon as original idea was to learn something new, what have I learned so far? A lot I think:
+</p>
+<ul>
+<li>
+<a href="http://gettingreal.37signals.com/toc.php">Getting Real</a> - methodology and recommendations by creators of Ruby on Rails, that fits my project perfectly. 
+</li>
+<li>
+<a href="http://asp.net/mvc">ASP.net MVC 2</a> - I've got a great introduction to MVC2 with a lot of help of Steven Sanderson great book <a href="http://apress.com/book/view/1430228865">Pro ASP.NET MVC 2 Framework, Second Edition</a>.
+</li>
+<li>
+<strong>JavaScript/jQuery</strong> - this one became one of my favorite language and jQuery one of the favorite frameworks.
+</li>
+<li>
+<strong>HTML/CSS</strong> - I've never done so much HTML/CSS before. I would not say I'm good on it, but I definitely improved.
+</li>
+<li>
+<a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UpperCut and Roundhouse</a> - good tools that help you with versioning and deployment.
+<li>
+<strong>Moq, Automapper, JSon, REST</strong> and more :).
+</li>
+</ul>
+<p>
+What should I do now? I would take one week rest and to refresh my eyes a bit. I would start with a planning next release and next sprints to work on. I hope to back for my normal blogging rhythm again as well as support a <a href="http://www.trackyt.net/Blog">product blog</a>. So, I still got something to do :). But today is the birthday of  <a href="http://www.trackyt.net">Trackyt.net</a> and on weekend I would be definitely celebrating it!
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

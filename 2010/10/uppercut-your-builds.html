@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>UppercuT your builds</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="UppercuT your builds Oct 22nd, 2010 Open source, Tools, asp.net I like open source tools and frameworks, but more I like open source tools and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2010/10/uppercut-your-builds.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">UppercuT your builds</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-22T13:05:00+03:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I like open source tools and frameworks, but more I like open source tools and frameworks that work! There are 2 nice frameworks that I started to use really fast got exactly what I need. They are <a href="http://code.google.com/p/uppercut">UppercuT</a> and <a href="http://code.google.com/p/roundhouse/">RoundhousE</a>. I&#8217;ve planned to blog about both, but post appears to be quite long, so I&#8217;ll spilt it on two.
+</p>
+<p>
+It is all about build and deployment. I&#8217;ve seen different build and deployment system through my career: some domestic made, some commercial, some simple, some complex. I&#8217;ve recently started to think about for my own project. But before we started, lets make it clear - what I personally expect from build framework?
+</p>
+<ul>
+<li>It have to use a industry standard tools - nant, msbuild, nunit, ncover etc.</li>
+<li>Build have to be done by one click (press key)</li>
+<li>During build unit tests have to run</li>
+<li>During build different code metrics must be collected</li>
+<li>It have to be integrated with popular SCM systems - svn, git, perforce etc.</li>
+<li>It must have easy to use versioning system, all build artifacts (binaries, docs) are labeled with one consistent version</li>
+<li>It must have automatic packaging mechanism, to deploy package on target machine</li>
+</ul>
+<p>
+If you are having database in your application, you should also be concerned of.
+</p>
+<ul>
+<li>Versioning of database</li>
+<li>Deployment of database on any environment</li>
+<li>Updating live database with new patches</li>
+</ul>
+<p>
+Initially I thought to do some very simple by myself, but later I was browsing some repositories on github and noticed interesting project structure - build/deployment folders as well as number of batch files, like build.bat, test.bat, open.bat etc. I digged a bit and found out that it is actually scaffold provided by UppercuT. After I checked some documentation, I realized that it is probably something that I need! So, please met two projects that would simplify your life a bit: UppercuT - automation build/versioning/packaging; RoundhousE - db migration/versioning/deployment. 
+</p>
+<h2>UppercuT setup and usage</h2>
+<p>
+Just go to <a href="http://code.google.com/p/uppercut">UppercuT</a> web site and download latest package. I&#8217;ve used 1.0.5.0, in package you will found some docs, that might be interesting to read and framework itself in UppercuT folder. 
+</p>
+<p>
+What&#8217;s inside? Well, package contains a configuration files, batch/shell scripts, nant scripts and number of tools - <code>MbUnit</code>, <code>MoMa</code>, <code>NAnt</code>, <code>NCover</code>, <code>NUnit</code>. Internally UppercuT uses nant for build automation. If you are not familiar with nant.build scripts, please don&#8217;t worry. UppercuT created in a way, that you very isolated of nant details and perform all configuration only in one place, <code>settings/UppercuT.config</code> - simple XML file.
+</p>
+<p>
+If you want to apply UppercuT to your existing project, I would recommend to do following steps before you start.
+</p>
+<ul>
+<li>Change you folder structure in the way to have on: <code>docs</code>, <code>lib</code>, <code>src</code> on higher level of directories tree.</li>
+<li>
+Solution file (.sln) and all projects are put to <code>src</code> folder.
+</li>
+<li>
+All 3rd parties (nunit, moq, ninject etc.) referenced from lib folder.
+</li>
+<li>
+Project documentation moved to <code>docs</code> folder.
+</li>
+</ul>
+<p>
+As soon as you done, just copy all content of UppercuT folder into your project folder. You are ready to use it. Before actual use you have to configure it. Fortunately, it have to be done only in one place - <code>settings/UppercutT.config</code> file. You have to provide <code>project.name</code>, <code>path_to_solution</code>, <code>repository.path</code> and <code>source_control_type</code>, <code>test.framework</code> and <code>microsoft.framework</code> (net-4.0 is supported).
+</p>
+<p>
+As you provided all required keys you are able to start build! If you have compliable sources and runnable unit tests, you have to receive SUCCESS build status (I failed to start it at first time, having problems with 
+    nunit, please see Issues section below). 
+</p>
+<p>
+Lets see what UppercuT does for us:
+</p>
+<ol>
+<li>
+It uses source repository to generate <code>_BuildInfo.xml</code> and <code>SolutionVersion.cs</code> files. <code>_BuildInfo.xml</code> contains a digest of build, with revision, version, path to repository, dot-net framework version etc. <code>SolutionVersion.cs</code> is code file that must be referenced from all projects in solution, so they all have a common version. 
+</li>
+<li>
+It compiles all projects in solution.
+</li>
+<li>
+It runs all unit test in solution (please note, it run only units - projects with *Test* in their names. It does smart job to skip Database, Integration tests). 
+</li>
+<li>
+It copies all db scripts and documentation to build_output folder.
+</li>
+<li>
+It generates batches for build deployment and db deployment.
+</li>
+<li>
+It analyzes output binaries with such tools as NCover, NDepend (it is not in package, because it is commercial but if you have it UppercuT will use it), MoMa etc and place results to <code>build_artifacts</code> folder.
+</li>
+<li>
+It packages everything to <code>code_drop</code> folder, where everything is on right places - web content, binaries, db scripts and build artifacts.
+</li>
+</ol>
+<p>
+A lot of things for free, right? What more you can do?
+</p>
+<ol>
+<li>
+You can run <code>open.bat</code> that by default open your Visual Studio with solution.
+</li>
+<li>
+You can run <code>test.bat</code> to build and re-run unit tests, <code>test.bat all</code> will run all types of tests - units, integration, database. <code>test.bat</code> useful to be run by some Continues Integration servers as CruiseControl.
+</li>
+<li>
+You can run <code>zip.bat</code>. Very useful feature, that would run build/tests and zip content of <code>code_drop</code> folder into one single zip file (like <code>trackyourtasks.net.v0.1.0.584b2ef4.zip</code>) that could be copied to production system for deployment and placed to repository to track builds. 
+</li>
+</ol>
+<h3>Issues and criticism</h3>
+<p>
+As I said above first time I run <code>build.bat</code> it failed. The reason was that <code>nunit-console</code> loaded 2.0 runtime, but my test assemblies are build with 4.0 framework. It have been solved by modification of <code>build\analyzers\nunit.test.step</code> and adding one additional argument in <code>exec</code> of <code>run_tests</code> target <code>&#60;arg value="/framework=${microsoft.framework}" /&#62;</code>. Please check my <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/f3ef494a00237275017053eb62477d7a1bebc974">commit</a> for details. <a href="http://twitter.com/#!/ferventcoder">Ferventcoder</a> already contacted me regarding that issue, for I hope in some nearest versions in would be solved :).
+</p>
+<p>
+Another problem I met with coverage reports generation. It just generates them empy. It is not blame for UppercuT but rather for NCover, that seems to have issues with .NET 4.0. In the same time, somehow, Testdriven.net is able to run NCover with properly generated coverage reports. 
+</p>
+<p>
+No more critic yet. What would be nice to have is already defined tasks for <a href="http://code.msdn.microsoft.com/sourceanalysis">Stylecop</a> and <a href="http://msdn.microsoft.com/en-us/library/bb429476(VS.80).aspx">FXCop</a>.
+</p>
+<h2>Conclusions</h2>
+<p>
+This uppercut turns to be powerfull. If you have no build system yet, UppercuT is recomended.. If you have some &#8220;self-written&#8221; system that you tired to support - UppercuT is recomended.. If you have build system and happy about it, well.. try UppercuT, you could notice something you missing, or otherwise suggest some new feature for UppercuT :).
+</p>
+<p>
+<b>Update:</b>
+<p>
+<p>Next blog post is about <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to handle your database.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2010/10/uppercut-your-builds.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2010/10/uppercut-your-builds.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: BabyStepsBackbone | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/babystepsbackbone/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring.html"/>
+    <updated>2013-04-10T20:53:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let's take a look what type of event does Backbone.Collection have.<br />
+    <!-- more -->
+    </p>    <h2>Backbone.Collection events</h2>    <p>        Will have a test suite for that,<br />
+    </p>    <pre class="brush: js">describe('collection events', function () {
+    var listener;
+
+    beforeEach(function () {
+        collection = new FeedbackCollection();
+    });
+
+    beforeEach(function () {
+        listener = jasmine.createSpy();
+    });
+    </pre>    <p>        Here we are creating collection for testing and Jasmine spy, special function we going to use as event subscriber.<br />
+    </p>    <h3>Adding element to collection</h3>    <p>        As we saw <a href="http://www.beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html">previously</a> there are several ways of adding new elements to collection. By add and push methods. The important thing, does not matter what API method you use, Backbone.Collection would trigger 'add' event.<br />
+    </p>    <p>        By <code>add</code> method,<br />
+    </p>    <pre class="brush: js">describe('while adding elements', function () {
+    beforeEach(function () {
+        collection.on('add', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it ('should raise add event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        By <code>push</code> method,<br />
+    </p>    <pre class="brush: js">describe('while pusing elements', function () {
+    beforeEach(function () {
+        collection.on('add', listener);
+    });
+
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it ('should raise add event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        Each event handlers receives model itself and reference to collection.<br />
+    </p>    <h3>Removing elements from collection</h3>    <p>        Similarly, there 2 ways of removing items from collection, by remove and pop methods.<br />
+    </p>    <p>        By <code>remove</code> method,<br />
+    </p>    <pre class="brush: js">describe('while removing items', function () {
+    beforeEach(function () {
+        collection.on('remove', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        var model = collection.get('feedback-1');
+        collection.remove(model);
+    });
+
+    it ('should raise remove event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        By <code>pop</code> method,<br />
+    </p>    <pre class="brush: js">describe('while poping items', function () {
+    beforeEach(function () {
+        collection.on('remove', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        collection.pop();
+    });
+
+    it ('should raise remove event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <h3>Resetting and sorting</h3>    <p>        Besides just adding and removing stuff from collection, it have few more method which reaction is triggering event. It's reset and sort. Reset is the bulk insert into collection, it works great when we fetch some data from server and want to push everything just by one operation. Sort, is rarely called manually, since if collection provides <code>comparator</code> function, it would sort itself, during add or reset operations. But sometimes sorting could be triggered from UI as user changes the sort column of table, for example.<br />
+    </p>    <p>        Resetting collection,<br />
+    </p>    <pre class="brush: js">describe('while reseting collection', function () {
+    beforeEach(function () {
+        collection.on('reset', listener);
+    });
+
+    beforeEach(function () {
+        collection.reset([
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
+    });
+
+    it('should raise reset event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+</pre>    <p>        Sorting collection,<br />
+    </p>    <pre class="brush: js">describe('while sorting collection', function () {
+    beforeEach(function () {
+        collection.on('sort', listener);
+    });
+
+    beforeEach(function () {
+        collection.reset([
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
+        collection.sort();
+    });
+
+    it('should raise sort event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <h2>Why it matters?</h2>    <p>        Knowing the events of all Backbone.js entities is very important. You should always design you application based on events triggering/subscription, instead of direct function call. That would make your code much de-coupled and UI logic very flexible.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring.html"/>
+    <updated>2013-03-27T17:51:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        After initial introduction to Backbone's <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
+    <!-- more -->
+    </p>    <p>        In small application we are doing through that series we have collection of feedbacks. But before I show how to integrate collection into the app, I want to make sure you understand all collection properties right. We'll do that by TDD'ing the collection and exploring it's behavior.<br />
+    </p>    <h2>Collection construction</h2>    <p>        So, to create collection we need to extend <code>Backbone.Collection</code> object,<br />
+    </p>    <pre class="brush: js">var FeedbackCollection = Backbone.Collection.extend({
+    model: Feedback,
+    url: '/feedback'
+});
+    </pre>    <p>        Here we just specified the URL for collection persistence and the model, of which the collection would consists of. Let's prepare the test suite for collection stories,<br />
+    </p>    <pre class="brush: js">describe('FeedbackCollection.js spec', function () {
+    var collection;
+});
+    </pre>    <p>        And create our first specification,<br />
+    </p>    <pre class="brush: js">describe('when constructing', function () {
+    describe('just empty', function () {
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
+
+        it('should be created', function () {
+            expect(collection).toBeDefined();
+        });
+    });
+</pre>    <p>        Just to make sure, our definition is fine and we are able to instantiate new collection object.<br />
+    </p>    <p>        <code>FeedbackCollection</code> constructor have few optional arguments - <code>models</code>, <code>options</code>. Models, could be either arrays of objects, or array of Backbone.Models. In case of object, collection constructor would "turn" them to models (taking the type we specified on collection definition) and add those models to collection. <br />
+    </p>    <pre class="brush: js">describe('with objects', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        or,<br />
+    </p>    <pre class="brush: js">describe('with models', function () {
+    beforeEach(function () {
+        var models = [
+            new Feedback({email: 'a@a.com', website: 'a.com', feedback: 'hello'}),
+            new Feedback({email: 'b@b.com', website: 'b.com', feedback: 'good bye'})
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        Both things are equivalent. Moreover, typically it's only unit tests you need to initialize collections that way, so I usually prefer first option.<br />
+    </p>    <p>        The <code>options</code> parameter, could contain the type of model that collection contain. So, if collection does not specify <code>model</code> property, <code>Backbone.Model</code> will be created by default.<br />
+    </p>    <pre class="brush: js">describe('with options', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models);   // not specifying model
+    });
+
+    it('should be created', function () {
+        expect(collection).toBeDefined();
+    });
+
+    it('should have models of Backbone.Model type', function () {
+        expect(collection.models[0].constructor).toBe(Backbone.Model);
+    });
+</pre>    <p>        You can override that by passing <code>{model: MyModel}</code> options object,<br />
+    </p>    <pre class="brush: js">describe('while passing model option', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models, { model: Feedback });
+    });
+
+    it('should have models of Feedback type', function () {
+        expect(collection.models[0].constructor).toBe(Feedback);
+    });
+});
+</pre>    <p>        Despite of that possibility I really rare use that in practice. It's better to simply specify model type in collection definition, that makes code easy to understand.<br />
+    </p>    <h2>Accessing collection elements</h2>    <p>        After collection has been constructed, it's possible to access internal models. There are several ways of doing that.<br />
+    </p>    <p>        The simplest one is by index,<br />
+    </p>    <pre class="brush: js">describe('when accessing collection elements', function () {
+    var first, second, models;
+
+    describe('by index', function () {
+        beforeEach(function () {
+            models = [
+                {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+                {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+            ];
+            collection = new FeedbackCollection(models);
+        });
+
+        beforeEach(function () {
+            first = collection.at(0);
+            second = collection.at(1);
+        });
+
+        it('should get first model by index', function () {
+            expect(first.toJSON()).toEqual(models[0]);
+        });
+
+        it('should get second model by index', function () {
+            expect(second.toJSON()).toEqual(models[1]);
+        });
+    });
+</pre>    <p>        Even it possible, in real apps you probably don't know the index of model you need to get from collection, since they might come from server in unpredictable order. So, instead of index, getting by id is more appropriate way.<br />
+    </p>    <pre class="brush: js">describe('by id', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    beforeEach(function () {
+        first = collection.get('feedback-1');
+        second = collection.get('feedback-2');
+    });
+
+    it('should get first model by id', function () {
+        expect(first.toJSON()).toEqual(models[0]);
+    });
+
+    it('should get second model by id', function () {
+        expect(second.toJSON()).toEqual(models[1]);
+    });
+});
+</pre>    <p>        And finally, something that I being trapped many time while starting up with Backbone - indexers on collection, does not work.<br />
+    </p>    <pre class="brush: js">describe('indexer does not work', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be undefined', function () {
+        expect(collection[0]).not.toBeDefined();
+    });
+});
+</pre>    <h2>Adding and removing items</h2>    <p>        Next, we need to understand to how to add and remove items from collections.<br />
+    </p>    <p>        There are 2 ways of adding item into backbone collection: <code>add</code>, <code>push</code>. They are very similar, but there are difference between those. The add method takes a model or array of models and the options you can specify the position there the item should be interred to. Push method, would simply add new item to the end of collection.<br />
+    </p>    <pre class="brush: js">describe('by add method', function () {
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with index specified', function () {
+        beforeEach(function () {
+            collection.add({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}, {at: 0});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-2 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-2');
+        });
+    });
+});
+</pre>    <p>        By push,<br />
+    </p>    <pre class="brush: js">describe('by push method', function () {
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with next push', function () {
+        beforeEach(function () {
+            collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-1 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-1');
+        });
+    });
+});
+</pre>    <p>        Please note, that <code>push</code> recieves the same options as <code>add</code>, but it's just a short-cut for <code>add</code> method (take a look how it's <a href="https://github.com/documentcloud/backbone/blob/master/backbone.js#L747">implemented</a>, to make it completely clear)<br />
+    </p>    <p>        For removing the items, we also have 2 methods: <code>remove</code>, <code>pop</code>. They are opposite symmetrical to the <code>add</code>, <code>push</code>. Remove, removes specified model from collection, pop removes the last model in collection. This is shown by following specification,<br />
+    </p>    <pre class="brush: js">describe('when removing items', function () {
+    beforeEach(function () {
+        collection = new FeedbackCollection();
+    });
+
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+    });
+
+    describe('by remove method', function () {
+        beforeEach(function () {
+            var model = collection.get('feedback-1');
+            collection.remove(model);
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-1')).not.toBeDefined();
+        });
+    });
+
+    describe('by pop method', function () {
+        beforeEach(function () {
+            collection.pop();
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-2')).not.toBeDefined();
+        });
+    });
+});
+</pre>    <h2>Conclusions</h2>    <p>        We've just gone for a very basic features of Backbone.Collection type. Next time, we'll explore more about collections as events it produces, fetching and persisting data to server.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
+    <updated>2012-12-19T21:52:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>Previous time, we've implemented a Backbone model and wrote some meaningful tests for it.<br />
+</p><p>Next very important Backbone's entry to test is View.<br />
+</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don't have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
+</p><h2>What to test?</h2><p>You should focus on such things: <br />
+</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
+<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
+<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
+<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
+</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It's typically that view tests are catching most regression issues.<br />
+</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don't need any special HTML on test page, since view holding all it's DOM structure inside <code>this.el</code>. By means of jQuery, it's easy to change DOM values or trigger events.<br />
+</p><p>Since view also holds reference to model, it's easy to check model's attributes changes or spying on particular models methods.<br />
+</p><p>First red test,<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView();
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
+</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
+</p><pre class="brush: js">describe('when view is initialized', function () {
+
+    describe('without model', function () {
+
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView();
+            }).toThrow(new Error('model is required'));
+        });
+
+    });
+
+    describe('without default feedback', function () {
+            
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView({model: new Backbone.Model() });
+            }).toThrow(new Error('feedback is required'));
+        });
+    });
+
+});
+    </pre><p>To turn from Red to Green, let's add <code>initialize</code> function to view,<br />
+</p><pre class="brush: js">initialize: function (options) {
+
+    if (!this.model) {
+        throw new Error('model is required');
+    }
+
+    if (!(options && options.feedback)) {
+        throw new Error('feedback is required');
+    }
+
+    this.feedback = options.feedback;
+},
+    </pre><p>Btw, after that change it's required to fix previous test, since it start to fail.<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Now, let's test how rendering works.<br />
+</p><pre class="brush: js">describe('when view is rendered', function () {
+
+    beforeEach(function () {
+        view.render();
+    });
+
+    it ('should email field be empty', function () {
+        expect(view.$el.find('input#email')).toHaveValue('');
+    });
+
+    it ('should website field be empty', function () {
+        expect(view.$el.find('input#website')).toHaveValue('');
+    });
+
+    it ('should feedback field with default feedback', function () {
+        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
+    });
+
+});
+</pre><p>Here and after I'm using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
+</p><p>We've tested initialization and rendering, now let's test last aspect, model changes and persistence.<br />
+</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
+</p><pre class="brush: js">describe('when form is submitted', function () {
+
+    describe('no inputs are filled', function () {
+
+        beforeEach(function () {
+            view.$el.find('#email').val('').trigger('change');
+            view.$el.find('#feedback').val('').trigger('change');
+        });
+
+        beforeEach(function () {
+            view.$el.find('#submit').trigger('click');
+        });
+
+        it('email field should be invalidated', function () {
+            expect(view.$el.find('.control-group.email')).toHaveClass('error');
+        });
+
+        it('feedback field should be invalidated', function () {
+            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+        });
+
+        it('website field should be valid', function () {
+            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+        });
+
+    });
+</pre><p>That's cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
+</p><pre class="brush: js">describe('only email field filled', function () {
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('email field should be valid', function () {
+        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
+    });
+
+    it('feedback field should be invalidated', function () {
+        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+    });
+
+    it('website field should be valid', function () {
+        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+    });
+
+});
+</pre><p>And finally, if view is filled correctly,<br />
+</p><pre class="brush: js">describe('email and feedback filled', function () {
+
+    beforeEach(function () {
+        spyOn(view.model, 'save').andCallThrough();
+    });
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('some feedback').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('should show no errors', function () {
+        expect(view.$el.find('.error').length).toBe(0);
+    });
+
+    it('should save model', function () {
+        expect(view.model.save).toHaveBeenCalled();
+    });
+
+});
+</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
+</p><p>I'm skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
+</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how "deep" you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of models]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing.html"/>
+    <updated>2012-11-22T11:54:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
+        </p>        <p>            By the end of the day, it's only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
+        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let's setup our testing infrastructure.<br />
+        </p>        <h2>Folders and files</h2>        <p>            We'll have a new folder called `spec`. Inside the spec folder, I'll have `models` and `views` folders that would contain tests for models and views.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
+            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
+        </a><br />
+        <h2>Tests runner</h2>        <p>            I'll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It's very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
+        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
+        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Sources --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Specs --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
+    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let's review the Jasmine test skeleton.<br />
+        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
+    var value;
+
+    beforeEach(function () {
+        value = 1;
+    });
+
+    it ('should fail', function () {
+        expect(value).toBe(0);
+    });
+
+    describe('when value is changed', function () {
+        beforeEach(function () {
+            value = 0;
+        });
+
+        it ('should pass', function () {
+            expect(value).toBe(0);
+        })
+    });
+});
+</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it's both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
+        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let's test that.<br />
+        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
+    var model;
+
+    beforeEach(function () {
+        model = new Feedback();
+    });
+
+    describe('when model is validating', function () {
+        var errors;
+    });
+});
+</pre>        <p>            This is something to start with. It does not do any asserts, so now we'll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
+        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
+    beforeEach(function () {
+        errors = model.validate({});
+    });
+
+    it ('should have 2 errors', function () {
+        expect(errors.length).toBe(2);
+    });
+
+    it ('should have email fields as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[1].name).toBe('feedback');
+    });
+});
+</pre>        <p>            It's is possible that user put email, but forgot about feedback.<br />
+        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ email: 'a@a.com'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[0].name).toBe('feedback');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
+        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ feedback: 'TDD is awesome'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have email field as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
+        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
+            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
+        </a><br />
+        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model's is pretty simple thing. It's nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
+        </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Model Validation]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-model.html"/>
+    <updated>2012-11-08T09:42:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-model</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Let's go back for a moment for <a href="http://www.beletsky.net/2012/10/baby-steps-to-backbonejs-starting-up.html">previous</a> post where we started to bootstrap some basic Backbone.js application. It's very simple now, just gathering all data and posting those data to server.<br />
+    </p>    <p>        Any reliable system is almost impossible without validation. If some field is required or must conform to some particular rule, it should be validated as soon as possible and validation information should be displayed to user. User then applies corrections and re-submit data.<br />
+    </p>    <p>        In case of `Feedback` model, we are interested that user always input her email and feedback message. Backbone.js provides very straight forward for models validation. If model requires validation, it should implement <a href="http://backbonejs.org/#Model-validate">validate</a> method.<br />
+    </p>    <p>        So, let's extend our model with validate method.<br />
+    </p>    <pre class="brush: js">var Feedback = Backbone.Model.extend({
+    url: '/feedback',
+
+    defaults: {
+        'email': '',
+        'website': '',
+        'feedback': ''
+    },
+
+    validate: function (attrs) {
+        if (!attrs.email) {
+            return 'Please fill email field.';
+        }
+        if (!attrs.feedback) {
+            return 'Please fill feedback field.';
+        }
+    }
+});
+    </pre>    <p>        As you can see, in case of email or feedback is missing, we just simply return string with error message.<br />
+    </p>    <p>        To better understand what's going on, let's look on some piece of the code from Backbone.js framework. Namely, to `_validate` method of `Backbone.Model`, which is actually responsible for validation.<br />
+    </p>    <pre class="brush: js">_validate: function(attrs, options) {
+    if (options.silent || !this.validate) return true;
+    attrs = _.extend({}, this.attributes, attrs);
+    var error = this.validate(attrs, options);
+    if (!error) return true;
+    if (options && options.error) {
+       options.error(this, error, options);
+    } else {
+        this.trigger('error', this, error, options);
+    }
+    return false;
+}
+</pre>    <p>        You can see, if `validate` returns either undefined or null or false, `_validate` just returns true - meaning the model is valid. Otherwise, it would check if `options.error` function initialized and call it, if not model event `error` is triggered.<br />
+    </p>    <p>        During the model saving, we typically provide both success and error callbacks. It means, that error callback will be called, if model does not pass validation requirements. Inside the callback, we might decided what to do with errors. Right now, let's just do alert.<br />
+    </p>    <pre class="brush: js">var options = {
+    success: function () {
+        alert('Thanks for the feedback!');
+    },
+    error: function (model, error) {
+        alert(error);
+    }
+};
+
+var feedback = {
+    email: this.$('#email').val(),
+    website:  this.$('#website').val(),
+    feedback: this.$('#feedback').val()
+};
+
+this.model.save(feedback, options);
+    </pre>    <p>        Notice that `error` callback receiving model itself as first argument and error object (one returned from `validate` method) as second argument. Let's try this code: leave email and feedback fields empty and press submit button.<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"><br />
+        <img src="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"/><br />
+    </a><br />
+    <p>        There are several drawback of such implementation, though. First of all, `alert` windows are awful, second if user corrects email, next time she presses the submit button next alert with another message appears. This is terrible UX, so let's fix it.<br />
+    </p>    <p>        So, we should basically do 2 things: aggregate all errors during validation and apply some nice styles to errors.<br />
+    </p>    <p>        Instead of returning simple strings, we'll return an array of objects, containing name of failed and field and message.<br />
+    </p>    <pre class="brush: js">validate: function (attrs) {
+    var errors = [];
+
+    if (!attrs.email) {
+        errors.push({name: 'email', message: 'Please fill email field.'});
+    }
+    if (!attrs.feedback) {
+        errors.push({name: 'feedback', message: 'Please fill feedback field.'});
+    }
+
+    return errors.length > 0 ? errors : false;
+}
+</pre>    <p>        Change the `save` method options, to show errors if any error appeared and hide errors if save was successful. <br />
+    </p>    <pre class="brush: js">var me = this;
+var options = {
+    success: function () {
+        me.hideErrors();
+    },
+    error: function (model, errors) {
+        me.showErrors(errors);
+    }
+};
+</pre>    <p>        And implement 2 simple methods:<br />
+    </p>    <pre class="brush: js">showErrors: function(errors) {
+    _.each(errors, function (error) {
+        var controlGroup = this.$('.' + error.name);
+        controlGroup.addClass('error');
+        controlGroup.find('.help-inline').text(error.message);
+    }, this);
+},
+
+hideErrors: function () {
+    this.$('.control-group').removeClass('error');
+    this.$('.help-inline').text('');
+}
+</pre>    <p>        Let's test the code. As all fields are left empty, it will look like,<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"><br />
+        <img src="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"></img><br />
+    </a><br />
+    <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
+    </p>    <h2>Conclusions</h2>    <p>        That was very simple "baby-step" style of approaching model validation. I would could it, validation "from the box". Even if it's very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
+    </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

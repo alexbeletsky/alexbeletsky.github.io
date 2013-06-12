@@ -1,0 +1,972 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Develop With Tests Nov 16th, 2011 TDD I&#8217;ve been recently thinking about my TDD and I came to interesting conclusion. I&#8217;m not TDD &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/blog/page/9/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/11/develop-with-tests.html">
+    
+      Develop With Tests</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-16T18:10:00+02:00" pubdate data-updated="true">Nov 16<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I&#8217;ve been recently thinking about my TDD and I came to interesting conclusion.  I&#8217;m not TDD practitioner any more!<br />
+</p><p>TDD is quite strict  practice, it suppose you following certain rules. The main rule is test first. You create test, you create code after. For years I&#8217;ve been using that practice as dogma. I&#8217;ve seen a lot of value with such approach and that worked for me really much. <br />
+</p><p>Do you use that rules now? Not always.. Do you use something different than TDD? Yes, I do <strong>develop with tests</strong>.<br />
+</p><p>See, TDD main power is not in tests itself. The power of TDD is Test Driven Design. This is design that makes code more readable and maintainable. Tests of cause helps regression and general quality, but it is not always the truth. As long as you practice TDD much you feel how designed for tests code should look like. You do not need to create test to prove that code is testable. Following very simple rules you simply guarantee that tests are possible here. <br />
+</p><p>Now, I simply optimize the process a bit. I could skip first step and go ahead for code. That does not mean I&#8217;m skipping test. No, I&#8217;ll create there I feel it necessary.. And I feel that mostly to all code I create. But this is no longer TDD, I call that develop with tests. DWT as you want ;)<br />
+</p><a href="https://lh3.googleusercontent.com/-wRTF3X1cJm0/TsPgJH6ryEI/AAAAAAAAH0M/H51scOr_Gf8/s620/dwt.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-wRTF3X1cJm0/TsPgJH6ryEI/AAAAAAAAH0M/H51scOr_Gf8/s620/dwt.jpg" alt="develop with tests" /><br />
+</a><br />
+<p>I think a some developers might say, &#8220;Oh, I&#8217;m using DWT as well&#8221;. Others will say, &#8220;I will use DWT since TDD is boring and requires too much time&#8221;. Please do not do that. I strongly believe that is TDD that could make you stronger as developers and your code robust and good looking. So follow the rules before you absolutely sure, you ready to break them.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/11/its-writing-time.html">
+    
+      It&#8217;s Writing Time</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-14T10:10:00+02:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>There are great series of stories called <a href="http://en.wikipedia.org/wiki/Azazel_(Asimov)">&#8220;Azazel&#8221;</a> by <a href="http://en.wikipedia.org/wiki/Isaac_Asimov">Isaac Asimov</a>. They are about 2 cm demon named Azazel and George, guy who is able to talk to him. Azazel knows actually nothing about demons or angels, hell or haven.. But he understands the nature of things able to change them. The stories are short and fun and smart, so I would recommend it to read.<br />
+</p><p>In particular, there is one great story called &#8220;Writing time&#8221;. It&#8217;s about the man whose name is Mordehai and he is writer. He has a great issue. He always need to wait for something, like wait for doctors, waiters, cab drivers, wait in a shop lines etc. Mordehai treated that time as completely wasted, because he could not spent it for job.<br />
+</p><p>He shared that problem with George. George asked Azazel if it&#8217;s possible to help to poor Mordehai. As always Azazel was angry about peoples misery, but agreed to help. He could introduce change that make it possible to Mordehai never need to wait for somebody. That change required a little cost, literally the sun will stop shining in 2 million years earlier, but who cares.<br />
+</p><p>George met Mordehai again in several month. For his great disappointment, writer created simply nothing in that time! Not even a small story. Instead of being hyper productive he became non productive at all.<br />
+</p><p>How could it be, that person who spend all his time for work are not able to do the work? As Mordehai understood as he sat behind his type writer - he had no ideas. Simply, he don&#8217;t know what to write about. <br />
+</p><p>As it turned out all that time he waited actually spent for thinking. It was absolutely not a waste for him, otherwise it was the most productive time.. But he did not realized that before. Unfortunately, Mordehai&#8217;s career totally ruined. <br />
+</p><p>You know what? I think that I&#8217;m wasting the time instead of doing &#8220;cool things&#8221;. I work as hard as I can, but the results aren&#8217;t impressive. I neither could find good idea nor have good rest recently - I&#8217;m exactly like Mordehai who blames waiting line for his problems.<br />
+</p><p>I&#8217;ll try not to repeat this issue. Having a rest, spending time with family or sport activities are equally important as job (perhaps even more important). And even if you are &#8220;doing nothing&#8221;, something is still going on your head. If inputs are right, outputs will be right as well.. Sooner or later.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/11/sayonara-nippon.html">
+    
+      Sayonara Nippon</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-12T21:34:00+02:00" pubdate data-updated="true">Nov 12<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I&#8217;ve just got back from the most wonderful country I ever been to - Japan. <br />
+</p><a href="https://lh5.googleusercontent.com/-JQHNK-xBJqE/Tr7JuF_SRNI/AAAAAAAAHzk/UsxHzEvgek8/s620/Gates.jpg?gl=UA"><br />
+<img src="https://lh5.googleusercontent.com/-JQHNK-xBJqE/Tr7JuF_SRNI/AAAAAAAAHzk/UsxHzEvgek8/s620/Gates.jpg?gl=UA" alt="japan gates" /><br />
+</a><br />
+<p>Japan is really different from everything I got used to. Differences are everywhere, from traffic direction to people behavior. But in general Japan is well developed, high cultural country with interesting history.<br />
+</p><p>Tokyo is huge, but the same is <a href="http://www.tokyometro.jp/en/">Tokyo Metropolitan</a> which is really complex, but makes travel from one part of city to another very fast. First day we have a lot of problems to understand metropolitan labyrinths, but with a little practice it does not look so scary anymore. Btw, I&#8217;ve never seen very over crowded stations and trains, even if you travel in rush hour. Comparing to Kyiv metro, Tokyo one is very expensive, where you pay as much as you go.  <br />
+</p><a href="https://lh4.googleusercontent.com/-MSLfarHSstA/Tr7Jv5PqImI/AAAAAAAAHzs/nSskJV4W5Ac/s620/metro.JPG?gl=UA"><br />
+<img src="https://lh4.googleusercontent.com/-MSLfarHSstA/Tr7Jv5PqImI/AAAAAAAAHzs/nSskJV4W5Ac/s620/metro.JPG?gl=UA" alt="tokyo metropolitan" /><br />
+</a><br />
+<p>People there are very kind, ready to help you. But the problem is communication. Very few Japanese can speak English. Usual dialog is something like. &#8220;Do you speak English?&#8221;, &#8220;A little..&#8221; and then nothing, even if you try to use as elementary words as possible. So, language barrier is very high. But as soon as they understood your problem, be sure you gonna get help. Once we&#8217;ve lost in metropolitan and one lady went out from station with ask, contacted metropolitan officer and explained our further actions. Such scenario happened several times.<br />
+</p><a href="https://lh6.googleusercontent.com/-Yzz0uvSJ0Rc/Tr7JtvG9fkI/AAAAAAAAHzc/Vh8w20Qfjbc/s620/food.JPG?gl=UA"><br />
+<img src="https://lh6.googleusercontent.com/-Yzz0uvSJ0Rc/Tr7JtvG9fkI/AAAAAAAAHzc/Vh8w20Qfjbc/s620/food.JPG?gl=UA" alt="noodles" /><br />
+</a><br />
+<p>Food is very delicious and relatively not expensive. Chinese and Japanese dishes are usually available together in restaurants. But if you want to go with sushi, you have to find specialized one. There are absolutely not a problem to eat in Tokyo. In each corner you could find small restaurants and cafeterias where you will be able to find what you like. Food is available mostly everywhere, including metro stations.     <br />
+</p><a href="https://lh6.googleusercontent.com/-oPJTvUilLkA/Tr7JxUvajTI/AAAAAAAAHz0/ipwdXzxSFcE/s620/tree.JPG?gl=UA"><br />
+<img src="https://lh6.googleusercontent.com/-oPJTvUilLkA/Tr7JxUvajTI/AAAAAAAAHz0/ipwdXzxSFcE/s620/tree.JPG?gl=UA" alt="tokyo park" /><br />
+</a><br />
+<p>Tokyo is concrete and wires jungle, but there are several great parks inside. They are beauty and calm. It is easy to find a bench to sit and observe spectacular views. It is great to relax body and mind there.<br />
+</p><p>I would not say I&#8217;ve seen a lot, but I really enjoyed with everything I saw. <br />
+</p><p>Sayonara Nippon! Hope to visit you again in a while.. Best luck to you!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/using-ninjectmvc-for-better-aspnet-mvc.html">
+    
+      Using Ninject.MVC For Better ASP.NET MVC Integration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-31T16:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>After the ASP.NET MVC infrastructure is <a href="http://www.beletsky.net/2011/10/integrating-aspnet-mvc-into-legacy-web.html">ready</a>, next logical step it to setup IoC container for application. Ninject setup is easy task, usually you solve that by implementation of your own <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">ControllerFactory</a> and put it to <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">ControllerBuilder</a>. As soon it is good enough approach it does not solve some important MVC implications, like injection of prosperities into filters. To make our lives a little easier Ninject team released <a href="https://github.com/ninject/ninject.web.mvc">Ninject.Web.MVC</a> extension library that solves a lot of similar problems.<br />
+</p><h2>Getting binaries</h2><p>Just follow the github to <a href="https://github.com/ninject/ninject.web.mvc/downloads">download</a> latest version of Ninject.Web.MVC and place it to web site <code>/Bin</code> directory. No changes to <code>web.config</code> or something.<br />
+</p><h2>Tweaking global.asax</h2><p>Now, let&#8217;s change <code>global.asax</code> according to Ninject.Web.MVC guidelines. I&#8217;ll just show how my current <code>global.aspx</code> looks like:<br />
+</p><pre class="brush: xml">&lt;%@ Application Language='C#' Inherits=&quot;Ninject.Web.Mvc.NinjectHttpApplication&quot; %&gt;
+&lt;%@ Import Namespace=&quot;Ninject&quot; %&gt;
+
+&lt;script RunAt=&quot;server&quot;&gt;
+ public void Application_Start()
+ {
+
+ }
+
+ protected override void OnApplicationStarted()
+ {
+  AreaRegistration.RegisterAllAreas();
+ }
+ 
+ protected override IKernel CreateKernel()
+ {
+  var kernel = new StandardKernel();
+  Sba.Web.Infrastructure.RegisterServices.For(kernel);
+  
+  return kernel;
+ }
+
+ public void Application_End()
+ {
+ }
+
+ public void Application_Error(object sender, EventArgs args)
+ {
+ }
+&lt;/script&gt;
+</pre><p>So, we basically inherit from <code>NinjectHttpApplication</code> class and override <code>CreateKernel()</code> method. You can see that inside the method I do call to <code>RegisterServices</code> - it is nothing more as static class, with <code>For</code> method that actually do the registration. Here is example:<br />
+</p><pre class="brush: csharp">using Ninject;
+using Ninject.Web.Mvc;
+using Sba.Common.Repositories;
+using Sba.Sales.Models;
+using Sba.Sales.Repositories;
+using Sba.Sales.Repositories.ViewHandlerRepositories;
+
+namespace Sba.Web.Infrastructure
+{
+ public class RegisterServices
+ {
+  public static void For(IKernel kernel)
+  {
+   kernel.Bind&lt;ISessionLoader&gt;().To&lt;LazySessionLoader&gt;();
+   kernel.Bind&lt;ILazyLoadChecker&gt;().To&lt;NHibernateLazyLoadChecker&gt;();
+   kernel.Bind&lt;IDraftInvoicesRepository&gt;().To&lt;DraftInvoicesRepository&gt;();
+   kernel.Bind&lt;IDraftInvoiceLinesRepository&gt;().To&lt;DraftInvoiceLinesRepository&gt;();
+   kernel.Bind&lt;IPaymentTermsRepository&gt;().To&lt;PaymentTermsRepository&gt;();
+   kernel.Bind&lt;IUnitsRepository&gt;().To&lt;UnitsRepository&gt;();
+   kernel.Bind&lt;ICustomersRepository&gt;().To&lt;CustomersRepository&gt;();
+  }
+ }
+}
+</pre><h2>Injection the properties into filters</h2><p>The main advantage of <code>NinjectHttpApplication</code> class usage, that now it handles the injection in different MVC entities by itself. For instance if you need inject to filter:<br />
+</p><pre class="brush: csharp">using System.Web.Mvc;
+using Ninject;
+using Economic2.Core;
+using Sba.Common.Repositories;
+
+namespace Sba.Common.Infrastructure.Filters
+{
+ public class SbaAuthorizeAttribute : AuthorizeAttribute
+ {
+  [Inject]
+  public ISessionLoader SessionLoader { get; set; }
+
+  public override void OnAuthorization(AuthorizationContext filterContext)
+  {
+            // some authorization logic here..
+  }
+ }
+}
+</pre></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/integrating-aspnet-mvc-into-legacy-web.html">
+    
+      Integrating ASP.NET MVC Into Legacy Web Site</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-30T09:05:00+02:00" pubdate data-updated="true">Oct 30<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>For some quite long time I naively thought that it is not possible (or at least very difficult) to make ASP.NET MVC stuff work on a Web Site project. But, my latest <a href="http://www.beletsky.net/search/label/InsideMVC">hacking of MVC</a> opened another perspectives. There are no any difficulties with ASP.NET MVC on Web Sites. I&#8217;ll share an experience of integration ASP.NET MVC in my work project legacy Web Site.<br />
+</p><h2>Pre-conditions</h2><p>In my case I integrated ASP.NET MVC2, since we are still running on .NET 3.5. If you are running .NET 4.0 the best is to go with ASP.NET MVC3 already. The difference of setup would not be huge, just in proper versions of assemblies.<br />
+</p><p>I assume you already have ASP.NET MVC2 framework on your machine (if you have VS2010 - you definitely have one), if no just go that <a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=22079">link</a> and install it.<br />
+</p><h2>Web config changes</h2><p>MVC assembly have to be added to <code>web.config</code>. Since the MVC infrastructure heavily depends on Routing mode, it have to be put to <code>web.config</code> as well.<br />
+</p><p>Register MVC assemblies:<br />
+</p><pre class="brush: xml">&lt;compilation defaultLanguage=&quot;c#&quot; debug=&quot;true&quot;&gt;
+ &lt;assemblies&gt;
+  &lt;add assembly=&quot;System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot;/&gt;
+
+  &lt;!-- Your application specific assemblies--&gt;
+        ...
+
+  &lt;!-- ASP.NET MVC --&gt;
+  &lt;add assembly=&quot;System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+ &lt;/assemblies&gt;
+&lt;/compilation&gt;
+</pre><p>Namespaces:<br />
+</p><pre class="brush: xml">&lt;pages enableViewStateMac=&quot;false&quot; enableViewState=&quot;false&quot; validateRequest=&quot;true&quot; viewStateEncryptionMode=&quot;Never&quot;&gt;
+  &lt;controls&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI.WebControls&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;/controls&gt;
+  
+  &lt;-- ASP.NET MVC --&gt;
+  &lt;namespaces&gt;
+    &lt;add namespace=&quot;System.Web.Mvc&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Ajax&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Html&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Routing&quot;/&gt;
+    &lt;add namespace=&quot;System.Linq&quot;/&gt;
+    &lt;add namespace=&quot;System.Collections.Generic&quot;/&gt;
+    &lt;add namespace=&quot;Microsoft.Web.Mvc&quot;/&gt;
+  &lt;/namespaces&gt;
+&lt;/pages&gt;
+</pre><p>Register URLRouting module and handler.<br />
+</p><pre class="brush: xml">&lt;system.webServer&gt;
+  &lt;validation validateIntegratedModeConfiguration=&quot;false&quot;/&gt;
+  &lt;modules&gt;
+ ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingModule&quot; type=&quot;System.Web.Routing.UrlRoutingModule, System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot; /&gt;
+  &lt;/modules&gt;
+  &lt;handlers&gt;
+    ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingHandler&quot; preCondition=&quot;integratedMode&quot; verb=&quot;*&quot; path=&quot;UrlRouting.axd&quot; type=&quot;System.Web.HttpForbiddenHandler, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+  &lt;/handlers&gt;
+&lt;/system.webServer&gt;
+</pre><h2>Global.asax changes</h2><p>You would be probably have <code>global.asax</code> without code-behind class. It&#8217;s not a problem, all you need is slightly change the <code>Application_Start()</code> method. Basically you can go and register routes there, as you do in any ASP.NET MVC application. But I didn&#8217;t do that. Instead, I used the advantages of <a href="http://msdn.microsoft.com/en-us/library/ee671793.aspx">Areas</a> feature of MVC2, since it makes better logical grouping. So, my <code>global.asax</code> are:<br />
+</p><pre class="brush: csharp">public void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+}
+</pre><h2>Models, Views, Controllers</h2><p>In typical ASP.NET MVC application you have 3 folders, for - Models, Views, Controllers. Models/Controllers are C# code, views are .aspx pages. With a Web Site you typically place code into <code>App_Code</code> folder. But you should not do that. Instead, it it better to create a separate class library project that would hold your models and controllers. Views would be placed under corresponding Area folder.<br />
+</p><h2>New project for Models/Controllers</h2><p>Just create a new class library project with such folder structure:<br />
+</p><a href="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png"><br />
+<img src="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png" alt="asp.net mvc class library" /><br />
+</a><br />
+<p>The most important - it should contain Area Registration class inside. This is the one that suppose to register all router for your application:<br />
+</p><pre class="brush: csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.Mvc;
+
+namespace Sba.Web.Areas.Sales
+{
+ public class SalesAreaRegistration : AreaRegistration 
+ {
+  public override string AreaName
+  {
+   get 
+   {
+    return "Sales";
+   }
+  }
+
+  public override void RegisterArea(AreaRegistrationContext context)
+  {
+            // All routes are here..
+
+   context.MapRoute(
+    "Sba_Sales",
+    "sba/sales/{controller}/{action}/{id}",
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+   );
+  }
+ }
+}
+</pre><p>That&#8217;s it. Now you implement Controller/Models in usual way and able to add unit tests project for new assembly.<br />
+</p><p>Make sure that assembly will be placed into to Web Site <code>/Bin</code> folder. I simply added <code>../Site/Bin</code> as project output directory. At the site initialization and <code>Application_Start()</code> call of Global.asax, all <code>AreaRegistration</code> instances would be created and routes being registered.<br />
+</p><h2>Views</h2><p>Views have to be placed in the Web Site folder itself. MVC has several rules for views placements, so you have to follow them. Views for controllers that are part of Area&#8217;s have to be places into <code>Site/Areas/AreaName/Views</code>, the common stuff line master pages are in <code>Site/Views/Shared</code>. It is very important that each View folder must contain the <code>web.config</code> inside. You can either pick it up from default MVC2 application of just grab from <a href="https://gist.github.com/1325577">gist</a>.<br />
+</p><a href="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png"><br />
+<img src="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png" alt="views folder structure" /><br />
+</a><br />
+<h2>IIS configuration</h2><p>Our application previously worked in &#8220;Classic&#8221; mode. Even thought, it is possible to run MVC on &#8220;Classic&#8221; I would not really recommend it to do and if production environment allows, just switch you application pool to &#8220;Integrated mode&#8221;.   <br />
+</p><a href="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png"><br />
+<img src="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png" alt="iis application pool config" /><br />
+</a><br />
+<p>After you did it, you can go and run you application. If you setup basic Home controller and view, you should be able to access it by given route. If you receiving 403 HTTP error check:<br />
+</p><ul><li>Are you really on integrated mode?</li>
+<li>Are there any physical folders that the same as you routing, e.g /sba/sales route and /site/sba/sales folder? In such case you either should correct the routing or change site folder structure.</li>
+</ul><h2>Session is Null issue</h2><p>Moving along and starting implementation of some real controllers, we&#8217;ve got very strange <code>NullReferenceException</code> problem. After bit debugging it turned out that <code>HttpContext.Current.Session</code> is null in controller actions. That&#8217;s the common problem for legacy web sites. It is very well described in this <a href="http://stackoverflow.com/questions/218057/httpcontext-current-session-is-null-when-routing-requests">stackoverflow</a> answer. So, you just need to add one more section into <code>web.config</code> file.<br />
+</p><pre class="brush: xml">&lt;configuration&gt;
+  ...
+  &lt;system.webServer&gt;
+    ...
+    &lt;modules&gt;
+      &lt;remove name=&quot;Session&quot; /&gt;
+      &lt;add name=&quot;Session&quot; type=&quot;System.Web.SessionState.SessionStateModule&quot;/&gt;
+      ...
+    &lt;/modules&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+</pre><p>After all of those configuration changes your Web Site is fully adopted to ASP.NET MVC framework usage. So, just go ahead and feel the awesomeness of MVC!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/greg-young-and-rinat-abdulin-visited.html">
+    
+      Greg Young and Rinat Abdulin Visited Kyiv</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-25T09:47:00+03:00" pubdate data-updated="true">Oct 25<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/beerncode/'>BeerNCode</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/ddd/'>DDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>It finally happened, <a href="http://codebetter.com/gregyoung/">Greg Young</a> and <a href="http://abdullin.com/">Rinat Abdulin</a> have been guesting Kyiv for almost the week. <br />
+</p><p>Initially we&#8217;ve gathered on <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting. The format a little changed that time, but I would say that was really interesting meeting. Greg introduced one of the project he currently working on <a href="http://continuoustests.com/">http://continuoustests.com/</a> that now referenced as &#8220;Mighty Moose&#8221;. &#8220;Mighty Moose&#8221; appear to be really powerful tool that tracks both code and tests changes, and in case of changes taking place it automatically re-runs all related test cases. So, we&#8217;ve grabbed the latest version on MM and played with it a bit. MM is officially in betta now and gonna to be release soon, so did a small contribution by submitting some bugs found on a fly. I also really much enjoyed the quick demonstration of <a href="https://github.com/gregoryyoung/Simple.Testing">Simple.Testing</a> framework. It worth to have a separate blog post on that, but in short - it is BDD style framework that literally produce plain English specifications as it&#8217;s output. It&#8217;s indeed very simple - just several hundreds LOC&#8217;s, but very impressive.<br />
+</p><p>But of cause, the main event was <a href="http://www.facebook.com/event.php?eid=268332313185736">Free Event Centric Weekend</a>. It is very hard to describe what was there just in this short post. You might check out some tweets on <a href="http://twitter.com/#!/search/eventcentric">#eventcentric</a> channel. Greg and Rinat were sharing their huge experience on CQRS/DDD and I would say that was extremely interesting. I&#8217;m not using either CQRS or DDD on my daily work, so a lot of new concept&#8217;s I&#8217;ve heard are still really unknown to me, but I&#8217;m happy I looked behind the curtain. Greg is <a href="http://martinfowler.com/bliki/ShuHaRi.html">Ri</a> level developer - he is simply breaking the concepts. Seriously, I was blown away with some of the statements and my brain is still &#8220;damaged&#8221; with everything I heard there.<br />
+</p><a href="https://lh4.googleusercontent.com/-_2de-YNoo-0/TqZWzXugX3I/AAAAAAAAHm0/_zNc09RHImQ/s720/eventcentic.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-_2de-YNoo-0/TqZWzXugX3I/AAAAAAAAHm0/_zNc09RHImQ/s720/eventcentic.jpg" alt="Eventcentric meeting in Kyiv" style="width: 620px" /><br />
+</a><br />
+<p>Besides of that we had several cool evenings, drinking beers. I would say that was great week and I&#8217;m really happy to meet you guys. I would also say big thanks to <a href="http://kievalt.net/">KievAltNet</a>, <a href="http://www.luxoft.com/">Luxoft</a> with support they provided to make this happen. I know this in not your last visit to Kiev, so see you soon! <br />
+</p><p>ps. As more you know as more unknown you are able to see&#8230;<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/network-conference-in-kharkiv.html">
+    
+      NETWork Conference in Kharkiv</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-16T16:55:00+03:00" pubdate data-updated="true">Oct 16<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/conference/'>Conference</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>In short, it was one of the most exciting and interesting conferences I ever been (and participated) so far. My big respect goes to organizers: <a href="http://sigmaukraine.com/">Sigma Ukraine</a>, <a href="http://www.akvelon.com.ua/">Akvelon</a> and <a href="http://ciklum.net/">Ciklum</a> as main sponsor. <br />
+</p><p>In a little long, I&#8217;ve been invited to participate this conference by <a href="http://www.facebook.com/anastasiakladova">Anastasia Kladova</a>, the PR manager of <a href="http://sigmaukraine.com/">Sigma Ukraine</a> during my visit of <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">IT Jam 2011</a> this summer. It sounded so cool to me, since so famous guys as <a href="http://network-ua.com/speaker/ayende-rahien-aka-oren-eini/">Ayende</a>, <a href="http://network-ua.com/speaker/greg-young/">Greg Young</a> and <a href="http://network-ua.com/speaker/rinat-abdullin/">Rinat Abdulin</a> would be the speakers there as well. I had not other choice, just to agree.<br />
+</p><p>Well, my trip to Kharkiv started not very good. Due to my personal awkwardness I simply missed the train. Now I have fun of that fact, by then I was standing on station and seeing my train passing away - it was not so fun to me. Anyway, with great advice of <a href="">@chaliy</a> by phone I switched to another train. The one one problem was - it comes to Kharkiv pretty late, at 10.00 o&#8217;clock.<br />
+</p><p>Unfortunately I missed first keynote by <a href="http://network-ua.com/speaker/sander-hoogendorn/">Sander</a> and first session of speeches. But I was ready for the rest of the day. I would not describe long my feelings to meet colleagues from other cities, which we communicate thought twitter. But it is exactly the conferences like that, where we have real opportunity to talk to each other. As for me, such communication is a bigger asset of any conference including NETWork.<br />
+</p><a href="https://lh6.googleusercontent.com/-kH4mZBDxBug/Tp2QkwVhZ1I/AAAAAAAAHmo/DRX7IEoA1pI/s720/DSC_2356.JPG"><br />
+<img src="https://lh6.googleusercontent.com/-kH4mZBDxBug/Tp2QkwVhZ1I/AAAAAAAAHmo/DRX7IEoA1pI/s720/DSC_2356.JPG" /><br />
+</a><br />
+<p>Let me share some feedback I got about the speeches I visited:<br />
+</p><ul><li><br />
+<strong>CQRS AND EVENT SOURCING</strong> by <a href="http://network-ua.com/speaker/greg-young/">Greg Young</a> - I really much enjoyed the that speech. Doesn&#8217;t matter I&#8217;ve seen it before on video :) - still I was amazed about his speakers skill and energy he exposed towards the audience. His mimic, body language and personal behavior - made the speech really attractive. I would not say I heard something really new to me, but at least I improved some knowledge I already had.<br />
+</li>
+<li><br />
+<strong>APPLIED CODE GENERATION IN .NET</strong> by <a href="http://network-ua.com/speaker/dmitro-mindra/">Dmitry Mindra</a> - great talk about Code Generation in .NET application. Even, if I dislike code generation much, Dmitry managed to find good Pros. and Cons. of code generation. So, at the end of the speech I even was not possible to start holy war on that topic, since really strong facts he had.<br />
+</li>
+<li><br />
+<strong>INSIDE ASP.NET MVC FRAMEWORK</strong> be me - yeah, that&#8217;s my speech so I&#8217;m not really happy as usual. Again, I didn&#8217;t fit everything I wanted to say. Something that I did seems was not really clear and far away from comprehensive. It would be last attempt I do that &#8216;Inside MVC&#8217; talk - it is simply too big, so probably next time I just select one small topic and focus on that. Anyway, I all the time enjoy the speaking and I really like that feeling of stress before and relax after :).  <br />
+</li>
+<li><br />
+<strong>NOSQL – A CHANGE OF PERSPECTIVE FOR THE DEVELOPER OF TODAY</strong> by <a href="http://network-ua.com/speaker/ayende-rahien-aka-oren-eini/">Ayende</a> - I have a split decision on that. The beginning of the speech was simply boring, I don&#8217;t understand the reason of spending 0.5h do describe the difference of price of 1 Mb HDD in 80&#8217;s and 00&#8217;s. Moreover, due to Ayende&#8217;s accent sometimes I just missed the idea. The end of the speech were more exiting but still I was disappointed. Ayende is great developer, everybody knows that - but it was not even one small example of code working with RavenDB. Probably he left it for some practical session, but still I think it is kind of drawback of his presentation.<br />
+</li>
+</ul><p>And after all speeches we had a kind of Round Table. All speaker got on stage and answering the questions of audience. It was a little funny to me how it went. First, the language - some questions were in English but answered in Russian, some was Russian but answered English :). I actually used English in respect towards our foreign guests, but anyway. The answers were long, not exact and mainly loosing the point of original question. I think the moderation (with a timing and topics) is really important here. <br />
+</p><p>What I remembered the most is the question to Ayende - &#8220;How you became so productive?&#8221;, and the answer was something that great developer should answer &#8220;I&#8217;m not so productive, I just code a lot and do some blog posts&#8221;. Yeah, &#8220;Code a lot&#8221; - so simple rule to became from good to great. I&#8217;ll remember that.<br />
+</p><p>Finally we had a great dinner at the one of Kharkiv&#8217;s restaurant&#8217;s. And I went to train station (0.5 hours ahead). There I met my guys from <a href="http://kievalt.net/">Kiev ALT.NET</a> who had a great mood and bag full of beer. So, we&#8217;ve had nice Beer && Talk session till 3.00 AM on our way back home. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/inside-aspnet-mvc-idependencyresolver.html">
+    
+      Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-13T21:55:00+03:00" pubdate data-updated="true">Oct 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    using System.Collections.Generic;
+
+    public interface IDependencyResolver {
+        object GetService(Type serviceType);
+        IEnumerable&lt;object&gt; GetServices(Type serviceType);
+    }
+}
+</pre><p>If take a look into the code you will definitely smell the <a href="http://msdn.microsoft.com/en-us/library/ff648968.aspx">Service Locator</a> pattern. Indeed, <code>IDependencyResolver</code> is pure service locator.<br />
+</p><h2>DependencyResolver as IDependencyResolver holder</h2><p><code>IDependencyResolver</code> instance is being accessed through the <code>DependencyResolver</code> class. <br />
+</p><pre class="brush:csharp">public class DependencyResolver {
+ // Static accessors
+
+ private static DependencyResolver _instance = new DependencyResolver();
+
+ public static IDependencyResolver Current {
+  get {
+   return _instance.InnerCurrent;
+  }
+ }
+</pre><p>It is a singleton class, current instance is being accessed through <code>Current</code> property. The default implementation is <code>DefaultDependencyResolver</code>. <br />
+</p><pre class="brush:csharp">// Instance implementation (for testing purposes)
+
+private IDependencyResolver _current = new DefaultDependencyResolver();
+
+</pre><p>Even if the comment says (for testing purposes) that class is used in real code. Let&#8217;s take a look on that.<br />
+</p><pre class="brush:csharp">private class DefaultDependencyResolver : IDependencyResolver {
+ [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;This method might throw exceptions whose type we cannot strongly link against; namely, ActivationException from common service locator&quot;)]
+ public object GetService(Type serviceType) {
+  try {
+   return Activator.CreateInstance(serviceType);
+  }
+  catch {
+   return null;
+  }
+ }
+
+ public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+  return Enumerable.Empty&lt;object&gt;();
+ }
+}
+</pre><p>As you might see, it is extremely simple. It just tries to resolve the type by <code>Activator</code> class. If the type could be resolved it just returns it&#8217;s instance, otherwise just return null. The <code>GetServices</code> method just returns empty enumerable. <br />
+</p><h2>Substituting default DependencyResolver</h2><p>As I said above, the main design goal of <code>DependencyResolver</code> is to provide flexibility. By flexibility I mean just easy way to substitute any type with own implementation. Say you want to change the <code>ControllerFactory</code> or <code>ModelBinder</code> or what ever you like. Everything is possible just by overriding <code>IDependencyResolver</code>.<br />
+</p><p>I&#8217;ve seen one common misconception about MVC3, that it is contains IoC container inside it. It is not true, but it expose the interface which really much suites interfaces of famous IoC containers. To do not have a strict rules and force developers to use one type of IoC, ASP.NET MVC developers created a facility by which you can integrate yours IoC of choice. Let&#8217;s have a look how to do that. <br />
+</p><p><code>DependencyResolver</code> contains the number of setters to substitute the instance.<br />
+</p><pre class="brush:csharp">public static void SetResolver(IDependencyResolver resolver) {
+ _instance.InnerSetResolver(resolver);
+}
+
+public static void SetResolver(object commonServiceLocator) {
+ _instance.InnerSetResolver(commonServiceLocator);
+}
+
+[SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1006:DoNotNestGenericTypesInMemberSignatures&quot;, Justification = &quot;This is an appropriate nesting of generic types.&quot;)]
+public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type, IEnumerable&lt;object&gt;&gt; getServices) {
+ _instance.InnerSetResolver(getService, getServices);
+}
+</pre><p>As example of implementation here my very dummy dependency resolver.<br />
+</p><pre class="brush:csharp">namespace MvcForDebug2.Infrastructure {
+    public class DummyDependencyResolver : IDependencyResolver {
+        public object GetService(Type serviceType) {
+            if (serviceType.Equals(typeof(IControllerFactory))) {
+                return new DummyControllerFactory();
+            }
+
+            return null;
+        }
+
+        public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+            return null;
+        }
+    }
+}
+</pre><p>Finally, in global.asx.cs you need to set it up.<br />
+</p><pre class="brush:csharp">protected void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+
+ RegisterGlobalFilters(GlobalFilters.Filters);
+ RegisterRoutes(RouteTable.Routes);
+
+ DependencyResolver.SetResolver(new DummyDependencyResolver());
+ //ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+}
+</pre><h2>Conclusions</h2><p><code>IDependencyResolver</code> is a powerful feature of ASP.NET MVC3. It is used to create all internal MVC types, so by overriding it you can override default behavior of many framework aspects. Typically you should not have any complex code in <code>GetService</code> and <code>GetServices</code> methods, but instead just delegation of call to IoC container.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/power-of-close-collaboration.html">
+    
+      The Power of Close Collaboration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-05T20:06:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/beerncode/'>BeerNCode</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>The collaboration and communication is very important in solving problems. As much better collaboration you have as much fast you are able to handle different issue. As closer people to each other, as better they able to work. That&#8217;s why I think that distributed teams even if they consists of great engineers could not work 100% of their potential. Lags in communications, language barrier, loose of body languages etc. makes it 80% for best cases.<br />
+</p><p>As you might know I&#8217;m currently working on <a href="https://github.com/alexanderbeletsky/candidate.net">candidate.net</a> project. I really want to release that and according to my original plans I was really close to do that. But, suddenly my application just stopped to work. I&#8217;ll skip details of bug, but it was a ship killer. Application was not able to clone/pull github repositories. The only thing that happened between periods of working and non-working states is that I upgraded my Windows 7 up to SP1.<br />
+</p><p>Even if I had great support by <a href="http://twitter.com/#!/ukraitor">@ukraitor</a> who forked my project recently, we were not able to solve it (remember, distributed teams - he is from Odessa, far from me). I was pulling out my hair and mostly lost a hope to solve that. But I decided to share the problem on latest <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting we had this Tuesday.<br />
+</p><p>It is usually hard to explain your problem. Along the process, I think to myself - &#8220;those people are pretty far from problem context, could they indeed help me?&#8221;. The simple answer is &#8220;Yes, they can&#8221;. Never underestimate the people around you.<br />
+</p><p>During 2 hours we&#8217;ve been able to try different scenarios, discuss some potential issues and finally found a clue! I was so happy about that, at least my work moved from a dead point. I&#8217;m sure, I could not complete it by my own (in reasonable time). <br />
+</p><p>So, my point is: if you are in work project - immediately share you problem with colleagues don&#8217;t make yourself <a href="http://www.beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html">completely stucked</a>. If you work on your own project - it is better if you find a collaborator, if you don&#8217;t have one you might find a local group, like <a href="http://kyivbeerncode.org/">Beer && Code</a> or talk to your developers friends whatever. <br />
+</p><p>Remember, as closer the collaborator is as better. Special thank&#8217;s today goes to <a href="http://twitter.com/#!/chaliy">@chaliy</a> who helped to solve the issue.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/09/branching-workflow-in-git-svn-mode.html">
+    
+      Branching Workflow in Git-SVN Mode</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-06T17:42:00+03:00" pubdate data-updated="true">Sep 6<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
+<pre>git checkout -b master-nd-177   
+</pre><li>Do your work here, performing as many commits as you need</li>
+<pre>get commit -a -m "some intermediate commit.."
+</pre><li>Now, as you are ready to be merged you to SVN, you checkout and rebase master (to get latest SVN changes from it)</li>
+<pre>git checkout master
+    git svn rebase
+</pre><li>You can simply merge 2 branches, but with simple merge you will get all commits history that you probably don&#8217;t need in SVN at all. You squash to compress number of commits into one nice looking commit object</li>
+<pre>git merge --squash master-nd-177
+</pre><li>It would merge up all changes from master-nd-177 into master. All you need to do is commit</li>
+<pre>git commit -m "ND-177 completed"
+</pre><li>And dcommit changes to SVN server</li>
+<pre>git svn dcommit
+</pre></ol><p>That&#8217;s six basic steps makes really straightforward workflow for everyday usage. </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

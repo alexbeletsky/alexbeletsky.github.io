@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ASP.NET developers disease</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="ASP.NET developers disease Mar 22nd, 2011 Life We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">ASP.NET developers disease</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-22T14:06:00+02:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/MVC etc. So, I do a lot of interviews nowadays and I found out interesting fact. I&#8217;ve noticed symptoms of disease many of many ASP.net guys suffer from. The people who spent a lot of time with WebForms do not really understand web.
+</p>
+<p>
+Originally WebForms has been designed in perspective to be conveniently used by Visual Basic developers. Ones who created UI in designers and put logic of application into control event handlers methods. That was a good idea because that gave possibility to many people switch to web world, without too much 
+    harm their own world of Windows programming (controls, events, handlers). That worked great, because all you have to understand is Page Lifecycle, be aware of controls that Microsoft created for you and be able to drag the control in WYSIWYG editor. The application created in this way was mostly fine, because it was to far to Web 2.0, AJAX, CSS and HTML revolutions.
+</p>
+<p>
+Time has passed. Web stepped far away from a <code>form</code> with <code>submit</code> button and tables for everything, into rich UI applications with complex client side code, styled up with CSS. WebForms issues appeared really seriously, because it too much abstracted you from &#8220;what is actually going on&#8221;. WebForms controls generated HTML for you, did a server side validation. You could tweak a bit of CSS on server side as well. But this is a not controlling of your application, but rather adapting to &#8220;old-school&#8221; type of web development with ASP.net. With such level of abstraction you were loosing many important things.
+</p>
+<p>
+I&#8217;m not saying the WebForms is bad. I&#8217;m saying that WebForms did a bad joke for the people who do not try to see bit far from their nose. If you open your eyes you would see how much web development is far from ASP.net WebForms development. Modern web development is actually started on client side. You have to understand HTML/JS really fine to be efficient in it. You might not be a designer, but you have to be able to style up your HTML from UI mock in PSD. You should understand REST and AJAX to make go from web page to web application. And the issue is - the most ASP.net developers do not know these things. They think that knowing a C# or VB.net is much OK for creation of web application and the rest is work for front-end developers. 
+</p>
+<p>
+Guys, seriously.. If you think: &#8220;HTML is easy, I could do learn in 5 mins&#8221;, &#8220;CSS is nothing to do..&#8221;, &#8220;I don&#8217;t want to do javascript&#8221; - you have those symptoms. Please try to markup the page that might look like <a href="http://onehub.com/">that</a>, enchase it with CSS3 transitions and shadows. Try to use jQuery for handling UI. You will see it is not easy at all. And basically your knowledge on C# does not make help you. I would say, it might be even harder than you application server side. Knowing how to do things with WebForms is great, but you should not be only limited to WebForms.
+</p>
+<p>
+So, if your CV says you are <i>web developer</i>, please make sure that your are really able to do <i>web products</i>. Do not limit your self to &#8220;client-side&#8221; or &#8220;server-side&#8221; developer, it does not work any more. Be universal, look for the same things in a different angles, that helps sometimes. 
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

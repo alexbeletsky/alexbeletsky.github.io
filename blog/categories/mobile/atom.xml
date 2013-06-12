@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mobile | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/mobile/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET Articles Mobile Application]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/04/aspnet-articles-mobile-application.html"/>
+    <updated>2012-04-12T16:50:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/04/aspnet-articles-mobile-application</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Do you like <a href="http://asp.net">asp.net</a> web site content? Do you enjoy reading fine selected articles about ASP.NET and related technologies? Me too, but I spent most of the reading from my iPad. And unfortunately <a href="http://asp.net">asp.net</a> is not that mobile friendly yet, moreover articles are just a bunch of links to developers blogs, that might not so be adapted for mobile devices as well. <br />
+</p><p>So, I would like to introduce mobile application that I created to close the gap. Please welcome <a href="http://aspnetmobile.apphb.com/">http://aspnetmobile.apphb.com/</a>.<br />
+</p><a href="https://lh4.googleusercontent.com/-OG7PCIOHvgg/T4bc0YDkssI/AAAAAAAAIYs/Ml5GW6dmmAg/s720/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-OG7PCIOHvgg/T4bc0YDkssI/AAAAAAAAIYs/Ml5GW6dmmAg/s720/image-1.png" style="width: 620px"/><br />
+</a><br />
+<p><a href="http://aspnetmobile.apphb.com/">aspnet.mobile</a> is rather simple application. Despite of many similar apps that uses RSS channel, it goes for ASP.NET portal simple external API. RSS is bad in the way that you are limited with initial content (typically up to 25 articles on channel). With <a href="http://aspnetmobile.apphb.com/">aspnet.mobile</a> you freely can access any article ever posted on ASP.NET.<br />
+</p><p>It's powered by <a href="http://jquerymobile.com/">jQuery Mobile</a> that currently provides more "iOS-look" interface. I'm happy with that currently but I plan to have native look for Android and WP7 as well, so I thinking either to change the framework or to create custom one. But it currently looks and works great on iPad.<br />
+</p><a href="https://lh6.googleusercontent.com/-ieAlxaf1ltM/T4bc0oHZBaI/AAAAAAAAIYw/qzKfJmSfi2A/s720/image-2.PNG"><br />
+    <img src="https://lh6.googleusercontent.com/-ieAlxaf1ltM/T4bc0oHZBaI/AAAAAAAAIYw/qzKfJmSfi2A/s720/image-2.PNG" style="width: 620px"/><br />
+</a><br />
+<p>I didn't want to just refer reader to developers blog, for the reason above. Instead, I much inspired by iOS 5.0 Safari feature called 'Reader'. A bit of googling and I found that Safari using technology called <a href="http://www.readability.com/">Readability</a>. There are different ports of that technology for a different platforms: Ruby, PHP, Python, Node.js.. and I was happy to find great implementation of <a href="https://github.com/marek-stoj/NReadability">NReadability</a> by <a href="http://about.me/marekstoj">Marek Stoj</a>. Basically, it allowed me to render nice looking pages, like:<br />
+</p><a href="https://lh6.googleusercontent.com/-D5ZD6S532PE/T4bc0XPGX1I/AAAAAAAAIYo/oVBo505PNXI/s720/image-3.PNG"><br />
+    <img src="https://lh6.googleusercontent.com/-D5ZD6S532PE/T4bc0XPGX1I/AAAAAAAAIYo/oVBo505PNXI/s720/image-3.PNG" style="width: 620px"/><br />
+</a><br />
+<p>Besides of that it has a basic support of offline mode. All read articles are stored in Local Storage, so once the application offine it will provide proper behavior and propose some content.<br />
+</p><p>I will be happy if you try and let me know your impression. Feel free to check sources at <a href="https://github.com/alexanderbeletsky/aspnet.mobile">github</a>.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

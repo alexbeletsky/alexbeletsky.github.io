@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating ELMAH to ASP.NET MVC in right way</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Integrating ELMAH to ASP.NET MVC in right way Mar 5th, 2011 ELMAH.MVC, MVC, Tips, Tools, asp.net I&#8217;ve received great feedback on this article &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/03/integrating-elmah-to-aspnet-mvc-in.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Integrating ELMAH to ASP.NET MVC in right way</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-05T19:36:00+02:00" pubdate data-updated="true">Mar 5<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small> I&#8217;ve received great feedback on this article. Thanks all of you guys, who provided valuable comments and pull requests on github. I edited the article several time, hope its up-to-date now. You can go directly to <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">code repository</a> and get the test application, to see what it is all about. In case if you having some issues, just let me know. </small> </p><p style="color: red"><strong>UPDATE:</strong> Elmah.MVC is now <a href="http://www.beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html">released</a> as NuGet package. No need to read that long blog post, just install it.  <p>Many of you know what the ELMAH is. If you still don&#8217;t, go and read <a href="http://code.google.com/p/elmah/">here</a>. If you care about monitoring and stability of your web application, you definitely consider to integrate ELMAH. There are number of guidelines of how to do that. But all of them do not answer several question that MVC developers really concerned about: </p><ul><li> How to add ELMAH as usual MVC controller? </li>
+<li> How to add ELMAH handler to make it secure (accessible only by authorized users) in MVC application? </li>
+</ul><p>I&#8217;ll shed the light on both questions here. </p><h2>Quick start up </h2><p>The best way to add ELMAH is to use <a href="http://nuget.codeplex.com/">Nuget</a> package manager (really recommend to install it). I&#8217;m using Nuget UI, so just right click on MVC application, select <i>&#8220;Add Library Package Reference</i> and pickup ELMAH from nuget feed. Nuget will add reference and update <code>web.config</code> with all required configuration. Basically you can start you application with <code>http://localhost/yourapp/elmah.asx</code> and see main ELMAH page. </p><h2>Changing the configuration </h2><p>ELMAH have been developed in ancient history times of Web Forms. And it is nicely done to be as much universal as possible and implemented as HttpHandler. In <code>web.config</code> you have several line of configuration that register this handler. This is of cause works, but URI like this <code>http://localhost/yourapp/elmah.asx</code> is absolutely not MVC way. So, what you have to do is simply comment out those configuration. </p><pre class="brush: xml">&lt;system.web&gt;
+
+        &lt;!--&lt;httpHandlers&gt;
+            &lt;add verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
+        &lt;/httpHandlers&gt;--&gt;
+  
+    &lt;/system.web&gt;
+
+&lt;system.webServer&gt;
+
+    &lt;!--&lt;handlers&gt;
+    &lt;remove name=&quot;Wild&quot; /&gt;
+    &lt;add name=&quot;Elmah&quot; verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
+    &lt;/handlers&gt;--&gt;
+ 
+&lt;/system.webServer&gt;
+</pre><h2>Add ELMAH controller </h2><p>Now add ELMAH controller to application, the code of controller is: </p><pre class="brush: csharp">public class ElmahController : Controller
+{
+    public ActionResult Index(string type)
+    {
+        return new ElmahResult(type);
+    }
+}
+</pre><p>And setup a proper routing for it: </p><pre class="brush: csharp">context.MapRoute(
+    "Admin_elmah",
+    "Admin/elmah/{type}",
+    new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
+);
+</pre><h2>Implementation of ElmahResult action result </h2><p>He we go for most interesting part. I&#8217;ve checked the sources of ELMAH and reused <code>Elmah.ErrorLogPageFactory</code> to handle those custom HTTP request. After several modifications and pull request by <a href="https://github.com/seba-i">seba-i</a> the code is: </p><pre class="brush: csharp">class ElmahResult : ActionResult
+{
+    private string _resouceType;
+
+    public ElmahResult(string resouceType)
+    {
+        _resouceType = resouceType;
+    }
+
+    public override void ExecuteResult(ControllerContext context)
+    {
+        var factory = new Elmah.ErrorLogPageFactory();
+
+        if (!string.IsNullOrEmpty(_resouceType)) {
+            var pathInfo = "." + _resouceType;
+            HttpContext.Current.RewritePath(PathForStylesheet(), pathInfo, HttpContext.Current.Request.QueryString.ToString());
+        }
+
+        var httpHandler = factory.GetHandler(HttpContext.Current, null, null, null);
+        httpHandler.ProcessRequest(HttpContext.Current);
+    }
+
+    private string PathForStylesheet() 
+    {
+        return _resouceType != "stylesheet" ? HttpContext.Current.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : HttpContext.Current.Request.Path;
+    }
+}
+</pre><h2>Try it now </h2><p>Just build the application and put <code>http://localhost/yourapp/admin/elmah</code> and you will get nice looking ELMAH main page. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s1600/screen.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s400/screen.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5580651212725432850" /></a> <h2>Making it secure </h2><p><a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.authorizeattribute.aspx">AuthorizeAttribute</a> works great for this purpose. Just put this attribute to <code>ElmahController</code> and now it is only Admin, who has access to it.  </p><pre class="brush: csharp">[Authorize(Users = "Admin")]
+public class ElmahController : Controller
+{
+    // ...
+</pre><p>In my applications I use a custom attribute, but the idea still the same.  </p><h2>Allow to view results remotely </h2><p>You definitely want to see results remotely, with no need to access hosting machine. By default, ELMAH do not allow this, but it is easily changed in configuration: </p><pre class="brush: xml">&lt;elmah&gt;
+  &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
+</pre><h2>Code example </h2><p>Full code example is located in my github repository <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Areas/Admin/Controllers/ElmahController.cs">here</a>. </p><br />
+<h2>UPD:</h2><p>I&#8217;ve moved out controller to separate github repostitory. You are free and very welcome to use/fork/pull changes :). Fork & fix it here - <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">https://github.com/alexanderbeletsky/elmah.mvc.controller</a>. </p><h2>UPD2:</h2><p>Instead of placing just controller I create test MVC3 application that clearly show how to use Elmah in MVC. Plese check code and README  <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">here</a>. </p><h2>UPD3:</h2><p>Code placed in this blog post has been changed drastically by latest feedback I recieved for this controller. Please better refer code on github or latest blog post here <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">Latest version of ELMAH MVC controller</a> </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/03/integrating-elmah-to-aspnet-mvc-in.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/03/integrating-elmah-to-aspnet-mvc-in.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

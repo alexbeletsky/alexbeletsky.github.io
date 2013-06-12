@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clean tests with SharpTestsEx</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Clean tests with SharpTestsEx Mar 12th, 2011 Clean Code, Open source, TDD, Tools I was recently been adding NUnit to one of mine project&#8217;s and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Clean tests with SharpTestsEx</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-12T10:25:00+02:00" pubdate data-updated="true">Mar 12<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I was recently been adding NUnit to one of mine project&#8217;s and noticed one interesting framework in <a href="http://nuget.codeplex.com/">Nuget</a> channel. It is <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a> by <a href="http://twitter.com/#!/fabiomaulo">Fabio Maulo</a> and its primary goal is to make your assertions shorter, cleaner and easy to read.
+</p>
+To start with, it is just enough to install it through Nuget (or manually) and add using statement in your test class file.
+<p>
+<pre class="brush: csharp">
+using SharpTestsEx;
+</pre>
+<p>
+SharpTestsEx would add number of <code>Should()</code> extension methods. Suppose you have such case:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    Assert.That(result, Is.Equal("&lt;div&gt;&lt;/div&gt;"), "expected and actual results are different");
+}
+</pre>
+<p>
+With SharpTestsEx I&#8217;m changing assert part of test to,
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    result.Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+Note, it is much shorter and mostly plain English sentence: <i>result should be equal to something</i>.. The assertion message for this test is really clean and sufficient, so you mostly won&#8217;t needed and custom messages.
+</p>
+<p>
+If I go further and implement extension method for this <code>Compile</code> method:
+</p>
+<pre class="brush: csharp">
+static class CompilerTestExtension
+{
+    public static string Compile(this string expression)
+    {
+        var c = new Compiler();
+        return с.Compile(expression);
+    }
+}
+</pre>
+<p>
+My tests case would be just one line of code:
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange / act / assert
+    "div".Compile().Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+This is very short and clean notation of test case, even not technical person could read this. You can do more complicated assertions, combining them by <code>And</code> / <code>Not</code> conditions. There are also bunch of useful extensions for strings, sequences.
+</p>
+</p>
+Additional information on project <a href="http://sharptestex.codeplex.com/">site</a> as well as author <a href="http://fabiomaulo.blogspot.com/search/label/SharpTestEx">blog</a>.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

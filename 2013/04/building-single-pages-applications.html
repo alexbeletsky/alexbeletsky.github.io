@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Building Single Pages Applications</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Building Single Pages Applications Apr 29th, 2013 Backbone.js, Conference, SPA This is transcript of talk I gave on #msswit conference 25 April 2013 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Building Single Pages Applications</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T20:26:00+03:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/spa/'>SPA</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
+    </p>
+    <h2>        What is SPA?<br />
+    </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We&#8217;ll check out new concept of web applications, that are called - Single Page Applications.<br />
+    </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it&#8217;s UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
+    <!-- more -->
+ <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script><br />
+    </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
+    </p>    <h2>        API oriented architecture<br />
+    </h2>    <p>        Before we jump into SPA details, let&#8217;s talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it&#8217;s being adopted by many vendors and became kind of default. We are talking about &#8216;API oriented&#8217; architecture.<br />
+    </p>    <p>        Basically, it&#8217;s just a deviation of classical &#8216;Server-client&#8217;, where we have server that provides an open API.. and where client is browser, powered by JavaScript engine.<br />
+    </p>    <p>        It&#8217;s quite typically that server and client are communicating through HTTP, using JSON as payload format and relying on REST principles. I&#8217;m saying <i>typically</i>, since it&#8217;s not always the case. Some apps might takes XML and use RPC instead of REST, but that actually doesn&#8217;t really matter.<br />
+    </p>    <p>        Client is browser, that runs JavaScript code. JavaScript code is requesting the data and updating the DOM. Few years ago, jQuery was the primary tool of making such applications. Nowadays, we see MV* JavaScript frameworks are gaining a lot of traction and simplifying front-end development. It&#8217;s not only about simplification, but also bringing the architecture principles on front-end, something that we haven&#8217;t seen earlier.<br />
+    </p>    <h2>How to build Single Page applications?</h2>    <p>        We have a bunch of technologies, server and client that would allow to do that. ASP.NET MVC, Web API, NancyFX, ServiceStack, Express.js, RoR.. etc, on server and Backbone.js, Knockout.js, Angular.js, Marrionette.js, Durandal.js etc. from client.<br />
+    </p>    <p>        It gives a lot of options, actually. All of them have their pro/cons. I&#8217;ve used to use ASP.NET MVC as platform to build open API&#8217;s and was quite happy with that. Nowadays, I&#8217;m using Node.js / Express.js and it works really great, as well.<br />
+    </p>    <p>        The truth is, with SPA, the front-end technology plays a bit more significant role. Of course, server still performs important role for authorization, data access, business logic.. but in API oriented architecture is turns to be a kind of CRUD exposed through HTTP.<br />
+    </p>    <p>        As for front-end, my experience lies in Backbone.js. Preventing the questions, I would say - Backbone.js is not perfect (as there are nothing perfect in this world). Bare Backbone.js app would require a lot of manual coding, but it would also allows to see some important implementation details that could be good for general SPA understanding.<br />
+    </p>    <h2>Server architecture</h2>    <p>        Server is responsible for two principal things. First, it provides with API. Second, it server the master page (again, it&#8217;s not always the case, master.html could be places in some static resource server).<br />
+    </p>    <p>        Master page, is the one that being rendered in browser should bring basic DOM structure + reference the JavaScript code to initialize and run application. That&#8217;s it.<br />
+    </p>    <p>        As always, it&#8217;s important to think about scalability. Doesn&#8217;t matter what technology you pick up, it&#8217;s able to scale and hanlde more incoming request with given response time is vital.<br />
+    </p>    <h2>Client architecture</h2>    <p>        Scalability is important here, as well. That&#8217;s a different scalability, though.<br />
+    </p>    <p>        I liked the way <a href="https://twitter.com/derickbailey">Derick Bailey</a> stated in one of <a href="http://javascriptjabber.com/056-jsj-marionette-js-with-derick-bailey/">JavaScript Jabber</a> show:<br />
+    </p>    <blockquote>        &#8230; scalability in this case is not the number of users running the code at any given time. It’s the number of features in the system, how those features interact, and how you can start up and shut down and do all these things with these different features so that your application can grow in size, grow in features, and grow in capabilities.<br />
+    </blockquote>    <p>        That&#8217;s were there the JavaScript pattern, MV* frameworks are shine. And without simple modularity, it&#8217;s very hard to build scalable JavaScript applications.<br />
+    </p>    <h2>Require.js and AMD</h2>    <p>        Modularity is important. Each module represents some small piece of application functionality. The problem that JavaScript (ES5, to be precise) doesn&#8217;t have modules as part of language.<br />
+    </p>    <p>        Require.js helps to solve the problem. Instead of referencing hundreds of JavaScript files which expose itself to global namespace, Require.js relies on, so called, Asynchronous Module Definition. The special rules which you code have to follow, to be able to act as module and being loaded by request.<br />
+    </p>    <p>        Besides of that, Require.js comes with building/optimization tools, that helps to prepare application to production.<br />
+    </p>    <p>        So, the Master html has a reference to Require.js main file, which will be responsible for configuration and initialization of app. This typically includes setup of view state management (ViewManager) and routing (Backbone.Router).<br />
+    </p>    <h2>Routing</h2>    <p>        Router, handles in-browser URL change events and notifies about that changes. <br />
+    </p>    <p>        The URL change might appear of 2 things: user clicks some href or submits the form with re-direct. The SPA prevents those things. Instead, all <code>href</code> click are overloaded, so instead of performing GET request on given URL, JavaScript code would let router know that URL is changing. Router receives the message and using some route rules, call corresponding handler.<br />
+    </p>    <p>        The handler job is to load the application and execute it.<br />
+    </p>    <h2>Applications</h2>    <p>        Applications in terms of code, are simple objects with <code>run</code> (or <code>execute</code>) function.<br />
+    </p>    <p>        The responsibility of application is to fetch all required data and intitialize application Main View. The Main view is then passed to a ViewManager, which is responsible to render it and attach to DOM.<br />
+    </p>    <p>        Besides of that, application is also &#8216;logical&#8217; group of different modules with one goal. Imagine GMail application again - Contacts, Mails, Tasks are different applications. Each application, could have sub applications (with their own data and views).<br />
+    </p>    <p>        The rule of thumb, one route one application.<br />
+    </p>    <h2>        View Manager<br />
+    </h2>    <p>        As it&#8217;s been mentioned about, View Manager is important part of SPA architecture.<br />
+    </p>    <p>        It handles the aspects of switching one application (MainView) to another. So, the content of application div is cleared up and than updated with new one. In Backbone.js application, that is particularly important, since besides the DOM update View Manager is responsible to clear up unsubscribe all events that views might be subscribed to, to prevent, so called <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Zombie View</a> problem.<br />
+    </p>    <h2>Main View and Subviews</h2>    <p>        Not trivial application could contain some complex UI. All complex UI is being divided on many smaller components.<br />
+    </p>    <p>        MainView is responsible for whole application UI. It&#8217;s typical job to instantiate and render all required subviews. It also stores the references for all subviews into some internal data structure, so it&#8217;s been able to close all them, while main view is closed.<br />
+    </p>    <h2>TheMailer - demo application</h2>    <p>        Here is <a href="https://github.com/alexanderbeletsky/themailer">TheMailer</a> - very simple application that implements all the ideas above. I&#8217;ve created that very quickly and I could not call it completed. At the backend it runs ASP.NET MVC/WebAPI and using Require.js + Backbone.js at front end.<br />
+    </p>    <p>        It allows you to view and compose email, as well as some simple management of tasks and contacts. <br />
+    </p>    <p>        Under the debugger, it is clear how the application is initialized and starting up, how MainView creates Subviews and how Routing and ViewManager works.<br />
+    </p>    <h2>Conclusions</h2>    <p>        I would call it SPA bare bones. As I mentioned above, using pure Backbone.js is good, since Backbone.js contains all required components which any SPA need (most important it have Backbone.Router).<br />
+    </p>    <p>        But I would recommended to check further. If you plan stick to Backbone.js, <a href="http://marionettejs.com/">Backbone.Marionette</a> by <a href="https://twitter.com/derickbailey">Derick Beiley</a> could be really nice option. For Google technologies fans, <a href="http://angularjs.org/">Angular.JS</a> makes a lot of sense. For ones that liked <a href="http://caliburnmicro.codeplex.com/">Caliburn.Micro</a> during WPF programming, could play with new framework <a href="http://durandaljs.com/">Durandal.js</a> by <a href="https://twitter.com/eisenbergeffect">Rob Eisenberg</a>.<br />
+    </p>    <p>        SPA is a lot of fun and adventure, welcome in!<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

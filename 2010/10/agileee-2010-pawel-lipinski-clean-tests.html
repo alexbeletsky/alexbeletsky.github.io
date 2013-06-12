@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well Oct 10th, 2010 Agile, TDD &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2010/10/agileee-2010-pawel-lipinski-clean-tests.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-10T16:59:00+03:00" pubdate data-updated="true">Oct 10<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s1600/DSC03703.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s400/DSC03703.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5526416986874802578" /></a>
+<p>
+One of few technical speeches on this conference. <a href="http://pragmatists.pl/en/about_us.php">Pawel</a> discusses a vision of production clean code, with a clean tests as key factor of creation good software. That was very interesting and rather quick, so I did only few notes of it.
+</p>
+<h2>Introduction</h2>
+<p>
+&#8220;Most important stuff is to create a clean code - Robert C. Martin (Uncle Bob)&#8221;
+</p>
+<p>
+Writing a clean code is important! Everybody knows that, but not everybody actually produce clean code. Writing a tests is vital to create reliable, maintable, code. It is a common issue of many developers to forget that tests code quality as such important as production code. 
+</p>
+<p>
+Then we do write tests, we have to be sure that we are:
+</p>
+<ul>
+<li>writing tests that are reliable</li>
+<li>writing tests that they are document code</li>
+<li>writing tests that they are maintainable</li>
+<li>writing tests that they are readable</li>
+</ul>
+<p>
+Writing good code/tests is a hard work! That require time and practice.
+</p>
+<h2>What test do give?</h2>
+<p>
+We are spending an effort on tests (a lot of efforts, actually). Why do we do that?
+</p>
+<ul>
+<li>Be in safe net, awareness of what you did</li>
+<li>TDD leads to a Test driven Design!</li>
+<li>TDD increasing development speed</li>
+<li>TDD produce documentation</li>
+</ul>
+<h2>Problems</h2>
+<p>
+The more tests you have, more problem you have with them. So, at some point of time it stop to be a documentation. 
+</p>
+<p>
+This is especially matters then you have a lot of integration tests, that could affect each other, provide massive failures without giving clear understanding what is wrong. 
+</p>
+<h2>Process</h2>
+<p>
+What&#8217;s the process of creation the tests, following TDD rules? 
+</p>
+<ul>
+<li>Think First</li>
+<li>Trivial First</li> 
+<li>Test specifies &#8220;what&#8221;, implementation says &#8220;how&#8221;</li>
+<li>You need different levels of tests (unit, integration, end-to-end)</li>
+</ul>
+<h2>Conventions</h2>
+<p>
+Something that helps to produce clean tests. 
+</p>
+<ul>
+<li>Coherent naming of tests classes</li>
+<li>Coherent naming of tests</li>
+<li>Test classes names focus more on functionality</li>
+</ul>
+<h2>Comments</h2>
+<p>
+If you feel you must comment, something wrong with you code. Tests have to be document itself.
+</p>
+<p>
+Some useful //give, //when, //then (//arrange, //act, //assert).
+</p>
+<h2>Test setup (Given part of test)</h2>
+<p>
+DRY (Dont repeat yourself) is major. We usually repeat the setup code for each tests. Have to be extracted to methods, that could be easily reused. Method name should reflect its meaning.
+</p>
+<h2>Behavior Driven Development</h2>
+<p>
+It is on top of TDD, we define behaviour. It reflects a user stories that business people create. Focuses, why code should exists. Code have to be a value for customer. Naming is important, language you use reflects the way you think. Naming in code is the same as names by the business people. In BDD we say Examples, Not Tests.
+</p>
+<p>
+By the way, someone suggested good BDD tool for .NET, <a href="http://specflow.org/">http://specflow.org/</a>
+</p>
+<h2>BDD rules</h2>
+<ul>
+<li>tests names should be sentences</li>
+<li>simple constant template of sentence help to focus in the tests on one thing</li>
+</ul>
+<h2>A-TDD</h2>
+<p>
+Acceptance TDD. Scenarios have to written by business people (or at least with them nearby).
+</p>
+<h2>Tests smells</h2>
+<p>Factors that shows something is wrong with test</p>
+<ul>
+<li>Long setup</li>
+<li>Long tests</li>
+<li>Many assertions</li>
+<li>To many tests methods</li>
+</ul>
+<h2>Maintainable tests</h2>
+<p>
+Some rules must be followed according to have maintainable tests.
+</p>
+<ul>
+<li>Reuse assertion, create &#8220;business&#8221; assertions</li>
+<li>Reuse object construction methods</li>
+<li>Reuse test setup</li>
+<li>Tests should not depend on environment and order of executions</li>
+</ul></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2010/10/agileee-2010-pawel-lipinski-clean-tests.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2010/10/agileee-2010-pawel-lipinski-clean-tests.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

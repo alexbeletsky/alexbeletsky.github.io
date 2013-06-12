@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Approval Tests: Locking Down Legacy Code</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Approval Tests: Locking Down Legacy Code Dec 14th, 2011 Approvals, Open source, TDD Suppose, you working on project with a lot of legacy code inside &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/12/approval-tests-locking-down-legacy-code.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Approval Tests: Locking Down Legacy Code</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-14T19:06:00+02:00" pubdate data-updated="true">Dec 14<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/approvals/'>Approvals</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Suppose, you working on project with a lot of legacy code inside. I know it makes you sick, but as brave developer you want to improve things. You met that ugliest method in your life and only one thing you want to do - refactor it. But refactoring is dangerous procedure. For safe refactoring you need to have good test coverage. But wait, it is legacy code. You simply have no tests. What to do? Approvals have answer.<br />
+</p><h2>Legacy code is the code that&#8230;</h2><p>Works! Right, it is ugly, un-supportable, nothing you can easy change there. But the most wonderful feature of that code - it works for years. And first thing is to get advantage of that fact!<br />
+</p><p>Here is my &#8220;just for example&#8221; legacy method.<br />
+</p><pre class="brush: csharp">namespace Playground.Legacy
+{
+    public class HugeAndScarryLegacyCode
+    {
+        public static string TheUgliesMethodYouMightEverSeen(string s, int i, char c)
+        {
+            if (s.Length > 5)
+            {
+                s += "_some_suffix";
+            }
+
+            var r = new StringBuilder();
+            foreach (var k in s)
+            {
+                if ((int)k % i == 0)
+                {
+                    r.Append(c);
+                }
+                else
+                {
+                    if (k == c)
+                    {
+                        if (r.Length <= 2)
+                        {
+                            r.Append('a');
+                        }
+                        else
+                        {
+                            r.Append('b');
+                        }
+                    }
+                    if (k == '^')
+                    {
+                        r.Append('c');
+                    }
+                    else
+                    {
+                        r.Append(k);
+                    }
+                }
+            }
+
+            return r.ToString();
+        }
+    }
+}
+</pre>
+<p>(it&#8217;s it ugly enough?)
+</p><p>It has a cycles, nested if-else case and all nice features of legacy code. We need to change it, but in the same time guarantee it would not be broken.
+</p><h2>Trying first simple test</h2><p>Supposing also, I&#8217;m not much in details of how exactly this function works.. So, I&#8217;m creating the test like:
+</p><pre class="brush: csharp">[Test]
+public void shoudl_work_some_how()
+{
+    Approvals.Approve(HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen("someinput", 10, 'c'));
+}
+</pre><p>I run it and got some result to approve:
+</p><a href="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg">
+<img src="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg" alt="approvals" />
+</a>
+<p>I approve that, cause I know that function works. But something inside tells you - that is not enough. Try to run in under the coverage: 
+</p><a href="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg">
+<img src="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg" alt="approvals" />
+</a>
+<p>That does not make me real confident with tests only one hit and coverage 76%. We have to create better tests cases.
+</p><h2>Use combinations of arguments</h2><p>Approvals include some tools to deal this case. Let&#8217;s change out test and write something like,
+</p><pre class="brush: csharp">[Test]
+public void should_try_to_cover_it()
+{
+    var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+    var strings = new[] { "", "approvals", "xpdays", "^stangeword^" };
+
+    ApprovalTests.Combinations.Approvals.ApproveAllCombinations(
+        (s, i, c) => HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(s, i, c),
+        strings,
+        numbers,
+        chars);
+}
+</pre><p>With only few lines of code, I&#8217;ve got 1560 test cases and all of them are correct!
+</p><a href="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg">
+<img src="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg" alt="approvals" />
+</a>
+<p>Besides, I got pretty good coverage. Ideal, I would say. Now, if even one small change would happen, some of 1560 tests will notice that. </p><a href="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg">
+<img src="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg" alt="approvals" />
+</a>
+<h2>Locking down</h2><p>The process of controlling the legacy code in that way is called &#8220;Locking down&#8221;. After the code is locked down, you have high confidence (read low risk) of breaking changes you introduce. Please note how low effort it was to create all that 1560 tests and how much value gained in that.
+</p><p>Notice, that test like <code>should_try_to_cover_it</code> is not supposed to &#8220;live forever&#8221;. You probably even don&#8217;t need to check it in to source control. You just do your job, either refactoring or changing that functionality and use Approvals to notify you as fast as possible of something goes wrong.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/12/approval-tests-locking-down-legacy-code.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/12/approval-tests-locking-down-legacy-code.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

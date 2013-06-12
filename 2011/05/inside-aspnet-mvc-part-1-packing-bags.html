@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inside ASP.NET MVC: Packing bags for journey</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Inside ASP.NET MVC: Packing bags for journey May 25th, 2011 InsideMVC, MVC, asp.net I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/05/inside-aspnet-mvc-part-1-packing-bags.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Inside ASP.NET MVC: Packing bags for journey</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-25T22:57:00+03:00" pubdate data-updated="true">May 25<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC are very intuitive, you don&#8217;t have to go thought pages of documentation to do some basic stuff. I do not use MVC on my primary work yet (unfortunately) but my small <a href="http://trackyt.net">project</a> became very nice sandbox to play around and learn stuff. 
+</p>
+<p>
+I definitely learned something thought the year of hooked up with MVC. But feel I still miss a lot of details. Moreover, my hackers curiosity always force to look - &#8220;what is inside?&#8221;.
+</p>
+<p>
+Great stuff about ASP.NET MVC project is that is open source. It is been released as open source and remain open source project till version 3.0.. In fact, it is very easy to start learning framework from inside! This what I&#8217;m going to do. I would like to go depth and hope that journey would be interesting and valuable.
+</p>
+<p>
+Today I&#8217;ll to prepare everything I need for journey. I would be happy if you join me, so we would help each other along the way :).
+</p>
+<h2>Getting out source code</h2>
+<p>
+That&#8217;s easy. Just google for &#8220;MVC3 source code&#8221; and it would bring you directly to <a href="http://aspnet.codeplex.com/releases/view/58781">ASP.NET Codeplex</a> site.
+</p>
+<p>
+Download <code>mvc3-rtm-sources.zip</code>. Unpack the archive and you will see the solution file <code>WebRuntime.sln</code> and 2 folders: <code>mvc3</code> and <code>webpages</code>. Layout of both folders are similar:
+</p>
+<pre>
+    /--- bin
+    /--- src
+    /--- tests
+    /--- tools
+</pre>
+<p>
+Source code package is pretty much organized. Solution does not using NuGet, btw :)
+</p>
+<h2>Meet the solution</h2>
+<p>
+It&#8217;s time open up solution! Fire up Visual Studio and open <code>WebRuntime.sln</code>. Let the journey begins! 
+</p>
+<p>
+Nothing fancy there. Minimal number of solution folders, just <code>MVC</code> and <code>WebPages</code>. Each of folder contains a bunch of projects in it. In nearest future we would be much interested in one <code>System.Web.Mvc</code> - heart of MVC framework.
+</p>
+<!-- solution.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png" alt="solution" />
+</a>
+<h2>Build it</h2>
+<p>
+Don&#8217;t waste any time and just build the solution. As it usually happened to me, with OSS projects - you always have some issues during build. It is not the case for MVC. Build runs smoothly as possible. The output is being placed in <code>mvc3/bin/debug</code> folder. So, as soon as build finished check it out and see for content.
+</p>
+<!-- output.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png" alt="output" />
+</a>
+<h2>Run tests</h2>
+<p>
+All TDD lovers would be really pleased with a number of tests in solution. There is 5004 tests actually, solid number of tests. No surprise <code>MsTest</code> framework is used. Let&#8217;s just try to run them!
+</p>
+<p>
+In menu Test -> Run -> Tests in Current Context. Here we go.. It took a bit time to run all. I was a little disappointed to see that some tests are failing.
+</p>
+<p>
+I did an inspection of failures and found out that all of them are actually related to my Local Settings. I use &#8220;Ukrainian Locale&#8221; that means time format, decimal point symbol etc. are differs from &#8220;United States Local&#8221;. It&#8217;s a quite common issue of units, workaround could be a simply change your locale to the one that rest development team uses. The rests of tests run&#8217;s just fine!
+</p>
+<!-- tests.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png" alt="tests" />
+</a>
+<h2>Conclusions</h2>
+<p>
+So, my initial impression are: 
+</p>
+<ul>
+<li>Easy to build and start up</li>
+<li>Code looks really nice</li>
+<li>Code style a little differs from default C# especially in with &#8220;{&#8221;</li>
+<!-- code.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png" alt="code"/>
+</a>
+<li>Tests following AAA pattern really nicely</li>
+<!-- test.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png" alt="test" />
+</a>
+<li>Code contracts are not used, but code pretty defensive with check for <code>null</code> arguments etc.</li>
+<!-- exception.png -->
+<a href="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png">
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png" alt="exception" />
+</a>
+<li>All members are with &#8220;_&#8221; underscore - I like that :)</li>
+<li>Methods are small and clean</li>
+</ul>
+<p>
+What I don&#8217;t like to far:
+</p>
+<ul>
+<li>Solution is quite big - I would be happy to have separation between MVC part and WebPages (if it is possible)</li>
+<li>Tests are really slow. Suite run for 3-4 minutes (upd: I blame MsTest runner for that, with TD.NET all tests passed for 89 sec&#8217;s)</li>
+<li>Already found some comments that lie (one more point to try to avoid comments if possible)</li>
+</ul>
+<h2>
+What is next?
+</h2>
+<p>
+Next, I will setup a test project which allow us to fully get in deep of details and see how it work.
+</p>
+<p>
+Please stay tuned.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/05/inside-aspnet-mvc-part-1-packing-bags.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/05/inside-aspnet-mvc-part-1-packing-bags.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

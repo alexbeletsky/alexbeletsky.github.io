@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MVC | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/mvc/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-12T19:39:10+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET MVC Routes and Namespaces]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces.html"/>
+    <updated>2012-07-25T16:42:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    While I was working on <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC v.2.0.0</a> I noticed a something that contradicts the way I understand how the controller resolving mechanism works. Before, I always thought that namespaces matters, but in practice I saw it otherwise.<br />
+</p><h2>Controller in separate class assembly</h2><p>    The good way of distribution re-usable software is class assembly. Suppose, I have 2 projects - one ASP.NET MVC web application (<code>MvcApplication2</code>), and another one is class assembly (<code>Awesome.Mvc.Lib</code>). Web application references the class library.<br />
+</p><a href="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png" /><br />
+</a><br />
+<p>    I want to have some particular controller to be exposed from <code>Awesome.Mvc.Lib</code>. Namely, I want to have a controller inside the class library, that would be accessible from <code>MvcApplication2</code>. I'll add some <code>ShinnyController.cs</code> inside.<br />
+</p><pre class="brush: csharp">namespace Awesome.Mvc.Lib
+{
+    public class ShinnyController : Controller
+    {
+        [HttpGet]
+        public string Index()
+        {
+            return "I'm in Shinny controller";
+        }
+    }
+}    
+</pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be "invisible" for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don't initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
+</p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
+    <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
+</a><br />
+<p>    This is totally unexpected to me! It turns out that default route is matching the controller/action from <code>Awesome.Mvc.Lib</code> class library.<br />
+</p><pre class="brush: csharp">routes.MapRoute(
+    "Default", // Route name
+    "{controller}/{action}/{id}", // URL with parameters
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+);
+</pre><p>    What I'm expecting though is that <code>ShinnyController.cs</code> have to be "explicitly" routed, and ideally placed into its own sub-URL, like <code>http://localhost:26810/awesome/shinny</code>.<br />
+</p><h2>What about namespaces fallback?</h2><p>    I've asked this question on <a href="http://stackoverflow.com/questions/11077554/controller-in-separate-assembly-and-routing">stackoverflow</a>. Even if I had good answer, it did not make it happy. So, to get the behavior I want, I need to do the following: <br />
+</p><ol>    <li>Change the default routing to explicitly mention the namespace and set fallback to false:</li>
+<pre class="brush: csharp">public class MvcApplication : System.Web.HttpApplication
+{
+    public static void RegisterRoutes(RouteCollection routes)
+    {
+        routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+        var route = routes.MapRoute(
+            "Default", // Route name
+            "{controller}/{action}/{id}", // URL with parameters
+            new { controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+            new[] { "MvcApplication2" }
+        );
+
+        route.DataTokens["UseNamespaceFallback"] = false;
+
+    }
+</pre>    <li>Create an Area in <code>Awesome.Mvc.Lib</code> and configure routing to it:</li>
+<pre class="brush: csharp">public class AwesomeAreaRegistration : AreaRegistration
+{
+    public override void RegisterArea(AreaRegistrationContext context)
+    {
+        context.MapRoute("Awesome_default", "Awesome/{controller}/{action}", new { action = "Index" });
+    }
+
+    public override string AreaName
+    {
+        get { return "Awesome"; }
+    }
+}
+</pre></ol><p>After I did so, I can reach the <code>http://localhost:26810/awesome/shinny</code>:<br />
+</p><a href="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png" /><br />
+</a><br />
+<p>And in the same time, <code>http://localhost:26810/shinny</code> is getting to be rejected:<br />
+</p><a href="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png"><br />
+    <img src="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png" /><br />
+</a><br />
+<p>Even though, it looks like desired behavior.. It sucks.<br />
+</p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I'm thinking about it's distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that's it! I don't suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexanderbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I'll give one more example, to proof it.<br />
+</p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
+</p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers
+{
+    public class SimpleController : Controller
+    {
+        public string Index()
+        {
+            return "I'm simple controller from API area";
+        }
+
+    }
+}
+</pre><p>The controller is reachable, as expected:<br />
+</p><a href="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png"><br />
+    <img src="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png" /><br />
+</a><br />
+<p>But now, I try to access <code>/simple</code>:<br />
+</p><a href="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png"><br />
+    <img src="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png" /><br />
+</a><br />
+<p>Hey WTF? The whole idea of Areas is just ruined. What I'm doing wrong?<br />
+</p><p>I'm feeling very frustrated about this issue. Even though I <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">understand</a> why it happens, it smells like a bug for me? It works exactly the same for ASP.NET MVC 2, 3, 4. I'm asking you guys, to help to clarify the problem. What is your opinion on that? Are you agree on such default behavior?<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSON Model Binding to IDictionary<> is Broken]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is.html"/>
+    <updated>2012-04-26T09:39:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Yesterday, I've been creating small web service based on existing ASP.NET MVC infrastructure. The task was really simple. Web service itself should be just a proxy for existing internal API. The API method takes a <code>Dictionary</code> that contains some fields. So, I've created a data model like that.<br />
+</p><pre class="brush: csharp">public class Notification
+{
+ public int Id { get; set; }
+ public string Recipient { get; set; }
+ public IDictionary&lt;string, string&gt; Fields { get; set; }
+}
+    </pre><p>and simple HttpPost handler, like<br />
+</p><pre class="brush: csharp">[HttpPost]
+public ActionResult Send(string token, Notification notification)
+{
+    // ...
+}
+    </pre><p>the payload posted to method is:<br />
+</p><pre class="brush: plain">{"id":32,"recipient":"a@a.com","fields": { "EMAIL": "a@a.com"} }
+
+    </pre><p>I've tried to test the method, but the <code>Fields</code> property of model was always <code>null</code>. First I thought I got a problem somewhere in JSON payload, but after sometime I saw that everything is correct. <br />
+</p><p>Google showed I'm not alone, so the issue been <a href="http://stackoverflow.com/questions/4710729/post-json-dictionary">raised</a> on SO. Darin Dimitrov responded that this is a bug of <code>JsonValueProviderFactory</code>. In the same time, some comments below contained the link for a bug <a href="http://connect.microsoft.com/VisualStudio/feedback/details/636647/make-jsonvalueproviderfactory-work-with-dictionary-types-in-asp-net-mvc">reported</a>, that was already stated as Fixed. <br />
+</p><p>I forgot to mention that I did that stuff on ASP.NET MVC 2. I decided to try that on ASP.NET MVC 3, since I got the sources and if it works I can try to backport the fix into our MVC 2 infrastructure. <br />
+</p><p>With my great disappointment it fails in exactly same way for ASP.NET MVC 3. That's not funny anymore. I blamed <code>JavaScriptSerializer</code>, JSON serializer that used inside the <code>JsonValueProviderFactory</code> that it simply not able to handle Dictionaries right. I knew that ASP.NET Web API is using Newtonsoft JSON.NET framework, which is really powerful for serialization/deserialization of JSON.<br />
+</p><p>So, I run VS 2011 and create test <code>ApiController</code> that receives the model with <code>IDictionary</code> inside. What do you think happen? Ok, the model is no longer <code>null</code>, but it contains Dictionary with count of elements equals to zero. Fail.<br />
+</p><pre class="brush: csharp">public void Post(Notification notification)
+{
+    // ...
+}
+    </pre><p>I re-raised <a href="http://aspnetwebstack.codeplex.com/workitem/99">issue</a> again, now on ASP.NET Web Stack site on <a href="http://aspnetwebstack.codeplex.com/">Codeplex</a>. I also tried to quickly write the unit test that show the existence of problem, but it's not that easy to do that, so it requires some time. Hope I can do that later.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[New in ASP.NET MVC4: Razor changes]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes.html"/>
+    <updated>2012-04-10T21:35:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Razor has been changed a little with ASP.NET MVC 4 beta. It's not a kind of radical changes, but rather improvements that make developers happier. As for me, developers happier then you need to write less code to get the same function. It reminded me a ideal device, which is part of <a href="http://www.mindtools.com/pages/article/newCT_92.htm">TRIZ</a> theory. Ideal device is a device that does not exit, but does it function. By analogy, ideal code is the code that not exist but it's function exist. Razor is not that ideal, through.. But it's "more ideal" than previous version. <br />
+</p><h2>No more @Url.Content</h2><p>I got used to @Url.Content and used that for all CSS and JS references. Since it's to commonly used, developers decided to include it on a level of engine. Now, instead of<br />
+</p><pre class="brush: html">&lt;script src=&quot;@Url.Content(&quot;~/Scripts/Controls.js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>You simply can write,<br />
+</p><pre class="brush: html">&lt;script src=&quot;~/Scripts/Controls.js&quot;&gt;&lt;/script&gt;
+</pre><p>If Razor detects ~/ it would created an output identical to @Url.Content. Just got rid of several bytes within view files.<br />
+</p><h2>Conditions</h2><p>Conditions in attributes were pretty noisy. Have you ever create something like this?<br />
+</p><pre class="brush: html">&lt;div @{if (myClass != null) { &lt;text&gt;class=&quot;@myClass&quot;&lt;/text&gt; } }&gt;Content&lt;/div&gt;
+</pre><p>I had and I did not like it much. I usually ended up with creation of some simple HTML helper instead. With new Razor it a little simpler, not you can write<br />
+</p><pre class="brush: html">&lt;div class=&quot;@myClass&quot;&gt;Content&lt;/div&gt;
+</pre><p>If @myClass is null, it won't output class attribute at all. Very handy.<br />
+</p><h2>And a little more</h2><p>This is an update section I created after this post has been <a href="https://twitter.com/#!/scottgu/status/190133254060388352">twitted</a> by <a href="https://twitter.com/#!/scottgu">Scott Guthrie</a> and some valuable comments has been received.<br />
+</p><p><a href="https://twitter.com/#!/bradwilson">Brad Wilson</a> stated, conditions does not only support nullable types, but also booleans. Say, I have code:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;@ViewBag.Checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p>If the @ViewBag.Checked in null or false, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input type=&quot;checkbox&quot;/&gt;
+</pre><p>Else if @ViewBag.Checked is true, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p><a href="https://twitter.com/#!/HumanCompiler">Erik Porter</a> also mentioned the custom support for <code>data-*</code> attributes. Data attributes are little special, so even if you missing particular value you still want to have those as empty <code>data-role = ""</code>. So, if you have code like:<br />
+</p><pre class="brush: html">&lt;ul data-role=&quot;@ViewBag.ListRole&quot;&gt;
+&lt;/ul&gt;
+</pre><p>and @ViewBag.ListRole is null or false, data attribute will be eliminated. That's how it work in Beta. But for next releases <code>data-*</code> attributes will be treated specially, so even if value is null or false they will be rendered as empty ones.<br />
+</p><h2>Conclusions</h2><p>I haven't noticed any more changes so far. It's great to see that Razor has not been "frozen" and still improving. I like that view engine first of all by it's simplicity. So making it even more simple would definitely make it more attractive.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Why I'm Not Using Bundling.. Yet]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html"/>
+    <updated>2012-04-04T18:32:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I'm doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
+</p><h2>It's contra-intuitive</h2><p>Maybe the 'contra-intuitive' is not exact word that reflects my frustration. What I mean, it does not do what you might expect by default. Remember I described two methods RegisterTemplateBundles() and EnableDefaultBundles()? It was really unclear to me what they do until I looked into code. Modern frameworks tend to be as less surprise as possible, but not in case of <code>System.Web.Optimizations</code>. <br />
+</p><h2>Development and production mode</h2><p>The fact it does not take into account 'Debug' and 'Release' mode is also very confusing. As same as in point above, I have a different expectations how it should behave. For 'Debug' mode it simply should do nothing - no optimization, no compression. For release mode it should do as much as possible to minify the number of HTTP request. It turns out that you have to create some code on your own to make it happen. <br />
+</p><h2>Bundling is bad during debugging</h2><p>While you in development mode you do debug, no surprise here. Having FireBug or Chrome Development tools it's very easy to debug javascript, you can pick up any file and place breakpoint inside.<br />
+</p><a href="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png" alt="chrome development" /><br />
+</a><br />
+<p>It is no so easy with bundling, cause it will package all your files in one big chunk, so you need to open and find right place there. Since the total number of line could be huge there, it's turns to be big deal.<br />
+</p><p>As a workaround you have to have a copies of references, one you using on development and ones you use on production.<br />
+</p><pre class="brush: csharp">&lt;!-- Development --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;     
+
+&lt;!-- Production 
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+--&gt;
+</pre><h2>It's not well ironed</h2><p>Since it's very young obviously it has some problems. <br />
+</p><p>Be honest, I haven't seen on my own but one of the comments in my previous post described the issue with minification of CSS files that include <code>-ie-</code> specific selectors. That's probably not only one issue found.<br />
+</p><h2>What did I expect?</h2><p>To do not have only critics I try to put some constructive part in post as well. Ok, so I see it should work to meet my needs? <br />
+</p><p>First of all, it should be implemented as simple HTML razor helpers. You just specify the name of bundle there, like "scripts/js" and that's it. Helper is smart enough to understand what is active environment at the moment. In case of 'Debug' it expanded to a bunch of script references or links, for JS and CSS respectively. In 'Release' mode it's indeed refers the bundle, so it's packaged and minified for best performance.<br />
+</p><p>You might say, that 1. this is out of scope for <code>System.Web.Optimization</code> framework 2. you can create this behavior easily on your own. This is right, but in the same time if you deal with ASP.NET MVC4 you have some expectation that is should work right and you are not forced to invent the wheel again, so you have kind of consistency between numerous projects.<br />
+</p><p>I've been thinking about to create something like that, but during the chat with fellow developer <a href="">@andrexx</a> about bundling and he showed me something interesting. <a href="https://twitter.com/#!/tdupont750">Tom DuPont</a> has already implemented something that's really reflects my needs. It's the <a href="http://www.tomdupont.net/2012/03/configuring-bundles-in-mvc-4.html">way</a> of configuring bundles both from code and web.config. It looks like a very handy tool.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[New in ASP.NET MVC4: Bundling and Minification]]></title>
+    <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
+    <updated>2012-04-02T09:44:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
+</p><p>The problem is, each HTTP request takes time. One of the most critical Yahoo web applications performance recommendation says - <a href="http://developer.yahoo.com/performance/rules.html">Minimize HTTP request</a>. As few HTTP requests you need to load application as better.<br />
+</p><h2>System.Web.Optimization<br />
+</h2><p>Bundling and minification is located in it's own namespace <code>System.Web.Optimization</code> and resides in assembly named <code>Microsoft.Web.Optimization</code>, which is installed by default with new ASP.NET MVC4 application template as NuGet package. Since it's still in beta, namespaces and class names are probably be changing, but let's look on that we have now.<br />
+</p><h2>What is bundle?<br />
+</h2><p>Bundle is simply logical group of files that could be referenced by unique name and being loaded with one HTTP request. Suppose, we have a Layout.cshtml that might look something like that:<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/jquery.mobile-1.0b3.min.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/reset.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/foundation.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Fonts.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Layout.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Mobile.css&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;        
+</pre><p>You can see, that's a lot of css and javascript that will be loaded for page. With bundling we can rewrite it with very simple code<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Content/css&quot;)&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>In this case <code>"~/Content/css"</code> and <code>"~/Scripts/js"</code> are no longer virtual paths, but bundle names. <br />
+</p><p>The the browser would load this page, rendered HTML would look like:<br />
+</p><pre class="brush: html">&lt;link href=&quot;/Content/css?v=q_sftc19r22licIM8-Ar58FwviyWry1JuYbA-iATm4M1&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+&lt;script src=&quot;/Scripts/js?v=_8kyYWxz-Je_VE0p3_w5nbcjAhq0Qj4vZiNxvYU_oBg1&quot;&gt;&lt;/script&gt;
+</pre><p>Note, it would reference the bundle with version. The version is a kind of hash taken on all files in bundle content. This enables browser caching, if content of bundle is not change browser will take it from cache, which is much faster. In case of changes, new version token is generated, so browser would be forced to reload bundle.<br />
+</p><a href="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png" alt="chrome development tools" /><br />
+</a><br />
+<h2>Bundle registration<br />
+</h2><p>In <code>global.asax</code> file you will see new line:<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.RegisterTemplateBundles();
+</pre><p>It's only one small line of code that enables bundling and minification framework.<br />
+</p><h2>RegisterTemplateBundles() vs. EnableDefaultBundles()<br />
+</h2><p>It looks fine so far, so I tried to add new javascript file into Scripts folder. Unfortunately, my application did not work. I think this is first very contra-intuitive fact of bundling framework. Googling a bit I found quick solution, change RegisterTemplateBundles() to EnableDefaultBundles().. I tried that and it really works.<br />
+</p><p>Since the <code>System.Web.Optimization</code> has not been opened sourced yet (in case you haven't heard - ASP.NET web stack is <a href="http://weblogs.asp.net/scottgu/archive/2012/03/27/asp-net-mvc-web-api-razor-and-open-source.aspx">open source</a>, even with accepting pull request) I had to go to <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> to understand why is that.<br />
+</p><p>So, RegisterTemplateBundles() is looks like that,<br />
+</p><pre class="brush: csharp">public void RegisterTemplateBundles()
+{
+    bool flag;
+    bool flag2;
+    bool flag3;
+    bool flag4;
+    bool flag5;
+    bool flag6;
+    bool flag7;
+    Bundle bundle1 = new Bundle("~/Scripts/js", new JsMinify());
+    bool flag8 = false.AddDirectory("~/Scripts", "jquery-*", flag, flag8);
+    bool flag9 = false.AddDirectory("~/Scripts", "jquery.mobile*", flag2, flag9);
+    bool flag10 = false.AddDirectory("~/Scripts", "jquery-ui*", flag3, flag10);
+    bool flag11 = false.AddDirectory("~/Scripts", "jquery.unobtrusive*", flag4, flag11);
+    bool flag12 = false.AddDirectory("~/Scripts", "jquery.validate*", flag5, flag12);
+    bool flag13 = false.AddFile("~/Scripts/MicrosoftAjax.js", flag13);
+    bool flag14 = false.AddFile("~/Scripts/MicrosoftMvc.js", flag14);
+    bool flag15 = false.AddDirectory("~/Scripts", "modernizr*", flag6, flag15);
+    bool flag16 = false.AddFile("~/Scripts/AjaxLogin.js", flag16);
+    this.Add(bundle1);
+    Bundle bundle2 = new Bundle("~/Content/css", new CssMinify());
+    bool flag17 = false.AddFile("~/Content/site.css", flag17);
+    bool flag18 = false.AddDirectory("~/Content/", "jquery.mobile*", flag7, flag18);
+    this.Add(bundle2);
+    Bundle bundle3 = new Bundle("~/Content/themes/base/css", new CssMinify());
+    bool flag19 = false.AddFile("~/Content/themes/base/jquery.ui.core.css", flag19);
+    bool flag20 = false.AddFile("~/Content/themes/base/jquery.ui.resizable.css", flag20);
+    bool flag21 = false.AddFile("~/Content/themes/base/jquery.ui.selectable.css", flag21);
+    bool flag22 = false.AddFile("~/Content/themes/base/jquery.ui.accordion.css", flag22);
+    bool flag23 = false.AddFile("~/Content/themes/base/jquery.ui.autocomplete.css", flag23);
+    bool flag24 = false.AddFile("~/Content/themes/base/jquery.ui.button.css", flag24);
+    bool flag25 = false.AddFile("~/Content/themes/base/jquery.ui.dialog.css", flag25);
+    bool flag26 = false.AddFile("~/Content/themes/base/jquery.ui.slider.css", flag26);
+    bool flag27 = false.AddFile("~/Content/themes/base/jquery.ui.tabs.css", flag27);
+    bool flag28 = false.AddFile("~/Content/themes/base/jquery.ui.datepicker.css", flag28);
+    bool flag29 = false.AddFile("~/Content/themes/base/jquery.ui.progressbar.css", flag29);
+    bool flag30 = false.AddFile("~/Content/themes/base/jquery.ui.theme.css", flag30);
+    this.Add(bundle3);
+}
+</pre><p>As you can see it adds all recourses that came just in template, including jQuery Mobile and jQuery UI. <br />
+</p><p>In the same time, EnableDefaultBundles()<br />
+</p><pre class="brush: csharp">public void EnableDefaultBundles()
+{
+    this.Add(new DynamicFolderBundle("js", JsMinify.Instance, "*.js"));
+    this.Add(new DynamicFolderBundle("css", CssMinify.Instance, "*.css"));
+}
+</pre><p>So, what it does - it matches all javascript and css files in project, minify them and create to bundles out of it.<br />
+</p><p>As you can see <code>EnableDefaultBundles()</code> is also uses Minification policy for bundle content.<br />
+</p><h2>How add my own custom bundle?<br />
+</h2><p>As simple as create new <code>Bundle</code> object, put files inside and then add it to Bundles collection.<br />
+</p><pre class="brush: csharp">var bundle = new Bundle("~/Scripts/libs", new JsMinify());
+bundle.AddFile("~/Scripts/knockout-2.0.0.js");
+BundleTable.Bundles.Add(bundle);
+</pre><p>But there two issues here. First of all, you don't always want to minify. Second, adding bundles with many files will make global.aspx.cs looks messy. I really liked approached proposed by Scott K. Allen in his <a href="http://odetocode.com/Blogs/scott/archive/2012/03/20/yet-another-bundling-approach-for-mvc-4.aspx">Yet Another Bundling Approach for MVC 4</a> blog post. He does it in more object-oriented way including smart code to decide, should the bundle be minified or not. All you need is just take code he created and after you are able to make bundles like that.<br />
+</p><pre class="brush: csharp">public class JsLibsBundle : JsBundle
+{
+    public JsLibsBundle() : base("~/js/libs")
+    {
+        AddFiles(
+            "~/Scripts/jquery-1.6.4-vsdoc.js",
+            "~/Scripts/jquery-1.6.4.js",
+            "~/Scripts/jquery.mobile-1.0b3.js",
+            "~/Scripts/knockout-2.0.0.js",
+            "~/Scripts/modernizr-2.0.6-development-only.js",
+            "~/Scripts/underscore.js"
+        );
+    }
+}
+
+public class CssAppBundle : CssBundle
+{
+    public CssAppBundle() : base("~/css/mobile")
+    {
+        AddFiles(
+            "~/Content/jquery.mobile-1.0b3.css",
+            "~/Content/Site.Mobile.css"
+        );
+    }
+}
+</pre><p>And put them to registered those classes in global.asax.cs<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.Add(new JsLibsBundle());
+    BundleTable.Bundles.Add(new CssAppBundle());
+</pre><h2>Ok, how all that stuff works?<br />
+</h2><p>Now let's do a really brief look under the hood. Again, <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> is our friend here. <br />
+</p><p>It was interesting to me to find out new cool way of registration modules in ASP.NET. No longer entry points in web.config or other magic. You can have a special class <code>PreApplicationStartCode</code> that would be called then assembly is loaded, but before application is stated.<br />
+</p><pre class="brush: csharp">public static class PreApplicationStartCode
+{
+    private static bool _startWasCalled;
+
+    public static void Start();
+}
+</pre><p>Here <code>System.Web.Optimization</code> register it's own module, called <code>BundleModule</code>.<br />
+</p><pre class="brush: csharp">public static void Start()
+{
+    if (PreApplicationStartCode._startWasCalled)
+    {
+        return;
+    }
+    PreApplicationStartCode._startWasCalled = 1;
+    DynamicModuleUtility.RegisterModule(typeof(BundleModule));
+}
+</pre><p>Then the module is intialized, it subscribes for event called <a href="http://msdn.microsoft.com/en-us/library/system.web.httpapplication.postresolverequestcache(v=vs.90).aspx">HttpApplication.PostResolveRequestCache</a> and inside the callback it would register the <code>BundleHandler</code>.<br />
+</p><pre class="brush: csharp">private void OnApplicationPostResolveRequestCache(object sender, EventArgs e)
+{
+    HttpApplication httpApplication = (HttpApplication)sender;
+    if (BundleTable.Bundles.Count > 0)
+    {
+        BundleHandler.RemapHandlerForBundleRequests(httpApplication);
+    }
+}
+</pre><p>The handler is now responsible for dirty job. Through the <code>RequestBundle</code> class it finally comes to <code>ProcessRequest</code> method.<br />
+</p><pre class="brush: csharp">internal void ProcessRequest(BundleContext context)
+{
+    context.EnableInstrumentation = Bundle.GetInstrumentationMode(context.HttpContext);
+    BundleResponse bundleResponse = this.GetBundleResponse(context);
+    Bundle.SetHeaders(bundleResponse, context);
+    context.HttpContext.Response.Write(bundleResponse.Content);
+}
+</pre><p>So, the <code>GetBundleResponse</code> is there magic is happens. <br />
+</p><pre class="brush: csharp">private BundleResponse GetBundleResponse(BundleContext context)
+{
+    BundleResponse bundleResponse = Bundle.CacheLookup(context);
+    if (bundleResponse == null || context.EnableInstrumentation)
+    {
+        bundleResponse = this.GenerateBundleResponse(context);
+        if (!context.EnableInstrumentation)
+        {
+            Bundle.UpdateCache(context, bundleResponse);
+        }
+    }
+    return bundleResponse;
+}
+</pre><p>What's important here is that it uses cache. So, it makes bundling rather efficient. In case if there are no cached result, it will run the <code>GenerateBundleResponse</code> to generate actual response:<br />
+</p><pre class="brush: csharp">public virtual BundleResponse GenerateBundleResponse(BundleContext context)
+{
+    if (context == null)
+    {
+        throw new ArgumentNullException("context");
+    }
+    IEnumerable&lt;FileInfo&gt; fileInfos = this.EnumerateFiles(context);
+    fileInfos = context.BundleCollection.IgnoreList.FilterIgnoredFiles(fileInfos);
+    fileInfos = this.Orderer.OrderFiles(context, fileInfos);
+    fileInfos = this.ReplaceFileExtensions(context, fileInfos);
+    string str = this.Builder.BuildBundleContent(this, context, fileInfos);
+    BundleResponse bundleResponse = new BundleResponse(str, fileInfos);
+    this.Transform.Process(context, bundleResponse);
+    return bundleResponse;
+}
+</pre><p>Yet another interesting finding here is <code>this.Orderer</code>. Sometime ago I did smalltalk on <a href="http://kievalt.net">Kiev ALT.NET</a> meeting about new stuff in VS2011 and being asked a question, how is possible to order the files. I didn't know answer then. It is actually possible to setup the order of files inside bundle, in case you have cross-file dependencies:<br />
+</p><pre class="brush: csharp">public interface IBundleOrderer
+{
+ IEnumerable&lt;FileInfo&gt; OrderFiles(BundleContext context, IEnumerable&lt;FileInfo&gt; files);
+}
+</pre><p>That's it, the generated response than just being written to <code>context.HttpContext.Response</code>.<br />
+</p><h2>Conclusions</h2><p>Bundling and minification is something that I personally wanted so much, to appear in new MVC framework. Now it's there, it works.. but I would not say I'm 100% happy. There are several things that makes it a little difficult to use, as for me. I did want to place it in this post, but appeared to big.. So, I'll probably do a separate one on this matter. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

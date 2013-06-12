@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Approval Tests, Alternative View on Test Automation</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Approval Tests, Alternative View on Test Automation Dec 11th, 2011 Approvals, Open source, TDD, Tools Approval Tests or simply Approvals in a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/12/approval-tests-alternative-view-on-test.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Approval Tests, Alternative View on Test Automation</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-11T01:19:00+02:00" pubdate data-updated="true">Dec 11<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/approvals/'>Approvals</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><a href="https://sourceforge.net/projects/approvaltests/">Approval Tests</a> or simply Approvals in a framework created by <a href="http://twitter.com/#!/LlewellynFalco">Llewellyn Falco</a> and <a href="http://dangilkerson.users.sourceforge.net/">Dan Gilkerson</a>, providing support for .NET, Java, PHP and Ruby. It is not yet another unit testing framework like NUnit or MbUnit etc., instead those frameworks are used to run approval tests.<br />
+</p><p>Broadly speaking, software is nothing more as virtual box there we put some inputs and expect on outputs. The outputs could be produces by zillion ways. Those ways are differ by its implementation. Unit tests are too much focusing on implementation. Thats why unit tests might fail even if you have working code, or otherwise. Approvals are focusing on output.<br />
+</p><h2>How it works?</h2><p>Let&#8217;s take a look on a very simple case. Say, I have a class <code>ShoppingCart</code>. I can add some products inside the shopping cart, confirm my purchase. I expect that total price is calculated for me. <br />
+</p><pre class="brush: csharp">[TestFixture]
+[UseReporter(typeof(DiffReporter))]
+public class ShoppingCartTests {
+
+    [Test]
+    public void should_calculate_the_total_price_for_shopping_cart() {
+        // do
+        var shoppingCart = new ShoppingCart();
+        shoppingCart.Add(new Product { Id = "iPad", Price = 500 });
+        shoppingCart.Add(new Product { Id = "Mouse", Price = 20 });
+        shoppingCart.Confirm();
+
+        // verify
+        Approvals.Approve(shoppingCart);
+    }
+}
+</pre><p>What happens if I run this test? If I&#8217;m running it first time it fails. No matter it works or doesn&#8217;t. Framework simply don&#8217;t know that yet. To understand how much correct that code is, it will actually ask you, to utilized human primary power - recognition.   <br />
+</p><p>In that case it will open the TortoiseDiff application and show actual and expected outputs.<br />
+</p><a href="https://lh5.googleusercontent.com/-la_QjhoPxSc/TuPoxAXVteI/AAAAAAAAH0w/MdWZ0OAcalk/s779/Diff.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-la_QjhoPxSc/TuPoxAXVteI/AAAAAAAAH0w/MdWZ0OAcalk/s779/Diff.jpg" /><br />
+</a><br />
+<p>Here, I&#8217;m able just read that: &#8220;Ok, I have 2 products in my cart..one iPod and one Mouse, iPods costs 500 smth and mouse is 20 smth.. and the total price is 520 - looks good! I approve that result!&#8221;.<br />
+</p><p>Technically the approving is just copying actual output file to expected. As soon as test passed, actual file output is deleted and approved file resides near test code file, so you just check it in source control.<br />
+</p><p>If then the shopping cart is modified and something goes wrong. There would be a failure. In case of unit tests, that would be multiple failure of different cases and it might be not so easy to understand what&#8217;s exactly wrong. For approval test, it would be one failure. And the cool thing that I have a difference that shows there exactly the deviation is. <br />
+</p><a href="https://lh3.googleusercontent.com/-CTO2HOQGoDs/TuPo7nJ1U8I/AAAAAAAAH04/ycao7SUf78s/s720/Diff2.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-CTO2HOQGoDs/TuPo7nJ1U8I/AAAAAAAAH04/ycao7SUf78s/s720/Diff2.jpg" /><br />
+</a><br />
+<h2>Where it works?</h2><p>It is not only the simple objects you can approve. What&#8217;s the cool thing, you can approval against the different sources: objects, enumerables, files, HTML, XML etc. On a more high level: WpfForm, WinForm, ASP.NET Page. <br />
+</p><p>For instance, code for ASP.NET:<br />
+</p><pre class="brush: csharp">[Test]
+public void should_have_approved_layout() {
+    ApprovalTests.Asp.Approvals.ApproveUrl("http://localhost:62642/customer/");
+}
+</pre><p>Or for WPF form<br />
+</p><pre class="brush: csharp">[Test]
+public void should_have_approved_layout() {
+    ApprovalTests.Wpf.Approvals.Approve(new Form());
+}
+</pre><p>With WPF and Win forms is that it&#8217;s able to serialize them into images, so the actual and expected results are actually images, so it is easy to track the differences (TortoiseDiff can do that).<br />
+</p><h2>When it works?</h2><p>It works best when you deal with 2 things: UI and legacy code.<br />
+</p><p>Testing of UI is always a difficult part. But what you typically need is: make sure that UI is not changed and if changed, where exactly is happening. Apporvals solves that nicely. It is only one line of code test, to test ASP.NET page for instance. <br />
+</p><p>Legacy is another story: you have no tests there at all, but you have to change code to implement new feature or refactor. The interesting thing about legacy code - It works! It works for years, no matter how it written (remember, virtual box). And this is a very great advantage of that code. With approvals, with only one test you can get all possible outputs (HTML, XLM, JSON, SQL or whatever output it could be) and approve, because you know - it works! After you have such test and approved result you are really much safe with a refactoring, since now you &#8220;locked down&#8221; all existing behavior.<br />
+</p><p>Approvals are not something you need to run all the time, like units or integration tests. It more like handy tool. You create approval tests, you do your job and at the end of the day it might happen - you no longer needed, so you can just throw it away.<br />
+</p><h2>Want to hear more?</h2><p>Just go and listen to <a href="http://herdingcode.com/?p=329">this</a> Herding Code podcast episode, or visit project <a href="https://sourceforge.net/projects/approvaltests/">web site</a> or join me at 17 December on <a href="http://xpdays.com.ua/program/">XP Days Ukraine</a> conference in Kiev, where I&#8217;m going to have a speech dedicated to Approvals.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/12/approval-tests-alternative-view-on-test.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/12/approval-tests-alternative-view-on-test.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

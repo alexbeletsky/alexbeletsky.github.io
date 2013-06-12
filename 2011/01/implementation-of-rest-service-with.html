@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Implementation of REST service with ASP.NET MVC</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Implementation of REST service with ASP.NET MVC Jan 7th, 2011 GitHub, MVC, REST, asp.net Now, after we are clear what the REST is all about and how &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2011/01/implementation-of-rest-service-with.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1>My profession is engineering</h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Implementation of REST service with ASP.NET MVC</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-07T00:39:00+02:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I&#8217;ll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into &#8220;API epoch&#8221;, customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he&#8217;s just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let&#8217;s implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I&#8217;ve created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexanderbeletsky/rest.mvc.example">github</a> (please don&#8217;t be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
+public partial class RestExampleDataContext : System.Data.Linq.DataContext
+{
+    // implementation...  
+
+</pre><pre class="brush: csharp;">[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogPosts")]
+public partial class BlogPost : INotifyPropertyChanging, INotifyPropertyChanged
+{
+    // implementation
+</pre><p>I&#8217;ve added simple data to database that will be used by tests: </p><pre class="brush: sql">insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-1', 'My post 1', 'This is first post', CAST('2011-01-01' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 2', 'This is second post', CAST('2011-01-02' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 3', 'This is third post', CAST('2011-01-03' as datetime), 'alexander.beletsky');
+</pre><h2>API Interface</h2><p>The interface we are going to implement, looks like this: </p><pre class="brush: plain">http://localhost/api/v1/posts/get/{posturl}
+http://localhost/api/v1/posts/all/{username}
+http://localhost/api/v1/posts/post/{username}
+http://localhost/api/v1/posts/delete/{username}/{posturl}
+</pre><p>For all of these interface methods, I&#8217;m adding integration javascript <a href="https://github.com/alexanderbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don&#8217;t have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) &#8220;API&#8221;. It is really similar with Area, by it&#8217;s structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: &#8220;It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action&#8221;. So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let&#8217;s take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
+
+namespace Web.API.v1
+{
+    public class ApiV1Registration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get { return "ApiV1"; }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            context.MapRoute(
+                "ApiV1_posts",
+                "api/v1/posts/{action}/{userName}/{postUrl}",
+                new { controller = "APIV1", postUrl = UrlParameter.Optional });
+        }
+    }
+}
+</pre><h2>API Controller</h2><p>After routing is defined, it is time to add actual hander - controller class. Initially it would be empty, with out any action. Just initialization of <code>context</code> object. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    public class ApiV1Controller : Controller
+    {
+        private RestExampleDataContext _context = new RestExampleDataContext();
+        
+        // actions..
+    }
+}
+</pre><h2>API Actions implementation</h2><p>We&#8217;ve complete infrastructure to start implementation. Solution, Project, Interface, Tests, Routing, Controller.. now it is time for Actions. </p><h3>Get all posts method</h3><p><pre>http://localhost/api/v1/posts/all/{username}
+</pre></p><p>It receives <code>username</code> as parameter and expected to return all blog posts belong to this user. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult All(string userName)
+{
+    var posts = _context.BlogPosts.Where(p => p.CreatedBy == userName);
+
+    return Json(
+        new { success = true, data = new { posts = posts.ToList() } }, JsonRequestBehavior.AllowGet
+    );
+}
+</pre><p>Signature of action method said: respond to <code>HttpGet</code> verb, get all records with corresponding userName and return as Json.  </p><p><code>Json</code> method of Controller class is really cool feature of MVC2 framework. It receives anonymous type object and serialize it Json. So, the <code>new { success = true, data = new { posts = posts.ToList() } }</code> object will be serialized into: </p><pre class="brush: csharp">{"success":true,"data":{"posts":[{"Id":1,"Url":"my-post-1","Title":"My post 1","Body":"This is first post","CreatedDate":"\/Date(1293832800000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":2,"Url":"my-post-2","Title":"My post 2","Body":"This is second post","CreatedDate":"\/Date(1293919200000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":3,"Url":"my-post-2","Title":"My post 3","Body":"This is third post","CreatedDate":"\/Date(1294005600000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}}]}}
+</pre><p>Nice and clean. </p><p>Take a note to <code>JsonRequestBehavior.AllowGet</code>. This is a special flag, you have to pass to <code>Json</code> method, if it is being called from GET handler method. This is done to prevent <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx">Json Hijacking</a> type of attack. So, actually if your API call returns user sensitive data, you should consider POST instead of GET.  </p><p>Let&#8217;s re-run test suite and see that first test is green now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s1600/api-tests-firstpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s400/api-tests-firstpass.png" border="0" alt=""id="Img3" /></a> <h3>Create new post method</h3><pre>http://localhost/api/v1/posts/all/{username}
+</pre><p>It receives <code>username</code> as parameter and blog post content in POST body as payload. Code is: </p><pre class="brush: csharp">[HttpPost]
+public JsonResult Post(string userName, PostDescriptorModel post)
+{
+    var blogPost = new BlogPost {
+        CreatedBy = userName,
+        CreatedDate = DateTime.Now,
+        Title = post.Title,
+        Body = post.Body,
+        Url = CreatePostUrl(post.Title) 
+    };
+
+    _context.BlogPosts.InsertOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, url = blogPost.Url });
+}
+
+private string CreatePostUrl(string title)
+{
+    var titleWithoutPunctuation = new string(title.Where(c => !char.IsPunctuation(c)).ToArray());
+    return titleWithoutPunctuation.ToLower().Trim().Replace(" ", "-");
+}
+</pre><p>where <code>PostDescriptorModel</code> is </p><pre class="brush: csharp">namespace Web.API.v1.Models
+{
+    public class PostDescriptorModel
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+}
+</pre><p>If you try to run this example just like that, you will see that <code>PostDescriptorModel</code> instance will be null. MVC2 could not handle Json payload. But if you google a little you find article by Phil Haack, where he addresses exactly the same issue - <a href="http://haacked.com/archive/2010/04/15/sending-json-to-an-asp-net-mvc-action-method-argument.aspx">Sending JSON to an ASP.NET MVC Action Method Argument</a>. Support of Json as action method is implemented in MVC Futures 2 library (library that contains useful extensions, that are not yet part of framework but will be there with big chances). Download it by this <a href="http://aspnet.codeplex.com/releases/view/41742#DownloadId=110348">link</a> add reference to project and in Global.asax.cs add <code>JsonValueProviderFactory</code>: </p><pre class="brush: csharp">protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+
+    RegisterRoutes(RouteTable.Routes);
+
+    ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
+    // ...
+</pre><p><strong>Important:</strong> </p><ul><li>In case you are using MVC3 framework, you do not need to include MVC Futures assembly, since <code>JsonValueProviderFactory</code> is already included into MVC3.</li>
+</ul><p>If I try to re-run the tests, I&#8217;ll see that &#8220;create new post&#8221; test is still red. That&#8217;s because &#8220;get post&#8221; API method is still not implemented. </p><h3>Get post by url method</h3><pre>http://localhost/api/v1/posts/get/{posturl}
+</pre><p>It receives <code>post</code> as post url and return blog post object in response. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Get(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    return Json(
+        new { success = true, data = blogPost }, JsonRequestBehavior.AllowGet);
+}
+</pre><p>Last red test is &#8220;delete post test&#8221;, so let&#8217;s implement delete API call. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s1600/api-tests-secondpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s400/api-tests-secondpass.png" border="0" alt=""id="Img4" /></a> <h3>Delete post by url method</h3><p><pre>http://localhost/api/v1/posts/delete/{posturl}
+</pre></p><p>It receives <code>post</code> as post url and return status in response. Code is: </p><pre class="brush: csharp">[HttpDelete]
+public JsonResult Delete(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    _context.BlogPosts.DeleteOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, data = (string)null });
+}
+</pre><p>Now all tests are green. Fantastic! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s1600/api-tests-allpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s400/api-tests-allpass.png" border="0" alt=""id="Img5" /></a> <h2>Handle Json Errors</h2><p>What happens if exception thrown with-in API method? Let&#8217;s create a test and see: </p><pre class="brush: js">test("fail method test", function () {
+
+    var method = 'posts/fail';
+    var data = null;
+    var type = 'GET';
+    var params = ['alexander.beletsky'];
+
+    var call = createCallUrl(this.url, method, params);
+
+    api_test(call, type, data, function (result) {
+        ok(result.success == false, method + " expected to be failed");
+        same(result.message, "The method or operation is not implemented.");
+    });
+});
+</pre><p>And add implementation of failed method: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>If I run the test, I&#8217;ll see such result: </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s1600/api-tests-exception.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s400/api-tests-exception.png" border="0" alt=""id="Img6" /></a> <p>This is not very greceful. It is expected that Json response would contain <code>false</code> in <code>success</code> attribute and <code>message</code> would contain actual exception message. </p><p>Of cause, it is possible to wrap all methods in <code>try / catch</code> code block and return corresponding Json in <code>catch</code> block, but this violates DRY (don&#8217;t repeat yourself) principle and makes code ugly. It is much more better to use MVC2 method attributes for that. </p><p>So, we define new attribute that would handle error and in case of exception thrown with-in Action method, this exception will be wrapped in Json object and returned as a response. </p><pre class="brush: csharp">namespace Web.Infrastructure
+{
+    public class HandleJsonError : ActionFilterAttribute
+    {
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
+            {
+                filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                filterContext.Result = new JsonResult()
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        success = false,
+                        message = filterContext.Exception.Message,
+                    }
+                };
+                filterContext.ExceptionHandled = true;
+            }
+        }
+    }
+}
+</pre><p>Add this attribute to method definition: </p><pre class="brush: csharp">[HttpGet]
+[HandleJsonError]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>And I&#8217;m happy to see that all tests are passing now! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s1600/api-tests-allpassed.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s400/api-tests-allpassed.png" border="0" alt=""id="Img7" /></a> <p>Since we need similar behavior for all API calls it is better to add this attribute to class, instead of method. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    [HandleJsonError]
+    public class ApiV1Controller : Controller
+    {
+        // code..
+</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexanderbeletsky/rest.mvc.example">https://github.com/alexanderbeletsky/rest.mvc.example</a>.  </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2011/01/implementation-of-rest-service-with.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2011/01/implementation-of-rest-service-with.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme developed by <a href="#">@alexbeletsky</a> | Powered by <a hfef="#">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>
