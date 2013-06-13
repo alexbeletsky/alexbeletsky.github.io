@@ -1,7 +1,7 @@
 body {
 	font-family: "Lato", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-size: 18px;
-	font-weight: 500;
+	font-weight: 400;
 }
 
 a {
@@ -65,6 +65,10 @@ article .sub-title {
 
 article p {
 	margin: 1em 0;
+}
+
+article h2, article h3, article h4 {
+	font-weight: 700;
 }
 
 article .title a, article .sub-title a {
