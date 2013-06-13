@@ -1,7 +1,7 @@
 body {
 	font-family: "Lato", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-size: 18px;
-	font-weight: 400;
+	font-weight: 300;
 }
 
 a {
@@ -227,6 +227,7 @@ and (min-device-width : 320px)
 and (max-device-width : 480px) {
 	body {
 		font-size: 14px;
+		font-weight: 400;
 	}
 
 	article .title {
