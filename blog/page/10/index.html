@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="What I&#8217;m Going To Do Sep 1st, 2011 Mind Lazy summer days have gone and cool September came. It is good time to think, decide on projects and &hellip;">
+  <meta name="description" content="Branching Workflow in Git-SVN Mode Sep 6th, 2011 Git, GitSVN, Tips As you might already know branches are primary power of Git. You should create &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,66 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/09/branching-workflow-in-git-svn-mode.html">
+    
+      Branching Workflow in Git-SVN Mode</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-06T17:42:00+03:00" pubdate data-updated="true">Sep 6<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
+<pre>git checkout -b master-nd-177   
+</pre><li>Do your work here, performing as many commits as you need</li>
+<pre>get commit -a -m "some intermediate commit.."
+</pre><li>Now, as you are ready to be merged you to SVN, you checkout and rebase master (to get latest SVN changes from it)</li>
+<pre>git checkout master
+    git svn rebase
+</pre><li>You can simply merge 2 branches, but with simple merge you will get all commits history that you probably don&#8217;t need in SVN at all. You squash to compress number of commits into one nice looking commit object</li>
+<pre>git merge --squash master-nd-177
+</pre><li>It would merge up all changes from master-nd-177 into master. All you need to do is commit</li>
+<pre>git commit -m "ND-177 completed"
+</pre><li>And dcommit changes to SVN server</li>
+<pre>git svn dcommit
+</pre></ol><p>That&#8217;s six basic steps makes really straightforward workflow for everyday usage. </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -777,90 +837,6 @@ That&#8217;s it. I&#8217;ve made C# code look like and behave like JavaScript, u
 <h2>Disclaimer</h2>
 <p>
 You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :). 
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/07/switching-from-aspx-to-razor-view.html">
-    
-      Switching from ASPX to Razor view engine</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-14T16:22:00+03:00" pubdate data-updated="true">Jul 14<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I&#8217;ve been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don&#8217;t blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much). 
-</p>
-<p>
-Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexanderbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it&#8217;s being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
-</p>
-<p>
-And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips: 
-</p>
-<ul>
-<li>Rename file from *.aspx to *.cshtml</li>
-<li>If you have master page like (Public.Master) change it to _PublicLayout.cshtml (Razor don&#8217;t use term Master, but rather Layout)</li>
-<li><code>&lt;%@ Control Language=&quot;C#&quot; Inherits=&quot;System.Web.Mvc.ViewUserControl&lt;Web.Models.LastArticleFromBlogModel&gt;&quot; %&gt;</code> became <code>@model Web.Models.LastArticleFromBlogModel</code></li>
-<li>
-<code>&lt;asp:ContentPlaceHolder ID=&quot;head&quot; runat=&quot;server&quot;/&gt;</code> became <code>@RenderSection("Head", required: false) in Layout pages</code>
-</li>
-<li><code>&lt;asp:ContentPlaceHolder ID=&quot;maincontent&quot; runat=&quot;server&quot;&gt;</code> became <code>@RenderBody() in Layout pages</code></li>
-<li><code>&lt;%@Import Namespace=&quot;Web.Helpers.Extensions&quot; %&gt;</code> became <code>@using Web.Helpers.Extensions</code></li>
-<li><code>&lt;%: </code> are changed to <code>@</code> and <code>%&gt;</code> changed to nothing (I simply used Find&Replace for that)</li>
-<li>At the top of content page
-<code><pre>@{
- ViewBag.Title = "Admin | Admin Dashboard";
- Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-}</pre></code>
-</li>
-<li>For content pages, everything that is inside is Body (no special sections for that)</li>
-<li>If you need to override Head section, simply <code>@section Head { }</code></li>
-<li>Layout could be nested, in nested Layout page you should mention parent Layout, like above</li>
-</ul>
-<p>
-That&#8217;s basically it.. Along the way I&#8217;ve changed all HTML to comply HTML5 standard and reformatted (with Ctrl K + Ctrl D) and now markup looks definitely better!
-</p>
-<p>
-One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in &#8220;None&#8221; item, instead on &#8220;Content&#8221;.. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
-</p>
-<p>
-So, there are no any technical issues with moving from ASPX to Razor, just don&#8217;t be to lazy and do it today :)
 </p></div>
 
       

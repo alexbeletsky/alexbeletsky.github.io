@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: life,mind,open | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/life-mind-open/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-06-15T18:04:50+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
+    <updated>2013-06-15T16:18:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
+    <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
+
+<p>That time, blogger was quite obvious choice. Google powered, editor and plain HTML support, templates etc. I used to use Visual Studio to create posts, then pasted that to blogger, posting images on Picassa and code on Github. That worked for quite while, but now I consider that is very heavyweight approach.</p>
+
+<p>Now this site is running <a href="http://octopress.org/">Octopress</a> and hosted on <a href="https://github.com/">Github</a> and that&rsquo;s totally reflects my current tools of choice.</p>
+
+<!-- more -->
+
+
+<h2>Reasons to move</h2>
+
+<p>My primary concern was up to blog design. The time I started to blog I had almost zero skill to HTML/CSS, so picking up some existing theme was best option. In 2010 <a href="http://beletsky.net">beletsky.net</a> looked pretty fine for me. But time has passed, my vision of design has changed, requirements for blog UI has changed (consider mobile devices), the way I blog has changed.</p>
+
+<p>I tried to tweak blogger theme and tried to create new one, but that appeared a <em>bloody</em> mess.</p>
+
+<p>Besides the design, the recent Google actions like closing up Picassa, Reader &ndash; are quite obvious signs that Blogger days are counted. They would probably try to integrate it to Google+ services and I&rsquo;m literally sick of Google+.</p>
+
+<p>Finally, with much of Github influence, I <a href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html">realized</a> Markdown is awesome, blogging in plain HTML sucks hard. I wanted to have nice and easy platform for handling my blog and personal page.. I wanted to blog like <a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">hackers</a> do.</p>
+
+<h2>How to move, easy way</h2>
+
+<p>I was really <em>afraid</em> of difficulties related to moving to other platform, that&rsquo;s why I procrastinated that so long.</p>
+
+<p>That lead to the point then I wanted to blog about something, but running up VS, starting HTML coding and uploading images somewhere simply prevented me to do that. Blogging should be as easy as writing to notepad, in that way you will do that with pleasure.</p>
+
+<p>But, I was really surprised how <strong>simple</strong> it actually was. I found that small and precise blog <a href="http://blog.thepete.net/blog/2012/02/08/blogger-to-octopress/">post</a> by <a href="http://twitter.com/ph1">Pete Hodgson</a>. After reading some docs on <a href="http://octopress.org/">Octopress</a> site I had running setup in 10 minutes or so. That was great start.</p>
+
+<p>But I didn&rsquo;t want to have default theme of Octopress, I didn&rsquo;t want to pick up <a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd parties</a> as well. My goal was to create something original.</p>
+
+<h2>Custom theme for Octopress</h2>
+
+<p>I&rsquo;ve picked up just released <a href="http://purecss.io/">Pure CSS</a> framework, since I <em>promised</em> myself never ever create my custom grids and layouts, since it works really bad. I basically use only grid system from there.</p>
+
+<p>I wanted to have something clean, minimal, black &amp; white theme. My inspiration was primarily from <a href="http://zachholman.com/">zachholman.com</a>, <a href="http://blog.brunoscopelliti.com/">blog.brunoscopelliti.com</a>, <a href="http://carmo.org.uk/">carmo.org.uk</a>.</p>
+
+<p>So, I spent maybe 2-3 hours to sketch new blog look.</p>
+
+<p><img src="/images/blog/design-blog-sketch.png" title="[beletsky.net design sketch [design sketch]]" ></p>
+
+<p>I showed that to colleagues and received some valuable feedback from <a href="http://twitter.com/voronianski">@voronianski</a> regarding fonts and styles. Sketch looked amazingly good on Mac retina, with custom fonts (Open Sans, Lato). It has anti-aliasing issues on Windows, though.</p>
+
+<p>Turning resulted HTML / CSS into Octopress was <strong>not</strong> so easy.</p>
+
+<p>I&rsquo;ve spent up to 16 hours to make it work nicely. There was a lot of CSS style conflicts between existing SASS and my custom one. So, I had to disable almost everything and use my custom <code>style.css</code>. But still, that was worth effort if you compare with previous look,</p>
+
+<p><img src="/images/blog/old-beletsky-net.png" title="[beletsky.net old look [old look]]" ></p>
+
+<p>Since I had some heavily read posts, I need to make sure that old google indexed URL&rsquo;s would work. Fourtunatelly, that was really easy to configure. In <code>_config.yml</code>, just paste:</p>
+
+<p><code>
+permalink: /:year/:month/:title.html
+</code></p>
+
+<p>That would give <strong>exactly</strong> the same URL as blogger have. Even if I hate that <code>.html</code> extension, nothing I can do now.</p>
+
+<p>I&rsquo;ve turned <a href="http://beletsky.net">beletsky.net</a> a bit more toward personal page, not only blog. There are about me, talks and projects page, that would demonstrate the profile more clearly I hope.</p>
+
+<p>And I dropped comments. I don&rsquo;t receive many and if you want to get in touch, twitter and github are better alternatives.</p>
+
+<h2>Hosting and domain names</h2>
+
+<p>Another problem was to get my custom domain back from Google. I&rsquo;ve bought it tougher with Google Apps, which I never actively use, except creating some email boxes to workaround some XBox Live stupidity.</p>
+
+<p>I was mad about I&rsquo;m not able to control DNS configuration of my own domain name. <code>Whois</code> showed that <code>beletsky.net</code> is actually registered by <a href="http://www.enom.com/">enom</a> registrar. So, I dropped a line there and with my great surprise that replied quite fast. We agreed, I move the domain name to another registar that I use for other stuff I own.</p>
+
+<p>That took a lot of time (more than 10 days) and even now DNS configuration is not yet broadcasted.</p>
+
+<p>Nevertheless, hosting Octopress blog on Github is best option. And Octopress has build in <code>rake</code> tasks for that.</p>
+
+<h2>Happy blogging time</h2>
+
+<p>So, the experience is different now. No more HTML, only clean and nice Markdown.</p>
+
+<p>I do everything in <a href="">Sublime Text 2</a> (wring post in <em>distraction free</em> mode is great) that has good syntax highlighting for Markdown and spell checker, from the box.</p>
+
+<p>Octopress running preview mode, so with each save of file you can check out the results on locally run web server. No more uploads of images to Google+, simple placing on file system.</p>
+
+<p>Nice integration with <code>gist</code> so I hope to do more code shares there. Code coloring is very nice, but I hope to customize that in future as well.</p>
+
+<p>New UI makes my eyes happy and this is big motivator to produce more content.</p>
+]]></content>
+  </entry>
+  
+</feed>

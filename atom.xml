@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-06-15T09:06:32+03:00</updated>
+  <updated>2013-06-15T18:04:50+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
+    <updated>2013-06-15T16:18:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
+    <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
+
+<p>That time, blogger was quite obvious choice. Google powered, editor and plain HTML support, templates etc. I used to use Visual Studio to create posts, then pasted that to blogger, posting images on Picassa and code on Github. That worked for quite while, but now I consider that is very heavyweight approach.</p>
+
+<p>Now this site is running <a href="http://octopress.org/">Octopress</a> and hosted on <a href="https://github.com/">Github</a> and that&rsquo;s totally reflects my current tools of choice.</p>
+
+<!-- more -->
+
+
+<h2>Reasons to move</h2>
+
+<p>My primary concern was up to blog design. The time I started to blog I had almost zero skill to HTML/CSS, so picking up some existing theme was best option. In 2010 <a href="http://beletsky.net">beletsky.net</a> looked pretty fine for me. But time has passed, my vision of design has changed, requirements for blog UI has changed (consider mobile devices), the way I blog has changed.</p>
+
+<p>I tried to tweak blogger theme and tried to create new one, but that appeared a <em>bloody</em> mess.</p>
+
+<p>Besides the design, the recent Google actions like closing up Picassa, Reader &ndash; are quite obvious signs that Blogger days are counted. They would probably try to integrate it to Google+ services and I&rsquo;m literally sick of Google+.</p>
+
+<p>Finally, with much of Github influence, I <a href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html">realized</a> Markdown is awesome, blogging in plain HTML sucks hard. I wanted to have nice and easy platform for handling my blog and personal page.. I wanted to blog like <a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">hackers</a> do.</p>
+
+<h2>How to move, easy way</h2>
+
+<p>I was really <em>afraid</em> of difficulties related to moving to other platform, that&rsquo;s why I procrastinated that so long.</p>
+
+<p>That lead to the point then I wanted to blog about something, but running up VS, starting HTML coding and uploading images somewhere simply prevented me to do that. Blogging should be as easy as writing to notepad, in that way you will do that with pleasure.</p>
+
+<p>But, I was really surprised how <strong>simple</strong> it actually was. I found that small and precise blog <a href="http://blog.thepete.net/blog/2012/02/08/blogger-to-octopress/">post</a> by <a href="http://twitter.com/ph1">Pete Hodgson</a>. After reading some docs on <a href="http://octopress.org/">Octopress</a> site I had running setup in 10 minutes or so. That was great start.</p>
+
+<p>But I didn&rsquo;t want to have default theme of Octopress, I didn&rsquo;t want to pick up <a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd parties</a> as well. My goal was to create something original.</p>
+
+<h2>Custom theme for Octopress</h2>
+
+<p>I&rsquo;ve picked up just released <a href="http://purecss.io/">Pure CSS</a> framework, since I <em>promised</em> myself never ever create my custom grids and layouts, since it works really bad. I basically use only grid system from there.</p>
+
+<p>I wanted to have something clean, minimal, black &amp; white theme. My inspiration was primarily from <a href="http://zachholman.com/">zachholman.com</a>, <a href="http://blog.brunoscopelliti.com/">blog.brunoscopelliti.com</a>, <a href="http://carmo.org.uk/">carmo.org.uk</a>.</p>
+
+<p>So, I spent maybe 2-3 hours to sketch new blog look.</p>
+
+<p><img src="http://alexanderbeletsky.github.io/images/blog/design-blog-sketch.png" title="[beletsky.net design sketch [design sketch]]" ></p>
+
+<p>I showed that to colleagues and received some valuable feedback from <a href="http://twitter.com/voronianski">@voronianski</a> regarding fonts and styles. Sketch looked amazingly good on Mac retina, with custom fonts (Open Sans, Lato). It has anti-aliasing issues on Windows, though.</p>
+
+<p>Turning resulted HTML / CSS into Octopress was <strong>not</strong> so easy.</p>
+
+<p>I&rsquo;ve spent up to 16 hours to make it work nicely. There was a lot of CSS style conflicts between existing SASS and my custom one. So, I had to disable almost everything and use my custom <code>style.css</code>. But still, that was worth effort if you compare with previous look,</p>
+
+<p><img src="http://alexanderbeletsky.github.io/images/blog/old-beletsky-net.png" title="[beletsky.net old look [old look]]" ></p>
+
+<p>Since I had some heavily read posts, I need to make sure that old google indexed URL&rsquo;s would work. Fourtunatelly, that was really easy to configure. In <code>_config.yml</code>, just paste:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>permalink: /:year/:month/:title.html</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That would give <strong>exactly</strong> the same URL as blogger have. Even if I hate that <code>.html</code> extension, nothing I can do now.</p>
+
+<p>I&rsquo;ve turned <a href="http://beletsky.net">beletsky.net</a> a bit more toward personal page, not only blog. There are about me, talks and projects page, that would demonstrate the profile more clearly I hope.</p>
+
+<p>And I dropped comments. I don&rsquo;t receive many and if you want to get in touch, twitter and github are better alternatives.</p>
+
+<h2>Hosting and domain names</h2>
+
+<p>Another problem was to get my custom domain back from Google. I&rsquo;ve bought it tougher with Google Apps, which I never actively use, except creating some email boxes to workaround some XBox Live stupidity.</p>
+
+<p>I was mad about I&rsquo;m not able to control DNS configuration of my own domain name. <code>Whois</code> showed that <code>beletsky.net</code> is actually registered by <a href="http://www.enom.com/">enom</a> registrar. So, I dropped a line there and with my great surprise that replied quite fast. We agreed, I move the domain name to another registar that I use for other stuff I own.</p>
+
+<p>That took a lot of time (more than 10 days) and even now DNS configuration is not yet broadcasted.</p>
+
+<p>Nevertheless, hosting Octopress blog on Github is best option. And Octopress has build in <code>rake</code> tasks for that.</p>
+
+<h2>Happy blogging time</h2>
+
+<p>So, the experience is different now. No more HTML, only clean and nice Markdown.</p>
+
+<p>I do everything in <a href="">Sublime Text 2</a> (wring post in <em>distraction free</em> mode is great) that has good syntax highlighting for Markdown and spell checker, from the box.</p>
+
+<p>Octopress running preview mode, so with each save of file you can check out the results on locally run web server. No more uploads of images to Google+, simple placing on file system.</p>
+
+<p>Nice integration with <code>gist</code> so I hope to do more code shares there. Code coloring is very nice, but I hope to customize that in future as well.</p>
+
+<p>New UI makes my eyes happy and this is big motivator to produce more content.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
@@ -1322,135 +1410,6 @@ $.get(url1, function (r) {
 </pre>    <p>        It does create the pipe of `$.get()` calls and place the responses in one response object. At the time then all resources are fetched, the callback is called. In case of errors, second parameter of callback will have error info.<br />
     </p>    <p>        Thanks a lot to <a href="http://twitter.com/antsamar">@antsamar</a> and <a href="http://twitter.com/alex_gonchar">@alex_gonchar</a> for helping me out.<br />
     </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby Steps to Backbone.js: Starting up]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/10/baby-steps-to-backbonejs-starting-up.html"/>
-    <updated>2012-10-25T22:40:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/10/baby-steps-to-backbonejs-starting-up</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>Many times then I speak to people regarding usage of any kind of MV* frameworks on front-end I hear common objection: &#8220;but we already have a lot of code written on jQuery/Dojo/Whatever, I think usage of additional framework would be impossible&#8221;. This is not actually true. Backbone is very lightweight and could fit into any existing application.<br />
-</p><p>Baby steps strategy is the most efficient way of trying the things. You start with something really small, enhance it over the time and expand for other application areas. Now, let&#8217;s imagine you got an existing application, you wish to start using Backbone.js to improve that. I would like to show you, that it&#8217;s absolutely possible.<br />
-</p><p>Suppose, you want to add a feedback form for your app. Let&#8217;s implement that with Backbone.js.<br />
-</p><h2>Applications, Models, Views</h2><p>There are no such thing as `Controller` in Backbone.js. But you have to have some kind of entry point, some place with `main()` function inside. I got used to call this place - Application. Basically, the application is a module, which is responsible for initialization of model, instantiation of view, rendering the view.<br />
-</p><p>The `Model` is object that holds the data. It could be fetched and persisted back to server.<br />
-</p><p>And finally view is object that produces markup, hooking up events and updates View from data in Model and otherwise.<br />
-</p><p>We are going to create all three things. It makes a lot of sense to breakdown the folder structure of to reflect logical meaning of each entity of Backbone application. So, we&#8217;ll create 3 folders for apps, models and views.<br />
-</p><a href="https://lh5.googleusercontent.com/-aFNqz_2e_i4/UImU8WZaMEI/AAAAAAAAKZ0/-v-Jb5EttRY/s620/image-1.png"><br />
-<img src="https://lh5.googleusercontent.com/-aFNqz_2e_i4/UImU8WZaMEI/AAAAAAAAKZ0/-v-Jb5EttRY/s620/image-1.png"/><br />
-</a><br />
-<h2>Setup Backbone.js</h2><p>On a target html page we should place 2 additional script tags.<br />
-</p><pre class="brush: html">&lt;script src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
-    </pre><p>Besides of that, let&#8217;s add one more div. The one that application will be using for rendering views.<br />
-</p><pre class="brush: html">&lt;div id=&quot;app&quot; class=&quot;container&quot;&gt;&lt;/div&gt;
-    </pre><h2>Application entry point</h2><p>Let&#8217;s create a new file in `apps` folder and call it `FeedbackFormApp.js`. It would be very simple.<br />
-</p><pre class="brush: js">$(function () {
-    var model = new Feedback();
-    var view = new FeedbackFormView ({model: model});
-    
-    $('#app').html(view.render().el);
-});
-    </pre><p>Then DOM is ready, we instantiate new model object and view and render the form into DOM element with id - app.<br />
-</p><h2>Feedback model</h2><p>Now, let&#8217;s define a model. Create a new file in models folder and call it `Feedback.js`.<br />
-</p><p>The model refects the data we are collecting/displaying to user and it&#8217;s typically stored on server (sometimes on localstorage). Feedback model will include 3 attributes: email of user, his web site and the feedback text. In terms of Backbone.js that would mean.<br />
-</p><pre class="brush: js">var Feedback = Backbone.Model.extend({
-
-    url: '/feedback',
-
-    defaults: {
-        'email': '',
-        'website': '',
-        'feedback': ''
-    }
-
-});
-    </pre><p>The <code>url</code> property of model object is used by Backbone for persisting object to server. The <code>default</code> are defaults values for model attributes.<br />
-</p><h2>Rendering the view</h2><p>The most interesting things in Backbone.js app is happening in Views. Add new file to `views` folder - FeedbackView.js.<br />
-</p><p>The skeleton of view would look like this:<br />
-</p><pre class="brush: js">var FeedbackFormView = Backbone.View.extend({
-   className: 'row',
-
-    render: function () {
-        return this;
-    }
-});
-    </pre><p>This view, does do nothing. So, let make it render the template. The template would be very simple form.<br />
-</p><p>There are different approaches, there to actually place the markup. It&#8217;s possible to place it in the same .html file where view starts and extract it by jQuery, it&#8217;s possible to place to separate file and load it asynchronously by $.get(). But, according to baby steps scenario - we&#8217;ll place it directly to .js file. So, inside the view we&#8217;ll add property called template.<br />
-</p><pre class="brush: js">template: '\
- &lt;form&gt;\
-  &lt;legend&gt;Share the feedback&lt;/legend&gt;\
-  &lt;div class=&quot;control-group&quot;&gt;\
-   &lt;label&gt;Email&lt;/label&gt;\
-   &lt;input type=&quot;text&quot; id=&quot;email&quot; placeholder=&quot;Your email address...&quot;&gt;\
-  &lt;/div&gt;\
-  &lt;div class=&quot;control-group&quot;&gt;\
-   &lt;label&gt;Web site&lt;/label&gt;\
-   &lt;input type=&quot;text&quot; id=&quot;website&quot; placeholder=&quot;Your website...&quot;&gt;\
-  &lt;/div&gt;\
-  &lt;div class=&quot;control-group&quot;&gt;\
-  &lt;label&gt;Feedback&lt;/label&gt;\
-  &lt;textarea id=&quot;feedback&quot; class=&quot;input-xxlarge&quot; placeholder=&quot;Feedback text...&quot; rows=&quot;6&quot;&gt;&lt;/textarea&gt;\
-  &lt;/div&gt;\
-  &lt;button type=&quot;submit&quot; id=&quot;submit&quot; class=&quot;btn&quot;&gt;Submit&lt;/button&gt;\
- &lt;/form&gt;\
-',
-    </pre><p>And render method, would be:<br />
-</p><pre class="brush: js">render: function () {
-    this.$el.html(this.template);
-
-    return this;
-}
-    </pre><h2>First test</h2><p>Basically, we are ready to see some results. Modify the target view by adding references to model and view.<br />
-</p><pre class="brush: html">&lt;script src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;/scripts/src/views/FeedbackFormView.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;/scripts/src/apps/FeedbackFormApp.js&quot;&gt;&lt;/script&gt;
-    </pre><p>Fire up the application and go to target page. You should be able to see something like this (for styles I use <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> here).<br />
-</p><a href="https://lh5.googleusercontent.com/-asgv034ZUyA/UImU8iURcEI/AAAAAAAAKZ4/9Yga2hCy9TQ/s620/image-2.png"><br />
-<img src="https://lh5.googleusercontent.com/-asgv034ZUyA/UImU8iURcEI/AAAAAAAAKZ4/9Yga2hCy9TQ/s620/image-2.png"/><br />
-</a><br />
-<p>If you see the form on screen, it means application started properly.<br />
-</p><h2>Submitting the form</h2><p>We enter the data into input fields and as soon as data is in-place we are ready to submit. It means we have to catch an event of `Submit` button click and store the model to server.<br />
-</p><p>To explain to Backbone.js that you interested in particular DOM event, you need to add another property to view. It is called <code>events</code>.<br />
-</p><pre class="brush: js">events: {
-    'click #submit': 'submitClicked'
-},
-    </pre><p>You can read it as - if click happed to element with id `submit`, call function submitClicked.<br />
-</p><pre class="brush: js">submitClicked: function (e) {
-    e.preventDefault();
-
-    var options = {
-        success: function () {
-            alert('Thanks for the feedback!');
-        },
-        error: function () {
-            alert('Opps, your feedback has not been submitted, please try again.');
-        }
-    };
-
-    var feedback = {
-        email: this.$('#email').val(),
-        website:  this.$('#website').val(),
-        feedback: this.$('#feedback').val()
-    };
-
-    this.model.save(feedback, options);
-}
-</pre><p>What it does, is first of all prevent the default behavior of event. So, the form would not be actually posted to server. Second, it prepares the options object&#8217;s with success and error handlers. After we initialize all attributes with actual values from corresponding inputs/textbox. And finally we call model.save().<br />
-</p><h2>Second test</h2><p>Fire up application again. Now, if have properly set-up server side to receive the HTTP post call to `/feedback` you actually post first feedback.<br />
-</p><a href="https://lh5.googleusercontent.com/-xoKGopfbwlw/UImU8rspz_I/AAAAAAAAKZ8/8D3bgfnRpgE/s620/image-3.png"><br />
-<img src="https://lh5.googleusercontent.com/-xoKGopfbwlw/UImU8rspz_I/AAAAAAAAKZ8/8D3bgfnRpgE/s620/image-3.png"/><br />
-</a><br />
-<p>From my server trace, I can see that new object is received.<br />
-</p><a href="https://lh6.googleusercontent.com/-FPoQZTARH0g/UImU9HR4aHI/AAAAAAAAKaA/fhPj64h6cr8/s621/image-4.png"><br />
-<img src="https://lh6.googleusercontent.com/-FPoQZTARH0g/UImU9HR4aHI/AAAAAAAAKaA/fhPj64h6cr8/s621/image-4.png"/><br />
-</a><br />
-<p>Now, it&#8217;s the server job to put to storage, allocate the id etc.<br />
-</p><h2>Conclusions</h2><p>In this first baby step, I just showed how it&#8217;s possible to adopt Backbone.js for existing apps. It does not make a lot of sense to re-write your existing code with Backbone.js, but new widgets/elements/applications could be created with Backbone, having a benefit of it&#8217;s structural approach.<br />
-</p><p>I&#8217;ll go on with baby steps, showing other features of Backbone.js.<br />
-</p></div>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Using ASP.NET MVC Validation Mechanism without ASP.NET MVC Jan 10th, 2012 Tips, asp.net I get used to DataAnnotations for model validation very &hellip;">
+  <meta name="description" content="Pre-announce of Release Candidate Jan 13th, 2012 Candidate For those, who already forgot what the candidate is I&#8217;ll do a small reminder :). &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,70 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/01/pre-announce-of-release-candidate.html">
+    
+      Pre-announce of Release Candidate</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-13T10:01:00+02:00" pubdate data-updated="true">Jan 13<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/candidate/'>Candidate</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>For those, who already forgot what the candidate is I&#8217;ll do a small reminder :). This is an <a href="https://github.com/alexanderbeletsky/candidate">application</a> for Continues Deployment for .NET projects. I started the project at <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">Hackatone</a> that took place in summer 2011, in Kyiv. I liked the results I got there, so I didn&#8217;t throw it away after the contest, but slowly progressed on that through last several months. <br />
+</p><a href="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png" alt="welcome"/><br />
+</a><br />
+<p>The goal of application is very simple. Provide you with easy to setup and use tool Continues Deployment. I&#8217;m still very confused now with all those terms - Continuous Deployment/Delivery/Production/Release.. but in general it is nothing more as next step of Continues Integration. Rebuild and retest the application and deploy it in case of successful results.<br />
+</p><a href="https://lh4.googleusercontent.com/-FfsyUPLA5ek/Tw_jirfuETI/AAAAAAAAH24/PX-apdvN2Rw/s1024/image-2.png"><br />
+<img src="https://lh4.googleusercontent.com/-FfsyUPLA5ek/Tw_jirfuETI/AAAAAAAAH24/PX-apdvN2Rw/s1024/image-2.png" style="width: 620px" alt="welcome"/><br />
+</a><br />
+<p>I&#8217;m building that in mind of my own needs, how I see it might work for my projects. My own projects are really simple ones, so the candidate is really simple now. Of cause, I would like to be as general as possible, to cover common needs. I&#8217;m pretty much sure it would be rewritten hundred of times to reach the level of mass adoption and I&#8217;m looking forward to that.<br />
+</p><a href="https://lh3.googleusercontent.com/-1pTIk_M6Z0s/Tw_jilnpwhI/AAAAAAAAH28/Zog53hBf1kY/s1019/image-3.png"><br />
+<img src="https://lh3.googleusercontent.com/-1pTIk_M6Z0s/Tw_jilnpwhI/AAAAAAAAH28/Zog53hBf1kY/s1019/image-3.png" style="width: 620px" alt="config"/><br />
+</a><br />
+<p>Yesterday, I reached very important milestone of candidate.net. It is now feature completed. I would like to stop on current functionality and show it to you. It would take some time to prepare website and instructions, but please stay tuned for official release of project!<br />
+</p><a href="https://lh6.googleusercontent.com/-2QDjpa8ic7c/Tw_jie0ltoI/AAAAAAAAH20/k6g2qmCxGj0/s982/image-4.png"><br />
+<img src="https://lh6.googleusercontent.com/-2QDjpa8ic7c/Tw_jie0ltoI/AAAAAAAAH20/k6g2qmCxGj0/s982/image-4.png" style="width: 620px" alt="config"/><br />
+</a><br />
+<p>By the way, I&#8217;m still looking for new name! It turns out that finding the good name, could be even harder than finding process running <a href="http://stackoverflow.com/questions/7666423/iis-7-5-with-process-idenity-set-to-user-has-wrong-userprofile">bugs</a>. I would be really happy if you do such early contribution proposing some nice name. Please do not hesitate and share your ideas just in comments.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1018,62 +1082,6 @@ public void should_have_approved_layout() {
 </pre><p>As for the rest of MVC entities it would use <code>IDependencyResolver</code> to resolve that type. <code>IDependecyResolved</code> is detailed <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">here</a>, but as you remember by default at the very end it calls <code>Activator.CreateInstance(type)</code> method.<br />
 </p><h2>Conclusions</h2><p>New controller is instantiated on each HTTP request. The instantiation is in-directed, means first we retrieve Type, after creating Instance. The type is being searched dynamically by getting out reflection information from assemblies. To optimize the performance of ASP.NET MVC application, the internal cache of types is used. The cache is stored in file in &#8220;Temporary ASP.NET Files\root\cdd53039\36a27802\UserCache\MVC-ControllerTypeCache.xml&#8221; folder. Namespaces of controllers are matters, in case of two or more controllers has the same name but different namespaces the exception would be thrown. In case of controller type could not be resolved, the HTTP 404 response is generated. Otherwise, the controller instance would be created by <code>IControllerActivator</code> instance.<br />
 </p><p>Previous post: <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a><br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/12/kiev-altnet-community-thoughts.html">
-    
-      Kiev ALT.NET Community Thoughts</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-03T11:52:00+02:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/kievaltnet/'>KievAltNet</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>I&#8217;ve just reviewed blog posts I created thought that year and realized that I miss very important piece of information here. Something that literally changed my developers life. And I&#8217;m talking about <a href="http://kievalt.net/">Kiev ALT.NET</a> community.<br />
-</p><p>From my first join at the beginning of the year I amazed with very cool and friendly atmosphere there. I tried to visit every meeting and each of them brought some value for me. And the most valuable asset I got there is people I met. Those guys simply rock.<br />
-</p><a href="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg"><br />
-<img src="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg" alt="kiev alt.net" /><br />
-</a><br />
-<p><a href="http://twitter.com/chaliy">Mike Chaliy</a>, the leader of community does exceptional job. I could imagine how hard could it be to do all organization work and he does that very well. <br />
-</p><p>What&#8217;s important, Mike involved me to do my own speech. I remember that first time when I was sharing my experience with <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Deployment</a> based on Chuck Norris tools and Jenkins. That was a good start and I did several more speeches after. I would say it happened only because of Kiev ALT.NET.<br />
-</p><p>Getting of knowledge for me is not only books, podcasts and just coding practice. But also, discussions, questions and speeches. I this is definitely productive way of learning. <br />
-</p><p>So, I&#8217;m very thankful to Kiev ALT.NET for that positive feel of progress, pleasure of communication with smart guys and fun time of after parties.I wish a long life for community and try to help it as much as I can.<br />
 </p></div>
 
       

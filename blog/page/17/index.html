@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Subtext: Open source blogging engine project Sep 1st, 2010 Open source One of my previous posts I mentioned a Subtext as open source project that I &hellip;">
+  <meta name="description" content="Is TDD skill actually required by employers? Sep 9th, 2010 TDD Is TDD popular among developers? Do managers knows about benefits of TDD? Are &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,115 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/09/is-tdd-skill-actually-required-by.html">
+    
+      Is TDD skill actually required by employers?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-09T20:47:00+03:00" pubdate data-updated="true">Sep 9<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Is TDD popular among developers? Do managers knows about benefits of TDD? Are employers really looking for TDD skilled people? 
+</p>
+<p>
+I was thinking about such kind of questions and decided to perform my initial research. My research was quite simple, I wanted to check popular job looking sites and review latest job offers, especially for &#8220;skills&#8221; sections. How many of employers actually seek for developers who know/use/love TDD. Since I&#8217;m geek I would not do it manually, so I&#8217;ve written an application for that. Crawler that could get data from job looking sites and store it to DB for further analisys. I already got the data and would like to share it in this post.    
+</p>
+<h2>How it works?</h2>
+<p>
+Like any other crawler it has one big cycle that makes a web requests to site, 
+    gets response, extracts the links and data from response, stores data somewhere. It proceeds as soon as relevant data is present on pages. Vacancy crawler does a search request, extracts links for all vacancy pages. As soon as link extracted, it does request to vacancy page. It analyzes the body of vacancy description by very simple method: searching for a keywords it text. So, to detect is TDD skill required or not, crawler try to match some words from vocabulary. 
+    Similar approach used to understand what technology skills (.NET, Java, C++) is required. At final it creates a record contains site name, position, technology used and TDD demand flag and stores data to database. 
+</p>
+<h2>Source of information</h2>
+<p>
+I&#8217;ve taken two sites as source of information. First, <a href="http://rabota.ua">RabotaUa</a> (Ukrainian one, Ukraine is 
+    one of big players of IT outsourcing in Europe, so data will be really relevant). Second one, I wanted to pick up from USA, but it was difficult to find it, since I&#8217;m not aware of its popularity, reputation and so on. I even asked question of <a href="http://stackoverflow.com/questions/3645579/developers-job-looking-site-in-us-closed">StackOverflow</a>, but my question was closed. I choose <a href="http://www.prgjobs.com">JobsForProgrammers</a> as one of google suggested.
+</p>
+<h2>RabotaUa results</h2>
+<p>
+I&#8217;ve extracted 978 records from <a href="http://rabota.ua">RabotaUa</a>. It is latest, actual, recently posted job offers. 150 of 987 vacancies contained requirements for TDD skills.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s1600/rabotaua.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s400/rabotaua.pie.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5514972151647040130" /></a>
+<p>
+How many of TDD skills required per technology? 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s1600/rabotaua.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s400/rabotaua.chart.png" border="0" alt=""id="Img1" /></a>
+<h2>PrgJobs results</h2>
+<p>
+I&#8217;ve extracted 1000 records from <a href="http://www.prgjobs.com">JobsForProgrammers</a>. Crawler could proceed more, but I&#8217;ve noticed that on latest pages, site contains not really relevant data, not developers jobs and offers with short and not always adequate description. So, I still consider to crawle some other USA site for data. Anyway, here are results. Only 69 of 1000 requires TDD, 7%! 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s1600/prgjob.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s400/prgjob.pie.png" border="0" alt=""id="Img2" /></a>
+<p>
+Technologies breakdown, also a bit strange. Match for technology were difficult, for several reasons. Job description headline, usually contained to generic description (as Software Developer, Web developer and so on), job description body contained multiskills requirements (like C++/Perl, or C#/Java, VB.NET/Java) that current version of crawler could not handle properly.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s1600/prgjob.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s400/prgjob.chart.png" border="0" alt=""id="Img3" /></a>
+<h2>Conclusions</h2>
+<p>
+To be honest, I would not expect such data. I thought 40-60% should ask for TDD, but we see that it is less than 16% from 
+    Ukranian data source and less than 7% for USA. For me, as TDD follower this is really disappointing results.  I realize that such results are very simple and rough, could not be used for some real life analytics, but it gives 
+    a vision, for sure.    
+</p>
+<p>
+Also I plan to do several technical blogs with details of implementation of Crawler, I&#8217;ve created for this report.
+</p>
+<p>
+Please let me know, what you think about such results, what further improvements could be done for more fine results, what other data sources could be used?
+</p>
+<h2>Update</h2>
+<p>
+<ul>
+<li>
+<a href="http://www.beletsky.net/2010/09/update-is-tdd-skill-actually-required.html">Analisys of Careers.StackOverflow job site</a>
+</li>
+<li>
+<a href="http://www.beletsky.net/2010/09/crawling-web-sites-with-htmlagilitypack.html">Crawling a web sites with HtmlAgilityPack</a>
+</li>
+<li>
+<a href="http://www.beletsky.net/2010/09/regex-to-match-words-in-dictionary-on.html">
+Regex to match a words in dictionary on page body
+</a>
+</li>
+</ul>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -742,67 +851,6 @@ I&#8217;ve completed no fine diagnosis yet, and still hope that hard drives are 
 </p>
 <p>
 You always can hear about importance of backup but does not take it seriously as soon it does not happen to you. It happened to me and now I feel not so great. For now I&#8217;m thinking of how to minimize or avoid such in future. For sure, spending about 200 bucks for UPS doesn&#8217;t sound bad idea now. I would also finally buy additional space on google to store all photos in picassa with original size, so you will always have a backup. All important projects, documents other artifacts, should be on copied on services (Google Docs, Google Code, github etc.). Music, videos and so on is backed up for external USB hard drive. Now, it is not so expensive.. and there is a chance that this hard drive could also be corrupted, but it is better than nothing.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/my-little-experience-with-github.html">
-    
-      My little experience with GitHub collaboration</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-19T19:00:00+03:00" pubdate data-updated="true">Jul 19<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/social/'>Social</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Recently I&#8217;ve started my tiny project. For this project I required access to GitHub by it&#8217;s open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I&#8217;ve opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I&#8217;m not very experienced in that). That was a good news!
-</p>
-<p>
-But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I&#8217;ve considered it as my change to do first fork!
-</p>
-<p>
-Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I&#8217;ve decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
-</p>
-<p>
-After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I&#8217;ve done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
-</p>
-<p>
-That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
 </p></div>
 
       

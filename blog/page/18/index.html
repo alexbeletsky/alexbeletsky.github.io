@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="StackOverflow usage in Chrome Jul 16th, 2010 Tips It might be well known fact, but I just discovered it to myself. StackOverflow has a nice feature &hellip;">
+  <meta name="description" content="My little experience with GitHub collaboration Jul 19th, 2010 GitHub, Social Recently I&#8217;ve started my tiny project. For this project I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,67 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/my-little-experience-with-github.html">
+    
+      My little experience with GitHub collaboration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-19T19:00:00+03:00" pubdate data-updated="true">Jul 19<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/social/'>Social</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Recently I&#8217;ve started my tiny project. For this project I required access to GitHub by it&#8217;s open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I&#8217;ve opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I&#8217;m not very experienced in that). That was a good news!
+</p>
+<p>
+But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I&#8217;ve considered it as my change to do first fork!
+</p>
+<p>
+Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I&#8217;ve decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
+</p>
+<p>
+After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I&#8217;ve done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
+</p>
+<p>
+That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -726,78 +787,6 @@ Easy to install and use.. Spell checking for HTML/ASP.net code, as well as sourc
 You can find an article by this link: <a href="http://agilitateur.azeau.com/post/2010/07/06/Architectural-Design-Challenge-by-James-Shore-:-a-review">http://agilitateur.azeau.com/post/2010/07/06/Architectural-Design-Challenge-by-James-Shore-:-a-review</a>
 </p>
 <p>Thanks for review, Par!</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/interesting-from-my-reader-this-week.html">
-    
-      Interesting from my Reader this week</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-02T11:37:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/reading/'>Reading</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-This week I liked such things came up from my reader.
-</p>
-<ul>
-<li>
-<a href="http://odetocode.com/Blogs/scott/archive/2010/06/28/enforcing-a-base-controller.aspx">Enforcing a Base Controller</a>. K. Scott Allen using very interesting technique for assert that some particular class is derived from expected class using reflection. That could be reused not only for case of Controllers (as Scott use) but any other classes.
-</li>
-<li>
-<a href="http://weblogs.asp.net/scottgu/archive/2010/06/30/new-embedded-database-support-with-asp-net.aspx">New Embedded Database Support with ASP.NET</a>. Announcement by Scott Gu of new DBMS by Microsoft that is positionized as brand-new, lightweight, no-install-require database system. It really looks interesting, so please welcome - SQL Server Compact Edition 4.
-</li>
-<li>
-<a href="http://weblogs.asp.net/scottgu/archive/2010/06/28/introducing-iis-express.aspx">Introducing IIS Express</a>. One more big annoucement by Scott Gu. IIS Express is new web server aimed to make life of ASP.net developers easy and fun. It should combine easy-of-use features of ASP.net development server and power of IIS server. Sure it is integrated with VS 2010.
-</li>
-<li>
-<a href="http://tutorialzine.com/2010/06/microtut-how-css-position-works/">MicroTut: How CSS Positioning Works</a>. As usually a vey good tutorial by Martin Angelov. Explains something that you always forget and very nice to fresh up memory from time to time.  
-</li>
-<li>
-<a href="http://www.hanselman.com/blog/TheWeeklySourceCode52YouKeepUsingThatLINQIDunnaThinkItMeansWhatYouThinkItMeans.aspx?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+ScottHanselman+(Scott+Hanselman+-+ComputerZen.com)">The Weekly Source Code 52 - You keep using that LINQ, I dunna think it means what you think it means</a>. Very nice article by Scott Henselman about a pitfalls you will never 
-    know during coding with Linq (or any other ORM with generation of SQL). I 
-    remember a talk with my collegue from Denmark, Christian, then I was asking 
-    about his thoughts about &quot;Is is good to start to use Linq for our project?&#8221; he said, &#8220;It is good till you keep eye on a actuall SQL that is being generated by framework&#8221;. Now I undrestand what he meant.
-</li>
-</ul>
-<p>
-Happy reading!
-</p></div>
 
       
       
