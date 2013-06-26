@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well Oct 10th, 2010 Agile, TDD &hellip;">
+  <meta name="description" content="Agileee 2010: J. B. Rainsberger: Integrated Tests are A Scam Oct 12th, 2010 Agile, TDD Disclaimer: text below is compilation of notes I made on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,97 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/10/agileee-2010-j-b-rainsberger-integrated.html">
+    
+      Agileee 2010: J. B. Rainsberger: Integrated Tests are A Scam</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-12T22:33:00+03:00" pubdate data-updated="true">Oct 12<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLS4D_xKylI/AAAAAAAAG-Y/3LkvrX1aLik/s1600/DSC03708.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLS4D_xKylI/AAAAAAAAG-Y/3LkvrX1aLik/s400/DSC03708.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5527245021487221330" /></a>
+<p>
+It a very dramatic beginning - &#8220;Integrated Tests are a scam&#8221;. a self-replicating virus that takes over your project and burdens you with long-running, fragile, hard-to-understand test suites - a sentence JBrains started his speech!
+</p>
+<h2>What is integrated tests?</h2>
+<p>
+Integrated tests checks whole system, not only collaboration between some components. It means any tests where the failure of the test with unjustifiable failures. It is bad, because it is a distraction and give no value.
+</p> 
+<h2>Integrated tests are slow</h2>
+<p>
+Integrated tests involves DB, network that makes tests are slow. 
+</p>
+<h2>Integrated tests are brittle</h2>
+<p> 
+If you change one small thing you have to fix a lot of tests. JBrains gives a very nice and common example. &#8220;Foreign Keys hell&#8221; - you have a foreign keys in DB, so to insert/remove record to one table, you have to insert/remove record to another table.. and so on. Preparation tests data is very expensive operation, complexity goes as exponential form. Eventually it came up that change that took 1.5 hour start to take 1 days.
+</p>
+<h2>Goal of unit testing</h2>
+<p>
+Goal of unit testing is to have quick and correct result. Test failure should point to exact problem in object to be tested. In case of integrated tests, it is possible to have multiple failures, with very few actual understanding of what is wrong.
+</p>
+<h2>What to do?</h2>
+<p>
+JBrains introduces term of - <em>Collaboration tests</em> (Interaction tests) - using mock objects or tests doubles. Collaboration is observed as Client-Server architecure. The object that is being tested is Client, the object it depends on is Server. We create interfaces, to make it possible to substitute implementation (using test doubles), we simulate behavior for object we testing. Client object is a completely tested, test double simulate behavior of Server. 
+</p>
+<p>
+This is greatly works, tests pass, but we found a problems. The issue is that object doesn&#8217;t always work as it is expected by tests and having Collaboration tests only is not enough. We need another type of test - <em>Contract tests</em>.
+</p>
+<p>
+Contract tests focuses on Server side, this are ones that actually do SQL to DB, requests by network etc. The goal here is to focus on Contract (or interface) of object and test interface, not exact implementation. Since contract tests are defined, now it is possible to reuse them for any particular implementation. As an example, we could review IList class, that could have different implementations (as array list, linked list etc.), but it have one interface with simple operations like - add, remove, at. We create a number of tests, for all contract operations. Such tests could be put to common class, with abstract operation of object creation (template method pattern), so tests of particular implementation (array list for instance) just inherit common class, override creation function to return array list method and reused all already defined contract tests.  
+</p>
+<h2>What are benefits?</h2>
+<p>
+Combining these 2 types of tests give us fast, isolated suites, failure is suite should point to exact issue avoiding creation of complex integration tests. 
+</p>
+<p>
+Later on JBrains gives some mathematical proves of differences between number collaboration/contacts tests and integrated tests, that I just do not want to write here, cause afraid to incorrectly interpret the information. The keynote of the speech is rather simple: forget about complex and heavyweight integration tests, do as much as possible with test doubles running everything in memory, do contract testing for platform depended objects. 
+</p>
+<p>
+You could find more, here: <a href="http://blog.jbrains.ca/integrated_tests_are_a_scam">http://blog.jbrains.ca/integrated_tests_are_a_scam</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1045,85 +1136,6 @@ This is it. If you see some issues or improvements, please let me know. <a href=
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/09/update-is-tdd-skill-actually-required.html">
-    
-      Update - Is TDD skill actually required by employers? - with data from StackOverflow</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-13T22:19:00+03:00" pubdate data-updated="true">Sep 13<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-This is a follow up for my last blog post, that I showed some data gathered by crawler, to check out how much TDD skill is valuable for development shops, how much do they ask for it in offers? As you remember I was satisfied with a quality of data provided by <a href="http://prgjobs.com">prgjobs.com</a>.  
-</p>
-<p>
-Today, I was reading a blog post from a <a href="http://www.codinghorror.com/blog/2010/09/go-that-way-really-fast.html">Coding Horrow</a> and understood that I missed one good source of information, that is <a href="http://careers.stackoverflow.com/Jobs">StackOverflow Careers</a> 
-</p>
-<p>
-Due to the latest architectural changes I&#8217;ve made to Crawler and well structure of Careers, it took about hour to create new crawler and test it. Now, I&#8217;m ready to share the data.
-</p>
-<h2>Careers.StackOverflow results</h2>
-<p>
-Here we go - 212 vacancies has been extracted from this site. 49 of them were requesting TDD (23%, not so bad). 
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TI55bLwkqoI/AAAAAAAAG5c/qVVin-tbdmw/s1600/careers.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TI55bLwkqoI/AAAAAAAAG5c/qVVin-tbdmw/s400/careers.pie.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5516480101495384706" /></a>
-<p>
-Technologies breakdown,
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TI55vubwwSI/AAAAAAAAG5k/Yn5n_TKSFJ0/s1600/tech.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TI55vubwwSI/AAAAAAAAG5k/Yn5n_TKSFJ0/s400/tech.pie.png" border="0" alt=""id="Img1" /></a>
-<h2>
-Conclusions
-</h2>
-<p>
-For sure, it is more correct data. We can see that results are really close the one we&#8217;ve got for Ukrainian market, by analysis of <a href="http://rabota.ua">rabotaua</a> site. It also make it possible to make some generalization of results.
-</p>
-<p>
-We could say that ~20% of employers are demanding on TDD skill. Rest of employers either do not mention it in applications or do not care about such skill at all.
-</p>
-<p>
-Ciprian Mustiata gave nice point in comments for previous post, that such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.
-</p>
-<p>
-That&#8217;s another piece of information to think about. What&#8217;s your opinion on that?
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/17/">&larr; Older</a>
@@ -1136,7 +1148,7 @@ That&#8217;s another piece of information to think about. What&#8217;s your opin
 </div></div>
 	<footer class="pure-g-r"><div class="inner pure-u-1">
 	<p>
-		Theme developed by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
 		Copyright © 2010 - 2013 beletsky.net

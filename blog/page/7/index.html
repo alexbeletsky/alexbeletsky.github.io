@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Second Year of E-conomic Mar 13th, 2012 E-conomic, Life Yeah, it&#8217;s been 2 years since I joined the e-conomic company. As it was last year, &hellip;">
+  <meta name="description" content="VS2011 Beta is Ready for Review Mar 15th, 2012 Mind, Tools 29 February (leap day and huge failure of Azure Cloud) is the day then VS2011 Beta &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,77 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/03/vs2011-beta-is-ready-for-review.html">
+    
+      VS2011 Beta is Ready for Review</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-15T11:15:00+02:00" pubdate data-updated="true">Mar 15<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>29 February (leap day and huge failure of Azure Cloud) is the day then VS2011 Beta community preview has been released. As a lot of geeks around the globe I&#8217;ve downloaded installation image and tried it on my computer. With VS2011 Beta we also received .NET 4.5 framework and (drums here) - ASP.NET MVC4 Beta, that I really wanted to try since first CTP is out. I would not say I spent too much time with both products, but I already have some initial opinion on that.<br />
+</p><h2>VS2011 installation..</h2><p>Well, I had some not really good experience with beta versions of VS2010 and compatibility between two visual studios on the same machine. Situation is different with VS2011. Installation very pretty smooth, I just run it on background while was working through RDP on another machine and it installed without any interaction. Whole process took about 40 minutes.<br />
+</p><p>VS2010 and VS2011 beta could happily leave together without any interference. Moreover, you can freely work with your existing VS2010 solutions. Solutions for .NET 4, 3.5 and 2.0 are still supported in the same good way. <br />
+</p><h3>.. and first launch</h3><p>VS2011 &#8220;cold&#8221; start up is a faster (about 40 seconds against 90 seconds, on my machine). The only one reason I see is VS2011 is not yet overloaded with different plugins I use in VS2010. <br />
+</p><p>First very noticeable change is of cause the design. There were many blog posts with preview of VS2011 design before the beta release. And you know, I really liked what I saw on images. I changed my opinion on first launch. Probably it&#8217;s just the matter of taste or habits, but new VS design looks awful to me (especially in Dark Theme - 80&#8217;s monochrome display back!). It&#8217;s totally grey, with no colors in icons at all. Fonts are in METRO style (all uppercase) looks very unusual. Solution explorer contains grey icons, it&#8217;s a little difficult to distinguish between project types and file types inside. So, fellow developer - get ready to order new glasses since you decide to switch to VS2011.  <br />
+</p><a href="https://lh6.googleusercontent.com/-kD1OpPYEcJY/T2GxpBjYlQI/AAAAAAAAIB0/IApm8gGFf6k/s620/image-3.png"><br />
+<img src="https://lh6.googleusercontent.com/-kD1OpPYEcJY/T2GxpBjYlQI/AAAAAAAAIB0/IApm8gGFf6k/s620/image-3.png" style="width: 620px" alt="vs2011 solution" /><br />
+</a><br />
+<p>Nevertheless, I was happy to open my exiting solution, press Ctrl + Shift + B and it successfully built. The good thing is .sln file has not been transformed (except the <code>Format Version 11.00</code> has been changed to <code>Format Version 12.00</code>) so it&#8217;s still can be opened both VS2010 and VS2011. <br />
+</p><p>It also has been imported all my VS2010 settings. It is really nice, since you don&#8217;t need to spent much time setting up favorite color scheme and key bindings.<br />
+</p><p>I haven&#8217;t seen any noticeable performance changes. Sometimes VS2011 works a little slower as for me (please note, this is only subjective feelings, does not pretend to be absolute truth). Looks like VS2011 has much larger memory footprint.<br />
+</p><a href="https://lh5.googleusercontent.com/-GvxigiUfINs/T2GxpL273FI/AAAAAAAAIBw/FjTLSQN6KUQ/s800/image-1.png"><br />
+<img src="https://lh5.googleusercontent.com/-GvxigiUfINs/T2GxpL273FI/AAAAAAAAIBw/FjTLSQN6KUQ/s800/image-1.png" style="width: 620px" alt="vs2011 memory usage" /><br />
+</a><br />
+<p>And for some mystical reason it spawns second <code>devenv.exe</code> process in a while, even if I have only one VS instance running.<br />
+</p><a href="https://lh6.googleusercontent.com/-GMrPaWLfxxQ/T2GxpGYIY5I/AAAAAAAAIBs/wu29YT2sHfg/s854/image-2.png"><br />
+<img src="https://lh6.googleusercontent.com/-GMrPaWLfxxQ/T2GxpGYIY5I/AAAAAAAAIBs/wu29YT2sHfg/s854/image-2.png" style="width: 620px" alt="vs2011 spawns process" /><br />
+</a><br />
+<h3>Code editing</h3><p>Code editor is almost the same. No new refactoring tools, no support of 3rd parties Unit Test systems (NUnit, XUnit etc.) from the box.  Still Visual Studio requires to have ReSharper for more productive coding. My dream of using clean VS with minimum plugins installed seems not gonna come true with VS2011.  <br />
+</p><p>Some few nice moments I noticed for HTML/Razor/CSS editors. First of all, it updates closing HTML tag if you changed opening one (and vice versa). For CSS, it has much more better InteliSence + nice feature of picking colors.   <br />
+</p><p>I haven&#8217;t noticed any significant changes to JS editor. Except the fact, that there are no &#8216;Update JScript Intellisense&#8217; menu command, so I suppose that now it&#8217;s done automatically. Still, it&#8217;s very primitive and does not work all the time. For instance, I haven&#8217;t managed to get any InteliSense during working with Knockout.js library, maybe I&#8217;m just doing something wrong.<br />
+</p><h3>I want my plugings</h3><p>So, VS2011 is generally OK, so I would prefer to use it. Hope a lot of new fixes and some feature still will be included in RC.<br />
+</p><p>What I personally lack is 2 plugins. ReSharper and NCrunch. Fortunately both appeared very fast. Remco Mulder released <a href="http://www.ncrunch.net/download.htm">NCrunch 1.38b</a> and JetBrains are came with <a href="http://blogs.jetbrains.com/dotnet/2012/03/resharper-70-eap-visual-studio-11-beta-edition-is-nowopen/">ReSharper 7 EAP</a> which is free for download and evaluation. Both plugins works really fine. Having good refactoring tools as ReSharper gives and having the power of Continuous Tests with NCrunch, makes the VS2011 ready to use IDE. <br />
+</p><h2>Conclusions</h2><p>The beta looks very promising.. and in general it works fine! Except the design, nothing really new to IDE as for me. Probably I spent to few time to feel the power, so I&#8217;ll be updating if I see some cool or bad features. The most sweet things with new VS is surely updated .NET framework and MVC. I&#8217;m now trying to play with new stuff and much as I can, already checked some new nice stuff of MVC4 framework.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -797,159 +868,6 @@ public void should_send_an_email_if_users_signs_up_nsub()
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/01/convention-based-ioc-configuration.html">
-    
-      Convention based IoC configuration</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-01-24T16:54:00+02:00" pubdate data-updated="true">Jan 24<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>What&#8217;s your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it&#8217;s my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I&#8217;ll still be using Ninject, through.<br />
-</p><h2>What&#8217;s are conventions?<br />
-</h2><p><a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over configuration</a> is very popular trend nowadays. Many frameworks trying to adopt it, including ASP.NET MVC. In short, that means you are relying on some front-know conventions, like names of files, folder or classes and system does something meaningful, based on those conventions. Like, all controllers in ASP.NET MVC should have &#8220;Controller&#8221; postfix, so the framework is able to find and <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">instantiate</a> it. <br />
-</p><p>Conventions make a developer&#8217;s life a little easier, you are no longer spending efforts on configuration, instead following some simple rules. <br />
-</p><h2>What we have for IoC?<br />
-</h2><p>My <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Shu&#8221;</a> level of IoC containers learning was configuration based. This is something you learn at very beginning. So, in case of Ninject, sooner of later you have huge file with dependencies configuration: <br />
-</p><pre class="brush: csharp">/// &lt;summary&gt;
-/// Load your modules or register your services here!
-/// &lt;/summary&gt;
-/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
-private static void RegisterServices(IKernel kernel)
-{
- kernel.Bind&lt;ISettingsManager&gt;().To&lt;SettingsManager&gt;();
- kernel.Bind&lt;IDirectoryProvider&gt;().To&lt;DirectoryProvider&gt;().InSingletonScope();
- kernel.Bind&lt;ISetupFactory&gt;().To&lt;SetupFactory&gt;();
- kernel.Bind&lt;ITargetsObjectBuilder&gt;().To&lt;DefaultTargetsObjectBuilder&gt;();
- kernel.Bind&lt;ITargetsBuilder&gt;().To&lt;TargetsBuilder&gt;();
- kernel.Bind&lt;IBounceFactory&gt;().To&lt;BounceFactory&gt;();
- kernel.Bind&lt;ITargetsRetriever&gt;().To&lt;TargetsRetriever&gt;();
- kernel.Bind&lt;IConfigObjectBuilder&gt;().To&lt;ConfigObjectBuilder&gt;();
- kernel.Bind&lt;ILoggerFactory&gt;().To&lt;LoggerFactory&gt;();
- kernel.Bind&lt;IHashService&gt;().To&lt;HashService&gt;();
- kernel.Bind&lt;IAuthentication&gt;().To&lt;Authentication&gt;();
- kernel.Bind&lt;IConfigurationsFactory&gt;().To&lt;ConfigurationsFactory&gt;();
- 
- // More, more, more...
-}
-</pre><p>As more your application grows, as more services, repositories, factories you have. As long <code>RegisterServices</code> method becomes longer, as more you forgot to correct correct it after some new dependency added, so you see YSOD during application run.<br />
-</p><p>But please, put your attention to interface and class names. What we have here - <code>ISettingsManager</code> and <code>SettingsManager</code>; <code>IDirectoryProvider</code> and <code>DirectoryProvider</code>.. <code>ILoggerFactory</code> and <code>LoggerFactory</code>. Do you see pattern here? Exactly, it is [&#8220;I&#8221; + entity name] for interfaces and [entity name] for implementation.<br />
-</p><p>Here we go for <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Ha&#8221;</a> level of IoC and apply convention based configuration.<br />
-</p><h2>Convention over configuration</h2><p>Let&#8217;s take an advance of the fact above and shrink our configuration code. First of all, you need to get great extension for Ninject, called <a href="http://nuget.org/packages/ninject.extensions.conventions/2.2.0.5">ninject.extensions.conventions</a>.<br />
-</p><p>After the package is installed, the simples Ninject start-up code ever would be:<br />
-</p><pre class="brush: csharp">/// &lt;summary&gt;
-/// Load your modules or register your services here!
-/// &lt;/summary&gt;
-/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
-private static void RegisterServices(IKernel kernel)
-{
- kernel.Scan(scanner =&gt;
-     {
-      scanner.FromCallingAssembly();
-      scanner.BindWithDefaultConventions();
-     }
-  );
-}
-</pre><p>What it does? It has an abstraction called &#8220;scanner&#8221;. You instruct scanner what to do. In this example, I said - take calling assembly and bind all interfaces to implementation class having Default conventions. The default conventions are ones that I shown above. <br />
-</p><p>That&#8217;s it, all those lines of code are simply gone away, since we rely on conventions and Ninject is aware how to deal with those conventions. If you added new dependency and followed convention, nothing you should do manually any more.<br />
-</p><h2>I have some questions!?</h2><p>Ok, typically you have something little more complex. I&#8217;ll try to predict some questions you might have.<br />
-</p><h3>I have a lot of assemblies in my application, but want only particular ones to be scanned?</h3><p>You can easily use only assemblies that matches particular patterns, like:<br />
-</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
-{
- kernel.Scan(scanner =&gt;
-     {
-      scanner.FromAssembliesMatching("Candidate.*");
-      scanner.BindWithDefaultConventions();
-     }
-  );
-}
-</pre><h3>Is it only default conventions I can use?</h3><p>No, you can specify your own rules. Scanner has <code>BindWith</code> method, that receives <code>IBindingGenerator</code> type. You can implement your own binding generator for custom conventions.<br />
-</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
-{
- kernel.Scan(scanner =&gt;
-     {
-      scanner.FromAssembliesMatching("Candidate.*");
-      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
-     }
-  );
-}
-</pre><h3>What if I have several cases of convention violations?</h3><p>You are still able to bind in exactly same way as before:<br />
-</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
-{
- kernel.Scan(scanner =&gt;
-     {
-      scanner.FromAssembliesMatching("Candidate.*");
-      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
-     }
-  );
-
-    // classes that violates conventions
-    kernel.Bind&lt;IMyInterface&gt;().To&lt;MyImpl&gt;();
-}
-</pre><h3>What is I have dependencies in different assemblies?</h3><p>Best thing is to go with Ninject modules. First, correct the scanner:<br />
-</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
-{
- kernel.Scan(scanner =&gt;
-     {
-      scanner.FromAssembliesMatching("Candidate.*");
-                        scanner.AutoLoadModules();
-      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
-     }
-  );
-}
-</pre><p>Now, each assembly should include module instance:<br />
-</p><pre class="brush: csharp">namespace Candidate.Core
-{
-    public class CoreModule : NinjectModule
-    {
-        public override void Load()
-        {
-            // place convention-violation classes here
-   // Bind&amp;lt;IMyInterface&amp;gt;().To&amp;lt;MyImpl&amp;gt;();
-        }
-    }
-}
-</pre><p>Another one good feature of Convention based IoC is - &#8220;Config and forget&#8221;. Once done, use always and forget about manual binding once and for all.<br />
-</p><p>I&#8217;ve heard about this on <a href="http://www.beletsky.net/2011/12/xp-days-ukraine-2011.html">XP Days 2011</a> conference, by <a href="https://twitter.com/#!/ploeh">Mark Seemann</a>. I think it&#8217;s nice approach.. I adopt it and going to use in my projects.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -962,7 +880,7 @@ private static void RegisterServices(IKernel kernel)
 </div></div>
 	<footer class="pure-g-r"><div class="inner pure-u-1">
 	<p>
-		Theme developed by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
 		Copyright © 2010 - 2013 beletsky.net

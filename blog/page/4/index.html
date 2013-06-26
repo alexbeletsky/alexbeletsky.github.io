@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="ELMAH.MVC 2.0.1 Update is Out Aug 16th, 2012 ELMAH.MVC I&#8217;ve just pushed new version of ELMAH.MVC NuGet package - 2.0.1. It covers some &hellip;">
+  <meta name="description" content="CamelCase JSON Formatting for NancyFX Application Aug 18th, 2012 NancyFX As I have chosen NancyFX framework for my pet project, I&#8217;ve spend yet &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,107 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/08/camelcase-json-formatting-for-nancyfx.html">
+    
+      CamelCase JSON Formatting for NancyFX Application</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-18T14:17:00+03:00" pubdate data-updated="true">Aug 18<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nancyfx/'>NancyFX</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I&#8217;ve spend yet another week playing with it. My original expectations were - I&#8217;ll be super-duper-fast with it, since it&#8217;s so comprehensive and powerful. One more time I have to admit - every technology has it&#8217;s learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
+</p><p>    The good thing, it&#8217;s very interesting to fight new challenges, and it&#8217;s so cool that Nancy just &#8220;does not contain everything&#8221;, but actually allows to customize things, as you wish to.<br />
+</p><h2>Nancy&#8217;s default JSON formatter</h2><p>    Nancy is using <a href="https://github.com/grendello">Marek Habersack&#8217;s</a> version <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Json/JsonSerializer.cs">JsonSerializer</a>, which is a smart wrapper on <a href="http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx">JavaScriptSerializer</a>. It works, fine.. but the problem, it does not provide any facilities to change default formatting settings. That would mean, if you have a module with method like that,<br />
+</p><pre class="brush: csharp">public class SitesModule : NancyModule
+{
+    public SitesModule() : base("/api/sites")
+    {
+        Get["/"] = parameters => Response.AsJson(new[] {new { Name = "Site 1", DeployStatus = "Deployed" }});
+    }
+}
+</pre><p>    You will get valid JSON, but it would serialize all C# properties, as they are:<br />
+</p><pre class="brush: plain">    "[{"Name":"Site 1","DeployStatus":"Deployed "}]"
+</pre><p>    Don&#8217;t know about you, but it makes me sick too work with uppercase object fields in JavaScript. Fortunately, such advanced JavaScript serialization libraries as <a href="http://james.newtonking.com/pages/json-net.aspx">JSON.NET</a> has formatting features. So, our goal is to create custom serialize (based on JSON.NET) and integrate it to Nancy&#8217;s pipeline.<br />
+</p><h2>    JSON.NET based serialization<br />
+</h2><p>    In order to do that, we need to implement special interface (guess it&#8217;s name?) - <code>ISerializer</code>. Without further explanation, I just copy and paste code here:<br />
+</p><pre class="brush: csharp">public class JsonNetSerializer : ISerializer
+{
+    private readonly JsonSerializer _serializer;
+
+    public JsonNetSerializer()
+    {
+        var settings = new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        };
+
+        _serializer = JsonSerializer.Create(settings);
+    }
+
+    public bool CanSerialize(string contentType)
+    {
+        return contentType == &quot;application/json&quot;;
+    }
+
+    public void Serialize&lt;TModel&gt;(string contentType, TModel model, Stream outputStream)
+    {
+        using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
+        {
+            _serializer.Serialize(writer, model);
+            writer.Flush();
+        }
+    }
+}
+</pre><h2>Changing the configuration</h2><p>    NancyFX bootstrapper has a special method, which have to be overridden in order to change internal configuration. There is a very convenient helper, that is useful for changing some particular bits of config.<br />
+</p><pre class="brush: csharp">protected override NancyInternalConfiguration InternalConfiguration
+{
+    get
+    {
+        return NancyInternalConfiguration.WithOverrides(c => c.Serializers.Insert(0, typeof(JsonNetSerializer)));
+    }
+}
+</pre><p>    Please note, I&#8217;m inserting that to position 0, just to make sure it&#8217;s *before* default <code>JsonSerializer</code> type, since AsJson() response formatter is using <code>FirstOrDefault</code> strategy to find corresponding serialize class. Just build and re-start your app, and from now your JSON&#8217;s would be looking really good:<br />
+</p><pre class="brush: plain">    "[{"name":"Site 1","deployStatus":"Deployed "}]"
+</pre><p>    Much more better now!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -819,62 +920,6 @@ private string RemoveFooter(string content)
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/06/elmahmvc-v20-is-coming.html">
-    
-      ELMAH.MVC v2.0 is coming</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-09T17:36:00+03:00" pubdate data-updated="true">Jun 9<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
-    </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
-    </p>    <h2>What will be changed?</h2>    <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is really simple one, actually delivered as 2 C# code files. It creates new ASP.NET MVC area and register route to ElmahController, which is just an adapter to ELMAH LogFactory. It worked very smooth, but with more functionality this approach no longer work.<br />
-    </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it&#8217;s a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
-    </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don&#8217;t know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it&#8217;s still nice step towards compatibility. <br />
-    </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won&#8217;t appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
-    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
-    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
-    </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
-    </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -887,7 +932,7 @@ private string RemoveFooter(string content)
 </div></div>
 	<footer class="pure-g-r"><div class="inner pure-u-1">
 	<p>
-		Theme developed by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
 		Copyright © 2010 - 2013 beletsky.net

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Functional testing by javascript with FuncUnit Dec 15th, 2010 JavaScript, MVC, Open source, Tips, Video, asp.net Functional tests are something that &hellip;">
+  <meta name="description" content="Let&#8217;s take a REST Dec 23rd, 2010 Design, MVC, REST, asp.net Nowadays, REST is becoming so popular, that any web developer must take it into &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,158 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/12/lets-take-rest.html">
+    
+      Let&#8217;s take a REST</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-23T07:28:00+02:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
+</p>
+<h2>What is REST?</h2>
+<p>
+It is rather style or pattern of development resource-oriented web applications. Beauty of REST is that its really easy to understand and basically you are using REST everyday but may not noticing that. REST works on top of HTTP protocol, but is is not protocol itself. It seems to me that it actually appears with HTTP/1.1 but only with <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> work it became well understood, defined and attractive.
+</p>
+<p>
+REST popularized by such applications as twitter, flickr, bloglines, technorati etc. And of cause, by <a href="http://rubyonrails.org/">Ruby On Rails</a> framework.
+</p>
+<h2>Unique ID</h2>
+<p>
+Unique ID is key concept in REST. Everything in Web is resource, every resource must be addressed, each address is unique.
+</p>
+<p>
+Here are examples of ID. Of cause in a world of HTTP ID&#8217;s are URI&#8217;s (Unified Recourse Identifiers):
+</p>
+<p>
+<code>
+http://mysite.com/blog/page/1<br />
+http://mysite.com/blop/post/my-first-post
+</code>
+</p>
+<h2>What is representation and state transfer?</h2>
+<p>
+Let&#8217;s see the first URI, it point for first page on some blog. As a client I ask for resource, <strong>representation</strong> of resource is returned back to client. By receiving the representation client <strong>transfers</strong> (changes) to particular <strong>state</strong>. As I ask for next resource, next representation of resource is back. The new representation changes the client application into yet another state. Between previous and next state, client stays is <strong>rest</strong> mode. Thus, the client application transfers state with each resource representation. That forms concept of - Representational State Transfer.
+</p>
+<p>
+It doesn&#8217;t depend what exact representation is, it could be: HTML, XML, JSON, RSS etc. 
+</p>
+<h2>Recourses and actions</h2>
+<p>
+You can do a different actions to resources. REST achitecture maps CRUD (Create, Read, Update, Delete) to the set of operations supported by the web service using HTTP methods (e.g., POST, GET, PUT or DELETE). 
+</p>
+<table>
+        <tr>
+            <th>URI</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/page/1</td>
+            <td>GET</td>
+            <td>
+            Gets the representation of resouce. Get request does not change the state of server.
+            Typically you do not submit any data in GET request. 
+            You can read the URL like, &#8220;get page 1 from blog located at http://mysite.com&#8221;
+            </td>
+
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry</td>
+            <td>POST</td>
+            <td>
+            Posts the changed state of resouce. With post you can change the state of server.
+            Post contains data in POST body. It is up to web server how to treat and use this data.
+            You can read URI like, &#8220;post an entry to entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/changename/211</td>
+            <td>PUT</td>
+            <td>
+            Updates some existing resouces. PUT is similar to POST, since it changes web server state and contains data in body. You can do different change actions that would update resource. Typically recourse identified by ID, like 211.
+            You can read URI like, &#8220;update an entry with Id 211, by changing its name, in entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>        
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/211</td>
+            <td>DELETE</td>
+            <td>
+            Deletes some existing resouces. DELETE changes web server state but typically contains no data in body.
+            You can read URI like, &#8220;delete an entry with Id 211, in entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>
+</table>
+<h2>Logical and Physical URL&#8217;s</h2>
+<p>
+If you do a lot of classic ASP.net programming you probably get used that URL reflects physical structure of application. For instance, <code>http://mysite.com/index.aspx</code> corresponds to <code>c:\inetpub\wwwroot\mysite\index.aspx</code>. In REST style URL stand not for physical, but logical URL. It means, <code>http://mysite.com/blog/post/1</code> doesn&#8217;t have to have <code>c:\inetpub\wwwroot\mysite\blog\post\1</code> file with static content. 
+</p>
+<p>
+Clean and logical URL&#8217;s one of the attractive points of REST. It moves away from ugly URL&#8217;s like <code>http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?s=books&ie=UTF8&qid=1293077887&sr=1-1</code>.
+</p>
+<p>
+From implementation point of view: to allow REST style URL for ASP.net applications you should either create your own <a href="http://intertwingly.net/wiki/pie/RestAspNetExample">HttpHandler</a> or use already created start-kits and frameworks, like <a href="http://aspnet.codeplex.com/releases/view/24644">WCF REST starter kit</a>, <a href="http://trac.caffeine-it.com/openrasta/">OpenRasta</a>.
+</p>
+<h2>REST vs. SOAP</h2>
+<p>
+Sure, REST is not first who approaches issue of using recourses in Web, it rather trendier new kind in a block. We know bunch of web technologies, SOAP, WSDL, ATOM, WS-*, WCF, ODATA and many many more.. So, what are the difference?  
+</p>
+<p>
+Major difference is that all above are <strong>protocols</strong>, but REST is <strong>style</strong>. This has pros and cons. Protocol&#8217;s are more strict and heavyweight, with a number of rules, formats etc. SOAP is using XML as data exchange format, REST could work any format depending on client needs. SOAP is using its own security model, REST relies on HTTP and web server security. SOAP requires tools, REST learning curve is small and less less reliance on tools. SOAP designed to handle distributed computing environments, REST assumes a point-to-point communication model. 
+</p>
+<p>
+But my opinion is simplicity always win against complexity. Key popularity of REST is because is simple, easy understand by developers and as a result - implemented in applications. My believe that SOAP and other heavyweight protocols will slightly die more and applications will be using REST. 
+</p>
+<h2>ASP.net MVC and REST</h2>
+<p>
+Developers of ASP.net MVC framework designed it to be REST compatible. In the level of framework, there is an URL routing system (<code>System.Web.Routing</code>) that allows you easily follow REST design principles. It gives you total control over your URL schema and its mapping to your controllers and actions, with no need to conform to any predefined pattern.
+</p>
+<p>
+So, basically ASP.net MVC web applications development is: create a controller class (<code>LoginController</code> for instance), implement number of actions (<code>Index</code>, <code>CheckCredentials</code>) and map those actions to particular URL. For instance <code>http://mysite.com/login</code> mapped to <code>LoginController.Index</code> method, that handles GET request from server and return View, containing Login form. <code>http://mysite.com/login/check</code> mapped to <code>LoginController.CheckCredentials</code> method, that handles POST and checks users credentials.
+</p>
+<p>
+It is much more easier to create web applications API&#8217;s with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1059,97 +1211,6 @@ By doing tests right, they won&#8217;t complicate your life but make it easier.
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/10/agileee-2010-j-b-rainsberger-integrated.html">
-    
-      Agileee 2010: J. B. Rainsberger: Integrated Tests are A Scam</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-12T22:33:00+03:00" pubdate data-updated="true">Oct 12<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<small>
-<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLS4D_xKylI/AAAAAAAAG-Y/3LkvrX1aLik/s1600/DSC03708.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLS4D_xKylI/AAAAAAAAG-Y/3LkvrX1aLik/s400/DSC03708.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5527245021487221330" /></a>
-<p>
-It a very dramatic beginning - &#8220;Integrated Tests are a scam&#8221;. a self-replicating virus that takes over your project and burdens you with long-running, fragile, hard-to-understand test suites - a sentence JBrains started his speech!
-</p>
-<h2>What is integrated tests?</h2>
-<p>
-Integrated tests checks whole system, not only collaboration between some components. It means any tests where the failure of the test with unjustifiable failures. It is bad, because it is a distraction and give no value.
-</p> 
-<h2>Integrated tests are slow</h2>
-<p>
-Integrated tests involves DB, network that makes tests are slow. 
-</p>
-<h2>Integrated tests are brittle</h2>
-<p> 
-If you change one small thing you have to fix a lot of tests. JBrains gives a very nice and common example. &#8220;Foreign Keys hell&#8221; - you have a foreign keys in DB, so to insert/remove record to one table, you have to insert/remove record to another table.. and so on. Preparation tests data is very expensive operation, complexity goes as exponential form. Eventually it came up that change that took 1.5 hour start to take 1 days.
-</p>
-<h2>Goal of unit testing</h2>
-<p>
-Goal of unit testing is to have quick and correct result. Test failure should point to exact problem in object to be tested. In case of integrated tests, it is possible to have multiple failures, with very few actual understanding of what is wrong.
-</p>
-<h2>What to do?</h2>
-<p>
-JBrains introduces term of - <em>Collaboration tests</em> (Interaction tests) - using mock objects or tests doubles. Collaboration is observed as Client-Server architecure. The object that is being tested is Client, the object it depends on is Server. We create interfaces, to make it possible to substitute implementation (using test doubles), we simulate behavior for object we testing. Client object is a completely tested, test double simulate behavior of Server. 
-</p>
-<p>
-This is greatly works, tests pass, but we found a problems. The issue is that object doesn&#8217;t always work as it is expected by tests and having Collaboration tests only is not enough. We need another type of test - <em>Contract tests</em>.
-</p>
-<p>
-Contract tests focuses on Server side, this are ones that actually do SQL to DB, requests by network etc. The goal here is to focus on Contract (or interface) of object and test interface, not exact implementation. Since contract tests are defined, now it is possible to reuse them for any particular implementation. As an example, we could review IList class, that could have different implementations (as array list, linked list etc.), but it have one interface with simple operations like - add, remove, at. We create a number of tests, for all contract operations. Such tests could be put to common class, with abstract operation of object creation (template method pattern), so tests of particular implementation (array list for instance) just inherit common class, override creation function to return array list method and reused all already defined contract tests.  
-</p>
-<h2>What are benefits?</h2>
-<p>
-Combining these 2 types of tests give us fast, isolated suites, failure is suite should point to exact issue avoiding creation of complex integration tests. 
-</p>
-<p>
-Later on JBrains gives some mathematical proves of differences between number collaboration/contacts tests and integrated tests, that I just do not want to write here, cause afraid to incorrectly interpret the information. The keynote of the speech is rather simple: forget about complex and heavyweight integration tests, do as much as possible with test doubles running everything in memory, do contract testing for platform depended objects. 
-</p>
-<p>
-You could find more, here: <a href="http://blog.jbrains.ca/integrated_tests_are_a_scam">http://blog.jbrains.ca/integrated_tests_are_a_scam</a>
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -1162,7 +1223,7 @@ You could find more, here: <a href="http://blog.jbrains.ca/integrated_tests_are_
 </div></div>
 	<footer class="pure-g-r"><div class="inner pure-u-1">
 	<p>
-		Theme developed by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
 		Copyright © 2010 - 2013 beletsky.net

@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-06-17T11:27:28+03:00</updated>
+  <updated>2013-06-26T13:38:55+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago.html"/>
+    <updated>2013-06-20T23:43:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago</id>
+    <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
+
+<p>Early 2000&rsquo;s I was programming C/C++ and the best way of passing some data from one machine to another, was &ndash; <em>socket</em>. The time took understanding of sockets, I clearly saw it&rsquo;s the best solution for that task.</p>
+
+<!-- more -->
+
+
+<p>Sending and receiving strings and binary structures was very nice comparing to using C or assembler to directly talk to network driver. Sockets allowed to build server-client architectures, in theory allowing application written in different languages to communicate each other.</p>
+
+<p>But time passed and COM / DCOM technologies appeared. Data transport operations was completely hidden, a lot of abstraction put above objects and marshaling. Again, that technology was massively adopted by developers, many projects were created based on COM / DCOM (or similar technology called CORBA).</p>
+
+<p>Marshaling, IDL, ATL and other stuff was very difficult to understand and to use. But still there was much better than implement something similar on raw sockets.</p>
+
+<p>Era of Web Services has begun. Web Services indeed allowed build highly distributed systems based on reliable HTTP protocol. Data transport mechanisms appeared to be transparent and very clear. Data transfered back and forth as XML payloads. Almost all web service technologies were build in concept on <a href="http://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> was primary payload format, formalized XML with metadata inside. Again, previous DCOM / COBRA things looked very ugly, Web services looked very promising.</p>
+
+<p>Web Services, definitely affected the way we architecture distributed systems now. It formalized a lot, <code>WS-*</code> set of standards came out. Many vendors like Microsoft or Sun created bunch of frameworks to support it. Many books, many blog posts and speaks issued on that topic.</p>
+
+<p>Nowadays, <code>RPC-based</code> services completely substituted with <code>REST-style</code>. XML as payload, seems to be awful, cause its verbose, requires more bandwidth comparing to <code>JSON</code>. <code>JSON</code> in conjunction with dynamic languages gives great framework of building distributed systems. We are currently in era of <em>API oriented</em> systems and as soon as you adopted that, SOAP and RPC makes no sense to you.</p>
+
+<p>What I&rsquo;m telling is, technologies are improving very fast. What was great today, will appear awful tomorrow.</p>
+
+<p>We were wrong 10 years ago that some particular technology is cool. So now, than I see some new and shinny thing I&rsquo;m no longer blindly excited about that. It will gone&hellip; and substituted with something better.</p>
+
+<p>Developers ultimate goal remains to <em>influence</em> that process. And make influence is easy &ndash; share your thoughts, implement prototypes, talk to people.</p>
+
+<p>Make things simpler, make things better.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
@@ -1360,55 +1396,6 @@ hideErrors: function () {
     <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
     </p>    <h2>Conclusions</h2>    <p>        That was very simple &#8220;baby-step&#8221; style of approaching model validation. I would could it, validation &#8220;from the box&#8221;. Even if it&#8217;s very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
     </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
-    </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to run multiple AJAX requests]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/10/how-to-run-multiple-ajax-requests.html"/>
-    <updated>2012-10-31T21:12:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/10/how-to-run-multiple-ajax-requests</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        Suppose you have a list of resources that you would like to retrieve by means of AJAX. `$.ajax()` (or it&#8217;s short variants like `$.get()` or `$.post`) is usual way of making AJAX calls, it works great than you need to fetch one.<br />
-    </p>    <pre class="brush: js">var url = '/api/resource/1';
-$.get(url, function (r) {
-    // use response
-});
-    </pre>    <p>        Even in case of several it might be still usable,<br />
-    </p>    <pre class="brush: js">var url1 = '/api/resource/1';
-var url2 = '/api/resource/2'
-$.get(url1, function (r) {
-    // use response from url1
-
-    $.get(url1, function (r) {
-        // use response from url2
-    });
-});
-    </pre>    <p>        You can easily see, if you have more than 3 you are trapping into &#8220;callback hell&#8221;. Furthermore, if you have a list of url&#8217;s to fetch and the size of that list is dynamic, it&#8217;s not even possible to build structure like that.<br />
-    </p>    <p>        Not long time a ago, I&#8217;ve been exactly into this situation. So, I have a list of resources to fetch, I need to issue them one-by-one and I want to have only one callback, that would pass all fetched resources in one object. Initially I thought it&#8217;s not even possible, at least with-out creation of some ugly code. But with great help of my colleagues the problem been solved. <br />
-    </p>    <p>        jQuery <a href="http://api.jquery.com/category/deferred-object/">Deferred Object</a> is something I&#8217;ve head about, but never got a change to play with. It turn&#8217;s out to be very nice and simple idea. Deferred allows you to build chainable constructions. Actually, `$.ajax()` always returns deferred object, so you can apply `.done()`, `.fail()` functions on it.<br />
-    </p>    <p>        Here is the code, that you could be re-usable in the same situation;<br />
-    </p>    <pre class="brush: js">var pipedAjaxRequests = function (urls, callback) {
- var responses = {};
-
- var promise = $.Deferred().resolve();
- _.each(urls, function (url) {
-  promise = promise.pipe(function () {
-   return $.get(url);
-  }).done(function (response) {
-   responses[url] = response;
-  });
- });
-
- promise.done(function () {
-  callback(responses);
- }).fail(function (err) {
-  callback(responses, err);
- });
-};
-</pre>    <p>        It does create the pipe of `$.get()` calls and place the responses in one response object. At the time then all resources are fetched, the callback is called. In case of errors, second parameter of callback will have error info.<br />
-    </p>    <p>        Thanks a lot to <a href="http://twitter.com/antsamar">@antsamar</a> and <a href="http://twitter.com/alex_gonchar">@alex_gonchar</a> for helping me out.<br />
     </p></div>
 ]]></content>
   </entry>
