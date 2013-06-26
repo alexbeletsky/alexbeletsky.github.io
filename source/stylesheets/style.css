@@ -70,6 +70,7 @@ article .sub-title {
 
 article p {
 	margin: 1em 0;
+	word-spacing: 3px;
 }
 
 article h2, article h3, article h4 {
