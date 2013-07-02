@@ -1,6 +1,5 @@
 body {
 	font-family: "Lato", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-size: 18px;
 	font-weight: 300;
 }
 
@@ -71,6 +70,7 @@ article .sub-title {
 article p {
 	margin: 1em 0;
 	word-spacing: 3px;
+	font-size: 18px;
 }
 
 article h2, article h3, article h4 {
@@ -159,9 +159,13 @@ footer a {
 	margin-right: 1em;
 }
 
-pre, code {
-	font-size: 0.8em !important;
+code, pre {
+	font-size: 0.9em !important;
 	margin: 0 !important;
+}
+
+figure.code .highlight .gutter {
+	display: none;
 }
 
 .post img {
