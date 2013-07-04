@@ -140,9 +140,11 @@ function logHttpErrors () {
 				message.error = req.unhandledError;
 			}
 
-			if (status >= 400) {
+			if (warning(status)) {
 				logger.warning(message);
-			} else if (status >= 500) {
+			}
+
+			if (error(status)) {
 				logger.error(message);
 			}
 
@@ -151,6 +153,14 @@ function logHttpErrors () {
 
 		next();
 	};
+
+	function warning (status) {
+		return status >= 400 && status < 500;
+	}
+
+	function error (status) {
+		return status >= 500;
+	}
 }
 ```
 
