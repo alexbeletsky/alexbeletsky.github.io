@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-07-04T12:55:08+03:00</updated>
+  <updated>2013-07-04T14:03:03+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -164,9 +164,11 @@ function logHttpErrors () {</p>
             message.error = req.unhandledError;
         }
 
-        if (status &gt;= 400) {
+        if (warning(status)) {
             logger.warning(message);
-        } else if (status &gt;= 500) {
+        }
+
+        if (error(status)) {
             logger.error(message);
         }
 
@@ -175,6 +177,14 @@ function logHttpErrors () {</p>
 
     next();
 };
+
+function warning (status) {
+    return status &gt;= 400 &amp;&amp; status &lt; 500;
+}
+
+function error (status) {
+    return status &gt;= 500;
+}
 </code></pre>
 
 <p>}

@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-07-04T12:55:08+03:00</updated>
+  <updated>2013-07-04T14:03:03+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -221,6 +221,16 @@
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">()</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">;</span>
@@ -238,9 +248,11 @@
 </span><span class='line'>              <span class="nx">message</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span><span class="p">;</span>
 </span><span class='line'>          <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">warning</span><span class="p">(</span><span class="nx">status</span><span class="p">))</span> <span class="p">{</span>
 </span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">(</span><span class="nx">status</span><span class="p">))</span> <span class="p">{</span>
 </span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
 </span><span class='line'>          <span class="p">}</span>
 </span><span class='line'>
@@ -249,6 +261,14 @@
 </span><span class='line'>
 </span><span class='line'>      <span class="nx">next</span><span class="p">();</span>
 </span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">warning</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">400</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">error</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
