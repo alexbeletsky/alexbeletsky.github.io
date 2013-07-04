@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: JavaScript | Alexander Beletsky's development blog]]></title>
+  <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-06-26T13:38:55+03:00</updated>
+  <updated>2013-07-04T12:55:08+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,484 +14,307 @@
 
   
   <entry>
-    <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
-    <updated>2013-04-14T14:35:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
-    <content type="html"><![CDATA[<div class='post'>
-        <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
-</p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don't do .NET development more than 1.5 years for now. It's not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
-</p><h2>WTH?</h2><p>I work in E-conomic company and about 2 years ago we decided to build new product. <br />
-</p><p>Till that time we've learned hard few things: plain jQuery applications is mess, building new shinny product on out-dated infrastructure is bad idea.<br />
-</p><p>So, we've started with front-end by choosing Backbone.js as our foundation, later on we've decided to switch our API server from .NET to Node.js.<br />
-</p><p>It appears we got full JavaScript stack on that product and I involved in JavaScript more and more each day.<br />
-<!-- more -->
-</p><h2>I thought I know JavaScript</h2><p>That time I mistakenly thought, I can do JS programming. Sure, I understood jQuery selectors, concept of callback and even why we need 'var me = this;' trick in code.<br />
-</p><p>But the reality was a bit different. Now, listening to podcasts and reading some blogs, I understood that I've been to 'classic' trap on C#/Java developer switching to JavaScript. Languages and frameworks requires time to learn.<br />
-</p><h2>Long hard way of learning</h2><p>I had to spend the time to learn new stuff. I would say the best source of information was the code written by my <a href="https://github.com/e-conomic?tab=members">colleagues</a>. We have great team, so initially I were just reviewing the code following some patterns. I also spent time of peering famous OS projects like underscore and Backbone.js.<br />
-</p><p>JavaScript  <a href="http://shop.oreilly.com/product/9780596517748.do">Good Parts</a>, opened my eyes on few important things as well.<br />
-</p><p>There are 3 aspects that changed my mind on JavaScript.<br />
-</p><h3>JavaScript is dynamic language</h3><p>Let's be clear. If someone in 2003 tell me I'm going to program dynamic language and will be happy about, I would never believe that. I was programming C++ and truly believed in types. Types as I was thinking is only way to tackle complexity of software.<br />
-</p><p>Even though, I still think about some advantages of static vs. dynamic languages, my opinion has changed radically.<br />
-</p><p>Dynamic languages are great. I feel I more solve problems rather than designing types (or usually hierarchy of types). Consider that, instead of thinking about the name for next "ProxyAbstractFactoryManager" I'm writing functions that do stuff.<br />
-</p><h3>Frictionless development</h3><p>I was compiling applications for whole my life. Just to run some simple thing I need to compile and link. It's usually not a problem at all, but depends on project infrastructure it can take a lot of time. Sooner or later you start to hate builds.<br />
-</p><p>With JavaScript application, you simply should run it. It starting fast so the gap between "write the line of code" and "check the results" became very small.<br />
-</p><p>Instead of heavyweight IDE's I became Sublime Text 2 user. After years in VS you simply could not understand how to write code without IntellySense. But practice shows it's really possible. <br />
-</p><h3>Node.js</h3><p>To be honest with you, I was very skeptical regarding Node.js initially. But again, practice showed different results. It's been proved that Node.js is very suitable for our product. We are running API server on Node.js and it performs really nice.<br />
-</p><p>Later I started to learn what Node.js platform offers and I was really surprised with it's abilities.<br />
-<p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
-</p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
-</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
-<h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one "language context". I would not call a huge problem, but usually context switching from one language to another can take something.<br />
-</p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I'm selecting JavaScript.<br />
-</p></div>
+    <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
+    <updated>2013-07-04T09:02:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
+    <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields.html"/>
-    <updated>2012-12-25T22:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        Recently, I've been working on small project which I want to share here. It's called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it's small plugin that extends Backbone.Model functionality a bit.<br />
-    </p>    <p>        I needed to have a model with 'virtual' fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
-    <!-- more -->
-    </p>    <p>        The easiest solution would be simply introduce some model methods, say <code>model.getComputedField() / model.setComputedField()</code> and store the value inside the model object. But that turns out to be bad idea, for several reasons. First, we are breaking usual Backbone interface for getting and setting values - <code>model.get('computed') / model.set('computed', 100)</code>. Also, if model is binded to a view, we are responsible for raising events manually, in case of computed or depended field changing.<br />
-    </p>    <p>        So, after few iterations <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
-    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
-    </p>    <p>        It's fairly important, that computed field could change. Based on it's value, dependent fields should be updated.<br />
-    </p>    <h2>Examples</h2>    <p>        Let's take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
-    </p>    <h3>Calculating prices</h3>    <p>        The model represents the product, which contains net price and VAT rate.<br />
-    </p>    <pre class="brush: js">var Produc = Backbone.Model.extend({
-    initialize: function () {
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
+<p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
 
-    computed: {
-        grossPrice: {
-            depends: ['netPrice', 'vatRate'],
-            get: function (fields) {
-                return fields.netPrice * (1 + fields.vatRate / 100);
-            },
-            set: function (value, fields) {
-                fields.netPrice = value / (1 + fields.vatRate / 100);
-            }
-        }
-    }
-});
-</pre>    <p>        So, we have <code>grossPrice</code> as computed field. That field depends on 'netPrice' and 'vatRate' and being calculated by simple formulas.<br />
-    </p>    <pre class="brush: js">var product = new Product({ netPrice: 100, vatRate: 20 });
-var grossPrice = product.get('grossPrice');
-    </pre>    <p>        In this case, gross price would be 120.<br />
-    </p>    <pre class="brush: js">product.set({grossPrice: 300});
-var netPrice = product.get('netPrice');
-</pre>    <p>        After gross price is update, netPrice will be recalculated and netPrice will be 250.<br />
-    </p>    <h3>Concatenating fields</h3>    <p>        Let's have a model to represent the person with first name and last name.<br />
-    </p>    <pre class="brush: js">var Person = Backbone.Model.extend({
-    initialize: function () {
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
+<p>Prepare application to production, means prepare good error logging. I&rsquo;m going to show how to extend your Express.js with proper logs.</p>
 
-    computed: {
-        fullName: {
-            depends: ['firstName', 'lastName'],
-            get: function (fields) {
-                return fields.firstName + ' ' + fields.lastName;
-            }
-        }
-    }
-});
-</pre>    <p>        I'm skipping the setter cause we don't need to set full name here.<br />
-    </p>    <pre class="brush: js">var person = new Person({firstName: 'Alexander', lastName: 'Beletsky'});
-var fullName = person.get('fullName');
-</pre>    <p>        Full name 'Alexander Beletsky' is returned here.<br />
-    </p>    <h3>Referenced objects</h3>    <p>        Sometimes we have a models that only contains a reference to another model. All the time, we need to get referenced object we have to create some piece of code, which it typically copy-n-pasted thought the code base. Computed field could be a good idea to encapsulate that.<br />
-    </p>    <pre class="brush: js">var Invoice = Backbone.Model.extend({
-    initialize: function (attrs, options) {
-        this.customers = options.customers;
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
+<!-- More -->
 
-    computed: {
-        customer: {
-            depends: ['customerId'],
-            get: function (fields) {
-                return fields.customerId && this.customers.get(fields.customerId);
-            },
-            set: function(customer, fields) {
-                fields.customerId = customer.get('id');
-            }
-        }
-    }
-});
-</pre>    <p>        Here we have customer field, which is computed. <br />
-    </p>    <pre class="brush: js">var invoice = new Invoice({}, { customers: collectionOfCustomers });
-var customer = invoice.get('customer');
-</pre>    <p>        So, I'm able to get customer model even if invoice is just holding the invoice Id. <br />
-    </p>    <pre class="brush: js">invoice.set({customer: anotherCustomer});
-var customerId = invoice.get('customerId');
-    </pre>    <p>        If I'm changing the customer of invoice, the 'customerId' would be initialized with id of 'anotherCustomer'.<br />
-    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
-    </p></div>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-12-19T21:52:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>Previous time, we've implemented a Backbone model and wrote some meaningful tests for it.<br />
-</p><p>Next very important Backbone's entry to test is View.<br />
-</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don't have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
-</p><h2>What to test?</h2><p>You should focus on such things: <br />
-</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
-<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
-<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
-<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
-</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It's typically that view tests are catching most regression issues.<br />
-</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don't need any special HTML on test page, since view holding all it's DOM structure inside <code>this.el</code>. By means of jQuery, it's easy to change DOM values or trigger events.<br />
-</p><p>Since view also holds reference to model, it's easy to check model's attributes changes or spying on particular models methods.<br />
-</p><p>First red test,<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
+<h2>What it means to have good logs?</h2>
 
-    beforeEach(function () {
-        view = new FeedbackFormView();
-    });
+<p>In my perspective good logs are ones satisfying following criterias:</p>
 
-    describe('when view is constructing', function () {
+<ul>
+<li>All unhandled errors are logged</li>
+<li>Log records are comprehensive and clear</li>
+<li>Logs are easily accessible</li>
+<li>If critical error logged, developers have to be notified</li>
+</ul>
 
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
 
-    });
-    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
-</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
-</p><pre class="brush: js">describe('when view is initialized', function () {
+<h2>Logger</h2>
 
-    describe('without model', function () {
+<p>Logger is object responsible to take some message or object and log it. The example of one,</p>
 
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView();
-            }).toThrow(new Error('model is required'));
-        });
+<p>```js
+var util = require(&lsquo;util&rsquo;);
+var colors = require(&lsquo;colors&rsquo;);
+var moment = require(&lsquo;moment&rsquo;);</p>
 
-    });
+<p>var logger = {</p>
 
-    describe('without default feedback', function () {
-            
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView({model: new Backbone.Model() });
-            }).toThrow(new Error('feedback is required'));
-        });
-    });
-
-});
-    </pre><p>To turn from Red to Green, let's add <code>initialize</code> function to view,<br />
-</p><pre class="brush: js">initialize: function (options) {
-
-    if (!this.model) {
-        throw new Error('model is required');
-    }
-
-    if (!(options && options.feedback)) {
-        throw new Error('feedback is required');
-    }
-
-    this.feedback = options.feedback;
+<pre><code>colorsMap: {
+    'success': 'green',
+    'warning': 'yellow',
+    'err': 'red',
+    'info': 'grey'
 },
-    </pre><p>Btw, after that change it's required to fix previous test, since it start to fail.<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
 
-    beforeEach(function () {
-        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
-    });
+success: function (message) {
+    this.log('success', message);
+},
 
-    describe('when view is constructing', function () {
+warning: function (message) {
+    this.log('warning', message);
+},
 
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
+error: function (message) {
+    this.log('err', message);
+},
 
-    });
-    </pre><p>Now, let's test how rendering works.<br />
-</p><pre class="brush: js">describe('when view is rendered', function () {
+info: function (message) {
+    this.log('info', message);
+},
 
-    beforeEach(function () {
-        view.render();
-    });
+log: function (type, message) {
+    var record = this.timestamptMessage(util.format('%s: %s', type.toUpperCase(), this.formatMessage(message)));
+    console.log(record[this.colorsMap[type]]);
+},
 
-    it ('should email field be empty', function () {
-        expect(view.$el.find('input#email')).toHaveValue('');
-    });
+formatMessage: function (message) {
+    return typeof message === 'string' ? message : JSON.stringify(message);
+},
 
-    it ('should website field be empty', function () {
-        expect(view.$el.find('input#website')).toHaveValue('');
-    });
+timestamptMessage: function (message) {
+    return util.format('[%s] %s', moment(), message);
+}
+</code></pre>
 
-    it ('should feedback field with default feedback', function () {
-        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
-    });
+<p>};</p>
 
-});
-</pre><p>Here and after I'm using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
-</p><p>We've tested initialization and rendering, now let's test last aspect, model changes and persistence.<br />
-</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
-</p><pre class="brush: js">describe('when form is submitted', function () {
+<p>module.exports = logger;
+```</p>
 
-    describe('no inputs are filled', function () {
+<p><code>Logger</code> could be used everywhere you need to get some info. But our ultimate goal is to be aware of all errors might appear in application.</p>
 
-        beforeEach(function () {
-            view.$el.find('#email').val('').trigger('change');
-            view.$el.find('#feedback').val('').trigger('change');
-        });
+<h2>Augmenting Express.js application with logs</h2>
 
-        beforeEach(function () {
-            view.$el.find('#submit').trigger('click');
-        });
+<p>We never know then error might appear. But, we can catch all unhandled errors + if some web request failed to complete with success code, we have to log that as well.</p>
 
-        it('email field should be invalidated', function () {
-            expect(view.$el.find('.control-group.email')).toHaveClass('error');
-        });
+<h3>Handling &ldquo;unhandled&rdquo; errors</h3>
 
-        it('feedback field should be invalidated', function () {
-            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-        });
+<p>We can listen to process &lsquo;uncaughtException&rsquo; event. It just placed in <code>app.js</code> file. The best place is just after require section and before any object is used.</p>
 
-        it('website field should be valid', function () {
-            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-        });
+<p>```js
+process.on(&lsquo;uncaughtException&rsquo;, function (err) {</p>
 
-    });
-</pre><p>That's cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
-</p><pre class="brush: js">describe('only email field filled', function () {
+<pre><code>logger.error({msg:'Uncaught exception', error:err, stack:err.stack});
+</code></pre>
 
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('').trigger('change');
-    });
+<p>});
+```</p>
 
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
+<p>From official docs,</p>
 
-    it('email field should be valid', function () {
-        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
-    });
+<blockquote><p>Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.</p></blockquote>
 
-    it('feedback field should be invalidated', function () {
-        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-    });
+<p>So, we just redirecting that error to logger. Also, docs say following:</p>
 
-    it('website field should be valid', function () {
-        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-    });
+<blockquote><p>Don&rsquo;t use it, use <a href="http://nodejs.org/api/domain.html">domains</a> instead. If you do use it, restart your application after every unhandled exception!</p></blockquote>
 
-});
-</pre><p>And finally, if view is filled correctly,<br />
-</p><pre class="brush: js">describe('email and feedback filled', function () {
+<p>I still not switched to domain version for that, need to consider that advice.</p>
 
-    beforeEach(function () {
-        spyOn(view.model, 'save').andCallThrough();
-    });
+<p>Anyway, this <code>uncaughtException</code> will give us only information typically about <code>undefined</code> variables used, that&rsquo;s pretty simple to caught during development testing. More interesting stuff is what&rsquo;s actually happening on runtime, while application handling HTTP requests.</p>
 
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('some feedback').trigger('change');
-    });
+<h3>Logging failing HTTP requests</h3>
 
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
+<p>Express.js power feature is <em>middleware</em>. It&rsquo;s possible to do a lot of cool stuff based on middleware functions. We&rsquo;ll utilize that feature to create a few middleware function that would allow to log all failed HTTP requests.</p>
 
-    it('should show no errors', function () {
-        expect(view.$el.find('.error').length).toBe(0);
-    });
+<p>First one,</p>
 
-    it('should save model', function () {
-        expect(view.model.save).toHaveBeenCalled();
-    });
+<p>```js
+// have to be injected as last middlware function for all routes
+function logErrors () {</p>
 
-});
-</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
-</p><p>I'm skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
-</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how "deep" you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
-</p></div>
+<pre><code>return function logErrors(err, req, res, next) {
+    req.unhandledError = err;
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of models]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-11-22T11:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
-        </p>        <p>            By the end of the day, it's only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
-        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let's setup our testing infrastructure.<br />
-        </p>        <h2>Folders and files</h2>        <p>            We'll have a new folder called `spec`. Inside the spec folder, I'll have `models` and `views` folders that would contain tests for models and views.<br />
-        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
-            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
-        </a><br />
-        <h2>Tests runner</h2>        <p>            I'll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It's very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
-        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
-        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
+    next(err);
+};
+</code></pre>
 
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
+<p>}
+```</p>
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
+<p>Second one,</p>
 
-&lt;!-- Sources --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+<p>```js
+function logHttpErrors () {</p>
 
-&lt;!-- Specs --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
-    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let's review the Jasmine test skeleton.<br />
-        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
-    var value;
+<pre><code>return function logHttpErrors (req, res, next) {
+    var end = res.end;
+    res.end = function (data, encoding) {
+        var status = res.statusCode;
+        var message = {
+            url: res.req.url,
+            headers: res.req.headers,
+            status: status,
+            body: req.body,
+            params: req.params
+        };
 
-    beforeEach(function () {
-        value = 1;
-    });
+        if (req.unhandledError) {
+            message.error = req.unhandledError;
+        }
 
-    it ('should fail', function () {
-        expect(value).toBe(0);
-    });
+        if (status &gt;= 400) {
+            logger.warning(message);
+        } else if (status &gt;= 500) {
+            logger.error(message);
+        }
 
-    describe('when value is changed', function () {
-        beforeEach(function () {
-            value = 0;
-        });
+        end.call (res, data, encoding);
+    };
 
-        it ('should pass', function () {
-            expect(value).toBe(0);
-        })
-    });
-});
-</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it's both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
-        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let's test that.<br />
-        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
-    var model;
+    next();
+};
+</code></pre>
 
-    beforeEach(function () {
-        model = new Feedback();
-    });
+<p>}
+```</p>
 
-    describe('when model is validating', function () {
-        var errors;
-    });
-});
-</pre>        <p>            This is something to start with. It does not do any asserts, so now we'll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
-        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
-    beforeEach(function () {
-        errors = model.validate({});
-    });
+<p>Look a bit closer: <code>logError()</code> produces middleware function that expected to be the last in chain, and if previous function retured an error, it stores that error object in in requests. <code>logHttpErrors()</code> produces middleware function that would override response <code>.end()</code> function and logs warning or error, depending on response status code.</p>
 
-    it ('should have 2 errors', function () {
-        expect(errors.length).toBe(2);
-    });
+<p>Let&rsquo;s integrate to app.</p>
 
-    it ('should have email fields as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
+<p><code>logHttpErrors()</code> could be put into <code>app.configure()</code> function,</p>
 
-    it ('should have feedback field as invalid', function () {
-        expect(errors[1].name).toBe('feedback');
-    });
-});
-</pre>        <p>            It's is possible that user put email, but forgot about feedback.<br />
-        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ email: 'a@a.com'});
-    });
+<p>```js
+app.configure(function(){</p>
 
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
+<pre><code>app.set('port', process.env.VCAP_APP_PORT || 3001);
+// ...
+app.use(middleware.errors.logHttpErrors());
+// ...
+</code></pre>
 
-    it ('should have feedback field as invalid', function () {
-        expect(errors[0].name).toBe('feedback');
-    });
+<p>});</p>
 
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
-        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ feedback: 'TDD is awesome'});
-    });
+<p>```</p>
 
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
+<p>It&rsquo;s a bit more trickier with <code>logError()</code> function. As I said above, it have to be <strong>last</strong> callback in chain.</p>
 
-    it ('should have email field as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
+<p>So, it&rsquo;s only possible to apply it in <code>app.configure()</code> since the routes are not defined yet. Even it&rsquo;s possible to manually add it to each endpoint manually, I don&rsquo;t think it&rsquo;s good idea, because it&rsquo;s easy to forgot do that.</p>
 
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
-        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
-            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
-        </a><br />
-        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model's is pretty simple thing. It's nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
-        </p></div>
+<p>I came up to following solution,</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JavaScript Object Creation by New Operator]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new.html"/>
-    <updated>2012-11-12T15:50:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
-    </p>    <pre class="brush: js">function Person (name) {
-    this.name = name;
+<p>```js
+require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>// here .logError() will be added to end of chain
+applyErrorLogging(app);</p>
+
+<p>http.createServer(app).listen(app.get(&lsquo;port&rsquo;), function() {</p>
+
+<pre><code>var env = process.env.NODE_ENV || 'development';
+logger.info('Likeastore app listening on port ' + app.get('port') + ' ' + env + ' mongo: ' + config.connection);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<p>```js
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyErrorLogging(app) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
 }
 
-var person = new Person('John Smith');
-console.log(person.name);
-    </pre>    <p>        If you try to run this code, you will see 'John Smith' in console. Now, try to delete new operator.<br />
-    </p>    <p>        Instead of 'John Smith' you will see undefined. Why?<br />
-    </p>    <p>        The difference is that without new operator it is just function call. During the call `this` points global namespace. If you running the code in browser, global namespace is bind to `window`.<br />
-    </p>    <p>        It's important to understand how new operator works. Internally, operator new is converted to NEW(Person, 'John Smith');. It does several things.<br />
-    </p>    <ol>        <li>Creates new native object and initializes the __proto__ of object by function.prototype.</li>
-        <li>Calls function, applying newly created object as value for <code>this</code>.</li>
-        <li>Returns newly created object.</li>
-    </ol>    <p>        It can be expressed in this kind of pseudo-code:<br />
-    </p>    <pre class="brush: js">function NEW(f) {
-    var obj = { '__proto__': f.prototype };
-    f.apply(obj, arguments.slice(1));
-    return obj;
+function patchRoute (route) {
+    route.callbacks.push(middleware.errors.logErrors());
 }
-</pre>    <p>        (It's a bit more complex actually, for details check this <a href="http://stackoverflow.com/questions/6750880/javascript-how-does-new-work-internally">great answer</a> on SO).<br />
-    </p>    <p>        It means that during function call with `new operator()`, <code>this</code> always points to a new object, created based on function prototype. You can initialize the properties of new object inside the function. It's no longer a simple function, but it is constructing function, or more simply - constructor.<br />
-    </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
-    </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
-    </p></div>
+</code></pre>
 
+<p>}</p>
+
+<p>module.exports = applyErrorLogging;
+```</p>
+
+<p>Now, it&rsquo;s everything in place, so all <code>4xx</code> are logged as warnings, all <code>5xx</code> are logged as errors.</p>
+
+<h2>Move your logs to cloud</h2>
+
+<p>Simply logging information is not enough. While your application writes info to console on production machine, this information worthless to you. You have to put you logs to the place where is easily accessible.</p>
+
+<p>There are few services like that. One of I recently hooked with in <a href="https://logentries.com/">Logentries</a>.</p>
+
+<p>Logentries gives you API to submit information there + Dashboard, there logs can be viewed, search and analyzed.</p>
+
+<p><img src="/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
+
+<p>Install <code>node-logentries</code> client,</p>
+
+<p><code>bash
+$ npm install node-logentries --save
+</code></p>
+
+<p>And now, we need to update logger, to not only <code>console.log</code> but send it to Logentries.</p>
+
+<p>Will create Logentries client,</p>
+
+<p>```js
+var log = logentries.logger({</p>
+
+<pre><code>token:process.env.LOGENTRIES_TOKEN
+</code></pre>
+
+<p>});
+log.level(&lsquo;info&rsquo;);</p>
+
+<p>```</p>
+
+<p>Will extend existing logger and override current <code>.log()</code> function:</p>
+
+<p>```js
+var logentriesLogger = (function (_super) {</p>
+
+<pre><code>var child = {
+    log: function (type, message) {
+        _super.log(type, message);
+        log.log(type, message);
+    }
+};
+
+return _.extend(Object.create(_super), child);
+</code></pre>
+
+<p>})(logger);</p>
+
+<p>module.exports = logentriesLogger;
+```</p>
+
+<p>Checkout this <a href="https://gist.github.com/alexanderbeletsky/5921464">gist</a> where you can see all things put together.</p>
+
+<p>So, now wherever <code>logger</code> is used, logs will both shown to screen (which is cool for development) and submitted to Logentries (which is cool for production).</p>
+
+<h2>Setup notification on critical errors</h2>
+
+<p>If error appeared on production, developers attention should be there. Without good notification system, is too easy to skip the moment then error arises.</p>
+
+<p>Again, it&rsquo;s easy to do with Logentries. Just go to <code>Alerts</code> section and setup patterns of errors you interested and email addresses for notifications.</p>
+
+<p><img src="/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
+
+<p>Email is not only one option, you can setup for SMS or webhook for your app. So, anytime error or warning appeared you will be notified and take action on it.</p>
+
+<h2>Conclusions</h2>
+
+<p>I&rsquo;ve used that for <a href="http://likeastore.com">likeastore</a> app I currently working on and it works just fine. Having such logs gave a lot of information after we went to private-beta phase. When you see how application behaves then real users start to use, it gives you good insights about fixes and improvements to apply.</p>
+
+<p>Taking into account that approach above is very universal and easy to adopt, to it today.</p>
 ]]></content>
   </entry>
   

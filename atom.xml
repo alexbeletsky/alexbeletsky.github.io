@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-06-26T13:38:55+03:00</updated>
+  <updated>2013-07-04T12:55:08+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,414 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
+    <updated>2013-07-04T09:02:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
+    <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
+
+<p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
+
+<p>Prepare application to production, means prepare good error logging. I&rsquo;m going to show how to extend your Express.js with proper logs.</p>
+
+<!-- More -->
+
+
+<h2>What it means to have good logs?</h2>
+
+<p>In my perspective good logs are ones satisfying following criterias:</p>
+
+<ul>
+<li>All unhandled errors are logged</li>
+<li>Log records are comprehensive and clear</li>
+<li>Logs are easily accessible</li>
+<li>If critical error logged, developers have to be notified</li>
+</ul>
+
+
+<h2>Logger</h2>
+
+<p>Logger is object responsible to take some message or object and log it. The example of one,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">moment</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;moment&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">colorsMap</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="s1">&#39;success&#39;</span><span class="o">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;warning&#39;</span><span class="o">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;err&#39;</span><span class="o">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;info&#39;</span><span class="o">:</span> <span class="s1">&#39;grey&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">warning</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;err&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">info</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">timestamptMessage</span><span class="p">(</span><span class="nx">util</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">&#39;%s: %s&#39;</span><span class="p">,</span> <span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">formatMessage</span><span class="p">(</span><span class="nx">message</span><span class="p">)));</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">record</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">colorsMap</span><span class="p">[</span><span class="nx">type</span><span class="p">]]);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">formatMessage</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">typeof</span> <span class="nx">message</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span> <span class="o">?</span> <span class="nx">message</span> <span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">timestamptMessage</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">util</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">&#39;[%s] %s&#39;</span><span class="p">,</span> <span class="nx">moment</span><span class="p">(),</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">logger</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Logger</code> could be used everywhere you need to get some info. But our ultimate goal is to be aware of all errors might appear in application.</p>
+
+<h2>Augmenting Express.js application with logs</h2>
+
+<p>We never know then error might appear. But, we can catch all unhandled errors + if some web request failed to complete with success code, we have to log that as well.</p>
+
+<h3>Handling &ldquo;unhandled&rdquo; errors</h3>
+
+<p>We can listen to process &lsquo;uncaughtException&rsquo; event. It just placed in <code>app.js</code> file. The best place is just after require section and before any object is used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">({</span><span class="nx">msg</span><span class="o">:</span><span class="s1">&#39;Uncaught exception&#39;</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stack</span><span class="o">:</span><span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From official docs,</p>
+
+<blockquote><p>Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.</p></blockquote>
+
+<p>So, we just redirecting that error to logger. Also, docs say following:</p>
+
+<blockquote><p>Don&rsquo;t use it, use <a href="http://nodejs.org/api/domain.html">domains</a> instead. If you do use it, restart your application after every unhandled exception!</p></blockquote>
+
+<p>I still not switched to domain version for that, need to consider that advice.</p>
+
+<p>Anyway, this <code>uncaughtException</code> will give us only information typically about <code>undefined</code> variables used, that&rsquo;s pretty simple to caught during development testing. More interesting stuff is what&rsquo;s actually happening on runtime, while application handling HTTP requests.</p>
+
+<h3>Logging failing HTTP requests</h3>
+
+<p>Express.js power feature is <em>middleware</em>. It&rsquo;s possible to do a lot of cool stuff based on middleware functions. We&rsquo;ll utilize that feature to create a few middleware function that would allow to log all failed HTTP requests.</p>
+
+<p>First one,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// have to be injected as last middlware function for all routes</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">logErrors</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="nx">logErrors</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span> <span class="o">=</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Second one,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">;</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">url</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">headers</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">status</span><span class="o">:</span> <span class="nx">status</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">body</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">params</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span>
+</span><span class='line'>          <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">message</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">end</span><span class="p">.</span><span class="nx">call</span> <span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">next</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Look a bit closer: <code>logError()</code> produces middleware function that expected to be the last in chain, and if previous function retured an error, it stores that error object in in requests. <code>logHttpErrors()</code> produces middleware function that would override response <code>.end()</code> function and logs warning or error, depending on response status code.</p>
+
+<p>Let&rsquo;s integrate to app.</p>
+
+<p><code>logHttpErrors()</code> could be put into <code>app.configure()</code> function,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VCAP_APP_PORT</span> <span class="o">||</span> <span class="mi">3001</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logHttpErrors</span><span class="p">());</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&rsquo;s a bit more trickier with <code>logError()</code> function. As I said above, it have to be <strong>last</strong> callback in chain.</p>
+
+<p>So, it&rsquo;s only possible to apply it in <code>app.configure()</code> since the routes are not defined yet. Even it&rsquo;s possible to manually add it to each endpoint manually, I don&rsquo;t think it&rsquo;s good idea, because it&rsquo;s easy to forgot do that.</p>
+
+<p>I came up to following solution,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// here .logError() will be added to end of chain</span>
+</span><span class='line'><span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Likeastore app listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">env</span> <span class="o">+</span> <span class="s1">&#39; mongo: &#39;</span> <span class="o">+</span> <span class="nx">config</span><span class="p">.</span><span class="nx">connection</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
+</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logErrors</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyErrorLogging</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, it&rsquo;s everything in place, so all <code>4xx</code> are logged as warnings, all <code>5xx</code> are logged as errors.</p>
+
+<h2>Move your logs to cloud</h2>
+
+<p>Simply logging information is not enough. While your application writes info to console on production machine, this information worthless to you. You have to put you logs to the place where is easily accessible.</p>
+
+<p>There are few services like that. One of I recently hooked with in <a href="https://logentries.com/">Logentries</a>.</p>
+
+<p>Logentries gives you API to submit information there + Dashboard, there logs can be viewed, search and analyzed.</p>
+
+<p><img src="http://alexanderbeletsky.github.io/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
+
+<p>Install <code>node-logentries</code> client,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install node-logentries --save
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now, we need to update logger, to not only <code>console.log</code> but send it to Logentries.</p>
+
+<p>Will create Logentries client,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">log</span> <span class="o">=</span> <span class="nx">logentries</span><span class="p">.</span><span class="nx">logger</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">token</span><span class="o">:</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">LOGENTRIES_TOKEN</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">log</span><span class="p">.</span><span class="nx">level</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Will extend existing logger and override current <code>.log()</code> function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">logentriesLogger</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">_super</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">log</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">_super</span><span class="p">),</span> <span class="nx">child</span><span class="p">);</span>
+</span><span class='line'><span class="p">})(</span><span class="nx">logger</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">logentriesLogger</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Checkout this <a href="https://gist.github.com/alexanderbeletsky/5921464">gist</a> where you can see all things put together.</p>
+
+<p>So, now wherever <code>logger</code> is used, logs will both shown to screen (which is cool for development) and submitted to Logentries (which is cool for production).</p>
+
+<h2>Setup notification on critical errors</h2>
+
+<p>If error appeared on production, developers attention should be there. Without good notification system, is too easy to skip the moment then error arises.</p>
+
+<p>Again, it&rsquo;s easy to do with Logentries. Just go to <code>Alerts</code> section and setup patterns of errors you interested and email addresses for notifications.</p>
+
+<p><img src="http://alexanderbeletsky.github.io/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
+
+<p>Email is not only one option, you can setup for SMS or webhook for your app. So, anytime error or warning appeared you will be notified and take action on it.</p>
+
+<h2>Conclusions</h2>
+
+<p>I&rsquo;ve used that for <a href="http://likeastore.com">likeastore</a> app I currently working on and it works just fine. Having such logs gave a lot of information after we went to private-beta phase. When you see how application behaves then real users start to use, it gives you good insights about fixes and improvements to apply.</p>
+
+<p>Taking into account that approach above is very universal and easy to adopt, to it today.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
@@ -1284,119 +1692,6 @@ console.log(person.name);
     </pre><p>It is <code>elmah.mvc.disableHandleErrorFilter</code>. By default it&#8217;s `false`, meaning `HandleErrorAttribute()` from ELMAH.MVC is used. To disable it, just set <code>true</code> to this setting.<br />
 </p><p>And btw, it&#8217;s already 30.000 downloads of NuGet package! Huge number, thanks a lot for all users and contributors.<br />
 </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Model Validation]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-model.html"/>
-    <updated>2012-11-08T09:42:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-model</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        Let&#8217;s go back for a moment for <a href="http://www.beletsky.net/2012/10/baby-steps-to-backbonejs-starting-up.html">previous</a> post where we started to bootstrap some basic Backbone.js application. It&#8217;s very simple now, just gathering all data and posting those data to server.<br />
-    </p>    <p>        Any reliable system is almost impossible without validation. If some field is required or must conform to some particular rule, it should be validated as soon as possible and validation information should be displayed to user. User then applies corrections and re-submit data.<br />
-    </p>    <p>        In case of `Feedback` model, we are interested that user always input her email and feedback message. Backbone.js provides very straight forward for models validation. If model requires validation, it should implement <a href="http://backbonejs.org/#Model-validate">validate</a> method.<br />
-    </p>    <p>        So, let&#8217;s extend our model with validate method.<br />
-    </p>    <pre class="brush: js">var Feedback = Backbone.Model.extend({
-    url: '/feedback',
-
-    defaults: {
-        'email': '',
-        'website': '',
-        'feedback': ''
-    },
-
-    validate: function (attrs) {
-        if (!attrs.email) {
-            return 'Please fill email field.';
-        }
-        if (!attrs.feedback) {
-            return 'Please fill feedback field.';
-        }
-    }
-});
-    </pre>    <p>        As you can see, in case of email or feedback is missing, we just simply return string with error message.<br />
-    </p>    <p>        To better understand what&#8217;s going on, let&#8217;s look on some piece of the code from Backbone.js framework. Namely, to `_validate` method of `Backbone.Model`, which is actually responsible for validation.<br />
-    </p>    <pre class="brush: js">_validate: function(attrs, options) {
-    if (options.silent || !this.validate) return true;
-    attrs = _.extend({}, this.attributes, attrs);
-    var error = this.validate(attrs, options);
-    if (!error) return true;
-    if (options && options.error) {
-       options.error(this, error, options);
-    } else {
-        this.trigger('error', this, error, options);
-    }
-    return false;
-}
-</pre>    <p>        You can see, if `validate` returns either undefined or null or false, `_validate` just returns true - meaning the model is valid. Otherwise, it would check if `options.error` function initialized and call it, if not model event `error` is triggered.<br />
-    </p>    <p>        During the model saving, we typically provide both success and error callbacks. It means, that error callback will be called, if model does not pass validation requirements. Inside the callback, we might decided what to do with errors. Right now, let&#8217;s just do alert.<br />
-    </p>    <pre class="brush: js">var options = {
-    success: function () {
-        alert('Thanks for the feedback!');
-    },
-    error: function (model, error) {
-        alert(error);
-    }
-};
-
-var feedback = {
-    email: this.$('#email').val(),
-    website:  this.$('#website').val(),
-    feedback: this.$('#feedback').val()
-};
-
-this.model.save(feedback, options);
-    </pre>    <p>        Notice that `error` callback receiving model itself as first argument and error object (one returned from `validate` method) as second argument. Let&#8217;s try this code: leave email and feedback fields empty and press submit button.<br />
-    </p>    <a href="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"><br />
-        <img src="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"/><br />
-    </a><br />
-    <p>        There are several drawback of such implementation, though. First of all, `alert` windows are awful, second if user corrects email, next time she presses the submit button next alert with another message appears. This is terrible UX, so let&#8217;s fix it.<br />
-    </p>    <p>        So, we should basically do 2 things: aggregate all errors during validation and apply some nice styles to errors.<br />
-    </p>    <p>        Instead of returning simple strings, we&#8217;ll return an array of objects, containing name of failed and field and message.<br />
-    </p>    <pre class="brush: js">validate: function (attrs) {
-    var errors = [];
-
-    if (!attrs.email) {
-        errors.push({name: 'email', message: 'Please fill email field.'});
-    }
-    if (!attrs.feedback) {
-        errors.push({name: 'feedback', message: 'Please fill feedback field.'});
-    }
-
-    return errors.length > 0 ? errors : false;
-}
-</pre>    <p>        Change the `save` method options, to show errors if any error appeared and hide errors if save was successful. <br />
-    </p>    <pre class="brush: js">var me = this;
-var options = {
-    success: function () {
-        me.hideErrors();
-    },
-    error: function (model, errors) {
-        me.showErrors(errors);
-    }
-};
-</pre>    <p>        And implement 2 simple methods:<br />
-    </p>    <pre class="brush: js">showErrors: function(errors) {
-    _.each(errors, function (error) {
-        var controlGroup = this.$('.' + error.name);
-        controlGroup.addClass('error');
-        controlGroup.find('.help-inline').text(error.message);
-    }, this);
-},
-
-hideErrors: function () {
-    this.$('.control-group').removeClass('error');
-    this.$('.help-inline').text('');
-}
-</pre>    <p>        Let&#8217;s test the code. As all fields are left empty, it will look like,<br />
-    </p>    <a href="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"><br />
-        <img src="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"></img><br />
-    </a><br />
-    <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
-    </p>    <h2>Conclusions</h2>    <p>        That was very simple &#8220;baby-step&#8221; style of approaching model validation. I would could it, validation &#8220;from the box&#8221;. Even if it&#8217;s very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
-    </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
-    </p></div>
 ]]></content>
   </entry>
   

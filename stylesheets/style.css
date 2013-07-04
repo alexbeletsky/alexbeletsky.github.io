@@ -1,11 +1,22 @@
 body {
 	font-family: "Lato", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-size: 18px;
-	font-weight: 300;
 }
 
 a {
 	color: #007cdb;
+}
+
+ul, ol {
+	margin: 0 0 1.5em;
+}
+
+ul li, ol li {
+	margin: 0 0 0.5em;
+}
+
+ul {
+	list-style: square;
 }
 
 .inner {
@@ -46,6 +57,10 @@ nav {
 	text-align: right;
 }
 
+.social ul {
+	margin-top: 25px;
+}
+
 .social a {
 	font-size: 0.9em;
 	color: #000;
@@ -70,7 +85,7 @@ article .sub-title {
 
 article p {
 	margin: 1em 0;
-	word-spacing: 3px;
+	word-spacing: 2px;
 }
 
 article h2, article h3, article h4 {
@@ -80,6 +95,15 @@ article h2, article h3, article h4 {
 article .title a, article .sub-title a {
 	text-decoration: none;
 	color: inherit;
+}
+
+article blockquote {
+	font-size: 1.1em;
+	position: relative;
+	line-height: 1.5em;
+	padding-left: 1em;
+	border-left: 4px solid #eee;
+	color: #777;
 }
 
 .entry-content {
@@ -159,9 +183,13 @@ footer a {
 	margin-right: 1em;
 }
 
-pre, code {
+code, pre {
 	font-size: 0.8em !important;
 	margin: 0 !important;
+}
+
+figure.code .highlight .gutter {
+	display: none;
 }
 
 .post img {

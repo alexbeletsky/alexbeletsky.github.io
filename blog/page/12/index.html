@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Inside ASP.NET MVC: Setting up project for hacking May 29th, 2011 InsideMVC, MVC, asp.net As we already got debug assembly and pdb file, it it time &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: Route to MvcHandler Jun 6th, 2011 InsideMVC, MVC, asp.net In my previous post I promised to start with exploration of MvcHanlder &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,6 +33,18 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -42,7 +54,7 @@
 	<div class="inner pure-u-1">
 		<h4 class="light">Alexander Beletsky's development blog</h4>
 		<h1><a href="/">My profession is engineering</a></h1>
-		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
 	<li><a href="/projects">Projects</a></li>
 	<li><a href="/talks">Talks</a></li>
 	<li><a href="/blog/archives">Archive</a></li>
@@ -63,6 +75,193 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">
+    
+      Inside ASP.NET MVC: Route to MvcHandler</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-06T10:28:00+03:00" pubdate data-updated="true">Jun 6<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+In my <a href="http://www.beletsky.net/2011/05/inside-aspnet-mvc-setting-up-project.html">previous post</a> I promised to start with exploration of <code>MvcHanlder</code> as entry point of ASP.NET MVC application. <code>MvcHandler</code> plays the major role in MVC infrastructure, but as I fugured out - the whole story does not begin there. The story is actually begins inside ASP.NET framework.
+</p>
+<h2>ASP.NET framework</h2>
+<p>
+ASP.NET framework is heart of ASP.NET MVC application. Basically, ASP.NET is a request processing engine. It takes incoming request as input and sends it through <i>internal pipeline</i> till the <i>end point</i>. The architecture allows extensibility, you could plug either into pipeline (modules) or end points (handlers). Interesting fact that ASP.NET designed to be decoupled from actual request source. So, the source of request could be any application - IIS, Cassini or any custom one.
+</p>
+<p>
+We could imagine that each request pass through the set of filters (<i>internal pipeline</i>) lands up on request handler (<i>end point</i>), request handler creates a response object and sent it back. There are a lot of hidden details of dealing with managed/unmanaged code that you could find in this <a href="http://www.west-wind.com/presentations/howaspnetworks/howaspnetworks.asp">brilliant article</a> by Rick Strahl. 
+</p>
+<p>
+For us it is important to understand two basic abstractions, HttpModules and HttpHandlers.
+</p>
+<h2>HttpModules and HttpHandlers</h2>
+<p>
+From the developers point of view the difference between those are: one implements <code>IHttpModule</code> interface another implements <code>IHttpHandler</code> interface. 
+</p>
+<p>
+<strong>Module</strong> participates in the request processing of every request in order to change or add to it in some way.  
+</p>
+<p>
+<strong>Handler</strong> is responsible for handling the request and producing the response for specific content types.  
+</p>
+<p>
+ASP.NET MVC is HttpHandler. 
+</p>
+<a href="https://lh3.googleusercontent.com/-8EBxpoh7R0w/Tex-Zo80FfI/AAAAAAAAHc8/eMI-FEEurCg/mvchandler.png">
+<img src="https://lh3.googleusercontent.com/-8EBxpoh7R0w/Tex-Zo80FfI/AAAAAAAAHc8/eMI-FEEurCg/mvchandler.png" alt="MVC handler" />
+</a>
+<p>
+There a bunch of default HttpModules and HttpHandlers in your IIS configuration. Just take a look here - %WINDOWS%\Microsoft.NET\Framework\v4.0.30319\Config\web.config. 
+</p>
+<p>
+But if you look closer you won&#8217;t notice any mention of <code>System.Web.Mvc.MvcHanlder</code>. Hey. what&#8217;s wrong? How the runtime actually knows that <code>MvcHanler</code> have to be called to handle our request? That was absolutely unclear to me at very beginning. 
+</p>
+<h2>From request to handler</h2>
+<p>
+I opened WebRuntime.sln and found all references to <code>MvcHandler</code>. It is only one place there, in the <code>MvcRouteHandler</code> (MvcRouteHandler.cs) class. MvcRouteHandler implements <code>IRouteHandler</code> interface, with one single method <code>GetHttpHandler</code>. I put the breakpoint there and started application for debug.
+</p>
+<a href="https://lh6.googleusercontent.com/-qcToxPI6g3o/Tex-ZsGfgdI/AAAAAAAAHdA/9SLS0GaX5GQ/mvcroutehandler.get.png">
+<img src="https://lh6.googleusercontent.com/-qcToxPI6g3o/Tex-ZsGfgdI/AAAAAAAAHdA/9SLS0GaX5GQ/mvcroutehandler.get.png" alt="MVC route handler" />
+</a>
+<p>
+As application got started I halted on breakpoint with such call stack:
+</p>
+<a href="https://lh4.googleusercontent.com/-95WwV5VbvNA/Tex-ZV9WcgI/AAAAAAAAHc4/RK9EdEXJS3E/s912/gethandler.debug.png">
+<img src="https://lh4.googleusercontent.com/-95WwV5VbvNA/Tex-ZV9WcgI/AAAAAAAAHc4/RK9EdEXJS3E/s912/gethandler.debug.png" alt="MVC debug" />
+</a>
+<p>
+Let&#8217;s try to read and decrypt it.
+</p>
+<p>
+It begins with <code>WebDev.WebHost40.dll</code> (Cassini Web Server) that receives request and <code>System.Web.HttpRuntime.ProcessRequest</code>. Here is ASP.NET framework start to work:  
+</p>
+<ol>
+<li>
+<strong>ProcessRequestInternal</strong> method called. This is the primary method of whole pipeline. First, it initialize the <code>HttpContext</code> object.
+</li>
+<a href="https://lh5.googleusercontent.com/-T9pgTJlG10Q/Tex-Z8zRAGI/AAAAAAAAHdM/duxzWFuPwy0/processrequestinternal.1.png">
+<img src="https://lh5.googleusercontent.com/-T9pgTJlG10Q/Tex-Z8zRAGI/AAAAAAAAHdM/duxzWFuPwy0/processrequestinternal.1.png" alt="System.Web.Dll ProcessRequestInternal"/>
+</a>
+<li>
+Next it get <code>HttpApplication</code> instance, initialize it and calls either <code>BeginProcessRequest</code> for <code>IHttpAsyncHandler</code> or <code>ProcessReques</code> for <code>IHttpHandler</code>. 
+</li>
+<a href="https://lh5.googleusercontent.com/-E2zMvxF0Kjs/Tex-Z399b2I/AAAAAAAAHdE/uuZWDF99pLg/processrequestinternal.2.png">
+<img src="https://lh5.googleusercontent.com/-E2zMvxF0Kjs/Tex-Z399b2I/AAAAAAAAHdE/uuZWDF99pLg/processrequestinternal.2.png" alt="System.Web.dll GetApplicationInstance"/>
+</a>
+<li>
+If I go to <code>global.asax.cs</code> of our application it is clear that <code>System.Web.HttpApplication</code> implementation is inherited and <code>System.Web.HttpApplication</code> is a usual <code>IHttpAsyncHandler</code>. So, async <code>BeginProcessRequest</code> starts.
+</li>
+<a href="https://lh3.googleusercontent.com/-o9FWdeP1IRk/Tex-ZYGZAmI/AAAAAAAAHcw/M9vfv2DB6EM/httpapplication.png">
+<img src="https://lh3.googleusercontent.com/-o9FWdeP1IRk/Tex-ZYGZAmI/AAAAAAAAHcw/M9vfv2DB6EM/httpapplication.png" alt="HttpApplication"/>
+</a>
+<li>In <code>BeginProcessRequest</code> there is a cycle that iterates all modules and execute each of it. Reflector code looks messy, but the point is clear</li>
+<a href="https://lh5.googleusercontent.com/-9wj99HDJiOM/Tex-ZEIIEqI/AAAAAAAAHcs/DV6Qy3ewRMM/execute.steps.png">
+<img src="https://lh5.googleusercontent.com/-9wj99HDJiOM/Tex-ZEIIEqI/AAAAAAAAHcs/DV6Qy3ewRMM/execute.steps.png" alt="System.Web.dll ExecuteSteps"/>
+</a>
+<li>And finally, the control goes to <strong>UrlRoutingModule</strong> that calls our factory method for <code>MvcHandler</code>. Aha!</li>
+</ol>
+<h2>UrlRouting module</h2>
+<p>
+UrlRouting is an HttpModule, registered in global web.config:
+</p>
+<a href="https://lh3.googleusercontent.com/-tb3Q5OzOn2k/Tex-aX1BawI/AAAAAAAAHdU/4AFsqAMjD_A/urlrouting.register.png">
+<img src="https://lh3.googleusercontent.com/-tb3Q5OzOn2k/Tex-aX1BawI/AAAAAAAAHdU/4AFsqAMjD_A/urlrouting.register.png" alt="UrlRouting register"/>
+</a>
+<p>
+The goal of this module is basically matching incoming request by URL with pre-defined Route configuration and return corresponding handler for this request. In <code>PostResolveRequestCache</code> method it gets the RouteHandler and asks for corresponding HttpHanlder. 
+</p>
+<a href="https://lh4.googleusercontent.com/-n1rd7SudO7k/Tex-aBhr-tI/AAAAAAAAHdQ/XaEaL3dPmJY/urlrouting.postresolve.png">
+<img src="https://lh4.googleusercontent.com/-n1rd7SudO7k/Tex-aBhr-tI/AAAAAAAAHdQ/XaEaL3dPmJY/urlrouting.postresolve.png"/>
+</a>
+<p>
+Wow, I didn&#8217;t know that!.. UrlRouting plays a major role inside the MVC infrastructure. But there the Routes are initialized and how <code>MvcRouteHandler</code> is associated with request?
+</p>
+<h2>Back to roots - Application_Start() method</h2>
+<p>
+I should actually start from here, <code>Application_Start()</code> is entry point of application. By my journey turn to be just other way around.
+</p>
+<a href="https://lh3.googleusercontent.com/-BTvRzBgusNQ/Tex-Y-X7yrI/AAAAAAAAHcg/0FJT4hP1FM4/applicationstart.png">
+<img src="https://lh3.googleusercontent.com/-BTvRzBgusNQ/Tex-Y-X7yrI/AAAAAAAAHcg/0FJT4hP1FM4/applicationstart.png" alt="Application_Init()"/>
+</a>
+<p>
+Inside the <code>RegisterRoutes</code> we register route by giving: route name and constraints.
+</p>
+<a href="https://lh5.googleusercontent.com/-iKaDvwunU-M/Tex-ZftTanI/AAAAAAAAHc0/6ssXZ32Zva0/maproute.png">
+<img src="https://lh5.googleusercontent.com/-iKaDvwunU-M/Tex-ZftTanI/AAAAAAAAHc0/6ssXZ32Zva0/maproute.png" alt="MVC map route"/>
+</a>
+<p>
+The <code>MapRoute</code> is actually extension method in RouteCollectionExtensions.cs.
+</p>
+<a href="https://lh5.googleusercontent.com/-qvU8dVWiIpw/Tex-aJuc0RI/AAAAAAAAHdI/u3OgdJCf8EA/routecollection.png">
+<img src="https://lh5.googleusercontent.com/-qvU8dVWiIpw/Tex-aJuc0RI/AAAAAAAAHdI/u3OgdJCf8EA/routecollection.png" alt="MVC register route"/>
+</a>
+<p>
+Now, you can see how the route with particular URL is being register and associated with <code>MvcRouteHandler</code>.
+</p>
+<h2>Putting it all together</h2>
+<p>
+Now it is time to get deep breath and finally understand the route of HTTP request to MvcHttpHandler. Here we go:
+</p>
+<ul>
+<li>ASP.NET framework starting to process incoming request in <code>ProcessRequest</code> method, but interesting stuff going in <code>ProcessRequestInternal</code></li>
+<li><code>ProcessRequestInternal</code> calls <code>GetApplicationInstance</code> method that get application instance and calls it <code>Application_Init()</code></li>
+<li><code>Application_Init()</code> registers routes that map URL (like &#8220;home/index&#8221;) with <code>MvcRouteHandler</code> instance</li>
+<li>ASP.NET framework starts to iterate modules for incoming request and found <code>UrlRouting</code> module</li>
+<li><code>UrlRouting</code> module matches incoming request URL with registered collections of Routes</li>
+<li>For found matched Route it gets corresponding route handler (MvcRouteHandler)</li>
+<li><code>MvcHandler</code> is being returned by GetHttpHandler of MvcRouteHandler</li>
+</ul>
+<p>
+That&#8217;s the routing that is being executed each time you put URL and hit your browser button.
+</p>
+<h2>What&#8217;s next?</h2>
+<p>
+I hope next time we indeed look closer to <code>MvcHandler</code> :).
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/05/inside-aspnet-mvc-setting-up-project.html">Inside ASP.NET MVC: Part 2: Setting up project for hacking</a>
+Next: <a href=http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">Inside ASP.NET MVC: All begins here - MvcHanlder</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1250,122 +1449,6 @@ As soon as component test is defined we are no longer interested in interaction 
 </p>
 <p>
 Back to our safety net analogy - with a lot of Interaction (detailed) cases, we are putting net to high, we should move it lower by getting rid of too detailed cases. To compensate that, it is important to have behavior test that would verify that application state still in workable state. This should be really careful and continues process.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/04/agilebasecamp-kiev-2011-sergey-dmitriev.html">
-    
-      AgileBaseCamp Kiev 2011: Sergey Dmitriev: Setting up priorities with Kano analysis</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-18T08:54:00+03:00" pubdate data-updated="true">Apr 18<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<small>
-<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<p>
-<a href="http://twitter.com/#dmitriev">Sergey Dmitriev</a> is a first russian-speaking Certified Scrum Trainer. On AgileBaseCamp he presented scientific based approach for prioritizing the backlog. I liked his speech since it was very new for me and could be done on practice.
-</p>
-<p>
-The approach is based on Kano analysis with weighted factor matrix. It might sound a little bit complex, but whole process is rather simple and splitted up on 2 stages.
-</p>
-<h2>Kano analysis of backlog items</h2>
-<p>In very simplified version it is basically 2 questions, with 5 answers. Questions are:</p>
-<ul>
-<li>How do you feel that feature is PRESENT in product?</li>
-<li>How do you feel that feature is ABSENT in product?</li>
-</ul>
-<p>
-And answers are:
-</p>
-<ul>
-<li>I like that</li>
-<li>I expect that</li>
-<li>I don&#8217;t care</li>
-<li>I can live with that</li>
-<li>I don&#8217;t like that</li>
-</ul>
-<p>
-Each item in backlog are put through that questions. It is important that real customers to participate that survey. Due to statistics laws, as biggest sample you have as more precise results you got. Sergey has created a web application that helps to perform such surveys, <a href="http://www.kanosurvey.com/">KanoSurvey</a>.
-</p>
-<h2>Classification of results</h2>
-<p>
-Based on users answers and using some complex math behind KanoSurvey would split up all user stories up to 5 classes:
-</p>
-<ul>
-<li><strong>Have to be done (mandatory) class</strong> - features that customers sees as very important/expected and have to be done fast</li>
-<li><strong>Linear class</strong> - linear features are something that you might accomplish but still do not fully satisfy customers (like battery life of mobile phone - if it works 3 days without re-charge.. it is nice, but I would like to have 4 days. Or, if I have 1Gb of storage on new service.. it is nice, but I would like to have 2Gb etc)</li>
-<li><strong>Amazing class</strong> - leadership function, something that makes you unique and produce &#8220;wow&#8221;-effect</li>
-<li><strong>Inversed class</strong> - features that you you might have, but customers are feeling bad about it</li>
-<li><strong>Don&#8217;t care class</strong> - features that customers not interested in</li>
-<li><strong>Questionable class</strong> - these are probably mistakes, then users answering &#8220;I want, I don&#8217;t want&#8221; in the same time</li>
-</ul>
-<p>
-The value only persist in first 3 classes of features. So, we use that in further analysis, rest of features are just thrown away are useless.
-</p>
-<p>
-It is done. After analysis it is time for weighing.
-</p>
-<h2>Weighing</h2>
-<p>
-With Kano analysis we understood that features are important for our auditorium. Now we need to plan the feature thought releases, to do that we have to prioritize them correctly. Weighing of features helps to do right prioritization.
-</p>
-<p>
-To perform a weighing business criteria&#8217;s have to be defined. It is very up to the product what the business criteria&#8217;s are. It is recommended to select not more than 5, that makes the process simpler. The example of criteria&#8217;s could be:
-</p>
-<ul>
-<li>Uniqueness - weight 3</li>
-<li>Sales - weight 2</li>
-<li>Low costs - weight 1</li>
-</ul>
-<p>
-Each pre-selected backlog item is assigned with weight.
-</p>
-<h2>Combining the results</h2>
-<p>
-Sergey has created an Excel spreadsheet (that is available <a href="http://www.agilecoach.ru/st/materials">here</a>). In the Excel spreadsheet we specify backlog items, estimations in points, class of Kano and it&#8217;s weight. Based on this input spreadsheet would automatically propose desired priority. It is also possible to see value and cost of particular item. This is a priceless information for any Product Owner.
-</p>
-<p>
-The presentation slides are located <a href="http://www.slideshare.net/Blackie6/ss-7654382">here</a>.
 </p></div>
 
       

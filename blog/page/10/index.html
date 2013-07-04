@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="The Power of Close Collaboration Oct 5th, 2011 BeerNCode, Mind The collaboration and communication is very important in solving problems. As much &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC Oct 13th, 2011 InsideMVC, MVC, asp.net All types inside ASP.NET MVC3 framework are &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,6 +33,18 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -42,7 +54,7 @@
 	<div class="inner pure-u-1">
 		<h4 class="light">Alexander Beletsky's development blog</h4>
 		<h1><a href="/">My profession is engineering</a></h1>
-		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
 	<li><a href="/projects">Projects</a></li>
 	<li><a href="/talks">Talks</a></li>
 	<li><a href="/blog/archives">Archive</a></li>
@@ -63,6 +75,139 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/inside-aspnet-mvc-idependencyresolver.html">
+    
+      Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-13T21:55:00+03:00" pubdate data-updated="true">Oct 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    using System.Collections.Generic;
+
+    public interface IDependencyResolver {
+        object GetService(Type serviceType);
+        IEnumerable&lt;object&gt; GetServices(Type serviceType);
+    }
+}
+</pre><p>If take a look into the code you will definitely smell the <a href="http://msdn.microsoft.com/en-us/library/ff648968.aspx">Service Locator</a> pattern. Indeed, <code>IDependencyResolver</code> is pure service locator.<br />
+</p><h2>DependencyResolver as IDependencyResolver holder</h2><p><code>IDependencyResolver</code> instance is being accessed through the <code>DependencyResolver</code> class. <br />
+</p><pre class="brush:csharp">public class DependencyResolver {
+ // Static accessors
+
+ private static DependencyResolver _instance = new DependencyResolver();
+
+ public static IDependencyResolver Current {
+  get {
+   return _instance.InnerCurrent;
+  }
+ }
+</pre><p>It is a singleton class, current instance is being accessed through <code>Current</code> property. The default implementation is <code>DefaultDependencyResolver</code>. <br />
+</p><pre class="brush:csharp">// Instance implementation (for testing purposes)
+
+private IDependencyResolver _current = new DefaultDependencyResolver();
+
+</pre><p>Even if the comment says (for testing purposes) that class is used in real code. Let&#8217;s take a look on that.<br />
+</p><pre class="brush:csharp">private class DefaultDependencyResolver : IDependencyResolver {
+ [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;This method might throw exceptions whose type we cannot strongly link against; namely, ActivationException from common service locator&quot;)]
+ public object GetService(Type serviceType) {
+  try {
+   return Activator.CreateInstance(serviceType);
+  }
+  catch {
+   return null;
+  }
+ }
+
+ public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+  return Enumerable.Empty&lt;object&gt;();
+ }
+}
+</pre><p>As you might see, it is extremely simple. It just tries to resolve the type by <code>Activator</code> class. If the type could be resolved it just returns it&#8217;s instance, otherwise just return null. The <code>GetServices</code> method just returns empty enumerable. <br />
+</p><h2>Substituting default DependencyResolver</h2><p>As I said above, the main design goal of <code>DependencyResolver</code> is to provide flexibility. By flexibility I mean just easy way to substitute any type with own implementation. Say you want to change the <code>ControllerFactory</code> or <code>ModelBinder</code> or what ever you like. Everything is possible just by overriding <code>IDependencyResolver</code>.<br />
+</p><p>I&#8217;ve seen one common misconception about MVC3, that it is contains IoC container inside it. It is not true, but it expose the interface which really much suites interfaces of famous IoC containers. To do not have a strict rules and force developers to use one type of IoC, ASP.NET MVC developers created a facility by which you can integrate yours IoC of choice. Let&#8217;s have a look how to do that. <br />
+</p><p><code>DependencyResolver</code> contains the number of setters to substitute the instance.<br />
+</p><pre class="brush:csharp">public static void SetResolver(IDependencyResolver resolver) {
+ _instance.InnerSetResolver(resolver);
+}
+
+public static void SetResolver(object commonServiceLocator) {
+ _instance.InnerSetResolver(commonServiceLocator);
+}
+
+[SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1006:DoNotNestGenericTypesInMemberSignatures&quot;, Justification = &quot;This is an appropriate nesting of generic types.&quot;)]
+public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type, IEnumerable&lt;object&gt;&gt; getServices) {
+ _instance.InnerSetResolver(getService, getServices);
+}
+</pre><p>As example of implementation here my very dummy dependency resolver.<br />
+</p><pre class="brush:csharp">namespace MvcForDebug2.Infrastructure {
+    public class DummyDependencyResolver : IDependencyResolver {
+        public object GetService(Type serviceType) {
+            if (serviceType.Equals(typeof(IControllerFactory))) {
+                return new DummyControllerFactory();
+            }
+
+            return null;
+        }
+
+        public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+            return null;
+        }
+    }
+}
+</pre><p>Finally, in global.asx.cs you need to set it up.<br />
+</p><pre class="brush:csharp">protected void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+
+ RegisterGlobalFilters(GlobalFilters.Filters);
+ RegisterRoutes(RouteTable.Routes);
+
+ DependencyResolver.SetResolver(new DummyDependencyResolver());
+ //ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+}
+</pre><h2>Conclusions</h2><p><code>IDependencyResolver</code> is a powerful feature of ASP.NET MVC3. It is used to create all internal MVC types, so by overriding it you can override default behavior of many framework aspects. Typically you should not have any complex code in <code>GetService</code> and <code>GetServices</code> methods, but instead just delegation of call to IoC container.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -720,83 +865,6 @@ Now, master-25 is your “master” for <code>branch25</code> SVN branch.
 </ol>
 <p>
 You can merge you previous changes.. and continue to work with <code>master-25</code> as you worked with usual master.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/07/how-to-be-better-developer-or-3.html">
-    
-      How to be better developer or 3 accounts rule</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-22T16:46:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Oh no, not again! - you might think. Yet another Mr.SmartyPants are going to share his own vision of how to improve in development.
-</p>
-<p>I&#8217;ll say very obvious thing - if you are going to be great in something, you have to do that a lot. Like, if you going to be a great snowboarder you have to ride a lot; If you going to be great mathematician you have to solve a lot of problems; If you going to be great developer you simply have to do a lot programming :). 
-</p>
-<p>
-The road from &#8220;good to great&#8221; is long and difficult, you could not be great in one year.. or ten, or even whole life. But what you definitely can do, be a better. Only realizing that you are better than yesterday (month, year ago) is a great benefit, believe me.  
-</p>
-<p>
-But just the fact of knowing &#8220;I need to do something a lot&#8221; would hardly could help you to progress. What you need to have is <strong>indicators</strong>. Simple criteria&#8217;s that make you understand what your progress is. Are doing great or you suck?
-</p>
-<p>
-Three account&#8217;s that I created almost year ago, help me to get those indicators.
-</p>
-<ul>
-<li>
-<strong>github.com</strong> - producing of code, that what we do. you have to have github to store all code you produce, doesn&#8217;t matter it is a product or tool or just a <a href="https://gist.github.com/">gist</a> you created to help someone - it have to be stored. with a github you should be able to see how much you coding are changing through the time. you should review you last year code and think &#8220;Oh, God I suck a lot!&#8221;.
-</li>
-<li>
-<strong>blogger.com</strong> - besides of code writing, you have to share your technical thoughts. the blog, is a great motivator for seeking and sharing knowledge. as well as coding, blogging requires much skills. I see some relation between producing good code and good post. blog would also help you to look back, to remind you problems you was thinking of.. and how much you were right on that? is your opinion changed on some topics or not?
-</li>
-<li>
-<strong>stackoverflow.com</strong> - if you can&#8217;t explain something to another, you don&#8217;t understand it. giving an answers is extremely difficult, especially in such competitive environment as stackoverflow. the time I created account there I was not able to give any answer in meaningful time. I just had not enough skills for that. stackoverflow is great indicator, since it contains a reputation system.
-</li>
-</ul>
-<p>
-Well, do you think it is useful? It works for me and I&#8217;m going to proceed. 
-</p>
-<p>
-PS. That&#8217;s my 100 post for this blog.. and that&#8217;s my Friday before week vacation.
 </p></div>
 
       

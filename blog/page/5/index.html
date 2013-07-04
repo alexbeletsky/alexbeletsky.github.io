@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="ELMAH.MVC v2.0 is coming Jun 9th, 2012 ELMAH.MVC, GitHub, asp.net Elmah.MVC is rather popular package in NuGet gallery. Being submitted about year &hellip;">
+  <meta name="description" content="ELMAH.MVC v.2.0.0 - Release Candidate Jun 13th, 2012 ELMAH.MVC, asp.net I&#8217;ve just pushed new Elmah.MVC package. It contains several changes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,6 +33,18 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -42,7 +54,7 @@
 	<div class="inner pure-u-1">
 		<h4 class="light">Alexander Beletsky's development blog</h4>
 		<h1><a href="/">My profession is engineering</a></h1>
-		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
 	<li><a href="/projects">Projects</a></li>
 	<li><a href="/talks">Talks</a></li>
 	<li><a href="/blog/archives">Archive</a></li>
@@ -63,6 +75,64 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/elmahmvc-v200-release-candidate.html">
+    
+      ELMAH.MVC v.2.0.0 - Release Candidate</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T18:42:00+03:00" pubdate data-updated="true">Jun 13<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        I&#8217;ve just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I&#8217;m about to spent sometime with testing and collecting feedback before it&#8217;s availability.<br />
+    </p>    <p>        I think ELMAH.MVC is getting it&#8217;s shape. Hopefully it will be as easy to use as indented.<br />
+    </p>    <h2>Changes highlights</h2>    <p>        Quickly recap the major and breaking changes of ELMAH.MVC 2.0.<br />
+    </p>    <h3>Deployed as class library</h3>    <p>        First noticeable change is that ELMAH.MVC is no longer deployed as several source files, having new Area and Elmah controller inside. The the sake of compatibility and reach functionality it is now deployed as <code>Elmah.Mvc.dll</code>. It&#8217;s using David&#8217;s Ebbo <a href="https://nuget.org/packages/WebActivator">WebActivator</a> project to bootstrap itself, registering routes and global filters.<br />
+    </p>    <h3>New URL to access ELMAH dashboard</h3>    <p>        In 2.0 ELMAH is accessed by <code>/elmah</code> route (not <code>/admin/elmah</code> as it was in previous versions). There are several reasons for that. First one is because of new &#8216;Admin&#8217; area is not created anymore, second is the really strange behavior is ASP.NET MVC default routing rules. <br />
+    </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it&#8217;s shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it&#8217;s already included into package.<br />
+    </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it&#8217;s own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
+    </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
+    </p>    <h3>Logging with customError=&#8221;On&#8221;</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
+    </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
+            </p>        </div>    </div></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -660,79 +730,6 @@
 </ol><h2>It took a while&#8230;</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
 </p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
 </p><h2>What&#8217;s next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to &#8220;pure Github&#8221; environment from here. Sure, now this transaction having it&#8217;s own dependencies. But let&#8217;s see what&#8217;s happen during next year. <br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/05/cs101-building-search-engine-week-3.html">
-    
-      CS101 Building a Search Engine: Week 3</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-07T12:58:00+03:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
-</small><br />
-</p><p>Yesterday, I&#8217;ve concluded Unit 3 of <a href="http://www.udacity.com/">CS101 Building Search Engine</a> class. I had a little lag, since I&#8217;ve been to little vacation at the beginning of previous week, so got a chance to get back to class only Thursday. So, I still have one homework task in my to-do list.<br />
-</p><p>It&#8217;s been an interesting unit, through it&#8217;s still very basic one. I&#8217;m little more confident with Python, getting powered by knowledge of collections, indexes etc. Again, I&#8217;m really pleased with language simplicity. Just few code snippets I like,<br />
-</p><pre class="brush: python"># creates generic list
-        some_list = []
-        
-        # add something inside
-        some_list.append(1)
-        some_list.append('z')
-        some_list.append([3,2,1])
-        
-        # iterate by for loop
-        for e in some_list:
-            pass
-            
-        # or with while
-        while some_list:
-            e = some_list.pop()
-        
-        # get index of element
-        index = some_list.index(1)
-    </pre><p>I also started to familiarize with functional style of Python programming. You can find some good inputs <a href="http://docs.python.org/howto/functional.html">here</a>. Everything look very interesting so far.<br />
-</p><p>This week we moved further with &#8220;real&#8221; implementation of web crawler. Instead of going by the set of quizzes I went my own path and created my implementation of simple crawler. So, what it does currently is go from &#8216;seed&#8217; page and collect all links it&#8217;s able to find on target pages and related pages. I went a little far, since I made it run on real web requests, instead of test data that current unit supposes. If you are interested code could be found <a href="https://gist.github.com/2626946">here</a>.<br />
-</p><p>Still I pretend as CS101 student trying to apply only knowledge I got through latest weeks. It&#8217;s great exercise I believe, showing some gaps in my education or concept understanding.  <br />
-</p><p>Homework was interesting as well. <a href="http://www.crunchbase.com/person/anna-patterson">Anna Patterson</a> was a starring guest for homework session. Together with Anna we tried to improve crawler with some real life requirements, like max_pages and max_depth parameter to prevent crawler to stay in indefinite loop. Anna is great expert in this field, so for each homework task I highly recommend to check the answer, a lot of interesting details there.<br />
 </p></div>
 
       

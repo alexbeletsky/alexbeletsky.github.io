@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="How to run multiple AJAX requests Oct 31st, 2012 AJAX, JavaScript Suppose you have a list of resources that you would like to retrieve by means of &hellip;">
+  <meta name="description" content="Baby steps to Backbone.js: Model Validation Nov 8th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Let&#8217;s go back for a moment for previous &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,6 +33,18 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -42,7 +54,7 @@
 	<div class="inner pure-u-1">
 		<h4 class="light">Alexander Beletsky's development blog</h4>
 		<h1><a href="/">My profession is engineering</a></h1>
-		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal"><ul>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
 	<li><a href="/projects">Projects</a></li>
 	<li><a href="/talks">Talks</a></li>
 	<li><a href="/blog/archives">Archive</a></li>
@@ -63,6 +75,156 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/11/baby-steps-to-backbonejs-model.html">
+    
+      Baby steps to Backbone.js: Model Validation</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-08T09:42:00+02:00" pubdate data-updated="true">Nov 8<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Let&#8217;s go back for a moment for <a href="http://www.beletsky.net/2012/10/baby-steps-to-backbonejs-starting-up.html">previous</a> post where we started to bootstrap some basic Backbone.js application. It&#8217;s very simple now, just gathering all data and posting those data to server.<br />
+    </p>    <p>        Any reliable system is almost impossible without validation. If some field is required or must conform to some particular rule, it should be validated as soon as possible and validation information should be displayed to user. User then applies corrections and re-submit data.<br />
+    </p>    <p>        In case of `Feedback` model, we are interested that user always input her email and feedback message. Backbone.js provides very straight forward for models validation. If model requires validation, it should implement <a href="http://backbonejs.org/#Model-validate">validate</a> method.<br />
+    </p>    <p>        So, let&#8217;s extend our model with validate method.<br />
+    </p>    <pre class="brush: js">var Feedback = Backbone.Model.extend({
+    url: '/feedback',
+
+    defaults: {
+        'email': '',
+        'website': '',
+        'feedback': ''
+    },
+
+    validate: function (attrs) {
+        if (!attrs.email) {
+            return 'Please fill email field.';
+        }
+        if (!attrs.feedback) {
+            return 'Please fill feedback field.';
+        }
+    }
+});
+    </pre>    <p>        As you can see, in case of email or feedback is missing, we just simply return string with error message.<br />
+    </p>    <p>        To better understand what&#8217;s going on, let&#8217;s look on some piece of the code from Backbone.js framework. Namely, to `_validate` method of `Backbone.Model`, which is actually responsible for validation.<br />
+    </p>    <pre class="brush: js">_validate: function(attrs, options) {
+    if (options.silent || !this.validate) return true;
+    attrs = _.extend({}, this.attributes, attrs);
+    var error = this.validate(attrs, options);
+    if (!error) return true;
+    if (options && options.error) {
+       options.error(this, error, options);
+    } else {
+        this.trigger('error', this, error, options);
+    }
+    return false;
+}
+</pre>    <p>        You can see, if `validate` returns either undefined or null or false, `_validate` just returns true - meaning the model is valid. Otherwise, it would check if `options.error` function initialized and call it, if not model event `error` is triggered.<br />
+    </p>    <p>        During the model saving, we typically provide both success and error callbacks. It means, that error callback will be called, if model does not pass validation requirements. Inside the callback, we might decided what to do with errors. Right now, let&#8217;s just do alert.<br />
+    </p>    <pre class="brush: js">var options = {
+    success: function () {
+        alert('Thanks for the feedback!');
+    },
+    error: function (model, error) {
+        alert(error);
+    }
+};
+
+var feedback = {
+    email: this.$('#email').val(),
+    website:  this.$('#website').val(),
+    feedback: this.$('#feedback').val()
+};
+
+this.model.save(feedback, options);
+    </pre>    <p>        Notice that `error` callback receiving model itself as first argument and error object (one returned from `validate` method) as second argument. Let&#8217;s try this code: leave email and feedback fields empty and press submit button.<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"><br />
+        <img src="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"/><br />
+    </a><br />
+    <p>        There are several drawback of such implementation, though. First of all, `alert` windows are awful, second if user corrects email, next time she presses the submit button next alert with another message appears. This is terrible UX, so let&#8217;s fix it.<br />
+    </p>    <p>        So, we should basically do 2 things: aggregate all errors during validation and apply some nice styles to errors.<br />
+    </p>    <p>        Instead of returning simple strings, we&#8217;ll return an array of objects, containing name of failed and field and message.<br />
+    </p>    <pre class="brush: js">validate: function (attrs) {
+    var errors = [];
+
+    if (!attrs.email) {
+        errors.push({name: 'email', message: 'Please fill email field.'});
+    }
+    if (!attrs.feedback) {
+        errors.push({name: 'feedback', message: 'Please fill feedback field.'});
+    }
+
+    return errors.length > 0 ? errors : false;
+}
+</pre>    <p>        Change the `save` method options, to show errors if any error appeared and hide errors if save was successful. <br />
+    </p>    <pre class="brush: js">var me = this;
+var options = {
+    success: function () {
+        me.hideErrors();
+    },
+    error: function (model, errors) {
+        me.showErrors(errors);
+    }
+};
+</pre>    <p>        And implement 2 simple methods:<br />
+    </p>    <pre class="brush: js">showErrors: function(errors) {
+    _.each(errors, function (error) {
+        var controlGroup = this.$('.' + error.name);
+        controlGroup.addClass('error');
+        controlGroup.find('.help-inline').text(error.message);
+    }, this);
+},
+
+hideErrors: function () {
+    this.$('.control-group').removeClass('error');
+    this.$('.help-inline').text('');
+}
+</pre>    <p>        Let&#8217;s test the code. As all fields are left empty, it will look like,<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"><br />
+        <img src="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"></img><br />
+    </a><br />
+    <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
+    </p>    <h2>Conclusions</h2>    <p>        That was very simple &#8220;baby-step&#8221; style of approaching model validation. I would could it, validation &#8220;from the box&#8221;. Even if it&#8217;s very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
+    </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -759,94 +921,6 @@ $.get(url1, function (r) {
     </p>    <p>        I really liked how the things went. From my perspective the idea of community spots was really cool. Probably, it&#8217;s to difficult for introverts, to feel them self comfortable with this environment, so mix up of formal speeches and spots could be a good idea for future conferences.<br />
     </p>    <p>        I wish to say thanks for organizers of this event for everybody involved, great effort guys. As always, it was so great to meet with colleagues from other cities and shake the hand for guys, whom I knew only virtually before. See you next year!<br />
     </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/08/developing-web-applications-faster.html">
-    
-      Developing Web Applications Faster</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-20T12:20:00+03:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/html/'>HTML</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>    If you haven&#8217;t seen Bret Victor&#8217;s <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
-</p><p>    As a developers, we do code. Applying Victor&#8217;s principle, ideally we should have this code immediately running and showing it&#8217;s results of execution. Some experimental IDE&#8217;s like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> is trying to adopt this principle now. <br />
-</p><p>    If you develop web applications, you spend much time working with HTML/CSS/JS, which being executed by browser. The typical workflow, is to open your text editor, correct some mark-up or javascript code, then switch to browser, press F5 and see the results. It doesn&#8217;t sound like a big job, but believe me, it&#8217;s getting annoying and boring in very short time.<br />
-</p><h2>LiveReload comes to help</h2><p>    Ideal workflow is something like, you apply changes to JS, press Ctrl + S in your text editor and browser get&#8217;s immediately reloaded, showing the results of execution. That&#8217;s sounds really cool and fortunately there is great solution for that. It&#8217;s called <a href="https://github.com/mockko/livereload">LiveReload</a> from <a href="https://github.com/andreyvit">Andrey Tarantsov</a>.<br />
-</p><p>    It can be installed as either a <code>&lt;script type=&quot;javascript&quot; scr=&quot;/libs/livereload.js&quot;&gt;&lt;/script&gt;</code> tag in your app, or as a browser plug-in. I prefer the plug-in way, since it could work with any app and requires no code modifications. There plugins for <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&ved=0CFYQFjAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fjnihajbhpnppcggbcgedagnkighmdlei&ei=Ld8xUOzuD8bhtQaThIGYAw&usg=AFQjCNGfX_zDQVCEb-jaq2-TSiR7TqxQWw&sig2=039AdwBtqrpgzbt-irnUcQ">Chrome</a>, <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&sqi=2&ved=0CEMQFjAA&url=https%3A%2F%2Faddons.mozilla.org%2Fen-us%2Ffirefox%2Faddon%2Flivereload%2F&ei=f98xUMPVM4rTtAbVioHgAg&usg=AFQjCNGsE_l-orw8MwyGW9mcQ2-y8H2F5Q&sig2=lYx9rMgyuI2384_1y2MZ8w">FireFox</a> and <a href="http://download.livereload.com/2.0.8/LiveReload-2.0.8.safariextz">Safari</a>.<br />
-</p><p>    How does it work? Take a look on a diagram.<br />
-</p><a href="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png"><br />
-    <img src="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png" style="width: 620px"/><br />
-</a><br />
-<p>    The LiveReload plug-in (or livereload.js script) expect&#8217;s that there is Web Socket Server, where it connects to and start to listen for changes. Web Socket Server is responsible for tracking changes and if changes occurred, it send the package of data with information about the changes, back to the web socket. LiveReload receives the data and reloads the browser.<br />
-</p><p>    As you installed plug-in and pressed &#8220;LR&#8221; button, it&#8217;s gonna light green if connection to server is successful, otherwise it will pop-up the message, that server is not available.<br />
-</p><a href="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png"><br />
-    <img src="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png" style="width: 620px"/><br />
-</a><br />
-<p>    So, to make LiveReload work properly we have to provide an Web Socket Server, that conforms to LiveReload interface. <br />
-</p><h2>LiveReload + Sublime Text 2</h2><p>    There is a great plug-in for Sublime Text 2, from <a href="https://github.com/dz0ny">Janez Troha</a> called, <a href="https://github.com/dz0ny/LiveReload-sublimetext2">LiveReload-sublimetext2</a>. It&#8217;s get easily installed through standard ST2 package installer (package name is &#8220;LiveReload&#8221;). Basically, it instantiate Web Socket Server inside the sublime, listening to editors event&#8217;s and push data to socket.<br />
-</p><p>    As soon as it&#8217;s installed, and browser connected to it, you can now modify any HTML/JS/CSS file. As file get changed and saved, you will see LiveReload-sublimetext2 will immediately send the command and browser got refreshed.<br />
-</p><a href="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png"><br />
-    <img src="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png" style="width: 620px"/><br />
-</a><br />
-<p>    When I first time tried that, I could not believe how smooth it was. Can&#8217;t even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
-</p><h2>LiveReload + any IDE</h2><p>    &#8220;Any IDE&#8221; in my case means Visual Studio, where I spent some time if I&#8217;m not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
-</p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I&#8217;m not much that comfortable with Ruby, so I went Node.js way.<br />
-</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It&#8217;s written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexanderbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
-</p><pre class="brush: plain">    @echo off
-    node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
-</pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />
-</p><a href="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png"><br />
-    <img src="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png" style="width: 620px"/><br />
-</a><br />
-<p>    Not everything so perfect with that approach, though. There are 2 reasons, why I did not finally like that:<br />
-</p><ol>    <li>It is slow. Internally node-livereload uses <code>fs.watchFile</code>, which is quite slow (at least on Windows). That mean&#8217;s if you save the file, it takes 1-1.5 seconds for browser to refresh.<br />
-    </li>
-    <li>Does not catch up new files. You have to restart server, to make it watch newly created files.<br />
-    </li>
-</ol><h2>Mixing things up</h2><p>    There reasons above prevent me to go on with <a href="https://github.com/josh/node-livereload">node-livereload</a>. So, even if I work on .NET-based application, I do C# in Visual Studio, but HTML/CSS/JS in Sublime, having the all it&#8217;s benefits. So, I basically have 2 things opened side-by-side.<br />
-</p><a href="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png"><br />
-    <img src="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png" style="width: 620px"/><br />
-</a><br />
-<h2>Conclusions</h2><p>    I felt much productivity boost with LiveReload. I have Sublime opened on one monitor and Chrome + WebKit Tools on another. As soon I change something, I see the results immediately, catching up errors in console as early as possible. It works so great then you TDD&#8217;ing your JavaScript code, as you write tests and implementation and it&#8217;s been re-run with each save (like a continues testing with AutoTest, NCrunch etc.).<br />
-</p><p>    That works very fine to me, I don&#8217;t want to press F5 anymore. Do you?<br />
-</p></div>
 
       
       
