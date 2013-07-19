@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="AgileBaseCamp Kiev 2011: Sergey Dmitriev: Setting up priorities with Kano analysis Apr 18th, 2011 Agile, Conference Disclaimer: text below is &hellip;">
+  <meta name="description" content="AgileBaseCamp Kiev 2011: Vitaly Stakhov: Working safety net Apr 18th, 2011 Agile, Conference Disclaimer: text below is compilation of notes I made &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,95 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/04/agilebasecamp-kiev-2011-vitaly-stakhov.html">
+    
+      AgileBaseCamp Kiev 2011: Vitaly Stakhov: Working safety net</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-18T18:23:00+03:00" pubdate data-updated="true">Apr 18<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<p>
+<a href="http://twitter.com/#!/VitalyStakhov">Vitaly</a> is a .NET developer shared really nice ideas of the creation of &#8220;safety net&#8221; with unit tests. He works in software delevelopment shop with no testers in it. Having that they manage to keep quality on acceptable level by means of test driven development practices and implemenation of safety net of tests around the product code base.
+</p>
+<p>
+Many of TDD practitioner&#8217;s have heard this term before, but not a lot of have full understanding of it. In general &#8220;Safety Net&#8221; does not mean 100% code coverage, it either don&#8217;t nesserely mean to follow &#8220;test first&#8221; principles in creation of code. Safety net is a methaphor of net used by acrobats in circus. Acrobats are doing dangerous tricks close to cicrus ceil (that&#8217;s a bit high).. As more complex trick is more chances to fall down, but as you fall on safety net you would be still alive. So, with safety net you fail, but not die.
+</p>
+<p>
+Another good methor about the actual position of safety net. If it put to low (close to the floor), resiliency of net might not be enought to compensate your kinetic energy during fall.. if it is put to high (close to ceil), it start to loose it sense and only interfere of making tricks.
+</p>
+<p>
+Let&#8217;s one more time see, why we using TDD and work so hard to create tests:
+</p>
+<ul>
+<li><strong>test driven design</strong> - indeed by having testable code you really much affect <a href="http://www.beletsky.net/2010/10/test-driven-design-and-levels-of.html">code design</a>. Design is key factor through the all life-cycle of project</li>
+<li><strong>safety net creation</strong> - in other hand we do testing to follow &#8220;cover my ass&#8221; principle, having a good test coverage makes us feel really confortable and confident with application</li>
+</ul>
+<p>
+In real life those to factors could contradict itself. When we originally create the code with TDD we are typically put too much details in test cases. We do verify for methods calls, expected exceptions, argument values etc. It works perfectly at the beginning. But as soon as we start to do refactoring it might turn to situation then a lot of cases became red, just because of implementation details changed! It leads to situation then the changes are applied, application still in workable state.. but tests are failed (safety net is put to high). That makes tests to be fragile.. fragile tests are bad, because it make to feel like &#8220;tests are not useful&#8221;.. so such tests are typically deleted, commented out, skipped. All of these is just a putting safety net low, close to floor. As for me this is even more dangerous then putting it too high.
+</p>
+<p>
+What to do? The the of mitigation this is all the time controlling safety net position. It is very useful to distinguish 2 types of tests:
+</p>
+<ul>
+<li>Interaction - tests that we basically create on &#8220;design&#8221; stage of application (detailed tests)</li>
+<li>Component - tests that we basically create to change safety net position (behavior tests)</li>
+</ul>
+<p>
+The point is the interaction tests are &#8220;classical&#8221; unit tests that we create for particular method/class. It works great of design stage of development, time there we have no model at all, we don&#8217;t know how internal structure would like etc. But as it said, the problem is that interaction tests are to much detailed. And as soon as small implementation detail is changed, those tests became red (I found a little analogy with blog post I did recently about <a href="http://www.beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">Functional tests</a>).
+</p>
+<p>
+To mitigate that we look on same problem with different view - components. With components tests we move focus from details to behavior. For instance if in case of moving money from one account to another, we are not particularly interested in what methods called, but we interested that amount is really moved. Type of test that actually tests that is called component.
+</p>
+<p>
+As soon as component test is defined we are no longer interested in interaction tests. Interactions tests became overhead and only slows done the process of development by continues fixes of failed tests. So, as we already have component tests is just possible to remove interaction tests at all.
+</p>
+<p>
+Back to our safety net analogy - with a lot of Interaction (detailed) cases, we are putting net to high, we should move it lower by getting rid of too detailed cases. To compensate that, it is important to have behavior test that would verify that application state still in workable state. This should be really careful and continues process.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -915,106 +1004,6 @@ public class ElmahController : Controller
   &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
 </pre><h2>Code example </h2><p>Full code example is located in my github repository <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Areas/Admin/Controllers/ElmahController.cs">here</a>. </p><br />
 <h2>UPD:</h2><p>I&#8217;ve moved out controller to separate github repostitory. You are free and very welcome to use/fork/pull changes :). Fork & fix it here - <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">https://github.com/alexanderbeletsky/elmah.mvc.controller</a>. </p><h2>UPD2:</h2><p>Instead of placing just controller I create test MVC3 application that clearly show how to use Elmah in MVC. Plese check code and README  <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">here</a>. </p><h2>UPD3:</h2><p>Code placed in this blog post has been changed drastically by latest feedback I recieved for this controller. Please better refer code on github or latest blog post here <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">Latest version of ELMAH MVC controller</a> </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/02/seleniumcamp-conference-in-kiev.html">
-    
-      SeleniumCamp conference in Kiev</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-28T14:56:00+02:00" pubdate data-updated="true">Feb 28<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I had a chance to be present on a <a href="http://seleniumcamp.com/">SeleniumCamp</a> conference that took place 26 of February. It was first Selenium dedicated conference in a <a href="http://seleniumcamp.com/about/">world</a>, so it was bad idea to miss it. Moreover, my colleague from Dnepropetrovsk <a href="http://samarskyy.blogspot.com/">Anton</a> was coming there also, so we had a good time to meet each other again. 
-</p>
-<p>
-Event has been organized by <a href="http://xpinjection.com/">Xp Injection</a> group. I&#8217;ve been <a href="http://www.beletsky.net/2010/10/agileee-2010-mikalai-alimenkau-aleksey.html">listen</a> those guys last year on Agileee, I also read their blog from time to time, so I was pretty confident of what is going be all about. Event took place in Bratislava hotel. Here is a brief summary of stuff I heard there:
-</p>
-<ul>
-<li>
-<a href="http://seleniumcamp.com/speakers/#burns">David Burns</a> was the one who did open speech. He is Senior Software Engineer in Test at Mozilla working as the Automation Lead in WebQA and one of Selenium Core commiter. David was describing Selenium 2 and <a href="http://google-opensource.blogspot.com/2009/05/introducing-webdriver.html">WebDriver</a> ideas as primary part on Selenium 2 framework. In spite of Selenium RC, Web driver: 
-    <ul>
-        <li>Uses native browser API, so works much more faster</li>
-        <li>Reduces and clear API</li>
-        <li>More reliable</li>
-    </ul>
-    It means that WebDrivers should be tool of choice for functional testing in nearest future. As far as I get Selenium 2 is not officially release and currently in Beta phase.
-</li>
-<li>
-<a href="http://twitter.com/#!/f0g">Kirill Klimov</a> did an speech about his experience of deployment Selemium in company. He shared some pros and cons of each Selenium umbrella products: from Core to Grid. They stated to use Selenium from IDE, seems the most easy scenario of using functional tests. Then they switched to Core and RC. Kirill has very good understanding of &#8220;what&#8217;s going on&#8221; and summaries speech with several recommendations I think very useful:
-    <ul>
-    <li>
-        Don&#8217;t be hurry to start up
-    </li>
-    <li>
-        Understand the difference in tools and pick up right one
-    </li>
-    <li>
-        Try to elaborate in several years perspective
-    </li>
-    </ul>
-    Slides from his presentation is <a href="http://www.slideshare.net/f0g/selenium-guide">here</a>
-</li>
-<li>
-    <a href="http://twitter.com/#!/mairbek">Mairbek Khadikov</a> shared his own vision of web applications testing automation. Through 2 years of usage Selenium they came up with bunch of tests and realized the power of automation. Most important that value shared between business and development. He touch such important issues as performance, tests isolations. It is very important to write tests that might be read 
-    by non-technical guys. In such case tests starting to be a part of project documentation and used not only be development team. He also noticed that test should be architecture to be run in parallel as early as possible, it is just matter of time then you going to run tests by Grid (for instance) and you will meet a problem. He did several examples of Tests written on Java, so developers had a little fun to see the code. His presentation is stored <a href="http://www.slideshare.net/mairbek/ss-7079843">here</a>.
-</li>
-<li>
-    <a href="http://twitter.com/#!/twincengray">Alexey Rezhchikov</a> did one of the most impressive speech as for me. He works on huge and high complexity project(s) for Ebay Motors (as far as I got). They are dealing with complex requirements, multicultural, high loaded sites with difficult configuration management. He clearly described problems any big project meet in a way towards Release. Nevertheless, they&#8217;ve implemented and successfully using solution stack based on Selenium platform (not only). Using different level of testing to meet acceptance goal, they are very flexible in decision &#8220;go or not to go with automated test&#8221; and &#8220;what kind of test is OK for this particular scenario&#8221;. I also bit impressed by usage a <a href="http://code.flickr.com/blog/2009/12/02/flipping-out/">Feature Flags</a> as opposite way of multibranch development. . His presentation <a href="http://slidesha.re/f3uMra">here</a>.
-</li>
-<li>
-    <a href="http://twitter.com/#!/xpinjection">Nikolai Alimenkov</a> was selling ideas of using Wiki as &#8220;live&#8221; requirements. The whole approach back us to Fitnesse ideas of keeping requirements in a Wiki-style storage, placing acceptance conditions into to tables and &#8220;somehow&#8221; run Fitnesse tests against target applications. With my big respect to <a href="http://en.wikipedia.org/wiki/Robert_Cecil_Martin">Robet C. Martin</a>, original developer of Fitnesse, I don&#8217;t believe that stuff works. I don&#8217;t believe that Product Owner will ever work with requirements in Wiki will run them. Moreover, it seems a big overhead to me to support all that wiki&#8217;s in up-to-date in world of changing requirements. Nikolai showed Fitnesse based tools as Fitnium, Selenesse and some tests examples but it was to artificial to me. You can find his presentation <a href="http://www.slideshare.net/alimenkou/selenium-wiki-executable-specification">here</a>.
-</li>
-<li>
-    <a href="http://automated-testing.info/users/kanon">Nikolai Kolesnik</a> seems to have a good plan to describe BDD, but was quite nervous and shy that interfered him to make a good speech. Nevertheless, he expressed his understanding and application of BDD for real projects, pitfals and solutions based on Selenium RC. You can find his presentation <a href="http://www.slideshare.net/kolesnik_nickolay/bdd-approach-with-selenium-rc">here</a>. 
-</li>
-</ul>
-<p>
-In short, I enjoyed the conference.. but I would not say it is something I expected. Most speeches I visited, was a kind of &#8220;too many word&#8217;s, too few real examples&#8221;. Guys, please if you are talking about product for developers - <strong>show me the code</strong>. All the idea&#8217;s of ATDD, BDD, Acceptance testing, Wiki are requirements are already <strong>sold</strong> years ago, don&#8217;t do the job that is already done. But, show some your projects, show real test cases, show examples. 
-</p>
-<p>
-I would like to THANK my <a href="http://e-conomic.com">company</a> who make it possible to me to visit this conference.
-</p>
-<p>
-PS. for foreign guys: Bratislava hotel is very cold, avoid it to stay on winter time :).
-</p></div>
 
       
       

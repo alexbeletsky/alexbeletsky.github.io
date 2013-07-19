@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Baby steps to Backbone.js: Model Validation Nov 8th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Let&#8217;s go back for a moment for previous &hellip;">
+  <meta name="description" content="ELMAH.MVC 2.0.2 is out Nov 9th, 2012 ELMAH.MVC ELMAH MVC 2.0.2 has been just pushed recently. This is a contribution by James Crowley which adds a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,64 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/11/elmahmvc-202-is-out.html">
+    
+      ELMAH.MVC 2.0.2 is out</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-09T17:21:00+02:00" pubdate data-updated="true">Nov 9<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It&#8217;s in particular useful, than you already setup some configuration inside the app, so you don&#8217;t want default behavior.<br />
+</p><p>Inside the <code>web.config</code> file you will find a configuration setting for that.<br />
+</p><pre class="brush: plain">&lt;appSettings&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandler&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.disableHandleErrorFilter&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.requiresAuthentication&quot; value=&quot;false&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.allowedRoles&quot; value=&quot;*&quot; /&gt;
+ &lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;
+&lt;/appSettings&gt;
+    </pre><p>It is <code>elmah.mvc.disableHandleErrorFilter</code>. By default it&#8217;s `false`, meaning `HandleErrorAttribute()` from ELMAH.MVC is used. To disable it, just set <code>true</code> to this setting.<br />
+</p><p>And btw, it&#8217;s already 30.000 downloads of NuGet package! Huge number, thanks a lot for all users and contributors.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -860,66 +918,6 @@ $.get(url1, function (r) {
     </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I&#8217;m using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone&#8217;s views as kind of widgets (or modules).<br />
     </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don&#8217;t need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
     </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
-    </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/09/it-jam-2012-in-kiev.html">
-    
-      IT Jam 2012 in Kiev</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-03T10:11:00+03:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/itjam/'>ITJam</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        It&#8217;s been my <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">second time</a> I attended IT Jam, the biggest IT gathering in Ukraine. This time, the rules has been completely changed. Instead of traditional speeches, the organizers decided to make <a href="http://www.it-jam.ciklum.net/community_spot">community spots</a>, there people might have a chance to group and discuss different issues. There were number of spots there: .NET, JavaScript, iOS, UX etc.<br />
-    </p>    <a href="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg"><br />
-        <img src="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg" style="width:620px" /><br />
-    </a><br />
-    <p>        Besides the community spots, there was several stages where <a href="http://www.it-jam.ciklum.net/visionary_speakers">visionary speakers</a> did their presentations. I had a chance to listen Christopher Marsh, and really enjoyed his vision of lean product development. At 13.00 community spots started to operate, to I went there.<br />
-    </p>    <p>        .NET spot is a closest to me, since it&#8217;s lead by guys whom I personally know and number of participants are well known guys from local .NET community. <a href="http://twitter.com/chaliy">Mike Chaliy</a> asked me to give a brief talk on.. Node.js. So, together with <a href="http://twitter.com/dmytromindra">Dmytro Mindra</a> we did kind of introduction to Node.js to .NET developers, introducing to the history of this rather new technology, it&#8217;s main features and showing some real code. Planned for 15 minutes, we&#8217;ve spend about hour talking about it. Besides of pure technology talk, I shared some experience of <a href="http://debitoor.de">e-conomic</a> switch from .NET to Node.js stack for the latest products and how it worked for us (mainly my message was, throw away your boring C# and switch to JS.. so I had a chance to been kicked off the spot, but everything were fine at the very end). .NET spot was very active, attracted many many participants. People were talking about newest .NET framework features, like Async, Azure, Kinect etc.<br />
-    </p>    <a href="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg"><br />
-        <img src="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg" /><br />
-    </a><br />
-    <p>        JavaScript spot leaded by my team mate <a href="http://ua.linkedin.com/in/edjafarov">Eldar Djafarov</a> was also very exiting. Guys did a very nice job, preparing some cool JavaScript applications, that people might play with. I joined it, having a quite interesting discussion of front end development issues with different JavaScript MVC frameworks. Again, the experience we&#8217;ve got in company regarding Backbone.js, unit testing and tools was very interesting to developers.<br />
-    </p>    <p>        Almost 4 hours on community spots were like one minute to me.<br />
-    </p>    <p>        I really liked how the things went. From my perspective the idea of community spots was really cool. Probably, it&#8217;s to difficult for introverts, to feel them self comfortable with this environment, so mix up of formal speeches and spots could be a good idea for future conferences.<br />
-    </p>    <p>        I wish to say thanks for organizers of this event for everybody involved, great effort guys. As always, it was so great to meet with colleagues from other cities and shake the hand for guys, whom I knew only virtually before. See you next year!<br />
     </p></div>
 
       

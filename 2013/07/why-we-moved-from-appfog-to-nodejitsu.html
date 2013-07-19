@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why We Moved From AppFog to Nodejitsu</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Why We Moved From AppFog to Nodejitsu Jul 19th, 2013 likeastore, nodejs, paas Likeastore started to use AppFog as PaaS during private beta campaign &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Why We Moved From AppFog to Nodejitsu</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-19T19:36:00+03:00" pubdate data-updated="true">Jul 19<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/likeastore/'>likeastore</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/paas/'>paas</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
+
+<p>But very fast we realized that AppFog does not suite us at lot.</p>
+
+<!--More-->
+
+
+<h2>Why to mess up with PaaS?</h2>
+
+<p>If you never tried things like <a href="https://www.heroku.com/">Heroku</a>, <a href="https://www.appfog.com/">AppFog</a>, or <a href="https://appharbor.com/">AppHabor</a> you might have a question, why to pay for something you &ldquo;almost&rdquo; can do your self just by renting VPS.</p>
+
+<p>Renting VPS seems to be nice idea, but the problem is &ndash; you taking to much responsibility to manage the server by your own. You have to have certain skills to configure nginx, git repositories, ssh keys etc. It&rsquo;s possible to do, but it takes a lot time.. time you can spend on code something will be spend to configure something.</p>
+
+<p>Another very important point is deployments. Usually deployments are hard and time consuming, since you have to do them manually. But with PaaS all you have to do to deploy the up is either, <code>git push</code> to some remote repo.. or call a special script like <code>af push app</code>, to do all the magic.</p>
+
+<p>For small companies and side-projects PaaS is a really good opportunity to actually ship something, instead of fail to customize the web server.</p>
+
+<h2>Why AppFog?</h2>
+
+<p>I&rsquo;ve heard about AppFog before from twitter and hacker news. It looked very attractive.</p>
+
+<p>But it was not the only one on the market. So, really competitive feature for me was: 8 running instances, for 20 USD. Very good price. We need 4 at that time, so AppFog was very good choice.</p>
+
+<p>But as always, with time you start to see some negative moments. Something that lead us to finally drop AppFog. I would like to quickly go through good and less good things.</p>
+
+<h2>Dashboard and UI</h2>
+
+<p>AppFog dashboard is quite nicely designed. But sometimes I felt difficulties to just find the things.</p>
+
+<p>I was not happy with performance of dashboard as well. It was really slow for me usually, so you click to check instance state and wait for 30 seconds while the page opens. You can leave with that, but the time comes than you start to hate it.</p>
+
+<h2>AppFog CLI</h2>
+
+<p>To create / run / stop applications on AppFog, you get a special command line utility, called <code>af</code>. It&rsquo;s typically for all PaaS to have some CLI to communicate to it. It&rsquo;s easy to install and configure, everything is nice.</p>
+
+<p>It&rsquo;s written on Ruby, so you won&rsquo;t have any problems on Mac, but Ruby have to installed on Windows machine.</p>
+
+<p>Once it&rsquo;s installed you have to login to you AppFog account and start to deploy.</p>
+
+<h2>Deployment experience</h2>
+
+<p>Even if CLI itself was quite nicely done, deployment experience was not so nice &ndash; it was too slow.</p>
+
+<p>Node.js is deployment-friendly platform. No build steps, no linking, no packaging &ndash; nothing. All you have to do, is to push the sources to remote machine. Sure, PaaS is doing a lot magic behind the scences, like firing new virtual machines and configuring network interfaces etc.</p>
+
+<p>And all that magic for AppFog works too long.</p>
+
+<p>Deployment could took up to 40 seconds, which is fine if you do it once in week. But it bothers you a lot while you do that once in hour.</p>
+
+<h2>Release management</h2>
+
+<p>If your plan is continuous delivery and frequent deployments, you have to be ready for frequent rollbacks as well. Without that feature, you are in trouble.</p>
+
+<p>AppFog does not afford anything like that. Correctly say, you have to do it manually, like tagging sources, then fetching by tag and push again.</p>
+
+<p>That&rsquo;s not big issue, I would say. Nevertheless, developers are too optimistic thinking that everything works great (and indeed in always works fine, on my machine), but the time you see issues on production you just panic and loosing control of what to do.</p>
+
+<h2>Support</h2>
+
+<p>Even if you running tiny bussiness and no one hurt if your application is down, still you expect that you&rsquo;ll get help if you are in trouble. That&rsquo;s the whole idea of support, especially if you pay money for it.</p>
+
+<p>AppFog support is not good. Few times my tickets were unanswered for 2 days. Then they answered I found the reason or was able to fix it by myself.</p>
+
+<p>This is just makes very bad impression of service. You start to think, it&rsquo;s not so reliable, so the time you&rsquo;ll be really screwed, they won&rsquo;t come help.</p>
+
+<h2>Load balancing and cookies</h2>
+
+<p>So, all mentioned above is something that we would prioritize as &ldquo;cosmetic&rdquo; issues. A bit ugly, but you can leave with it. The real and unexpected problem appeared as we did first announcement and users came to check the application.</p>
+
+<p>We are using <a href="">passport</a> for user authorization, which depends on sessions. Each request contains contains a <code>session_state</code> which being persisted in cookie. The problem was that, on AppFog for some unknown dropped that <code>session_state</code>. So, after user just logged on and clicked somewhere, she was immediately redirected back to login page, as unauthorized.</p>
+
+<p>Absolutely unclear behavior to me.</p>
+
+<p>I definitely know I&rsquo;m not the <a href="https://www.google.com/search?q=appfog+session+lost&amp;oq=appfog+session+lost">only one</a> who was suffering that issue. Supported failed to answer quickly and even on my next request they didn&rsquo;t provide anything constructive.</p>
+
+<p>That was the show-stopper with AppFog.</p>
+
+<h2>.. and now Nodejitsu?</h2>
+
+<p>Meanwhile, I just deployed application to <a href="">Nodejtsu</a> and it worked fine there. I was really happy to see the features I missed with AppFog:</p>
+
+<ul>
+<li>Clear and fast dashboard</li>
+<li>Release management (you can go back and forth with any version you deployed)</li>
+<li>Node.js written CLI and fast deployments</li>
+<li>Good support</li>
+</ul>
+
+
+<p>The time we joined Nodejitsu it costs 33 USD for 3 instances, that didn&rsquo;t match our needs ideally, but we had to embrace the constraints.</p>
+
+<h2>Conclusions</h2>
+
+<p>I know, there is nothing ideal in this world &ndash; but if you have choice, it&rsquo;s fine pick up best (or at least better). I would not say AppFog completely sucks, but it didn&rsquo;t work for me as I was expecting.</p>
+
+<p>PS. While writing this post I&rsquo;ve noticed that AppFog being <a href="https://www.appfog.com/savvis/">acquired</a> by CentruLink. I only wish that it would positively affect service and support, so wish good luck for AppFog.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

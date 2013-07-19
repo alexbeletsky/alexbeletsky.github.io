@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Crawling a web sites with HtmlAgilityPack Sep 16th, 2010 Design, GitHub, Linq, Tools IntroductionThis is a first post of small series that I&#8217;m &hellip;">
+  <meta name="description" content="Regex to match a words in dictionary on page body Sep 23rd, 2010 Design, Tips Using a Regex is pretty easy in .NET applications. All you have to use &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,77 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/09/regex-to-match-words-in-dictionary-on.html">
+    
+      Regex to match a words in dictionary on page body</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-23T14:52:00+03:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns. 
+</p>
+<p>
+My goal was to create a code, that would give an answer: does this particular text contain some words from dictionary or not? Using a regular expressions is an obvious choice then you do such type of operation. So, I was trying to understand what technology is demanded by job offer (Cpp, Java or .NET) and is TDD skill demanded. To archive that I created a set of &#8220;matchers&#8221; small classes each of its own area. Crawler just used those matchers to get actual data.  
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToTdd(<font color="#0000ff">string</font> description)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> TddMatcher().Match(description);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToJava(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> JavaMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToCpp(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> CppMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToDotNet(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> DotNetMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+As you see, I have 4 matchers to cover my requirements: <em>CppMatcher</em>, <em>DotNetMatcher</em>, <em>JavaMatcher</em>, <em>TddMatcher</em>. All of them implements simple <em>IMatcher</em> interface.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">interface</font> IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Now, let&#8217;s review the matcher. Because all the matchers do basically the same operations and differ only but its dictionary contents, they contain a dictionary of target words and delegates matching functionality to <em>MatchUtil</em> class. Let&#8217;s see C++ matcher for instance.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> CppMatcher : IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> IList&#60;<font color="#0000ff">string</font>&#62; _patterns = <font color="#0000ff">new</font> <font color="#2B91AF">List</font>&#60;<font color="#0000ff">string</font>&#62;()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"c\\+\\+"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cpp"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"stl"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cppunit"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> MatchUtil.Match(input, _patterns);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+I wanted to design <em>MatchUtil.Match</em> to be universal, as much as possible and to do not depend on kind of input words. Matching words with boundaries &#8220;\b&#8221; works perfecly, as soon as you have a simple words, like &#8216;java&#8217;, &#8216;nunit&#8217;, &#8216;tests&#8217; and so on, but my tests stated to fail as soon as I tried &#8216;c++&#8217; or &#8216;.net&#8217;. Because of &#8216;\b&#8217; matches boudary between 2 alphanumeric symbols, in my case &#8216;+&#8217; or &#8216;.&#8217; is not alphanumeric. That made a problem to me and asked <a href="http://stackoverflow.com/questions/3641985/regex-to-match-a-word-with-plus-signs">StackOverflow</a> for help. I finished up with such implementation, that I hope could be useful if you do similar stuff.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> MatchUtil<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input, IList&#60;<font color="#0000ff">string</font>&#62; patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> lower = input.ToLower();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">foreach</font> (<font color="#0000ff">var</font> pattern <font color="#0000ff">in</font> patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> start = pattern.StartsWith(<font color="#A31515">"\\."</font>) ? <font color="#A31515">"(?!\\w)"</font> : <font color="#A31515">"\\b"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (Regex.IsMatch(lower, start + pattern + <font color="#A31515">"(?!\\w)"</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">true</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+So, <em>Regex.IsMatch</em> static method is used to perform match. 
+</p>
+<p>
+This is it. If you see some issues or improvements, please let me know. <a href="http://github.com/alexanderbeletsky/TddDemand">http://github.com/alexanderbeletsky/TddDemand</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -771,94 +842,6 @@ This is it.. You can also join such challenge, please do that.
 </p>
 <p>
 Happy blogging!
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/blogging-with-github-and-blogspot-ideas.html">
-    
-      Blogging with a GitHub and Blogspot? Ideas?</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-27T22:54:00+03:00" pubdate data-updated="true">Jul 27<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I do use Blogger as my blog engine and really like it. Right, as soon as you create your blog posts in 
-    HTML and do not use embedded editor it is perfectly fine! So, when I do new post I create a plain 
-    HTML in VS and after it is ready I copy paste it to blogspot and publish. Original 
-    HTML I commit special repository on github.  
-</p>
-<p>
-I liked that style of work as far I as I change nothing in posts. As I need change, I have to change original 
-    HTML, re-publish it on blogspot and commit again to github. After I did it 
-    several times, I started to think how to automate this? I came up this a simple 
-    idea, why do not load the content of post dynamically, by using a javascript? 
-</p>
-<p>
-It is no problem to do that, and I implemented a small script that performs exactly what I needed. I called this project <a href="http://github.com/alexanderbeletsky/GithubToBlogspot">GithubToBlogspot</a>. Its description:
-</p>
-<p>
-GithubToBlogspot is used for people who stores they blog article sources in HTML.
-Instead copy pasting HTML between blogspot and github, it should be possible to paste a simple script on a page and that 
-script would load a content.
-</p>
-<p>
-It utilized javascript GitHub API by: http://github.com/fitzgen/github-api
-</p>
-<p>
-First draft example looks like this,
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexanderbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-Code itself is also really simple: it opens the blob, reads its data as HTML, extracts the body and put body to target div. That&#8217;s it. All this done asynchronously, so as you open the blog you see progress image.. after data loaded it appears on screen.
-</p>
-<p>
-But I haven&#8217;t taken into account several major considerations:
-<ul>
-<li>First, AJAX content is not crawlable by Google. It <a href="http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html">actually is</a>, but requires a changes that could not be done, since you are on 3rd party blog engine.</li>
-<li>
-Second, is with that dynamic loading RSS feed of blog will also be empty.
-</li>
-</ul> 
-</p>
-<p>
-I still want to accomplish this. I was thinking about different solutions, but have no solid one.. Do you know is it possible to accomplish something similar with no drawbacks I mentioned above. It would be great if you share you ideas! 
 </p></div>
 
       

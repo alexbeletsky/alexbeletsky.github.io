@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Third Year of E-conomic Mar 13th, 2013 E-conomic, Life That&#8217;s my traditional post on yet another anniversary in E-conomic company. Even &hellip;">
+  <meta name="description" content="Baby steps to Backbone.js: Exploring collections Mar 27th, 2013 BabyStepsBackbone, Backbone.js After initial introduction to Backbone&#8217;s views &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,57 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/03/baby-steps-to-backbonejs-exploring.html">
+    
+      Baby steps to Backbone.js: Exploring collections</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-27T17:51:00+02:00" pubdate data-updated="true">Mar 27<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        After initial introduction to Backbone&#8217;s <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/03/baby-steps-to-backbonejs-exploring.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -875,64 +926,6 @@ console.log(person.name);
     </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
     </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
     </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/11/elmahmvc-202-is-out.html">
-    
-      ELMAH.MVC 2.0.2 is out</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-09T17:21:00+02:00" pubdate data-updated="true">Nov 9<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-    <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It&#8217;s in particular useful, than you already setup some configuration inside the app, so you don&#8217;t want default behavior.<br />
-</p><p>Inside the <code>web.config</code> file you will find a configuration setting for that.<br />
-</p><pre class="brush: plain">&lt;appSettings&gt;
- &lt;add key=&quot;elmah.mvc.disableHandler&quot; value=&quot;false&quot; /&gt;
- &lt;add key=&quot;elmah.mvc.disableHandleErrorFilter&quot; value=&quot;false&quot; /&gt;
- &lt;add key=&quot;elmah.mvc.requiresAuthentication&quot; value=&quot;false&quot; /&gt;
- &lt;add key=&quot;elmah.mvc.allowedRoles&quot; value=&quot;*&quot; /&gt;
- &lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;
-&lt;/appSettings&gt;
-    </pre><p>It is <code>elmah.mvc.disableHandleErrorFilter</code>. By default it&#8217;s `false`, meaning `HandleErrorAttribute()` from ELMAH.MVC is used. To disable it, just set <code>true</code> to this setting.<br />
-</p><p>And btw, it&#8217;s already 30.000 downloads of NuGet package! Huge number, thanks a lot for all users and contributors.<br />
-</p></div>
 
       
       

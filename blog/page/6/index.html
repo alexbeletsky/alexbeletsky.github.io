@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="CS101 Building a Search Engine: Week 3 May 7th, 2012 CS101, SearchEngine, Udacity Disclaimer: this blog post expresses some impressions and details &hellip;">
+  <meta name="description" content="A year with Git May 20th, 2012 E-conomic, Git, GitHub, GitSVN It&#8217;s almost a year ago, I&#8217;ve posted the article How to start using Git in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,78 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/year-with-git.html">
+    
+      A year with Git</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-20T13:43:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    It&#8217;s almost a year ago, I&#8217;ve posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
+</p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
+</p><p>    I think we followed &#8220;Baby steps to..&#8221; strategy of Git adoption. Our baby steps to Git, were small, accurate and quite long. But at the end of the day, I&#8217;m happy to say - we are pure Git organization now. Moreover, some of our projects are hosted as public and private repositories under the <a href="https://github.com/organizations/e-conomic">e-conomic</a> organization github account.<br />
+</p><h2>Retrospective</h2><p>    So, let&#8217;s make a kind of retrospective seeing what things were happening.<br />
+</p><ol>    <li><strong>Git-SVN mode</strong>. As described in original article, the best way to try Git inside the organization is go to Git-SVN mode. It will allow to use SVN as primary repo, but allow Git features like local branching, cool merging, stashes and other stuff described <a href="http://www.beletsky.net/2011/07/git-with-svn-what-benefits-are.html">here</a>.<br />
+    </li>
+    <li><strong>People awareness</strong>. Started by just few developers the information about the Git had spread along mates in our department. Some were very enthusiastic about that, some not. But anyway, it got attention of our many people including our CTO. The greatest thing is that initiative has not been cancelled, instead we start to think of some kind of plan that might bring us into pure Git world. <br />
+    </li>
+    <li><strong>Planning</strong>. Our plan including different evaluations, choosing between Git or HG, local or cloud hosting, Centralized or De-centralized mode etc. During this planning sessions we also identified some infrastructure dependencies that blocked switch to Git. We have so called &#8220;Language System&#8221; the application helping our copyrighters and translators to change the content of app. It&#8217;s been creating assuming that SVN used, doing checkouts and commits where. Another thing is that our deployment procedure happened to be SVN dependent. Obviously, it have to be changed to work with Git. But the most priority had &#8220;Education&#8221; task. Everybody should be able to work with Git. <br />
+    </li>
+    <li><strong>Execution</strong>. Planning is easy, execution is hard. We did initial education as a series of meetings were the basics are described. Fortunately, almost as teams contained the git-aware person who were initial knowledge keeper. Some important details being moved to company&#8217;s Wiki. The problems we start to have local infrastructure setup. Being Windows organization we tried to setup primary repository and server on Windows box. Keeping that short, I just say - don&#8217;t do that. It&#8217;s not trivial at all, to configure Git server there, setup the accounts and permissions and make it work with TeamCity. We tried different scenarios of Git hosting on IIS, including <a href="https://github.com/jakubgarfield/Bonobo-Git-Server">Bonobo-Git-Server</a> or <a href="https://github.com/JeremySkinner/git-dot-aspx">Git-Dot</a> but all had it&#8217;s own limitations, blocking us of full-feature Git usage.<br />
+    </li>
+    <li><strong>Trying github</strong>. In parallel, one team that was starting out new project and was quite independent tried to host sources in cloud. Github is obvious choice here. I think, that was a great experience and this project is still hosted on github. We tried, so called <a href="https://github.com/blog/674-introducing-organizations">&#8220;organization&#8221;</a> mode. It ideally fits small software development shops. Easy start, easy go.<br />
+    </li>
+    <li><strong>Linux local server</strong>. Failed to run it properly on Windows we had to switch to Linux box. It&#8217;s being deployed as virtual box, that is more than enough for Git server. That solved a lot of infrastructural issues, including authentications & permissions as well as CI problems. As I can see the effort to setup it was not so big (if compare to effort spend to make the same on Windows, it would be closer to 0). Setup once, it just start to work.  <br />
+    </li>
+    <li><strong>Mirroring repositories</strong>. The setup of local central server was the first great milestone. Even if all the developers might start to use it instead of SVN, the infrastructural problems that I mentioned in #3 were not yet solved. So, we did a partial decision. The developers are switching to Git repository, but the deployments and language works are still done on SVN repository. So it&#8217;s not so frequent operations, it&#8217;s possible to synchronize the Git and SVN between each other. It means, all new code started to appear in Git, but once a week (or often) all changes set are being pushed to SVN. This is of course an overhead and required some manual work.. But it was only one way for us.<br />
+    </li>
+    <li><strong>Fixing the dependencies</strong>. It took some time while everybody got comfortable with Git. Our Wiki has extended with some policies of working with Git. We mainly follow <a href="http://nvie.com/posts/a-successful-git-branching-model/">&#8220;A successful Git branching model&#8221;</a> keeping the feature in local branches, having remote branches for code review etc. After our deployment dependency has been fixed, we were able to push the code to production very fast. I think it&#8217;s almost a year passed to now clearly understand benefit of Git not just theoretically, but practically. And that was amazing experience, as so for me.<br />
+    </li>
+    <li><strong>Pure git world</strong>. After the last dependency has been fixed, we happily entered the &#8220;Pure Git Environment&#8221; world. The SVN server has been stopped. All developers, DevOps and copyrighters are Git users now.<br />
+    </li>
+</ol><h2>It took a while&#8230;</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
+</p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
+</p><h2>What&#8217;s next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to &#8220;pure Github&#8221; environment from here. Sure, now this transaction having it&#8217;s own dependencies. But let&#8217;s see what&#8217;s happen during next year. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -925,68 +997,6 @@ public class CssAppBundle : CssBundle
 }
 </pre><p>That&#8217;s it, the generated response than just being written to <code>context.HttpContext.Response</code>.<br />
 </p><h2>Conclusions</h2><p>Bundling and minification is something that I personally wanted so much, to appear in new MVC framework. Now it&#8217;s there, it works.. but I would not say I&#8217;m 100% happy. There are several things that makes it a little difficult to use, as for me. I did want to place it in this post, but appeared to big.. So, I&#8217;ll probably do a separate one on this matter. <br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/03/ms-swit-2012.html">
-    
-      MS SWIT 2012</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-27T09:26:00+03:00" pubdate data-updated="true">Mar 27<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/speeches/'>Speeches</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>The 22-23 of March this year I had a chance to participate biggest event organized by Microsoft Ukraine - <a href="http://www.msswit.in.ua/eng/">MS SWIT 2012</a>. <br />
-</p><a href="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png"><br />
-<img src="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png" alt="ms swit 2012" style="width: 620px"/><br />
-</a><br />
-<p>It&#8217;s been almost two years ago I visited MS SWIT 2010. If the primary topic of last conference was cloud technologies - Azure, SQL etc. This time I would say the buzz was around Windows 8, Market Place and Metro-style applications. Of cause, there was still a lot of attention to Azure as well.<br />
-</p><p>I really much enjoyed the Keynote of first day by <a href="http://www.linkedin.com/pub/wolfgang-ebermann/4/825/278">Wolfgang Ebermann</a>. Indeed, Microsoft opens pretty much interesting opportunities for developers on Windows 8 and Windows Phone markets. Not long time ago Ukraine officially is a part of MarketPlace, so no time to wait - go and create you first Metro style app. And with new Microsoft policies regarding adoption of open standards like HTLM5, EcmaScript - it looks really attractive to me.<br />
-</p><p>Big attention was also about new recent releases like: Share Point, SQL Server Denali, Windows Server 8 etc. I would not say this is exactly interesting to me, since I more focus on web technologies, but it&#8217;s always good to be aware what&#8217;s going on around. First day of conference got a lot  people moving around, so if you wanted to listen for some interesting speech you have to be in time to get free sit. Second day was not so overcrowded as for me, so the people who didn&#8217;t come have to be sorry, cause Second day was much more interesting. <br />
-</p><p>My talk was about new stuff in ASP.NET MVC4, with more focus to mobile web applications. That was the biggest audience I ever speak to. There was almost no free sits.. I don&#8217;t know for sure it contained 150-200 people.. Huge!<br />
-</p><p>Being much inspired by Steve Sanderson <a href="http://channel9.msdn.com/Events/TechDays/TechDays-2012-Belgium/199">talk</a> on TechDays 2012, I decided to make something similar. I came up with idea of simple mobile web application, namely it is a web client to <a href="http://asp.net">http://asp.net</a> portal and develop it just during the speech. I had several issue&#8217;s there, first one I did a little more longer introduction and then some issues with internet that made me a little nervous and I lose tempo a bit. That forced me to skip the last part of talk regarding Offline mode for apps. Anyway, I hope I was able to show new sweet available stuff like CSS3 Media Queries, Display Modes and jQuery Mobile framework. <br />
-</p><script src="http://speakerdeck.com/embed/4f6c7d411388a6002101e8f1.js"></script><br />
-<p>Thanks a lot for everyone who listened to me and came up with questions. I appreciate your attention and hope my talk was useful for you.<br />
-</p><a href="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png"><br />
-<img src="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png" alt="asp.net portal mobile" style="width: 620px"/><br />
-</a><br />
-<p>Regarding the app, I polished it a bit and going to release closer to the end of next week. The sources are hosted on <a href="https://github.com/alexanderbeletsky/aspnet.mobile">https://github.com/alexanderbeletsky/aspnet.mobile</a>, feel free to clone and send a pull request.<br />
 </p></div>
 
       
