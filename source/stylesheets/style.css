@@ -192,6 +192,12 @@ figure.code .highlight .gutter {
 	display: none;
 }
 
+.post .no-shadow {
+	-webkit-box-shadow: 0 0;
+	-moz-box-shadow: 0 0 0;
+	box-shadow: 0 0 0;
+}
+
 .post img {
 	margin: 2px;
 	-webkit-box-shadow: 0 0 15px #5c5c5c;
