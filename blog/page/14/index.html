@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="SeleniumCamp conference in Kiev Feb 28th, 2011 Conference I had a chance to be present on a SeleniumCamp conference that took place 26 of February. &hellip;">
+  <meta name="description" content="Integrating ELMAH to ASP.NET MVC in right way Mar 5th, 2011 ELMAH.MVC, MVC, Tips, Tools, asp.net I&#8217;ve received great feedback on this article &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,117 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/03/integrating-elmah-to-aspnet-mvc-in.html">
+    
+      Integrating ELMAH to ASP.NET MVC in right way</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-05T19:36:00+02:00" pubdate data-updated="true">Mar 5<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small> I&#8217;ve received great feedback on this article. Thanks all of you guys, who provided valuable comments and pull requests on github. I edited the article several time, hope its up-to-date now. You can go directly to <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">code repository</a> and get the test application, to see what it is all about. In case if you having some issues, just let me know. </small> </p><p style="color: red"><strong>UPDATE:</strong> Elmah.MVC is now <a href="http://www.beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html">released</a> as NuGet package. No need to read that long blog post, just install it.  <p>Many of you know what the ELMAH is. If you still don&#8217;t, go and read <a href="http://code.google.com/p/elmah/">here</a>. If you care about monitoring and stability of your web application, you definitely consider to integrate ELMAH. There are number of guidelines of how to do that. But all of them do not answer several question that MVC developers really concerned about: </p><ul><li> How to add ELMAH as usual MVC controller? </li>
+<li> How to add ELMAH handler to make it secure (accessible only by authorized users) in MVC application? </li>
+</ul><p>I&#8217;ll shed the light on both questions here. </p><h2>Quick start up </h2><p>The best way to add ELMAH is to use <a href="http://nuget.codeplex.com/">Nuget</a> package manager (really recommend to install it). I&#8217;m using Nuget UI, so just right click on MVC application, select <i>&#8220;Add Library Package Reference</i> and pickup ELMAH from nuget feed. Nuget will add reference and update <code>web.config</code> with all required configuration. Basically you can start you application with <code>http://localhost/yourapp/elmah.asx</code> and see main ELMAH page. </p><h2>Changing the configuration </h2><p>ELMAH have been developed in ancient history times of Web Forms. And it is nicely done to be as much universal as possible and implemented as HttpHandler. In <code>web.config</code> you have several line of configuration that register this handler. This is of cause works, but URI like this <code>http://localhost/yourapp/elmah.asx</code> is absolutely not MVC way. So, what you have to do is simply comment out those configuration. </p><pre class="brush: xml">&lt;system.web&gt;
+
+        &lt;!--&lt;httpHandlers&gt;
+            &lt;add verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
+        &lt;/httpHandlers&gt;--&gt;
+  
+    &lt;/system.web&gt;
+
+&lt;system.webServer&gt;
+
+    &lt;!--&lt;handlers&gt;
+    &lt;remove name=&quot;Wild&quot; /&gt;
+    &lt;add name=&quot;Elmah&quot; verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
+    &lt;/handlers&gt;--&gt;
+ 
+&lt;/system.webServer&gt;
+</pre><h2>Add ELMAH controller </h2><p>Now add ELMAH controller to application, the code of controller is: </p><pre class="brush: csharp">public class ElmahController : Controller
+{
+    public ActionResult Index(string type)
+    {
+        return new ElmahResult(type);
+    }
+}
+</pre><p>And setup a proper routing for it: </p><pre class="brush: csharp">context.MapRoute(
+    "Admin_elmah",
+    "Admin/elmah/{type}",
+    new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
+);
+</pre><h2>Implementation of ElmahResult action result </h2><p>He we go for most interesting part. I&#8217;ve checked the sources of ELMAH and reused <code>Elmah.ErrorLogPageFactory</code> to handle those custom HTTP request. After several modifications and pull request by <a href="https://github.com/seba-i">seba-i</a> the code is: </p><pre class="brush: csharp">class ElmahResult : ActionResult
+{
+    private string _resouceType;
+
+    public ElmahResult(string resouceType)
+    {
+        _resouceType = resouceType;
+    }
+
+    public override void ExecuteResult(ControllerContext context)
+    {
+        var factory = new Elmah.ErrorLogPageFactory();
+
+        if (!string.IsNullOrEmpty(_resouceType)) {
+            var pathInfo = "." + _resouceType;
+            HttpContext.Current.RewritePath(PathForStylesheet(), pathInfo, HttpContext.Current.Request.QueryString.ToString());
+        }
+
+        var httpHandler = factory.GetHandler(HttpContext.Current, null, null, null);
+        httpHandler.ProcessRequest(HttpContext.Current);
+    }
+
+    private string PathForStylesheet() 
+    {
+        return _resouceType != "stylesheet" ? HttpContext.Current.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : HttpContext.Current.Request.Path;
+    }
+}
+</pre><h2>Try it now </h2><p>Just build the application and put <code>http://localhost/yourapp/admin/elmah</code> and you will get nice looking ELMAH main page. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s1600/screen.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s400/screen.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5580651212725432850" /></a> <h2>Making it secure </h2><p><a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.authorizeattribute.aspx">AuthorizeAttribute</a> works great for this purpose. Just put this attribute to <code>ElmahController</code> and now it is only Admin, who has access to it.  </p><pre class="brush: csharp">[Authorize(Users = "Admin")]
+public class ElmahController : Controller
+{
+    // ...
+</pre><p>In my applications I use a custom attribute, but the idea still the same.  </p><h2>Allow to view results remotely </h2><p>You definitely want to see results remotely, with no need to access hosting machine. By default, ELMAH do not allow this, but it is easily changed in configuration: </p><pre class="brush: xml">&lt;elmah&gt;
+  &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
+</pre><h2>Code example </h2><p>Full code example is located in my github repository <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Areas/Admin/Controllers/ElmahController.cs">here</a>. </p><br />
+<h2>UPD:</h2><p>I&#8217;ve moved out controller to separate github repostitory. You are free and very welcome to use/fork/pull changes :). Fork & fix it here - <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">https://github.com/alexanderbeletsky/elmah.mvc.controller</a>. </p><h2>UPD2:</h2><p>Instead of placing just controller I create test MVC3 application that clearly show how to use Elmah in MVC. Plese check code and README  <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">here</a>. </p><h2>UPD3:</h2><p>Code placed in this blog post has been changed drastically by latest feedback I recieved for this controller. Please better refer code on github or latest blog post here <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">Latest version of ELMAH MVC controller</a> </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1303,67 +1414,6 @@ We got to Kiev, mostly with no serious at 15.00 next day. I was mostly sleep all
 </p>
 <p>
 That was a great trip for sure! We did 3,908 kilometers in total. We had no injuries, no car damages. Visited greatest places and had snowboarding that I&#8217;ll be seeing in my night dreams in summer. You can find some more picture <a href="https://picasaweb.google.com/alexander.beletsky/21Jan2011ValGardenaTrip#">here</a>. Now, it is time to work again.. to learn new things, to blog and self-improve. Thanks a lot if you read till this point :). 
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/01/last-workday-before-vacation.html">
-    
-      Last workday before vacation</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-19T12:47:00+02:00" pubdate data-updated="true">Jan 19<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/life/'>Life</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Today is my last day before vacation and I&#8217;m very exited about that!
-</p>
-<p>
-Last year my wife and my friends did a great quest from Kiev to <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Ischgl,+Austria&sll=45.434336,12.338784&sspn=0.268866,0.676346&ie=UTF8&hq=&hnear=Ischgl,+Landeck+District,+Tyrol,+Austria&t=h&z=15">Ischgl, Austria</a>. It was my first experience of driving for such big distance (total drive were ~4500 kilometers). We were too optimistic to do all road at once, without any stay on night.. we did it through, but it was too difficult :).. So, when we finally hit Ischgl, we were so tired and exhausted that even beauty of snow Alps were not please us. Fortunately that feeling gone after we got good diner and sleep (I remember I slept for 15 hours then). Nevertheless of hard road the snowboarding in Austria is just fantastic! We had a lot joy of long runs, beautiful slopes, great weather and fresh air! Some photos you ca find in my <a href="http://picasaweb.google.com/alexander.beletsky/15Feb2010IschglSnowTrip#">Picasa</a>. 
-</p>
-<p>
-This year we are smarter, experienced and want for more! At September we started to plan next adventure, this time to Italian Alps (Dolomites). We will stay in <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Santa+Cristina+Val+Gardena,++Italy&sll=46.553785,11.762066&sspn=0.06587,0.169086&ie=UTF8&hq=&hnear=Santa+Cristina+Gherd%C3%ABina+Province+of+Bolzano-Bozen,+Trentino-Alto+Adige%2FS%C3%BCdtirol,+Italy&ll=46.558388,11.719494&spn=0.065865,0.169086&t=h&z=13">Santa Cristina, Italy</a>.. that gives us ability to joy of the best snow resorts of <a href="http://www.val-gardena.net/Default_en.asp">Val Gardena</a> area. This is not only place we are going to visit. We have a night stay in <a href="http://maps.google.com.ua/maps?q=Budapest,+Hungary&um=1&ie=UTF-8&sa=N&hl=en&tab=wl">Budapest, Hungary</a> (last time we had only quick change to look at it, but I would say this is one of the most beautiful cities I ever seen) and <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Venice,+Italy&sll=45.434336,12.338784&sspn=0.268866,0.676346&ie=UTF8&hq=&hnear=Venice,+Veneto,+Italy&t=h&z=11&iwloc=A">Venice, Italy</a>. At the way home we also planning to vist <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Retz+Austria&sll=47.44295,14.040527&sspn=3.960226,10.821533&ie=UTF8&hq=&hnear=Retz,+Hollabrunn,+Lower+Austria,+Austria&ll=48.75981,15.954895&spn=0.126289,0.338173&t=h&z=12">Retz, Austria</a>. This time we are going to join both fun of snowboarding and excitement of Europe traveling. Venice is the place I dream to visit and I&#8217;m very happy that my dream will come true, soon :).  
-</p>
-<p>
-This year I&#8217;m leaving to vacation with very good mood. I&#8217;ve just rolled-out next version of <a href="http://trackyt.net">trackyt.net</a>, so it is upgraded up to 1.0.3 :), closed a lot of <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/issues/closed">issues</a> so far. But mostly because of very good progress we currently do with my fine team in <a href="http://www.e-conomic.com/">E-conomic</a>. I&#8217;m pretty happy to know that during my absence everything would remain with same control and with good performance. 
-</p>
-<p>
-So, that&#8217;s my time to re-charge a batteries a little :). See you in several weeks, guys!
 </p></div>
 
       

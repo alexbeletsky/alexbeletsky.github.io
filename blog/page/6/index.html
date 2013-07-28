@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="A year with Git May 20th, 2012 E-conomic, Git, GitHub, GitSVN It&#8217;s almost a year ago, I&#8217;ve posted the article How to start using Git in &hellip;">
+  <meta name="description" content="CS101 Building a Search Engine: Week 4 May 20th, 2012 CS101, SearchEngine, Udacity Disclaimer: this blog post expresses some impressions and details &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,72 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/05/cs101-building-search-engine-week-4.html">
+    
+      CS101 Building a Search Engine: Week 4</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-20T14:50:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>I&#8217;ve got completed Unit 4 of course during this week. It&#8217;s getting more and more interesting and the crawler we building there getting more complicated. <br />
+</p><p>This week we got through the basic data structures, mainly based on lists. The most interesting thing was an index data structure, thought. We&#8217;ve built the simple page indexer. Now the result of crawling is not simply the list of crawled links, but instead is index that keeps track of content (as word) and the URL where the word is mention. If some of you don&#8217;t know what the index is, the simplest explanation is get just to open any technical book. At the end of the book you will see &#8220;Index&#8221; section. By looking for information you have to option. Either go from one page to another, finding keyword appearance.. or go to index and see exact pages, where this keyword is mentioned. Indices are essential for quick search of data.<br />
+</p><p>The index that my crawler produce, crawling the <a href="http://www.udacity.com/cs101x/index.html">test page</a> is:<br />
+</p><pre class="brush: python">[['This', ['http://www.udacity.com/cs101x/index.html']], 
+   ['is', ['http://www.udacity.com/cs101x/index.html']], 
+   ['a', ['http://www.udacity.com/cs101x/index.html']], 
+   ['test', ['http://www.udacity.com/cs101x/index.html']], 
+   ['page', ['http://www.udacity.com/cs101x/index.html']], 
+   ['for', ['http://www.udacity.com/cs101x/index.html']], 
+   ['learning', ['http://www.udacity.com/cs101x/index.html']], 
+   ['to', ['http://www.udacity.com/cs101x/index.html', 'http://www.udacity.com/cs101x/crawling.html']], 
+   ['crawl!', ['http://www.udacity.com/cs101x/index.html']]
+   # ...
+    </pre><p>I went a little above the given task and improved the crawler with &#8220;clean-up html tags&#8221; functionality. So, I get the body part of document, strip out all HTML tags and then index the content. The latest version of crawler is in this <a href="https://gist.github.com/2757731">gist</a>.<br />
+</p><p>We also looked on some Internet fundamentals as: bandwidth, latency, traceroutes and protocols. <br />
+</p><p>I haven&#8217;t yet started any project on python except the crawler one. With implementing the of more complex applications I start to feel the lack of IDE with debugger. I currently use Sublime Text 2 + print statement as my IDE and debugger tool. It might be time to look for something better.<br />
+</p><p>Everything is going fine so far, except the fact I&#8217;m being late for one week. The final exam is going to be posted at 27th of May and it will take one week to have a change to pass it. So, I&#8217;ve got a goal to complete 2 units through this week. The half of course is done! <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -749,254 +815,6 @@ It is interesting enough to do not be bored in a middle (at least I hope so)<br 
 </p><p>First of all, it should be implemented as simple HTML razor helpers. You just specify the name of bundle there, like &#8220;scripts/js&#8221; and that&#8217;s it. Helper is smart enough to understand what is active environment at the moment. In case of &#8216;Debug&#8217; it expanded to a bunch of script references or links, for JS and CSS respectively. In &#8216;Release&#8217; mode it&#8217;s indeed refers the bundle, so it&#8217;s packaged and minified for best performance.<br />
 </p><p>You might say, that 1. this is out of scope for <code>System.Web.Optimization</code> framework 2. you can create this behavior easily on your own. This is right, but in the same time if you deal with ASP.NET MVC4 you have some expectation that is should work right and you are not forced to invent the wheel again, so you have kind of consistency between numerous projects.<br />
 </p><p>I&#8217;ve been thinking about to create something like that, but during the chat with fellow developer <a href="">@andrexx</a> about bundling and he showed me something interesting. <a href="https://twitter.com/#!/tdupont750">Tom DuPont</a> has already implemented something that&#8217;s really reflects my needs. It&#8217;s the <a href="http://www.tomdupont.net/2012/03/configuring-bundles-in-mvc-4.html">way</a> of configuring bundles both from code and web.config. It looks like a very handy tool.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/04/new-in-aspnet-mvc4-bundling-and.html">
-    
-      New in ASP.NET MVC4: Bundling and Minification</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-02T09:44:00+03:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/css/'>CSS</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
-</p><p>The problem is, each HTTP request takes time. One of the most critical Yahoo web applications performance recommendation says - <a href="http://developer.yahoo.com/performance/rules.html">Minimize HTTP request</a>. As few HTTP requests you need to load application as better.<br />
-</p><h2>System.Web.Optimization<br />
-</h2><p>Bundling and minification is located in it&#8217;s own namespace <code>System.Web.Optimization</code> and resides in assembly named <code>Microsoft.Web.Optimization</code>, which is installed by default with new ASP.NET MVC4 application template as NuGet package. Since it&#8217;s still in beta, namespaces and class names are probably be changing, but let&#8217;s look on that we have now.<br />
-</p><h2>What is bundle?<br />
-</h2><p>Bundle is simply logical group of files that could be referenced by unique name and being loaded with one HTTP request. Suppose, we have a Layout.cshtml that might look something like that:<br />
-</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
-
-&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
-        
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/jquery.mobile-1.0b3.min.css&quot; /&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/reset.css&quot; /&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/foundation.css&quot; /&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Fonts.css&quot; /&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Layout.css&quot; /&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Mobile.css&quot; /&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;        
-</pre><p>You can see, that&#8217;s a lot of css and javascript that will be loaded for page. With bundling we can rewrite it with very simple code<br />
-</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
-
-&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
-        
-&lt;link rel=&quot;stylesheet&quot; href=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Content/css&quot;)&quot; /&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
-</pre><p>In this case <code>"~/Content/css"</code> and <code>"~/Scripts/js"</code> are no longer virtual paths, but bundle names. <br />
-</p><p>The the browser would load this page, rendered HTML would look like:<br />
-</p><pre class="brush: html">&lt;link href=&quot;/Content/css?v=q_sftc19r22licIM8-Ar58FwviyWry1JuYbA-iATm4M1&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
-&lt;script src=&quot;/Scripts/js?v=_8kyYWxz-Je_VE0p3_w5nbcjAhq0Qj4vZiNxvYU_oBg1&quot;&gt;&lt;/script&gt;
-</pre><p>Note, it would reference the bundle with version. The version is a kind of hash taken on all files in bundle content. This enables browser caching, if content of bundle is not change browser will take it from cache, which is much faster. In case of changes, new version token is generated, so browser would be forced to reload bundle.<br />
-</p><a href="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png"><br />
-    <img src="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png" alt="chrome development tools" /><br />
-</a><br />
-<h2>Bundle registration<br />
-</h2><p>In <code>global.asax</code> file you will see new line:<br />
-</p><pre class="brush: csharp">    BundleTable.Bundles.RegisterTemplateBundles();
-</pre><p>It&#8217;s only one small line of code that enables bundling and minification framework.<br />
-</p><h2>RegisterTemplateBundles() vs. EnableDefaultBundles()<br />
-</h2><p>It looks fine so far, so I tried to add new javascript file into Scripts folder. Unfortunately, my application did not work. I think this is first very contra-intuitive fact of bundling framework. Googling a bit I found quick solution, change RegisterTemplateBundles() to EnableDefaultBundles().. I tried that and it really works.<br />
-</p><p>Since the <code>System.Web.Optimization</code> has not been opened sourced yet (in case you haven&#8217;t heard - ASP.NET web stack is <a href="http://weblogs.asp.net/scottgu/archive/2012/03/27/asp-net-mvc-web-api-razor-and-open-source.aspx">open source</a>, even with accepting pull request) I had to go to <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> to understand why is that.<br />
-</p><p>So, RegisterTemplateBundles() is looks like that,<br />
-</p><pre class="brush: csharp">public void RegisterTemplateBundles()
-{
-    bool flag;
-    bool flag2;
-    bool flag3;
-    bool flag4;
-    bool flag5;
-    bool flag6;
-    bool flag7;
-    Bundle bundle1 = new Bundle("~/Scripts/js", new JsMinify());
-    bool flag8 = false.AddDirectory("~/Scripts", "jquery-*", flag, flag8);
-    bool flag9 = false.AddDirectory("~/Scripts", "jquery.mobile*", flag2, flag9);
-    bool flag10 = false.AddDirectory("~/Scripts", "jquery-ui*", flag3, flag10);
-    bool flag11 = false.AddDirectory("~/Scripts", "jquery.unobtrusive*", flag4, flag11);
-    bool flag12 = false.AddDirectory("~/Scripts", "jquery.validate*", flag5, flag12);
-    bool flag13 = false.AddFile("~/Scripts/MicrosoftAjax.js", flag13);
-    bool flag14 = false.AddFile("~/Scripts/MicrosoftMvc.js", flag14);
-    bool flag15 = false.AddDirectory("~/Scripts", "modernizr*", flag6, flag15);
-    bool flag16 = false.AddFile("~/Scripts/AjaxLogin.js", flag16);
-    this.Add(bundle1);
-    Bundle bundle2 = new Bundle("~/Content/css", new CssMinify());
-    bool flag17 = false.AddFile("~/Content/site.css", flag17);
-    bool flag18 = false.AddDirectory("~/Content/", "jquery.mobile*", flag7, flag18);
-    this.Add(bundle2);
-    Bundle bundle3 = new Bundle("~/Content/themes/base/css", new CssMinify());
-    bool flag19 = false.AddFile("~/Content/themes/base/jquery.ui.core.css", flag19);
-    bool flag20 = false.AddFile("~/Content/themes/base/jquery.ui.resizable.css", flag20);
-    bool flag21 = false.AddFile("~/Content/themes/base/jquery.ui.selectable.css", flag21);
-    bool flag22 = false.AddFile("~/Content/themes/base/jquery.ui.accordion.css", flag22);
-    bool flag23 = false.AddFile("~/Content/themes/base/jquery.ui.autocomplete.css", flag23);
-    bool flag24 = false.AddFile("~/Content/themes/base/jquery.ui.button.css", flag24);
-    bool flag25 = false.AddFile("~/Content/themes/base/jquery.ui.dialog.css", flag25);
-    bool flag26 = false.AddFile("~/Content/themes/base/jquery.ui.slider.css", flag26);
-    bool flag27 = false.AddFile("~/Content/themes/base/jquery.ui.tabs.css", flag27);
-    bool flag28 = false.AddFile("~/Content/themes/base/jquery.ui.datepicker.css", flag28);
-    bool flag29 = false.AddFile("~/Content/themes/base/jquery.ui.progressbar.css", flag29);
-    bool flag30 = false.AddFile("~/Content/themes/base/jquery.ui.theme.css", flag30);
-    this.Add(bundle3);
-}
-</pre><p>As you can see it adds all recourses that came just in template, including jQuery Mobile and jQuery UI. <br />
-</p><p>In the same time, EnableDefaultBundles()<br />
-</p><pre class="brush: csharp">public void EnableDefaultBundles()
-{
-    this.Add(new DynamicFolderBundle("js", JsMinify.Instance, "*.js"));
-    this.Add(new DynamicFolderBundle("css", CssMinify.Instance, "*.css"));
-}
-</pre><p>So, what it does - it matches all javascript and css files in project, minify them and create to bundles out of it.<br />
-</p><p>As you can see <code>EnableDefaultBundles()</code> is also uses Minification policy for bundle content.<br />
-</p><h2>How add my own custom bundle?<br />
-</h2><p>As simple as create new <code>Bundle</code> object, put files inside and then add it to Bundles collection.<br />
-</p><pre class="brush: csharp">var bundle = new Bundle("~/Scripts/libs", new JsMinify());
-bundle.AddFile("~/Scripts/knockout-2.0.0.js");
-BundleTable.Bundles.Add(bundle);
-</pre><p>But there two issues here. First of all, you don&#8217;t always want to minify. Second, adding bundles with many files will make global.aspx.cs looks messy. I really liked approached proposed by Scott K. Allen in his <a href="http://odetocode.com/Blogs/scott/archive/2012/03/20/yet-another-bundling-approach-for-mvc-4.aspx">Yet Another Bundling Approach for MVC 4</a> blog post. He does it in more object-oriented way including smart code to decide, should the bundle be minified or not. All you need is just take code he created and after you are able to make bundles like that.<br />
-</p><pre class="brush: csharp">public class JsLibsBundle : JsBundle
-{
-    public JsLibsBundle() : base("~/js/libs")
-    {
-        AddFiles(
-            "~/Scripts/jquery-1.6.4-vsdoc.js",
-            "~/Scripts/jquery-1.6.4.js",
-            "~/Scripts/jquery.mobile-1.0b3.js",
-            "~/Scripts/knockout-2.0.0.js",
-            "~/Scripts/modernizr-2.0.6-development-only.js",
-            "~/Scripts/underscore.js"
-        );
-    }
-}
-
-public class CssAppBundle : CssBundle
-{
-    public CssAppBundle() : base("~/css/mobile")
-    {
-        AddFiles(
-            "~/Content/jquery.mobile-1.0b3.css",
-            "~/Content/Site.Mobile.css"
-        );
-    }
-}
-</pre><p>And put them to registered those classes in global.asax.cs<br />
-</p><pre class="brush: csharp">    BundleTable.Bundles.Add(new JsLibsBundle());
-    BundleTable.Bundles.Add(new CssAppBundle());
-</pre><h2>Ok, how all that stuff works?<br />
-</h2><p>Now let&#8217;s do a really brief look under the hood. Again, <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> is our friend here. <br />
-</p><p>It was interesting to me to find out new cool way of registration modules in ASP.NET. No longer entry points in web.config or other magic. You can have a special class <code>PreApplicationStartCode</code> that would be called then assembly is loaded, but before application is stated.<br />
-</p><pre class="brush: csharp">public static class PreApplicationStartCode
-{
-    private static bool _startWasCalled;
-
-    public static void Start();
-}
-</pre><p>Here <code>System.Web.Optimization</code> register it&#8217;s own module, called <code>BundleModule</code>.<br />
-</p><pre class="brush: csharp">public static void Start()
-{
-    if (PreApplicationStartCode._startWasCalled)
-    {
-        return;
-    }
-    PreApplicationStartCode._startWasCalled = 1;
-    DynamicModuleUtility.RegisterModule(typeof(BundleModule));
-}
-</pre><p>Then the module is intialized, it subscribes for event called <a href="http://msdn.microsoft.com/en-us/library/system.web.httpapplication.postresolverequestcache(v=vs.90).aspx">HttpApplication.PostResolveRequestCache</a> and inside the callback it would register the <code>BundleHandler</code>.<br />
-</p><pre class="brush: csharp">private void OnApplicationPostResolveRequestCache(object sender, EventArgs e)
-{
-    HttpApplication httpApplication = (HttpApplication)sender;
-    if (BundleTable.Bundles.Count > 0)
-    {
-        BundleHandler.RemapHandlerForBundleRequests(httpApplication);
-    }
-}
-</pre><p>The handler is now responsible for dirty job. Through the <code>RequestBundle</code> class it finally comes to <code>ProcessRequest</code> method.<br />
-</p><pre class="brush: csharp">internal void ProcessRequest(BundleContext context)
-{
-    context.EnableInstrumentation = Bundle.GetInstrumentationMode(context.HttpContext);
-    BundleResponse bundleResponse = this.GetBundleResponse(context);
-    Bundle.SetHeaders(bundleResponse, context);
-    context.HttpContext.Response.Write(bundleResponse.Content);
-}
-</pre><p>So, the <code>GetBundleResponse</code> is there magic is happens. <br />
-</p><pre class="brush: csharp">private BundleResponse GetBundleResponse(BundleContext context)
-{
-    BundleResponse bundleResponse = Bundle.CacheLookup(context);
-    if (bundleResponse == null || context.EnableInstrumentation)
-    {
-        bundleResponse = this.GenerateBundleResponse(context);
-        if (!context.EnableInstrumentation)
-        {
-            Bundle.UpdateCache(context, bundleResponse);
-        }
-    }
-    return bundleResponse;
-}
-</pre><p>What&#8217;s important here is that it uses cache. So, it makes bundling rather efficient. In case if there are no cached result, it will run the <code>GenerateBundleResponse</code> to generate actual response:<br />
-</p><pre class="brush: csharp">public virtual BundleResponse GenerateBundleResponse(BundleContext context)
-{
-    if (context == null)
-    {
-        throw new ArgumentNullException("context");
-    }
-    IEnumerable&lt;FileInfo&gt; fileInfos = this.EnumerateFiles(context);
-    fileInfos = context.BundleCollection.IgnoreList.FilterIgnoredFiles(fileInfos);
-    fileInfos = this.Orderer.OrderFiles(context, fileInfos);
-    fileInfos = this.ReplaceFileExtensions(context, fileInfos);
-    string str = this.Builder.BuildBundleContent(this, context, fileInfos);
-    BundleResponse bundleResponse = new BundleResponse(str, fileInfos);
-    this.Transform.Process(context, bundleResponse);
-    return bundleResponse;
-}
-</pre><p>Yet another interesting finding here is <code>this.Orderer</code>. Sometime ago I did smalltalk on <a href="http://kievalt.net">Kiev ALT.NET</a> meeting about new stuff in VS2011 and being asked a question, how is possible to order the files. I didn&#8217;t know answer then. It is actually possible to setup the order of files inside bundle, in case you have cross-file dependencies:<br />
-</p><pre class="brush: csharp">public interface IBundleOrderer
-{
- IEnumerable&lt;FileInfo&gt; OrderFiles(BundleContext context, IEnumerable&lt;FileInfo&gt; files);
-}
-</pre><p>That&#8217;s it, the generated response than just being written to <code>context.HttpContext.Response</code>.<br />
-</p><h2>Conclusions</h2><p>Bundling and minification is something that I personally wanted so much, to appear in new MVC framework. Now it&#8217;s there, it works.. but I would not say I&#8217;m 100% happy. There are several things that makes it a little difficult to use, as for me. I did want to place it in this post, but appeared to big.. So, I&#8217;ll probably do a separate one on this matter. <br />
 </p></div>
 
       

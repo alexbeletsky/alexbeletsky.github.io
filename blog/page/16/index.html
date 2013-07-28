@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Test Driven Design and levels of testing Oct 19th, 2010 TDD, Tips Major benefit of TDD is not coverage, regression stability, test problem solving &hellip;">
+  <meta name="description" content="UppercuT your builds Oct 22nd, 2010 Open source, Tools, asp.net I like open source tools and frameworks, but more I like open source tools and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,166 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/10/uppercut-your-builds.html">
+    
+      UppercuT your builds</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-22T13:05:00+03:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I like open source tools and frameworks, but more I like open source tools and frameworks that work! There are 2 nice frameworks that I started to use really fast got exactly what I need. They are <a href="http://code.google.com/p/uppercut">UppercuT</a> and <a href="http://code.google.com/p/roundhouse/">RoundhousE</a>. I&#8217;ve planned to blog about both, but post appears to be quite long, so I&#8217;ll spilt it on two.
+</p>
+<p>
+It is all about build and deployment. I&#8217;ve seen different build and deployment system through my career: some domestic made, some commercial, some simple, some complex. I&#8217;ve recently started to think about for my own project. But before we started, lets make it clear - what I personally expect from build framework?
+</p>
+<ul>
+<li>It have to use a industry standard tools - nant, msbuild, nunit, ncover etc.</li>
+<li>Build have to be done by one click (press key)</li>
+<li>During build unit tests have to run</li>
+<li>During build different code metrics must be collected</li>
+<li>It have to be integrated with popular SCM systems - svn, git, perforce etc.</li>
+<li>It must have easy to use versioning system, all build artifacts (binaries, docs) are labeled with one consistent version</li>
+<li>It must have automatic packaging mechanism, to deploy package on target machine</li>
+</ul>
+<p>
+If you are having database in your application, you should also be concerned of.
+</p>
+<ul>
+<li>Versioning of database</li>
+<li>Deployment of database on any environment</li>
+<li>Updating live database with new patches</li>
+</ul>
+<p>
+Initially I thought to do some very simple by myself, but later I was browsing some repositories on github and noticed interesting project structure - build/deployment folders as well as number of batch files, like build.bat, test.bat, open.bat etc. I digged a bit and found out that it is actually scaffold provided by UppercuT. After I checked some documentation, I realized that it is probably something that I need! So, please met two projects that would simplify your life a bit: UppercuT - automation build/versioning/packaging; RoundhousE - db migration/versioning/deployment. 
+</p>
+<h2>UppercuT setup and usage</h2>
+<p>
+Just go to <a href="http://code.google.com/p/uppercut">UppercuT</a> web site and download latest package. I&#8217;ve used 1.0.5.0, in package you will found some docs, that might be interesting to read and framework itself in UppercuT folder. 
+</p>
+<p>
+What&#8217;s inside? Well, package contains a configuration files, batch/shell scripts, nant scripts and number of tools - <code>MbUnit</code>, <code>MoMa</code>, <code>NAnt</code>, <code>NCover</code>, <code>NUnit</code>. Internally UppercuT uses nant for build automation. If you are not familiar with nant.build scripts, please don&#8217;t worry. UppercuT created in a way, that you very isolated of nant details and perform all configuration only in one place, <code>settings/UppercuT.config</code> - simple XML file.
+</p>
+<p>
+If you want to apply UppercuT to your existing project, I would recommend to do following steps before you start.
+</p>
+<ul>
+<li>Change you folder structure in the way to have on: <code>docs</code>, <code>lib</code>, <code>src</code> on higher level of directories tree.</li>
+<li>
+Solution file (.sln) and all projects are put to <code>src</code> folder.
+</li>
+<li>
+All 3rd parties (nunit, moq, ninject etc.) referenced from lib folder.
+</li>
+<li>
+Project documentation moved to <code>docs</code> folder.
+</li>
+</ul>
+<p>
+As soon as you done, just copy all content of UppercuT folder into your project folder. You are ready to use it. Before actual use you have to configure it. Fortunately, it have to be done only in one place - <code>settings/UppercutT.config</code> file. You have to provide <code>project.name</code>, <code>path_to_solution</code>, <code>repository.path</code> and <code>source_control_type</code>, <code>test.framework</code> and <code>microsoft.framework</code> (net-4.0 is supported).
+</p>
+<p>
+As you provided all required keys you are able to start build! If you have compliable sources and runnable unit tests, you have to receive SUCCESS build status (I failed to start it at first time, having problems with 
+    nunit, please see Issues section below). 
+</p>
+<p>
+Lets see what UppercuT does for us:
+</p>
+<ol>
+<li>
+It uses source repository to generate <code>_BuildInfo.xml</code> and <code>SolutionVersion.cs</code> files. <code>_BuildInfo.xml</code> contains a digest of build, with revision, version, path to repository, dot-net framework version etc. <code>SolutionVersion.cs</code> is code file that must be referenced from all projects in solution, so they all have a common version. 
+</li>
+<li>
+It compiles all projects in solution.
+</li>
+<li>
+It runs all unit test in solution (please note, it run only units - projects with *Test* in their names. It does smart job to skip Database, Integration tests). 
+</li>
+<li>
+It copies all db scripts and documentation to build_output folder.
+</li>
+<li>
+It generates batches for build deployment and db deployment.
+</li>
+<li>
+It analyzes output binaries with such tools as NCover, NDepend (it is not in package, because it is commercial but if you have it UppercuT will use it), MoMa etc and place results to <code>build_artifacts</code> folder.
+</li>
+<li>
+It packages everything to <code>code_drop</code> folder, where everything is on right places - web content, binaries, db scripts and build artifacts.
+</li>
+</ol>
+<p>
+A lot of things for free, right? What more you can do?
+</p>
+<ol>
+<li>
+You can run <code>open.bat</code> that by default open your Visual Studio with solution.
+</li>
+<li>
+You can run <code>test.bat</code> to build and re-run unit tests, <code>test.bat all</code> will run all types of tests - units, integration, database. <code>test.bat</code> useful to be run by some Continues Integration servers as CruiseControl.
+</li>
+<li>
+You can run <code>zip.bat</code>. Very useful feature, that would run build/tests and zip content of <code>code_drop</code> folder into one single zip file (like <code>trackyourtasks.net.v0.1.0.584b2ef4.zip</code>) that could be copied to production system for deployment and placed to repository to track builds. 
+</li>
+</ol>
+<h3>Issues and criticism</h3>
+<p>
+As I said above first time I run <code>build.bat</code> it failed. The reason was that <code>nunit-console</code> loaded 2.0 runtime, but my test assemblies are build with 4.0 framework. It have been solved by modification of <code>build\analyzers\nunit.test.step</code> and adding one additional argument in <code>exec</code> of <code>run_tests</code> target <code>&#60;arg value="/framework=${microsoft.framework}" /&#62;</code>. Please check my <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/f3ef494a00237275017053eb62477d7a1bebc974">commit</a> for details. <a href="http://twitter.com/#!/ferventcoder">Ferventcoder</a> already contacted me regarding that issue, for I hope in some nearest versions in would be solved :).
+</p>
+<p>
+Another problem I met with coverage reports generation. It just generates them empy. It is not blame for UppercuT but rather for NCover, that seems to have issues with .NET 4.0. In the same time, somehow, Testdriven.net is able to run NCover with properly generated coverage reports. 
+</p>
+<p>
+No more critic yet. What would be nice to have is already defined tasks for <a href="http://code.msdn.microsoft.com/sourceanalysis">Stylecop</a> and <a href="http://msdn.microsoft.com/en-us/library/bb429476(VS.80).aspx">FXCop</a>.
+</p>
+<h2>Conclusions</h2>
+<p>
+This uppercut turns to be powerfull. If you have no build system yet, UppercuT is recomended.. If you have some &#8220;self-written&#8221; system that you tired to support - UppercuT is recomended.. If you have build system and happy about it, well.. try UppercuT, you could notice something you missing, or otherwise suggest some new feature for UppercuT :).
+</p>
+<p>
+<b>Update:</b>
+<p>
+<p>Next blog post is about <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to handle your database.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1143,86 +1303,6 @@ At the end of session Henrik did several known (but usually forgotten) priciples
 </ul>
 <p>
 Perfection is direction, not a place - don&#8217;t forget it!
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/10/agileee-2010-biggest-agile-conference.html">
-    
-      Agileee 2010: Biggest Agile conference in East Europe</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-08T20:06:00+03:00" pubdate data-updated="true">Oct 8<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-First of all I would like to say thank you to my <a href="http://e-conomic.com">company</a> to be at this conference. It is really great to be part of such community, to see a lot of famous faces, to listen to a wise speeches.
-</p>
-<p>
-I&#8217;ll share my overall impressions on this conference as well as some keynotes for sessions I attend.
-</p>
-<h2>Registration</h2>
-<p>
-Registration were fine and easy, no waiting lines, no crowd. Just gave my registration letter and got lunch tickets for both days as well as big bag. Then I looked in bag I found a lot of interesting stuff in it! There was a map of Kiev (I live in Kiev, but I believe that guests find it very useful), notepad, pens, some advs. What I really liked is notebook stickers by <a href="http://www.versionone.com/">VersionOne</a> (that I already put on my notebook :) and planning poker cards by <a href="http://www.globallogic.com/">GlobalLogic</a>. Also, I was quite surprised to see that I represent Nigeria on Agileee 2010 :). So, organizators were in good humor.
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9QJXb2fLI/AAAAAAAAG9I/pNeqgughpKQ/s1600/DSC03693.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 338px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9QJXb2fLI/AAAAAAAAG9I/pNeqgughpKQ/s400/DSC03693.JPG" border="0" alt=""id="Img1" /></a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TK9TtzdeCsI/AAAAAAAAG9o/UpHCWzxvFBo/s1600/DSC03687.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 338px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TK9TtzdeCsI/AAAAAAAAG9o/UpHCWzxvFBo/s800/DSC03687.JPG" border="0" alt=""id="Img5" /></a>
-<h2>Morning coffee</h2>
-<p>
-Since I was in really big hurry I was happy to see I still have time before Opening Session. All guests could enjoy morning coffee and tea, listening to some classic tunes played by a small orchestra. During the coffee it was great to see such guests as <a href="">Mary Poppendieck</a>, <a href="http://www.allankelly.net/">Allan Kelly</a> and others. 
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9PvyPYsXI/AAAAAAAAG9A/noZGF9ws7ZY/s1600/DSC03661.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 338px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9PvyPYsXI/AAAAAAAAG9A/noZGF9ws7ZY/s800/DSC03661.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5525722950165639538" /></a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TK9RS5HzrQI/AAAAAAAAG9Q/N_3_4kw7gzk/s1600/DSC03664.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 338px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TK9RS5HzrQI/AAAAAAAAG9Q/N_3_4kw7gzk/s800/DSC03664.JPG" border="0" alt=""id="Img2" /></a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9SbsPleVI/AAAAAAAAG9Y/EdBhwU5_cO4/s1600/DSC03669.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 338px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9SbsPleVI/AAAAAAAAG9Y/EdBhwU5_cO4/s800/DSC03669.JPG" border="0" alt=""id="Img3" /></a>
-<h2>Opening Session</h2>
-<p>
-Time to begin! <a href="http://twitter.com/#!/alexeykri">Alexey Krivitsky</a> and <a href="http://twitter.com/#!/NataliyaTrenina">Natalia Trenina</a> are major people on scene! Introduction speach were nice and clean, even it has been bit messed up with microphone issues that took place. Anyway, Agileee 2010 is opened, so it is time for speakers to do their work!
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9Sumg5T-I/AAAAAAAAG9g/f4BC6MN_JUo/s1600/DSC03676.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 600px; height: 450px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TK9Sumg5T-I/AAAAAAAAG9g/f4BC6MN_JUo/s800/DSC03676.JPG" border="0" alt=""id="Img4" /></a>
-<h2>Sessions</h2>
-<p>
-I really enjoyed some sessions, some was boring as for me. Having a notebook on my knees I tried to do as much notes as possible, so I&#8217;m planning to do a small review of each session I visisited. So my channel is going to be a little noisy next several days, but please stay in tune :). 
-</p>
-<h2>
-My little feedback on organization.
-</h2>
-<p>
-The organization is really great, keep doing that guys :). What I personally complain about are: bad quality of WiFi connection, and few plugs to recharge of notebook&#8217;s battery.  
 </p></div>
 
       
