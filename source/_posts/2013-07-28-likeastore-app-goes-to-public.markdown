@@ -45,11 +45,11 @@ Looking back, I have to say - *it's great we didn't show it to public immediatel
 
 Originally, we've planned to push more features to public version: facebook and tumlr connectors, full text search and other stuff. But private beta clearly showed - the *focus have to be on quality*.
 
-We literally re-write application from scratch, both server side and client. Applied integration tests and unit tests whereever it's possible, also covering main application pathes with zombie.js [end-to-end](http://pixelhunter.me/post/54753803233/end-to-end-testing-with-zombie-js-mocha-js-and) tests.
+We literally re-wrote the application from scratch, both server side and client. Applied integration tests and unit tests whereever it's possible, also covering main application pathes with zombie.js [end-to-end](http://pixelhunter.me/post/54753803233/end-to-end-testing-with-zombie-js-mocha-js-and) tests.
 
 Our [API](https://github.com/likeastore/app/tree/master/source/api) became stable and fully tested, our [client](https://github.com/likeastore/app/tree/master/public/js) solid rock and very reliable. The trickiest part of application, the [collector](https://github.com/likeastore/collector) - it became smarter, with a scheduler that schedules optimal requests to avoid API rate limits.
 
-## Make the product beautiful
+## Making the product beautiful
 
 Beautiful UI/UX for applications like a crucial. And that's why I'm happy that [@voronianski](https://twitter.com/voronianski) is a part of team.
 
@@ -57,7 +57,7 @@ He did amazing job by visualizing both site and application. Design became very 
 
 Following the modern trend of flat design, we've picked up colors and styles, showing the way we see application, as modern and useful. Just *making the things look nicer* would be a real further strategy for us.
 
-## Security
+## Security is concern
 
 We collect users private data, it was obvioulsy just impossible to give a chance of someone else access it. So, have to secure the application with SSL connection, so all trafic between API and browser is crypted. SSL became a quite hard, first because certificate is rather expensive, second you have to install on server, which I never did before.
 
