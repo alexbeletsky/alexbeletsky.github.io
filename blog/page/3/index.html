@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="JavaScript Object Creation by New Operator Nov 12th, 2012 JavaScript, Tips There are different approaches of how to create object in JavaScript. C# &hellip;">
+  <meta name="description" content="Baby steps to Backbone.js: Unit testing of models Nov 22nd, 2012 BabyStepsBackbone, Backbone.js, JavaScript, TDD Unit testing is important part of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,172 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/11/baby-steps-to-backbonejs-unit-testing.html">
+    
+      Baby steps to Backbone.js: Unit testing of models</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-22T11:54:00+02:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
+        </p>        <p>            By the end of the day, it&#8217;s only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
+        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let&#8217;s setup our testing infrastructure.<br />
+        </p>        <h2>Folders and files</h2>        <p>            We&#8217;ll have a new folder called `spec`. Inside the spec folder, I&#8217;ll have `models` and `views` folders that would contain tests for models and views.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
+            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
+        </a><br />
+        <h2>Tests runner</h2>        <p>            I&#8217;ll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It&#8217;s very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
+        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
+        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Sources --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Specs --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
+    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let&#8217;s review the Jasmine test skeleton.<br />
+        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
+    var value;
+
+    beforeEach(function () {
+        value = 1;
+    });
+
+    it ('should fail', function () {
+        expect(value).toBe(0);
+    });
+
+    describe('when value is changed', function () {
+        beforeEach(function () {
+            value = 0;
+        });
+
+        it ('should pass', function () {
+            expect(value).toBe(0);
+        })
+    });
+});
+</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it&#8217;s both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
+        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let&#8217;s test that.<br />
+        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
+    var model;
+
+    beforeEach(function () {
+        model = new Feedback();
+    });
+
+    describe('when model is validating', function () {
+        var errors;
+    });
+});
+</pre>        <p>            This is something to start with. It does not do any asserts, so now we&#8217;ll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
+        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
+    beforeEach(function () {
+        errors = model.validate({});
+    });
+
+    it ('should have 2 errors', function () {
+        expect(errors.length).toBe(2);
+    });
+
+    it ('should have email fields as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[1].name).toBe('feedback');
+    });
+});
+</pre>        <p>            It&#8217;s is possible that user put email, but forgot about feedback.<br />
+        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ email: 'a@a.com'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[0].name).toBe('feedback');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
+        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ feedback: 'TDD is awesome'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have email field as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
+        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
+            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
+        </a><br />
+        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model&#8217;s is pretty simple thing. It&#8217;s nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -860,68 +1026,6 @@ $.get(url1, function (r) {
 </p><p>The point of my story is. Developer have to be open minded person during whole career. Something you did yesterday, may became obsolete tomorrow. There are many things outside your comfort zone you might missing, staying in comfort zone for long time.<br />
 </p><p>Back to Sasha, I always knew she is very bright lady. Now I hope she became bright engineer, good luck to you, honey.<br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/09/why-use-backbonejs.html">
-    
-      Why Use Backbone.js?</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-07T18:30:00+03:00" pubdate data-updated="true">Sep 7<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-    <p>        Even JavaScript language and front-end development has been much matured recent time, I still see a lot of confusion about usage of different frameworks and libraries.<br />
-    </p>    <p>        For a half of year I use Backbone.js and feel much satisfied with it. It&#8217;s very popular library, probably because of personal popularity of the creator of Backbone.js <a href="http://en.twitter.com/jashkenas">Jeremy Ashkenas</a>, very much known also as author of CoffeScript language.<br />
-    </p>    <h2>Frameworks and libraries</h2>    <p>        There are differences between frameworks and libraries. In one sentence, &#8220;library is then you call some code, framework is then your code is called from somewhere&#8221;. The Backbone.js is clearly library. You usually have a lot of different options with libraries and less with frameworks. It&#8217;s very minimalistic, actually.<br />
-    </p>    <p>        At core it only contains of only 4 components (Model, Collection, View, Router). This minimalism is both power and weak side of Backbone.js. The power is that you can build things whatever you like, Backbone fits the experience really smoothly. In the same time, you are really confused the time you just started, since you simply don&#8217;t understand how to make everything work together properly.<br />
-    </p>    <h2>The essence of Backbone.js</h2>    <p>        In one of the podcasts with Jeremy, he said &#8220;Backbone is something that almost every developer will come to theirselves.. dealing with JavaScript applications for a while&#8221;. I could not agree more. If you have previous experience in programming and you see the value of architecture and design, you will definitely start to invent something similar to Backbone.<br />
-    </p>    <p>        After some time spend of development jQuery based application you will realize many fundamental issues, like: data does not belong to DOM, events are not limited on jQuery and so on. But the main issue is jQuery apps usually violates the &#8220;Single Responsibility Principle&#8221;, mixing and manipulation with data and views in the same time. Experienced developers, tries to eliminate SRP issues as soon as possible, almost naturally coming to MVC pattern.<br />
-    </p>    <p>        In essence the Backbone is a way to structure you application better. It makes clear de-coupling between data and views that render that data. It&#8217;s nothing more than that.<br />
-    </p>    <h2>Abstracting things out</h2>    <p>        Programming is a matter of abstractions. As better abstractions you have as better code you have. <br />
-    </p>    <p>        Every application works with data. The data does not appear in browser just like that, it have to fetched from somewhere. It&#8217;s also have to be persisted somewhere. The data could be changed and you have to validate that change is right. If some part of data is changing, you want to be notified on that change. Notice that, this is a very common functionality you want to keep between all data classes - initialization, validation, persistence. This is where the <code>Backbone.Model</code> comes out. With <code>Backbone.Model</code> all that things are already &#8220;in the box&#8221; you just need to apply your own strategies of implementation.<br />
-    </p>    <p>        You typically don&#8217;t deal with one instance of model. REST interfaces are usually expose something like <code>/api/tasks</code> or <code>/api/photos</code> and so on. You need to group the models into collections. Collection (similar to model) are able fetch and persist itself, all it needs to know is the actual type of Model and URL. This is where <code>Backbone.Collection</code> shies. You are keeping all models close together, if some model become destroyed the collection will be updated, so it always in consistent state.<br />
-    </p>    <p>        With view is basically render your models as DOM structure. So, the <code>Backbone.View</code> is abstraction with primarily method - <code>render</code>. Backbone does not say, how exactly you are going to do that. You can create handcrafted HTML and append it DOM, or use some templating mechanisms. Instead, it provides you convenient methods for listening to view events (like clicks, focusout or any other DOM supported events). Inside the handlers you either could update related model or apply some changes to view parts, whatever.<br />
-    </p>    <p>        And finally <code>Backbone.Router</code> is a facility to building, so called Single Page Applications (SPA). SPA&#8217;s most popular example is GMail. You browsing emails, writing and sending - without and page reloads. What&#8217;s changing is only hash part of URL (like #inbox, #sent, #all). Router is handling hash change events and triggers registered handler. Inside the handler, you can initialize the corresponding application.<br />
-    </p>    <h2>Don&#8217;t repeat yourself</h2>    <p>        Now, please let me know. How many times did you create (read copy-n-paste) the code for RESTful data persistence? How many times, you did you create code for validation? How many hours you spend for looking for some event listener provoking the bug in your app and hiding somewhere among 200 .js files?<br />
-    </p>    <p>        If your answer, more that 2 - stop doing that. Don&#8217;t repeat yourself - reuse. And better - reuse from best.<br />
-    </p>    <h2>Conclusions</h2>    <p>        There are great solutions, created by people experienced than me, amplified by huge community behind. <a href="https://github.com/documentcloud/backbone">Backbone.js</a> is one best representatives of such solutions. Having a something that I could rely on, that works good and there <a href="http://stackoverflow.com/questions/tagged/backbone.js">places</a> to get help is very strong reason for me, to keep doing that, instead of re-invent wheel yet another time.<br />
-    </p></div>
 
       
       

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Using Approval Testing for ELMAH.MVC project Jun 16th, 2012 Approvals, TDD During the ELMAH.MVC 2.0 preparation I had a bit challenging task. As I &hellip;">
+  <meta name="description" content="Starting Up Node.js Development on Windows Jun 27th, 2012 NodeJs, Tools Node.js is very interesting platform, it allows to unleash your internal &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,132 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/starting-up-nodejs-development-on.html">
+    
+      Starting Up Node.js Development on Windows</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-27T20:40:00+03:00" pubdate data-updated="true">Jun 27<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nodejs/'>NodeJs</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
+</p><p>    If you are .NET developer addicted to Visual Studio, you might feel a little frustration about joining new camp. Primarily, because of lacking proper development environment. This is not quite true. You can setup very solid development environment for Node.js on Windows box.<br />
+</p><h2>Installing node.js</h2><p>    Node.js is nothing more as node.exe file. It&#8217;s very easy to install with latest installer available on <a href="http://nodejs.org">nodejs.org</a> web site. <br />
+</p><p>    Installing the software is always a little mess. You have to download, un-package, run.. go different wizards - it&#8217;s boring! Do you remember how you life changed after NuGet release? What if say, you can do exactly the same thing, but instead of installing .NET packages, you can install software. This is possible by brilliant project called <a href="http://chocolatey.org/">Chocolatey</a>.<br />
+</p><p>    After <a href="http://chocolatey.org/">Chocolatey</a> is setup, you can easily install any <a href="http://chocolatey.org/packages">package</a> you like, including one for <a href="http://chocolatey.org/packages/nodejs">node.js</a>. <br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            c:&gt; cinst nodejs<br />
+        </p>    </div></div><p>    Nice and easy.<br />
+</p><h2>Trying things out</h2><p>    As Chocolatey installed node, it should be available in your PATH. So, fire up new cmd window and put &#8216;node&#8217; in command line. node.exe acts as javascript interpreter, so you can directly put some code in console. Here is simple example of Fibonacci number&#8217;s calculation in node.<br />
+</p><a href="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png"><br />
+    <img src="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png" alt="node.js command line"/><br />
+</a><br />
+<p>    Instead of typing the code into interpreter console, you can save it to local file &#8216;fib.js&#8217; and run it with node.<br />
+</p><a href="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png"><br />
+    <img src="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png" alt="node.js command line 2"/><br />
+</a><br />
+<h2>Setting up development environment</h2><p>    Basically all you need with node.js is command line and text editor. Any text editor you like. You just code in you favorite one and then switch to command line to start up application, like &#8216;node app.js&#8217;. <br />
+</p><p>    You can go further this minimalistic setup, thought. I&#8217;ll show the best options I&#8217;ve tried so far.<br />
+</p><h3>Sublime Text 2</h3><p>    <a href="http://www.sublimetext.com/2">Sublime Text 2</a> is a superior development-oriented text editor. Even with plain installation it&#8217;s very useful. Available on many platforms, including Windows makes it really &#8216;must-have&#8217; tool for any developer. <br />
+</p><p>    You can turn Sublime Text 2 into quite powerful node.js IDE with plug called <a href="https://github.com/tanepiper/SublimeText-Nodejs">SublimeText-NodeJs</a>.<br />
+</p><p>    It provides with basic code completion functionality.<br />
+</p><a href="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    But it also gives you ability to simply run node.js scripts inside the editor and see resulted output.<br />
+</p><a href="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png"><br />
+    <img src="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    Just inside the editor you able to access &#8216;npm&#8217; and &#8216;node&#8217; command line, so it&#8217;s pretty possible to work with project without leaving text Sublime at all. Reality is a little different, thought.<br />
+</p><p>    You can handle pretty big projects inside Sublime. It is able to open folders, providing great file navigation options. Pressing &#8216;Ctrl+P&#8217; will bring navigation console. Start typing the file name and relevant suggestion will appear.<br />
+</p><a href="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png"><br />
+    <img src="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    As well, you can easily navigate inside javascript file, by functions or object properties. Press &#8216;Ctrl+P&#8217; after put &#8216;@&#8217; sign and type function name.<br />
+</p><a href="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<h3>JetBrains Web Storm</h3><p>    JetBrains produces great <a href="http://www.jetbrains.com/products.html">products</a> including <a href="http://www.jetbrains.com/webstorm/index.html">Web Storm</a>. Web Storm is full feature IDE from a world-class vendor. Being HTML/CSS/JS editor, it could be easily adopted for Node.js development. <br />
+</p><a href="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    With a WebStorm you just create a new project, place javascript files inside and configure IDE to run Node.js configuration. You have ready to use presets, including one for node.<br />
+</p><a href="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    As you start to work with any Node.js internal modules (as http, fs etc.) WebStorm would propose to download sources and index them to be able to produce IntelliSence-like suggestions. I was really happy to see how fast and precise it works.<br />
+</p><a href="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png"><br />
+    <img src="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    Besides of that, you are getting all JetBrains IDE&#8217;s goodness - Refactoring, Integration with VCS, Code Formatting, Navigation etc. But the most sweet feature as for me is - Debugging. Just place the break point in the line you want to halt and press &#8216;Debug&#8217; button.<br />
+</p><a href="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png"><br />
+    <img src="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<p>   App would run and debugger will stop on breakpoint, showing current Frames, Local or Watched variables. <br />
+</p><a href="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png"><br />
+    <img src="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<h3>Microsoft Web Matrix 2</h3><p>    New kid in the block of Node.js development on Windows is <a href="http://jbeckwith.com/2012/06/07/node-js-meet-webmatrix-2/">Web Matrix 2</a>, currently beta version.<br />
+</p><a href="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png"><br />
+    <img src="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix 2 is a lightweight IDE suitable for ASP.NET, PHP, HTML development. It&#8217;s easy to install it by Web Installer. As soon as it&#8217;s installed, you can pretty nice templates for Node.js applications.<br />
+</p><a href="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png"><br />
+    <img src="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix works differently. As Sublime and WebStorm depend on &#8216;node.exe&#8217; and work directly with it, Web Matrix uses another component, called <a href="https://github.com/tjanczuk/iisnode/">iisnode</a>. IISNode is a host of node.js on IIS web server. This approach of course brings a lot of <a href="https://github.com/tjanczuk/iisnode/wiki">benefits</a>, but in the same way it might give you some limitations of IIS itself. Web Matrix comes with IIS Express web server, which is perfect for web development. One very obvious benefit of using &#8216;iisnode&#8217; is that you no longer need to restart &#8216;node.exe&#8217; process manually, as you changing sources.<br />
+</p><p>    But let&#8217;s go back to IDE itself. As for IntelliSence it much more worse that WebStorm and even Sublime, I would say. It works really strange, for instance knowing nothing about embedded node components. <br />
+</p><a href="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png"><br />
+    <img src="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    No internal debugger, no refactoring tools. The code editor is more than good enough. Almost the same user experience as Visual Studio. <br />
+</p><p>    Besides of the code editor, you create databases and different report for sites.<br />
+</p><a href="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png"><br />
+    <img src="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    Even with plugins, Sublime Text 2 still more text editor than IDE. Definitely, more than good enough text editor, but still. I personally using it. First of all, because I like.. second, because I would like to be closer to &#8216;node.exe&#8217; at least at the period I&#8217;m learning the platform. Available as unlimited trial for now, makes it really attractive.<br />
+</p><p>    WebStorm, no doubt is the most valuable player now. It works great, even If I heard some rumors that it sucks a little on Linux. This should be the choice for professional development. It costs money.<br />
+</p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It&#8217;s much more closer to Microsoft technologies, like IIS, Azure etc.<br />
+</p><p>    So, what to pick up you might ask?<br />
+</p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -679,78 +805,6 @@ private string RemoveFooter(string content)
 </p><p>Yesterday, we were doing Coding Dojo with good friend of mine <a href="http://twitter.com/skalinets">@skalinets</a> on <a href="http://agilebasecamp.org/">Agile Base Camp</a> conference. Instead of going my default language (which is C# for now) I paired the PHP guy. We were doing String Calculator kata in PHP. It was so great! First of all, I amazed how much PHP improved since the last time I looked on it (about 10 years ago), second is that I used my keystrokes to learn something new. <br />
 </p><p>Writing the code for fun and learning has a huge value. This is definitely good investment of the keystrokes.  <br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/05/github-for-windows-yay.html">
-    
-      Github for Windows - Yay!</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-21T23:44:00+03:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        For quite long time Windows users of github had a huge envy towards <a href="http://mac.github.com/">Github for Mac</a> - the application that makes work with github based repositories as simple as possible. A lot of people, especially ones who are not familiar with Git, experiencing some issues with github initially. No surprise, extensive command-line, SSH, public/private keys - might sound scary for GUI addicted persons. <br />
-    </p>    <p>       December 2011, Phil Haack <a href="http://haacked.com/archive/2011/12/07/hello-github.aspx">joined</a> github.. so, the world hold the breath, to see what actually will be done by Phil and team to improve overall Github experience on Windows. And the day has come! Today <a href="http://windows.github.com/">Github:Windows</a> is officially shipped.<br />
-    </p>    <h2>What&#8217;s the point?</h2>    <p>        As well as Mac users, Windows users are also much got used to UI. For long time, if you want to deal with Git on windows, you have to go and install <a href="http://code.google.com/p/msysgit/">msysgit</a>. It&#8217;s a great product and works great actually, but you have to spend some time of learning of Git to do very basics operations. Moreover, if you hadn&#8217;t had any experience with distributed version control systems - you&#8217;ll be to much confused by new words like: pull, push, clone, fork, cherry-pick and so on. <a href="http://windows.github.com/">Github for Windows</a> is about to fix that.<br />
-    </p>    <h2>Go ahead and install it</h2>    <p>        Installation is very easy. Just click the <a href="http://github-windows.s3.amazonaws.com/setup.exe">download</a> link, to get web setup file. Two things are gonna installed on you machine: Github client itself and Git shell - the powershell command line for git.<br />
-    </p>    <h2>        Github for Windows client<br />
-    </h2>    <p>        At the first run it will do some configuration stuff. It will ask you for github credentials.<br />
-    </p>    <img src="https://lh6.googleusercontent.com/-b82cqlo96-4/T7qZuUkKYeI/AAAAAAAAIuA/JeqiYMu_sNM/s1024/page-1.png" style="width: 620px" /><br />
-    <p>        As you logged on, it will show you some basic account information.<br />
-    </p>    <img src="https://lh3.googleusercontent.com/-cF3gaHlxPYE/T7qZuqR6clI/AAAAAAAAIuI/gE6-xxhKd58/s1024/page-2.png" style="width: 620px" /><br />
-    <p>        It will also add new public SSH key your account. That was a little unexpected as I received email notification for github about that. The information that it&#8217;s gonna do that, probably should be mentioned during setup. <br />
-    </p>    <p>        Then it tries to locate all repositories. It scans the home folder, but I don&#8217;t keeping repositories there (just some temp copies), so I unselected everything.<br />
-    </p>    <img src="https://lh6.googleusercontent.com/-E-6YmkuP9M8/T7qZufRug-I/AAAAAAAAIuE/ifq-o89_Eio/s1024/page-3.png" style="width: 620px" /><br />
-    <p>        As I tried to go straight and create new repository the application crashed. Oppps.. It reproduced several times, but after gone. Anyway, I contacted <a href="mailto:support@github.com">support@github.com</a> with detailed steps and info.    <br />
-    </p>    <img src="https://lh3.googleusercontent.com/-v4EcFQZzPeo/T7qZvPSQdmI/AAAAAAAAIuQ/FYaM5NvP8_c/s1024/page-4.png" style="width: 620px" /><br />
-    <p>        Finally, after I changed the default folder and wait till it&#8217;s completed scanned (that took about 3 mins on my machine), I got client working.<br />
-    </p>    <img src="https://lh3.googleusercontent.com/-VWSpIa020_g/T7qZvVqLnTI/AAAAAAAAIuc/xSuOGL0NWJs/s1024/page-6.png" style="width: 620px" /><br />
-    <p>        Even if I&#8217;m not huge fan of METRO style - I was really pleased with UI. It looks very nice, application works fast and responsive. It takes almost no effort to overview application features.. everything is very intuitive.<br />
-    </p>    <p>        It&#8217;s of course not the perfect. I tried to do some commits, that seems to be fine.. but sync of the repo failed. It also fails to switch the branches in 95% cases.<br />
-    </p>    <h2>Git Shell for command line</h2>    <p>        Next good addition is Git Shell, powered by PowerShell (nice!). It utilizes famous <a href="https://github.com/dahlbyk/posh-git">posh-git</a> project. The most useful features for me now: &#8216;Tab&#8217; support that provides suggestion for the command and &#8216;Stats&#8217; that are shown at command prompt, showing current repository state. There are probably a lot of other cool things there, that I haven&#8217;t discovered yet.<br />
-    </p>    <img src="https://lh4.googleusercontent.com/-HOCSvGnNXnQ/T7qhpOr91rI/AAAAAAAAIu0/xwFjs8dvw_Q/s678/page-7.png" style="width: 620px" /><br />
-    <p>        If you are fan of Bash, or pure Cmd.. or custom stuff (as <a href="http://sourceforge.net/projects/console/">Console 2</a>) it very easy to change that, right in application configuration.<br />
-    </p>    <h2>Conclusions</h2>    <p>        Even if it&#8217;s just first release, it&#8217;s very solid and a lot of features already there. Issues exist, but I hope it will be cleared out soon.<br />
-    </p>    <p>        What make me a little wonder, that the project is not open sourced? I hope it&#8217;s just the question of time, I&#8217;m pretty sure that a lot of people are waiting to see what&#8217;s inside and submit some pull requests.<br />
-    </p>    <p>        Will I personally use that product? Probably, not. I&#8217;ve spent too many time in Command-line of my favorite <a href="http://www.farmanager.com/download.php?l=en">Far Manager</a>, that UI is more noise that help. What I will use is Git Shell, thought. I&#8217;ve heard a lot about posh-git, now it&#8217;s  time to try.<br />
-    </p>    <p>    But for all people, who are just starting using Github on Window - <a href="http://windows.github.com/">Github:Windows</a> would be my first recommendation.<br />
-    </p></div>
 
       
       

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Likeastore, Application Built on Hackathone Mar 31st, 2013 Applications, Hackatone, Social It&#8217;s my second time I attended hackatone. As last &hellip;">
+  <meta name="description" content="Baby steps to Backbone.js: Exploring collections. Part 2. Apr 10th, 2013 BabyStepsBackbone, Backbone.js Backbone.js is event-driven framework. All &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,57 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/04/baby-steps-to-backbonejs-exploring.html">
+    
+      Baby steps to Backbone.js: Exploring collections. Part 2.</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-10T20:53:00+03:00" pubdate data-updated="true">Apr 10<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/04/baby-steps-to-backbonejs-exploring.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -741,172 +792,6 @@
     </p>    <p>        Pair programming takes double effort. You should not plan PP session for a whole day, half day as maximum. In my opinion it&#8217;s not valuable to do every task in pair, simply it&#8217;s not productive. Pick up most difficult ones, ones that requires cross-functional expertise or most risky ones. As problem well kick-started, rest of things might go in parallel. <br />
     </p>    <p>        I really like Pair Programming, but I would not use it as day-to-day practice as XP suggests. Most of the time, it&#8217;s more efficient to work alone.<br />
     </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/11/baby-steps-to-backbonejs-unit-testing.html">
-    
-      Baby steps to Backbone.js: Unit testing of models</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-22T11:54:00+02:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
-        </p>        <p>            By the end of the day, it&#8217;s only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
-        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let&#8217;s setup our testing infrastructure.<br />
-        </p>        <h2>Folders and files</h2>        <p>            We&#8217;ll have a new folder called `spec`. Inside the spec folder, I&#8217;ll have `models` and `views` folders that would contain tests for models and views.<br />
-        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
-            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
-        </a><br />
-        <h2>Tests runner</h2>        <p>            I&#8217;ll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It&#8217;s very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
-        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
-        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
-
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- Sources --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- Specs --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
-    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let&#8217;s review the Jasmine test skeleton.<br />
-        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
-    var value;
-
-    beforeEach(function () {
-        value = 1;
-    });
-
-    it ('should fail', function () {
-        expect(value).toBe(0);
-    });
-
-    describe('when value is changed', function () {
-        beforeEach(function () {
-            value = 0;
-        });
-
-        it ('should pass', function () {
-            expect(value).toBe(0);
-        })
-    });
-});
-</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it&#8217;s both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
-        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let&#8217;s test that.<br />
-        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
-    var model;
-
-    beforeEach(function () {
-        model = new Feedback();
-    });
-
-    describe('when model is validating', function () {
-        var errors;
-    });
-});
-</pre>        <p>            This is something to start with. It does not do any asserts, so now we&#8217;ll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
-        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
-    beforeEach(function () {
-        errors = model.validate({});
-    });
-
-    it ('should have 2 errors', function () {
-        expect(errors.length).toBe(2);
-    });
-
-    it ('should have email fields as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
-
-    it ('should have feedback field as invalid', function () {
-        expect(errors[1].name).toBe('feedback');
-    });
-});
-</pre>        <p>            It&#8217;s is possible that user put email, but forgot about feedback.<br />
-        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ email: 'a@a.com'});
-    });
-
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
-
-    it ('should have feedback field as invalid', function () {
-        expect(errors[0].name).toBe('feedback');
-    });
-
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
-        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ feedback: 'TDD is awesome'});
-    });
-
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
-
-    it ('should have email field as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
-
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
-        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
-            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
-        </a><br />
-        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model&#8217;s is pretty simple thing. It&#8217;s nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
-        </p></div>
 
       
       

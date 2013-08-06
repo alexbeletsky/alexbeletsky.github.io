@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-07-28T12:27:28+03:00</updated>
+  <updated>2013-08-06T23:03:26+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[First Week in The Air]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air.html"/>
+    <updated>2013-08-06T05:40:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
+
+<p>Here is a little retrospective on the things happened through that seven days.</p>
+
+<!-- More -->
+
+
+<h2>Few hours after release</h2>
+
+<p>We&rsquo;ve deployed about 6.00 PM at Saturday, sending out a bunch of invitation latters. Right after that, users began to register.</p>
+
+<p>Small script that sends <em>&ldquo;New user registered&rdquo;</em> notification has been rolled out as well, so it was easy to see how things are going. Saturday both me and <a href="https://twitter.com/voronianski">@voronianski</a> were completely tired. No doubt, it has been quite an exhausting journey, we worked hard last 3 weeks at nights and weekends, so I just came home and fall asleep, just checking that application is still running.</p>
+
+<h2>Unpredictable thing</h2>
+
+<p>Next morning, I found a bunch of emails in my box, maybe 40-50 subscribed. Mostly from my &ldquo;nearest&rdquo; network, after notification in twitter and facebook.</p>
+
+<p>But then, something unpredictable happened &ndash; we&rsquo;ve announced in amazing <a href="http://t.co/4DinPVlcdk">Collective #74</a> issue.</p>
+
+<p>That gave us a lot of traffic and sign-ups. Monday and Tuesday, we had a rush hours then every minute new user sign-up. My phone was ringing all the time, and my email box was full of notifications. People were <a href="https://twitter.com/search?q=likeastore&amp;src=typd">tweeting</a> about, we recieved few request for new service connectors as well.</p>
+
+<p>I have to say, I was really pleased with that. We did something noticeable, something that other people liked.</p>
+
+<h2>First problems</h2>
+
+<p>Real user experience shows real application issues. We had few..</p>
+
+<p>First is that our app failed to work in IE. It appeared that our <em>nginx</em> configuration. Since we are using <a href="https://github.com/progrium/dokku">Dokku</a> for deployment, it have to be fixed there. Thanks to Dokku community, the issue has been resolved rather quickly and fix being <a href="https://github.com/progrium/dokku/commit/33a3b85674e92fe883ba3151dee861f53914718a">pushed</a>.</p>
+
+<p>Another thing, that was not possible to see without some <em>real</em> data &ndash; stackoverflow OAuth token is very short living.. So, if you enabled stackoverlow connector, next day it fail to collect the data, since token in not valid any more. Unfortunately, there is no way to workaround this issue automatically, only ask user to re-enable the network.</p>
+
+<p>We had several outages of data collection caused be bugs not noticed on staging. Also, to improve <em>initial collecting velocity</em>, we run 2 instances of collector in parallel. That worked, so just subscribed users are served fast, but it&rsquo;s not ideal yet.</p>
+
+<h2>What&rsquo;s coming?</h2>
+
+<p>The last week was really motivating. We are continue to improve the service and expecting new users to come.</p>
+
+<p>Through the next month we&rsquo;ll be focusing on:</p>
+
+<ul>
+<li><strong>Facebook connector</strong> &ndash; the top most requested connector to be implemented.</li>
+<li><strong>Likes indexing</strong> &ndash; currenly implemented search is very simple, just to show the idea, what is really needed is to perform the search based in likes content.</li>
+<li><strong>UI improvements</strong> &ndash; we are still improving the design of application, to make it attractive and unique.</li>
+<li><strong>Performance</strong> &ndash; our core component <a href="https://github.com/likeastore/collector">collector</a> will be deployed on dedicated core 2 machine and re-written to be easily scaled.</li>
+<li><strong>CDN</strong> &ndash; currently all static resources are handled by node.js, which is terrible slow, will move all our stuff to Amazon CloudFront.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
@@ -1721,135 +1776,6 @@ var customerId = invoice.get('customerId');
     </p>    <p>        Pair programming takes double effort. You should not plan PP session for a whole day, half day as maximum. In my opinion it&#8217;s not valuable to do every task in pair, simply it&#8217;s not productive. Pick up most difficult ones, ones that requires cross-functional expertise or most risky ones. As problem well kick-started, rest of things might go in parallel. <br />
     </p>    <p>        I really like Pair Programming, but I would not use it as day-to-day practice as XP suggests. Most of the time, it&#8217;s more efficient to work alone.<br />
     </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of models]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-11-22T11:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/baby-steps-to-backbonejs-unit-testing</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
-        </p>        <p>            By the end of the day, it&#8217;s only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
-        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let&#8217;s setup our testing infrastructure.<br />
-        </p>        <h2>Folders and files</h2>        <p>            We&#8217;ll have a new folder called `spec`. Inside the spec folder, I&#8217;ll have `models` and `views` folders that would contain tests for models and views.<br />
-        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
-            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
-        </a><br />
-        <h2>Tests runner</h2>        <p>            I&#8217;ll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It&#8217;s very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
-        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
-        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
-
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- Sources --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- Specs --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
-    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let&#8217;s review the Jasmine test skeleton.<br />
-        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
-    var value;
-
-    beforeEach(function () {
-        value = 1;
-    });
-
-    it ('should fail', function () {
-        expect(value).toBe(0);
-    });
-
-    describe('when value is changed', function () {
-        beforeEach(function () {
-            value = 0;
-        });
-
-        it ('should pass', function () {
-            expect(value).toBe(0);
-        })
-    });
-});
-</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it&#8217;s both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
-        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let&#8217;s test that.<br />
-        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
-    var model;
-
-    beforeEach(function () {
-        model = new Feedback();
-    });
-
-    describe('when model is validating', function () {
-        var errors;
-    });
-});
-</pre>        <p>            This is something to start with. It does not do any asserts, so now we&#8217;ll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
-        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
-    beforeEach(function () {
-        errors = model.validate({});
-    });
-
-    it ('should have 2 errors', function () {
-        expect(errors.length).toBe(2);
-    });
-
-    it ('should have email fields as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
-
-    it ('should have feedback field as invalid', function () {
-        expect(errors[1].name).toBe('feedback');
-    });
-});
-</pre>        <p>            It&#8217;s is possible that user put email, but forgot about feedback.<br />
-        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ email: 'a@a.com'});
-    });
-
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
-
-    it ('should have feedback field as invalid', function () {
-        expect(errors[0].name).toBe('feedback');
-    });
-
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
-        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
-    beforeEach(function () {
-        errors = model.validate({ feedback: 'TDD is awesome'});
-    });
-
-    it ('should have 1 error', function () {
-        expect(errors.length).toBe(1);
-    });
-
-    it ('should have email field as invalid', function () {
-        expect(errors[0].name).toBe('email');
-    });
-
-    it ('should have error message', function () {
-        expect(errors[0].message).toBeDefined();
-    });
-});
-</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
-        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
-            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
-        </a><br />
-        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model&#8217;s is pretty simple thing. It&#8217;s nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
-        </p></div>
 ]]></content>
   </entry>
   

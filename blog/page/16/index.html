@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="UppercuT your builds Oct 22nd, 2010 Open source, Tools, asp.net I like open source tools and frameworks, but more I like open source tools and &hellip;">
+  <meta name="description" content="Roundhouse your database Oct 26th, 2010 Open source, Tips, Tools As you started to use UppercuT for your builds, it is definitely worth to try worth &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,128 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/10/roundhouse-your-database.html">
+    
+      Roundhouse your database</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T18:14:00+03:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+As you started to use <a href="http://code.google.com/p/uppercut">UppercuT</a> for your builds, it is definitely worth to try worth to try <a href="http://code.google.com/p/roundhouse/">RoundhousE</a> for versioning, deployment, migration of your database. 
+</p>
+<h2>RoundhousE - setup and usage</h2>
+<p>
+Let&#8217;s begin, just to to project web site and download latest package. Package contains documentation (just some draft version, not yet completed), samples and framework itself.
+</p>
+<p>
+Initially I spent sometime to make samples run. Documentation said that it has been developed and tested with SQL 2008 Server and there is no information that it would run on SQL 2008 Express Edition. After several fail/repeat sessions I was happy to see that it actually could work with Express edition as well!
+</p>
+<h3>Before you start</h3>
+<p>
+Before you start, you have to change something in you SQL Express configuration. Go to <code>Start -> All programs -> Microsoft SQL Server 2008 -> Configuration Tools -> SQL Server Configuration Manager</code>. There you have to configure your SQL instance Network Configuration, to be able with &#8220;Named Pipes&#8221; protocol. So, go to <code>Protocols for &#60;%INSTANCE_NAME%&#62;</code> and enable <code>Named Pipes</code>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s1600/sqlconfig.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 301px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s400/sqlconfig.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5532373566257895026" /></a>
+<h3>UppercuT configuration</h3>
+<p>
+Now you have to change something into UppercuT config. First you have to modify <code>LOCAL.settings</code> (file that is used for generation of deployment scripts). You have to supply <code>server.database</code> (in case of local Express it would be .\SQLEXPRESS), <code>database.name</code> the name of your db. 
+</p>
+<p>
+After small changes is required for <code>UppercuT.config</code>. First, <code>folder.database</code> I just used &#8220;db&#8221;, short and clear.
+</p>
+<p>
+Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+</p>
+<h3>DB folder layout and content</h3>
+<p>
+Now, you have to create folder that would contain all sql scripts. I places it in the same level as <code>docs</code>, <code>lib</code> etc (but it could be placed to <code>src</code> folder as well). So, please folder with name &#8220;db&#8221;.
+</p>
+<p>
+Documentation currently lacks information about folder layout, but from samples it is pretty clear:
+</p>
+<ul>
+<li><strong>functions</strong> - sql for functions definitions</li>
+<li><strong>permissions</strong> - setup permissions for database</li>
+<li><strong>sprocs</strong> - stored procedures definition</li>
+<li><strong>up</strong> - update scripts (create, drop, alter tables and records here)</li>
+<li><strong>views</strong> - views definition</li>
+</ul>
+<p>
+If your application doesn&#8217;t currently use stored procedures or view.. it is OK to just leave those folders empty.
+</p>
+<h3>Deployment options</h3>
+<p>
+You have 3 options of deployment: by Nant, by MSBuild or by RH executable. It does not actually matters what to choose, all options are equal by its functionality. I choose executable, because it lightweight and only one file (please not that it would be included to deployment package).
+</p>
+<p>
+To go with RH you have to copy it from RoundhousE packages into yours deployment folder. So, you will have <code>deployment/rh/rh.exe</code>.
+</p>
+<h3>Correction of deployment scripts</h3>
+<p>
+Deployment scripts are ones that will be used on production to update database. They are created based on templates and settings you set. You have to modify yours <code>DBDeployment.bat</code> file. Since I use <code>rh.exe</code> I created template for it. It simply runs <code>rh.exe</code> that does the rest of work. 
+</p>
+<script src="http://gist.github.com/645211.js"> </script>
+<p>
+Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+</p>
+<h3>Running RoundhousE</h3>
+<p>
+As soon as build application, go to <code>code_drop</code> folder you can run <code>LOCAL.BEDeployment.bat</code> and RounhousE will setup database with version it.
+</p>
+<p>
+That&#8217;s basically it! As soon as its configured you can easily add new scripts to db folder, RoundhousE will handle changes of them.
+</p>
+<h3>Additional scripts I use</h3>
+<p>
+There are something that I added for my personal needs. If I do build on new environment, I would like to create database first. For such purpose I created <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/initdb.bat"><code>initdb.bat</code></a>, so build procedure on clean environment would be:
+</p>
+<ol>
+<li>run build.bat</li>
+<li>run initdb.bat</li>
+<li>run test.bat all</li>
+</ol>
+<p>
+I also created script to reset database,  <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/resetdb.bat"><code>resetdb.bat</code></a> drops existing database and just creates new instance. This very useful during development, if you database became &#8220;dirty&#8221;. 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1102,207 +1224,6 @@ Write less code! Developers productivity - less code, less features.
 </p>
 <p>
 Later in twitter I&#8217;ve seen a link to new Mary&#8217;s book regarding <a href="http://www.amazon.com/gp/product/0321712471?ie=UTF8&tag=noopnl-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321712471">Management 3.0</a>, that you might be interesting to.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/10/agileee-2010-henrik-kniberg-speech.html">
-    
-      Agileee 2010: Henrik Kniberg speech: The essence of Agile</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-08T22:35:00+03:00" pubdate data-updated="true">Oct 8<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<h1>Henrik Kniberg speech: The essence of Agile</h1>
-<p>
-<small>
-<strong>Disclamer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TK9yv8mpoSI/AAAAAAAAG9w/aNtXlSctfyU/s1600/DSC03679.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TK9yv8mpoSI/AAAAAAAAG9w/aNtXlSctfyU/s400/DSC03679.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5525761435854545186" /></a>
-<p>
-First session on Agileee 2010. Due to its name I thought it will be yet another lecture of Agile/Scrum etc. It was, but <a href="http://twitter.com/#!/henrikkniberg">Henrik</a> make it really interesting, detailed. I&#8217;ve heard a lot of new things there. So far it is my favorite speech on conf. 
-</p>
-<h2>Beginning</h2>
-<p>
-I&#8217;m scarred now :) - the words <a href="http://twitter.com/#!/henrikkniberg">Henrik</a> started. But all his speech were clear and fluent.
-</p>
-<h2>Introduction</h2>
-<p>
-All current agile abbreviations make us to confuse. Scrum, Kanban, XP, TDD and so on. What is about, what problems it tries to solve?
-</p>
-<p>
-Doing a software projects could be compared to shooting a goal by cannon ball. There are Goal and Cannon.. and only one shot. After shot we hope, we launch a target. That&#8217;s why we try to do all planning, risk management and all other &#8220;do before&#8221; stuff. But the issue is - target is moving with time, so we always miss. 
-</p>
-<p>
-Taking into account percentage of successful and failed projects through the last years. Henrik gives such figures:
-</p>
-Success of projects:
-<ol>
-<li>
-Year 1994 - 15% of success
-</li>
-<li>
-Year 2004 - 34% of success
-</li>
-</ol>
-<p>
-So, we definitely learned something thought 10 years. So, what was the problems, what we&#8217;ve learned so far?
-</p>
-<h2>Estimations</h2>
-<p>Different people, within different context, with slightly different input do different estimations. Henrik gives some really nice examples, than estimation double only by fact that spec is wrote in bigger number of pages, or includes some irrelevant details, or contains different items.
-<p>
-Let&#8217;s put it really simple - we are all could not do an estimations! We could actually, but our estimations sucks. A lot of project treated to be failed, as they haven&#8217;t been met original estimations.
-</p>
-<p>
-But they are number of successful projects increases? Because, project gotten a lot smaller and (there is no silver bullet), but Agile is something that improved the situation. Why?
-</p>
-<ul>
-<li>User involvement</li>
-<li>Executive management support</li>
-<li>Clear business objectives</li>
-<li>Optimizing scope</li>
-</ul>
-<h2>Agile in nutshell</h2>
-<ol>
-<li>Customer discover that they want</li>
-<li>Developers discover how to build</li>
-<li>Responding to change is vital(to track moving goal)</li>
-</ol>
-<h2>Agile approach to planning</h2>
-<p>
-So, if we are not able to do exact estimations and to do exact plans, whats our approach for planning should be?
-</p>
-<p>Agile principles: early delivery. If we late with release we have to at least deliver most important features at planned time.
-Releases have to be short. Henrik gives nice metaphor: if we wait for train that goes every 5 minutes, it is not big deal for us if we miss it. We just wait for 5 minutes and go to train. It it goes every 30 minutes, it will annoy us but we still could wait. But let&#8217;s consider a ship that goes for another city once in week or once in month. We miss it, we are in trouble.
-</p>
-<p>
-Having a releases to be short, we act like a 5 minutes train.
-</p>
-<h2>Scrum in nutshell</h2>
-<p>
-Scrum tries to split the things. Organization split to teams, product split to backlog items, time split to iterations. Deliver ever sprint is key factor.
-</p>
-<p>
-Scrum defines different roles for people in team, they are:
-</p>
-<ul>
-<li>Stakeholders: users, helpdesk, customers</li>
-<li>Product Owner: one who define a vision and priorities</li>
-<li>Team: group of people responsible how much to pull in, how to build</li>
-<li>Scrum master: one who responsible for process leadership and coaching</li>
-</ul>
-<p>
-Definition of done, plays important role in Scrum. It have to be clearly defined by team. What exacly have to be done, to treat some particular work is done (tested, merged, release noted and so on).
-</p>
-<p>
-How to estimate? Don&#8217;t estimate time, estimate by people who do work, estimate continuously. Planning poker is a nice agile estimation technique.
-</p>
-<p>
-Sprint planning, Daily scrum (make a process to be white box, not a black box), something to come out, Demo (looking into product), Retrospective (looking to process).
-</p>
-<h2>XP in nutshell</h2>
-<p>
-Scrum wraps XP. Scrum don&#8217;t know nothing about programming, XP does.. it introduce engineering practices. Scrum + XP is great combination (but is not really required).
-</p>
-<p>
-XP contains a number of practicies, but most important are - Pair programming: short feedback loop (seconds). Unit tests: short feedback loop (minutes), Continuously integration: short feedback loop (hours). 
-</p>
-<h2>Agile architecture</h2>
-<p>
-It might seem that Agile don&#8217;t care about architecture, since there are no value in architecture. It is partially true. Agile is goal oriented, oriented to do things quickly, to release quickly, to fail quickly.
-</p>
-<p>
-Quick&#8217;n&#8217;dirty turns to be Slow&#8217;n&#8217;dirty. If you don&#8217;t care on architecture at all and do patch style of programming, you are in trouble after awhile. It would be just too difficult to extend and maintain the product.  
-</p>
-<p>
-On other hand, big upfront design works could make customers unhappy. To much spend on thinking about beautiful architecture with no actual output (remember that Working Software is major Agile metric of progress).
-</p>
-<p>
-It have to be balanced. Architecture have to be simple, as simple architecture is as simple code is. Clean and simple code is very important. But code is not an asset, code is cost. Only some code is value. Simple code is easy to change. 
-</p>
-<p>What is definition of Simple code? Simple code is one that all of there requirements</p>
-<ol>
-<li>All tests passed</li>
-<li>No duplication</li>
-<li>Readable</li>
-<li>Minimal</li>
-</ol>
-<p>Sure, such criteria&#8217;s as readability and minimalism is subjective, different people could have different opinion on that. But team have to share same vision.</p>
-<h2>Kanban in nutshell</h2>
-<p>
-Kanban is a way of visualization of work. Kanban - visual card. David Anderson, visualized of flow. See board, talk near board.
-</p>
-<p>
-Board could consist of such sections: Backlog, Next, Dev (Ongoing, Done), Acceptance (Ongoing, Done), In production. It is great to see that Next could be empty. Analysis of board is a way of project management with Kanban. Don&#8217;t put to much, don&#8217;t pull to much. Printer jam - don&#8217;t put more paper. Theory of constraints is applied doing a projects with Kanban.
-</p>
-<h2>Comparing methodologies</h2>
-<p>
-The comparing have to be done only with one goal - undestanding. It is like compare knife to fork, it doesn&#8217;t make a lot of sense to compare tools, decide what tool is best for to solve problem. 
-</p>
-<p>
-Comparison by a number of rules:
-</p>
-<ul>
-<li>More prescriptive: XP (13), RUP(120+)</li>
-<li>More adaptive: Kanban (3), Do Whatever (0)</li>
-<li>In a middle: Scrum (9)</li>
-</ul>
-<h2>Approach to use any new methodologies</h2>
-<p>
-Henrik gives a really nice explanation of how to approach a thing. It is <a href="http://en.wikipedia.org/wiki/Shuhari">Shuhari</a>. It cames form Japaneses martial arts, I liked that a lot, since I&#8217;m fan of karate :).
-</p>
-<ul>
-<li>Shu - follow the process (shut up and listen to master)</li>
-<li>Ha - adapt the process, innovate the process</li>
-<li>Ri - never mind the process, forget the process, create your process</li>
-</ul>
-<h2>Conclusions</h2>
-<P>
-At the end of session Henrik did several known (but usually forgotten) priciples to follow.
-</p>
-<ul>
-<li>Use right tools - chose exactly what you need, it could be difficult, mistakes could happen here</li>
-<li>Don&#8217;t be dogmatic - don&#8217;t treat any practice as dogma, because it is not dogma, reach Ri level of learning</li>
-</ul>
-<p>
-Perfection is direction, not a place - don&#8217;t forget it!
 </p></div>
 
       

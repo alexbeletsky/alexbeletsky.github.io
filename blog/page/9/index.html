@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Why New Technologies Move Your Product Faster? Dec 13th, 2011 MVC, Mind, asp.net This summer my company e-conomic started new project with a working &hellip;">
+  <meta name="description" content="Approval Tests: Locking Down Legacy Code Dec 14th, 2011 Approvals, Open source, TDD Suppose, you working on project with a lot of legacy code inside &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,143 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/12/approval-tests-locking-down-legacy-code.html">
+    
+      Approval Tests: Locking Down Legacy Code</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-14T19:06:00+02:00" pubdate data-updated="true">Dec 14<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/approvals/'>Approvals</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Suppose, you working on project with a lot of legacy code inside. I know it makes you sick, but as brave developer you want to improve things. You met that ugliest method in your life and only one thing you want to do - refactor it. But refactoring is dangerous procedure. For safe refactoring you need to have good test coverage. But wait, it is legacy code. You simply have no tests. What to do? Approvals have answer.<br />
+</p><h2>Legacy code is the code that&#8230;</h2><p>Works! Right, it is ugly, un-supportable, nothing you can easy change there. But the most wonderful feature of that code - it works for years. And first thing is to get advantage of that fact!<br />
+</p><p>Here is my &#8220;just for example&#8221; legacy method.<br />
+</p><pre class="brush: csharp">namespace Playground.Legacy
+{
+    public class HugeAndScarryLegacyCode
+    {
+        public static string TheUgliesMethodYouMightEverSeen(string s, int i, char c)
+        {
+            if (s.Length > 5)
+            {
+                s += "_some_suffix";
+            }
+
+            var r = new StringBuilder();
+            foreach (var k in s)
+            {
+                if ((int)k % i == 0)
+                {
+                    r.Append(c);
+                }
+                else
+                {
+                    if (k == c)
+                    {
+                        if (r.Length <= 2)
+                        {
+                            r.Append('a');
+                        }
+                        else
+                        {
+                            r.Append('b');
+                        }
+                    }
+                    if (k == '^')
+                    {
+                        r.Append('c');
+                    }
+                    else
+                    {
+                        r.Append(k);
+                    }
+                }
+            }
+
+            return r.ToString();
+        }
+    }
+}
+</pre>
+<p>(it&#8217;s it ugly enough?)
+</p><p>It has a cycles, nested if-else case and all nice features of legacy code. We need to change it, but in the same time guarantee it would not be broken.
+</p><h2>Trying first simple test</h2><p>Supposing also, I&#8217;m not much in details of how exactly this function works.. So, I&#8217;m creating the test like:
+</p><pre class="brush: csharp">[Test]
+public void shoudl_work_some_how()
+{
+    Approvals.Approve(HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen("someinput", 10, 'c'));
+}
+</pre><p>I run it and got some result to approve:
+</p><a href="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg">
+<img src="https://lh6.googleusercontent.com/-7-utFOmYWqw/TujWEUiQc-I/AAAAAAAAH1g/-1OCWEOAQYQ/s555/result-1.jpg" alt="approvals" />
+</a>
+<p>I approve that, cause I know that function works. But something inside tells you - that is not enough. Try to run in under the coverage: 
+</p><a href="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg">
+<img src="https://lh5.googleusercontent.com/-9AS23mH6UGI/TujWMRdftFI/AAAAAAAAH1o/VDbIJW4D3OQ/s621/result-2.jpg" alt="approvals" />
+</a>
+<p>That does not make me real confident with tests only one hit and coverage 76%. We have to create better tests cases.
+</p><h2>Use combinations of arguments</h2><p>Approvals include some tools to deal this case. Let&#8217;s change out test and write something like,
+</p><pre class="brush: csharp">[Test]
+public void should_try_to_cover_it()
+{
+    var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+    var strings = new[] { "", "approvals", "xpdays", "^stangeword^" };
+
+    ApprovalTests.Combinations.Approvals.ApproveAllCombinations(
+        (s, i, c) => HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(s, i, c),
+        strings,
+        numbers,
+        chars);
+}
+</pre><p>With only few lines of code, I&#8217;ve got 1560 test cases and all of them are correct!
+</p><a href="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg">
+<img src="https://lh3.googleusercontent.com/--P4qoqgHK-A/TujWW2-jkkI/AAAAAAAAH1w/nfOWsaKJH5Y/s575/result-3.jpg" alt="approvals" />
+</a>
+<p>Besides, I got pretty good coverage. Ideal, I would say. Now, if even one small change would happen, some of 1560 tests will notice that. </p><a href="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg">
+<img src="https://lh3.googleusercontent.com/-P7b61iiuL7I/TujWflnUWUI/AAAAAAAAH14/ERoxa0k6dfI/s620/result-4.jpg" alt="approvals" />
+</a>
+<h2>Locking down</h2><p>The process of controlling the legacy code in that way is called &#8220;Locking down&#8221;. After the code is locked down, you have high confidence (read low risk) of breaking changes you introduce. Please note how low effort it was to create all that 1560 tests and how much value gained in that.
+</p><p>Notice, that test like <code>should_try_to_cover_it</code> is not supposed to &#8220;live forever&#8221;. You probably even don&#8217;t need to check it in to source control. You just do your job, either refactoring or changing that functionality and use Approvals to notify you as fast as possible of something goes wrong.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -876,176 +1013,6 @@ namespace Sba.Common.Infrastructure.Filters
  }
 }
 </pre></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/10/integrating-aspnet-mvc-into-legacy-web.html">
-    
-      Integrating ASP.NET MVC Into Legacy Web Site</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-30T09:05:00+02:00" pubdate data-updated="true">Oct 30<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>For some quite long time I naively thought that it is not possible (or at least very difficult) to make ASP.NET MVC stuff work on a Web Site project. But, my latest <a href="http://www.beletsky.net/search/label/InsideMVC">hacking of MVC</a> opened another perspectives. There are no any difficulties with ASP.NET MVC on Web Sites. I&#8217;ll share an experience of integration ASP.NET MVC in my work project legacy Web Site.<br />
-</p><h2>Pre-conditions</h2><p>In my case I integrated ASP.NET MVC2, since we are still running on .NET 3.5. If you are running .NET 4.0 the best is to go with ASP.NET MVC3 already. The difference of setup would not be huge, just in proper versions of assemblies.<br />
-</p><p>I assume you already have ASP.NET MVC2 framework on your machine (if you have VS2010 - you definitely have one), if no just go that <a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=22079">link</a> and install it.<br />
-</p><h2>Web config changes</h2><p>MVC assembly have to be added to <code>web.config</code>. Since the MVC infrastructure heavily depends on Routing mode, it have to be put to <code>web.config</code> as well.<br />
-</p><p>Register MVC assemblies:<br />
-</p><pre class="brush: xml">&lt;compilation defaultLanguage=&quot;c#&quot; debug=&quot;true&quot;&gt;
- &lt;assemblies&gt;
-  &lt;add assembly=&quot;System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
-  &lt;add assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
-  &lt;add assembly=&quot;System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
-  &lt;add assembly=&quot;System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
-  &lt;add assembly=&quot;System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot;/&gt;
-
-  &lt;!-- Your application specific assemblies--&gt;
-        ...
-
-  &lt;!-- ASP.NET MVC --&gt;
-  &lt;add assembly=&quot;System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
-  &lt;add assembly=&quot;System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
-  &lt;add assembly=&quot;System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
- &lt;/assemblies&gt;
-&lt;/compilation&gt;
-</pre><p>Namespaces:<br />
-</p><pre class="brush: xml">&lt;pages enableViewStateMac=&quot;false&quot; enableViewState=&quot;false&quot; validateRequest=&quot;true&quot; viewStateEncryptionMode=&quot;Never&quot;&gt;
-  &lt;controls&gt;
-    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
-    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI.WebControls&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
-  &lt;/controls&gt;
-  
-  &lt;-- ASP.NET MVC --&gt;
-  &lt;namespaces&gt;
-    &lt;add namespace=&quot;System.Web.Mvc&quot;/&gt;
-    &lt;add namespace=&quot;System.Web.Mvc.Ajax&quot;/&gt;
-    &lt;add namespace=&quot;System.Web.Mvc.Html&quot;/&gt;
-    &lt;add namespace=&quot;System.Web.Routing&quot;/&gt;
-    &lt;add namespace=&quot;System.Linq&quot;/&gt;
-    &lt;add namespace=&quot;System.Collections.Generic&quot;/&gt;
-    &lt;add namespace=&quot;Microsoft.Web.Mvc&quot;/&gt;
-  &lt;/namespaces&gt;
-&lt;/pages&gt;
-</pre><p>Register URLRouting module and handler.<br />
-</p><pre class="brush: xml">&lt;system.webServer&gt;
-  &lt;validation validateIntegratedModeConfiguration=&quot;false&quot;/&gt;
-  &lt;modules&gt;
- ...
- 
- &lt;!-- ASP.NET MVC --&gt;
-    &lt;add name=&quot;UrlRoutingModule&quot; type=&quot;System.Web.Routing.UrlRoutingModule, System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot; /&gt;
-  &lt;/modules&gt;
-  &lt;handlers&gt;
-    ...
- 
- &lt;!-- ASP.NET MVC --&gt;
-    &lt;add name=&quot;UrlRoutingHandler&quot; preCondition=&quot;integratedMode&quot; verb=&quot;*&quot; path=&quot;UrlRouting.axd&quot; type=&quot;System.Web.HttpForbiddenHandler, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
-  &lt;/handlers&gt;
-&lt;/system.webServer&gt;
-</pre><h2>Global.asax changes</h2><p>You would be probably have <code>global.asax</code> without code-behind class. It&#8217;s not a problem, all you need is slightly change the <code>Application_Start()</code> method. Basically you can go and register routes there, as you do in any ASP.NET MVC application. But I didn&#8217;t do that. Instead, I used the advantages of <a href="http://msdn.microsoft.com/en-us/library/ee671793.aspx">Areas</a> feature of MVC2, since it makes better logical grouping. So, my <code>global.asax</code> are:<br />
-</p><pre class="brush: csharp">public void Application_Start()
-{
- AreaRegistration.RegisterAllAreas();
-}
-</pre><h2>Models, Views, Controllers</h2><p>In typical ASP.NET MVC application you have 3 folders, for - Models, Views, Controllers. Models/Controllers are C# code, views are .aspx pages. With a Web Site you typically place code into <code>App_Code</code> folder. But you should not do that. Instead, it it better to create a separate class library project that would hold your models and controllers. Views would be placed under corresponding Area folder.<br />
-</p><h2>New project for Models/Controllers</h2><p>Just create a new class library project with such folder structure:<br />
-</p><a href="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png"><br />
-<img src="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png" alt="asp.net mvc class library" /><br />
-</a><br />
-<p>The most important - it should contain Area Registration class inside. This is the one that suppose to register all router for your application:<br />
-</p><pre class="brush: csharp">using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-
-namespace Sba.Web.Areas.Sales
-{
- public class SalesAreaRegistration : AreaRegistration 
- {
-  public override string AreaName
-  {
-   get 
-   {
-    return "Sales";
-   }
-  }
-
-  public override void RegisterArea(AreaRegistrationContext context)
-  {
-            // All routes are here..
-
-   context.MapRoute(
-    "Sba_Sales",
-    "sba/sales/{controller}/{action}/{id}",
-    new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-   );
-  }
- }
-}
-</pre><p>That&#8217;s it. Now you implement Controller/Models in usual way and able to add unit tests project for new assembly.<br />
-</p><p>Make sure that assembly will be placed into to Web Site <code>/Bin</code> folder. I simply added <code>../Site/Bin</code> as project output directory. At the site initialization and <code>Application_Start()</code> call of Global.asax, all <code>AreaRegistration</code> instances would be created and routes being registered.<br />
-</p><h2>Views</h2><p>Views have to be placed in the Web Site folder itself. MVC has several rules for views placements, so you have to follow them. Views for controllers that are part of Area&#8217;s have to be places into <code>Site/Areas/AreaName/Views</code>, the common stuff line master pages are in <code>Site/Views/Shared</code>. It is very important that each View folder must contain the <code>web.config</code> inside. You can either pick it up from default MVC2 application of just grab from <a href="https://gist.github.com/1325577">gist</a>.<br />
-</p><a href="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png"><br />
-<img src="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png" alt="views folder structure" /><br />
-</a><br />
-<h2>IIS configuration</h2><p>Our application previously worked in &#8220;Classic&#8221; mode. Even thought, it is possible to run MVC on &#8220;Classic&#8221; I would not really recommend it to do and if production environment allows, just switch you application pool to &#8220;Integrated mode&#8221;.   <br />
-</p><a href="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png"><br />
-<img src="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png" alt="iis application pool config" /><br />
-</a><br />
-<p>After you did it, you can go and run you application. If you setup basic Home controller and view, you should be able to access it by given route. If you receiving 403 HTTP error check:<br />
-</p><ul><li>Are you really on integrated mode?</li>
-<li>Are there any physical folders that the same as you routing, e.g /sba/sales route and /site/sba/sales folder? In such case you either should correct the routing or change site folder structure.</li>
-</ul><h2>Session is Null issue</h2><p>Moving along and starting implementation of some real controllers, we&#8217;ve got very strange <code>NullReferenceException</code> problem. After bit debugging it turned out that <code>HttpContext.Current.Session</code> is null in controller actions. That&#8217;s the common problem for legacy web sites. It is very well described in this <a href="http://stackoverflow.com/questions/218057/httpcontext-current-session-is-null-when-routing-requests">stackoverflow</a> answer. So, you just need to add one more section into <code>web.config</code> file.<br />
-</p><pre class="brush: xml">&lt;configuration&gt;
-  ...
-  &lt;system.webServer&gt;
-    ...
-    &lt;modules&gt;
-      &lt;remove name=&quot;Session&quot; /&gt;
-      &lt;add name=&quot;Session&quot; type=&quot;System.Web.SessionState.SessionStateModule&quot;/&gt;
-      ...
-    &lt;/modules&gt;
-  &lt;/system.webServer&gt;
-&lt;/configuration&gt;
-</pre><p>After all of those configuration changes your Web Site is fully adopted to ASP.NET MVC framework usage. So, just go ahead and feel the awesomeness of MVC!<br />
-</p></div>
 
       
       

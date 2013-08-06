@@ -290,7 +290,7 @@ and (max-device-width : 480px) {
 and (min-width : 321px) {
 	.inner {
 		width: auto;
-		margin: 0 5px;
+		margin: 0 15px;
 	}
 }
 
@@ -299,7 +299,7 @@ and (min-width : 321px) {
 and (max-width : 320px) {
 	.inner {
 		width: auto;
-		margin: 0 5px;
+		margin: 0 15px;
 	}
 }
 
@@ -309,7 +309,7 @@ and (min-device-width : 768px)
 and (max-device-width : 1024px) {
 	.inner {
 		width: auto;
-		margin: 0 5px;
+		margin: 0 15px;
 	}
 }
 
@@ -320,7 +320,7 @@ and (max-device-width : 1024px)
 and (orientation : landscape) {
 	.inner {
 		width: auto;
-		margin: 0 5px;
+		margin: 0 15px;
 	}
 }
 
@@ -330,7 +330,7 @@ and (min-device-width : 768px)
 and (max-device-width : 1024px)
 and (orientation : portrait) {
 	.inner {
-		margin: 0 5px;
+		margin: 0 15px;
 	}
 }
 
