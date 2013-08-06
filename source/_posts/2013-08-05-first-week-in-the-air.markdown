@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "First Week in The Air"
-date: 2013-08-05 05:40
+date: 2013-08-06 05:40
 comments: true
 categories: applications likeastore
 ---
@@ -32,7 +32,7 @@ I have to say, I was really pleased with that. We did something noticeable, some
 
 Real user experience shows real application issues. We had few..
 
-First is that our app failed to work in IE. It appeared that our *nginx* configuration. Since we are using [Dokku]() for deployment, it have to be fixed there. Thanks to Dokku community, the issue has been resolved rather quickly and fix being [pushed](https://github.com/progrium/dokku/commit/33a3b85674e92fe883ba3151dee861f53914718a).
+First is that our app failed to work in IE. It appeared that our *nginx* configuration. Since we are using [Dokku](https://github.com/progrium/dokku) for deployment, it have to be fixed there. Thanks to Dokku community, the issue has been resolved rather quickly and fix being [pushed](https://github.com/progrium/dokku/commit/33a3b85674e92fe883ba3151dee861f53914718a).
 
 Another thing, that was not possible to see without some *real* data - stackoverflow OAuth token is very short living.. So, if you enabled stackoverlow connector, next day it fail to collect the data, since token in not valid any more. Unfortunately, there is no way to workaround this issue automatically, only ask user to re-enable the network.
 
