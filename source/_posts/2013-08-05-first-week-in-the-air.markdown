@@ -22,7 +22,7 @@ Small script that sends *"New user registered"* notification has been rolled out
 
 Next morning, I found a bunch of emails in my box, maybe 40-50 subscribed. Mostly from my "nearest" network, after notification in twitter and facebook.
 
-But then, something unpredictable happened. [@voronianski](https://twitter.com/voronianski) skyped me that we are about to be published at amazing [Collective #74](http://t.co/4DinPVlcdk) issue.
+But then, something unpredictable happened - we've announced in amazing [Collective #74](http://t.co/4DinPVlcdk) issue.
 
 That gave us a lot of traffic and sign-ups. Monday and Tuesday, we had a rush hours then every minute new user sign-up. My phone was ringing all the time, and my email box was full of notifications. People were [tweeting](https://twitter.com/search?q=likeastore&src=typd) about, we recieved few request for new service connectors as well.
 
