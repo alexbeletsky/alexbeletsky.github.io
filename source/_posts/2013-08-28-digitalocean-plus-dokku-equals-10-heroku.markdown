@@ -26,13 +26,13 @@ I never seriously used Heroku, though. What I dislike, is pricing. Also, the oth
 
 Digital Ocean is very fast growing cloud-computing service. It's not PaaS (platform as a service) like Heroku, it's rather IaaS (infrastructure as a service). They are notable for few major things:
 
-* **Pricing** - really (mean, really!) competitive pricing, 1GB RAM, 20GB SSD machine for 10$.
+* **Pricing** - really (mean, really!) competitive pricing, 1GB RAM, 30GB SSD machine for 10$.
 * **Easy of use** - the flow from registration for first droplet creation is smooth and clear.
 * **Regions** - machines can be fired up for both US and EU, ideal for us.
 
 But again, Digital Ocean is nothing more as great infrastructure. Herding the server is all up to you. I personally was really afraid of that perspective of setting up nginx, configuring firewalls, load-balancing etc., that prevented me to look to Digital Ocean closely. Getting used to deployment procedures with Nodejitsu and Heroku, it's real pain to deploy app by FTP again and do everything manually.
 
-But lucky chance I noticed [Dokku]() project and that was something really great, explain why later.
+But lucky chance I noticed [Dokku](https://github.com/progrium/dokku) project and that was something really great, explain why later.
 
 ## Dokku & Docker
 
