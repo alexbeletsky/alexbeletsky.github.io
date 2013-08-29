@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-29T21:00:50+03:00</updated>
+  <updated>2013-08-29T21:38:41+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -43,7 +43,7 @@
 <p>Digital Ocean is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
 
 <ul>
-<li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 20GB SSD machine for 10$.</li>
+<li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 30GB SSD machine for 10$.</li>
 <li><strong>Easy of use</strong> &ndash; the flow from registration for first droplet creation is smooth and clear.</li>
 <li><strong>Regions</strong> &ndash; machines can be fired up for both US and EU, ideal for us.</li>
 </ul>
@@ -51,7 +51,7 @@
 
 <p>But again, Digital Ocean is nothing more as great infrastructure. Herding the server is all up to you. I personally was really afraid of that perspective of setting up nginx, configuring firewalls, load-balancing etc., that prevented me to look to Digital Ocean closely. Getting used to deployment procedures with Nodejitsu and Heroku, it&rsquo;s real pain to deploy app by FTP again and do everything manually.</p>
 
-<p>But lucky chance I noticed <a href="">Dokku</a> project and that was something really great, explain why later.</p>
+<p>But lucky chance I noticed <a href="https://github.com/progrium/dokku">Dokku</a> project and that was something really great, explain why later.</p>
 
 <h2>Dokku &amp; Docker</h2>
 
