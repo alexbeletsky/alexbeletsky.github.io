@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Digital Ocean + Dokku = 10$ Heroku</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Digital Ocean + Dokku = 10$ Heroku Aug 28th, 2013 digitalocean, dokku, nodejs My last infrastructure related post was about an experience of using &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Digital Ocean + Dokku = 10$ Heroku</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T22:00:00+03:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digitalocean/'>digitalocean</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
+
+<p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
+
+<!-- More -->
+
+
+<h2>Heroku</h2>
+
+<p>Heroku is good service. Afraid to be mistaken, but that&rsquo;s probably Heroku who popularized &ldquo;git-powered&rdquo; deployments much, ones there deployment script looks like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git push heroku master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The rest is all about the service &ndash; prepare runtime, deploy code, start web application etc. Besides of that Heroku open-sourced a lot of good stuff, including so called <a href="https://devcenter.heroku.com/articles/buildpacks">buildpacks</a>, some ready to use scripts that are able to setup the dyno with all required runtime to be able to start application there.</p>
+
+<p>I never seriously used Heroku, though. What I dislike, is pricing. Also, the other people I asked about their satisfaction of using Heroku, was not satisfying much (arguable). We needed more lightweight, easy to change setup.</p>
+
+<h2>Digital Ocean</h2>
+
+<p>Digital Ocean is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
+
+<ul>
+<li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 20GB SSD machine for 10$.</li>
+<li><strong>Easy of use</strong> &ndash; the flow from registration for first droplet creation is smooth and clear.</li>
+<li><strong>Regions</strong> &ndash; machines can be fired up for both US and EU, ideal for us.</li>
+</ul>
+
+
+<p>But again, Digital Ocean is nothing more as great infrastructure. Herding the server is all up to you. I personally was really afraid of that perspective of setting up nginx, configuring firewalls, load-balancing etc., that prevented me to look to Digital Ocean closely. Getting used to deployment procedures with Nodejitsu and Heroku, it&rsquo;s real pain to deploy app by FTP again and do everything manually.</p>
+
+<p>But lucky chance I noticed <a href="">Dokku</a> project and that was something really great, explain why later.</p>
+
+<h2>Dokku &amp; Docker</h2>
+
+<p>So, <a href="https://github.com/progrium/dokku">Dokku</a> is simply amazing hack (or more correctly, combination of diffrent hacks) by <a href="https://github.com/progrium">Jeff Lindsay</a>. Some initial facts:</p>
+
+<ul>
+<li>Written in Shell script and currently nearly 100 lines of code</li>
+<li>Based on Docker</li>
+<li>Provides Heroku-like deployment experience</li>
+<li>Community-driven</li>
+</ul>
+
+
+<p>Dokku, can be installed to Ubuntu 13 machine and turn that machine into Heroku-like server. I mean, you can push the code there and Dokku, will fire-up new <em>docker process</em>, deploy code there, start the application, configure nginx and setup environment variables and SSL.</p>
+
+<p>Btw, the time I just looked to Dokku, they missed exactly support of ENV variables and SSL. It was not acceptable for me, without those 2 features. Constraints again, but that gave me ability to contribute the projects and eventually I submitted both features.</p>
+
+<p>Dokku, is very interesting project. First of all, because it based on trendy <a href="http://www.docker.io/">Docker</a>. Docker is &ldquo;Virtual-Machine-Based-Deployment&rdquo; alternative. Deployment on virtual boxes are de-facto standard now and docker is about to change that. Guys from <a href="https://www.dotcloud.com/">dotCloud</a> open-sourced solution that allows to run isolated processes (containers) &ndash; that are like lightweight virtual machines. You can deploy docker on Ubuntu server and then use that as host any kind of applications or databases.</p>
+
+<p>Docker could turn Ubuntu Server to PaaS and Dokku makes great &ldquo;interface&rdquo; for that.</p>
+
+<p>Each Dokku piece is very interesting indeed and I hope to blog more about. And Dokku is using Heroku buildbacks, which makes you feel you deal with Heroku, not with your own setup.</p>
+
+<h2>Putting Things Together</h2>
+
+<p>Digital Ocean and Dokku make a perfect match. As I said above, Digital Ocean is something you can really start quick with. So, what we did is just started up 10$ Ubuntu 13 server and installed Dokku there. In total it took 7 minutes or so. I would not bother you with instructions, cause you find a lot in <a href="https://medium.com/code-adventures/438bce155dcb">internet</a>.. but also, assuming that DO + Dokku is a kind of Apple product, that does not require instructions.</p>
+
+<p>First impression was simply amazing. You have everything under control and fill great with &ldquo;git-powered&rdquo; deployments. So, after successful try that machine became our staging server and I also fired-up another one for production one.</p>
+
+<p>Now, then we developing features and what to show each other or test, you just need to do following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git push deploy-staging feature:master
+</span><span class='line'>Counting objects: 7, <span class="k">done</span>.
+</span><span class='line'>Delta compression using up to 8 threads.
+</span><span class='line'>Compressing objects: 100% <span class="o">(</span>4/4<span class="o">)</span>, <span class="k">done</span>.
+</span><span class='line'>Writing objects: 100% <span class="o">(</span>4/4<span class="o">)</span>, 445 bytes | 0 bytes/s, <span class="k">done</span>.
+</span><span class='line'>Total 4 <span class="o">(</span>delta 2<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'>remote: -----&gt; Building collector ...
+</span><span class='line'>remote:        Node.js app detected
+</span><span class='line'>remote: -----&gt; Resolving engine versions
+</span><span class='line'>remote:        Using Node.js version: 0.10.15
+</span><span class='line'>remote:        Using npm version: 1.2.30
+</span><span class='line'>remote: -----&gt; Fetching Node.js binaries
+</span><span class='line'>remote: -----&gt; Vendoring node into slug
+</span><span class='line'>remote: -----&gt; Installing dependencies with npm
+</span><span class='line'>remote:        npm WARN package.json likeastore-collector@0.0.2-21 No repository field.
+</span><span class='line'>remote:        npm http GET https://registry.npmjs.org/mongojs
+</span><span class='line'>remote:        npm http GET https://registry.npmjs.org/underscore
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>remote: <span class="o">=====</span>&gt; Application deployed:
+</span><span class='line'>remote:        http://stage-collector.likeastore.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The time we are ready to release:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git push deploy-production master
+</span><span class='line'>Counting objects: 7, <span class="k">done</span>.
+</span><span class='line'>Delta compression using up to 8 threads.
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>remote: <span class="o">=====</span>&gt; Application deployed:
+</span><span class='line'>remote:        http://collector.likeastore.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&rsquo;s fast and it&rsquo;s pretty reliable.</p>
+
+<p>For conclusion, I would say that using both Digial Ocean and Dokku was a clear win for <a href="https://likeastore.com/">Likeastore</a> being released.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html" data-via="alexbeletsky" data-counturl="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexanderbeletsky/site/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

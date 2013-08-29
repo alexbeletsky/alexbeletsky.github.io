@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: dokku | Alexander Beletsky's development blog]]></title>
+  <link href="http://alexanderbeletsky.github.io/blog/categories/dokku/atom.xml" rel="self"/>
+  <link href="http://alexanderbeletsky.github.io/"/>
+  <updated>2013-08-29T20:33:05+03:00</updated>
+  <id>http://alexanderbeletsky.github.io/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
+    <updated>2013-08-28T22:00:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
+    <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
+
+<p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
+
+<!-- More -->
+
+
+<h2>Heroku</h2>
+
+<p>Heroku is good service. Afraid to be mistaken, but that&rsquo;s probably Heroku who popularized &ldquo;git-powered&rdquo; deployments much, ones there deployment script looks like:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push heroku master
+```</p></blockquote>
+
+<p>The rest is all about the service &ndash; prepare runtime, deploy code, start web application etc. Besides of that Heroku open-sourced a lot of good stuff, including so called <a href="https://devcenter.heroku.com/articles/buildpacks">buildpacks</a>, some ready to use scripts that are able to setup the dyno with all required runtime to be able to start application there.</p>
+
+<p>I never seriously used Heroku, though. What I dislike, is pricing. Also, the other people I asked about their satisfaction of using Heroku, was not satisfying much (arguable). We needed more lightweight, easy to change setup.</p>
+
+<h2>Digital Ocean</h2>
+
+<p>Digital Ocean is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
+
+<ul>
+<li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 20GB SSD machine for 10$.</li>
+<li><strong>Easy of use</strong> &ndash; the flow from registration for first droplet creation is smooth and clear.</li>
+<li><strong>Regions</strong> &ndash; machines can be fired up for both US and EU, ideal for us.</li>
+</ul>
+
+
+<p>But again, Digital Ocean is nothing more as great infrastructure. Herding the server is all up to you. I personally was really afraid of that perspective of setting up nginx, configuring firewalls, load-balancing etc., that prevented me to look to Digital Ocean closely. Getting used to deployment procedures with Nodejitsu and Heroku, it&rsquo;s real pain to deploy app by FTP again and do everything manually.</p>
+
+<p>But lucky chance I noticed <a href="">Dokku</a> project and that was something really great, explain why later.</p>
+
+<h2>Dokku &amp; Docker</h2>
+
+<p>So, <a href="https://github.com/progrium/dokku">Dokku</a> is simply amazing hack (or more correctly, combination of diffrent hacks) by <a href="https://github.com/progrium">Jeff Lindsay</a>. Some initial facts:</p>
+
+<ul>
+<li>Written in Shell script and currently nearly 100 lines of code</li>
+<li>Based on Docker</li>
+<li>Provides Heroku-like deployment experience</li>
+<li>Community-driven</li>
+</ul>
+
+
+<p>Dokku, can be installed to Ubuntu 13 machine and turn that machine into Heroku-like server. I mean, you can push the code there and Dokku, will fire-up new <em>docker process</em>, deploy code there, start the application, configure nginx and setup environment variables and SSL.</p>
+
+<p>Btw, the time I just looked to Dokku, they missed exactly support of ENV variables and SSL. It was not acceptable for me, without those 2 features. Constraints again, but that gave me ability to contribute the projects and eventually I submitted both features.</p>
+
+<p>Dokku, is very interesting project. First of all, because it based on trendy <a href="http://www.docker.io/">Docker</a>. Docker is &ldquo;Virtual-Machine-Based-Deployment&rdquo; alternative. Deployment on virtual boxes are de-facto standard now and docker is about to change that. Guys from <a href="https://www.dotcloud.com/">dotCloud</a> open-sourced solution that allows to run isolated processes (containers) &ndash; that are like lightweight virtual machines. You can deploy docker on Ubuntu server and then use that as host any kind of applications or databases.</p>
+
+<p>Docker could turn Ubuntu Server to PaaS and Dokku makes great &ldquo;interface&rdquo; for that.</p>
+
+<p>Each Dokku piece is very interesting indeed and I hope to blog more about. And Dokku is using Heroku buildbacks, which makes you feel you deal with Heroku, not with your own setup.</p>
+
+<h2>Putting Things Together</h2>
+
+<p>Digital Ocean and Dokku make a perfect match. As I said above, Digital Ocean is something you can really start quick with. So, what we did is just started up 10$ Ubuntu 13 server and installed Dokku there. In total it took 7 minutes or so. I would not bother you with instructions, cause you find a lot in <a href="https://medium.com/code-adventures/438bce155dcb">internet</a>.. but also, assuming that DO + Dokku is a kind of Apple product, that does not require instructions.</p>
+
+<p>First impression was simply amazing. You have everything under control and fill great with &ldquo;git-powered&rdquo; deployments. So, after successful try that machine became our staging server and I also fired-up another one for production one.</p>
+
+<p>Now, then we developing features and what to show each other or test, you just need to do following:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push deploy-staging feature:master
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 445 bytes | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+remote: &mdash;&mdash;&ndash;> Building collector &hellip;
+remote:        Node.js app detected
+remote: &mdash;&mdash;&ndash;> Resolving engine versions
+remote:        Using Node.js version: 0.10.15
+remote:        Using npm version: 1.2.30
+remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
+remote: &mdash;&mdash;&ndash;> Vendoring node into slug
+remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
+remote:        npm WARN package.json <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#108;&#105;&#107;&#101;&#97;&#115;&#116;&#111;&#x72;&#101;&#x2d;&#x63;&#111;&#108;&#x6c;&#x65;&#99;&#x74;&#111;&#x72;&#64;&#x30;&#x2e;&#x30;&#x2e;&#x32;&#x2d;&#x32;&#49;">&#108;&#x69;&#107;&#x65;&#x61;&#x73;&#x74;&#x6f;&#x72;&#x65;&#x2d;&#99;&#x6f;&#108;&#108;&#x65;&#99;&#x74;&#x6f;&#x72;&#64;&#48;&#x2e;&#x30;&#x2e;&#50;&#x2d;&#50;&#x31;</a> No repository field.
+remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
+remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
+
+<p>&hellip;</p>
+
+<p>remote: =====> Application deployed:
+remote:        <a href="http://stage-collector.likeastore.com">http://stage-collector.likeastore.com</a>
+```</p>
+
+<p>The time we are ready to release:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push deploy-production master
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+&hellip;</p></blockquote>
+
+<p>remote: =====> Application deployed:
+remote:        <a href="http://collector.likeastore.com">http://collector.likeastore.com</a>
+```</p>
+
+<p>It&rsquo;s fast and it&rsquo;s pretty reliable.</p>
+
+<p>For conclusion, I would say that using both Digial Ocean and Dokku was a clear win for <a href="https://likeastore.com/">Likeastore</a> being released.</p>
+]]></content>
+  </entry>
+  
+</feed>

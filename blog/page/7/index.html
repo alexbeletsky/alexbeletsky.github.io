@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Why I&#8217;m Not Using Bundling.. Yet Apr 4th, 2012 MVC, asp.net Last time I a posted some initial info about Bundling and Minification abilities &hellip;">
+  <meta name="description" content="New in ASP.NET MVC4: Razor changes Apr 10th, 2012 MVC, asp.net Razor has been changed a little with ASP.NET MVC 4 beta. It&#8217;s not a kind of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,76 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/new-in-aspnet-mvc4-razor-changes.html">
+    
+      New in ASP.NET MVC4: Razor changes</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-10T21:35:00+03:00" pubdate data-updated="true">Apr 10<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Razor has been changed a little with ASP.NET MVC 4 beta. It&#8217;s not a kind of radical changes, but rather improvements that make developers happier. As for me, developers happier then you need to write less code to get the same function. It reminded me a ideal device, which is part of <a href="http://www.mindtools.com/pages/article/newCT_92.htm">TRIZ</a> theory. Ideal device is a device that does not exit, but does it function. By analogy, ideal code is the code that not exist but it&#8217;s function exist. Razor is not that ideal, through.. But it&#8217;s &#8220;more ideal&#8221; than previous version. <br />
+</p><h2>No more @Url.Content</h2><p>I got used to @Url.Content and used that for all CSS and JS references. Since it&#8217;s to commonly used, developers decided to include it on a level of engine. Now, instead of<br />
+</p><pre class="brush: html">&lt;script src=&quot;@Url.Content(&quot;~/Scripts/Controls.js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>You simply can write,<br />
+</p><pre class="brush: html">&lt;script src=&quot;~/Scripts/Controls.js&quot;&gt;&lt;/script&gt;
+</pre><p>If Razor detects ~/ it would created an output identical to @Url.Content. Just got rid of several bytes within view files.<br />
+</p><h2>Conditions</h2><p>Conditions in attributes were pretty noisy. Have you ever create something like this?<br />
+</p><pre class="brush: html">&lt;div @{if (myClass != null) { &lt;text&gt;class=&quot;@myClass&quot;&lt;/text&gt; } }&gt;Content&lt;/div&gt;
+</pre><p>I had and I did not like it much. I usually ended up with creation of some simple HTML helper instead. With new Razor it a little simpler, not you can write<br />
+</p><pre class="brush: html">&lt;div class=&quot;@myClass&quot;&gt;Content&lt;/div&gt;
+</pre><p>If @myClass is null, it won&#8217;t output class attribute at all. Very handy.<br />
+</p><h2>And a little more</h2><p>This is an update section I created after this post has been <a href="https://twitter.com/#!/scottgu/status/190133254060388352">twitted</a> by <a href="https://twitter.com/#!/scottgu">Scott Guthrie</a> and some valuable comments has been received.<br />
+</p><p><a href="https://twitter.com/#!/bradwilson">Brad Wilson</a> stated, conditions does not only support nullable types, but also booleans. Say, I have code:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;@ViewBag.Checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p>If the @ViewBag.Checked in null or false, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input type=&quot;checkbox&quot;/&gt;
+</pre><p>Else if @ViewBag.Checked is true, it will be rendered as:<br />
+</p><pre class="brush: html">&lt;input checked=&quot;checked&quot; type=&quot;checkbox&quot;/&gt;
+</pre><p><a href="https://twitter.com/#!/HumanCompiler">Erik Porter</a> also mentioned the custom support for <code>data-*</code> attributes. Data attributes are little special, so even if you missing particular value you still want to have those as empty <code>data-role = ""</code>. So, if you have code like:<br />
+</p><pre class="brush: html">&lt;ul data-role=&quot;@ViewBag.ListRole&quot;&gt;
+&lt;/ul&gt;
+</pre><p>and @ViewBag.ListRole is null or false, data attribute will be eliminated. That&#8217;s how it work in Beta. But for next releases <code>data-*</code> attributes will be treated specially, so even if value is null or false they will be rendered as empty ones.<br />
+</p><h2>Conclusions</h2><p>I haven&#8217;t noticed any more changes so far. It&#8217;s great to see that Razor has not been &#8220;frozen&#8221; and still improving. I like that view engine first of all by it&#8217;s simplicity. So making it even more simple would definitely make it more attractive.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1014,99 +1084,6 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
 <script src="http://speakerdeck.com/embed/4f49e9bd2270a2002200a29c.js"></script><br />
 <p>I also really much enjoyed <a href="http://samarskyy.blogspot.com/">Anton Samarskyy</a> talk on jQuery deffered objects and Vitaly Koval did great hacking session of WinRT.<br />
 </p><p>I some of you been listening to me on those speeches and still have any questions or concerns, feel free to contact me by comments or through <a href="http://twitter.com/alexbeletsky">twitter</a>. See you next time!<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/02/foundation-framework-for-web-sites.html">
-    
-      Foundation Framework for Web Sites Production</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-21T11:15:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/css/'>CSS</a>, <a class='category' href='/blog/categories/html/'>HTML</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/ui/'>UI</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
-</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
-</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
-</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I&#8217;m changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
-</p><p>Great thing is that you see how it&#8217;s done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id&#8217;s, applying the styles by element Id. The code was awful and styles applied on #id&#8217;s were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
-</p><p>With OOCSS you rely on classed. Here some example,<br />
-</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
- &lt;div class=&quot;row smaller-fonts&quot;&gt;
-  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
- &lt;/div&gt;
-&lt;/div&gt;
-</pre><p>Look, no #id&#8217;s - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
-</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It&#8217;s really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it&#8217;s content based on screen size.<br />
-</p><p>Here is a quote of Foundation documentation.<br />
-</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don&#8217;t give a specific structural style to should be within a container, row and column.<br />
-</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost &#8220;plain&#8221; English in HTML.<br />
-</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
-  &lt;div class=&quot;row&quot;&gt;
-    &lt;div class=&quot;eight columns&quot;&gt;
-      Eight columns
-    &lt;/div&gt;
-    &lt;div class=&quot;four columns&quot;&gt;
-      Four columns     
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
-</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can&#8217;t get good site appearance if buttons and forms are ugly. I usually spend a lot of time on &#8220;beautifying&#8221; those, but still unhappy with results at the end of the day. With Foundation it&#8217;s easier. You got nice styles from the box. <br />
-</p><p>Forms:<br />
-</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
-<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
-</a><br />
-<p>Buttons:<br />
-</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
-<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
-</a><br />
-<p>Recently, I&#8217;ve <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
-</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That&#8217;s different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
-</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
-</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
-<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
-</a><br />
-<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it&#8217;s place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
-</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I&#8217;m about to create bunch of &#8220;ready-to-use&#8221; Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
 </p></div>
 
       
