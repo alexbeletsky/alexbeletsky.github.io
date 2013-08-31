@@ -24,7 +24,7 @@ I never seriously used Heroku, though. What I dislike, is pricing. Also, the oth
 
 ## Digital Ocean
 
-Digital Ocean is very fast growing cloud-computing service. It's not PaaS (platform as a service) like Heroku, it's rather IaaS (infrastructure as a service). They are notable for few major things:
+[Digital Ocean](https://www.digitalocean.com/?refcode=de56d081b272) is very fast growing cloud-computing service. It's not PaaS (platform as a service) like Heroku, it's rather IaaS (infrastructure as a service). They are notable for few major things:
 
 * **Pricing** - really (mean, really!) competitive pricing, 1GB RAM, 30GB SSD machine for 10$.
 * **Easy of use** - the flow from registration for first droplet creation is smooth and clear.
