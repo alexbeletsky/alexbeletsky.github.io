@@ -4,7 +4,7 @@
   <title><![CDATA[Category: digitalocean | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/digitalocean/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-29T21:38:41+03:00</updated>
+  <updated>2013-08-31T09:42:03+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -40,7 +40,7 @@
 
 <h2>Digital Ocean</h2>
 
-<p>Digital Ocean is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
+<p><a href="https://www.digitalocean.com/?refcode=de56d081b272">Digital Ocean</a> is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
 
 <ul>
 <li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 30GB SSD machine for 10$.</li>
@@ -99,7 +99,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#108;&#105;&#x6b;&#101;&#x61;&#115;&#x74;&#x6f;&#114;&#101;&#x2d;&#99;&#x6f;&#108;&#x6c;&#101;&#x63;&#x74;&#111;&#114;&#x40;&#x30;&#x2e;&#48;&#x2e;&#x32;&#x2d;&#x32;&#x31;">&#x6c;&#x69;&#107;&#x65;&#97;&#115;&#x74;&#x6f;&#x72;&#101;&#x2d;&#99;&#x6f;&#x6c;&#x6c;&#x65;&#x63;&#x74;&#x6f;&#114;&#x40;&#x30;&#x2e;&#48;&#46;&#50;&#x2d;&#x32;&#x31;</a> No repository field.
+remote:        npm WARN package.json <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x6c;&#105;&#107;&#101;&#97;&#115;&#x74;&#x6f;&#114;&#x65;&#x2d;&#99;&#111;&#108;&#108;&#x65;&#x63;&#116;&#x6f;&#114;&#x40;&#48;&#46;&#48;&#x2e;&#x32;&#45;&#x32;&#x31;">&#108;&#x69;&#x6b;&#101;&#x61;&#x73;&#116;&#x6f;&#114;&#x65;&#x2d;&#x63;&#111;&#x6c;&#x6c;&#x65;&#x63;&#116;&#111;&#x72;&#64;&#48;&#x2e;&#48;&#46;&#x32;&#x2d;&#50;&#x31;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 
