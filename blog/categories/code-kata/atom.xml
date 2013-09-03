@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code Kata | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/code-kata/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[The Game of Life]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/09/the-game-of-life.html"/>
-    <updated>2012-09-27T11:52:00+03:00</updated>
+    <updated>2012-09-27T10:52:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/09/the-game-of-life</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
@@ -57,7 +57,7 @@
   <entry>
     <title type="html"><![CDATA[The Limit of Keystrokes]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/05/limit-of-keystrokes.html"/>
-    <updated>2012-05-26T15:03:00+03:00</updated>
+    <updated>2012-05-26T14:03:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/05/limit-of-keystrokes</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Some time ago I've posted an article called <a href="http://www.beletsky.net/2011/07/how-to-be-better-developer-or-3.html">How to be better developer or 3 accounts rule</a> where I shared my vision on importance of having some accounts if you care about professionalism and mastery. The basic idea there is you have to produce a lot, you have to write a lot. You have to write code, write blog posts and help people on forums.<br />
@@ -73,7 +73,7 @@
   <entry>
     <title type="html"><![CDATA[Extension methods and clean code]]></title>
     <link href="http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code.html"/>
-    <updated>2011-02-10T10:52:00+02:00</updated>
+    <updated>2011-02-10T09:52:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

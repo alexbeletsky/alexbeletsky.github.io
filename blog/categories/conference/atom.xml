@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Conference | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/conference/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Building Single Pages Applications]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
-    <updated>2013-04-29T20:26:00+03:00</updated>
+    <updated>2013-04-29T19:26:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
@@ -73,7 +73,7 @@
   <entry>
     <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
-    <updated>2013-04-14T14:35:00+03:00</updated>
+    <updated>2013-04-14T13:35:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
     <content type="html"><![CDATA[<div class='post'>
         <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
@@ -109,7 +109,7 @@
   <entry>
     <title type="html"><![CDATA[IT Jam 2012 in Kiev]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/09/it-jam-2012-in-kiev.html"/>
-    <updated>2012-09-03T10:11:00+03:00</updated>
+    <updated>2012-09-03T09:11:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/09/it-jam-2012-in-kiev</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        It's been my <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">second time</a> I attended IT Jam, the biggest IT gathering in Ukraine. This time, the rules has been completely changed. Instead of traditional speeches, the organizers decided to make <a href="http://www.it-jam.ciklum.net/community_spot">community spots</a>, there people might have a chance to group and discuss different issues. There were number of spots there: .NET, JavaScript, iOS, UX etc.<br />
@@ -133,7 +133,7 @@
   <entry>
     <title type="html"><![CDATA[MS SWIT 2012]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/03/ms-swit-2012.html"/>
-    <updated>2012-03-27T09:26:00+03:00</updated>
+    <updated>2012-03-27T08:26:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/03/ms-swit-2012</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The 22-23 of March this year I had a chance to participate biggest event organized by Microsoft Ukraine - <a href="http://www.msswit.in.ua/eng/">MS SWIT 2012</a>. <br />
@@ -159,7 +159,7 @@
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
-    <updated>2012-02-27T10:30:00+02:00</updated>
+    <updated>2012-02-27T09:30:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />

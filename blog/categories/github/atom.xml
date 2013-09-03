@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GitHub | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
-    <updated>2013-05-16T18:55:00+03:00</updated>
+    <updated>2013-05-16T17:55:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
@@ -34,7 +34,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC v2.0 is coming]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming.html"/>
-    <updated>2012-06-09T17:36:00+03:00</updated>
+    <updated>2012-06-09T16:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
@@ -54,7 +54,7 @@
   <entry>
     <title type="html"><![CDATA[Github for Windows - Yay!]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay.html"/>
-    <updated>2012-05-21T23:44:00+03:00</updated>
+    <updated>2012-05-21T22:44:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        For quite long time Windows users of github had a huge envy towards <a href="http://mac.github.com/">Github for Mac</a> - the application that makes work with github based repositories as simple as possible. A lot of people, especially ones who are not familiar with Git, experiencing some issues with github initially. No surprise, extensive command-line, SSH, public/private keys - might sound scary for GUI addicted persons. <br />
@@ -90,7 +90,7 @@
   <entry>
     <title type="html"><![CDATA[A year with Git]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/05/year-with-git.html"/>
-    <updated>2012-05-20T13:43:00+03:00</updated>
+    <updated>2012-05-20T12:43:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/05/year-with-git</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
@@ -126,7 +126,7 @@
   <entry>
     <title type="html"><![CDATA[Few Things I Learned From IdeaStrike Project]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike.html"/>
-    <updated>2012-02-09T20:20:00+02:00</updated>
+    <updated>2012-02-09T19:20:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/few-things-i-learned-from-ideastrike</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It's very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have "product envy" inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />

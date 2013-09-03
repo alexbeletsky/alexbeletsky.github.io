@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Implementation of REST web service adapter on .NET]]></title>
     <link href="http://alexanderbeletsky.github.io/2011/02/implementation-of-rest-web-service.html"/>
-    <updated>2011-02-24T14:58:00+02:00</updated>
+    <updated>2011-02-24T13:58:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2011/02/implementation-of-rest-web-service</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -214,7 +214,7 @@ As reference I'll give you implementation of <a href="https://github.com/alexand
   <entry>
     <title type="html"><![CDATA[Implementation of REST service with ASP.NET MVC]]></title>
     <link href="http://alexanderbeletsky.github.io/2011/01/implementation-of-rest-service-with.html"/>
-    <updated>2011-01-07T00:39:00+02:00</updated>
+    <updated>2011-01-06T23:39:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2011/01/implementation-of-rest-service-with</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I'll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into "API epoch", customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he's just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let's implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I've created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexanderbeletsky/rest.mvc.example">github</a> (please don't be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
@@ -401,7 +401,7 @@ public JsonResult Fail()
   <entry>
     <title type="html"><![CDATA[Testing REST services with javascript]]></title>
     <link href="http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript.html"/>
-    <updated>2010-12-30T08:28:00+02:00</updated>
+    <updated>2010-12-30T07:28:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -502,7 +502,7 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   <entry>
     <title type="html"><![CDATA[Let's take a REST]]></title>
     <link href="http://alexanderbeletsky.github.io/2010/12/lets-take-rest.html"/>
-    <updated>2010-12-23T07:28:00+02:00</updated>
+    <updated>2010-12-23T06:28:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2010/12/lets-take-rest</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

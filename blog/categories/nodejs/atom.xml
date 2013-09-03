@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,9 +14,205 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant.html"/>
+    <updated>2013-09-03T19:57:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant</id>
+    <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
+
+<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
+
+<!-- More -->
+
+
+<h2>Prepearing Environment</h2>
+
+<p>You box should contain few things: git (github account), VirtualBox and Vagrant. If you don&rsquo;t have Vagrant installed, please do now. It makes a lot of sense to keep such kind software on machine.</p>
+
+<p>Here you can find <a href="http://docs.vagrantup.com/v2/getting-started/index.html">some instructionn</a> of how to do that.</p>
+
+<h3>Cloning Dokku</h3>
+
+<p>You should clone Dokku repo locally. In your development folder, run</p>
+
+<p>```bash</p>
+
+<blockquote><p>git clone git@github.com:progrium/dokku.git
+cd dokku
+```</p></blockquote>
+
+<p>Dokku repository already contains Vagrant file, with all required configuration.</p>
+
+<h3>Local Networking</h3>
+
+<p>Just in sake of convenience, will map <code>10.0.0.2</code> ip address (the one that Vagrant machine is assigned with), to <code>dokku.me</code> DNS name, so it&rsquo;s just handy for testing.</p>
+
+<p><code>bash
+› sudo nano /private/etc/hosts
+</code></p>
+
+<p>and put last 2 lines, as it shown in my example:</p>
+
+<p>```plain</p>
+
+<h1>#</h1>
+
+<h1>Host Database</h1>
+
+<p>#</p>
+
+<h1>localhost is used to configure the loopback interface</h1>
+
+<h1>when the system is booting.  Do not change this entry.</h1>
+
+<h1>#</h1>
+
+<p>127.0.0.1       localhost
+255.255.255.255 broadcasthost
+::1             localhost
+fe80::1%lo0     localhost
+10.0.0.2        dokku.me
+10.0.0.2        node-simple.dokku.me
+```</p>
+
+<h3>Fire Up Virtual Machine</h3>
+
+<p>In <code>dokku</code> folder, you should run</p>
+
+<p>```bash</p>
+
+<blockquote><p>vagrant up
+```</p></blockquote>
+
+<p>It will start to prepare new virtual environment for you,</p>
+
+<p><code>bash
+ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Setting the name of the VM...
+[default] Clearing any previously set forwarded ports...
+[default] Creating shared folders metadata...
+[default] Clearing any previously set network interfaces...
+[default] Preparing network interfaces based on configuration...
+[default] Forwarding ports...
+[default] -- 22 =&gt; 2222 (adapter 1)
+[default] -- 80 =&gt; 8080 (adapter 1)
+[default] Running any VM customizations...
+[default] Booting VM...
+[default] Waiting for VM to boot. This can take a few minutes.
+</code></p>
+
+<p>It would took about 2-3 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
+
+<p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
+
+<p>```bash</p>
+
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh dokku.me &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+```</p></blockquote>
+
+<p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
+
+<p>```bash</p>
+
+<blockquote><p>vagrant ssh
+```</p></blockquote>
+
+<p>So, just try that everything is running fine by checking version of Docker:</p>
+
+<p>```bash</p>
+
+<blockquote><p>docker -v
+Docker version 0.6.1, build 5105263
+```</p></blockquote>
+
+<p>The instance is ready for deployment.</p>
+
+<h2>Deploy to Dokku</h2>
+
+<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexanderbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
+
+<p>So, what you need to setup is remote repository to push to:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git remote add local-deploy git@dokku.me:node-simple
+```</p></blockquote>
+
+<p>That&rsquo;s all. You ready for first deploy, just push code to machine with Dokku:</p>
+
+<p>```bash
+git push local-deploy master
+› git push local-deploy master &mdash;force
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 289 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+&mdash;&mdash;&ndash;> Building node-simple &hellip;</p>
+
+<pre><code>   Node.js app detected
+</code></pre>
+
+<p>&mdash;&mdash;&ndash;> Resolving engine versions</p>
+
+<pre><code>   Using Node.js version: 0.8.25
+   Using npm version: 1.2.30
+</code></pre>
+
+<p>&mdash;&mdash;&ndash;> Fetching Node.js binaries
+&mdash;&mdash;&ndash;> Vendoring node into slug
+&mdash;&mdash;&ndash;> Installing dependencies with npm</p>
+
+<pre><code>   npm WARN package.json application-name@0.0.5 No repository field.
+   npm WARN package.json application-name@0.0.5 No readme data.
+   npm WARN package.json send@0.1.0 No repository field.
+   ...
+</code></pre>
+
+<p>=====> Application deployed:</p>
+
+<pre><code>   http://node-simple.dokku.me
+</code></pre>
+
+<p>To git@dokku.me:node-simple
+   dd05aae..ac5b6da  master &ndash;> master
+```</p>
+
+<h2>Setting up Environment</h2>
+
+<p>Every application requires environment. It&rsquo;s common practice to set at least <code>NODE_ENV</code> variable for Node.js applications. To do that, you need to create <code>ENV</code> file inside the <code>/home/git/node-simple</code> folder.</p>
+
+<p><code>bash
+› ssh root@dokku.me "echo export NODE_ENV="development" &gt; /home/git/node-simple/ENV"
+</code></p>
+
+<p>Now, let&rsquo;s re-deploy the application, change the version in <code>package.json</code> and push code again.</p>
+
+<p><code>bash
+› git push local-deploy master
+</code></p>
+
+<p>Now, application is ready to be accessed.</p>
+
+<h2>Accessing the Application</h2>
+
+<p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
+
+<p><img src="/images/blog/node-simple-run.png"></p>
+
+<p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
+
+<p>Just looking on logs while new application is deployed, would give pretty much idea of what&rsquo;s going on there.</p>
+
+<p>So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
-    <updated>2013-08-28T22:00:00+03:00</updated>
+    <updated>2013-08-28T22:00:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
     <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
 
@@ -99,7 +295,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#108;&#105;&#x6b;&#x65;&#x61;&#x73;&#116;&#111;&#x72;&#x65;&#x2d;&#99;&#x6f;&#108;&#108;&#x65;&#99;&#116;&#x6f;&#x72;&#64;&#x30;&#x2e;&#48;&#46;&#x32;&#x2d;&#50;&#x31;">&#x6c;&#105;&#x6b;&#x65;&#x61;&#115;&#116;&#111;&#114;&#101;&#x2d;&#99;&#111;&#108;&#x6c;&#101;&#99;&#116;&#111;&#114;&#64;&#48;&#46;&#x30;&#x2e;&#50;&#45;&#50;&#49;</a> No repository field.
+remote:        npm WARN package.json <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#108;&#x69;&#107;&#x65;&#x61;&#x73;&#x74;&#111;&#x72;&#101;&#45;&#99;&#111;&#108;&#x6c;&#101;&#99;&#x74;&#111;&#114;&#64;&#48;&#x2e;&#48;&#46;&#50;&#x2d;&#x32;&#x31;">&#108;&#105;&#x6b;&#101;&#97;&#x73;&#x74;&#111;&#114;&#x65;&#x2d;&#99;&#111;&#x6c;&#108;&#101;&#x63;&#116;&#111;&#114;&#64;&#x30;&#46;&#48;&#46;&#x32;&#45;&#50;&#49;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 
@@ -131,7 +327,7 @@ remote:        <a href="http://collector.likeastore.com">http://collector.likeas
   <entry>
     <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
-    <updated>2013-07-19T19:36:00+03:00</updated>
+    <updated>2013-07-19T19:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
     <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
 
@@ -235,7 +431,7 @@ remote:        <a href="http://collector.likeastore.com">http://collector.likeas
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
-    <updated>2013-07-04T09:02:00+03:00</updated>
+    <updated>2013-07-04T09:02:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
     <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,9 +14,240 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant.html"/>
+    <updated>2013-09-03T19:57:00+02:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant</id>
+    <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
+
+<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
+
+<!-- More -->
+
+
+<h2>Prepearing Environment</h2>
+
+<p>You box should contain few things: git (github account), VirtualBox and Vagrant. If you don&rsquo;t have Vagrant installed, please do now. It makes a lot of sense to keep such kind software on machine.</p>
+
+<p>Here you can find <a href="http://docs.vagrantup.com/v2/getting-started/index.html">some instructionn</a> of how to do that.</p>
+
+<h3>Cloning Dokku</h3>
+
+<p>You should clone Dokku repo locally. In your development folder, run</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git clone git@github.com:progrium/dokku.git
+</span><span class='line'>&gt; <span class="nb">cd </span>dokku
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dokku repository already contains Vagrant file, with all required configuration.</p>
+
+<h3>Local Networking</h3>
+
+<p>Just in sake of convenience, will map <code>10.0.0.2</code> ip address (the one that Vagrant machine is assigned with), to <code>dokku.me</code> DNS name, so it&rsquo;s just handy for testing.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>› sudo nano /private/etc/hosts
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and put last 2 lines, as it shown in my example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>##
+</span><span class='line'># Host Database
+</span><span class='line'>#
+</span><span class='line'># localhost is used to configure the loopback interface
+</span><span class='line'># when the system is booting.  Do not change this entry.
+</span><span class='line'>##
+</span><span class='line'>127.0.0.1       localhost
+</span><span class='line'>255.255.255.255 broadcasthost
+</span><span class='line'>::1             localhost
+</span><span class='line'>fe80::1%lo0     localhost
+</span><span class='line'>10.0.0.2        dokku.me
+</span><span class='line'>10.0.0.2        node-simple.dokku.me</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Fire Up Virtual Machine</h3>
+
+<p>In <code>dokku</code> folder, you should run</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; vagrant up
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will start to prepare new virtual environment for you,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Setting the name of the VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Preparing network interfaces based on configuration...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">80</span> <span class="o">=</span>&gt; 8080 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running any VM customizations...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It would took about 2-3 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
+
+<p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; cat ~/.ssh/id_rsa.pub | ssh dokku.me <span class="s2">&quot;sudo gitreceive upload-key alexanderbeletsky&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; vagrant ssh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, just try that everything is running fine by checking version of Docker:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; docker -v
+</span><span class='line'>Docker version 0.6.1, build 5105263
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The instance is ready for deployment.</p>
+
+<h2>Deploy to Dokku</h2>
+
+<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexanderbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
+
+<p>So, what you need to setup is remote repository to push to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git remote add <span class="nb">local</span>-deploy git@dokku.me:node-simple
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s all. You ready for first deploy, just push code to machine with Dokku:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git push <span class="nb">local</span>-deploy master
+</span><span class='line'>› git push <span class="nb">local</span>-deploy master --force
+</span><span class='line'>Counting objects: 5, <span class="k">done</span>.
+</span><span class='line'>Delta compression using up to 8 threads.
+</span><span class='line'>Compressing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, <span class="k">done</span>.
+</span><span class='line'>Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, 289 bytes | 0 bytes/s, <span class="k">done</span>.
+</span><span class='line'>Total 3 <span class="o">(</span>delta 2<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'>-----&gt; Building node-simple ...
+</span><span class='line'>       Node.js app detected
+</span><span class='line'>-----&gt; Resolving engine versions
+</span><span class='line'>       Using Node.js version: 0.8.25
+</span><span class='line'>       Using npm version: 1.2.30
+</span><span class='line'>-----&gt; Fetching Node.js binaries
+</span><span class='line'>-----&gt; Vendoring node into slug
+</span><span class='line'>-----&gt; Installing dependencies with npm
+</span><span class='line'>       npm WARN package.json application-name@0.0.5 No repository field.
+</span><span class='line'>       npm WARN package.json application-name@0.0.5 No readme data.
+</span><span class='line'>       npm WARN package.json send@0.1.0 No repository field.
+</span><span class='line'>       ...
+</span><span class='line'><span class="o">=====</span>&gt; Application deployed:
+</span><span class='line'>       http://node-simple.dokku.me
+</span><span class='line'>
+</span><span class='line'>To git@dokku.me:node-simple
+</span><span class='line'>   dd05aae..ac5b6da  master -&gt; master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setting up Environment</h2>
+
+<p>Every application requires environment. It&rsquo;s common practice to set at least <code>NODE_ENV</code> variable for Node.js applications. To do that, you need to create <code>ENV</code> file inside the <code>/home/git/node-simple</code> folder.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>› ssh root@dokku.me <span class="s2">&quot;echo export NODE_ENV=&quot;</span>development<span class="s2">&quot; &gt; /home/git/node-simple/ENV&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, let&rsquo;s re-deploy the application, change the version in <code>package.json</code> and push code again.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>› git push <span class="nb">local</span>-deploy master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, application is ready to be accessed.</p>
+
+<h2>Accessing the Application</h2>
+
+<p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
+
+<p><img src="http://alexanderbeletsky.github.io/images/blog/node-simple-run.png"></p>
+
+<p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
+
+<p>Just looking on logs while new application is deployed, would give pretty much idea of what&rsquo;s going on there.</p>
+
+<p>So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
-    <updated>2013-08-28T22:00:00+03:00</updated>
+    <updated>2013-08-28T22:00:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
     <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
 
@@ -162,7 +393,7 @@
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+03:00</updated>
+    <updated>2013-08-06T05:40:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 
@@ -217,7 +448,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public.html"/>
-    <updated>2013-07-28T09:30:00+03:00</updated>
+    <updated>2013-07-28T09:30:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public</id>
     <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
 
@@ -306,7 +537,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
-    <updated>2013-07-19T19:36:00+03:00</updated>
+    <updated>2013-07-19T19:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
     <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
 
@@ -410,7 +641,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
-    <updated>2013-07-04T09:02:00+03:00</updated>
+    <updated>2013-07-04T09:02:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
     <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 
@@ -838,7 +1069,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago.html"/>
-    <updated>2013-06-20T23:43:00+03:00</updated>
+    <updated>2013-06-20T23:43:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago</id>
     <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
 
@@ -874,7 +1105,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
-    <updated>2013-06-15T16:18:00+03:00</updated>
+    <updated>2013-06-15T16:18:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
     <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
 
@@ -962,7 +1193,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
-    <updated>2013-05-16T18:55:00+03:00</updated>
+    <updated>2013-05-16T17:55:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
@@ -979,7 +1210,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Building Single Pages Applications]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
-    <updated>2013-04-29T20:26:00+03:00</updated>
+    <updated>2013-04-29T19:26:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
@@ -1035,7 +1266,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
-    <updated>2013-04-24T06:11:00+03:00</updated>
+    <updated>2013-04-24T05:11:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
@@ -1058,7 +1289,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
-    <updated>2013-04-14T14:35:00+03:00</updated>
+    <updated>2013-04-14T13:35:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
     <content type="html"><![CDATA[<div class='post'>
         <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
@@ -1093,7 +1324,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring.html"/>
-    <updated>2013-04-10T20:53:00+03:00</updated>
+    <updated>2013-04-10T19:53:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
@@ -1214,7 +1445,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on.html"/>
-    <updated>2013-03-31T18:52:00+03:00</updated>
+    <updated>2013-03-31T17:52:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can&#8217;t guess which projects will be popular or not.. and the second, that it&#8217;s hard to do something valuable alone.<br />
@@ -1247,7 +1478,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring.html"/>
-    <updated>2013-03-27T17:51:00+02:00</updated>
+    <updated>2013-03-27T16:51:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        After initial introduction to Backbone&#8217;s <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
@@ -1505,7 +1736,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Third Year of E-conomic]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
-    <updated>2013-03-13T20:29:00+02:00</updated>
+    <updated>2013-03-13T19:29:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>That&#8217;s my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I&#8217;ve heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
@@ -1524,7 +1755,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Looking back to 2012]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012.html"/>
-    <updated>2013-01-05T17:25:00+02:00</updated>
+    <updated>2013-01-05T16:25:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
@@ -1572,7 +1803,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields.html"/>
-    <updated>2012-12-25T22:28:00+02:00</updated>
+    <updated>2012-12-25T21:28:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
@@ -1661,7 +1892,7 @@ var customerId = invoice.get('customerId');
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-12-19T21:52:00+02:00</updated>
+    <updated>2012-12-19T20:52:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
@@ -1851,7 +2082,7 @@ var customerId = invoice.get('customerId');
   <entry>
     <title type="html"><![CDATA[Retrospective of Trackyt.net or Best Project I Ever Accomplished]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best.html"/>
-    <updated>2012-12-01T16:11:00+02:00</updated>
+    <updated>2012-12-01T15:11:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s been to years ago, I&#8217;ve <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I&#8217;ve cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
@@ -1887,24 +2118,6 @@ var customerId = invoice.get('customerId');
     </p>    <p>        Looking back I definitely say - it was only possible because of Trackyt.net.<br />
     </p>    <p>        Without any doubts, that was the most successful project to me!<br />
     </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Kiev ALT.NET Re-launch with Jimmy Bogard]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard.html"/>
-    <updated>2012-11-27T10:16:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>Good news, <a href="http://kievalt.net/">Kiev ALT.NET</a> community! One of the best know ALT.NET developers <a href="http://twitter.com/jbogard">Jimmy Bogard</a> is visiting us on December 11. It&#8217;s been awhile since the last meetup we had, so it&#8217;s just great time to gather again and listen to the presentation Jimmy prepared for us.<br />
-</p><p>There will be a talk with intriguing name <i>&#8220;Real World Polyglot Persistence&#8221;</i>. Here is the short description of it.<br />
-</p><blockquote>It always sounds easy - &#8220;use the best tool for the job&#8221;. With very isolated systems, it&#8217;s easy to decide RDBMS for one application, Redis for another and Cassandra for somethings else. When it comes time to building systems with multiple persistent stores, we&#8217;re met with challenges in integration, existing applications, and push back from IT administrators. In this session, we&#8217;ll look at the multitude of challenges of achieving polyglot persistence nirvana, and strategies for addressing associated risks.<br />
-</blockquote><p>I don&#8217;t know about you, but for me it sound extremely interesting.<br />
-</p><p>Meetup will take place in <a href="http://ciklum.net/">Ciklum</a>, the most spectacular place in Kiev - <a href="http://www.ciklum.com/upload/iblock/41b/Ciklum_SkyPoint_Kyiv_20Floor.jpg">Sky Point</a> at 19-00. As always, <a href="http://ciklum.net/">Ciklum</a> happily agreed host us. <br />
-</p><p>Participation is completely free, but you have to register before. Registration is available <a href="https://docs.google.com/spreadsheet/viewform?formkey=dDlsSS1QenUyMVVkRWM3RmJKZzB1Wnc6MQ">here</a>.<br />
-</p><p>The information support by our good friend at <a href="http://wp7rocks.com/">wp7rocks.com</a>.<br />
-</p><img src="https://si0.twimg.com/profile_images/1246801773/Headshot3.png" /><br />
-</div>
 ]]></content>
   </entry>
   

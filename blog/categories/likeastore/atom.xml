@@ -4,7 +4,7 @@
   <title><![CDATA[Category: likeastore | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/likeastore/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+03:00</updated>
+    <updated>2013-08-06T05:40:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 
@@ -71,7 +71,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public.html"/>
-    <updated>2013-07-28T09:30:00+03:00</updated>
+    <updated>2013-07-28T09:30:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public</id>
     <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
 
@@ -160,7 +160,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
-    <updated>2013-07-19T19:36:00+03:00</updated>
+    <updated>2013-07-19T19:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
     <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
 

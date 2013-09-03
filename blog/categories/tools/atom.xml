@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tools | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/tools/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Developing Web Applications Faster]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster.html"/>
-    <updated>2012-08-20T12:20:00+03:00</updated>
+    <updated>2012-08-20T11:20:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    If you haven't seen Bret Victor's <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
@@ -68,7 +68,7 @@
   <entry>
     <title type="html"><![CDATA[Starting Up Node.js Development on Windows]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/06/starting-up-nodejs-development-on.html"/>
-    <updated>2012-06-27T20:40:00+03:00</updated>
+    <updated>2012-06-27T19:40:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/06/starting-up-nodejs-development-on</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
@@ -158,7 +158,7 @@
   <entry>
     <title type="html"><![CDATA[VS2011 Beta is Ready for Review]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/03/vs2011-beta-is-ready-for-review.html"/>
-    <updated>2012-03-15T11:15:00+02:00</updated>
+    <updated>2012-03-15T10:15:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/03/vs2011-beta-is-ready-for-review</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>29 February (leap day and huge failure of Azure Cloud) is the day then VS2011 Beta community preview has been released. As a lot of geeks around the globe I've downloaded installation image and tried it on my computer. With VS2011 Beta we also received .NET 4.5 framework and (drums here) - ASP.NET MVC4 Beta, that I really wanted to try since first CTP is out. I would not say I spent too much time with both products, but I already have some initial opinion on that.<br />
@@ -193,7 +193,7 @@
   <entry>
     <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites.html"/>
-    <updated>2012-02-21T11:15:00+02:00</updated>
+    <updated>2012-02-21T10:15:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
@@ -250,7 +250,7 @@
   <entry>
     <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html"/>
-    <updated>2012-02-02T11:36:00+02:00</updated>
+    <updated>2012-02-02T10:36:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />

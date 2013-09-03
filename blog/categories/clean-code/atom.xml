@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Clean Code | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/clean-code/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[The Game of Life]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/09/the-game-of-life.html"/>
-    <updated>2012-09-27T11:52:00+03:00</updated>
+    <updated>2012-09-27T10:52:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/09/the-game-of-life</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
@@ -57,7 +57,7 @@
   <entry>
     <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html"/>
-    <updated>2012-02-02T11:36:00+02:00</updated>
+    <updated>2012-02-02T10:36:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />
@@ -110,7 +110,7 @@ public void should_send_an_email_if_users_signs_up_nsub()
   <entry>
     <title type="html"><![CDATA[Convention based IoC configuration]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration.html"/>
-    <updated>2012-01-24T16:54:00+02:00</updated>
+    <updated>2012-01-24T15:54:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
@@ -227,7 +227,7 @@ private static void RegisterServices(IKernel kernel)
   <entry>
     <title type="html"><![CDATA[Clean tests with SharpTestsEx]]></title>
     <link href="http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex.html"/>
-    <updated>2011-03-12T10:25:00+02:00</updated>
+    <updated>2011-03-12T09:25:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -311,7 +311,7 @@ Additional information on project <a href="http://sharptestex.codeplex.com/">sit
   <entry>
     <title type="html"><![CDATA[Extension methods and clean code]]></title>
     <link href="http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code.html"/>
-    <updated>2011-02-10T10:52:00+02:00</updated>
+    <updated>2011-02-10T09:52:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

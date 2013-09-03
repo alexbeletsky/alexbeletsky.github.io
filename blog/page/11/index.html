@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Inside ASP.NET MVC: IResolver and it&#8217;s implementations Aug 27th, 2011 InsideMVC, MVC, asp.net One of the major changes between MVC2 and MVC3 &hellip;">
+  <meta name="description" content="Latest version of ELMAH MVC controller Aug 27th, 2011 ELMAH.MVC, MVC, Tips, Tools, asp.net Integrating ELMAH to ASP.NET MVC in right way is blog &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,104 @@
         
   <h1 class="title pure-u-1">
     
+    <a href="/2011/08/latest-version-of-elmah-mvc-controller.html">
+    
+      Latest version of ELMAH MVC controller</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T18:36:00+02:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">Integrating ELMAH to ASP.NET MVC in right way</a> is blog post I created sometime ago. It appears really popular, because a lot of people had the same issue as me and found solution I created really applicable. It was really cool to receive all that feedback! By the way, <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">elmah.mvc.controller</a> is my first github repository I got pull request! </p><p>Especially, I would like to thank to <a href="https://github.com/seba-i">Seba Illingworth</a> and <a href="http://twitter.com/#!/blowdart">Barry Dorrans</a> who found really nasty issues and helped to fix those. </p><p>The controller&#8217;s code has been moved to github long time ago, but what I see many people just copy-past code from article into their solutions. The code I gave in previous post has been changed drastically, but instead of re-writting original post I decided to create new one. </p><h2>Latest version of ELMAH MVC controller</h2><p>So, after all modifications it looks like: </p><pre class="brush: csharp">namespace ElmahMvc.Areas.Admin.Controllers {
+    class ElmahResult : ActionResult {
+        private string _resouceType;
+
+        public ElmahResult(string resouceType) {
+            _resouceType = resouceType;
+        }
+
+        public override void ExecuteResult(ControllerContext context) {
+            var factory = new Elmah.ErrorLogPageFactory();
+
+            if (!string.IsNullOrEmpty(_resouceType)) {
+                var pathInfo = "/" + _resouceType;
+                context.HttpContext.RewritePath(FilePath(context), pathInfo, context.HttpContext.Request.QueryString.ToString());
+            }
+
+            var currentApplication = (HttpApplication)context.HttpContext.GetService(typeof(HttpApplication));
+            var currentContext = currentApplication.Context;
+
+            var httpHandler = factory.GetHandler(currentContext, null, null, null);
+            if (httpHandler is IHttpAsyncHandler) {
+                var asyncHttpHandler = (IHttpAsyncHandler)httpHandler;
+                asyncHttpHandler.BeginProcessRequest(currentContext, (r) => { }, null);
+            }
+            else {
+                httpHandler.ProcessRequest(currentContext);
+            }
+        }
+
+        private string FilePath(ControllerContext context) {
+            return _resouceType != "stylesheet" ? context.HttpContext.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : context.HttpContext.Request.Path;
+        }
+    }
+
+    public class ElmahController : Controller {
+        public ActionResult Index(string type) {
+            return new ElmahResult(type);
+        }
+    }
+}
+
+</pre><h2>How to use it in my application?</h2><p>Easy. Install ELMAH by NuGet, in package console </p><pre class="brush:plain"> Install-Package elmah
+</pre><p>It is optional (but preferable) to create new Area called Admin. Inside AreaRegistration.cs your should place routing for ELMAH controller: </p><pre class="brush: csharp">context.MapRoute(
+        "Admin_elmah",
+        "Admin/elmah/{type}",
+        new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
+    );
+</pre><p>Create ElmahController.cs (just from code above) and place to yours Areas/Admin/Controller folder, add file to project. Don&#8217;t forget to change the namespace according to your project. </p><p>Configure ELMAH logging options (Memory, XML, SQL), use Web.Config of this <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">project</a> as example. Run application, and see that: </p><pre class="brush:plain"> /admin/elmah
+</pre><p>works.  </p><p>Optional (but very preferable) is to secure your controller with Authorize attribute: </p><pre class="brush: csharp"> [Authorize(Users = "Admin")]
+ public class ElmahController : Controller
+ {
+</pre><p>That&#8217;s it. </p><h2>Known issues</h2><p>One current known issue - if I&#8217;m using <code>SqlErrorLog</code> as error log class and press &#8220;Download log&#8221; button on ELMAH dashboard, you&#8217;ve got empty result. Unfortunately, it does not work now, since <a href="http://code.google.com/p/elmah/issues/detail?id=230">issue</a> in ELMAH core that I hope will be fixed in nearest release. </p><h2>NuGet package for it? </h2><p>I didn&#8217;t expect such popularity of that class, but now I seriosly think putting this on NuGet. I&#8217;ll try to package that as soon as possible. </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
     <a href="/2011/08/inside-aspnet-mvc-iresolver-and-its.html">
     
       Inside ASP.NET MVC: IResolver and it&#8217;s implementations</a>
@@ -98,7 +196,7 @@
   
 
 
-<time datetime="2011-08-27T16:06:00+03:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+<time datetime="2011-08-27T15:06:00+02:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -245,7 +343,7 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
   
 
 
-<time datetime="2011-08-24T10:37:00+03:00" pubdate data-updated="true">Aug 24<span>th</span>, 2011</time></div>
+<time datetime="2011-08-24T09:37:00+02:00" pubdate data-updated="true">Aug 24<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -324,7 +422,7 @@ I would be happy if you try it, tweet it, comment on site. Sources are placed on
   
 
 
-<time datetime="2011-08-23T17:45:00+03:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time></div>
+<time datetime="2011-08-23T16:45:00+02:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -375,7 +473,7 @@ I would be happy if you try it, tweet it, comment on site. Sources are placed on
   
 
 
-<time datetime="2011-08-01T11:16:00+03:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time></div>
+<time datetime="2011-08-01T10:16:00+02:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -453,7 +551,7 @@ You can merge you previous changes.. and continue to work with <code>master-25</
   
 
 
-<time datetime="2011-07-22T16:46:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2011</time></div>
+<time datetime="2011-07-22T15:46:00+02:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -530,7 +628,7 @@ PS. That&#8217;s my 100 post for this blog.. and that&#8217;s my Friday before w
   
 
 
-<time datetime="2011-07-15T17:28:00+03:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time></div>
+<time datetime="2011-07-15T16:28:00+02:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -624,7 +722,7 @@ You should not probably doing such tricks a lot. C# is still static language (ev
   
 
 
-<time datetime="2011-07-14T16:22:00+03:00" pubdate data-updated="true">Jul 14<span>th</span>, 2011</time></div>
+<time datetime="2011-07-14T15:22:00+02:00" pubdate data-updated="true">Jul 14<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -708,7 +806,7 @@ So, there are no any technical issues with moving from ASPX to Razor, just don&#
   
 
 
-<time datetime="2011-07-13T08:50:00+03:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time></div>
+<time datetime="2011-07-13T07:50:00+02:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -781,7 +879,7 @@ To summarize that a little I would say that my personal benefits of starting usi
   
 
 
-<time datetime="2011-07-09T12:28:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time></div>
+<time datetime="2011-07-09T11:28:00+02:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -853,147 +951,6 @@ Next we are going to look closer into <code>SingleServiceResolver</code> and see
 </p>
 <p>
 Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">Inside ASP.NET MVC: All begins here - MvcHanlder</a>
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/06/how-to-start-using-git-in-svn-based.html">
-    
-      How to start using Git in SVN-based organization</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-29T22:04:00+03:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I&#8217;ve been using Git about a year now, immediately after creation my <a href="https://github.com/alexanderbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
-</p>
-<p>
-You are probably aware about all good thing with Git. If you still don&#8217;t you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well. 
-</p>
-<p>
-After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues &#8220;Are you ready to go with Git?&#8221; you would probably hear &#8220;No!&#8221;. It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
-</p>
-<p>
-Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I&#8217;m talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>. 
-</p>
-<p>
-Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I&#8217;ll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.  
-</p>
-<h2>Setup you environment</h2>
-<ul>
-<li>
-Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a> 
-</li>
-<li>
-Setup local user information, example
-<pre>
-    git config --global user.name “alexander.beletsky”
-    git config --global user.email “alexander.beletsky@gmail.com”
-</pre>
-</li>
-<li>
-If you are on Windows and doing only-Windows development, it is recommended to turn off <code>autocrlf</code>
-<pre>
-    git config core.autocrlf false
-</pre>
-</li>
-</ul>
-<h2>Checking out code from SVN repository</h2>
-<ul>
-<li>
-Run git clone command (it might take some time, depending on repository and history size)
-<pre>
-    git svn clone https://mysvnserver/repo 
-</pre>
-</li>
-</ul>
-<p>
-As clone finished, you will see that new folder <code>repo</code> created with the content of your SVN repository. Now, this folder is actually Git repository + you local sources copy. Try to run <code>git log</code> inside the repository and you will see that all your history are there!
-</p>
-<h2>Let&#8217;s do some work</h2>
-<p>
-Now, suppose you start to work on some bugfix. By default, git repository contains one branch called <code>master</code>. Good style is do not do direct commits into master at all, just keep it as synchronization point between SVN repository and your local repository. So, to do actual job you to create branch.
-</p>
-<pre>
-    git checkout -b bugfix-id-1453
-</pre>
-<p>
-This command will create new branch called <code>bugfix-id-1453</code> and immediately switch to it. If you haven&#8217;t noticed how that happened - please welcome to git&#8217;s high performance world.
-</p>
-<p>
-You changed some file and ready to commit. In git it&#8217;s a 2 steps operation. First, you need to put content to stage.. second, you store the content in new commit object.
-</p>
-<pre>
-    git add .
-    git commit -m "issue has been fixed"
-</pre>
-<h2>Commit changes back to SVN</h2>
-<p>
-You&#8217;ve fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world. 
-</p>
-<p>
-Checkout your master branch:
-</p>
-<pre>
-    git checkout master
-</pre>
-<p>
-Get the latest changes from SVN:
-</p>
-<pre>
-    git svn rebase
-</pre>
-<p>
-Now SVN server and local master branch are identical. We have to merge our fix into master:
-</p>
-<pre>
-    git merge bugfix-id-1453
-</pre>
-<p>
-Now master contains previous SVN state + new fix. We have to synchronize local repository and SVN server:
-</p>
-<pre>
-    git svn dcommit
-</pre>
-<h2>Conclusions</h2>
-<p>
-Git-svn is perfect tool to start using git without radical changes in organization. It gives everybody change to try it out, how much it really fits your needs. I&#8217;m having a big pleasure now of working with Git. I&#8217;m not saying it&#8217;s ideal smooth process, sure I met some difficulties. But for me those difficulties are nothing comparing the benefits I&#8217;m getting with it.
 </p></div>
 
       

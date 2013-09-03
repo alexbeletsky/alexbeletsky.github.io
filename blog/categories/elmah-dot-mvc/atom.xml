@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ELMAH.MVC | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/elmah-dot-mvc/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-08-31T09:42:03+03:00</updated>
+  <updated>2013-09-03T22:19:19+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC 2.0.2 is out]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out.html"/>
-    <updated>2012-11-09T17:21:00+02:00</updated>
+    <updated>2012-11-09T16:21:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out</id>
     <content type="html"><![CDATA[<div class='post'>
     <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It's in particular useful, than you already setup some configuration inside the app, so you don't want default behavior.<br />
@@ -38,7 +38,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC 2.0.1 Update is Out]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out.html"/>
-    <updated>2012-08-16T20:01:00+03:00</updated>
+    <updated>2012-08-16T19:01:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    I've just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can't wait to share.<br />
@@ -53,7 +53,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC v.2.0.0 - Release Candidate]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate.html"/>
-    <updated>2012-06-13T18:42:00+03:00</updated>
+    <updated>2012-06-13T17:42:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        I've just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I'm about to spent sometime with testing and collecting feedback before it's availability.<br />
@@ -75,7 +75,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC v2.0 is coming]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming.html"/>
-    <updated>2012-06-09T17:36:00+03:00</updated>
+    <updated>2012-06-09T16:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
@@ -95,7 +95,7 @@
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
-    <updated>2012-02-27T10:30:00+02:00</updated>
+    <updated>2012-02-27T09:30:00+01:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
