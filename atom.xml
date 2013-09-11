@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-03T22:19:19+02:00</updated>
+  <updated>2013-09-11T12:47:43+02:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -121,14 +121,18 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>It would took about 2-3 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
+<p>I have a problem with this step few times, so if you machine could not be booted, try to run <code>vagrant reload</code>, it should help.</p>
+
+<p>It would took about up to 20 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
 
 <p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; cat ~/.ssh/id_rsa.pub | ssh dokku.me <span class="s2">&quot;sudo gitreceive upload-key alexanderbeletsky&quot;</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; cat ~/.ssh/id_rsa.pub | ssh root@dokku.me <span class="s2">&quot;sudo gitreceive upload-key alexanderbeletsky&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
 
 <p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
 
