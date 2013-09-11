@@ -80,13 +80,17 @@ Bringing machine 'default' up with 'virtualbox' provider...
 [default] Waiting for VM to boot. This can take a few minutes.
 ```
 
-It would took about 2-3 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it's done, it's possible to access machine by `ssh`.
+I have a problem with this step few times, so if you machine could not be booted, try to run `vagrant reload`, it should help.
+
+It would took about up to 20 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it's done, it's possible to access machine by `ssh`.
 
 Last thing you need to do, is to upload your `ssh` key to Dokku server, so you will be to `git push` code there.
 
 ```bash
-> cat ~/.ssh/id_rsa.pub | ssh dokku.me "sudo gitreceive upload-key alexanderbeletsky"
+> cat ~/.ssh/id_rsa.pub | ssh root@dokku.me "sudo gitreceive upload-key alexanderbeletsky"
 ```
+
+You can use default vagrant root password, which is `vagrant`.
 
 Now, just to check that everything is fine simply access you machine by `ssh`,
 
