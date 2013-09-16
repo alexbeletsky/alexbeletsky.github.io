@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/tips/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[JavaScript Object Creation by New Operator]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new.html"/>
-    <updated>2012-11-12T14:50:00+01:00</updated>
+    <updated>2012-11-12T15:50:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
@@ -51,7 +51,7 @@ console.log(person.name);
   <entry>
     <title type="html"><![CDATA[Developing Web Applications Faster]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster.html"/>
-    <updated>2012-08-20T11:20:00+02:00</updated>
+    <updated>2012-08-20T12:20:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    If you haven't seen Bret Victor's <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
@@ -103,7 +103,7 @@ console.log(person.name);
   <entry>
     <title type="html"><![CDATA[Customizing Folders Layout for NancyFX Application]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx.html"/>
-    <updated>2012-08-14T19:05:00+02:00</updated>
+    <updated>2012-08-14T20:05:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don't even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
@@ -158,7 +158,7 @@ console.log(person.name);
   <entry>
     <title type="html"><![CDATA[Convention based IoC configuration]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration.html"/>
-    <updated>2012-01-24T15:54:00+01:00</updated>
+    <updated>2012-01-24T16:54:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
@@ -275,7 +275,7 @@ private static void RegisterServices(IKernel kernel)
   <entry>
     <title type="html"><![CDATA[Using ASP.NET MVC Validation Mechanism without ASP.NET MVC]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism.html"/>
-    <updated>2012-01-10T20:30:00+01:00</updated>
+    <updated>2012-01-10T21:30:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />

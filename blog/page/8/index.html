@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Speeches Hat-Trick For This Weekend Feb 27th, 2012 Conference, Continuous, ELMAH.MVC, KievAltNet It&#8217;s been great weekend. It started Friday &hellip;">
+  <meta name="description" content="NancyFX Migration from 0.9 to 0.10 Feb 29th, 2012 Open source Recently, I&#8217;ve upgraded IdeaStrike project from NancyFX 0.9 to the latest 0.10 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,164 @@
         
   <h1 class="title pure-u-1">
     
+    <a href="/2012/02/nancyfx-migration-from-09-to-010.html">
+    
+      NancyFX Migration from 0.9 to 0.10</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T12:16:00+02:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Recently, I&#8217;ve <a href="https://github.com/Code52/Ideastrike/pull/92">upgraded</a> IdeaStrike project from NancyFX 0.9 to the latest 0.10 version. There were some very unclear moments, fortunately due to great support of <a href="">@thecodejunkie</a> and <a href="">@grumpydev</a> they are solved. As a result, the <a href="https://github.com/NancyFx/Nancy/issues/520">issue 520</a> was born, that contains a lot of text inside. I&#8217;ll try to sum up all important things into one blog post.<br />
+</p><h2>Running update</h2><p>With NuGet updating dependencies is very easy, just run in package manager console:<br />
+</p><pre class="brush: plain">    PM> update-package
+</pre><p>It will give you the information about the upgrade process, it should be very smooth, so the end you will see:<br />
+</p><pre class="brush: plain">Successfully uninstalled 'Nancy.Hosting.Aspnet 0.9.0'.
+Updating 'Nancy.Testing' from version '0.9.0' to '0.10.0' in project 'IdeaStrike.Tests'.
+Successfully removed 'Nancy.Testing 0.9.0' from IdeaStrike.Tests.
+Successfully removed 'Nancy 0.9.0' from IdeaStrike.Tests.
+Successfully added 'Nancy 0.10.0' to IdeaStrike.Tests.
+Successfully installed 'Nancy.Testing 0.10.0'.
+Successfully added 'Nancy.Testing 0.10.0' to IdeaStrike.Tests.
+Successfully uninstalled 'Nancy.Testing 0.9.0'.
+The directory is not empty.
+
+Successfully uninstalled 'Nancy 0.9.0'.
+</pre><h2>Fixing compilation errors</h2><p>As you try to build the project after upgrade, it would fail because of compilation issues.<br />
+</p><p>If you using Nancy bootstrapper and overriding <code>RequestStratup</code> method, you will see that method had changed the signature: <br />
+</p><pre class="brush: csharp">    // in 0.9
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines);
+
+    // in 0.10
+    protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines, NancyContext context)
+</pre><p>So, it now receives additional parameter - NancyContext.<br />
+</p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
+</p><pre class="brush: csharp">    // in 0.9
+    public IEnumerable&lt;string&gt; AcceptLanguage { get; }
+    
+    // in 0.10
+    public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
+</p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
+</p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
+    ---- Nancy.RequestExecutionException : Oh noes!
+    -------- Nancy.ViewEngines.ViewNotFoundException : Unable to locate view '404'. Currently available view engine extensions: sshtml,html,htm,cshtml,vbhtml
+    at Nancy.Testing.PassThroughErrorHandler.Handle(HttpStatusCode statusCode, NancyContext context)
+    at Nancy.NancyEngine.CheckErrorHandler(NancyContext context)
+    at Nancy.NancyEngine.HandleRequest(Request request)
+    at Nancy.Testing.Browser.HandleRequest(String method, String path, Action1 browserContext)
+    at Nancy.Testing.Browser.Get(String path, Action1 browserContext)
+    at IdeaStrike.Tests.IdeaStrikeSpecBase1.Get(String path, Action1 browserContext) in D:\Development\Projects\Ideastrike\tests\IdeaStrike.Tests\IdeaStrikeSpecBase.cs:line 85
+</pre><p>That was a mystery. All of those tests were fine, but suddenly stopped to work in 0.10. <br />
+</p><p>The reason was very interesting. Those tests for views were actually <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4157010">never run</a>. It&#8217;s been unseen for 2 reasons: Nancy 0.9 failed silently about missing view, IdeaStrike unit tests never tested view content.<br />
+</p><p>To make those run, the <code>IdeaStrikeSpecBase</code> have to be setup with <code>IRootPathProvider</code>. IRootPathProvider, provides the path root for modules, so views could be located, based on default conventions. I finished up with this implementation:<br />
+</p><pre class="brush: csharp">public class CustomRootPathProvider : IRootPathProvider
+{
+    public string GetRootPath()
+    {
+        return Path.GetDirectoryName(typeof(IdeastrikeBootstrapper).Assembly.Location);
+    }
+}
+</pre><p>This root provider is used with spec base class configuration:<br />
+</p><pre class="brush: csharp">public IdeaStrikeSpecBase()
+{
+ Bootstrapper = new ConfigurableBootstrapper(with =&gt;
+ {
+  with.Module&lt;TModule&gt;();
+  with.Dependencies(_Users.Object, _Ideas.Object, _Features.Object, _Activity.Object, _Settings.Object, _Images.Object);
+  with.DisableAutoRegistration();
+  with.NancyEngine&lt;NancyEngine&gt;();
+  with.RootPathProvider&lt;CustomRootPathProvider&gt;(); // <- Here
+ });
+}
+</pre>
+<p>So, we are saying that root is the same folder as IdeaStike assembly. The problem is that location depends on actual Test runner. In case of NCrunch, it would be some deeply hidden folder in user\AppData\Local\Temp, in case of ReSharper runner it would be temp ASP.NET folder. That&#8217;s a little annoying.
+</p><p>Tests were still red, since neither NCrush nor ReSharper is copying actual views into target folder. Fortunately, I found this great <a href="http://iamnotmyself.com/2012/01/03/testing-rendered-output-of-nancyfx-with-the-razor-view-engine-gotchas/">article</a>, explaining NancyFX view testing gotchas. I ended up with just saying “Copy if newer” for views under test, so they are in the same folder as target binary. That&#8217;s not cool, but currently I see no other option.
+</p><p>After those changes, tests became green, so I run the application. No surprise, it failed to start.
+</p><h2>Fixing runtime errors</h2><p>At the first run, I got nothing more as bunch of Razor compilation errors:
+</p><pre class="brush: plain">    Error Compiling Template: (51, 18) The name 'Url' does not exist in the current context)
+    Error Compiling Template: (61, 33) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (68, 26) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (78, 7) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (83, 31) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (88, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (103, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (118, 14) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (132, 25) The name 'Model' does not exist in the current context)
+    Error Compiling Template: (234, 19) The name 'Url' does not exist in the current context)
+</pre><p>The proposed <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4153006">solution</a> that NancyRazorViewBase should always be specified with generic parameter.
+</p><pre class="brush: csharp">    // in 0.9
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
+
+    // in 0.10 
+    @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
+    &ensp;
+</pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
+</p><pre class="brush: plain">    Error Compiling Template: (83, 1) The type 'System.Web.IHtmlString' is defined in an assembly that is not referenced. You must add a reference to assembly 'System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.)
+</pre><p>NancyFX is being developed to be independent of <code>System.Web</code>. It was not totally true for 0.9 with Razor support, but it has been fixed in 0.10. That of cause, brings some surprises. So, if your application is using Razor view engine, you need to do <a href="">following</a>:
+</p><ul>    <li>update all usages of IHtmlString to use Nancy.ViewEngines.Razor.IHtmlString</li>
+    <li>update all usages of McvHtmlString to use Nancy.ViewEngines.Razor.NonEncodedHtmlString</li>
+    <li>let the razor engine know about system.web (in case if HttpContext is used in layout)</li>
+</ul><pre class="brush: plain">&lt;razor disableAutoIncludeModelNamespace=&quot;false&quot;&gt;
+    &lt;assemblies&gt;
+        &lt;add assembly=&quot;System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+    &lt;/assemblies&gt;
+    &lt;namespaces&gt;
+        &lt;add namespace=&quot;System.Web&quot; /&gt;
+    &lt;/namespaces&gt;
+&lt;/razor&gt;
+</pre><h2>Changing the Partial views</h2><p>After these steps were done, application finally started. But some page gave runtime exception:
+</p><pre class="brush: plain">Server Error in '/' Application.
+
+Sequence contains no elements
+
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+
+Exception Details: System.InvalidOperationException: Sequence contains no elements
+</pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:
+</p><pre class="brush: csharp">    @Html.Partial("Shared/Templates/upload.html")
+    @Html.Partial("Shared/Templates/download.html")
+</pre><p>The reason turned out to be really <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4179548">simple</a>. All templates in IdeaStrike project were using .html extension. For 0.10 it required to be .cshtml. So, renaming from .html to .cshtml made the IdeaStrike up and running again.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
     <a href="/2012/02/speeches-hat-trick-for-this-weekend.html">
     
       Speeches Hat-Trick For This Weekend</a>
@@ -98,7 +256,7 @@
   
 
 
-<time datetime="2012-02-27T09:30:00+01:00" pubdate data-updated="true">Feb 27<span>th</span>, 2012</time></div>
+<time datetime="2012-02-27T10:30:00+02:00" pubdate data-updated="true">Feb 27<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -154,7 +312,7 @@
   
 
 
-<time datetime="2012-02-21T10:15:00+01:00" pubdate data-updated="true">Feb 21<span>st</span>, 2012</time></div>
+<time datetime="2012-02-21T11:15:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -247,7 +405,7 @@
   
 
 
-<time datetime="2012-02-14T06:37:00+01:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time></div>
+<time datetime="2012-02-14T07:37:00+02:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -314,7 +472,7 @@
   
 
 
-<time datetime="2012-02-09T19:20:00+01:00" pubdate data-updated="true">Feb 9<span>th</span>, 2012</time></div>
+<time datetime="2012-02-09T20:20:00+02:00" pubdate data-updated="true">Feb 9<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -414,7 +572,7 @@ if "%config%" == "" (
   
 
 
-<time datetime="2012-02-02T10:36:00+01:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2012</time></div>
+<time datetime="2012-02-02T11:36:00+02:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -503,7 +661,7 @@ public void should_send_an_email_if_users_signs_up_nsub()
   
 
 
-<time datetime="2012-01-30T19:54:00+01:00" pubdate data-updated="true">Jan 30<span>th</span>, 2012</time></div>
+<time datetime="2012-01-30T20:54:00+02:00" pubdate data-updated="true">Jan 30<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -560,7 +718,7 @@ public void should_send_an_email_if_users_signs_up_nsub()
   
 
 
-<time datetime="2012-01-24T15:54:00+01:00" pubdate data-updated="true">Jan 24<span>th</span>, 2012</time></div>
+<time datetime="2012-01-24T16:54:00+02:00" pubdate data-updated="true">Jan 24<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -713,7 +871,7 @@ private static void RegisterServices(IKernel kernel)
   
 
 
-<time datetime="2012-01-13T09:01:00+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2012</time></div>
+<time datetime="2012-01-13T10:01:00+02:00" pubdate data-updated="true">Jan 13<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -777,7 +935,7 @@ private static void RegisterServices(IKernel kernel)
   
 
 
-<time datetime="2012-01-10T20:30:00+01:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time></div>
+<time datetime="2012-01-10T21:30:00+02:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -833,116 +991,6 @@ private static void RegisterServices(IKernel kernel)
 }
     </pre><p>It works great for such simple task I need to accomplish.<br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/01/approval-tests-locking-down-output.html">
-    
-      Approval Tests: Locking down an output</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-01-06T16:52:00+01:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/approvals/'>Approvals</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        We have <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">seen</a> how Approval Tests are useful for locking down some legacy code. You might say, that on practice we are having much more bigger problem, like some code that executes queries against the database. We need somehow to be able to work with that code, without worries of brake it down. Approvals could help here. <br />
-    </p>    <h2>The case</h2>    <p>        Again I just imagine some legacy code that works with DB, it might look something like that:<br />
-    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
-{
- private static Connection _connection;
-
- public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
- {
-  if (!IsConnectionOpened())
-  {
-   OpenConnection();
-  }
-
-  var connection = GetConnection();
-
-  var value = HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(parameterOne, parameterTwo, 'c');
-
-  var query = string.Format(&quot;INSERT INTO TableName (SomeColumn) VALUES ({0})&quot;, value);
-  connection.ExecuteQuery(query);
- }
-
-    // ...
-    </pre>    <p>        The <code>MethodThatProduceSomeResults</code> takes some arguments, call another method to get value and then store value to database. It will be problematic to tests what exactly is happening there. We might consider approach to check the difference in <code>TableName</code> before code execution and after, but we will go smarter and easier way. <br />
-    </p>    <p>        Let&#8217;s prepare the test for that code.<br />
-    </p>    <h2>Tests</h2>    <p>        The great thing with Approvals is the tests are really elegant. Just 2 steps - DO and VERIFY.<br />
-    </p>    <pre class="brush: csharp">[Test]
-public void should_be_able_to_test()
-{
- // DO
- var some = new ClassThatOutputsSomething();
- some.MethodThatProduceSomeResults('some_input', 221);
-
- // VERIFY
- Approvals.Approve(...);
-}
-    </pre>    <p>        But you can see, the problem here is that we don&#8217;t have any return value of that method. Instead, it does something inside and keep that action in secret. We need some how to log all internal activities and than verify that log. <code>Approval.Utilities</code> contains exactly what we need.<br />
-    </p>    <pre class="brush: csharp">[Test]
-public void should_be_able_to_test()
-{
- // DO
- var output = ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder();
- new ClassThatOutputsSomething().MethodThatProduceSomeResults('some_input', 221);
-
- // VERIFY
- Approvals.Approve(output);
-}
-    </pre>    <p>        I have just added logger <code>ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder</code> and do approve against it. But if I run this test I could see that output is just empty. Sure, we need to change <code>MethodThatProduceSomeResults</code> a little.<br />
-    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
-{
- private static Connection _connection;
-
- public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
- {
-        // ...
-
-        connection.ExecuteQuery(query);
-        ApprovalUtilities.SimpleLogger.Logger.Event(query);
- }
-    </pre>    <p>        So, in the place where query is being executed, we placed the logger and put exact some query inside it. Now if I run the test I will got application output, that I will approve and use those approved results after. <br />
-    </p>    <p>        I&#8217;m not limited with only one place I could put logger. On practice, would more that one places to grab the results, as well as more that one argument for <code>MethodThatProduceSomeResults</code> method. By analysis of particular practical case, it is possible to place logger exactly where it&#8217;s needed, plus prepare best matching inputs. Just for example: after code examination it might happen that <code>parameterOne</code> is ProductId, but <code>parameterTwo</code> is ProductPrice. In my test I could query the database to select all products and prices and call <code>MethodThatProduceSomeResults</code> in loop, to get all potential output. That approved test will give me much confidence during refactoring.<br />
-    </p>    <h2>Conclusion</h2>    <p>        Locking down output is very powerful technique, you can use it for any kind of objects that are &#8220;hidden&#8221; inside legacy classes, like SQL or console outputs.  <br />
-    </p>    <p>        On <a href="http://herdingcode.com/?p=329">Herding Code</a> episode <a href="https://twitter.com/#!/LlewellynFalco">Llewellyn</a> describes the case of some legacy project he worked on. There was a kind of report generator and it&#8217;s code was just a big mess. He did copy of production database and put it in &#8220;Read-Only&#8221; mode. By running the report, he was able to find all places where code was accessing DB, since exception is thrown in that place. Putting in just the same log instructions as I did above, he managed to grab all SQL queries that run for that particular report. Everything were just in one file.<br />
-    </p>    <p>        That&#8217;s the good example of reaching 100% code coverage just with one test.<br />
-    </p></div>
 
       
       

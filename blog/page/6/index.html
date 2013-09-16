@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="CS101 Building a Search Engine: Week 5 and 6 May 31st, 2012 CS101, SearchEngine, Udacity Disclaimer: this blog post expresses some impressions and &hellip;">
+  <meta name="description" content="7 Weeks With Python Jun 2nd, 2012 Mind, Python, Udacity During my CS101 class I first time meet Python. That&#8217;s not completely true, since I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,122 @@
         
   <h1 class="title pure-u-1">
     
+    <a href="/2012/06/7-weeks-with-python.html">
+    
+      7 Weeks With Python</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-02T20:15:00+03:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/python/'>Python</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            During my <a href="http://www.beletsky.net/search/label/CS101">CS101</a> class I first time meet Python. That&#8217;s not completely true, since I played a bit Python before, but I had a chance to see Python in action only during this course. In short, that was really pleasant meet up and I hope it will grown up to prolonged and mutual relationships. I will share some &#8216;likes&#8217; and &#8216;dislikes&#8217; about Python, which I would think you find interesting.<br />
+        </p>        <h2>What I liked in Python&#8230;</h2>        <p>            Python is very well known language with great reputation and community around it. Big companies, including Google, using python to build enterprise level applications. Hackers love Python cause it combines both simplicity and power. You can do any kind of application development including desktop and web applications. All the time is being compared to Ruby, which is for me ends up to something like <a href="http://grokcode.com/746/dear-python-why-are-you-so-ugly/">this</a> only.<br />
+        </p>        <h3>No IDE development</h3>        <p>            You don&#8217;t need any kind of fancy IDE to start up with Python. Sure, IDE is something that makes development more efficient, so if you going to do a lot of programming with Python including debugging you should probably pick one. But for now, I&#8217;m totally happy with Sublime Text 2 as IDE.  <br />
+        </p>        <a href="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png"><img src="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png" alt="Sublime Text 2 for Python" style="width: 620px"/></a><br />
+        <h3>Easy to learn</h3>        <p>            If you know some OO language like C++ or Java, it will be quick jump to Python. Python is object-oriented language but with support of different paradigms as procedural and even functional programming. The basic concepts of variables, conditions and control flow are the same as you get used to. Of course, you spend sometime to know the fundaments - like, how to compare things, how to calculate length of string or list, how to put element into dictionary. Sometimes, I still refer to documentation, but in general all that things are easy to remember with practice.<br />
+        </p>        <h3>Interpretation and dynamic typing</h3>        <p>            Python is interpretator. You never mention the type of object as you declare it or use it. You might apply different operations on object, it would be evaluated on runtime. There are different opinions (holy wars) on Static vs. Dynamic, but as for me with Dynamic languages the overall development velocity is higher. First of all, you don&#8217;t spend any time for compilation, which in case of big solutions could be really high. Second, as you are only to able to check results as code executed (even if you just misspell variable name you will know about it only if this code section is evaluated), you are more focused on unit tests and TDD to catch up obvious issues, which in general makes development faster.  <br />
+        </p>        <h3>Built in types</h3>        <p>            Python has complete built-in types system. For numbers you can use different types, as <code>int</code>, <code>float</code>, <code>long</code>, <code>complex</code>. The type is evaluated on runtime,<br />
+        </p>        <pre class="brush: python">            i = 0               # integer
+            j = 1.0             # float
+            x = complex(1, -1)  # complex
+        </pre>        <p>            Strings are everything inside the &#8221; quotes,<br />
+        </p>        <pre class="brush: python">            str = "I'm string"
+        </pre>        <p>            Btw, during the course I got conclusion that list is the most flexible data structure. Everything you need, you can build upon lists. Lists are nicely handled with Python,<br />
+        </p>        <pre class="brush: python">            l = [ 1, 2, 'three', [4, 5], [[6, 7], 8]   
+        </pre>        <p>            Lists are non-optimal for searches, so if you do a lot of searches you might consider using dictionary,<br />
+        </p>        <pre class="brush: python">            d = { 'one': 1, 'two': 2, 'three': [3] }
+        </pre>        <p>            Each type has it&#8217;s own set of methods. Strings including common operations as concatenation, trimming, substring found etc. For list and dictionaries there are bunch of useful stuff as getting iterators, pushing and poping of elements.<br />
+        </p>        <h3>Syntax and Code styles</h3>        <p>            Syntax and Code styles are commonly another topic of holy war. Fortunately, Python leaves very few room for that. First of all - no semicolons. Second, Python uses indentation as part of language syntax. So, poorly indented code would simply won&#8217;t work.  <br />
+        </p>        <pre class="brush: python">            def my_method_name(arg1, arg2):
+                return arg1 < arg2              # right
+                
+            def my_method_name(arg1, arg2):
+            return arg1 < arg                   # won't work!
+            
+            def my_method(arg1, arg2):
+                if arg1 < arg2:
+                    return arg1 + arg2          # right
+            
+                if arg1 == arg2:
+                print arg2                      # won't work!
+        </pre>
+        <p>            Basically, everything that is after &#8220;:&#8221; have to be indented. This is for <code>if</code>, <code>while</code>, <code>for</code> etc. Using tab instead of curvy braces (or any other symbol or term) is really nice idea, allowing to keep code in the same format and &#8216;forcing&#8217; one and solid code guidelines along the projects and teams.
+        </p>        <h2>What I disliked in Python&#8230;</h2>        <p>            There are no perfect things, moreover perfect languages. Developers have their own habits and opinions on different things. In Python I see several things that makes me little uncomfortable about.
+        </p>        <h2>Naming consistency</h2>        <p>            It sounds like Python adopts C code styles for naming of methods and variables, like <code>longes_cycle</code> or <code>def make_it_work()</code>. But in reality a lot of methods are violating those rules. For instance some methods of dictionary type: <code>fromkeys()</code>, <code>iteritems()</code>, <code>setdefault()</code>. In the same time dict contains the method: <code>has_key()</code>.
+        </p>        <p>            That&#8217;s very annoying. Especially if you don&#8217;t have any IDE with names suggesting, it makes it really hard to remember.
+        </p>        <h2>Booleans and None</h2>        <p>            Almost the same as in topic above. Having the C-style (with a lower first symbol) language designers decided to have a special cases. 
+        </p>        <pre class="brush: python">            a = True        # why not true ?
+            b = False       # why not false ?
+            x = None        # none ?
+        </pre>        <p>            So, in code which is in general lower case, those True/False/None looking really strange.
+        </p>        <pre class="brush: python">            def proc3(input_list):
+                if len(input_list) == 0:
+                    return None
+
+                for i in range(0, len(input_list)):
+                    for j in range(0, len(input_list)):
+                        if input_list[i] == input_list[j] and i != j:
+                            return False
+                return True
+        </pre>        <h3>OO but not OO</h3>        <p>            Being OO language, Python still relies on some procedural concepts. The good example is calculation of string length. I would expect, that string corresponding method <code>len()</code> or something, but instead we are having &#8216;global&#8217; function that does that. 
+        </p>        <pre class="brush: python">            s = "I'm string"
+            print len(s)        # why not s.len() ?
+        </pre>        <p>            <code>len()</code> is overloaded for other types, it would work for list and dictionaries as well,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            d = { 1: 1, 2: 2, 3: 3 }
+            
+            print len(l)
+            print len(d)
+        </pre>        <p>            In the same manner, if you what to get reverse iterator for collection, I would assume there corresponding method that returns that iterator. Bad guess,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            for e in reverse(l):    # why l.reverse()
+                print e
+        </pre>        <h3>__init__() method</h3>        <p>            Trying out classes in Python first you need to understand is how to construct an object. Python has constructor, that look like that, 
+        </p>        <pre class="brush: python">            class MyClass:
+                def __init__(self, a, b):
+                    self.a = a
+                    self.b = b
+        </pre>        <p>            I could understand it would be <code>init</code> or <code>_init</code> or <code>constructor</code>, but I will probably never understand <code>__init__</code> with 2 underscores before and after. It&#8217;s ugly.
+        </p>        <h2>Conclusions</h2>        <p>            I&#8217;m about to enroll to next Udactity courses, so my Python journey continues. I hope to get more in language and standard library.
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
     <a href="/2012/05/cs101-building-search-engine-week-5-and.html">
     
       CS101 Building a Search Engine: Week 5 and 6</a>
@@ -98,7 +214,7 @@
   
 
 
-<time datetime="2012-05-31T16:28:00+02:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time></div>
+<time datetime="2012-05-31T17:28:00+03:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -153,7 +269,7 @@
   
 
 
-<time datetime="2012-05-26T14:03:00+02:00" pubdate data-updated="true">May 26<span>th</span>, 2012</time></div>
+<time datetime="2012-05-26T15:03:00+03:00" pubdate data-updated="true">May 26<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -205,7 +321,7 @@
   
 
 
-<time datetime="2012-05-21T22:44:00+02:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time></div>
+<time datetime="2012-05-21T23:44:00+03:00" pubdate data-updated="true">May 21<span>st</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -277,7 +393,7 @@
   
 
 
-<time datetime="2012-05-20T13:50:00+02:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+<time datetime="2012-05-20T14:50:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -343,7 +459,7 @@
   
 
 
-<time datetime="2012-05-20T12:43:00+02:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
+<time datetime="2012-05-20T13:43:00+03:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -415,7 +531,7 @@
   
 
 
-<time datetime="2012-05-07T11:58:00+02:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time></div>
+<time datetime="2012-05-07T12:58:00+03:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -488,7 +604,7 @@
   
 
 
-<time datetime="2012-04-28T10:31:00+02:00" pubdate data-updated="true">Apr 28<span>th</span>, 2012</time></div>
+<time datetime="2012-04-28T11:31:00+03:00" pubdate data-updated="true">Apr 28<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -541,7 +657,7 @@
   
 
 
-<time datetime="2012-04-26T08:39:00+02:00" pubdate data-updated="true">Apr 26<span>th</span>, 2012</time></div>
+<time datetime="2012-04-26T09:39:00+03:00" pubdate data-updated="true">Apr 26<span>th</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -614,7 +730,7 @@ public ActionResult Send(string token, Notification notification)
   
 
 
-<time datetime="2012-04-21T19:54:00+02:00" pubdate data-updated="true">Apr 21<span>st</span>, 2012</time></div>
+<time datetime="2012-04-21T20:54:00+03:00" pubdate data-updated="true">Apr 21<span>st</span>, 2012</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
@@ -712,82 +828,6 @@ public ActionResult Send(string token, Notification notification)
 </p><p>Believe me or not, but I really frustrated on that task. I just didn&#8217;t understood how it&#8217;s possible to do not use any <code>if</code> here, but I have a condition inside the problem. I spend additional 10 minutes, starting to think it&#8217;s just impossible. It&#8217;s really funny, but indeed I thought it&#8217;s something strange and had a great temptation to go and check for correct answer. Fortunately, I got this this online <a href="http://forums.udacity.com/cs101-april2012/questions/345/rounding-without-an-if-statement?page=1&focusedAnswerId=386#386">discussion</a> (each course has it&#8217;s discussion board, where student&#8217;s can share the info). It turns out I&#8217;m not alone, some professional programmers did the look like I did with if&#8217;s and calls to other functions.<br />
 </p><p>Finally, I just tried to concentrate and really pretend to be a person how is just listen to that material first time, using the only knowledge I got in Unit 1. And solution came up to my mind! It was sooo easy, so I felt really ashamed for the code I wrote above. It&#8217;s 3 lines of code, using just <code>str()</code> and <code>find()</code> method, so simple.<br />
 </p><p>That was definitely facepalm situation. But, it really encourage me to continue!<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/04/i-enrolled-to-udacity-build-search.html">
-    
-      I Enrolled to Udacity &#8216;Build Search Engine&#8217; Online Course</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-17T17:55:00+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/stanford/'>Stanford</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>I&#8217;m astonished how many opportunities we have now to learn and self-improve there days. One of the greatest things was announcement of online courses by Stanford. Stanford is the world class university with best professors and highest reputation. Then I first time heard that some of Stanford courses are online with videos, quizzes and materials - I thought to my self, - I would not miss the thing. <br />
-</p><p>With a great support of <a href="http://www.coursera.org/">Coursera</a> and <a href="http://www.udacity.com/">Udacity</a> now we have great list of interesting <a href="http://www.class-central.com/">courses</a>, including programming, artificial intelligence, cryptography etc. Lead by well known specialists those courses are just price-less, nevertheless they are available for free.  <br />
-</p><p>I have enrolled for new course by <a href="http://www.udacity.com/">Udacity</a> - <a href="http://www.udacity.com/overview/Course/cs101/CourseRev/apr2012">CS101: Building a Search Engine</a> that has been started 16 Apr 2012, by David Evans and Sebastian Thrun. This should be interesting journey inside the web crawling, data mining, ranking etc. What is good for me it would not evolve hardcode-math and also does some good introduction into Python programming language. By the way, CS101 does not assume you know any computer language before or any special math knowledge. So, my assumptions that this course should not take hours of digging into the difference between <code>o(n)</code> and <code>O(n)</code> but rather has more practical aspects. <br />
-</p><p>So, why I&#8217;m writing that?.. Millions of people are joining them, a lot of people already got successful records for several courses already. OK, let&#8217;s look in eyes of truth. I enrolled for several ones already (ml-class and saas). But neither I successfully completed. Due to my business (read as laziness) I quickly went out of schedule and it was to difficult to line up again. I don&#8217;t want it happen again.<br />
-</p><p>I have some small goals for a next 7 weeks:<br />
-</p><ul><li><br />
-Start up learning new language<br />
-</li>
-<li><br />
-Lean something new in data mining and data processing<br />
-</li>
-<li><br />
-Improve my self learning discipline<br />
-</li>
-<li><br />
-Encourage myself for next online courses<br />
-</li>
-</ul><p>I think <a href="http://www.udacity.com/overview/Course/cs101/CourseRev/apr2012">CS101: Building a Search Engine</a> is vey nice candidate, because: <br />
-</p><ul><li><br />
-As I said it should not include very complex math (that I already manage to forgot)<br />
-</li>
-<li><br />
-It has no strict deadlines for units <br />
-</li>
-<li><br />
-It is interesting enough to do not be bored in a middle (at least I hope so)<br />
-</li>
-</ul><p>Moreover, I&#8217;ll be doing a weekly blog post (Saturday) about highlighting the things I learned through week. If you are interested, please jump in since that train is still not gone. I&#8217;m sure it will be great experience.<br />
-</p><p>Let&#8217;s do that together!<br />
 </p></div>
 
       

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: life,mind,open | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/life-mind-open/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
-    <updated>2013-06-15T16:18:00+02:00</updated>
+    <updated>2013-06-15T16:18:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
     <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
 
@@ -55,7 +55,7 @@
 
 <p>So, I spent maybe 2-3 hours to sketch new blog look.</p>
 
-<p><img src="/images/blog/design-blog-sketch.png" title="[beletsky.net design sketch [design sketch]]" ></p>
+<p>{% img /images/blog/design-blog-sketch.png [beletsky.net design sketch [design sketch]]%}</p>
 
 <p>I showed that to colleagues and received some valuable feedback from <a href="http://twitter.com/voronianski">@voronianski</a> regarding fonts and styles. Sketch looked amazingly good on Mac retina, with custom fonts (Open Sans, Lato). It has anti-aliasing issues on Windows, though.</p>
 
@@ -63,7 +63,7 @@
 
 <p>I&rsquo;ve spent up to 16 hours to make it work nicely. There was a lot of CSS style conflicts between existing SASS and my custom one. So, I had to disable almost everything and use my custom <code>style.css</code>. But still, that was worth effort if you compare with previous look,</p>
 
-<p><img src="/images/blog/old-beletsky-net.png" title="[beletsky.net old look [old look]]" ></p>
+<p>{% img /images/blog/old-beletsky-net.png [beletsky.net old look [old look]]%}</p>
 
 <p>Since I had some heavily read posts, I need to make sure that old google indexed URL&rsquo;s would work. Fourtunatelly, that was really easy to configure. In <code>_config.yml</code>, just paste:</p>
 

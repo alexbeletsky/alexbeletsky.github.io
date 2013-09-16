@@ -4,7 +4,7 @@
   <title><![CDATA[Category: NancyFX | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/nancyfx/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[CamelCase JSON Formatting for NancyFX Application]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/camelcase-json-formatting-for-nancyfx.html"/>
-    <updated>2012-08-18T13:17:00+02:00</updated>
+    <updated>2012-08-18T14:17:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/camelcase-json-formatting-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I've spend yet another week playing with it. My original expectations were - I'll be super-duper-fast with it, since it's so comprehensive and powerful. One more time I have to admit - every technology has it's learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
@@ -81,7 +81,7 @@
   <entry>
     <title type="html"><![CDATA[Customizing Folders Layout for NancyFX Application]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx.html"/>
-    <updated>2012-08-14T19:05:00+02:00</updated>
+    <updated>2012-08-14T20:05:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don't even care. If you plan to do self-hosting application, you typically want to change some bits.<br />

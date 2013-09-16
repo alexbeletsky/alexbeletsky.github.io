@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:58:05+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,9 +14,128 @@
 
   
   <entry>
+    <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <updated>2013-09-16T21:21:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku</id>
+    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="">RejectJS</a> conf in Berlin, September 2013.</p>
+
+<p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
+
+<!-- More -->
+
+
+
+
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>Background</h2>
+
+<p>So, some background on me. My name is Alexander and I live in Kiev and work for Danish company, named E-conomic. There we do, we interesting product called Debitoor and a lot of cool stuff happens there.. But besides of that full-time job, with a friend of mine, I&rsquo;m doing a small project called Likeastore.</p>
+
+<p>And this is exactly, side-project are something <strong>there you learn some new things and you try these things</strong>. So, it&rsquo;s started out as hackathon project, it&rsquo;s Node.js, MongoDB, Angular.js &ndash; so highly JS related thing (even if my talk is not so JS oriented). On a hackathon we got really exited on the way it went, soon we realized that we want to push things out. So, we wanted to release, and conquer the world with the cool idea we had.</p>
+
+<p>Probably the most important lesson I&rsquo;ve learned in whole my career &ndash; the way you ship the code, matters!</p>
+
+<p>It matters a lot, but the key fact &ndash; as faster you can ship the code from machine A to machine B, as faster you running business as happy team you have. So, if you shipping once a 2-weeks, you are fine, if you shipping 1-week are are great, if you shipping 1-per-hour you are superb (if you don&rsquo;t believe me, take a look on github guys, how happy they are all the time).</p>
+
+<p>And long time I realized that deployment of code, should be as easy as:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git push origin master
+</span><span class='line'>git push heroku master
+</span><span class='line'>af deploy
+</span><span class='line'>jitsu deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whatever, important is &ndash; one click (command, shell script) you are done.</p>
+
+<p>So, we were seeking for good deployment and hosting options. And I love Node.js in particular for it&rsquo;s &ldquo;deployment-friendly&rdquo; environment.</p>
+
+<p>Code deployment in general is very known developers problem. It solved many time and with cloud computing it <strong>evolutionized in something that&rsquo;s know as PaaS (platform as service)</strong>. And PaaS is something that brings a lot of value for any project, since you abstract out the exact infrastructure, and what you do is write code push it out, the rest is solved by PaaS.</p>
+
+<p>Of cause, we started to look for PaaS that fits us best.</p>
+
+<p>Started with AppFog, jumped to Nodejitsu, but met few constrains that forced us to gave up. Namely, that we had to have SSL connection, since we dealing with users private data, but Nodejitsu is proposing SSL for 120 USD that, simply too much of the project you begin with and don&rsquo;t have great budget behind.</p>
+
+<p>I was really unhappy that time, since I realized a lot of overhead work that comes to you, then you drop PaaS.</p>
+
+<p>This is where constraints coming from, and sometimes they are very unpleasant, but in general constraints are good. With perfect timing, I&rsquo;ve seen Dokku project.</p>
+
+<p>Even if I said Dokku is small project, it&rsquo;s standing on shoulders of giants, and those giants are Docker &amp; Builtpacks &amp; Gitrecieve (there is a few more, but those are most important ones).</p>
+
+<p>During this talk, I&rsquo;ll highlight both Docker and Dokku internals, but my primary goal is to rather share the <strong>experience of using Dokku that helped to making the things done</strong>.</p>
+
+<h2>Dokku</h2>
+
+<p>Dokku is created by bright hacker &ndash; Jeff Lindsay. And what Jeff did is he saw the opportunity of mixing all the pieces together in one tasty cocktail.</p>
+
+<p>Dokku relying on Docker for running containers (as isolated application instance), it uses Gitrecive to implement git interface for server, and it&rsquo;s relying on Buildpacks, for preparing environment for container.</p>
+
+<p>Now, it&rsquo;s time to show you how it works in reality:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>demo with node-sample</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Gitrecieve</h2>
+
+<p>Gitrecieve is a component which is able to recieve you git push command, create repository on fly and trigger recieve script. Recieve script could be anything you want.</p>
+
+<h2>Buildpacks</h2>
+
+<p>Buildpacks are open source components released by Heroku. How many of you guys ever used Heroku? All right, so the output you see, while pushing code to Heroku is exactly the <strong>result of work by Buildpack</strong>.</p>
+
+<p>Buildpack is responsible for few things: it detects the environment of you app (like if I can see <code>package.json</code>, that would probably mean Node.js app), downloads all required runtime components and run build script. Once it run, we have created infrastructure where application is ready to start up.</p>
+
+<p>So, Heroku created a lot of buildpacks, for Ruby, Python, Java, etc., and all that goodness is reused by Dokku.</p>
+
+<h2>Docker</h2>
+
+<p>How many of guys seen the videos, or read the materials about Docker? I hope many of you, because it&rsquo;s kind on noisy now.</p>
+
+<p>So, Docker in essence, is the engine of <strong>portable containers</strong>. Portable? Containers? You are probably very interesting what actually goes, behind these words.</p>
+
+<p>Docker is open-source project by dotCloud. And the dotCloud is actually specializing on shipping the code. Company&rsquo;s co-founder Salmon Hykes, gives are very nice metaphor on containers: imaging a shipping of goods like, 100 years ago &ndash; where were ships and barrels and bags and boxes, etc. Because of that variety you had a different options for shipping. In middle 1950, the idea of container born. Container defines size and dimensions, but in essence &ndash; you can put what ever you like there, close the door and that&rsquo;s it. It&rsquo;s guaranteed that you container is shipped, because all equipment fits it.</p>
+
+<p>So, in dotCloud they&rsquo;ve developed a fairly complex infrastructure, that would allow to run their business. After 5 years of hacking that, they reached <strong>great level of expertise</strong>, as well they realized the need to take out the core system, rewrite it completely and open source it. That was then Docker project born and if Salmon would ever listen to my talk, I would like to give tons of Kudos for him, for that job.</p>
+
+<p>Docker itself is hack above the Linux kernel technology called LXC. And LXC is the of running isolated processes. LXC is a Linux process, that have it&rsquo;s own file system, networking interfaces, processes etc.</p>
+
+<p>Sure, you might think &ndash; it smells like virtual machines, why containers are better?</p>
+
+<p>Image container is immutable entity. Once the command run, it&rsquo;s changed.. but as soon as change is not committed the image remain the same. That mean, you can re-use some existing image as many time as you want, all the time starting up, so called clean environment. The clean environment is something we like of using VM.</p>
+
+<p>Startup time of container is <strong>many times faster, then booting up new VM image</strong>. And this is it&rsquo;s primary benefit.</p>
+
+<p>Besides of that, Docker comes with so called Index. Index is a public repository of ready to use images. Different operations systems and different pre-installed software is there.</p>
+
+<h2>Nginx</h2>
+
+<p>All HTTP / HTTPS orchestration is done by Nginx.</p>
+
+<h2>Deploying the applications with Dokku</h2>
+
+<p>So, we&rsquo;ve came to the most interesting part, how Dokku is <strong>helpful for the product development</strong>. Theoretically, Dokku can work on any Linux machine with LXC support, to run docker, dokku itself is written on shell script, which make it really portable. Practically it works on Ubuntu 13 64b.</p>
+
+<p>You build you own small PaaS on any IaaS as you want. One&rsquo;s which is able to fire up Ubuntu machine and give you ssh access to it. For a few reasons, I&rsquo;ve picked up Digital Ocean, since they indeed provide really nice service and competitive prices.</p>
+
+<p>Once the machine is started, you push have to install Dokku there. After it&rsquo;s installed, you upload you SSH key there, so you are able to do git push.</p>
+
+<p>You are able to configure environment variables, as well as configure SSL connection.</p>
+
+<p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant.html"/>
-    <updated>2013-09-03T19:57:00+02:00</updated>
+    <updated>2013-09-03T19:57:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant</id>
     <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
 
@@ -251,7 +370,7 @@
   <entry>
     <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
-    <updated>2013-08-28T22:00:00+02:00</updated>
+    <updated>2013-08-28T22:00:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
     <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
 
@@ -397,7 +516,7 @@
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+02:00</updated>
+    <updated>2013-08-06T05:40:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 
@@ -452,7 +571,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public.html"/>
-    <updated>2013-07-28T09:30:00+02:00</updated>
+    <updated>2013-07-28T09:30:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public</id>
     <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
 
@@ -541,7 +660,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
-    <updated>2013-07-19T19:36:00+02:00</updated>
+    <updated>2013-07-19T19:36:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
     <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
 
@@ -645,7 +764,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
-    <updated>2013-07-04T09:02:00+02:00</updated>
+    <updated>2013-07-04T09:02:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
     <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 
@@ -1073,7 +1192,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago.html"/>
-    <updated>2013-06-20T23:43:00+02:00</updated>
+    <updated>2013-06-20T23:43:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago</id>
     <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
 
@@ -1109,7 +1228,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
-    <updated>2013-06-15T16:18:00+02:00</updated>
+    <updated>2013-06-15T16:18:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
     <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
 
@@ -1197,7 +1316,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
-    <updated>2013-05-16T17:55:00+02:00</updated>
+    <updated>2013-05-16T18:55:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
@@ -1214,7 +1333,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Building Single Pages Applications]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
-    <updated>2013-04-29T19:26:00+02:00</updated>
+    <updated>2013-04-29T20:26:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
@@ -1270,7 +1389,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
-    <updated>2013-04-24T05:11:00+02:00</updated>
+    <updated>2013-04-24T06:11:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
@@ -1293,7 +1412,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
-    <updated>2013-04-14T13:35:00+02:00</updated>
+    <updated>2013-04-14T14:35:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
     <content type="html"><![CDATA[<div class='post'>
         <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
@@ -1328,7 +1447,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring.html"/>
-    <updated>2013-04-10T19:53:00+02:00</updated>
+    <updated>2013-04-10T20:53:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
@@ -1449,7 +1568,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on.html"/>
-    <updated>2013-03-31T17:52:00+02:00</updated>
+    <updated>2013-03-31T18:52:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can&#8217;t guess which projects will be popular or not.. and the second, that it&#8217;s hard to do something valuable alone.<br />
@@ -1482,7 +1601,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring.html"/>
-    <updated>2013-03-27T16:51:00+01:00</updated>
+    <updated>2013-03-27T17:51:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        After initial introduction to Backbone&#8217;s <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
@@ -1740,7 +1859,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Third Year of E-conomic]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
-    <updated>2013-03-13T19:29:00+01:00</updated>
+    <updated>2013-03-13T20:29:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>That&#8217;s my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I&#8217;ve heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
@@ -1759,7 +1878,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Looking back to 2012]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012.html"/>
-    <updated>2013-01-05T16:25:00+01:00</updated>
+    <updated>2013-01-05T17:25:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
@@ -1807,7 +1926,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   <entry>
     <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields.html"/>
-    <updated>2012-12-25T21:28:00+01:00</updated>
+    <updated>2012-12-25T22:28:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
@@ -1896,7 +2015,7 @@ var customerId = invoice.get('customerId');
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-12-19T20:52:00+01:00</updated>
+    <updated>2012-12-19T21:52:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
@@ -2080,48 +2199,6 @@ var customerId = invoice.get('customerId');
 </p><p>I&#8217;m skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
 </p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how &#8220;deep&#8221; you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
 </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Retrospective of Trackyt.net or Best Project I Ever Accomplished]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best.html"/>
-    <updated>2012-12-01T15:11:00+01:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        It&#8217;s been to years ago, I&#8217;ve <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I&#8217;ve cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
-    </p>    <p>        This project is first attempt to release something. I had some pet projects before, but never ever made them done. Trackyt.net started as simple application to learn some JavaScript programming and HTML. It turns out to be much, much, much more. Even it seems to be very simple, but I&#8217;ve spent a lot of energy on it.<br />
-    </p>    <a href="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png"><br />
-        <img src="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png" style="width: 620px"/><br />
-    </a><br />
-    <p>        The product did not gather any meaningful amount of users neither good amount of traffic. For almost 2 years I was investing money/time on it. So, from the first sight it might appear as failed project.<br />
-    </p>    <p>        Any kind of business should be evaluated in terms of assets. It&#8217;s not necessarily means money. Or more correctly, it does not meant &#8220;direct&#8221; money. I had no paying customers and I actually never thought to sell the product. But, I can prove it - every hour I spent on the project got back to me as value. And the most valuable asset for developer is skill, of cause.<br />
-    </p>    <a href="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png"><br />
-        <img src="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png" style="width: 620px"/><br />
-    </a><br />
-    <p>        I&#8217;ll try to analyze what actually happened:<br />
-    </p>    <ul>        <li><strong>Web development and design:</strong> even my professional involvement into web applications, did not give me a feeling of web development. I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">blame</a> ASP.NET Web Forms for that, but I realized that I lack that kind of skill. That was my first project were I did everything by myself, all HTML/CSS/JS were handmade, not stupid WebControls. My eyes opened on how many things I did not understand, how difficult the front-end might be. Crafting of UI is a huge pleasure for me, I simply like beautiful things. 2 years after I will never call Trackyt.net beautiful, but it was a great point to start.<br />
-            <p>                <i>Outcome</i>: I overstepped the uncertainty and fears of front-end. During the JavaScript programming. I&#8217;ve seen a lot of value in front-end MVC frameworks, so I had no doubts of moving from jQuery based apps to Backbone.js (or other MV*) frameworks. I did a <a href="https://speakerdeck.com/alexanderbeletsky">several speeches</a> of JavaScript applications development and got really cool feedback on it.<br />
-            </p>        </li>
-        <li><strong>Test driven development:</strong> practicing TDD for quite long years already, so Trackyt.net was not my first project were I applied the technique. The difference was that usually the we work with some legacy code at work, so TDD could be difficult to apply. Starting that project I had strong opinion on TDD and literally TDD&#8217;ed everything. UI, Controllers, Repositories.. JavaScript and C#. That was so great experience, I never felt on any other projects. During Trackyt.net I think I moved from <a href="http://martinfowler.com/bliki/ShuHaRi.html">Shu</a> to <a href="</a>&#8220;>Ha</a> level of testing. Now, I <a href="http://www.beletsky.net/2011/11/develop-with-tests.html">more clearly</a> see what and when should I test to stay in good shape of application.<br />
-        </li>
-        <p>            <i>Outcome</i>: currently I&#8217;m professional TDD trainer at <a href="http://xpinjection.com/">XP Injection</a> and Trackyt.net much influenced that it happened. I share my experience with guys I show some examples of code there. I <a href="http://www.beletsky.net/search/label/TDD">wrote</a> a bunch of blog posts on TDD and it&#8217;s Trackyt.net who gave most inputs and insights. I&#8217;ve <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">implemented</a> integration tests for my API based FuncUnit and that blog post became the part of <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and still remains one of the best reads in my blog. I&#8217;ve learned UI testing and <a href="http://www.beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">formed</a> my opinion on that.
-        </p>        <li><strong>ASP.NET MVC:</strong> Never used ASP.NET MVC before, I armed with <a href="http://books.google.com.ua/books/about/Pro_ASP_NET_MVC_2_Framework.html?hl=uk&id=lFSPoYt9deAC">great book</a> by Steven Sanderson I&#8217;ve started to learn new framework. And Trackyt.net was main playground. Starting up with MVC2 and lately ported it to MVC3 I had a chance to play different aspects of framework. ASP.NET MVC was my first serious step into web development world.<br />
-        </li>
-        <p>            <i>Outcome:</i> I became a huge fan of this technology, learning it from deep and <a href="http://www.beletsky.net/search/label/InsideMVC">posting</a> information on it. I had a few speeches about ASP.NET MVC.. and the biggest one on MS SWIT 2012, there ~300 persons were listened to me. Then the company I worked to were deciding about back-end technology for API of new product I helped to integrate ASP.NET MVC into existing web site and we successfully built API on it. I assisted my team mates to understand the framework, it was not difficult at all, since I knew the stuff. Currently I have a <a href="http://xpinjection.com/trainings/mvc-net-development/">training course</a> on ASP.NET MVC as well and already conducted some.
-        </p>        <li><strong>API oriented architecture:</strong> popularized by Twitter and GMail, the architecture and having RESTfull JSON based service behind and the JavaScript-driven application on front-end, was my high-level architecture for Trackyt.net. <br />
-            <p>                <i>Outcome:</i> I successfully used the same ideas on other projects and it worked really well. For now I&#8217;m consulting few companies that tries to adopt same ideas. The most popular <a href="http://www.beletsky.net/2011/01/implementation-of-rest-service-with.html">post</a> in my blog is about build REST(like) services with ASP.NET MVC. <br />
-            </p>        </li>
-        <li><strong>Continuous Delivery:</strong> being annoyed by manual update of production environment I&#8217;ve <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">built</a> simple continuous delivery pipeline that worked really great for me. During the way I&#8217;ve met such great tools as Jenkins, UppercuT, RoundhousE etc. That was my first try of this approach and I felt huge power and advantages of Continuous Delivery. Slightly it became one of the professional areas of interests for me.<br />
-        </li>
-        <p>            <i>Outcome:</i> Continuous Delivery and <a href="https://github.com/chucknorris">Chuck Norris</a> tools was the topic of my first talk on <a href="http://kievalt.net/">KievALT.NET</a>. Since then I became an active participant of community and I really like it. Also, I&#8217;m talking about things like RoundhousE on my other speeches and trainings and I got a lot of pleasure than people stand by saying: &#8220;You know, we&#8217;ve tried that and it worked so nice, thanks a lot&#8221;.
-        </p>        <li><strong>Code base:</strong> the code base of application is rather small. There is C#, JavaScript, SQL and some NAnt scripts. A lot of things I used there I still copy and paste (or at least taking a look) from Trackyt.net to my current projects. It became a kind of cook book, from there I could quickly pick up some recipe. <br />
-        </li>
-        <p>            <i>Outcome:</i> I didn&#8217;t thought above that initially, but Trackyt.net codebase also helping me to see what improvements I&#8217;ve made so far. For instance, I reviewed the API controllers recently and realized that I would never write anything like that. Having some code that you produced year or two ago you peer and compare gives some really interesting insights. Besides of application code itself, I&#8217;ve made an C# API adapter and the most significant outcome is <a href="https://github.com/alexanderbeletsky/elmah.mvc">ELMAH.MVC</a>.
-        </p>    </ul>    <p>        Concluding this, I would say - Trackyt.net changed the things radically. I&#8217;ve became a speaker on <a href="http://kievalt.net/">KievALT.NET</a> and <a href="http://xpinjection.com/uadevclub/">UADevClub</a> communities, my blog received an <a href="http://java.dzone.com/users/alexanderb">MVB</a> status, I improved my skills and knowledge and I do trainings and consulting. Basically, I&#8217;ve &#8220;rebooted&#8221; developer inside me and saw my way of constant learning and improving.<br />
-    </p>    <p>        Looking back I definitely say - it was only possible because of Trackyt.net.<br />
-    </p>    <p>        Without any doubts, that was the most successful project to me!<br />
-    </p></div>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Node.js | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
     <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
-    <updated>2013-04-24T05:11:00+02:00</updated>
+    <updated>2013-04-24T06:11:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
@@ -40,7 +40,7 @@
   <entry>
     <title type="html"><![CDATA[Three month without .NET code]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code.html"/>
-    <updated>2012-07-11T12:29:00+02:00</updated>
+    <updated>2012-07-11T13:29:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's not farewell letter in style of "Goodbye .NET". But, I just realized that I haven't created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />

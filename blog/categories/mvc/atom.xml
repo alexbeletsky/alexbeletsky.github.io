@@ -4,7 +4,7 @@
   <title><![CDATA[Category: MVC | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/mvc/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ASP.NET MVC Routes and Namespaces]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces.html"/>
-    <updated>2012-07-25T15:42:00+02:00</updated>
+    <updated>2012-07-25T16:42:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    While I was working on <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC v.2.0.0</a> I noticed a something that contradicts the way I understand how the controller resolving mechanism works. Before, I always thought that namespaces matters, but in practice I saw it otherwise.<br />
@@ -120,7 +120,7 @@
   <entry>
     <title type="html"><![CDATA[JSON Model Binding to IDictionary<> is Broken]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is.html"/>
-    <updated>2012-04-26T08:39:00+02:00</updated>
+    <updated>2012-04-26T09:39:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Yesterday, I've been creating small web service based on existing ASP.NET MVC infrastructure. The task was really simple. Web service itself should be just a proxy for existing internal API. The API method takes a <code>Dictionary</code> that contains some fields. So, I've created a data model like that.<br />
@@ -157,7 +157,7 @@ public ActionResult Send(string token, Notification notification)
   <entry>
     <title type="html"><![CDATA[New in ASP.NET MVC4: Razor changes]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes.html"/>
-    <updated>2012-04-10T20:35:00+02:00</updated>
+    <updated>2012-04-10T21:35:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Razor has been changed a little with ASP.NET MVC 4 beta. It's not a kind of radical changes, but rather improvements that make developers happier. As for me, developers happier then you need to write less code to get the same function. It reminded me a ideal device, which is part of <a href="http://www.mindtools.com/pages/article/newCT_92.htm">TRIZ</a> theory. Ideal device is a device that does not exit, but does it function. By analogy, ideal code is the code that not exist but it's function exist. Razor is not that ideal, through.. But it's "more ideal" than previous version. <br />
@@ -191,7 +191,7 @@ public ActionResult Send(string token, Notification notification)
   <entry>
     <title type="html"><![CDATA[Why I'm Not Using Bundling.. Yet]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html"/>
-    <updated>2012-04-04T17:32:00+02:00</updated>
+    <updated>2012-04-04T18:32:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I'm doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
@@ -227,7 +227,7 @@ public ActionResult Send(string token, Notification notification)
   <entry>
     <title type="html"><![CDATA[New in ASP.NET MVC4: Bundling and Minification]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
-    <updated>2012-04-02T08:44:00+02:00</updated>
+    <updated>2012-04-02T09:44:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />

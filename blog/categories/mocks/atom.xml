@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mocks | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/mocks/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html"/>
-    <updated>2012-02-02T10:36:00+01:00</updated>
+    <updated>2012-02-02T11:36:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Conference | Alexander Beletsky's development blog]]></title>
+  <title><![CDATA[Category: conference | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/conference/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,165 +14,118 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Building Single Pages Applications]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
-    <updated>2013-04-29T19:26:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
-    </p>
-    <h2>        What is SPA?<br />
-    </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We'll check out new concept of web applications, that are called - Single Page Applications.<br />
-    </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it's UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
-    <!-- more -->
- <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
-    </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
-    </p>    <h2>        API oriented architecture<br />
-    </h2>    <p>        Before we jump into SPA details, let's talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it's being adopted by many vendors and became kind of default. We are talking about 'API oriented' architecture.<br />
-    </p>    <p>        Basically, it's just a deviation of classical 'Server-client', where we have server that provides an open API.. and where client is browser, powered by JavaScript engine.<br />
-    </p>    <p>        It's quite typically that server and client are communicating through HTTP, using JSON as payload format and relying on REST principles. I'm saying <i>typically</i>, since it's not always the case. Some apps might takes XML and use RPC instead of REST, but that actually doesn't really matter.<br />
-    </p>    <p>        Client is browser, that runs JavaScript code. JavaScript code is requesting the data and updating the DOM. Few years ago, jQuery was the primary tool of making such applications. Nowadays, we see MV* JavaScript frameworks are gaining a lot of traction and simplifying front-end development. It's not only about simplification, but also bringing the architecture principles on front-end, something that we haven't seen earlier.<br />
-    </p>    <h2>How to build Single Page applications?</h2>    <p>        We have a bunch of technologies, server and client that would allow to do that. ASP.NET MVC, Web API, NancyFX, ServiceStack, Express.js, RoR.. etc, on server and Backbone.js, Knockout.js, Angular.js, Marrionette.js, Durandal.js etc. from client.<br />
-    </p>    <p>        It gives a lot of options, actually. All of them have their pro/cons. I've used to use ASP.NET MVC as platform to build open API's and was quite happy with that. Nowadays, I'm using Node.js / Express.js and it works really great, as well.<br />
-    </p>    <p>        The truth is, with SPA, the front-end technology plays a bit more significant role. Of course, server still performs important role for authorization, data access, business logic.. but in API oriented architecture is turns to be a kind of CRUD exposed through HTTP.<br />
-    </p>    <p>        As for front-end, my experience lies in Backbone.js. Preventing the questions, I would say - Backbone.js is not perfect (as there are nothing perfect in this world). Bare Backbone.js app would require a lot of manual coding, but it would also allows to see some important implementation details that could be good for general SPA understanding.<br />
-    </p>    <h2>Server architecture</h2>    <p>        Server is responsible for two principal things. First, it provides with API. Second, it server the master page (again, it's not always the case, master.html could be places in some static resource server).<br />
-    </p>    <p>        Master page, is the one that being rendered in browser should bring basic DOM structure + reference the JavaScript code to initialize and run application. That's it.<br />
-    </p>    <p>        As always, it's important to think about scalability. Doesn't matter what technology you pick up, it's able to scale and hanlde more incoming request with given response time is vital.<br />
-    </p>    <h2>Client architecture</h2>    <p>        Scalability is important here, as well. That's a different scalability, though.<br />
-    </p>    <p>        I liked the way <a href="https://twitter.com/derickbailey">Derick Bailey</a> stated in one of <a href="http://javascriptjabber.com/056-jsj-marionette-js-with-derick-bailey/">JavaScript Jabber</a> show:<br />
-    </p>    <blockquote>        ... scalability in this case is not the number of users running the code at any given time. It’s the number of features in the system, how those features interact, and how you can start up and shut down and do all these things with these different features so that your application can grow in size, grow in features, and grow in capabilities.<br />
-    </blockquote>    <p>        That's were there the JavaScript pattern, MV* frameworks are shine. And without simple modularity, it's very hard to build scalable JavaScript applications.<br />
-    </p>    <h2>Require.js and AMD</h2>    <p>        Modularity is important. Each module represents some small piece of application functionality. The problem that JavaScript (ES5, to be precise) doesn't have modules as part of language.<br />
-    </p>    <p>        Require.js helps to solve the problem. Instead of referencing hundreds of JavaScript files which expose itself to global namespace, Require.js relies on, so called, Asynchronous Module Definition. The special rules which you code have to follow, to be able to act as module and being loaded by request.<br />
-    </p>    <p>        Besides of that, Require.js comes with building/optimization tools, that helps to prepare application to production.<br />
-    </p>    <p>        So, the Master html has a reference to Require.js main file, which will be responsible for configuration and initialization of app. This typically includes setup of view state management (ViewManager) and routing (Backbone.Router).<br />
-    </p>    <h2>Routing</h2>    <p>        Router, handles in-browser URL change events and notifies about that changes. <br />
-    </p>    <p>        The URL change might appear of 2 things: user clicks some href or submits the form with re-direct. The SPA prevents those things. Instead, all <code>href</code> click are overloaded, so instead of performing GET request on given URL, JavaScript code would let router know that URL is changing. Router receives the message and using some route rules, call corresponding handler.<br />
-    </p>    <p>        The handler job is to load the application and execute it.<br />
-    </p>    <h2>Applications</h2>    <p>        Applications in terms of code, are simple objects with <code>run</code> (or <code>execute</code>) function.<br />
-    </p>    <p>        The responsibility of application is to fetch all required data and intitialize application Main View. The Main view is then passed to a ViewManager, which is responsible to render it and attach to DOM.<br />
-    </p>    <p>        Besides of that, application is also 'logical' group of different modules with one goal. Imagine GMail application again - Contacts, Mails, Tasks are different applications. Each application, could have sub applications (with their own data and views).<br />
-    </p>    <p>        The rule of thumb, one route one application.<br />
-    </p>    <h2>        View Manager<br />
-    </h2>    <p>        As it's been mentioned about, View Manager is important part of SPA architecture.<br />
-    </p>    <p>        It handles the aspects of switching one application (MainView) to another. So, the content of application div is cleared up and than updated with new one. In Backbone.js application, that is particularly important, since besides the DOM update View Manager is responsible to clear up unsubscribe all events that views might be subscribed to, to prevent, so called <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Zombie View</a> problem.<br />
-    </p>    <h2>Main View and Subviews</h2>    <p>        Not trivial application could contain some complex UI. All complex UI is being divided on many smaller components.<br />
-    </p>    <p>        MainView is responsible for whole application UI. It's typical job to instantiate and render all required subviews. It also stores the references for all subviews into some internal data structure, so it's been able to close all them, while main view is closed.<br />
-    </p>    <h2>TheMailer - demo application</h2>    <p>        Here is <a href="https://github.com/alexanderbeletsky/themailer">TheMailer</a> - very simple application that implements all the ideas above. I've created that very quickly and I could not call it completed. At the backend it runs ASP.NET MVC/WebAPI and using Require.js + Backbone.js at front end.<br />
-    </p>    <p>        It allows you to view and compose email, as well as some simple management of tasks and contacts. <br />
-    </p>    <p>        Under the debugger, it is clear how the application is initialized and starting up, how MainView creates Subviews and how Routing and ViewManager works.<br />
-    </p>    <h2>Conclusions</h2>    <p>        I would call it SPA bare bones. As I mentioned above, using pure Backbone.js is good, since Backbone.js contains all required components which any SPA need (most important it have Backbone.Router).<br />
-    </p>    <p>        But I would recommended to check further. If you plan stick to Backbone.js, <a href="http://marionettejs.com/">Backbone.Marionette</a> by <a href="https://twitter.com/derickbailey">Derick Beiley</a> could be really nice option. For Google technologies fans, <a href="http://angularjs.org/">Angular.JS</a> makes a lot of sense. For ones that liked <a href="http://caliburnmicro.codeplex.com/">Caliburn.Micro</a> during WPF programming, could play with new framework <a href="http://durandaljs.com/">Durandal.js</a> by <a href="https://twitter.com/eisenbergeffect">Rob Eisenberg</a>.<br />
-    </p>    <p>        SPA is a lot of fun and adventure, welcome in!<br />
-    </p></div>
+    <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
+    <link href="http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <updated>2013-09-16T21:21:00+03:00</updated>
+    <id>http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku</id>
+    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="">RejectJS</a> conf in Berlin, September 2013.</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
-    <updated>2013-04-14T13:35:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
-    <content type="html"><![CDATA[<div class='post'>
-        <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
-</p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don't do .NET development more than 1.5 years for now. It's not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
-</p><h2>WTH?</h2><p>I work in E-conomic company and about 2 years ago we decided to build new product. <br />
-</p><p>Till that time we've learned hard few things: plain jQuery applications is mess, building new shinny product on out-dated infrastructure is bad idea.<br />
-</p><p>So, we've started with front-end by choosing Backbone.js as our foundation, later on we've decided to switch our API server from .NET to Node.js.<br />
-</p><p>It appears we got full JavaScript stack on that product and I involved in JavaScript more and more each day.<br />
-<!-- more -->
-</p><h2>I thought I know JavaScript</h2><p>That time I mistakenly thought, I can do JS programming. Sure, I understood jQuery selectors, concept of callback and even why we need 'var me = this;' trick in code.<br />
-</p><p>But the reality was a bit different. Now, listening to podcasts and reading some blogs, I understood that I've been to 'classic' trap on C#/Java developer switching to JavaScript. Languages and frameworks requires time to learn.<br />
-</p><h2>Long hard way of learning</h2><p>I had to spend the time to learn new stuff. I would say the best source of information was the code written by my <a href="https://github.com/e-conomic?tab=members">colleagues</a>. We have great team, so initially I were just reviewing the code following some patterns. I also spent time of peering famous OS projects like underscore and Backbone.js.<br />
-</p><p>JavaScript  <a href="http://shop.oreilly.com/product/9780596517748.do">Good Parts</a>, opened my eyes on few important things as well.<br />
-</p><p>There are 3 aspects that changed my mind on JavaScript.<br />
-</p><h3>JavaScript is dynamic language</h3><p>Let's be clear. If someone in 2003 tell me I'm going to program dynamic language and will be happy about, I would never believe that. I was programming C++ and truly believed in types. Types as I was thinking is only way to tackle complexity of software.<br />
-</p><p>Even though, I still think about some advantages of static vs. dynamic languages, my opinion has changed radically.<br />
-</p><p>Dynamic languages are great. I feel I more solve problems rather than designing types (or usually hierarchy of types). Consider that, instead of thinking about the name for next "ProxyAbstractFactoryManager" I'm writing functions that do stuff.<br />
-</p><h3>Frictionless development</h3><p>I was compiling applications for whole my life. Just to run some simple thing I need to compile and link. It's usually not a problem at all, but depends on project infrastructure it can take a lot of time. Sooner or later you start to hate builds.<br />
-</p><p>With JavaScript application, you simply should run it. It starting fast so the gap between "write the line of code" and "check the results" became very small.<br />
-</p><p>Instead of heavyweight IDE's I became Sublime Text 2 user. After years in VS you simply could not understand how to write code without IntellySense. But practice shows it's really possible. <br />
-</p><h3>Node.js</h3><p>To be honest with you, I was very skeptical regarding Node.js initially. But again, practice showed different results. It's been proved that Node.js is very suitable for our product. We are running API server on Node.js and it performs really nice.<br />
-</p><p>Later I started to learn what Node.js platform offers and I was really surprised with it's abilities.<br />
-<p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
-</p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
-</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
-<h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one "language context". I would not call a huge problem, but usually context switching from one language to another can take something.<br />
-</p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I'm selecting JavaScript.<br />
-</p></div>
+<p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[IT Jam 2012 in Kiev]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/09/it-jam-2012-in-kiev.html"/>
-    <updated>2012-09-03T09:11:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/09/it-jam-2012-in-kiev</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>        It's been my <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">second time</a> I attended IT Jam, the biggest IT gathering in Ukraine. This time, the rules has been completely changed. Instead of traditional speeches, the organizers decided to make <a href="http://www.it-jam.ciklum.net/community_spot">community spots</a>, there people might have a chance to group and discuss different issues. There were number of spots there: .NET, JavaScript, iOS, UX etc.<br />
-    </p>    <a href="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg"><br />
-        <img src="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg" style="width:620px" /><br />
-    </a><br />
-    <p>        Besides the community spots, there was several stages where <a href="http://www.it-jam.ciklum.net/visionary_speakers">visionary speakers</a> did their presentations. I had a chance to listen Christopher Marsh, and really enjoyed his vision of lean product development. At 13.00 community spots started to operate, to I went there.<br />
-    </p>    <p>        .NET spot is a closest to me, since it's lead by guys whom I personally know and number of participants are well known guys from local .NET community. <a href="http://twitter.com/chaliy">Mike Chaliy</a> asked me to give a brief talk on.. Node.js. So, together with <a href="http://twitter.com/dmytromindra">Dmytro Mindra</a> we did kind of introduction to Node.js to .NET developers, introducing to the history of this rather new technology, it's main features and showing some real code. Planned for 15 minutes, we've spend about hour talking about it. Besides of pure technology talk, I shared some experience of <a href="http://debitoor.de">e-conomic</a> switch from .NET to Node.js stack for the latest products and how it worked for us (mainly my message was, throw away your boring C# and switch to JS.. so I had a chance to been kicked off the spot, but everything were fine at the very end). .NET spot was very active, attracted many many participants. People were talking about newest .NET framework features, like Async, Azure, Kinect etc.<br />
-    </p>    <a href="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg"><br />
-        <img src="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg" /><br />
-    </a><br />
-    <p>        JavaScript spot leaded by my team mate <a href="http://ua.linkedin.com/in/edjafarov">Eldar Djafarov</a> was also very exiting. Guys did a very nice job, preparing some cool JavaScript applications, that people might play with. I joined it, having a quite interesting discussion of front end development issues with different JavaScript MVC frameworks. Again, the experience we've got in company regarding Backbone.js, unit testing and tools was very interesting to developers.<br />
-    </p>    <p>        Almost 4 hours on community spots were like one minute to me.<br />
-    </p>    <p>        I really liked how the things went. From my perspective the idea of community spots was really cool. Probably, it's to difficult for introverts, to feel them self comfortable with this environment, so mix up of formal speeches and spots could be a good idea for future conferences.<br />
-    </p>    <p>        I wish to say thanks for organizers of this event for everybody involved, great effort guys. As always, it was so great to meet with colleagues from other cities and shake the hand for guys, whom I knew only virtually before. See you next year!<br />
-    </p></div>
+<!-- More -->
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MS SWIT 2012]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/03/ms-swit-2012.html"/>
-    <updated>2012-03-27T08:26:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/03/ms-swit-2012</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>The 22-23 of March this year I had a chance to participate biggest event organized by Microsoft Ukraine - <a href="http://www.msswit.in.ua/eng/">MS SWIT 2012</a>. <br />
-</p><a href="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png"><br />
-<img src="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png" alt="ms swit 2012" style="width: 620px"/><br />
-</a><br />
-<p>It's been almost two years ago I visited MS SWIT 2010. If the primary topic of last conference was cloud technologies - Azure, SQL etc. This time I would say the buzz was around Windows 8, Market Place and Metro-style applications. Of cause, there was still a lot of attention to Azure as well.<br />
-</p><p>I really much enjoyed the Keynote of first day by <a href="http://www.linkedin.com/pub/wolfgang-ebermann/4/825/278">Wolfgang Ebermann</a>. Indeed, Microsoft opens pretty much interesting opportunities for developers on Windows 8 and Windows Phone markets. Not long time ago Ukraine officially is a part of MarketPlace, so no time to wait - go and create you first Metro style app. And with new Microsoft policies regarding adoption of open standards like HTLM5, EcmaScript - it looks really attractive to me.<br />
-</p><p>Big attention was also about new recent releases like: Share Point, SQL Server Denali, Windows Server 8 etc. I would not say this is exactly interesting to me, since I more focus on web technologies, but it's always good to be aware what's going on around. First day of conference got a lot  people moving around, so if you wanted to listen for some interesting speech you have to be in time to get free sit. Second day was not so overcrowded as for me, so the people who didn't come have to be sorry, cause Second day was much more interesting. <br />
-</p><p>My talk was about new stuff in ASP.NET MVC4, with more focus to mobile web applications. That was the biggest audience I ever speak to. There was almost no free sits.. I don't know for sure it contained 150-200 people.. Huge!<br />
-</p><p>Being much inspired by Steve Sanderson <a href="http://channel9.msdn.com/Events/TechDays/TechDays-2012-Belgium/199">talk</a> on TechDays 2012, I decided to make something similar. I came up with idea of simple mobile web application, namely it is a web client to <a href="http://asp.net">http://asp.net</a> portal and develop it just during the speech. I had several issue's there, first one I did a little more longer introduction and then some issues with internet that made me a little nervous and I lose tempo a bit. That forced me to skip the last part of talk regarding Offline mode for apps. Anyway, I hope I was able to show new sweet available stuff like CSS3 Media Queries, Display Modes and jQuery Mobile framework. <br />
-</p><script src="http://speakerdeck.com/embed/4f6c7d411388a6002101e8f1.js"></script><br />
-<p>Thanks a lot for everyone who listened to me and came up with questions. I appreciate your attention and hope my talk was useful for you.<br />
-</p><a href="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png"><br />
-<img src="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png" alt="asp.net portal mobile" style="width: 620px"/><br />
-</a><br />
-<p>Regarding the app, I polished it a bit and going to release closer to the end of next week. The sources are hosted on <a href="https://github.com/alexanderbeletsky/aspnet.mobile">https://github.com/alexanderbeletsky/aspnet.mobile</a>, feel free to clone and send a pull request.<br />
-</p></div>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
-    <updated>2012-02-27T09:30:00+01:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
-    <content type="html"><![CDATA[<div class='post'>
-<p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
-</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
-</p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
-<p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday's is just great initiative by Ciklum company. I's free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
-</p><p>I had two talks there. First one about "Continuous Delivery" that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
-</p><p>Another one is for logging and tracking unhandled exceptions in ASP.NET / ASP.NET MVC application based on ELMAH. I showed some basics features as well easiness of ELMAH integration to ASP.NET MVC with <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> NuGet package. It was very light and funny talk, especially discussing Troy Hunt's <a href="http://www.troyhunt.com/2012/01/aspnet-session-hijacking-with-google.html">ELMAH attack</a>. <br />
-<script src="http://speakerdeck.com/embed/4f49e9bd2270a2002200a29c.js"></script><br />
-<p>I also really much enjoyed <a href="http://samarskyy.blogspot.com/">Anton Samarskyy</a> talk on jQuery deffered objects and Vitaly Koval did great hacking session of WinRT.<br />
-</p><p>I some of you been listening to me on those speeches and still have any questions or concerns, feel free to contact me by comments or through <a href="http://twitter.com/alexbeletsky">twitter</a>. See you next time!<br />
-</p></div>
 
+
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>Background</h2>
+
+<p>So, some background on me. My name is Alexander and I live in Kiev and work for Danish company, named E-conomic. There we do, we interesting product called Debitoor and a lot of cool stuff happens there.. But besides of that full-time job, with a friend of mine, I&rsquo;m doing a small project called Likeastore.</p>
+
+<p>And this is exactly, side-project are something <strong>there you learn some new things and you try these things</strong>. So, it&rsquo;s started out as hackathon project, it&rsquo;s Node.js, MongoDB, Angular.js &ndash; so highly JS related thing (even if my talk is not so JS oriented). On a hackathon we got really exited on the way it went, soon we realized that we want to push things out. So, we wanted to release, and conquer the world with the cool idea we had.</p>
+
+<p>Probably the most important lesson I&rsquo;ve learned in whole my career &ndash; the way you ship the code, matters!</p>
+
+<p>It matters a lot, but the key fact &ndash; as faster you can ship the code from machine A to machine B, as faster you running business as happy team you have. So, if you shipping once a 2-weeks, you are fine, if you shipping 1-week are are great, if you shipping 1-per-hour you are superb (if you don&rsquo;t believe me, take a look on github guys, how happy they are all the time).</p>
+
+<p>And long time I realized that deployment of code, should be as easy as:</p>
+
+<p><code>
+git push origin master
+git push heroku master
+af deploy
+jitsu deploy
+</code></p>
+
+<p>Whatever, important is &ndash; one click (command, shell script) you are done.</p>
+
+<p>So, we were seeking for good deployment and hosting options. And I love Node.js in particular for it&rsquo;s &ldquo;deployment-friendly&rdquo; environment.</p>
+
+<p>Code deployment in general is very known developers problem. It solved many time and with cloud computing it <strong>evolutionized in something that&rsquo;s know as PaaS (platform as service)</strong>. And PaaS is something that brings a lot of value for any project, since you abstract out the exact infrastructure, and what you do is write code push it out, the rest is solved by PaaS.</p>
+
+<p>Of cause, we started to look for PaaS that fits us best.</p>
+
+<p>Started with AppFog, jumped to Nodejitsu, but met few constrains that forced us to gave up. Namely, that we had to have SSL connection, since we dealing with users private data, but Nodejitsu is proposing SSL for 120 USD that, simply too much of the project you begin with and don&rsquo;t have great budget behind.</p>
+
+<p>I was really unhappy that time, since I realized a lot of overhead work that comes to you, then you drop PaaS.</p>
+
+<p>This is where constraints coming from, and sometimes they are very unpleasant, but in general constraints are good. With perfect timing, I&rsquo;ve seen Dokku project.</p>
+
+<p>Even if I said Dokku is small project, it&rsquo;s standing on shoulders of giants, and those giants are Docker &amp; Builtpacks &amp; Gitrecieve (there is a few more, but those are most important ones).</p>
+
+<p>During this talk, I&rsquo;ll highlight both Docker and Dokku internals, but my primary goal is to rather share the <strong>experience of using Dokku that helped to making the things done</strong>.</p>
+
+<h2>Dokku</h2>
+
+<p>Dokku is created by bright hacker &ndash; Jeff Lindsay. And what Jeff did is he saw the opportunity of mixing all the pieces together in one tasty cocktail.</p>
+
+<p>Dokku relying on Docker for running containers (as isolated application instance), it uses Gitrecive to implement git interface for server, and it&rsquo;s relying on Buildpacks, for preparing environment for container.</p>
+
+<p>Now, it&rsquo;s time to show you how it works in reality:</p>
+
+<p><code>
+demo with node-sample
+</code></p>
+
+<h2>Gitrecieve</h2>
+
+<p>Gitrecieve is a component which is able to recieve you git push command, create repository on fly and trigger recieve script. Recieve script could be anything you want.</p>
+
+<h2>Buildpacks</h2>
+
+<p>Buildpacks are open source components released by Heroku. How many of you guys ever used Heroku? All right, so the output you see, while pushing code to Heroku is exactly the <strong>result of work by Buildpack</strong>.</p>
+
+<p>Buildpack is responsible for few things: it detects the environment of you app (like if I can see <code>package.json</code>, that would probably mean Node.js app), downloads all required runtime components and run build script. Once it run, we have created infrastructure where application is ready to start up.</p>
+
+<p>So, Heroku created a lot of buildpacks, for Ruby, Python, Java, etc., and all that goodness is reused by Dokku.</p>
+
+<h2>Docker</h2>
+
+<p>How many of guys seen the videos, or read the materials about Docker? I hope many of you, because it&rsquo;s kind on noisy now.</p>
+
+<p>So, Docker in essence, is the engine of <strong>portable containers</strong>. Portable? Containers? You are probably very interesting what actually goes, behind these words.</p>
+
+<p>Docker is open-source project by dotCloud. And the dotCloud is actually specializing on shipping the code. Company&rsquo;s co-founder Salmon Hykes, gives are very nice metaphor on containers: imaging a shipping of goods like, 100 years ago &ndash; where were ships and barrels and bags and boxes, etc. Because of that variety you had a different options for shipping. In middle 1950, the idea of container born. Container defines size and dimensions, but in essence &ndash; you can put what ever you like there, close the door and that&rsquo;s it. It&rsquo;s guaranteed that you container is shipped, because all equipment fits it.</p>
+
+<p>So, in dotCloud they&rsquo;ve developed a fairly complex infrastructure, that would allow to run their business. After 5 years of hacking that, they reached <strong>great level of expertise</strong>, as well they realized the need to take out the core system, rewrite it completely and open source it. That was then Docker project born and if Salmon would ever listen to my talk, I would like to give tons of Kudos for him, for that job.</p>
+
+<p>Docker itself is hack above the Linux kernel technology called LXC. And LXC is the of running isolated processes. LXC is a Linux process, that have it&rsquo;s own file system, networking interfaces, processes etc.</p>
+
+<p>Sure, you might think &ndash; it smells like virtual machines, why containers are better?</p>
+
+<p>Image container is immutable entity. Once the command run, it&rsquo;s changed.. but as soon as change is not committed the image remain the same. That mean, you can re-use some existing image as many time as you want, all the time starting up, so called clean environment. The clean environment is something we like of using VM.</p>
+
+<p>Startup time of container is <strong>many times faster, then booting up new VM image</strong>. And this is it&rsquo;s primary benefit.</p>
+
+<p>Besides of that, Docker comes with so called Index. Index is a public repository of ready to use images. Different operations systems and different pre-installed software is there.</p>
+
+<h2>Nginx</h2>
+
+<p>All HTTP / HTTPS orchestration is done by Nginx.</p>
+
+<h2>Deploying the applications with Dokku</h2>
+
+<p>So, we&rsquo;ve came to the most interesting part, how Dokku is <strong>helpful for the product development</strong>. Theoretically, Dokku can work on any Linux machine with LXC support, to run docker, dokku itself is written on shell script, which make it really portable. Practically it works on Ubuntu 13 64b.</p>
+
+<p>You build you own small PaaS on any IaaS as you want. One&rsquo;s which is able to fire up Ubuntu machine and give you ssh access to it. For a few reasons, I&rsquo;ve picked up Digital Ocean, since they indeed provide really nice service and competitive prices.</p>
+
+<p>Once the machine is started, you push have to install Dokku there. After it&rsquo;s installed, you upload you SSH key there, so you are able to do git push.</p>
+
+<p>You are able to configure environment variables, as well as configure SSL connection.</p>
+
+<p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
 ]]></content>
   </entry>
   

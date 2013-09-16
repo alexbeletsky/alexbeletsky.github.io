@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Foundstyles | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/foundstyles/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles.html"/>
-    <updated>2012-03-07T13:54:00+01:00</updated>
+    <updated>2012-03-07T14:54:00+02:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />

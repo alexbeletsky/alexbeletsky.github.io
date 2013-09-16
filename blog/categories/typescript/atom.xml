@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TypeScript | Alexander Beletsky's development blog]]></title>
   <link href="http://alexanderbeletsky.github.io/blog/categories/typescript/atom.xml" rel="self"/>
   <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-11T12:47:43+02:00</updated>
+  <updated>2013-09-16T21:59:48+03:00</updated>
   <id>http://alexanderbeletsky.github.io/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Looking at TypeScript]]></title>
     <link href="http://alexanderbeletsky.github.io/2012/10/typescript-language.html"/>
-    <updated>2012-10-05T20:24:00+02:00</updated>
+    <updated>2012-10-05T21:24:00+03:00</updated>
     <id>http://alexanderbeletsky.github.io/2012/10/typescript-language</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
