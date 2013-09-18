@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Retrospective | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/retrospective/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/retrospective/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Looking back to 2012]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012.html"/>
+    <link href="http://beletsky.net/2013/01/looking-back-to-2012.html"/>
     <updated>2013-01-05T17:25:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012</id>
+    <id>http://beletsky.net/2013/01/looking-back-to-2012</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It's the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
     </p>    <h2>Work in e-conomic</h2>    <p>        That was yet another great year in e-conomic. We have build great app - <a href="https://debitoor.com/">Debitoor</a>. Along the way, we were trying different approaches, re-writing things from scratch, designing and re-designing again and again. Finally we got very solid application built upon Node.js, MongoDB and Backbone.js. Debitoor has been created with scalability in mind, we started with Heroku cloud service, eventually moved to Amazon EC for back-end and Amazon Cloud Front for front-end. Now, it's working amazingly fast and for 8 month we gathered ~20,000 signups, launched service for many countries.<br />
@@ -64,9 +64,9 @@
   
   <entry>
     <title type="html"><![CDATA[Retrospective 2011]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/12/retrospective-2011.html"/>
+    <link href="http://beletsky.net/2011/12/retrospective-2011.html"/>
     <updated>2011-12-29T21:37:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/12/retrospective-2011</id>
+    <id>http://beletsky.net/2011/12/retrospective-2011</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Last year I failed to create retrospective blog post, so lesson learned and I started a little bit earlier now. Not the 1 day, but 3 days before NY :). Retrospective is a great practice and I hope it give me some value when I'll be reading it next year and laughing on my previous achievements.<br />
 </p><p>I'll try to cover 4 basic directions: Career, Development, Blog, Personal.<br />

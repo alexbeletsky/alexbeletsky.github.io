@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Stanford | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/stanford/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/stanford/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Building a Search Engine: Week 1]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/cs101-building-search-engine-week-1.html"/>
+    <link href="http://beletsky.net/2012/04/cs101-building-search-engine-week-1.html"/>
     <updated>2012-04-21T20:54:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/cs101-building-search-engine-week-1</id>
+    <id>http://beletsky.net/2012/04/cs101-building-search-engine-week-1</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
 </small><br />
@@ -109,9 +109,9 @@
   
   <entry>
     <title type="html"><![CDATA[I Enrolled to Udacity 'Build Search Engine' Online Course]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/i-enrolled-to-udacity-build-search.html"/>
+    <link href="http://beletsky.net/2012/04/i-enrolled-to-udacity-build-search.html"/>
     <updated>2012-04-17T18:55:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/i-enrolled-to-udacity-build-search</id>
+    <id>http://beletsky.net/2012/04/i-enrolled-to-udacity-build-search</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I'm astonished how many opportunities we have now to learn and self-improve there days. One of the greatest things was announcement of online courses by Stanford. Stanford is the world class university with best professors and highest reputation. Then I first time heard that some of Stanford courses are online with videos, quizzes and materials - I thought to my self, - I would not miss the thing. <br />
 </p><p>With a great support of <a href="http://www.coursera.org/">Coursera</a> and <a href="http://www.udacity.com/">Udacity</a> now we have great list of interesting <a href="http://www.class-central.com/">courses</a>, including programming, artificial intelligence, cryptography etc. Lead by well known specialists those courses are just price-less, nevertheless they are available for free.  <br />

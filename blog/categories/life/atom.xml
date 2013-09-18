@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Life | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/life/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Third Year of E-conomic]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
+    <link href="http://beletsky.net/2013/03/third-year-of-e-conomic.html"/>
     <updated>2013-03-13T20:29:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
+    <id>http://beletsky.net/2013/03/third-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>That's my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I've heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
     <!-- more -->
@@ -35,9 +35,9 @@
   
   <entry>
     <title type="html"><![CDATA[Second Year of E-conomic]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/03/second-year-of-e-conomic.html"/>
+    <link href="http://beletsky.net/2012/03/second-year-of-e-conomic.html"/>
     <updated>2012-03-13T19:40:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/03/second-year-of-e-conomic</id>
+    <id>http://beletsky.net/2012/03/second-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Yeah, it's been 2 years since I joined the <a href="http://www.e-conomic.com/">e-conomic</a> company. As it was <a href="http://www.beletsky.net/2011/03/my-first-year-in-company.html">last year</a>, this year e-conomic still plays very important role in my life, so I'll spent some time to write this blog post.<br />
 </p><p>Well, a lot of things changed I would say. Some people came, some people left. Teams rotating all the time, I'm no longer work with guys I used to work last year. We are doing revolutionary things there, no doubts. It doesn't mean, we are creating new search engines or inventing new type of computer. No, we are revolutionizing ourselves much.. doing the same type of products, but doing it differently.<br />
@@ -54,9 +54,9 @@
   
   <entry>
     <title type="html"><![CDATA[Sayonara Nippon]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/11/sayonara-nippon.html"/>
+    <link href="http://beletsky.net/2011/11/sayonara-nippon.html"/>
     <updated>2011-11-12T21:34:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/11/sayonara-nippon</id>
+    <id>http://beletsky.net/2011/11/sayonara-nippon</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I've just got back from the most wonderful country I ever been to - Japan. <br />
 </p><a href="https://lh5.googleusercontent.com/-JQHNK-xBJqE/Tr7JuF_SRNI/AAAAAAAAHzk/UsxHzEvgek8/s620/Gates.jpg?gl=UA"><br />
@@ -85,9 +85,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to be better developer or 3 accounts rule]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/07/how-to-be-better-developer-or-3.html"/>
+    <link href="http://beletsky.net/2011/07/how-to-be-better-developer-or-3.html"/>
     <updated>2011-07-22T16:46:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/07/how-to-be-better-developer-or-3</id>
+    <id>http://beletsky.net/2011/07/how-to-be-better-developer-or-3</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Oh no, not again! - you might think. Yet another Mr.SmartyPants are going to share his own vision of how to improve in development.
@@ -126,9 +126,9 @@ PS. That's my 100 post for this blog.. and that's my Friday before week vacation
   
   <entry>
     <title type="html"><![CDATA[ASP.NET developers disease]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease.html"/>
+    <link href="http://beletsky.net/2011/03/aspnet-developers-disease.html"/>
     <updated>2011-03-22T14:06:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/03/aspnet-developers-disease</id>
+    <id>http://beletsky.net/2011/03/aspnet-developers-disease</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/MVC etc. So, I do a lot of interviews nowadays and I found out interesting fact. I've noticed symptoms of disease many of many ASP.net guys suffer from. The people who spent a lot of time with WebForms do not really understand web.

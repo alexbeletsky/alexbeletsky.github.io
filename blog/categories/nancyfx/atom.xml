@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: NancyFX | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/nancyfx/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/nancyfx/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CamelCase JSON Formatting for NancyFX Application]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/08/camelcase-json-formatting-for-nancyfx.html"/>
+    <link href="http://beletsky.net/2012/08/camelcase-json-formatting-for-nancyfx.html"/>
     <updated>2012-08-18T14:17:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/08/camelcase-json-formatting-for-nancyfx</id>
+    <id>http://beletsky.net/2012/08/camelcase-json-formatting-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I've spend yet another week playing with it. My original expectations were - I'll be super-duper-fast with it, since it's so comprehensive and powerful. One more time I have to admit - every technology has it's learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
 </p><p>    The good thing, it's very interesting to fight new challenges, and it's so cool that Nancy just "does not contain everything", but actually allows to customize things, as you wish to.<br />
@@ -80,9 +80,9 @@
   
   <entry>
     <title type="html"><![CDATA[Customizing Folders Layout for NancyFX Application]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx.html"/>
+    <link href="http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx.html"/>
     <updated>2012-08-14T20:05:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx</id>
+    <id>http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don't even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
 </p><p>    In my case, during <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />

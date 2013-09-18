@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: MVC | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/mvc/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/mvc/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ASP.NET MVC Routes and Namespaces]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces.html"/>
+    <link href="http://beletsky.net/2012/07/aspnet-mvc-routes-and-namespaces.html"/>
     <updated>2012-07-25T16:42:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/07/aspnet-mvc-routes-and-namespaces</id>
+    <id>http://beletsky.net/2012/07/aspnet-mvc-routes-and-namespaces</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    While I was working on <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC v.2.0.0</a> I noticed a something that contradicts the way I understand how the controller resolving mechanism works. Before, I always thought that namespaces matters, but in practice I saw it otherwise.<br />
 </p><h2>Controller in separate class assembly</h2><p>    The good way of distribution re-usable software is class assembly. Suppose, I have 2 projects - one ASP.NET MVC web application (<code>MvcApplication2</code>), and another one is class assembly (<code>Awesome.Mvc.Lib</code>). Web application references the class library.<br />
@@ -119,9 +119,9 @@
   
   <entry>
     <title type="html"><![CDATA[JSON Model Binding to IDictionary<> is Broken]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is.html"/>
+    <link href="http://beletsky.net/2012/04/json-model-binding-to-idictionary-is.html"/>
     <updated>2012-04-26T09:39:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/json-model-binding-to-idictionary-is</id>
+    <id>http://beletsky.net/2012/04/json-model-binding-to-idictionary-is</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Yesterday, I've been creating small web service based on existing ASP.NET MVC infrastructure. The task was really simple. Web service itself should be just a proxy for existing internal API. The API method takes a <code>Dictionary</code> that contains some fields. So, I've created a data model like that.<br />
 </p><pre class="brush: csharp">public class Notification
@@ -156,9 +156,9 @@ public ActionResult Send(string token, Notification notification)
   
   <entry>
     <title type="html"><![CDATA[New in ASP.NET MVC4: Razor changes]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes.html"/>
+    <link href="http://beletsky.net/2012/04/new-in-aspnet-mvc4-razor-changes.html"/>
     <updated>2012-04-10T21:35:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-razor-changes</id>
+    <id>http://beletsky.net/2012/04/new-in-aspnet-mvc4-razor-changes</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Razor has been changed a little with ASP.NET MVC 4 beta. It's not a kind of radical changes, but rather improvements that make developers happier. As for me, developers happier then you need to write less code to get the same function. It reminded me a ideal device, which is part of <a href="http://www.mindtools.com/pages/article/newCT_92.htm">TRIZ</a> theory. Ideal device is a device that does not exit, but does it function. By analogy, ideal code is the code that not exist but it's function exist. Razor is not that ideal, through.. But it's "more ideal" than previous version. <br />
 </p><h2>No more @Url.Content</h2><p>I got used to @Url.Content and used that for all CSS and JS references. Since it's to commonly used, developers decided to include it on a level of engine. Now, instead of<br />
@@ -190,9 +190,9 @@ public ActionResult Send(string token, Notification notification)
   
   <entry>
     <title type="html"><![CDATA[Why I'm Not Using Bundling.. Yet]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet.html"/>
+    <link href="http://beletsky.net/2012/04/why-im-not-using-bundling-yet.html"/>
     <updated>2012-04-04T18:32:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/why-im-not-using-bundling-yet</id>
+    <id>http://beletsky.net/2012/04/why-im-not-using-bundling-yet</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I'm doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
 </p><h2>It's contra-intuitive</h2><p>Maybe the 'contra-intuitive' is not exact word that reflects my frustration. What I mean, it does not do what you might expect by default. Remember I described two methods RegisterTemplateBundles() and EnableDefaultBundles()? It was really unclear to me what they do until I looked into code. Modern frameworks tend to be as less surprise as possible, but not in case of <code>System.Web.Optimizations</code>. <br />
@@ -226,9 +226,9 @@ public ActionResult Send(string token, Notification notification)
   
   <entry>
     <title type="html"><![CDATA[New in ASP.NET MVC4: Bundling and Minification]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
+    <link href="http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
     <updated>2012-04-02T09:44:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/new-in-aspnet-mvc4-bundling-and</id>
+    <id>http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
 </p><p>The problem is, each HTTP request takes time. One of the most critical Yahoo web applications performance recommendation says - <a href="http://developer.yahoo.com/performance/rules.html">Minimize HTTP request</a>. As few HTTP requests you need to load application as better.<br />

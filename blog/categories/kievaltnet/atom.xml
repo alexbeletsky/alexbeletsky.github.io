@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: KievAltNet | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/kievaltnet/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/kievaltnet/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Kiev ALT.NET Re-launch with Jimmy Bogard]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard.html"/>
+    <link href="http://beletsky.net/2012/11/kiev-altnet-re-launch-with-jimmy-bogard.html"/>
     <updated>2012-11-27T10:16:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/kiev-altnet-re-launch-with-jimmy-bogard</id>
+    <id>http://beletsky.net/2012/11/kiev-altnet-re-launch-with-jimmy-bogard</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>Good news, <a href="http://kievalt.net/">Kiev ALT.NET</a> community! One of the best know ALT.NET developers <a href="http://twitter.com/jbogard">Jimmy Bogard</a> is visiting us on December 11. It's been awhile since the last meetup we had, so it's just great time to gather again and listen to the presentation Jimmy prepared for us.<br />
 </p><p>There will be a talk with intriguing name <i>"Real World Polyglot Persistence"</i>. Here is the short description of it.<br />
@@ -34,9 +34,9 @@
   
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
+    <link href="http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend.html"/>
     <updated>2012-02-27T10:30:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
+    <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
 </p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
@@ -54,9 +54,9 @@
   
   <entry>
     <title type="html"><![CDATA[Kiev ALT.NET Community Thoughts]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/12/kiev-altnet-community-thoughts.html"/>
+    <link href="http://beletsky.net/2011/12/kiev-altnet-community-thoughts.html"/>
     <updated>2011-12-03T11:52:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/12/kiev-altnet-community-thoughts</id>
+    <id>http://beletsky.net/2011/12/kiev-altnet-community-thoughts</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I've just reviewed blog posts I created thought that year and realized that I miss very important piece of information here. Something that literally changed my developers life. And I'm talking about <a href="http://kievalt.net/">Kiev ALT.NET</a> community.<br />
 </p><p>From my first join at the beginning of the year I amazed with very cool and friendly atmosphere there. I tried to visit every meeting and each of them brought some value for me. And the most valuable asset I got there is people I met. Those guys simply rock.<br />

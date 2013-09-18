@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: E-conomic | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/e-conomic/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/e-conomic/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
+    <link href="http://beletsky.net/2013/04/net-developer-in-javascript-world.html"/>
     <updated>2013-04-14T14:35:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
+    <id>http://beletsky.net/2013/04/net-developer-in-javascript-world</id>
     <content type="html"><![CDATA[<div class='post'>
         <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
 </p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don't do .NET development more than 1.5 years for now. It's not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
@@ -41,7 +41,7 @@
 </p><p>Later I started to learn what Node.js platform offers and I was really surprised with it's abilities.<br />
 <p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
 </p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
-</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
 <h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one "language context". I would not call a huge problem, but usually context switching from one language to another can take something.<br />
 </p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I'm selecting JavaScript.<br />
 </p></div>
@@ -51,9 +51,9 @@
   
   <entry>
     <title type="html"><![CDATA[Third Year of E-conomic]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
+    <link href="http://beletsky.net/2013/03/third-year-of-e-conomic.html"/>
     <updated>2013-03-13T20:29:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
+    <id>http://beletsky.net/2013/03/third-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>That's my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I've heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
     <!-- more -->
@@ -71,9 +71,9 @@
   
   <entry>
     <title type="html"><![CDATA[Company Days 2012 in E-conomic]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic.html"/>
+    <link href="http://beletsky.net/2012/09/company-days-2012-in-e-conomic.html"/>
     <updated>2012-09-20T16:58:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/09/company-days-2012-in-e-conomic</id>
+    <id>http://beletsky.net/2012/09/company-days-2012-in-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        Company Days is a yearly event in E-conomic, then all employees gather together. It's usually happen in the middle of September, the time than Copenhagen is especially beautiful. It's been great week, primarily because of opportunity to meet guys whom we work very close to. Besides the developers, primarily located in Denmark and Ukraine, business and operational people from UK, Sweden, Norway, Spain, Germany etc. are also coming, so it makes very cool international environment.<br />
     </p>    <p>        This year was a little special, since we had additional fun. Our CTO had organized the hackathon. The whole day event, supposed to create some valuable hacks for E-conomic product. All developers has been spitted on pairs and extended with business representatives. I had a team of 4 people - 2 developers and 2 business guys. Started at early morning near the blackboard, it was so nice to be part of process where the value is born in such extremely short period. We finally selected the idea, which seems to be very cool in terms of business and realistic in terms of one day implementation.<br />
@@ -91,9 +91,9 @@
   
   <entry>
     <title type="html"><![CDATA[Three month without .NET code]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code.html"/>
+    <link href="http://beletsky.net/2012/07/three-month-without-net-code.html"/>
     <updated>2012-07-11T13:29:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code</id>
+    <id>http://beletsky.net/2012/07/three-month-without-net-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's not farewell letter in style of "Goodbye .NET". But, I just realized that I haven't created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />
 </p><p>    I love .NET and love C# language. C# is probably one of the best language I ever programmed with. I think that .NET is my comfort zone. Web technologies as ASP.NET MVC, Web API, NancyFX are great. But, as I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">said</a> long time ago server side development is not enough to create cool web apps.<br />
@@ -120,9 +120,9 @@
   
   <entry>
     <title type="html"><![CDATA[A year with Git]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/year-with-git.html"/>
+    <link href="http://beletsky.net/2012/05/year-with-git.html"/>
     <updated>2012-05-20T13:43:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/year-with-git</id>
+    <id>http://beletsky.net/2012/05/year-with-git</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
 </p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />

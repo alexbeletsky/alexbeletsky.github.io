@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Continuous | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/continuous/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/continuous/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
+    <link href="http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend.html"/>
     <updated>2012-02-27T10:30:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
+    <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
 </p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
@@ -35,9 +35,9 @@
   
   <entry>
     <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released.html"/>
+    <link href="http://beletsky.net/2012/02/candidate-v001rc-released.html"/>
     <updated>2012-02-14T07:37:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released</id>
+    <id>http://beletsky.net/2012/02/candidate-v001rc-released</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
  </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />
@@ -66,9 +66,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Base Camp 2012]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/01/agile-base-camp-2012.html"/>
+    <link href="http://beletsky.net/2012/01/agile-base-camp-2012.html"/>
     <updated>2012-01-30T20:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/01/agile-base-camp-2012</id>
+    <id>http://beletsky.net/2012/01/agile-base-camp-2012</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Past Saturday I was a part of big Ukrainian event <a href="http://agilebasecamp.org/">Agile Base Camp: From Idea to Product</a>. It's been organized by <a href="http://www.scrumguides.com/">ScrumGuides</a>, pioneers on Agile in Ukraine and organizers of famous <a href="http://www.beletsky.net/search/label/Agile">Agilee</a> series of conferences.<br />
 </p><p>The conference named "From Idea to Product" and focused on product development issues. There was 3 stages there: Main, XP, UX. Main is for more or less common topics as budgeting, motivation etc.. XP is practical stage for developers and UX for user experience engineers. The program of conference was really interesting, but I spend all my day on XP stage (no surprise).<br />
@@ -87,9 +87,9 @@
   
   <entry>
     <title type="html"><![CDATA[Continuous Delivery: Make it work]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/05/continuous-production-make-it-work.html"/>
+    <link href="http://beletsky.net/2011/05/continuous-production-make-it-work.html"/>
     <updated>2011-05-11T10:27:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/05/continuous-production-make-it-work</id>
+    <id>http://beletsky.net/2011/05/continuous-production-make-it-work</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 As soon as we <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">setup</a> project infrastructure in a way that build and deploy is done by one batch command, we are ready to run this process continuously. It is possible to take any CI server you want, I stopped on <a href="http://jenkins-ci.org/">Jenkins</a>.. basically it contains everything I need. But before start with Jenkins, let's one more time take a look current infrastructure and goals.
@@ -205,9 +205,9 @@ What we did is only very basic setup, but it already gives a lot of power. It is
   
   <entry>
     <title type="html"><![CDATA[Continuous Delivery: Setup and run]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/05/continues-production-setup-and-run.html"/>
+    <link href="http://beletsky.net/2011/05/continues-production-setup-and-run.html"/>
     <updated>2011-05-02T11:39:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/05/continues-production-setup-and-run</id>
+    <id>http://beletsky.net/2011/05/continues-production-setup-and-run</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 In my <a href="http://www.beletsky.net/2011/04/continuous-production-overview-and.html">previous post</a> I tried to make it clear that continuous production is for good. This post I'll show how to prepare environment for continuous production. The idea is that you should be able to configure and test it locally. All configurations have to be part of source code under SCM. It should not depend on machine and run any environment you like. Success criteria is: pick up clean machine, do checkout, run build.bat/deploy.bat and have installed web application.

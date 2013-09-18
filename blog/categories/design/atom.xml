@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Design | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/design/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/design/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles.html"/>
+    <link href="http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles.html"/>
     <updated>2012-03-07T14:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles</id>
+    <id>http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
 </p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />
@@ -37,9 +37,9 @@
   
   <entry>
     <title type="html"><![CDATA[My application for 10KAppart competition]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/08/my-application-for-10kappart.html"/>
+    <link href="http://beletsky.net/2011/08/my-application-for-10kappart.html"/>
     <updated>2011-08-24T10:37:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/08/my-application-for-10kappart</id>
+    <id>http://beletsky.net/2011/08/my-application-for-10kappart</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Recently, I've met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
@@ -80,9 +80,9 @@ I would be happy if you try it, tweet it, comment on site. Sources are placed on
   
   <entry>
     <title type="html"><![CDATA[Ninject provider as factory method]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method.html"/>
+    <link href="http://beletsky.net/2011/02/ninject-provider-as-factory-method.html"/>
     <updated>2011-02-13T19:22:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method</id>
+    <id>http://beletsky.net/2011/02/ninject-provider-as-factory-method</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 <a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
@@ -189,9 +189,9 @@ Now, in case of <code>INotificationService</code> object need to be instantiated
   
   <entry>
     <title type="html"><![CDATA[Let's take a REST]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/12/lets-take-rest.html"/>
+    <link href="http://beletsky.net/2010/12/lets-take-rest.html"/>
     <updated>2010-12-23T07:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/12/lets-take-rest</id>
+    <id>http://beletsky.net/2010/12/lets-take-rest</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
@@ -305,9 +305,9 @@ It is much more easier to create web applications API's with MVC framework. The 
   
   <entry>
     <title type="html"><![CDATA[Regex to match a words in dictionary on page body]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/09/regex-to-match-words-in-dictionary-on.html"/>
+    <link href="http://beletsky.net/2010/09/regex-to-match-words-in-dictionary-on.html"/>
     <updated>2010-09-23T14:52:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/09/regex-to-match-words-in-dictionary-on</id>
+    <id>http://beletsky.net/2010/09/regex-to-match-words-in-dictionary-on</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns. 

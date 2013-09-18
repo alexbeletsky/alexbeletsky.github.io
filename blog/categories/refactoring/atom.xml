@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Refactoring | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/refactoring/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/refactoring/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Refactoring to testability]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/refactoring-to-testability.html"/>
+    <link href="http://beletsky.net/2011/02/refactoring-to-testability.html"/>
     <updated>2011-02-21T10:33:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/refactoring-to-testability</id>
+    <id>http://beletsky.net/2011/02/refactoring-to-testability</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Suppose you are working on some web <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">REST</a> API adapter. It would be basically one class with bunch of methods. Each method would represent each supported API call. Through the implementation you would probably landed with something like this,

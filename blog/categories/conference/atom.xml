@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: conference | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/conference/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/conference/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
     <updated>2013-09-16T21:21:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku</id>
+    <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
     <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013.</p>
 
 <p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
@@ -27,7 +27,7 @@
 
 
 
-<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script>
 
 
 <h2>Background</h2>

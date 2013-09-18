@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Backbone.js | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/backbone-dot-js/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/backbone-dot-js/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Building Single Pages Applications]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-pages-applications.html"/>
     <updated>2013-04-29T20:26:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
+    <id>http://beletsky.net/2013/04/building-single-pages-applications</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
     </p>
@@ -25,7 +25,7 @@
     </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We'll check out new concept of web applications, that are called - Single Page Applications.<br />
     </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it's UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
     <!-- more -->
- <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+ <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
     </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
     </p>    <h2>        API oriented architecture<br />
     </h2>    <p>        Before we jump into SPA details, let's talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it's being adopted by many vendors and became kind of default. We are talking about 'API oriented' architecture.<br />
@@ -72,9 +72,9 @@
   
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-page-applications-with.html"/>
     <updated>2013-04-24T06:11:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
+    <id>http://beletsky.net/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
 </p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
@@ -96,9 +96,9 @@
   
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring.html"/>
+    <link href="http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring.html"/>
     <updated>2013-04-10T20:53:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring</id>
+    <id>http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let's take a look what type of event does Backbone.Collection have.<br />
     <!-- more -->
@@ -218,9 +218,9 @@
   
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring.html"/>
+    <link href="http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html"/>
     <updated>2013-03-27T17:51:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring</id>
+    <id>http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        After initial introduction to Backbone's <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
     <!-- more -->
@@ -477,9 +477,9 @@
   
   <entry>
     <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields.html"/>
+    <link href="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html"/>
     <updated>2012-12-25T22:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields</id>
+    <id>http://beletsky.net/2012/12/introducing-backbonecomputedfields</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Recently, I've been working on small project which I want to share here. It's called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it's small plugin that extends Backbone.Model functionality a bit.<br />
     </p>    <p>        I needed to have a model with 'virtual' fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />

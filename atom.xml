@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
     <updated>2013-09-16T21:21:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/09/paas-in-your-pocket-with-dokku</id>
+    <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
     <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013.</p>
 
 <p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
@@ -27,7 +27,7 @@
 
 
 
-<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script>
 
 
 <h2>Background</h2>
@@ -134,9 +134,9 @@
   
   <entry>
     <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant.html"/>
+    <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
     <updated>2013-09-03T19:57:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/09/playing-with-dokku-on-vagrant</id>
+    <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
     <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
 
 <p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
@@ -357,7 +357,7 @@
 
 <p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/node-simple-run.png"></p>
+<p><img src="http://beletsky.net/images/blog/node-simple-run.png"></p>
 
 <p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
 
@@ -369,9 +369,9 @@
   
   <entry>
     <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
+    <link href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
     <updated>2013-08-28T22:00:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
+    <id>http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
     <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
 
 <p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
@@ -515,9 +515,9 @@
   
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air.html"/>
+    <link href="http://beletsky.net/2013/08/first-week-in-the-air.html"/>
     <updated>2013-08-06T05:40:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/08/first-week-in-the-air</id>
+    <id>http://beletsky.net/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 
 <p>Here is a little retrospective on the things happened through that seven days.</p>
@@ -570,9 +570,9 @@
   
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public.html"/>
+    <link href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html"/>
     <updated>2013-07-28T09:30:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/07/likeastore-app-goes-to-public</id>
+    <id>http://beletsky.net/2013/07/likeastore-app-goes-to-public</id>
     <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
 
 <p>Bootstrapping is always hard, despite of the actual product size. Finishing something that other people will see, just doubles the stake &ndash; you could not fail, wish to do best of the best. It&rsquo;s been really breathtaking journey (or I would call it beginning of the path), so if you are interested I&rsquo;ll share some details of product and it&rsquo;s development.</p>
@@ -580,7 +580,7 @@
 <!--More-->
 
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/likeastore-home.png" alt="likeastore" /></p>
+<p><img src="http://beletsky.net/images/blog/likeastore-home.png" alt="likeastore" /></p>
 
 <h2>Likeastore in few simple words</h2>
 
@@ -659,9 +659,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
+    <link href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
     <updated>2013-07-19T19:36:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
+    <id>http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
     <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
 
 <p>But very fast we realized that AppFog does not suite us at lot.</p>
@@ -763,9 +763,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging.html"/>
+    <link href="http://beletsky.net/2013/07/think-ahead-think-logging.html"/>
     <updated>2013-07-04T09:02:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/07/think-ahead-think-logging</id>
+    <id>http://beletsky.net/2013/07/think-ahead-think-logging</id>
     <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 
 <p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
@@ -1114,7 +1114,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 
 <p>Logentries gives you API to submit information there + Dashboard, there logs can be viewed, search and analyzed.</p>
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
+<p><img src="http://beletsky.net/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
 
 <p>Install <code>node-logentries</code> client,</p>
 
@@ -1177,7 +1177,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 
 <p>Again, it&rsquo;s easy to do with Logentries. Just go to <code>Alerts</code> section and setup patterns of errors you interested and email addresses for notifications.</p>
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
+<p><img src="http://beletsky.net/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
 
 <p>Email is not only one option, you can setup for SMS or webhook for your app. So, anytime error or warning appeared you will be notified and take action on it.</p>
 
@@ -1191,9 +1191,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago.html"/>
+    <link href="http://beletsky.net/2013/06/we-were-wrong-10-years-ago.html"/>
     <updated>2013-06-20T23:43:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/06/we-were-wrong-10-years-ago</id>
+    <id>http://beletsky.net/2013/06/we-were-wrong-10-years-ago</id>
     <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
 
 <p>Early 2000&rsquo;s I was programming C/C++ and the best way of passing some data from one machine to another, was &ndash; <em>socket</em>. The time took understanding of sockets, I clearly saw it&rsquo;s the best solution for that task.</p>
@@ -1227,9 +1227,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress.html"/>
+    <link href="http://beletsky.net/2013/06/moved-from-blogger-to-octopress.html"/>
     <updated>2013-06-15T16:18:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/06/moved-from-blogger-to-octopress</id>
+    <id>http://beletsky.net/2013/06/moved-from-blogger-to-octopress</id>
     <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
 
 <p>That time, blogger was quite obvious choice. Google powered, editor and plain HTML support, templates etc. I used to use Visual Studio to create posts, then pasted that to blogger, posting images on Picassa and code on Github. That worked for quite while, but now I consider that is very heavyweight approach.</p>
@@ -1267,7 +1267,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 
 <p>So, I spent maybe 2-3 hours to sketch new blog look.</p>
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/design-blog-sketch.png" title="[beletsky.net design sketch [design sketch]]" ></p>
+<p><img src="http://beletsky.net/images/blog/design-blog-sketch.png" title="[beletsky.net design sketch [design sketch]]" ></p>
 
 <p>I showed that to colleagues and received some valuable feedback from <a href="http://twitter.com/voronianski">@voronianski</a> regarding fonts and styles. Sketch looked amazingly good on Mac retina, with custom fonts (Open Sans, Lato). It has anti-aliasing issues on Windows, though.</p>
 
@@ -1275,7 +1275,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 
 <p>I&rsquo;ve spent up to 16 hours to make it work nicely. There was a lot of CSS style conflicts between existing SASS and my custom one. So, I had to disable almost everything and use my custom <code>style.css</code>. But still, that was worth effort if you compare with previous look,</p>
 
-<p><img src="http://alexanderbeletsky.github.io/images/blog/old-beletsky-net.png" title="[beletsky.net old look [old look]]" ></p>
+<p><img src="http://beletsky.net/images/blog/old-beletsky-net.png" title="[beletsky.net old look [old look]]" ></p>
 
 <p>Since I had some heavily read posts, I need to make sure that old google indexed URL&rsquo;s would work. Fourtunatelly, that was really easy to configure. In <code>_config.yml</code>, just paste:</p>
 
@@ -1315,9 +1315,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
+    <link href="http://beletsky.net/2013/05/github-as-blogging-platform.html"/>
     <updated>2013-05-16T18:55:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
+    <id>http://beletsky.net/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
     </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how&#8217;s while I create some code. It&#8217;s just hard to blog about. As you didn&#8217;t do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
@@ -1332,9 +1332,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Building Single Pages Applications]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-pages-applications.html"/>
     <updated>2013-04-29T20:26:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-pages-applications</id>
+    <id>http://beletsky.net/2013/04/building-single-pages-applications</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
     </p>
@@ -1342,7 +1342,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
     </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We&#8217;ll check out new concept of web applications, that are called - Single Page Applications.<br />
     </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it&#8217;s UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
     <!-- more -->
- <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+ <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
     </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
     </p>    <h2>        API oriented architecture<br />
     </h2>    <p>        Before we jump into SPA details, let&#8217;s talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it&#8217;s being adopted by many vendors and became kind of default. We are talking about &#8216;API oriented&#8217; architecture.<br />
@@ -1388,9 +1388,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-page-applications-with.html"/>
     <updated>2013-04-24T06:11:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
+    <id>http://beletsky.net/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
 </p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
@@ -1411,9 +1411,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[.NET Developer in JavaScript World]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world.html"/>
+    <link href="http://beletsky.net/2013/04/net-developer-in-javascript-world.html"/>
     <updated>2013-04-14T14:35:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/net-developer-in-javascript-world</id>
+    <id>http://beletsky.net/2013/04/net-developer-in-javascript-world</id>
     <content type="html"><![CDATA[<div class='post'>
         <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
 </p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don&#8217;t do .NET development more than 1.5 years for now. It&#8217;s not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
@@ -1437,7 +1437,7 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 </p><p>Later I started to learn what Node.js platform offers and I was really surprised with it&#8217;s abilities.<br />
 <p>CommonJS style of writing code started to make sense. Namespacing problem is solved, so you can build big applications there.<br />
 </p><p>I have to add that Node.js is a significant Open Source player. Everything you get by npm is open source, you can check the sources if anything unclear. Most of Node.js modules are hosted in github, so even if you experience issues you can fix it.<br />
-</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://alexanderbeletsky.github.io//speakerdeck.com/assets/embed.js"></script><br />
+</p><script async class="speakerdeck-embed" data-id="8e251d9087200130c2401231381d5999" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
 <h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one &#8220;language context&#8221;. I would not call a huge problem, but usually context switching from one language to another can take something.<br />
 </p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I&#8217;m selecting JavaScript.<br />
 </p></div>
@@ -1446,9 +1446,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring.html"/>
+    <link href="http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring.html"/>
     <updated>2013-04-10T20:53:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/baby-steps-to-backbonejs-exploring</id>
+    <id>http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
     <!-- more -->
@@ -1567,9 +1567,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on.html"/>
+    <link href="http://beletsky.net/2013/03/likeastore-application-built-on.html"/>
     <updated>2013-03-31T18:52:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/likeastore-application-built-on</id>
+    <id>http://beletsky.net/2013/03/likeastore-application-built-on</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can&#8217;t guess which projects will be popular or not.. and the second, that it&#8217;s hard to do something valuable alone.<br />
     </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - &#8220;Likeastore&#8221;<br />
@@ -1600,9 +1600,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring.html"/>
+    <link href="http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html"/>
     <updated>2013-03-27T17:51:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/baby-steps-to-backbonejs-exploring</id>
+    <id>http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        After initial introduction to Backbone&#8217;s <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
     <!-- more -->
@@ -1858,9 +1858,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Third Year of E-conomic]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic.html"/>
+    <link href="http://beletsky.net/2013/03/third-year-of-e-conomic.html"/>
     <updated>2013-03-13T20:29:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/03/third-year-of-e-conomic</id>
+    <id>http://beletsky.net/2013/03/third-year-of-e-conomic</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>That&#8217;s my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I&#8217;ve heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
 	<!-- more -->
@@ -1877,9 +1877,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Looking back to 2012]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012.html"/>
+    <link href="http://beletsky.net/2013/01/looking-back-to-2012.html"/>
     <updated>2013-01-05T17:25:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/01/looking-back-to-2012</id>
+    <id>http://beletsky.net/2013/01/looking-back-to-2012</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
     </p>    <h2>Work in e-conomic</h2>    <p>        That was yet another great year in e-conomic. We have build great app - <a href="https://debitoor.com/">Debitoor</a>. Along the way, we were trying different approaches, re-writing things from scratch, designing and re-designing again and again. Finally we got very solid application built upon Node.js, MongoDB and Backbone.js. Debitoor has been created with scalability in mind, we started with Heroku cloud service, eventually moved to Amazon EC for back-end and Amazon Cloud Front for front-end. Now, it&#8217;s working amazingly fast and for 8 month we gathered ~20,000 signups, launched service for many countries.<br />
@@ -1925,9 +1925,9 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
   
   <entry>
     <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields.html"/>
+    <link href="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html"/>
     <updated>2012-12-25T22:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/introducing-backbonecomputedfields</id>
+    <id>http://beletsky.net/2012/12/introducing-backbonecomputedfields</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
     </p>    <p>        I needed to have a model with &#8216;virtual&#8217; fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
@@ -2014,9 +2014,9 @@ var customerId = invoice.get('customerId');
   
   <entry>
     <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
+    <link href="http://beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
     <updated>2012-12-19T21:52:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/baby-steps-to-backbonejs-unit-testing</id>
+    <id>http://beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
 </p><p>Next very important Backbone&#8217;s entry to test is View.<br />

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Code Kata | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/code-kata/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/code-kata/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Game of Life]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/09/the-game-of-life.html"/>
+    <link href="http://beletsky.net/2012/09/the-game-of-life.html"/>
     <updated>2012-09-27T11:52:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/09/the-game-of-life</id>
+    <id>http://beletsky.net/2012/09/the-game-of-life</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
     </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
@@ -56,9 +56,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Limit of Keystrokes]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/limit-of-keystrokes.html"/>
+    <link href="http://beletsky.net/2012/05/limit-of-keystrokes.html"/>
     <updated>2012-05-26T15:03:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/limit-of-keystrokes</id>
+    <id>http://beletsky.net/2012/05/limit-of-keystrokes</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Some time ago I've posted an article called <a href="http://www.beletsky.net/2011/07/how-to-be-better-developer-or-3.html">How to be better developer or 3 accounts rule</a> where I shared my vision on importance of having some accounts if you care about professionalism and mastery. The basic idea there is you have to produce a lot, you have to write a lot. You have to write code, write blog posts and help people on forums.<br />
 </p><p>If you have seen one of the latest Scott Hanselman's <a href="http://www.hanselman.com/blog/ItsNotWhatYouReadItsWhatYouIgnoreVideoOfScottHanselmansPersonalProductivityTips.aspx">Productivity Tips</a> video, you probably heard nice metaphor about the "Limit of Keystrokes". It sounds really funny, Scott saying - "everybody is having limited count of keystokes, if you reach you count - you dead". That means, we have to think on each keystroke we do with much care. <br />
@@ -72,9 +72,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extension methods and clean code]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code.html"/>
+    <link href="http://beletsky.net/2011/02/extension-methods-and-clean-code.html"/>
     <updated>2011-02-10T10:52:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code</id>
+    <id>http://beletsky.net/2011/02/extension-methods-and-clean-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension methods</a> is one of my favorite features of C# language. It appeared from version 3.0 and became very popular.

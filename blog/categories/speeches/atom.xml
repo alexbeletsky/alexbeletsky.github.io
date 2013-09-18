@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Speeches | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/speeches/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/speeches/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[MS SWIT 2012]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/03/ms-swit-2012.html"/>
+    <link href="http://beletsky.net/2012/03/ms-swit-2012.html"/>
     <updated>2012-03-27T09:26:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/03/ms-swit-2012</id>
+    <id>http://beletsky.net/2012/03/ms-swit-2012</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The 22-23 of March this year I had a chance to participate biggest event organized by Microsoft Ukraine - <a href="http://www.msswit.in.ua/eng/">MS SWIT 2012</a>. <br />
 </p><a href="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png"><br />

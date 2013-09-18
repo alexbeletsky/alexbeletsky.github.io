@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ELMAH.MVC | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/elmah-dot-mvc/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/elmah-dot-mvc/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC 2.0.2 is out]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out.html"/>
+    <link href="http://beletsky.net/2012/11/elmahmvc-202-is-out.html"/>
     <updated>2012-11-09T17:21:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/elmahmvc-202-is-out</id>
+    <id>http://beletsky.net/2012/11/elmahmvc-202-is-out</id>
     <content type="html"><![CDATA[<div class='post'>
     <p><a href="http://nuget.org/packages/Elmah.MVC">ELMAH MVC 2.0.2</a> has been just pushed recently. This is a contribution by <a href="https://github.com/jamescrowley">James Crowley</a> which adds a special configuration key that prevents ELMAH.MVC to setup a global `HandleErrorAttribute()`. It's in particular useful, than you already setup some configuration inside the app, so you don't want default behavior.<br />
 </p><p>Inside the <code>web.config</code> file you will find a configuration setting for that.<br />
@@ -37,9 +37,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC 2.0.1 Update is Out]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out.html"/>
+    <link href="http://beletsky.net/2012/08/elmahmvc-201-update-is-out.html"/>
     <updated>2012-08-16T20:01:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/08/elmahmvc-201-update-is-out</id>
+    <id>http://beletsky.net/2012/08/elmahmvc-201-update-is-out</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    I've just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can't wait to share.<br />
 </p><h2>VB.NET projects support</h2><p>    For quite a while, I've been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I've just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
@@ -52,9 +52,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC v.2.0.0 - Release Candidate]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate.html"/>
+    <link href="http://beletsky.net/2012/06/elmahmvc-v200-release-candidate.html"/>
     <updated>2012-06-13T18:42:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v200-release-candidate</id>
+    <id>http://beletsky.net/2012/06/elmahmvc-v200-release-candidate</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        I've just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I'm about to spent sometime with testing and collecting feedback before it's availability.<br />
     </p>    <p>        I think ELMAH.MVC is getting it's shape. Hopefully it will be as easy to use as indented.<br />
@@ -74,9 +74,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH.MVC v2.0 is coming]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming.html"/>
+    <link href="http://beletsky.net/2012/06/elmahmvc-v20-is-coming.html"/>
     <updated>2012-06-09T17:36:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/06/elmahmvc-v20-is-coming</id>
+    <id>http://beletsky.net/2012/06/elmahmvc-v20-is-coming</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
     </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
@@ -94,9 +94,9 @@
   
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend.html"/>
+    <link href="http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend.html"/>
     <updated>2012-02-27T10:30:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/speeches-hat-trick-for-this-weekend</id>
+    <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
 </p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: DDD | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/ddd/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/ddd/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Greg Young and Rinat Abdulin Visited Kyiv]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited.html"/>
+    <link href="http://beletsky.net/2011/10/greg-young-and-rinat-abdulin-visited.html"/>
     <updated>2011-10-25T09:47:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited</id>
+    <id>http://beletsky.net/2011/10/greg-young-and-rinat-abdulin-visited</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It finally happened, <a href="http://codebetter.com/gregyoung/">Greg Young</a> and <a href="http://abdullin.com/">Rinat Abdulin</a> have been guesting Kyiv for almost the week. <br />
 </p><p>Initially we've gathered on <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting. The format a little changed that time, but I would say that was really interesting meeting. Greg introduced one of the project he currently working on <a href="http://continuoustests.com/">http://continuoustests.com/</a> that now referenced as "Mighty Moose". "Mighty Moose" appear to be really powerful tool that tracks both code and tests changes, and in case of changes taking place it automatically re-runs all related test cases. So, we've grabbed the latest version on MM and played with it a bit. MM is officially in betta now and gonna to be release soon, so did a small contribution by submitting some bugs found on a fly. I also really much enjoyed the quick demonstration of <a href="https://github.com/gregoryyoung/Simple.Testing">Simple.Testing</a> framework. It worth to have a separate blog post on that, but in short - it is BDD style framework that literally produce plain English specifications as it's output. It's indeed very simple - just several hundreds LOC's, but very impressive.<br />
@@ -34,9 +34,9 @@
   
   <entry>
     <title type="html"><![CDATA[DDD, Implementation of Repository pattern with Linq to SQL]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/06/ddd-implementation-of-repository.html"/>
+    <link href="http://beletsky.net/2010/06/ddd-implementation-of-repository.html"/>
     <updated>2010-06-30T19:06:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/06/ddd-implementation-of-repository</id>
+    <id>http://beletsky.net/2010/06/ddd-implementation-of-repository</id>
     <content type="html"><![CDATA[<div class='post'>
 Lets review first and one of major DDD pattern - Repository. Repository is something that provides access to an entities objects (domain objects). Here what DDD patterns guide says on Repositories:
 <br />
@@ -146,9 +146,9 @@ It is really easy to start up with Repositories keeping its implementation as si
   
   <entry>
     <title type="html"><![CDATA[DDD, Domain Driven Design]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/06/ddd-domain-driven-development.html"/>
+    <link href="http://beletsky.net/2010/06/ddd-domain-driven-development.html"/>
     <updated>2010-06-28T14:00:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/06/ddd-domain-driven-development</id>
+    <id>http://beletsky.net/2010/06/ddd-domain-driven-development</id>
     <content type="html"><![CDATA[<div class='post'>
 There is one great book by Jimmy Nilsson <a href="http://domaindrivendesign.org/books#DDD_apply">Applying Domain-Driven Design and Patterns</a> (russian translation of that book is just awful, so now I'm looking for orignal copy). Jimmy is describing DDD with a very nice examples and concepts, also he gives a good attension to TDD 
     and refactoring. If you want to start with DDD (and you have to) you should 
@@ -201,9 +201,9 @@ As I said on a beginning DDD is something that every developer shound aware abou
   
   <entry>
     <title type="html"><![CDATA[Web development: ASP.NET Ajax, ScriptManager to recover a password]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/06/web-development-aspnet-ajax.html"/>
+    <link href="http://beletsky.net/2010/06/web-development-aspnet-ajax.html"/>
     <updated>2010-06-27T00:58:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/06/web-development-aspnet-ajax</id>
+    <id>http://beletsky.net/2010/06/web-development-aspnet-ajax</id>
     <content type="html"><![CDATA[<div class='post'>
 Remember a site we started to create in previous articles. What we've got is simple web application, 
     with a registration functionality. During registration you submit email, password and secret phrase. We going to use this secret phrase today to recover forgotten passwords. Functionality is bit artifictial but my goal is to demonstrate usage of ASP.NET Ajax framework, namely ScripManager object as very usefully component for ajaxifying your applications.

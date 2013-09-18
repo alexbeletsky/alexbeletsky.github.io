@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Tips | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/tips/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/tips/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaScript Object Creation by New Operator]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new.html"/>
+    <link href="http://beletsky.net/2012/11/javascript-object-creation-by-new.html"/>
     <updated>2012-11-12T15:50:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/11/javascript-object-creation-by-new</id>
+    <id>http://beletsky.net/2012/11/javascript-object-creation-by-new</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
     </p>    <pre class="brush: js">function Person (name) {
@@ -50,9 +50,9 @@ console.log(person.name);
   
   <entry>
     <title type="html"><![CDATA[Developing Web Applications Faster]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster.html"/>
+    <link href="http://beletsky.net/2012/08/developing-web-applications-faster.html"/>
     <updated>2012-08-20T12:20:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/08/developing-web-applications-faster</id>
+    <id>http://beletsky.net/2012/08/developing-web-applications-faster</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    If you haven't seen Bret Victor's <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
 </p><p>    As a developers, we do code. Applying Victor's principle, ideally we should have this code immediately running and showing it's results of execution. Some experimental IDE's like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> is trying to adopt this principle now. <br />
@@ -102,9 +102,9 @@ console.log(person.name);
   
   <entry>
     <title type="html"><![CDATA[Customizing Folders Layout for NancyFX Application]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx.html"/>
+    <link href="http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx.html"/>
     <updated>2012-08-14T20:05:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/08/customizing-folders-layout-for-nancyfx</id>
+    <id>http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don't even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
 </p><p>    In my case, during <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
@@ -157,9 +157,9 @@ console.log(person.name);
   
   <entry>
     <title type="html"><![CDATA[Convention based IoC configuration]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration.html"/>
+    <link href="http://beletsky.net/2012/01/convention-based-ioc-configuration.html"/>
     <updated>2012-01-24T16:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration</id>
+    <id>http://beletsky.net/2012/01/convention-based-ioc-configuration</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
 </p><h2>What's are conventions?<br />
@@ -274,9 +274,9 @@ private static void RegisterServices(IKernel kernel)
   
   <entry>
     <title type="html"><![CDATA[Using ASP.NET MVC Validation Mechanism without ASP.NET MVC]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism.html"/>
+    <link href="http://beletsky.net/2012/01/using-aspnet-mvc-validation-mechanism.html"/>
     <updated>2012-01-10T21:30:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/01/using-aspnet-mvc-validation-mechanism</id>
+    <id>http://beletsky.net/2012/01/using-aspnet-mvc-validation-mechanism</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />
 </p><p>During implementation of some feature for <a href="https://github.com/alexanderbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it "configured" or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />

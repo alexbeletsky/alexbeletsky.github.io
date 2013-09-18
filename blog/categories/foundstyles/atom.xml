@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Foundstyles | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/foundstyles/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/foundstyles/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles.html"/>
+    <link href="http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles.html"/>
     <updated>2012-03-07T14:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/03/foundstylescom-ready-to-use-styles</id>
+    <id>http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
 </p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />

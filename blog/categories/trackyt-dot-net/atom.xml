@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Trackyt.net | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/trackyt-dot-net/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/trackyt-dot-net/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Retrospective of Trackyt.net or Best Project I Ever Accomplished]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best.html"/>
+    <link href="http://beletsky.net/2012/12/retrospective-of-trackytnet-or-best.html"/>
     <updated>2012-12-01T16:11:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/12/retrospective-of-trackytnet-or-best</id>
+    <id>http://beletsky.net/2012/12/retrospective-of-trackytnet-or-best</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It's been to years ago, I've <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I've cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
     </p>    <p>        This project is first attempt to release something. I had some pet projects before, but never ever made them done. Trackyt.net started as simple application to learn some JavaScript programming and HTML. It turns out to be much, much, much more. Even it seems to be very simple, but I've spent a lot of energy on it.<br />
@@ -58,9 +58,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ninject provider as factory method]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method.html"/>
+    <link href="http://beletsky.net/2011/02/ninject-provider-as-factory-method.html"/>
     <updated>2011-02-13T19:22:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/ninject-provider-as-factory-method</id>
+    <id>http://beletsky.net/2011/02/ninject-provider-as-factory-method</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 <a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
@@ -167,9 +167,9 @@ Now, in case of <code>INotificationService</code> object need to be instantiated
   
   <entry>
     <title type="html"><![CDATA[Testing REST services with javascript]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript.html"/>
+    <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
     <updated>2010-12-30T08:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript</id>
+    <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
@@ -268,9 +268,9 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   
   <entry>
     <title type="html"><![CDATA[You stucked? Stop and ask for help!]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/11/you-stucked-stop-and-ask-for-help.html"/>
+    <link href="http://beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html"/>
     <updated>2010-11-26T13:24:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/11/you-stucked-stop-and-ask-for-help</id>
+    <id>http://beletsky.net/2010/11/you-stucked-stop-and-ask-for-help</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 I've been working on one task for last several days. In a product I work there is feature that looks like Excel - template editor. User is able to put a data to sheets and do some simple calculation with formulas (SUM, MUL etc.). This functionality has been created far ago and worked fine. But recently we've changed our engine and now we support not only "plain" data structure, but expanded one - when user is able to say - "this column or row is expanded with such data". Data size is dynamic and could be predicted while template edition and SUM function have to take into account that data is expanded.
@@ -321,9 +321,9 @@ Have you been to such situation, do you think it's valuable if you have some sto
   
   <entry>
     <title type="html"><![CDATA[I've released my own product - Trackyt.net]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/11/ive-release-my-own-product-trackytnet.html"/>
+    <link href="http://beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html"/>
     <updated>2010-11-24T07:53:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/11/ive-release-my-own-product-trackytnet</id>
+    <id>http://beletsky.net/2010/11/ive-release-my-own-product-trackytnet</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 I've not been blogging for awhile, not because I'm too lazy but because I've spent all the time for my own first release. And today I'm very happy, proud and excited to announce that <a href="http://www.trackyt.net">Trackyt.net</a> is now available online. 

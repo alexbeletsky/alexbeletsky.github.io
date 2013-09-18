@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: DAL | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/dal/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/dal/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to export SQL data script for SQL Express 2008 R2]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/how-to-export-sql-data-script-for-sql.html"/>
+    <link href="http://beletsky.net/2011/02/how-to-export-sql-data-script-for-sql.html"/>
     <updated>2011-02-06T15:33:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/how-to-export-sql-data-script-for-sql</id>
+    <id>http://beletsky.net/2011/02/how-to-export-sql-data-script-for-sql</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Before deployment of new version of my application I wanted to make sure that everything is alright, by doing development test on my machine. I backed up production database and copied it my local environment. Task was easy, restore database from backup and run all unit/integration tests, run the smoke test of application manually. But as I started to restore database I got such error from my SQL Express Management Studio: 
@@ -83,9 +83,9 @@ This helped me quickly to workaround "version incompatibility" issue, hope it mi
   
   <entry>
     <title type="html"><![CDATA[Testing database and Test database]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/11/testing-database-and-test-database.html"/>
+    <link href="http://beletsky.net/2010/11/testing-database-and-test-database.html"/>
     <updated>2010-11-05T08:43:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/11/testing-database-and-test-database</id>
+    <id>http://beletsky.net/2010/11/testing-database-and-test-database</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Testing the database is important. It is absolutely required then your DAL is simply a bunch of methods that do SQL against the DB. It still required to be done then you rely on some ORM (like Linq to SQL, NHibernate etc).

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Open source | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/open-source/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Github as blogging platform]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html"/>
+    <link href="http://beletsky.net/2013/05/github-as-blogging-platform.html"/>
     <updated>2013-05-16T18:55:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform</id>
+    <id>http://beletsky.net/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
     </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how's while I create some code. It's just hard to blog about. As you didn't do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
@@ -33,9 +33,9 @@
   
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-page-applications-with.html"/>
     <updated>2013-04-24T06:11:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
+    <id>http://beletsky.net/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
 </p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
@@ -57,9 +57,9 @@
   
   <entry>
     <title type="html"><![CDATA[NancyFX Migration from 0.9 to 0.10]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/nancyfx-migration-from-09-to-010.html"/>
+    <link href="http://beletsky.net/2012/02/nancyfx-migration-from-09-to-010.html"/>
     <updated>2012-02-29T12:16:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/nancyfx-migration-from-09-to-010</id>
+    <id>http://beletsky.net/2012/02/nancyfx-migration-from-09-to-010</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Recently, I've <a href="https://github.com/Code52/Ideastrike/pull/92">upgraded</a> IdeaStrike project from NancyFX 0.9 to the latest 0.10 version. There were some very unclear moments, fortunately due to great support of <a href="">@thecodejunkie</a> and <a href="">@grumpydev</a> they are solved. As a result, the <a href="https://github.com/NancyFx/Nancy/issues/520">issue 520</a> was born, that contains a lot of text inside. I'll try to sum up all important things into one blog post.<br />
 </p><h2>Running update</h2><p>With NuGet updating dependencies is very easy, just run in package manager console:<br />
@@ -179,9 +179,9 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
   
   <entry>
     <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites.html"/>
+    <link href="http://beletsky.net/2012/02/foundation-framework-for-web-sites.html"/>
     <updated>2012-02-21T11:15:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/foundation-framework-for-web-sites</id>
+    <id>http://beletsky.net/2012/02/foundation-framework-for-web-sites</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
 </p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
@@ -236,9 +236,9 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
   
   <entry>
     <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released.html"/>
+    <link href="http://beletsky.net/2012/02/candidate-v001rc-released.html"/>
     <updated>2012-02-14T07:37:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/candidate-v001rc-released</id>
+    <id>http://beletsky.net/2012/02/candidate-v001rc-released</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
  </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />

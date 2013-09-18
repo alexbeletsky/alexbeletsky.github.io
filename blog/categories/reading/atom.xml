@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Reading | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/reading/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/reading/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How do I seek for knowledge?]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/04/how-do-i-seek-for-knowledge.html"/>
+    <link href="http://beletsky.net/2011/04/how-do-i-seek-for-knowledge.html"/>
     <updated>2011-04-08T18:30:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/04/how-do-i-seek-for-knowledge</id>
+    <id>http://beletsky.net/2011/04/how-do-i-seek-for-knowledge</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Developers job is nothing more than other engineers specialties except one big difference. Technologies we are using are changing very fast and to feel confidence in daily work you have to be up-to-date with latest changes in development world. That's why I usually ask people "How do you seek for knowledge?", "How you sure you up-to-date?". And today I gonna share my primary sources of information.
@@ -112,9 +112,9 @@ Picking a little bit from every source of information make you more comfortable 
   
   <entry>
     <title type="html"><![CDATA[Interesting from my Reader this week]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/07/interesting-from-my-reader-this-week_09.html"/>
+    <link href="http://beletsky.net/2010/07/interesting-from-my-reader-this-week_09.html"/>
     <updated>2010-07-09T17:58:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/07/interesting-from-my-reader-this-week_09</id>
+    <id>http://beletsky.net/2010/07/interesting-from-my-reader-this-week_09</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 My weekly update is what is going on in my Reader:
@@ -149,9 +149,9 @@ My weekly update is what is going on in my Reader:
   
   <entry>
     <title type="html"><![CDATA[Interesting from my Reader this week]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/07/interesting-from-my-reader-this-week.html"/>
+    <link href="http://beletsky.net/2010/07/interesting-from-my-reader-this-week.html"/>
     <updated>2010-07-02T11:37:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/07/interesting-from-my-reader-this-week</id>
+    <id>http://beletsky.net/2010/07/interesting-from-my-reader-this-week</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 This week I liked such things came up from my reader.

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Mobile | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/mobile/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/mobile/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ASP.NET Articles Mobile Application]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/04/aspnet-articles-mobile-application.html"/>
+    <link href="http://beletsky.net/2012/04/aspnet-articles-mobile-application.html"/>
     <updated>2012-04-12T16:50:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/04/aspnet-articles-mobile-application</id>
+    <id>http://beletsky.net/2012/04/aspnet-articles-mobile-application</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Do you like <a href="http://asp.net">asp.net</a> web site content? Do you enjoy reading fine selected articles about ASP.NET and related technologies? Me too, but I spent most of the reading from my iPad. And unfortunately <a href="http://asp.net">asp.net</a> is not that mobile friendly yet, moreover articles are just a bunch of links to developers blogs, that might not so be adapted for mobile devices as well. <br />
 </p><p>So, I would like to introduce mobile application that I created to close the gap. Please welcome <a href="http://aspnetmobile.apphb.com/">http://aspnetmobile.apphb.com/</a>.<br />

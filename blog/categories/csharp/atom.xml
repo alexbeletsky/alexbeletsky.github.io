@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: CSharp | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/csharp/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/csharp/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[A little bit on Javascript magic inside C# code]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/07/little-bit-on-javascript-magic-inside-c.html"/>
+    <link href="http://beletsky.net/2011/07/little-bit-on-javascript-magic-inside-c.html"/>
     <updated>2011-07-15T17:28:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/07/little-bit-on-javascript-magic-inside-c</id>
+    <id>http://beletsky.net/2011/07/little-bit-on-javascript-magic-inside-c</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 C# and Javascript are both my favorite languages. I believe that those two are best languages in a world (perhaps I haven't started to learn Ruby). With a quite long practice in Javascript, you start to feel real power of dynamic language. Even more, you are so much get used for particular code constructions that you try to do the same things in C#.

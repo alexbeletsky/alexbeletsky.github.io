@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: NuGet | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/nuget/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/nuget/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH MVC: Answering questions]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/12/elmah-mvc-answering-questions.html"/>
+    <link href="http://beletsky.net/2011/12/elmah-mvc-answering-questions.html"/>
     <updated>2011-12-11T12:25:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/12/elmah-mvc-answering-questions</id>
+    <id>http://beletsky.net/2011/12/elmah-mvc-answering-questions</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I've received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
 </p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
@@ -42,9 +42,9 @@
   
   <entry>
     <title type="html"><![CDATA[ELMAH MVC controller released on NuGet]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/08/elmah-mvc-controller-released-on-nuget.html"/>
+    <link href="http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html"/>
     <updated>2011-08-29T21:20:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/08/elmah-mvc-controller-released-on-nuget</id>
+    <id>http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        I dedicated some time for that and happy to announce - ELMAH MVC controller released         on NuGet.     </p><p>        Due to the latest interest, feedback and changes - it has no sense         at all to keep that code just in blog post. In my <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">previous</a> post I promised to create NuGet package for that, so here we are:     </p><div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC</p></div></div><p>        I simplified code even a little more to avoid changing in routes (in case of Admin area already exists in project).     </p><p>        So just grab it from NuGet now.     </p></div>
 

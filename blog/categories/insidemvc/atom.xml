@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: InsideMVC | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/insidemvc/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/insidemvc/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: Instantiation of Controller]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/12/inside-aspnet-mvc-instantiation-of.html"/>
+    <link href="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html"/>
     <updated>2011-12-05T21:05:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/12/inside-aspnet-mvc-instantiation-of</id>
+    <id>http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Controller are being created by <code>ControllerFactory</code>, by default <code>IControllerFactory</code> type is being resolved to <code>DefaultControllerFactory</code>. Today's post is dedicated to some details of how actually <code>DefaultControllerFactory</code> works and creates instance of required controller. Let's go from the beginning!<br />
 </p><h2>Request for controller instance</h2><p>Initially, we are at <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">MvcHandler</a>'s <code>ProcessRequestInit</code> method, where we extract controllers name from RouteData and request controller factory to create corresponding controller.<br />
@@ -190,9 +190,9 @@
   
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/10/inside-aspnet-mvc-idependencyresolver.html"/>
+    <link href="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html"/>
     <updated>2011-10-13T21:55:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/10/inside-aspnet-mvc-idependencyresolver</id>
+    <id>http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
 </p><pre class="brush:csharp">namespace System.Web.Mvc {
@@ -287,9 +287,9 @@ public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type
   
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: IResolver and it's implementations]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/08/inside-aspnet-mvc-iresolver-and-its.html"/>
+    <link href="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html"/>
     <updated>2011-08-27T16:06:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/08/inside-aspnet-mvc-iresolver-and-its</id>
+    <id>http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through 'new' operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
 </p><pre class="brush:csharp">namespace System.Web.Mvc {
@@ -398,9 +398,9 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
   
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: ControllerBuilder class]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/07/inside-aspnet-mvc-controllerbuilder.html"/>
+    <link href="http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html"/>
     <updated>2011-07-09T12:28:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/07/inside-aspnet-mvc-controllerbuilder</id>
+    <id>http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Integral part of <code>MvcHanlder</code> is <code>ControllerBuilder</code>. <code>ControllerBuilder</code> is a singleton that is responsible to produce <code>IControllerFactory</code> instance. 
@@ -466,9 +466,9 @@ Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-
   
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: All begins here - MvcHanlder]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/06/inside-aspnet-mvc-all-begins-here.html"/>
+    <link href="http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html"/>
     <updated>2011-06-18T18:46:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/06/inside-aspnet-mvc-all-begins-here</id>
+    <id>http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">Last time</a> we explored a way of HTTP request from the IIS up to <code>MvcHanlder</code>. Then <code>UrlRouting</code> module match URL we registered in <code>Application_Start()</code>, it gets corresponding <code>IRouteHandler</code> class and calls for <code>GetHttpHandler</code> method. In ASP.NET MVC URL <code>IRouteHandler</code> interface is implemented by <code>MvcRouteHandler</code> class which return <code>MvcHanlder</code> instance. The actual MVC story begins exactly in <code>MvcHanlder</code> internals.

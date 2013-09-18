@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://alexanderbeletsky.github.io/sitemap.xml 
+Sitemap: http://beletsky.net/sitemap.xml 

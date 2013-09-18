@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Video | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/video/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/video/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Functional testing by javascript with FuncUnit]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/12/functional-testing-by-javascript-with.html"/>
+    <link href="http://beletsky.net/2010/12/functional-testing-by-javascript-with.html"/>
     <updated>2010-12-15T07:57:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/12/functional-testing-by-javascript-with</id>
+    <id>http://beletsky.net/2010/12/functional-testing-by-javascript-with</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Functional tests are something that is better to use as early as possible, to get any valuable results. Obvious choice for ASP.net applications are <a href="http://seleniumtoolkit.codeplex.com/">Seleminum for .NET</a>, <a href="http://watin.sourceforge.net/">WatiN</a> or <a href="http://specflow.org">SpecFlow</a>. But all of them are supposed to use C# as programming language and run their tests by special runners. Thought the experience I saw how cool is to write tests with full dynamic languages, like javascript and be able to run tests directly from browser, so I can debug some broken functionality. As I saw <a href="http://funcunit.com">FuncUnit</a> project and it really attracted my attention! Here I describe some initial experince of testing ASP.net MVC application with FuncUnit.
@@ -129,9 +129,9 @@ To make picture full, I prepared small screencast that would demonstrate how I u
   
   <entry>
     <title type="html"><![CDATA[NDC2010 conference videos available on torrent]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/07/ndc2010-conference-videos-available-on.html"/>
+    <link href="http://beletsky.net/2010/07/ndc2010-conference-videos-available-on.html"/>
     <updated>2010-07-13T09:52:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/07/ndc2010-conference-videos-available-on</id>
+    <id>http://beletsky.net/2010/07/ndc2010-conference-videos-available-on</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Huge amount of priceless information is not available on legal torrent server. It is a video from this year <a href="http://www.ndc2010.no">NDC2010.htm</a>. Just check out a list of <a href="http://www.ndc2010.no/index.aspx?cat=1070">speakers</a>, so you could imagine how interesting in should be. 

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Git | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/git/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Github for Windows - Yay!]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay.html"/>
+    <link href="http://beletsky.net/2012/05/github-for-windows-yay.html"/>
     <updated>2012-05-21T23:44:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/github-for-windows-yay</id>
+    <id>http://beletsky.net/2012/05/github-for-windows-yay</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        For quite long time Windows users of github had a huge envy towards <a href="http://mac.github.com/">Github for Mac</a> - the application that makes work with github based repositories as simple as possible. A lot of people, especially ones who are not familiar with Git, experiencing some issues with github initially. No surprise, extensive command-line, SSH, public/private keys - might sound scary for GUI addicted persons. <br />
     </p>    <p>       December 2011, Phil Haack <a href="http://haacked.com/archive/2011/12/07/hello-github.aspx">joined</a> github.. so, the world hold the breath, to see what actually will be done by Phil and team to improve overall Github experience on Windows. And the day has come! Today <a href="http://windows.github.com/">Github:Windows</a> is officially shipped.<br />
@@ -51,9 +51,9 @@
   
   <entry>
     <title type="html"><![CDATA[A year with Git]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/year-with-git.html"/>
+    <link href="http://beletsky.net/2012/05/year-with-git.html"/>
     <updated>2012-05-20T13:43:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/year-with-git</id>
+    <id>http://beletsky.net/2012/05/year-with-git</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
 </p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
@@ -87,9 +87,9 @@
   
   <entry>
     <title type="html"><![CDATA[Branching Workflow in Git-SVN Mode]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/09/branching-workflow-in-git-svn-mode.html"/>
+    <link href="http://beletsky.net/2011/09/branching-workflow-in-git-svn-mode.html"/>
     <updated>2011-09-06T17:42:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/09/branching-workflow-in-git-svn-mode</id>
+    <id>http://beletsky.net/2011/09/branching-workflow-in-git-svn-mode</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
 <pre>git checkout -b master-nd-177   
@@ -111,9 +111,9 @@
   
   <entry>
     <title type="html"><![CDATA[Analog of SVN branch switch for Git]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/08/analog-of-svn-branch-switch-for-git.html"/>
+    <link href="http://beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html"/>
     <updated>2011-08-01T11:16:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/08/analog-of-svn-branch-switch-for-git</id>
+    <id>http://beletsky.net/2011/08/analog-of-svn-branch-switch-for-git</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Working with Git in SVN based organization is <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">possible</a> and make a lot of benefits. Sources checked out once are now at you local repository, so all you do is commits, rebases and dcommits back to SVN. But sometimes you need to be able to switch to another SVN branch. You need something equivalent to "SVN switch" command inside Git environment.
@@ -153,9 +153,9 @@ You can merge you previous changes.. and continue to work with <code>master-25</
   
   <entry>
     <title type="html"><![CDATA[Git with SVN, what the benefits are?]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/07/git-with-svn-what-benefits-are.html"/>
+    <link href="http://beletsky.net/2011/07/git-with-svn-what-benefits-are.html"/>
     <updated>2011-07-13T08:50:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/07/git-with-svn-what-benefits-are</id>
+    <id>http://beletsky.net/2011/07/git-with-svn-what-benefits-are</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 My previous <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">post</a> about starting up of using Git inside on SVN organization appeared to be really attractive, I received many questions through <a href="http://twitter.com/#!/alexbeletsky">twitter</a> and <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">dzone</a>. All of them are really interesting and I going to do a separate posting on that, but primary question is "Why, oh why?".  

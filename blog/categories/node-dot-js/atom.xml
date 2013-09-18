@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Node.js | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/node-dot-js/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
-    <link href="http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with.html"/>
+    <link href="http://beletsky.net/2013/04/building-single-page-applications-with.html"/>
     <updated>2013-04-24T06:11:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2013/04/building-single-page-applications-with</id>
+    <id>http://beletsky.net/2013/04/building-single-page-applications-with</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
 </p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
@@ -39,9 +39,9 @@
   
   <entry>
     <title type="html"><![CDATA[Three month without .NET code]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code.html"/>
+    <link href="http://beletsky.net/2012/07/three-month-without-net-code.html"/>
     <updated>2012-07-11T13:29:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/07/three-month-without-net-code</id>
+    <id>http://beletsky.net/2012/07/three-month-without-net-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    It's not farewell letter in style of "Goodbye .NET". But, I just realized that I haven't created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />
 </p><p>    I love .NET and love C# language. C# is probably one of the best language I ever programmed with. I think that .NET is my comfort zone. Web technologies as ASP.NET MVC, Web API, NancyFX are great. But, as I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">said</a> long time ago server side development is not enough to create cool web apps.<br />

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Clean Code | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/clean-code/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/clean-code/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Game of Life]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/09/the-game-of-life.html"/>
+    <link href="http://beletsky.net/2012/09/the-game-of-life.html"/>
     <updated>2012-09-27T11:52:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/09/the-game-of-life</id>
+    <id>http://beletsky.net/2012/09/the-game-of-life</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
     </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
@@ -56,9 +56,9 @@
   
   <entry>
     <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal.html"/>
+    <link href="http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal.html"/>
     <updated>2012-02-02T11:36:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/02/new-tools-in-my-tdd-arsenal</id>
+    <id>http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />
 </p><h2>NCrunch<br />
@@ -109,9 +109,9 @@ public void should_send_an_email_if_users_signs_up_nsub()
   
   <entry>
     <title type="html"><![CDATA[Convention based IoC configuration]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration.html"/>
+    <link href="http://beletsky.net/2012/01/convention-based-ioc-configuration.html"/>
     <updated>2012-01-24T16:54:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/01/convention-based-ioc-configuration</id>
+    <id>http://beletsky.net/2012/01/convention-based-ioc-configuration</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
 </p><h2>What's are conventions?<br />
@@ -226,9 +226,9 @@ private static void RegisterServices(IKernel kernel)
   
   <entry>
     <title type="html"><![CDATA[Clean tests with SharpTestsEx]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex.html"/>
+    <link href="http://beletsky.net/2011/03/clean-tests-with-sharptestsex.html"/>
     <updated>2011-03-12T10:25:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/03/clean-tests-with-sharptestsex</id>
+    <id>http://beletsky.net/2011/03/clean-tests-with-sharptestsex</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 I was recently been adding NUnit to one of mine project's and noticed one interesting framework in <a href="http://nuget.codeplex.com/">Nuget</a> channel. It is <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a> by <a href="http://twitter.com/#!/fabiomaulo">Fabio Maulo</a> and its primary goal is to make your assertions shorter, cleaner and easy to read.
@@ -310,9 +310,9 @@ Additional information on project <a href="http://sharptestex.codeplex.com/">sit
   
   <entry>
     <title type="html"><![CDATA[Extension methods and clean code]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code.html"/>
+    <link href="http://beletsky.net/2011/02/extension-methods-and-clean-code.html"/>
     <updated>2011-02-10T10:52:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/02/extension-methods-and-clean-code</id>
+    <id>http://beletsky.net/2011/02/extension-methods-and-clean-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension methods</a> is one of my favorite features of C# language. It appeared from version 3.0 and became very popular.

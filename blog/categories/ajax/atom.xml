@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: AJAX | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/ajax/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/ajax/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to run multiple AJAX requests]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/10/how-to-run-multiple-ajax-requests.html"/>
+    <link href="http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests.html"/>
     <updated>2012-10-31T21:12:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/10/how-to-run-multiple-ajax-requests</id>
+    <id>http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Suppose you have a list of resources that you would like to retrieve by means of AJAX. `$.ajax()` (or it's short variants like `$.get()` or `$.post`) is usual way of making AJAX calls, it works great than you need to fetch one.<br />
     </p>    <pre class="brush: js">var url = '/api/resource/1';
@@ -65,9 +65,9 @@ $.get(url1, function (r) {
   
   <entry>
     <title type="html"><![CDATA[Testing REST services with javascript]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript.html"/>
+    <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
     <updated>2010-12-30T08:28:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/12/testing-rest-services-with-javascript</id>
+    <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
@@ -166,9 +166,9 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   
   <entry>
     <title type="html"><![CDATA[Switching from ASP.NET development server (Cassini) to IIS with MVC applications]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/10/switching-from-aspnet-development.html"/>
+    <link href="http://beletsky.net/2010/10/switching-from-aspnet-development.html"/>
     <updated>2010-10-15T12:11:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/10/switching-from-aspnet-development</id>
+    <id>http://beletsky.net/2010/10/switching-from-aspnet-development</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Start developing new applications on IIS already is probably good idea, since it is IIS where you application is finally landed to. Working with Cassini is great, cause it fast, requires no maintenance, very easy to start. But it could hide some issues that would surprise you during deployment. </p><p>Recently I've decided to switch my current Asp.net MVC application from Cassini to IIS. It is done very easy, just go to project, Web tab -> Use local IIS Web Server. Select the option and then click on "Create a virtual directory", to create a virtual directory for application.  </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s1600/projproperties.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 122px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s400/projproperties.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5528198177940745122" /></a> <p>But after I started, application just failed. I'll share the problems I met and how I fix them. </p><h2>IIS identity impersonation and path credentials</h2><p>To make sure your SQL database works fine, you have to configure identity impersonation for application pool and path credentials for folder. </p><p>Go to ISS Management, Application Pools, DefaulAppPool, (you could you another app pool for you application), Advanced Settings, Process Model, Identity and set it for your account (you should have admin permissions on this machine). </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s1600/processidentity.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 338px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s400/processidentity.png" border="0" alt=""id="Img1" /></a> <p>Go to Virtual folder, Basic Setting, Connect As..., use you credentials. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s1600/pathcredentials.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 281px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s400/pathcredentials.png" border="0" alt=""id="Img2" /></a> <h2>JavaScript references from Master page </h2><p>On my master page I've referenced number of javascript files, as jQuery, jPost etc. I did it like that, </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">src</font><font color="#0000ff">="/Scripts/jquery-1.4.1.min.js"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp; <br />
 &#60;script src=<font color="#A31515">"/Scripts/jquery.blockUI.js"</font> type=<font color="#A31515">"text/javascript"</font>&#62;&#60;/script&#62;<br />
@@ -196,9 +196,9 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   
   <entry>
     <title type="html"><![CDATA[Web development: Lightweight AJAX thought jQuery, JSon.net and HttpHandlers]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/08/web-development-lightweight-ajax.html"/>
+    <link href="http://beletsky.net/2010/08/web-development-lightweight-ajax.html"/>
     <updated>2010-08-09T09:43:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/08/web-development-lightweight-ajax</id>
+    <id>http://beletsky.net/2010/08/web-development-lightweight-ajax</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 If you are about to start using AJAX in your ASP.net application, you will be pointed to some existing frameworks, like: <a href="http://www.asp.net/ajax">ASP.net AJAX</a>, <a href="http://anthem-dot-net.sourceforge.net/">Anthem.net</a> or something else. That is a probably a good idea to use time-proven things, but you also might have a reasons not do that. First of all, if you are new to AJAX and you need to educate yourself with it, using frameworks in not good, because it hides a lot of details of "how it works". Second reason, that you might not want to overhead with additional frameworks, to make it as lightweight as possible. If you are about to implement some simple AJAX operations, then jQuery for client code, Json.net to handle JSON on server side and ASP.net HttpHandler is all that you need!   
@@ -265,9 +265,9 @@ Such approach serves really great for simple AJAX applications, on pure ASP.net,
   
   <entry>
     <title type="html"><![CDATA[Blogging with a GitHub and Blogspot? Ideas?]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/07/blogging-with-github-and-blogspot-ideas.html"/>
+    <link href="http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas.html"/>
     <updated>2010-07-27T22:54:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/07/blogging-with-github-and-blogspot-ideas</id>
+    <id>http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 I do use Blogger as my blog engine and really like it. Right, as soon as you create your blog posts in 

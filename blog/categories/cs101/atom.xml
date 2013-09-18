@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: CS101 | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/cs101/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/cs101/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Course Accomplished!]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/06/cs101-course-accomplished.html"/>
+    <link href="http://beletsky.net/2012/06/cs101-course-accomplished.html"/>
     <updated>2012-06-14T10:14:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/06/cs101-course-accomplished</id>
+    <id>http://beletsky.net/2012/06/cs101-course-accomplished</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        Yesterday, I have finally received results for my Final Exams of CS101 Udacity course. I did it! <br />
     </p>    <p>        I have successfully accomplished that course, received the certificate with "High Distinction". To be honest, I thought it would be "Highest Distinction", since I was pretty sure about correctness of all my solutions posted. But reality is different, you can never be sure. Next time, I'll probably put more attention to verification of my code. Nevertheless, here is my certificate.<br />
@@ -33,9 +33,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Building a Search Engine: Week 7 and Final Exams]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/06/cs101-building-search-engine-week-7-and.html"/>
+    <link href="http://beletsky.net/2012/06/cs101-building-search-engine-week-7-and.html"/>
     <updated>2012-06-08T22:06:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/06/cs101-building-search-engine-week-7-and</id>
+    <id>http://beletsky.net/2012/06/cs101-building-search-engine-week-7-and</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>As I said in my <a href="http://www.beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html">previous</a> post, last several units of CS101 were a little tought. Not so difficult, but it made me a little worry what's it gonna be in final exams. Being posted right in time, I had to conclude Unit 7 before I start with exams. That time, I had some doubts if I'm able to meet course deadline.<br />
 </p><p>Fortunatelly, Unit 7 was non-technical one. I went throught it rather quickly. Some scenes for this unit were taken in <a href="http://www.computerhistory.org/">Compute History Museum</a>. This place is just amazing, I wish I had a chance to visit it someday. We've been passed throught a pre-historical computers (like Babbage machine), first hard drives and other interesting stuff. Besides of that we guested Mozilla company talking to it's president and developers about open source projects, infuence of open source and some thoughts on how to be involved in open source community.<br />
@@ -50,9 +50,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Building a Search Engine: Week 5 and 6]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-5-and.html"/>
+    <link href="http://beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html"/>
     <updated>2012-05-31T17:28:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-5-and</id>
+    <id>http://beletsky.net/2012/05/cs101-building-search-engine-week-5-and</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        <small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
         </small><br />
@@ -69,9 +69,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Building a Search Engine: Week 4]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-4.html"/>
+    <link href="http://beletsky.net/2012/05/cs101-building-search-engine-week-4.html"/>
     <updated>2012-05-20T14:50:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-4</id>
+    <id>http://beletsky.net/2012/05/cs101-building-search-engine-week-4</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
 </small><br />
@@ -99,9 +99,9 @@
   
   <entry>
     <title type="html"><![CDATA[CS101 Building a Search Engine: Week 3]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-3.html"/>
+    <link href="http://beletsky.net/2012/05/cs101-building-search-engine-week-3.html"/>
     <updated>2012-05-07T12:58:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/05/cs101-building-search-engine-week-3</id>
+    <id>http://beletsky.net/2012/05/cs101-building-search-engine-week-3</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
 </small><br />

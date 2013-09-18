@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: BeerNCode | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/beerncode/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/beerncode/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Greg Young and Rinat Abdulin Visited Kyiv]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited.html"/>
+    <link href="http://beletsky.net/2011/10/greg-young-and-rinat-abdulin-visited.html"/>
     <updated>2011-10-25T09:47:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/10/greg-young-and-rinat-abdulin-visited</id>
+    <id>http://beletsky.net/2011/10/greg-young-and-rinat-abdulin-visited</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It finally happened, <a href="http://codebetter.com/gregyoung/">Greg Young</a> and <a href="http://abdullin.com/">Rinat Abdulin</a> have been guesting Kyiv for almost the week. <br />
 </p><p>Initially we've gathered on <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting. The format a little changed that time, but I would say that was really interesting meeting. Greg introduced one of the project he currently working on <a href="http://continuoustests.com/">http://continuoustests.com/</a> that now referenced as "Mighty Moose". "Mighty Moose" appear to be really powerful tool that tracks both code and tests changes, and in case of changes taking place it automatically re-runs all related test cases. So, we've grabbed the latest version on MM and played with it a bit. MM is officially in betta now and gonna to be release soon, so did a small contribution by submitting some bugs found on a fly. I also really much enjoyed the quick demonstration of <a href="https://github.com/gregoryyoung/Simple.Testing">Simple.Testing</a> framework. It worth to have a separate blog post on that, but in short - it is BDD style framework that literally produce plain English specifications as it's output. It's indeed very simple - just several hundreds LOC's, but very impressive.<br />
@@ -34,9 +34,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Power of Close Collaboration]]></title>
-    <link href="http://alexanderbeletsky.github.io/2011/10/power-of-close-collaboration.html"/>
+    <link href="http://beletsky.net/2011/10/power-of-close-collaboration.html"/>
     <updated>2011-10-05T20:06:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2011/10/power-of-close-collaboration</id>
+    <id>http://beletsky.net/2011/10/power-of-close-collaboration</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The collaboration and communication is very important in solving problems. As much better collaboration you have as much fast you are able to handle different issue. As closer people to each other, as better they able to work. That's why I think that distributed teams even if they consists of great engineers could not work 100% of their potential. Lags in communications, language barrier, loose of body languages etc. makes it 80% for best cases.<br />
 </p><p>As you might know I'm currently working on <a href="https://github.com/alexanderbeletsky/candidate.net">candidate.net</a> project. I really want to release that and according to my original plans I was really close to do that. But, suddenly my application just stopped to work. I'll skip details of bug, but it was a ship killer. Application was not able to clone/pull github repositories. The only thing that happened between periods of working and non-working states is that I upgraded my Windows 7 up to SP1.<br />

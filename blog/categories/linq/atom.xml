@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Linq | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/linq/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/linq/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Testing database and Test database]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/11/testing-database-and-test-database.html"/>
+    <link href="http://beletsky.net/2010/11/testing-database-and-test-database.html"/>
     <updated>2010-11-05T08:43:00+02:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/11/testing-database-and-test-database</id>
+    <id>http://beletsky.net/2010/11/testing-database-and-test-database</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
 Testing the database is important. It is absolutely required then your DAL is simply a bunch of methods that do SQL against the DB. It still required to be done then you rely on some ORM (like Linq to SQL, NHibernate etc).
@@ -86,9 +86,9 @@ It is very convenient to work like that.
   
   <entry>
     <title type="html"><![CDATA[Crawling a web sites with HtmlAgilityPack]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/09/crawling-web-sites-with-htmlagilitypack.html"/>
+    <link href="http://beletsky.net/2010/09/crawling-web-sites-with-htmlagilitypack.html"/>
     <updated>2010-09-16T15:46:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/09/crawling-web-sites-with-htmlagilitypack</id>
+    <id>http://beletsky.net/2010/09/crawling-web-sites-with-htmlagilitypack</id>
     <content type="html"><![CDATA[<div class='post'>
 <h1>Introduction</h1><p>This is a first post of small series that I'm going to describe implementation and design of Crawler, that I&#39;ve      done recently for <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">TDD demand analisys</a>. I would split it up into several parts, covering its major architectural parts. </p><ul><li> Part 1 - Crawling a web sites with HtmlAgilityPack </li>
 <li> Part 2 - Regex to match a words in dictionary on page body </il><br />
@@ -102,9 +102,9 @@ It is very convenient to work like that.
   
   <entry>
     <title type="html"><![CDATA[DDD, Implementation of Repository pattern with Linq to SQL]]></title>
-    <link href="http://alexanderbeletsky.github.io/2010/06/ddd-implementation-of-repository.html"/>
+    <link href="http://beletsky.net/2010/06/ddd-implementation-of-repository.html"/>
     <updated>2010-06-30T19:06:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2010/06/ddd-implementation-of-repository</id>
+    <id>http://beletsky.net/2010/06/ddd-implementation-of-repository</id>
     <content type="html"><![CDATA[<div class='post'>
 Lets review first and one of major DDD pattern - Repository. Repository is something that provides access to an entities objects (domain objects). Here what DDD patterns guide says on Repositories:
 <br />

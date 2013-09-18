@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Python | Alexander Beletsky's development blog]]></title>
-  <link href="http://alexanderbeletsky.github.io/blog/categories/python/atom.xml" rel="self"/>
-  <link href="http://alexanderbeletsky.github.io/"/>
-  <updated>2013-09-17T09:58:34+03:00</updated>
-  <id>http://alexanderbeletsky.github.io/</id>
+  <link href="http://beletsky.net/blog/categories/python/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-09-18T10:23:18+03:00</updated>
+  <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
     <email><![CDATA[alexander.beletsky@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[7 Weeks With Python]]></title>
-    <link href="http://alexanderbeletsky.github.io/2012/06/7-weeks-with-python.html"/>
+    <link href="http://beletsky.net/2012/06/7-weeks-with-python.html"/>
     <updated>2012-06-02T20:15:00+03:00</updated>
-    <id>http://alexanderbeletsky.github.io/2012/06/7-weeks-with-python</id>
+    <id>http://beletsky.net/2012/06/7-weeks-with-python</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>            During my <a href="http://www.beletsky.net/search/label/CS101">CS101</a> class I first time meet Python. That's not completely true, since I played a bit Python before, but I had a chance to see Python in action only during this course. In short, that was really pleasant meet up and I hope it will grown up to prolonged and mutual relationships. I will share some 'likes' and 'dislikes' about Python, which I would think you find interesting.<br />
         </p>        <h2>What I liked in Python...</h2>        <p>            Python is very well known language with great reputation and community around it. Big companies, including Google, using python to build enterprise level applications. Hackers love Python cause it combines both simplicity and power. You can do any kind of application development including desktop and web applications. All the time is being compared to Ruby, which is for me ends up to something like <a href="http://grokcode.com/746/dear-python-why-are-you-so-ugly/">this</a> only.<br />
