@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-09-29T21:45:49+03:00</updated>
+  <updated>2013-09-30T09:41:38+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -18,7 +18,7 @@
     <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
     <updated>2013-09-16T21:21:00+03:00</updated>
     <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
-    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013.</p>
+    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
 
 <p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
 
