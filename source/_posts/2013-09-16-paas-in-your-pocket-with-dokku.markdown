@@ -6,7 +6,7 @@ comments: true
 categories: docker dokku nodejs conference transcript
 ---
 
-This is transcript of talk I gave on [RejectJS](http://rejectjs.org/speakers.html#alexbeletsky) conf in Berlin, September 2013.
+This is transcript of talk I gave on [RejectJS](http://rejectjs.org/speakers.html#alexbeletsky) conf in Berlin, September 2013. Video is already available [here](http://www.youtube.com/watch?v=EaoRDrdqm-E).
 
 What I'm going to talk about is Dokku - pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.
 
