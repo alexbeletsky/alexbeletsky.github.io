@@ -6,17 +6,15 @@ comments: true
 categories: nodejs expressjs security authorization
 ---
 
-Once you implement HTTP API using Express.js (which is great option, btw), the security became the concern. There are a lot of diffent options and strategies, implementing security for API's. One of the latest I prefer is described here.
+Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API's. One of the latest I prefer is described [here](https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors).
 
-Doesn't matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization issues. That would mean, you have a piece of information in HTTP request (either field in header or cookie), by checking one you can say, is this HTTP request authorized or not.
-
-That "check" have to applied for all HTTP calls, except ones explicitly mentioned as "guest".
+Doesn't matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.
 
 <!-- More -->
 
 ## Middleware
 
-Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization check:
+Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization:
 
 ```js
 function access(req, res, next) {
@@ -81,7 +79,7 @@ That seems to be like `app.use()` is good candidate to place `access` function i
 
 Guest endpoints are ones, that can be accessed without authentication. That's a kind of special case, but typically required on any HTTP API projects I worked.
 
-We need to distinguish between secure and guest endpoints. We'll introduce special middleware function, for guest access.
+We need to distinguish between **secure** and **guest** endpoints. We'll introduce special middleware function, for guest access.
 
 ```js
 function guest(req, res, next) {
@@ -118,9 +116,9 @@ module.exports = peopleApi;
 
 After I got a bit deeper with structure of Express.js `application` I came up to one idea that helped to solve the problem.
 
-Then all endpoints are defined, `application` would contain initialized [routes](http://expressjs.com/api.html#app.routes) object. If you closer, than you'll see, besides of path and method data it also contains an array of `callbacks` applied to route. That's exactly middleware functions, so we can simply patch that array with authentication function we want.
+Then all endpoints are defined, `application` would contain initialized [routes](http://expressjs.com/api.html#app.routes) object. If you look closer, then you'll see, besides of path and method data it also contains an array of `callbacks` applied to route. That's exactly middleware functions, so we can simply patch that array with authentication function we want.
 
-The authentication function have to be called first, so it's need to be placed at `0` position of array.
+The authentication function have to be called first, so it's need to be placed at first position of array.
 
 Right after application configured and all routes are defined, call `applyAuthentication()` function.
 
