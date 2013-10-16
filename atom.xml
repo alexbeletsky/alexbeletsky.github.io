@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-09T10:44:56+03:00</updated>
+  <updated>2013-10-16T19:56:59+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,297 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
+    <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
+    <updated>2013-10-15T21:54:00+03:00</updated>
+    <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
+    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
+
+<p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
+
+<!-- More -->
+
+
+<h2>Middleware</h2>
+
+<p>Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">access</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">checkAuthorization</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">authorized</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">||</span> <span class="o">!</span><span class="nx">authorized</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;Unauthorized&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">401</span><span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">next</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">checkAuthorization</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// actual auth strategy goes here..</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of cause, it&rsquo;s simply possible to apply this function to each HTTP method in application, like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>but, it&rsquo;s really get annoying to do that all the time.. and it&rsquo;s easy to just forgot to secure endpoint. So, it&rsquo;s better to keep the code as clean as possible.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That seems to be like <code>app.use()</code> is good candidate to place <code>access</code> function into, but it&rsquo;s not. <code>app.use()</code> is global apply of middleware function, so if applications serves static resources, that does not need authentication, or simply you want to expose some <strong>guest</strong> endpoints.</p>
+
+<h2>Guest or not?</h2>
+
+<p>Guest endpoints are ones, that can be accessed without authentication. That&rsquo;s a kind of special case, but typically required on any HTTP API projects I worked.</p>
+
+<p>We need to distinguish between <strong>secure</strong> and <strong>guest</strong> endpoints. We&rsquo;ll introduce special middleware function, for guest access.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">guest</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">guestAccess</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">next</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, assume that all endpoints are require authentication by default (which is good assumption), but ones that don&rsquo;t need to have <code>guest()</code> middleware be used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/meta&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">guest</span><span class="p">,</span>             <span class="c1">// no authentication required!</span>
+</span><span class='line'>      <span class="nx">getPeopleMeta</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Patch the routes</h2>
+
+<p>After I got a bit deeper with structure of Express.js <code>application</code> I came up to one idea that helped to solve the problem.</p>
+
+<p>Then all endpoints are defined, <code>application</code> would contain initialized <a href="http://expressjs.com/api.html#app.routes">routes</a> object. If you look closer, then you&rsquo;ll see, besides of path and method data it also contains an array of <code>callbacks</code> applied to route. That&rsquo;s exactly middleware functions, so we can simply patch that array with authentication function we want.</p>
+
+<p>The authentication function have to be called first, so it&rsquo;s need to be placed at first position of array.</p>
+
+<p>Right after application configured and all routes are defined, call <code>applyAuthentication()</code> function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="c1">// configure</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s1">&#39;development&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// configure for development</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// configure for production</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;/api&#39;</span><span class="p">]);</span>       <span class="c1">// apply authentication here</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;app listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And finally, <code>applyAuthentication</code> function,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">routesToSecure</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
+</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">apply</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nx">routesToSecure</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">route</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">guestAccess</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">&#39;guest&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">apply</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">guestAccess</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">.</span><span class="nx">authenticatedAccess</span><span class="p">());</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyAuthentication</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
@@ -2009,196 +2300,6 @@ var customerId = invoice.get('customerId');
     </pre>    <p>        If I&#8217;m changing the customer of invoice, the &#8216;customerId&#8217; would be initialized with id of &#8216;anotherCustomer&#8217;.<br />
     </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
     </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Unit testing of views]]></title>
-    <link href="http://beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html"/>
-    <updated>2012-12-19T21:52:00+02:00</updated>
-    <id>http://beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
-</p><p>Next very important Backbone&#8217;s entry to test is View.<br />
-</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don&#8217;t have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
-</p><h2>What to test?</h2><p>You should focus on such things: <br />
-</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
-<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
-<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
-<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
-</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It&#8217;s typically that view tests are catching most regression issues.<br />
-</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don&#8217;t need any special HTML on test page, since view holding all it&#8217;s DOM structure inside <code>this.el</code>. By means of jQuery, it&#8217;s easy to change DOM values or trigger events.<br />
-</p><p>Since view also holds reference to model, it&#8217;s easy to check model&#8217;s attributes changes or spying on particular models methods.<br />
-</p><p>First red test,<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
-
-    beforeEach(function () {
-        view = new FeedbackFormView();
-    });
-
-    describe('when view is constructing', function () {
-
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
-
-    });
-    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
-</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
-</p><pre class="brush: js">describe('when view is initialized', function () {
-
-    describe('without model', function () {
-
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView();
-            }).toThrow(new Error('model is required'));
-        });
-
-    });
-
-    describe('without default feedback', function () {
-            
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView({model: new Backbone.Model() });
-            }).toThrow(new Error('feedback is required'));
-        });
-    });
-
-});
-    </pre><p>To turn from Red to Green, let&#8217;s add <code>initialize</code> function to view,<br />
-</p><pre class="brush: js">initialize: function (options) {
-
-    if (!this.model) {
-        throw new Error('model is required');
-    }
-
-    if (!(options && options.feedback)) {
-        throw new Error('feedback is required');
-    }
-
-    this.feedback = options.feedback;
-},
-    </pre><p>Btw, after that change it&#8217;s required to fix previous test, since it start to fail.<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
-
-    beforeEach(function () {
-        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
-    });
-
-    describe('when view is constructing', function () {
-
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
-
-    });
-    </pre><p>Now, let&#8217;s test how rendering works.<br />
-</p><pre class="brush: js">describe('when view is rendered', function () {
-
-    beforeEach(function () {
-        view.render();
-    });
-
-    it ('should email field be empty', function () {
-        expect(view.$el.find('input#email')).toHaveValue('');
-    });
-
-    it ('should website field be empty', function () {
-        expect(view.$el.find('input#website')).toHaveValue('');
-    });
-
-    it ('should feedback field with default feedback', function () {
-        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
-    });
-
-});
-</pre><p>Here and after I&#8217;m using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
-</p><p>We&#8217;ve tested initialization and rendering, now let&#8217;s test last aspect, model changes and persistence.<br />
-</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
-</p><pre class="brush: js">describe('when form is submitted', function () {
-
-    describe('no inputs are filled', function () {
-
-        beforeEach(function () {
-            view.$el.find('#email').val('').trigger('change');
-            view.$el.find('#feedback').val('').trigger('change');
-        });
-
-        beforeEach(function () {
-            view.$el.find('#submit').trigger('click');
-        });
-
-        it('email field should be invalidated', function () {
-            expect(view.$el.find('.control-group.email')).toHaveClass('error');
-        });
-
-        it('feedback field should be invalidated', function () {
-            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-        });
-
-        it('website field should be valid', function () {
-            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-        });
-
-    });
-</pre><p>That&#8217;s cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
-</p><pre class="brush: js">describe('only email field filled', function () {
-
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('').trigger('change');
-    });
-
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
-
-    it('email field should be valid', function () {
-        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
-    });
-
-    it('feedback field should be invalidated', function () {
-        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-    });
-
-    it('website field should be valid', function () {
-        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-    });
-
-});
-</pre><p>And finally, if view is filled correctly,<br />
-</p><pre class="brush: js">describe('email and feedback filled', function () {
-
-    beforeEach(function () {
-        spyOn(view.model, 'save').andCallThrough();
-    });
-
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('some feedback').trigger('change');
-    });
-
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
-
-    it('should show no errors', function () {
-        expect(view.$el.find('.error').length).toBe(0);
-    });
-
-    it('should save model', function () {
-        expect(view.model.save).toHaveBeenCalled();
-    });
-
-});
-</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
-</p><p>I&#8217;m skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
-</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how &#8220;deep&#8221; you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
-</p></div>
 ]]></content>
   </entry>
   

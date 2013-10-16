@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Retrospective of Trackyt.net or Best Project I Ever Accomplished Dec 1st, 2012 Trackyt.net It&#8217;s been to years ago, I&#8217;ve released my own &hellip;">
+  <meta name="description" content="Baby steps to Backbone.js: Unit testing of views Dec 19th, 2012 BabyStepsBackbone, Backbone.js, JavaScript, TDD Previous time, we&#8217;ve &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +30,7 @@
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Oxygen:300' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -74,6 +74,233 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/12/baby-steps-to-backbonejs-unit-testing.html">
+    
+      Baby steps to Backbone.js: Unit testing of views</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-19T21:52:00+02:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
+</p><p>Next very important Backbone&#8217;s entry to test is View.<br />
+</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don&#8217;t have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
+</p><h2>What to test?</h2><p>You should focus on such things: <br />
+</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
+<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
+<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
+<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
+</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It&#8217;s typically that view tests are catching most regression issues.<br />
+</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don&#8217;t need any special HTML on test page, since view holding all it&#8217;s DOM structure inside <code>this.el</code>. By means of jQuery, it&#8217;s easy to change DOM values or trigger events.<br />
+</p><p>Since view also holds reference to model, it&#8217;s easy to check model&#8217;s attributes changes or spying on particular models methods.<br />
+</p><p>First red test,<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView();
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
+</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
+</p><pre class="brush: js">describe('when view is initialized', function () {
+
+    describe('without model', function () {
+
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView();
+            }).toThrow(new Error('model is required'));
+        });
+
+    });
+
+    describe('without default feedback', function () {
+            
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView({model: new Backbone.Model() });
+            }).toThrow(new Error('feedback is required'));
+        });
+    });
+
+});
+    </pre><p>To turn from Red to Green, let&#8217;s add <code>initialize</code> function to view,<br />
+</p><pre class="brush: js">initialize: function (options) {
+
+    if (!this.model) {
+        throw new Error('model is required');
+    }
+
+    if (!(options && options.feedback)) {
+        throw new Error('feedback is required');
+    }
+
+    this.feedback = options.feedback;
+},
+    </pre><p>Btw, after that change it&#8217;s required to fix previous test, since it start to fail.<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Now, let&#8217;s test how rendering works.<br />
+</p><pre class="brush: js">describe('when view is rendered', function () {
+
+    beforeEach(function () {
+        view.render();
+    });
+
+    it ('should email field be empty', function () {
+        expect(view.$el.find('input#email')).toHaveValue('');
+    });
+
+    it ('should website field be empty', function () {
+        expect(view.$el.find('input#website')).toHaveValue('');
+    });
+
+    it ('should feedback field with default feedback', function () {
+        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
+    });
+
+});
+</pre><p>Here and after I&#8217;m using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
+</p><p>We&#8217;ve tested initialization and rendering, now let&#8217;s test last aspect, model changes and persistence.<br />
+</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
+</p><pre class="brush: js">describe('when form is submitted', function () {
+
+    describe('no inputs are filled', function () {
+
+        beforeEach(function () {
+            view.$el.find('#email').val('').trigger('change');
+            view.$el.find('#feedback').val('').trigger('change');
+        });
+
+        beforeEach(function () {
+            view.$el.find('#submit').trigger('click');
+        });
+
+        it('email field should be invalidated', function () {
+            expect(view.$el.find('.control-group.email')).toHaveClass('error');
+        });
+
+        it('feedback field should be invalidated', function () {
+            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+        });
+
+        it('website field should be valid', function () {
+            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+        });
+
+    });
+</pre><p>That&#8217;s cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
+</p><pre class="brush: js">describe('only email field filled', function () {
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('email field should be valid', function () {
+        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
+    });
+
+    it('feedback field should be invalidated', function () {
+        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+    });
+
+    it('website field should be valid', function () {
+        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+    });
+
+});
+</pre><p>And finally, if view is filled correctly,<br />
+</p><pre class="brush: js">describe('email and feedback filled', function () {
+
+    beforeEach(function () {
+        spyOn(view.model, 'save').andCallThrough();
+    });
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('some feedback').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('should show no errors', function () {
+        expect(view.$el.find('.error').length).toBe(0);
+    });
+
+    it('should save model', function () {
+        expect(view.model.save).toHaveBeenCalled();
+    });
+
+});
+</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
+</p><p>I&#8217;m skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
+</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how &#8220;deep&#8221; you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -951,66 +1178,6 @@ $.get(url1, function (r) {
 <p>Now, it&#8217;s the server job to put to storage, allocate the id etc.<br />
 </p><h2>Conclusions</h2><p>In this first baby step, I just showed how it&#8217;s possible to adopt Backbone.js for existing apps. It does not make a lot of sense to re-write your existing code with Backbone.js, but new widgets/elements/applications could be created with Backbone, having a benefit of it&#8217;s structural approach.<br />
 </p><p>I&#8217;ll go on with baby steps, showing other features of Backbone.js.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/10/typescript-language.html">
-    
-      Looking at TypeScript</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-05T21:24:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/typescript/'>TypeScript</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
-</p><p>For ones who missed the video (I can&#8217;t believe you did) I shortly describe - TypeScript in new open source project, by Microsoft. It&#8217;s leader <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a> is very famous developer (my bad, I always forget his name), creator of C# and one of the persons who most influenced .NET platform. TypeScript compiled down to JavaScript, but it introduce the types checking during compilation, so it could be called &#8216;static typed language&#8217;.<br />
-</p><p>First of all, TypeScript is definitely <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">not the first language</a>, that complies to JavaScript. It&#8217;s not the first one that augments JavaScript with new statements like class, interface or module. So, what&#8217;s so interesting on it?<br />
-</p><p>I&#8217;ve been using static type languages for about 10 years. I&#8217;ve very much got used to compiler error messages and truly believed that it helps to build applications. Meaning, the complier is first guard towards the &#8216;good&#8217; code. To the code that could be called reliable, error free. <br />
-</p><p>But situation much changed after I start programming JavaScript. <br />
-</p><p>I feel myself quite productive with using of using JavaScript. Of cause, there are some best practice & patters are collected nowadays, we have better tools, faster engines and JavaScript has been so much adopted by community. But JavaScript is indeed, so powerful language. I really like the dynamic typing, that bit more forces to unit testing, making code changes more easy in the same time creating some very beautiful code structures.<br />
-</p><p>I know that some people are saying, &#8220;we don&#8217;t need any static typing for JavaScript; please don&#8217;t change the language&#8221;. Such developers could be called &#8220;purists&#8221;. And they are absolutely right - if you feel confidence in something you do, you should not change the way you do it. <br />
-</p><p>In another hand, I came to conclusion that it&#8217;s not dynamic types that makes me productive with JavaScript, but rather the experience I gathered with programming lately. It&#8217;s always only experience, that allows you to work faster, better quality and had fun of your job.<br />
-<p>And it&#8217;s absolutely not about Static vs. Dynamic languages.<br />
-</p><p>Static types are not useless, though. I think, in average it reduces the chances of bug introduction into the code. That&#8217;s at least what I&#8217;ve seen so far. And that&#8217;s why &#8220;purists&#8221; are running JSLint. Basically, Static Types should provide better application quality. This is of cause not completely true, since we know great software written in Python and poor systems written in C++.<br />
-</p><p>It&#8217; about the engineers who build that software.<br />
-</p><p>In my opinion the TypeScript will grow. It would have it&#8217;s own army of fans, like CoffeeScript have or Ruby have. The code that TypeScript outputs is nice and clean, that make easy of debugging it. TypeScript is designed to be closer to ECMAScript6 (Harmony), so in near future the pure JavaScript would start to look like TypeScript.<br />
-</p><p>TypeScript is interesting project and open minded guys will like one. <br />
 </p></div>
 
       
