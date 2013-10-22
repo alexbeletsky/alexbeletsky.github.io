@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="ASP.NET MVC controller&#8217;s action with name View() Feb 15th, 2011 MVC, Tips, asp.net If you want to have action with name View in your &hellip;">
+  <meta name="description" content="Refactoring to testability Feb 21st, 2011 Refactoring, TDD Suppose you are working on some web REST API adapter. It would be basically one class &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,173 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/refactoring-to-testability.html">
+    
+      Refactoring to testability</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-21T10:33:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/refactoring/'>Refactoring</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Suppose you are working on some web <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">REST</a> API adapter. It would be basically one class with bunch of methods. Each method would represent each supported API call. Through the implementation you would probably landed with something like this,
+</p>
+<pre class="brush: csharp">
+public class ApiAdapter
+{
+    private HttpClient _client;
+    private RequestFormatHelper _requestFormatHelper;
+    private ResponseFormatHelper _responseFormatHelper;
+
+    // ...
+    
+    public ApiAdapter()
+    {
+        _client = new HttpClient(/* ... */);
+        _requestFormatHelper = RequestFormatHelper(/* ... */);
+        _responseFormatHelper = ResponseFormatHelper(/* ... */);
+    }
+
+    void CreateNewTask(Task task)
+    {
+        // implementation
+    }
+
+    void DeleteTask(Task task)
+    {
+        // implementation
+    }
+
+    // rest of methods...
+}
+</pre>
+<p>
+Nevertheless, the code works it has several code smells: 
+</p>
+<ul>
+<li>
+<strong>High cohesion</strong> - the relation between objects are really strong. Objects are aggregated and aggregation is the one of strongest types of links between objects. 
+</li>
+<li>
+<strong>Violation of <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/Closed principle</a></strong> - one of the SOLID object oriented design principles.
+</li>
+<li>
+<strong>Lack of testability</strong> - if you decide to unit test this code, you will be in problem. Unit testing is supposed to be done in <a href="http://c2.com/cgi/wiki?UnitTestIsolation">isolation</a>. Having high cohesion code you can&#8217;t get required level of isolation. Moreover it is not possible to substitute concrete class with <a href="http://en.wikipedia.org/wiki/Mock_object">mock object</a> by using some famous JMock, RhinoMocks or Moq.
+</li>
+<li>
+<strong>Lack of flexibility</strong> - if you decide to change implementation of some of depended objects, say <code>ResponseFormatHelper</code> you would probably change the implementation of <code>ApiAdapter</code> as well.
+</li>
+</ul>
+<p>
+If you think that you code is not testable or flexible, don&#8217;t waste your time.. apply the power of refactoring.
+</p>
+<p>
+What to do? It is basically very simple to correct such code, you just need to follow this:
+</p>
+<ul>
+<li>
+<strong>Always hide the details behind the interface</strong> - all behavior objects must conform to particular interface. Other objects must refer to another object only with knowledge of the interface. In terms of programming languages, if you pass object to client code you must always pass it by interface (e.g <code>public SomeAction(IHttpClient client, Type type, Data data);</code>.
+</li>
+<li>
+<strong>Use dependency injection for louse coupled code</strong> - try to avoid to create depended object by <code>new</code>, inject the dependency by constructor of public property. (e.g <code>public ApiAdapter(IHttpClient client, IRequestFormatHelper requestHelper, IResponseFormatHelper responseHelper)</code>.
+</li>
+</ul>
+<p>
+How the code might look after refactoring:
+</p>
+<pre class="brush: csharp">
+public interface IHttpClient
+{
+    void WebCall(/*...*/);
+}
+
+public interface IRequestFormatHelper
+{
+    string Format(/*...*/);
+}
+
+public interface IResponseFormatHelper
+{
+    string Format(/*...*/);
+}
+
+
+public class ApiAdapter
+{
+    private IHttpClient _client;
+    private IRequestFormatHelper _requestFormatHelper;
+    private IResponseFormatHelper _responseFormatHelper;
+
+    // ...
+
+    public ApiAdapter(IHttpClient client, IRequestFormatHelper requestFormatHelper, IResponseFormatHelper responseFormatHelper)
+    {
+        _client = client;
+        _requestFormatHelper = requestFormatHelper;
+        _responseFormatHelper = requestFormatHelper;
+    }
+</pre>
+<p>
+Now, you can easily test this code using mocks, like this simple test:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void CreateNewTask_SendPutRequest_WithJson()
+{
+    // arrange
+    var client = new Mock&lt;IHttpClient&gt;();
+    var requestFormatter = new Mock&lt;IRequestFormatHelper&gt;();
+    var responseFormater = new Mock&lt;responseFormatHelper&gt;();
+
+    // act 
+    var api = new ApiAdapter(client, requestFormatter, responseFormater);
+    api.CreateTask (new Task());
+
+    // arrange
+    client.Verify(client.WebCall(/*...*/)).Called().WithArguments(/*...*/;
+}
+</pre>
+<p>
+And change any details of injected objects, without any changes in <code>ApiAdapter</code>. Refactoring to testablity is important, as much testable code you got as much flexible code you got.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1295,156 +1462,6 @@ So, basically ASP.net MVC web applications development is: create a controller c
 <p>
 It is much more easier to create web applications API&#8217;s with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/12/functional-testing-by-javascript-with.html">
-    
-      Functional testing by javascript with FuncUnit</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-15T07:57:00+02:00" pubdate data-updated="true">Dec 15<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/video/'>Video</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Functional tests are something that is better to use as early as possible, to get any valuable results. Obvious choice for ASP.net applications are <a href="http://seleniumtoolkit.codeplex.com/">Seleminum for .NET</a>, <a href="http://watin.sourceforge.net/">WatiN</a> or <a href="http://specflow.org">SpecFlow</a>. But all of them are supposed to use C# as programming language and run their tests by special runners. Thought the experience I saw how cool is to write tests with full dynamic languages, like javascript and be able to run tests directly from browser, so I can debug some broken functionality. As I saw <a href="http://funcunit.com">FuncUnit</a> project and it really attracted my attention! Here I describe some initial experince of testing ASP.net MVC application with FuncUnit.
-</p>
-<h2>What it is all about?</h2>
-<p>
-<a href="http://funcunit.com">FuncUnit</a> is very compact and elegant functional testing framework. It combines the power of jQuery, qUnit, Selemium, Synthetic. Later it was a part of <a href="http://javascriptmvc.com/">javascriptMVC</a> framework, but now it is available as separate framework. Major features are:
-</p>
-<ul>
-<li>It is only javascript</li>
-<li>Could run tests in browser mode and command line by means of Selemium</li>
-<li>Simple API</li>
-<li>Easy to debug</li>
-<li>Automate your existing qUnit tests</li>
-<li>Run file mode and server page mode</li>
-</ul>
-<p>
-Yes, it simple.. just from the reading of documentation and downloading the package you are ready to start you testing. I&#8217;ve managed to cover mostly all functionality of my small <a href="http://trackyt.net">application</a> in 3 hours or so. 
-</p>
-<h2>Integration</h2>
-<p>
-Download FuncUnit package <a href="http://github.com/downloads/jupiterjs/funcunit/funcunit-beta-5.zip">here</a>. 
-    It contains all required javascript files, as well as selemium jar&#39;s, so as you 
-    have Java runtime installed on your machine you immediately able to run tests 
-    from command line. FuncUnit does not say what particular framework should be 
-    behind of your application, it would work with any.</p>
-<p>
-It requires that tests page are on the same level as tested page. At the beginning it was confusing me, because in ASP.net MVC we don&#8217;t have pages at all, only controllers and corresponding actions; my existing qUnit tests were placed to <code>Scripts/Tests/index.html</code> runner and I expected to have same layout. But it have to be changed a little for FuncUnit. So, filemode testing is not really applicable for ASP.net MVC, you should go with server pages mode.
-</p>
-<p>
-I placed both FuncUnit and qUnit test pages at the root of application. Test code itself is referenced from <code>Scripts/Tests/acceptance</code> and <code>Scripts/Tests/acceptance</code>.
-</p>
-<!-- layout.png -->
-<p>
-Content of FuncUnit placed to <code>Scripts/Test/framework</code>, so I got something like:
-</p>
-<!-- scripts.png -->
-<h2>Test page</h2>
-<p>
-It is very similar (even identical) to qUnit page. Just reference framework and tests scripts.
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">html</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">title</font><font color="#0000ff">&#62;</font>Trackyt.net Functional Test<font color="#0000ff">&#60;/</font><font color="#800000">title</font><font color="#0000ff">&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">link</font> <font color="#ff0000">rel</font><font color="#0000ff">="stylesheet"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/css"</font> <font color="#ff0000">href</font><font color="#0000ff">="http://v3.javascriptmvc.com/funcunit/dist/qunit.css"</font> <font color="#0000ff">/&#62;</font> <br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">='text/javascript'</font> <font color="#ff0000">src</font><font color="#0000ff">='Scripts/Tests/framework/funcunit/funcunit.js'</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;!-- Tests --&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.home.js'</font>&#62;&#60;/script&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.signup.js'</font>&#62;&#60;/script&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.bugs.js'</font>&#62;<font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h1</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-header"</font><font color="#0000ff">&#62;</font>FuncUnit Test Suite<font color="#0000ff">&#60;/</font><font color="#800000">h1</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h2</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-banner"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-testrunner-toolbar"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h2</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-userAgent"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">ol</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-tests"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">ol</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">html</font><font color="#0000ff">&#62;</font></font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<h2>Test code</h2>
-<p>
-As I said its fun and easy to write tests with FuncUnit. You have everything that should be in functional testing framework: open pages, read values and put values to controls, wait for events.. clicking and dragging mouse. Tests code/layout is the same as you get used with qUnit. Each test basically does: 
-</p>
-<ul>
-<li>
-Open test page, by <code>S.open("page_url_from_root")</code> (ex. S.open(&#8220;Admin/Login&#8221;), will run http://localhost/app/admin/login)
-</li>
-<li>
-Wait for some html elements appear in browser, with <code>S.wait()</code>;
-</li>
-<li>
-Type some values to control <code>S('#myControlId').type('bla-bla')</code> and read values <code>S('#anotherControlId').val();</code>
-</li>
-<li>
-Assert for results with <code>ok, same, equal</code> methods;
-</li>
-</ul>
-<p>
-I&#8217;ll do several example from my code.
-</p>
-<p>
-Simple one, I check that user is not able to login with empty password:
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// I as user could not login with empty password</font><br>test(<font color="#A31515">"password is empty"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// arrange</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(<font color="#A31515">'a@a.com'</font>);<br><br>&nbsp;&nbsp;<font color="#008000">// act</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click();<br><br>&nbsp;&nbsp;<font color="#008000">// assert</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#PasswordValidationMessage'</font>).visible(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> message = S(<font color="#A31515">'#PasswordValidationMessage li:nth-child(1)'</font>).html();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;ok(message == <font color="#A31515">"Password is empty"</font>, <font color="#A31515">"I as user could not login with empty password"</font>);<br>&nbsp;&nbsp;});<br>});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-Or that I&#8217;m not able to register with already registered email:
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// I as user could not register with same email twice</font><br>test(<font color="#A31515">"register twice"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// arrange</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> email = <font color="#A31515">"test"</font> + <font color="#0000ff">new</font> Date().getSeconds() + <font color="#0000ff">new</font> Date().getMilliseconds() + <font color="#A31515">"@trackyt.net"</font>;<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// wait till registration is done</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S.wait();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// act</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// go back to register page and try to register with same credentials</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S.open(<font color="#A31515">"Registration"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// assert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#PasswordValidationMessage'</font>).visible(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> message = S(<font color="#A31515">'.validation-summary-errors li:nth-child(1)'</font>).html();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;same(message, <font color="#A31515">"Sorry, user with such email already exist. Please register with different email."</font>, <font color="#A31515">"I as user could not register with same email twice"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br>});<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-To more complex, bug reproducing issues:
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// https://github.com/alexanderbeletsky/Trackyourtasks.net/issues/#issue/20</font><br>test(<font color="#A31515">"tasks are disappeared"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// go to sign up page</font><br>&nbsp;&nbsp;S.open(<font color="#A31515">"Registration"</font>);<br><br>&nbsp;&nbsp;<font color="#008000">// create new account</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> email = <font color="#A31515">"test_bugs"</font> + <font color="#0000ff">new</font> Date().getSeconds() + <font color="#0000ff">new</font> Date().getMilliseconds() + <font color="#A31515">"@trackyt.net"</font>;<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br><br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#tasks'</font>).exists(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// create several tasks</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#task-description'</font>).click().type(<font color="#A31515">"fix issue 20"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#add-task'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(500);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#task-description'</font>).click().type(<font color="#A31515">"fix issue 20 2"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#add-task'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(500);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// and log off of dashboard</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#sign-out'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;<font color="#008000">// now sign in with same account</font><br>&nbsp;&nbsp;S.open(<font color="#A31515">"Login"</font>);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// wait till tasks are ready</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#tasks'</font>).exists(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = S(<font color="#A31515">'.task'</font>).size();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// tasks created before must exist</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks == 2, <font color="#A31515">"tasks created before must exist"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br>});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-I found that those tests are also a kind of documentation! I could document user stories with such tests and maybe even use tools to generate documentation just from tests code.
-</p>
-<h2>Running tests from browser</h2>
-<p>
-While development it is more preferable to run tests directly from browser. To do that I just select FunctionalTests.html file in Solution Explorer and press Ctrl+Shift+W that mean &#8220;View in browser&#8221;. Please note, that FuncUnit tests are run in pop-up window, so you have to enable pop ups in your browser. Browser will open <code>http://localhost/virtualdir/FunctionalTests.html</code> and tests will run. For more convenience I also put a bookmark for test page in browser, so I could always re-run all tests by one click.
-</p>
-<!-- firefox.png -->
-<h2>Running tests from command-line</h2>
-<p>
-Major feature of FuncUnit is of cause it&#8217;s ability to run from command-line, so you can easily integrate to your continuous integration system. There a script <code>envjs.bat</code> that would easily to start the tests under Selenium and provide with results as command line output (you can also run qUnit tests from command line with <code>envjs.bat</code>).
-</p>
-<p>
-From the root of web application, I start:
-</p>
-<p>
-<code>.\Scripts\Tests\framework\funcunit\envjs.bat  http://localhost/tracky/FunctionalTests.html</code>
-</p>
-<p>
-BTW, there is a small issue in envjs.bat that stops me to successfully run it initially, it does not take into accounts that it could be run as <code>envjs.bat</code>, but simpy as <code>envjs</code>. Please see my version of this file <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/a687d63f4130be277dcd06f30549e98974e37cb2/src/Acceptance.Tests/envjs.bat">here</a>.
-</p>
-<h2>Deployment</h2>
-<p>
-Sure you don&#8217;t want to make those tests public on your site. There are 2 options: change Web.config to disable users to access <code>FunctionalTets.html</code>, <code>UnitTests.html</code> or just delete those 2 before deployment to production. Since I do simple <code>xcopy</code> deployment, option 2 works for me.
-</p>
-<h2>Demonstration</h2>
-<p>
-To make picture full, I prepared small screencast that would demonstrate how I used the framework. I like it, it fits my requirements (at least for now). I hope you also like it and find this information useful! And also, you should check the <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/tree/master/src/Web/Scripts/Tests">repository</a> for test code examples.
-</p>
-<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' /><param name='flashvars' value='i=144436' /><param name='allowFullScreen' value='true' /><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=144436' allowFullScreen='true' width='560' height='345' pluginspage='http://www.macromedia.com/go/getflashplayer'></embed></object></div>
 
       
       

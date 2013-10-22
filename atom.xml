@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-16T19:56:59+03:00</updated>
+  <updated>2013-10-22T18:58:42+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,144 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
+    <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
+    <updated>2013-10-18T09:56:00+03:00</updated>
+    <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
+    <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
+
+<p>Let&rsquo;s go back, to the problem. I want to handle all errors in my application. Instead of <code>res.send()</code> or <code>res.json()</code>, I want to have a middleware that handles everything by itself. It can be flexible, so I can put any kind of logic there, like logging etc.</p>
+
+<p>It&rsquo;s very easy to archive with <em>patch the middleware</em> method.</p>
+
+<!-- More -->
+
+
+<p>Just like in previous case, <code>app.use()</code> won&rsquo;t work here. First, it would apply to every request. Second, error handling middleware have to placed last, <code>app.use()</code> won&rsquo;t guarantee that.</p>
+
+<h2>Follow the style</h2>
+
+<p>To get benefits of common error handling/logging code, you have to follow particular style. It&rsquo;s very simple, though.</p>
+
+<p>Your last endpoint (middleware) function have to always receive <code>next()</code> callback parameter, all logs have to pass as first argument to that function. You should not send errors directly as <code>res.send(500, 'Error')</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/users/:id&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">db</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">next</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;failed to query db&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">500</span><span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">next</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;user not found&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">404</span><span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please note, that it receives first argument.. and the function is only called, the we call <code>next()</code> with first parameter.</p>
+
+<h2>Error handler middleware</h2>
+
+<p>Let&rsquo;s define the function. Since HTTP API&rsquo;s are JSON based, it would just return the JSON response and status.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">logErrors</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span> <span class="o">=</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">error</span> <span class="o">||</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">status</span> <span class="o">||</span> <span class="mi">500</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="nx">message</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">error</span><span class="p">},</span> <span class="nx">status</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Apply the patch</h2>
+
+<p>Again, right after all routes are already defined, let&rsquo;s call <code>applyErrorLogging()</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;/api&#39;</span><span class="p">]);</span>
+</span><span class='line'><span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>                 <span class="c1">// apply error handling here</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
+</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logErrors</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyErrorLogging</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
@@ -2210,95 +2348,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
     </ul>    <p>        If you reading this and those projects looks interesting to you, so you would like to pick that up - please let me know.<br />
     </p>    <p>        Something that I has started in 2011 and feel most shame for is <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. Being <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">restarted</a> this year I had big ambitions to actually make it done. I still want to implement some meaningful product for .NET web applications deployment. And Candidate would probably be my focus at the beginning of 2013.<br />
     </p>    <h2>Conclusions</h2>    <p>        Despite of side-projects failure, 2012 was a good year. 2013 is the year of Python that means it would bring happy coding time for all the developers. Happy New Year!<br />
-    </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
-    <link href="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html"/>
-    <updated>2012-12-25T22:28:00+02:00</updated>
-    <id>http://beletsky.net/2012/12/introducing-backbonecomputedfields</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
-    </p>    <p>        I needed to have a model with &#8216;virtual&#8217; fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
-    <!-- more -->
-    </p>    <p>        The easiest solution would be simply introduce some model methods, say <code>model.getComputedField() / model.setComputedField()</code> and store the value inside the model object. But that turns out to be bad idea, for several reasons. First, we are breaking usual Backbone interface for getting and setting values - <code>model.get('computed') / model.set('computed', 100)</code>. Also, if model is binded to a view, we are responsible for raising events manually, in case of computed or depended field changing.<br />
-    </p>    <p>        So, after few iterations <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
-    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
-    </p>    <p>        It&#8217;s fairly important, that computed field could change. Based on it&#8217;s value, dependent fields should be updated.<br />
-    </p>    <h2>Examples</h2>    <p>        Let&#8217;s take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
-    </p>    <h3>Calculating prices</h3>    <p>        The model represents the product, which contains net price and VAT rate.<br />
-    </p>    <pre class="brush: js">var Produc = Backbone.Model.extend({
-    initialize: function () {
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
-
-    computed: {
-        grossPrice: {
-            depends: ['netPrice', 'vatRate'],
-            get: function (fields) {
-                return fields.netPrice * (1 + fields.vatRate / 100);
-            },
-            set: function (value, fields) {
-                fields.netPrice = value / (1 + fields.vatRate / 100);
-            }
-        }
-    }
-});
-</pre>    <p>        So, we have <code>grossPrice</code> as computed field. That field depends on &#8216;netPrice&#8217; and &#8216;vatRate&#8217; and being calculated by simple formulas.<br />
-    </p>    <pre class="brush: js">var product = new Product({ netPrice: 100, vatRate: 20 });
-var grossPrice = product.get('grossPrice');
-    </pre>    <p>        In this case, gross price would be 120.<br />
-    </p>    <pre class="brush: js">product.set({grossPrice: 300});
-var netPrice = product.get('netPrice');
-</pre>    <p>        After gross price is update, netPrice will be recalculated and netPrice will be 250.<br />
-    </p>    <h3>Concatenating fields</h3>    <p>        Let&#8217;s have a model to represent the person with first name and last name.<br />
-    </p>    <pre class="brush: js">var Person = Backbone.Model.extend({
-    initialize: function () {
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
-
-    computed: {
-        fullName: {
-            depends: ['firstName', 'lastName'],
-            get: function (fields) {
-                return fields.firstName + ' ' + fields.lastName;
-            }
-        }
-    }
-});
-</pre>    <p>        I&#8217;m skipping the setter cause we don&#8217;t need to set full name here.<br />
-    </p>    <pre class="brush: js">var person = new Person({firstName: 'Alexander', lastName: 'Beletsky'});
-var fullName = person.get('fullName');
-</pre>    <p>        Full name &#8216;Alexander Beletsky&#8217; is returned here.<br />
-    </p>    <h3>Referenced objects</h3>    <p>        Sometimes we have a models that only contains a reference to another model. All the time, we need to get referenced object we have to create some piece of code, which it typically copy-n-pasted thought the code base. Computed field could be a good idea to encapsulate that.<br />
-    </p>    <pre class="brush: js">var Invoice = Backbone.Model.extend({
-    initialize: function (attrs, options) {
-        this.customers = options.customers;
-        this.computedFields = new Backbone.ComputedFields(this);
-    },
-
-    computed: {
-        customer: {
-            depends: ['customerId'],
-            get: function (fields) {
-                return fields.customerId && this.customers.get(fields.customerId);
-            },
-            set: function(customer, fields) {
-                fields.customerId = customer.get('id');
-            }
-        }
-    }
-});
-</pre>    <p>        Here we have customer field, which is computed. <br />
-    </p>    <pre class="brush: js">var invoice = new Invoice({}, { customers: collectionOfCustomers });
-var customer = invoice.get('customer');
-</pre>    <p>        So, I&#8217;m able to get customer model even if invoice is just holding the invoice Id. <br />
-    </p>    <pre class="brush: js">invoice.set({customer: anotherCustomer});
-var customerId = invoice.get('customerId');
-    </pre>    <p>        If I&#8217;m changing the customer of invoice, the &#8216;customerId&#8217; would be initialized with id of &#8216;anotherCustomer&#8217;.<br />
-    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
     </p></div>
 ]]></content>
   </entry>

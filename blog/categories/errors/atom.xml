@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: errors | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/errors/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2013-10-22T18:58:42+03:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
+    <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
+    <updated>2013-10-18T09:56:00+03:00</updated>
+    <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
+    <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
+
+<p>Let&rsquo;s go back, to the problem. I want to handle all errors in my application. Instead of <code>res.send()</code> or <code>res.json()</code>, I want to have a middleware that handles everything by itself. It can be flexible, so I can put any kind of logic there, like logging etc.</p>
+
+<p>It&rsquo;s very easy to archive with <em>patch the middleware</em> method.</p>
+
+<!-- More -->
+
+
+<p>Just like in previous case, <code>app.use()</code> won&rsquo;t work here. First, it would apply to every request. Second, error handling middleware have to placed last, <code>app.use()</code> won&rsquo;t guarantee that.</p>
+
+<h2>Follow the style</h2>
+
+<p>To get benefits of common error handling/logging code, you have to follow particular style. It&rsquo;s very simple, though.</p>
+
+<p>Your last endpoint (middleware) function have to always receive <code>next()</code> callback parameter, all logs have to pass as first argument to that function. You should not send errors directly as <code>res.send(500, 'Error')</code>.</p>
+
+<p>```js
+app.get(&lsquo;/api/users/:id&rsquo;, function (req, res, next) {</p>
+
+<pre><code>db.users.find({id: req.params.id}, function (err, user) {
+    if (err) {
+        return next({message: 'failed to query db', status: 500});
+    }
+
+    if (!user) {
+        return next({message: 'user not found', status: 404});
+    }
+
+    res.json(user);
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Please note, that it receives first argument.. and the function is only called, the we call <code>next()</code> with first parameter.</p>
+
+<h2>Error handler middleware</h2>
+
+<p>Let&rsquo;s define the function. Since HTTP API&rsquo;s are JSON based, it would just return the JSON response and status.</p>
+
+<p>```js
+function logErrors(err, req, res) {</p>
+
+<pre><code>req.unhandledError = err;
+
+var message = err.message;
+var error = err.error || err;
+var status = err.status || 500;
+
+res.json({message: message, error: error}, status);
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Apply the patch</h2>
+
+<p>Again, right after all routes are already defined, let&rsquo;s call <code>applyErrorLogging()</code>.</p>
+
+<p>```js
+// &hellip;</p>
+
+<p>require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>applyAuthentication(app, [&lsquo;/api&rsquo;]);
+applyErrorLogging(app);                 // apply error handling here</p>
+
+<p>// &hellip;
+```</p>
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<p>```js
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyErrorLogging(app) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
+}
+
+function patchRoute (route) {
+    route.callbacks.push(middleware.errors.logErrors);
+}
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = applyErrorLogging;
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

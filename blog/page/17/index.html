@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Agileee 2010: Mikalai Alimenkau & Aleksey Solntsev: How to be proud when you are done Oct 10th, 2010 Agile Disclaimer: text below is compilation of &hellip;">
+  <meta name="description" content="Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well Oct 10th, 2010 Agile, TDD &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,161 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/10/agileee-2010-pawel-lipinski-clean-tests.html">
+    
+      Agileee 2010: Pawel Lipinski: “Clean Tests” by Uncle Paul, or How to structure your tests so that they serve you well</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-10T16:59:00+03:00" pubdate data-updated="true">Oct 10<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s1600/DSC03703.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLHG-CdbcZI/AAAAAAAAG-Q/6lTubX6bNG0/s400/DSC03703.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5526416986874802578" /></a>
+<p>
+One of few technical speeches on this conference. <a href="http://pragmatists.pl/en/about_us.php">Pawel</a> discusses a vision of production clean code, with a clean tests as key factor of creation good software. That was very interesting and rather quick, so I did only few notes of it.
+</p>
+<h2>Introduction</h2>
+<p>
+&#8220;Most important stuff is to create a clean code - Robert C. Martin (Uncle Bob)&#8221;
+</p>
+<p>
+Writing a clean code is important! Everybody knows that, but not everybody actually produce clean code. Writing a tests is vital to create reliable, maintable, code. It is a common issue of many developers to forget that tests code quality as such important as production code. 
+</p>
+<p>
+Then we do write tests, we have to be sure that we are:
+</p>
+<ul>
+<li>writing tests that are reliable</li>
+<li>writing tests that they are document code</li>
+<li>writing tests that they are maintainable</li>
+<li>writing tests that they are readable</li>
+</ul>
+<p>
+Writing good code/tests is a hard work! That require time and practice.
+</p>
+<h2>What test do give?</h2>
+<p>
+We are spending an effort on tests (a lot of efforts, actually). Why do we do that?
+</p>
+<ul>
+<li>Be in safe net, awareness of what you did</li>
+<li>TDD leads to a Test driven Design!</li>
+<li>TDD increasing development speed</li>
+<li>TDD produce documentation</li>
+</ul>
+<h2>Problems</h2>
+<p>
+The more tests you have, more problem you have with them. So, at some point of time it stop to be a documentation. 
+</p>
+<p>
+This is especially matters then you have a lot of integration tests, that could affect each other, provide massive failures without giving clear understanding what is wrong. 
+</p>
+<h2>Process</h2>
+<p>
+What&#8217;s the process of creation the tests, following TDD rules? 
+</p>
+<ul>
+<li>Think First</li>
+<li>Trivial First</li> 
+<li>Test specifies &#8220;what&#8221;, implementation says &#8220;how&#8221;</li>
+<li>You need different levels of tests (unit, integration, end-to-end)</li>
+</ul>
+<h2>Conventions</h2>
+<p>
+Something that helps to produce clean tests. 
+</p>
+<ul>
+<li>Coherent naming of tests classes</li>
+<li>Coherent naming of tests</li>
+<li>Test classes names focus more on functionality</li>
+</ul>
+<h2>Comments</h2>
+<p>
+If you feel you must comment, something wrong with you code. Tests have to be document itself.
+</p>
+<p>
+Some useful //give, //when, //then (//arrange, //act, //assert).
+</p>
+<h2>Test setup (Given part of test)</h2>
+<p>
+DRY (Dont repeat yourself) is major. We usually repeat the setup code for each tests. Have to be extracted to methods, that could be easily reused. Method name should reflect its meaning.
+</p>
+<h2>Behavior Driven Development</h2>
+<p>
+It is on top of TDD, we define behaviour. It reflects a user stories that business people create. Focuses, why code should exists. Code have to be a value for customer. Naming is important, language you use reflects the way you think. Naming in code is the same as names by the business people. In BDD we say Examples, Not Tests.
+</p>
+<p>
+By the way, someone suggested good BDD tool for .NET, <a href="http://specflow.org/">http://specflow.org/</a>
+</p>
+<h2>BDD rules</h2>
+<ul>
+<li>tests names should be sentences</li>
+<li>simple constant template of sentence help to focus in the tests on one thing</li>
+</ul>
+<h2>A-TDD</h2>
+<p>
+Acceptance TDD. Scenarios have to written by business people (or at least with them nearby).
+</p>
+<h2>Tests smells</h2>
+<p>Factors that shows something is wrong with test</p>
+<ul>
+<li>Long setup</li>
+<li>Long tests</li>
+<li>Many assertions</li>
+<li>To many tests methods</li>
+</ul>
+<h2>Maintainable tests</h2>
+<p>
+Some rules must be followed according to have maintainable tests.
+</p>
+<ul>
+<li>Reuse assertion, create &#8220;business&#8221; assertions</li>
+<li>Reuse object construction methods</li>
+<li>Reuse test setup</li>
+<li>Tests should not depend on environment and order of executions</li>
+</ul></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -971,115 +1126,6 @@ Ciprian Mustiata gave nice point in comments for previous post, that such demand
 </p>
 <p>
 That&#8217;s another piece of information to think about. What&#8217;s your opinion on that?
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/09/is-tdd-skill-actually-required-by.html">
-    
-      Is TDD skill actually required by employers?</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-09T20:47:00+03:00" pubdate data-updated="true">Sep 9<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Is TDD popular among developers? Do managers knows about benefits of TDD? Are employers really looking for TDD skilled people? 
-</p>
-<p>
-I was thinking about such kind of questions and decided to perform my initial research. My research was quite simple, I wanted to check popular job looking sites and review latest job offers, especially for &#8220;skills&#8221; sections. How many of employers actually seek for developers who know/use/love TDD. Since I&#8217;m geek I would not do it manually, so I&#8217;ve written an application for that. Crawler that could get data from job looking sites and store it to DB for further analisys. I already got the data and would like to share it in this post.    
-</p>
-<h2>How it works?</h2>
-<p>
-Like any other crawler it has one big cycle that makes a web requests to site, 
-    gets response, extracts the links and data from response, stores data somewhere. It proceeds as soon as relevant data is present on pages. Vacancy crawler does a search request, extracts links for all vacancy pages. As soon as link extracted, it does request to vacancy page. It analyzes the body of vacancy description by very simple method: searching for a keywords it text. So, to detect is TDD skill required or not, crawler try to match some words from vocabulary. 
-    Similar approach used to understand what technology skills (.NET, Java, C++) is required. At final it creates a record contains site name, position, technology used and TDD demand flag and stores data to database. 
-</p>
-<h2>Source of information</h2>
-<p>
-I&#8217;ve taken two sites as source of information. First, <a href="http://rabota.ua">RabotaUa</a> (Ukrainian one, Ukraine is 
-    one of big players of IT outsourcing in Europe, so data will be really relevant). Second one, I wanted to pick up from USA, but it was difficult to find it, since I&#8217;m not aware of its popularity, reputation and so on. I even asked question of <a href="http://stackoverflow.com/questions/3645579/developers-job-looking-site-in-us-closed">StackOverflow</a>, but my question was closed. I choose <a href="http://www.prgjobs.com">JobsForProgrammers</a> as one of google suggested.
-</p>
-<h2>RabotaUa results</h2>
-<p>
-I&#8217;ve extracted 978 records from <a href="http://rabota.ua">RabotaUa</a>. It is latest, actual, recently posted job offers. 150 of 987 vacancies contained requirements for TDD skills.
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s1600/rabotaua.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkd880X8oI/AAAAAAAAG4o/O3lUnKnogJs/s400/rabotaua.pie.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5514972151647040130" /></a>
-<p>
-How many of TDD skills required per technology? 
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s1600/rabotaua.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TIke28TkF_I/AAAAAAAAG4w/Jp4ieZptCKg/s400/rabotaua.chart.png" border="0" alt=""id="Img1" /></a>
-<h2>PrgJobs results</h2>
-<p>
-I&#8217;ve extracted 1000 records from <a href="http://www.prgjobs.com">JobsForProgrammers</a>. Crawler could proceed more, but I&#8217;ve noticed that on latest pages, site contains not really relevant data, not developers jobs and offers with short and not always adequate description. So, I still consider to crawle some other USA site for data. Anyway, here are results. Only 69 of 1000 requires TDD, 7%! 
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s1600/prgjob.pie.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TIkhupQmI2I/AAAAAAAAG44/xi8kA_k-NE4/s400/prgjob.pie.png" border="0" alt=""id="Img2" /></a>
-<p>
-Technologies breakdown, also a bit strange. Match for technology were difficult, for several reasons. Job description headline, usually contained to generic description (as Software Developer, Web developer and so on), job description body contained multiskills requirements (like C++/Perl, or C#/Java, VB.NET/Java) that current version of crawler could not handle properly.
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s1600/prgjob.chart.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 217px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TIkix2ebWKI/AAAAAAAAG5A/zHGGiqCGGaQ/s400/prgjob.chart.png" border="0" alt=""id="Img3" /></a>
-<h2>Conclusions</h2>
-<p>
-To be honest, I would not expect such data. I thought 40-60% should ask for TDD, but we see that it is less than 16% from 
-    Ukranian data source and less than 7% for USA. For me, as TDD follower this is really disappointing results.  I realize that such results are very simple and rough, could not be used for some real life analytics, but it gives 
-    a vision, for sure.    
-</p>
-<p>
-Also I plan to do several technical blogs with details of implementation of Crawler, I&#8217;ve created for this report.
-</p>
-<p>
-Please let me know, what you think about such results, what further improvements could be done for more fine results, what other data sources could be used?
-</p>
-<h2>Update</h2>
-<p>
-<ul>
-<li>
-<a href="http://www.beletsky.net/2010/09/update-is-tdd-skill-actually-required.html">Analisys of Careers.StackOverflow job site</a>
-</li>
-<li>
-<a href="http://www.beletsky.net/2010/09/crawling-web-sites-with-htmlagilitypack.html">Crawling a web sites with HtmlAgilityPack</a>
-</li>
-<li>
-<a href="http://www.beletsky.net/2010/09/regex-to-match-words-in-dictionary-on.html">
-Regex to match a words in dictionary on page body
-</a>
-</li>
-</ul>
 </p></div>
 
       

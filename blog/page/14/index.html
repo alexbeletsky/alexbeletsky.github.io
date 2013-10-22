@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="How do I seek for knowledge? Apr 8th, 2011 Reading, Social, Tips Developers job is nothing more than other engineers specialties except one big &hellip;">
+  <meta name="description" content="Functional tests must not be done first Apr 13th, 2011 TDD First of all, by functional tests I understand tests of application features primarily &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,101 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/04/functional-tests-must-not-be-done-first.html">
+    
+      Functional tests must not be done first</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T22:27:00+03:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+First of all, by functional tests I understand tests of application features primarily from user (UI) perspective, with different set of frameworks - <a href="http://seleniumhq.org/">Seleminum</a>, <a href="http://watin.org/">Watin</a>, <a href="http://funcunit.com">FuncUnit</a> or whatever. 
+</p>
+<p>
+I&#8217;ve seen the cases that functional tests are being implemented either first or immediately after some particular feature is implemented. I think this is a just wrong practice. Even the UI testing could definitely provide value you should think twice before getting to deep with functional testing and apply as development process rule. Functional tests have several serious drawbacks:
+</p>
+<ul>
+<li>
+<strong>Fragility</strong>. Functional tests are extremely fragile. You could run test suite and got green results and re-run them in 5 seconds and got completely red sheet. And there could be thousands of reasons why it happened.
+</li>
+<li>
+<strong>Speed</strong>. They are simply slow. As much tests you have as slow they are. As much slow tests you have as long feedback cycle is. As long feedback cycle is as low value you are getting from tests.
+</li>
+<li>
+<strong>Bad isolation</strong>. Because of functional tests have integration nature, it is just not possible to run them in isolated environment. Tests became depended from each other, that in particular leads to fragility.
+</li>
+<li>
+<strong>Support</strong>. Implementation of UI test is not trivial thing. Even with so cool frameworks like <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> or <a href="http://seleniumhq.org/docs/03_webdriver.html">WebDrivers</a> that have strict and clear interface, it could be hard to test some UI feature of application. But support is much more harder - really small change in could turn many tests to red state. In fact, implementation of change that costs you 1 hour, could cost 1 day for correction of tests.
+</li>
+<li>
+<strong>Changes</strong>. We are trying to adopt agile into development world, one of the aspect that makes development really agile is reacting on change. Reacting on change have to be fast. Changes are integral part of development, even if developers hate changes. But as I said above, even small change could ruin UI tests and it is not fast to fix it. It means that cost of change is getting more and more expensive. 
+</li>
+</ul>
+<p>
+So, trying to implement UI tests in early development stages or cover all applications features with UI tests is a <strong>waste</strong>. Ratio between effort / value would be just go to zero with time.
+</p>
+<p>
+What I think as recommendation for UI testing: 
+</p>
+<ul>
+<li>
+Rely more on unit tests - all server side code must be covered with a <a href="http://www.beletsky.net/2010/10/test-driven-design-and-levels-of.html">different level of testing</a>. Units have to be isolated and fast.
+</li>
+<li>
+Keep view as thin as possible - in ideal you should not have logic in view at all, but modern web application heavily using client side (javascript) logic that affects view. Javascript code have to be unit tested with <a href="http://docs.jquery.com/Qunit">qUnit</a> or similar frameworks.
+</li>
+<li>
+Don&#8217;t start with UI tests - UI testing have to be done <strong>last</strong>. If the feature is just implemented it does not mean it has to be immediately tested. It has to pass PO approval, QA. Ideally it has to be released to beta group and confirmed that &#8220;this is exactly what we need&#8221;. After feature stabilized test could be added.
+</li>
+<li>
+Don&#8217;t try to test everything - since UI testing cost more, you should be more careful. It has sense to automate smoke test, critical parts of application or parts that have high regression. 
+</li>
+<li>
+Clean up tests regularly - peer tests regularly, if you have bunch of tests for some area that works OK for a long time you might consider to remove those tests, to speedup whole tests process.
+</li>
+</ul>
+<p>
+Keeping focus only of primary features of application and avoid of testing small stuff should be key for functional tests.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1031,173 +1126,6 @@ public IList&lt;Task&gt; GetAllTasks(ApiToken token)
 </pre>
 <p>
 As reference I&#8217;ll give you implementation of <a href="https://github.com/alexanderbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/02/refactoring-to-testability.html">
-    
-      Refactoring to testability</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-21T10:33:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/refactoring/'>Refactoring</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Suppose you are working on some web <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">REST</a> API adapter. It would be basically one class with bunch of methods. Each method would represent each supported API call. Through the implementation you would probably landed with something like this,
-</p>
-<pre class="brush: csharp">
-public class ApiAdapter
-{
-    private HttpClient _client;
-    private RequestFormatHelper _requestFormatHelper;
-    private ResponseFormatHelper _responseFormatHelper;
-
-    // ...
-    
-    public ApiAdapter()
-    {
-        _client = new HttpClient(/* ... */);
-        _requestFormatHelper = RequestFormatHelper(/* ... */);
-        _responseFormatHelper = ResponseFormatHelper(/* ... */);
-    }
-
-    void CreateNewTask(Task task)
-    {
-        // implementation
-    }
-
-    void DeleteTask(Task task)
-    {
-        // implementation
-    }
-
-    // rest of methods...
-}
-</pre>
-<p>
-Nevertheless, the code works it has several code smells: 
-</p>
-<ul>
-<li>
-<strong>High cohesion</strong> - the relation between objects are really strong. Objects are aggregated and aggregation is the one of strongest types of links between objects. 
-</li>
-<li>
-<strong>Violation of <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/Closed principle</a></strong> - one of the SOLID object oriented design principles.
-</li>
-<li>
-<strong>Lack of testability</strong> - if you decide to unit test this code, you will be in problem. Unit testing is supposed to be done in <a href="http://c2.com/cgi/wiki?UnitTestIsolation">isolation</a>. Having high cohesion code you can&#8217;t get required level of isolation. Moreover it is not possible to substitute concrete class with <a href="http://en.wikipedia.org/wiki/Mock_object">mock object</a> by using some famous JMock, RhinoMocks or Moq.
-</li>
-<li>
-<strong>Lack of flexibility</strong> - if you decide to change implementation of some of depended objects, say <code>ResponseFormatHelper</code> you would probably change the implementation of <code>ApiAdapter</code> as well.
-</li>
-</ul>
-<p>
-If you think that you code is not testable or flexible, don&#8217;t waste your time.. apply the power of refactoring.
-</p>
-<p>
-What to do? It is basically very simple to correct such code, you just need to follow this:
-</p>
-<ul>
-<li>
-<strong>Always hide the details behind the interface</strong> - all behavior objects must conform to particular interface. Other objects must refer to another object only with knowledge of the interface. In terms of programming languages, if you pass object to client code you must always pass it by interface (e.g <code>public SomeAction(IHttpClient client, Type type, Data data);</code>.
-</li>
-<li>
-<strong>Use dependency injection for louse coupled code</strong> - try to avoid to create depended object by <code>new</code>, inject the dependency by constructor of public property. (e.g <code>public ApiAdapter(IHttpClient client, IRequestFormatHelper requestHelper, IResponseFormatHelper responseHelper)</code>.
-</li>
-</ul>
-<p>
-How the code might look after refactoring:
-</p>
-<pre class="brush: csharp">
-public interface IHttpClient
-{
-    void WebCall(/*...*/);
-}
-
-public interface IRequestFormatHelper
-{
-    string Format(/*...*/);
-}
-
-public interface IResponseFormatHelper
-{
-    string Format(/*...*/);
-}
-
-
-public class ApiAdapter
-{
-    private IHttpClient _client;
-    private IRequestFormatHelper _requestFormatHelper;
-    private IResponseFormatHelper _responseFormatHelper;
-
-    // ...
-
-    public ApiAdapter(IHttpClient client, IRequestFormatHelper requestFormatHelper, IResponseFormatHelper responseFormatHelper)
-    {
-        _client = client;
-        _requestFormatHelper = requestFormatHelper;
-        _responseFormatHelper = requestFormatHelper;
-    }
-</pre>
-<p>
-Now, you can easily test this code using mocks, like this simple test:
-</p>
-<pre class="brush: csharp">
-[Test]
-public void CreateNewTask_SendPutRequest_WithJson()
-{
-    // arrange
-    var client = new Mock&lt;IHttpClient&gt;();
-    var requestFormatter = new Mock&lt;IRequestFormatHelper&gt;();
-    var responseFormater = new Mock&lt;responseFormatHelper&gt;();
-
-    // act 
-    var api = new ApiAdapter(client, requestFormatter, responseFormater);
-    api.CreateTask (new Task());
-
-    // arrange
-    client.Verify(client.WebCall(/*...*/)).Called().WithArguments(/*...*/;
-}
-</pre>
-<p>
-And change any details of injected objects, without any changes in <code>ApiAdapter</code>. Refactoring to testablity is important, as much testable code you got as much flexible code you got.
 </p></div>
 
       
