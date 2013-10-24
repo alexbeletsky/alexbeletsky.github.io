@@ -45,7 +45,7 @@ Please note, that it receives first argument.. and the function is only called, 
 Let's define the function. Since HTTP API's are JSON based, it would just return the JSON response and status.
 
 ```js
-function logErrors(err, req, res) {
+function logErrors(err, req, res, next) {
 	req.unhandledError = err;
 
 	var message = err.message;
