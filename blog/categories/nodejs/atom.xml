@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-23T21:19:15+03:00</updated>
+  <updated>2013-10-24T09:30:00+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -61,7 +61,7 @@ app.get(&lsquo;/api/users/:id&rsquo;, function (req, res, next) {</p>
 <p>Let&rsquo;s define the function. Since HTTP API&rsquo;s are JSON based, it would just return the JSON response and status.</p>
 
 <p>```js
-function logErrors(err, req, res) {</p>
+function logErrors(err, req, res, next) {</p>
 
 <pre><code>req.unhandledError = err;
 
@@ -537,7 +537,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#114;&#x6f;&#x6f;&#116;&#x40;&#x64;&#x6f;&#x6b;&#107;&#117;&#46;&#109;&#x65;">&#x72;&#111;&#x6f;&#x74;&#64;&#100;&#111;&#x6b;&#107;&#x75;&#x2e;&#x6d;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#114;&#x6f;&#111;&#116;&#64;&#x64;&#x6f;&#107;&#x6b;&#117;&#46;&#109;&#x65;">&#x72;&#x6f;&#x6f;&#x74;&#64;&#100;&#111;&#x6b;&#x6b;&#117;&#x2e;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
@@ -726,7 +726,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x6c;&#105;&#x6b;&#101;&#97;&#x73;&#116;&#111;&#x72;&#x65;&#x2d;&#x63;&#x6f;&#108;&#108;&#x65;&#x63;&#116;&#111;&#x72;&#64;&#x30;&#46;&#48;&#x2e;&#50;&#x2d;&#50;&#49;">&#x6c;&#105;&#x6b;&#101;&#x61;&#x73;&#116;&#111;&#x72;&#101;&#45;&#99;&#111;&#x6c;&#x6c;&#101;&#x63;&#116;&#x6f;&#x72;&#64;&#48;&#x2e;&#x30;&#46;&#x32;&#x2d;&#x32;&#x31;</a> No repository field.
+remote:        npm WARN package.json <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6c;&#105;&#x6b;&#101;&#x61;&#x73;&#116;&#x6f;&#x72;&#101;&#x2d;&#x63;&#111;&#108;&#108;&#101;&#99;&#116;&#111;&#x72;&#64;&#x30;&#46;&#48;&#46;&#50;&#45;&#x32;&#x31;">&#108;&#105;&#x6b;&#101;&#x61;&#x73;&#x74;&#x6f;&#x72;&#x65;&#45;&#99;&#111;&#x6c;&#108;&#101;&#x63;&#116;&#x6f;&#114;&#64;&#48;&#46;&#x30;&#46;&#50;&#x2d;&#50;&#49;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 
