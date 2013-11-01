@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-24T09:30:00+03:00</updated>
+  <updated>2013-11-01T15:28:25+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -226,7 +226,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#114;&#111;&#x6f;&#x74;&#64;&#x64;&#x6f;&#x6b;&#107;&#x75;&#46;&#109;&#101;">&#114;&#x6f;&#x6f;&#x74;&#64;&#x64;&#111;&#107;&#107;&#x75;&#46;&#109;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#x72;&#x6f;&#x6f;&#x74;&#x40;&#100;&#111;&#x6b;&#x6b;&#x75;&#x2e;&#109;&#x65;">&#x72;&#x6f;&#x6f;&#116;&#x40;&#100;&#x6f;&#107;&#x6b;&#117;&#x2e;&#x6d;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>

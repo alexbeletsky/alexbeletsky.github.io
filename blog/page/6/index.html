@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="CS101 Building a Search Engine: Week 7 and Final Exams Jun 8th, 2012 CS101, SearchEngine, Udacity As I said in my previous post, last several units &hellip;">
+  <meta name="description" content="ELMAH.MVC v2.0 is coming Jun 9th, 2012 ELMAH.MVC, GitHub, asp.net Elmah.MVC is rather popular package in NuGet gallery. Being submitted about year &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,62 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/elmahmvc-v20-is-coming.html">
+    
+      ELMAH.MVC v2.0 is coming</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-09T17:36:00+03:00" pubdate data-updated="true">Jun 9<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
+    </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
+    </p>    <h2>What will be changed?</h2>    <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is really simple one, actually delivered as 2 C# code files. It creates new ASP.NET MVC area and register route to ElmahController, which is just an adapter to ELMAH LogFactory. It worked very smooth, but with more functionality this approach no longer work.<br />
+    </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it&#8217;s a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
+    </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don&#8217;t know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it&#8217;s still nice step towards compatibility. <br />
+    </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won&#8217;t appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
+    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -688,59 +744,6 @@
 </p><p>This week we moved further with &#8220;real&#8221; implementation of web crawler. Instead of going by the set of quizzes I went my own path and created my implementation of simple crawler. So, what it does currently is go from &#8216;seed&#8217; page and collect all links it&#8217;s able to find on target pages and related pages. I went a little far, since I made it run on real web requests, instead of test data that current unit supposes. If you are interested code could be found <a href="https://gist.github.com/2626946">here</a>.<br />
 </p><p>Still I pretend as CS101 student trying to apply only knowledge I got through latest weeks. It&#8217;s great exercise I believe, showing some gaps in my education or concept understanding.  <br />
 </p><p>Homework was interesting as well. <a href="http://www.crunchbase.com/person/anna-patterson">Anna Patterson</a> was a starring guest for homework session. Together with Anna we tried to improve crawler with some real life requirements, like max_pages and max_depth parameter to prevent crawler to stay in indefinite loop. Anna is great expert in this field, so for each homework task I highly recommend to check the answer, a lot of interesting details there.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/04/cs101-building-search-engine-week-2.html">
-    
-      CS101 Building a Search Engine: Week 2</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-28T11:31:00+03:00" pubdate data-updated="true">Apr 28<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
-</small><br />
-</p><p>This week I&#8217;ve concluded Unit 2 of <a href="http://www.udacity.com/">CS101 Building Search Engine</a> class. As a previous one it was very basic. We did went thought programming fundamentals on <code>if</code> statements, <code>while</code> loops, conditions and boolean operations. In contrast to Unit 1, I haven&#8217;t got any really new information for me. All the information given very nicely, preparing listener to do some more serious stuff. <br />
-</p><p>I think I started to get used to Python a little bit. Unfortunately I do not practice it much now, so I have to find simple project that I could accomplish in Python, besides the search engine. As always doing code katas is very nice for introduction to any new language, so I can do that. <br />
-</p><p>Homework was simple enough, but again as last time I got one problem that made me think some extra time. This is &#8220;median search&#8221; issue. Say, you are given 3 numbers - (1,2,3). Median is the one between bigger and smaller number, in this case it&#8217;s &#8220;2&#8221;. In (9,3,6) it&#8217;s &#8220;6&#8221; and in (7,8,7) it&#8217;s &#8220;7&#8221;. As a previous time I started with something I don&#8217;t suppose to know, like lists and sorting. Solving this problem just with knowledge I got so far more problematic. So, I spent some time on that.. and was really happy than I found simple and nice solution for that. You should try to solve that, pretending you know only procedures and conditional operations.  <br />
-</p><p>Now, I&#8217;m looking forward for Unit 3. It&#8217;s still basic, but there we suppose to create some simple crawler. I hope it will be fun!<br />
 </p></div>
 
       

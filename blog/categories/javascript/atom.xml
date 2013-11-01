@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-24T09:30:00+03:00</updated>
+  <updated>2013-11-01T15:28:25+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,258 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
+    <link href="http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js.html"/>
+    <updated>2013-11-01T11:36:00+02:00</updated>
+    <id>http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js</id>
+    <content type="html"><![CDATA[<p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
+
+<p>There was a few difficulties with that.</p>
+
+<!-- More -->
+
+
+<h2>Why to use Require.js with Angular.js?</h2>
+
+<p>Some people argue about rationality of using Require and Angular together. Indeed, Angular has it&rsquo;s own module system, dependency resolve system etc. I agree with that, but still my point is: Require.js comes with very handy add-on, called <code>r.js</code> &ndash; it&rsquo;s code minimizer and optimizer.</p>
+
+<p>Having <code>grunt</code> build system (which is de-facto standard for JS applications) you can easily integrate with your deployment scenarios.</p>
+
+<h2>Project organization</h2>
+
+<p>Before deep dive, I want to share you some simple ideas of client side code organization that I think makes sense:</p>
+
+<p>```plain</p>
+
+<pre><code>    /
+    + - build
+    |
+    + - components
+    |
+    + - js
+        |
+        + - controllers
+        |
+        + - directives
+        |
+        + - services
+        |
+        + - app.js
+            |
+            main.js
+            |
+            config.js
+</code></pre>
+
+<p>```</p>
+
+<ul>
+<li><strong>build</strong> &ndash; results of build .js and .css is placed here (these files are used in production).</li>
+<li><strong>components</strong> &ndash; bower components are configured to be placed in this folder.</li>
+<li><strong>js</strong> &ndash; source code of application, divided to <code>contollers</code>, <code>directives</code> and <code>services</code>.</li>
+</ul>
+
+
+<h3>main.js</h3>
+
+<p>Require.js main file, that contains configuration and main entry.</p>
+
+<p>```js
+require.config({</p>
+
+<pre><code>paths: {
+    'angular' : '../components/angular/angular',
+    'ngResource': '../components/angular-resource/angular-resource',
+    'ngCookies': '../components/angular-cookies/angular-cookies',
+    'ngProgressLite': '../components/ngprogress-lite/ngprogress-lite'
+},
+shim: {
+    ngResource: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    ngCookies: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    ngProgress: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    angular: {
+        exports : 'angular'
+    }
+},
+baseUrl: '/js'
+</code></pre>
+
+<p>});</p>
+
+<p>require([&lsquo;app&rsquo;], function (app) {</p>
+
+<pre><code>app.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<h3>app.js</h3>
+
+<p>Instance of application, where all Angular.js bootstraping taking place.</p>
+
+<p>```js
+define(function (require) {</p>
+
+<pre><code>'use strict';
+
+var angular = require('angular');
+var services = require('./services/services');
+var controllers = require('./controllers/controllers');
+var directives = require('./directives/directives');
+
+var app = angular.module('likeastore', ['services', 'controllers', 'directives']);
+
+app.init = function () {
+    angular.bootstrap(document, ['likeastore']);
+};
+
+app.config(['$routeProvider', '$locationProvider', '$httpProvider',
+    function ($routeProvider, $locationProvider, $httpProvider) {
+        $httpProvider.responseInterceptors.push('httpInterceptor');
+
+        $routeProvider
+            .when('/', { templateUrl: 'partials/dashboard', controller: 'dashboardController' })
+            .when('/inbox', { templateUrl: 'partials/dashboard', controller: 'dashboardController' })
+            .when('/facebook', { templateUrl: 'partials/dashboard', controller: 'facebookController' })
+            .when('/github', { templateUrl: 'partials/dashboard', controller: 'githubController' })
+            .when('/twitter', { templateUrl: 'partials/dashboard', controller: 'twitterController' })
+            .when('/stackoverflow', { templateUrl: 'partials/dashboard', controller: 'stackoverflowController' })
+            .when('/search', { templateUrl: 'partials/dashboard', controller: 'searchController' })
+            .when('/settings', { templateUrl: 'partials/settings', controller: 'settingsController' })
+            .when('/ooops', { templateUrl: 'partials/dashboard', controller: 'errorController' })
+            .otherwise({ redirectTo: '/' });
+
+        $locationProvider.html5Mode(true);
+    }
+]);
+
+app.run(function ($window, auth, user) {
+    auth.setAuthorizationHeaders();
+    user.initialize();
+});
+
+return app;
+</code></pre>
+
+<p>});
+```</p>
+
+<h3>config.js</h3>
+
+<p>Configuration object that contains application settings, like <code>itemsPerPage</code>, <code>logoutTimeout</code> etc.</p>
+
+<p>```js
+define(function (require) {</p>
+
+<pre><code>'use strict';
+
+return {
+    dashboard: {
+        limit: 30
+    }
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Master HTML</h2>
+
+<p>The first noticable difference is the way master HTML file is organized. You are no longer define application with directive <code>&lt;html lang="en" ng-app&gt;</code>, but instead using manual <em>booting</em> of application.</p>
+
+<p>```html
+&lt;!doctype html>
+<html>
+<head></p>
+
+<pre><code>&lt;meta charset="utf-8"&gt;
+</code></pre>
+
+<p></head>
+<body></p>
+
+<pre><code>&lt;div class="main-viewer" ng-view&gt;&lt;/div&gt;
+
+&lt;script type="text/javascript" src="http://beletsky.net/components/requirejs/require.js" data-main="/js/main.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p></body>
+</html>
+```</p>
+
+<h2>Booting application</h2>
+
+<p>Once master HTML is loaded, Require.js will execute <code>main.js</code> file. This is were the action should be taken to bootstrap Angular.js application.</p>
+
+<p>Take a look at <code>main.js</code> file from above, here we start application bootstrapping:</p>
+
+<p>```js
+require([&lsquo;app&rsquo;], function (app) {</p>
+
+<pre><code>app.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>The <code>init()</code> function of application,</p>
+
+<p>```js
+var app = angular.module(&lsquo;likeastore&rsquo;, [&lsquo;services&rsquo;, &lsquo;controllers&rsquo;, &lsquo;directives&rsquo;]);</p>
+
+<p>app.init = function () {</p>
+
+<pre><code>angular.bootstrap(document, ['likeastore']);
+</code></pre>
+
+<p>};
+```</p>
+
+<p>By doing this, you should be able to start the application and make sure that all modules, controllers and directives are loaded without any issues.</p>
+
+<h2>Build configuration</h2>
+
+<p>Next tricky part is to configure application for production. There is a great <a href="http://tech.pro/blog/1639/using-rjs-to-optimize-your-requirejs-project">blog post</a> of using <code>r.js</code> to optimize the project.</p>
+
+<p>In short, you need to add <a href="https://github.com/gruntjs/grunt-contrib-requirejs">grunt-contrib-requirejs</a> grunt task and configure it.</p>
+
+<p>The problem with Angular.js optimization is that it using dependency injection mechanism, which resolves the services to inject by it&rsquo;s name. If optimizer would change the name of function parameters, when application would not work. Fortunately, there is workaround for that.</p>
+
+<p>```js
+requirejs: {</p>
+
+<pre><code>js: {
+    options: {
+        uglify2: {
+            mangle: false
+        },
+        baseUrl: "public/js",
+        mainConfigFile: "public/js/main.js",
+        name: 'main',
+        out: "public/build/main.js",
+        optimize: 'uglify2'
+    }
+}
+</code></pre>
+
+<p>},
+```</p>
+
+<p>You have to use <code>uglify2</code> optimizer, that has an option <a href="https://github.com/mishoo/UglifyJS2#mangler-options">mangle</a> that have to set to <code>false</code>. In this case, <code>uglify2</code> will do full optimization and minification of javascript code, without ruing functions parameters names, with is vital for Angular.js.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>

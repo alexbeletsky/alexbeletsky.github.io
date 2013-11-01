@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-10-24T09:30:00+03:00</updated>
+  <updated>2013-11-01T15:28:25+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,358 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
+    <link href="http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js.html"/>
+    <updated>2013-11-01T11:36:00+02:00</updated>
+    <id>http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js</id>
+    <content type="html"><![CDATA[<p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
+
+<p>There was a few difficulties with that.</p>
+
+<!-- More -->
+
+
+<h2>Why to use Require.js with Angular.js?</h2>
+
+<p>Some people argue about rationality of using Require and Angular together. Indeed, Angular has it&rsquo;s own module system, dependency resolve system etc. I agree with that, but still my point is: Require.js comes with very handy add-on, called <code>r.js</code> &ndash; it&rsquo;s code minimizer and optimizer.</p>
+
+<p>Having <code>grunt</code> build system (which is de-facto standard for JS applications) you can easily integrate with your deployment scenarios.</p>
+
+<h2>Project organization</h2>
+
+<p>Before deep dive, I want to share you some simple ideas of client side code organization that I think makes sense:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> /
+</span><span class='line'>  + - build
+</span><span class='line'>  |
+</span><span class='line'>  + - components
+</span><span class='line'>  |
+</span><span class='line'>  + - js
+</span><span class='line'>      |
+</span><span class='line'>      + - controllers
+</span><span class='line'>      |
+</span><span class='line'>      + - directives
+</span><span class='line'>      |
+</span><span class='line'>      + - services
+</span><span class='line'>      |
+</span><span class='line'>      + - app.js
+</span><span class='line'>          |
+</span><span class='line'>          main.js
+</span><span class='line'>          |
+</span><span class='line'>          config.js</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>build</strong> &ndash; results of build .js and .css is placed here (these files are used in production).</li>
+<li><strong>components</strong> &ndash; bower components are configured to be placed in this folder.</li>
+<li><strong>js</strong> &ndash; source code of application, divided to <code>contollers</code>, <code>directives</code> and <code>services</code>.</li>
+</ul>
+
+
+<h3>main.js</h3>
+
+<p>Require.js main file, that contains configuration and main entry.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="s1">&#39;angular&#39;</span> <span class="o">:</span> <span class="s1">&#39;../components/angular/angular&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;ngResource&#39;</span><span class="o">:</span> <span class="s1">&#39;../components/angular-resource/angular-resource&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;ngCookies&#39;</span><span class="o">:</span> <span class="s1">&#39;../components/angular-cookies/angular-cookies&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;ngProgressLite&#39;</span><span class="o">:</span> <span class="s1">&#39;../components/ngprogress-lite/ngprogress-lite&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">shim</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">ngResource</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">deps</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;angular&#39;</span><span class="p">],</span>
+</span><span class='line'>          <span class="nx">exports</span><span class="o">:</span> <span class="s1">&#39;angular&#39;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">ngCookies</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">deps</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;angular&#39;</span><span class="p">],</span>
+</span><span class='line'>          <span class="nx">exports</span><span class="o">:</span> <span class="s1">&#39;angular&#39;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">ngProgress</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">deps</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;angular&#39;</span><span class="p">],</span>
+</span><span class='line'>          <span class="nx">exports</span><span class="o">:</span> <span class="s1">&#39;angular&#39;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">angular</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">exports</span> <span class="o">:</span> <span class="s1">&#39;angular&#39;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">&#39;/js&#39;</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">require</span><span class="p">([</span><span class="s1">&#39;app&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>app.js</h3>
+
+<p>Instance of application, where all Angular.js bootstraping taking place.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">require</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">angular</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;angular&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">services</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./services/services&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">controllers</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./controllers/controllers&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">directives</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./directives/directives&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;likeastore&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="s1">&#39;controllers&#39;</span><span class="p">,</span> <span class="s1">&#39;directives&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">angular</span><span class="p">.</span><span class="nx">bootstrap</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;likeastore&#39;</span><span class="p">]);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$routeProvider&#39;</span><span class="p">,</span> <span class="s1">&#39;$locationProvider&#39;</span><span class="p">,</span> <span class="s1">&#39;$httpProvider&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="kd">function</span> <span class="p">(</span><span class="nx">$routeProvider</span><span class="p">,</span> <span class="nx">$locationProvider</span><span class="p">,</span> <span class="nx">$httpProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">$httpProvider</span><span class="p">.</span><span class="nx">responseInterceptors</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;httpInterceptor&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">$routeProvider</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;dashboardController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/inbox&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;dashboardController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/facebook&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;facebookController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/github&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;githubController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/twitter&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;twitterController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/stackoverflow&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;stackoverflowController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/search&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;searchController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/settings&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;settingsController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/ooops&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;partials/dashboard&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;errorController&#39;</span> <span class="p">})</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span> <span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$window</span><span class="p">,</span> <span class="nx">auth</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">auth</span><span class="p">.</span><span class="nx">setAuthorizationHeaders</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">user</span><span class="p">.</span><span class="nx">initialize</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">app</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>config.js</h3>
+
+<p>Configuration object that contains application settings, like <code>itemsPerPage</code>, <code>logoutTimeout</code> etc.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">require</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">dashboard</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">limit</span><span class="o">:</span> <span class="mi">30</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Master HTML</h2>
+
+<p>The first noticable difference is the way master HTML file is organized. You are no longer define application with directive <code>&lt;html lang="en" ng-app&gt;</code>, but instead using manual <em>booting</em> of application.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!doctype html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main-viewer&quot;</span> <span class="na">ng-view</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;/components/requirejs/require.js&quot;</span> <span class="na">data-main=</span><span class="s">&quot;/js/main.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Booting application</h2>
+
+<p>Once master HTML is loaded, Require.js will execute <code>main.js</code> file. This is were the action should be taken to bootstrap Angular.js application.</p>
+
+<p>Take a look at <code>main.js</code> file from above, here we start application bootstrapping:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">([</span><span class="s1">&#39;app&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>init()</code> function of application,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;likeastore&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="s1">&#39;controllers&#39;</span><span class="p">,</span> <span class="s1">&#39;directives&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">angular</span><span class="p">.</span><span class="nx">bootstrap</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;likeastore&#39;</span><span class="p">]);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By doing this, you should be able to start the application and make sure that all modules, controllers and directives are loaded without any issues.</p>
+
+<h2>Build configuration</h2>
+
+<p>Next tricky part is to configure application for production. There is a great <a href="http://tech.pro/blog/1639/using-rjs-to-optimize-your-requirejs-project">blog post</a> of using <code>r.js</code> to optimize the project.</p>
+
+<p>In short, you need to add <a href="https://github.com/gruntjs/grunt-contrib-requirejs">grunt-contrib-requirejs</a> grunt task and configure it.</p>
+
+<p>The problem with Angular.js optimization is that it using dependency injection mechanism, which resolves the services to inject by it&rsquo;s name. If optimizer would change the name of function parameters, when application would not work. Fortunately, there is workaround for that.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">js</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">uglify2</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">mangle</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>          <span class="p">},</span>
+</span><span class='line'>          <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;public/js&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">mainConfigFile</span><span class="o">:</span> <span class="s2">&quot;public/js/main.js&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">out</span><span class="o">:</span> <span class="s2">&quot;public/build/main.js&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify2&#39;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You have to use <code>uglify2</code> optimizer, that has an option <a href="https://github.com/mishoo/UglifyJS2#mangler-options">mangle</a> that have to set to <code>false</code>. In this case, <code>uglify2</code> will do full optimization and minification of javascript code, without ruing functions parameters names, with is vital for Angular.js.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
@@ -2300,54 +2652,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
     </p>    <p>        Front-end is being involved as well. We&#8217;ve been switched to Single Page Application (SPA) architecture client side and there is no way back. With Node.js backend we easily moved application to cloud, all static resources to CloudFront that affected initial load time as a result made application to look and feel incredibly fast.<br />
     </p>    <p>        But the most important is - users love it! We&#8217;ve got plenty of sign-ups during the day, from different countries as Germany, Spain, Great Britain, Columbia etc., recently we&#8217;ve started premium campaign, and the premium users joins us. UI/UX are tweeked all the time, based on future application vision and A/B tests.<br />
     </p>    <p>        All that makes me feel - your work is important and you do something valuable.. and that is exactly what keeps me working on <a href="http://www.e-conomic.com/">E-conomic</a>. It&#8217;s interesting and make sense - that&#8217;s all I need.        <br />
-    </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Looking back to 2012]]></title>
-    <link href="http://beletsky.net/2013/01/looking-back-to-2012.html"/>
-    <updated>2013-01-05T17:25:00+02:00</updated>
-    <id>http://beletsky.net/2013/01/looking-back-to-2012</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
-    </p>    <h2>Work in e-conomic</h2>    <p>        That was yet another great year in e-conomic. We have build great app - <a href="https://debitoor.com/">Debitoor</a>. Along the way, we were trying different approaches, re-writing things from scratch, designing and re-designing again and again. Finally we got very solid application built upon Node.js, MongoDB and Backbone.js. Debitoor has been created with scalability in mind, we started with Heroku cloud service, eventually moved to Amazon EC for back-end and Amazon Cloud Front for front-end. Now, it&#8217;s working amazingly fast and for 8 month we gathered ~20,000 signups, launched service for many countries.<br />
-    <!-- more -->
-    </p>    <p>        At the beginning of the year we were a bunch of .NET developers diving into JavaScript. Having a very strong team of responsible professionals we&#8217;ve gathered initial knowledge quite fast. I&#8217;ve been focused almost at front-end this year. You probably noticed that I slowed down my writings about <a href="http://www.beletsky.net/search/label/asp.net">ASP.NET MVC</a> and doing more for <a href="http://www.beletsky.net/search/label/Backbone.js">Backbone.js</a>. That just reflects the fact of my current specialization. Initially, I was not very serious about Node.js platform. But with time, I became to love it. It speed up our development velocity several times, the API we&#8217;ve built on this platform shows amazing performance indicators.<br />
-    </p>    <p>        The team has been expanded a bit. We got new very strong PO and few developers both in Ukraine and Denmark and all of those guys are awesome. I enjoy friendly and cooperative environment we have in team. Besides of that, this year we got 2 QA guys. QA influenced the development really much and helped to improve overall quality of service. I would also mention amazing UX team we have, calling themselves &#8220;UX Wizards Team&#8221; I have to admit - we are really doing magically things. UI/UX of app is changing all the time and with each iteration it became more intuitive, comprehensive and good looking.<br />
-    </p>    <h2>Speaking and blogging</h2>    <p>        For 2012 and have written 63 blog posts on various topics, primarily on .NET, JavaScript and TDD. Some stats, from Google Analytics:<br />
-    </p>    <p>        I don&#8217;t track GA stats actively and I was really surprised to see the figures. I got 105,490 visits, 79,445 unique visits. That gives 288% more traffic than <a href="http://www.beletsky.net/2011/12/retrospective-2011.html">2011</a>. That&#8217;s quite big number and I could only hope that this year the traffic would only grow up.<br />
-    </p>    <p>        As for most viewed blog posts:<br />
-    </p>    <ul>        <li><a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-razor-changes.html">New in ASP.NET MVC4: Razor changes</a> where I highlighted some new stuff of ASP.NET MVC 4 and it&#8217;s been tweeted by <a href="http://weblogs.asp.net/scottgu/">@scottgu</a> (what explains it&#8217;s popularity).</li>
-        <li><a href="http://www.beletsky.net/2012/02/new-tools-in-my-tdd-arsenal.html">New Tools in My TDD Arsenal</a> I posted about stuff I used in .NET development like NCrunch, NSubstitute and FluentAssertions.<br />
-        </li>
-        <li><a href="http://www.beletsky.net/2012/06/starting-up-nodejs-development-on.html">Starting Up Node.js Development on Windows</a> as quick introduction to setup Node.js development environment on Windows box.</li>
-    </ul>    <p>        Something that I personally liked the most:<br />
-    </p>    <ul>        <li><a href="http://www.beletsky.net/2012/01/convention-based-ioc-configuration.html">Convention based IoC configuration</a> convention over configuration principles applied to IoC.</li>
-        <li><a href="http://www.beletsky.net/2012/06/7-weeks-with-python.html">7 Weeks With Python</a> my little journey with Python language during Audacity CS101 course.</li>
-        <li><a href="http://www.beletsky.net/2012/08/developing-web-applications-faster.html">Developing Web Applications Faster</a> that shows how to apply LiveReload technique to working faster with front-end tasks.<br />
-        </li>
-    </ul>    <p>        As I said above my focus moved from .NET to JavaScript a bit. I&#8217;ve started a series of blog posts called <a href="http://www.beletsky.net/search/label/BabyStepsBackbone">Baby steps to Backbone.js</a>, I&#8217;m learning JavaScript and other front-end frameworks, so I would say more info about JavaScript to come.<br />
-    </p>    <p>        As for speaking, I&#8217;ve prepared 10 <a href="https://speakerdeck.com/alexanderbeletsky">presentations</a> during 2012 and had nearly 15 speeches on different events. That&#8217;s not a lot, but it&#8217;s much more that 2011 and I feel good about it.<br />
-    </p>    <h2>Trainings and Consulting</h2>    <p>        Our <a href="http://xpinjection.com/trainings/tdd-in-net/">TDD in .NET</a> training became very popular. We did a quite of the through the year. It goes very fine and thanks to <a href="http://xpinjection.com/">XP Injection</a> efforts I could only predict more to come. I also did a training on <a href="">ASP.NET MVC</a> which went quite fine, but very small demand could be seen on that. I hope that 2013 will bring some more trainings in JavaScript as well.<br />
-    </p>    <p>        In 2012 I&#8217;ve tried myself as a consultant. I&#8217;ve been contacted by the guy who listened to my <a href="https://speakerdeck.com/alexanderbeletsky/large-scale-javascript-applications">JavaScript talk</a> and asked to help with architectural advices on new service he tries to build. I think that was very good experience for both of us. Of cause, that&#8217;s just a tiny job but I hope that consulting could work for me in future.<br />
-    </p>    <p>        I believe that 2012 was just the beginning of Trainings & Consulting part of my duties and 2013 will be the one to prove it.<br />
-    </p>    <h2>Communities</h2>    <p>        <a href="http://www.facebook.com/groups/574355212591240/">Kyiv Beer&#8217;N&#8217;Code</a> is something that I personally happy about. Being relauched in September 2012, we haven&#8217;t missed any meet up. Taking into account it&#8217;s bi-weekly meetings that&#8217;s a lot. New guys, who joined the group are open minded and smart, so it&#8217;s always interesting to spend time there. I would like to have say big thanks to <a href="">Ciklum</a> company, who provides a support for us.<br />
-    </p>    <p>        <a href="http://xpinjection.com/uadevclub/">UA Dev Club</a> is growing and growing. Each meeting gathers more and people and it&#8217;s great. I did a few talks there I try to attend as more meetings as I can (even if they are talking about Java). UA Dev Club became very active this year and I wish it only improves in 2013.<br />
-    </p>    <p>        <a href="http://kievalt.net/">Kiev ALT.NET</a> in opposite a little slowed down this year. Primarily, because it&#8217;s leader moved to another city, so it became difficult to manage the stuff. Nevertheless, we&#8217;ve organized very cool meetup at the end of year with Jimmy Bogard and it motivated us to go on. We already have planned few meetings ahead and expecting more interesting foreign guests to come. Besides of that, <a href="http://www.jetbrains.com/">JetBrains</a> might be the one who can help us this year.<br />
-    </p>    <h2>Side projects</h2>    <p>        The last topic in my list that makes me a bit sad. I have to admit, I haven&#8217;t produced anything really noticeable through the year. My problem is that I&#8217;m starting few projects and none of them could make done. Simply lacking the energy and motivation to accomplish it. I believe that &#8220;Less is more&#8221; should be my slogan for 2013.<br />
-    </p>    <p>        Some new projects appeared in my github profile in 2012:<br />
-    </p>    <ul>        <li><a href="https://github.com/alexanderbeletsky/wonka">Wonka</a> - supposed to be a blogging engine based on github with easy integration to ASP.NET MVC applications. I had some designs and ideas of implementing it, but it&#8217;s still in very early stage.</li>
-        <li><a href="https://github.com/alexanderbeletsky/aspnet.mobile">ASP.NET Mobile</a> - small project that I&#8217;ve completed during preparation to the conference. It launched on AppHabor at <a href="http://aspnetmobile.apphb.com/">http://aspnetmobile.apphb.com/</a>, but the traffic is very low there.<br />
-        </li>
-        <li><a href="https://github.com/alexanderbeletsky/foundstyles">FoundStyles</a> - while my playing with Foundation framework I&#8217;ve decided to build small site to keep gallery of themes there, so <a href="http://foundstyles.com/">http://foundstyles.com/</a> was born. I&#8217;ve created only 3 and after left it. But, currently it has about 300 visits per day and it make sense to update the project. It would be easier, since Foundation moved to SASS.</li>
-        <li><a href="https://github.com/alexanderbeletsky/freeze">Freeze</a> - small utility project to make a snapshots of dynamic web sites. Originally I&#8217;ve created it to make a snapshot of Kyiv Beer && Code site and place it to github. I&#8217;ve spent some time on that and it&#8217;s not yet done (as well as Kyiv Beer && Code site is not moved).</li>
-        <li><a href="https://github.com/alexanderbeletsky/github-fs.net">GithubFS.net</a> - using Github remote repository as local file system project. It&#8217;s on really early development stage, but has some documentation describing ideas. And, it&#8217;s not done as well.</li>
-        <li><a href="https://github.com/alexanderbeletsky/benchmark-js">Benchmark-js</a> - tiny library for measuring JS execution time and putting that to log. Works both Node.js and browser.</li>
-        <li><a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone Computed.Fields</a> - something that I personally happy with. Started as some code I&#8217;ve created for debitoor it moved as stand alone Backbone.js plugin.</li>
-    </ul>    <p>        If you reading this and those projects looks interesting to you, so you would like to pick that up - please let me know.<br />
-    </p>    <p>        Something that I has started in 2011 and feel most shame for is <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. Being <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">restarted</a> this year I had big ambitions to actually make it done. I still want to implement some meaningful product for .NET web applications deployment. And Candidate would probably be my focus at the beginning of 2013.<br />
-    </p>    <h2>Conclusions</h2>    <p>        Despite of side-projects failure, 2012 was a good year. 2013 is the year of Python that means it would bring happy coding time for all the developers. Happy New Year!<br />
     </p></div>
 ]]></content>
   </entry>

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Introducing Backbone.ComputedFields Dec 25th, 2012 Backbone.js, JavaScript Recently, I&#8217;ve been working on small project which I want to share &hellip;">
+  <meta name="description" content="Looking back to 2012 Jan 5th, 2013 Retrospective It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,58 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/01/looking-back-to-2012.html">
+    
+      Looking back to 2012</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T17:25:00+02:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/retrospective/'>Retrospective</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
+    </p>    <h2>Work in e-conomic</h2>    <p>        That was yet another great year in e-conomic. We have build great app - <a href="https://debitoor.com/">Debitoor</a>. Along the way, we were trying different approaches, re-writing things from scratch, designing and re-designing again and again. Finally we got very solid application built upon Node.js, MongoDB and Backbone.js. Debitoor has been created with scalability in mind, we started with Heroku cloud service, eventually moved to Amazon EC for back-end and Amazon Cloud Front for front-end. Now, it&#8217;s working amazingly fast and for 8 month we gathered ~20,000 signups, launched service for many countries.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/01/looking-back-to-2012.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -978,92 +1030,6 @@ hideErrors: function () {
     <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
     </p>    <h2>Conclusions</h2>    <p>        That was very simple &#8220;baby-step&#8221; style of approaching model validation. I would could it, validation &#8220;from the box&#8221;. Even if it&#8217;s very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
     </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
-    </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/10/how-to-run-multiple-ajax-requests.html">
-    
-      How to run multiple AJAX requests</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-31T21:12:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-    <p>        Suppose you have a list of resources that you would like to retrieve by means of AJAX. `$.ajax()` (or it&#8217;s short variants like `$.get()` or `$.post`) is usual way of making AJAX calls, it works great than you need to fetch one.<br />
-    </p>    <pre class="brush: js">var url = '/api/resource/1';
-$.get(url, function (r) {
-    // use response
-});
-    </pre>    <p>        Even in case of several it might be still usable,<br />
-    </p>    <pre class="brush: js">var url1 = '/api/resource/1';
-var url2 = '/api/resource/2'
-$.get(url1, function (r) {
-    // use response from url1
-
-    $.get(url1, function (r) {
-        // use response from url2
-    });
-});
-    </pre>    <p>        You can easily see, if you have more than 3 you are trapping into &#8220;callback hell&#8221;. Furthermore, if you have a list of url&#8217;s to fetch and the size of that list is dynamic, it&#8217;s not even possible to build structure like that.<br />
-    </p>    <p>        Not long time a ago, I&#8217;ve been exactly into this situation. So, I have a list of resources to fetch, I need to issue them one-by-one and I want to have only one callback, that would pass all fetched resources in one object. Initially I thought it&#8217;s not even possible, at least with-out creation of some ugly code. But with great help of my colleagues the problem been solved. <br />
-    </p>    <p>        jQuery <a href="http://api.jquery.com/category/deferred-object/">Deferred Object</a> is something I&#8217;ve head about, but never got a change to play with. It turn&#8217;s out to be very nice and simple idea. Deferred allows you to build chainable constructions. Actually, `$.ajax()` always returns deferred object, so you can apply `.done()`, `.fail()` functions on it.<br />
-    </p>    <p>        Here is the code, that you could be re-usable in the same situation;<br />
-    </p>    <pre class="brush: js">var pipedAjaxRequests = function (urls, callback) {
- var responses = {};
-
- var promise = $.Deferred().resolve();
- _.each(urls, function (url) {
-  promise = promise.pipe(function () {
-   return $.get(url);
-  }).done(function (response) {
-   responses[url] = response;
-  });
- });
-
- promise.done(function () {
-  callback(responses);
- }).fail(function (err) {
-  callback(responses, err);
- });
-};
-</pre>    <p>        It does create the pipe of `$.get()` calls and place the responses in one response object. At the time then all resources are fetched, the callback is called. In case of errors, second parameter of callback will have error info.<br />
-    </p>    <p>        Thanks a lot to <a href="http://twitter.com/antsamar">@antsamar</a> and <a href="http://twitter.com/alex_gonchar">@alex_gonchar</a> for helping me out.<br />
     </p></div>
 
       

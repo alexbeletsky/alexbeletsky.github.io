@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Inside ASP.NET MVC: Packing bags for journey May 25th, 2011 InsideMVC, MVC, asp.net I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: Setting up project for hacking May 29th, 2011 InsideMVC, MVC, asp.net As we already got debug assembly and pdb file, it it time &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,113 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/05/inside-aspnet-mvc-setting-up-project.html">
+    
+      Inside ASP.NET MVC: Setting up project for hacking</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-29T20:58:00+03:00" pubdate data-updated="true">May 29<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+As we <a href="http://www.beletsky.net/2011/05/inside-aspnet-mvc-part-1-packing-bags.html">already got</a> debug assembly and pdb file, it it time to create a test project that would be a sandbox for all experiments. This would be classic MVC application, but we going to substitute release version of MVC framework with our locally built version, which allows us easily debug it.
+</p>
+<h2>Create new project</h2>
+<p>
+Let&#8217;s create new project. It would be MVC 3 Application:
+</p>
+<!-- newproject.png -->
+<a href="https://lh3.googleusercontent.com/-1wuOdUmqbUI/TeKIMTnbcUI/AAAAAAAAHcM/-kBRSXGB0bc/s720/newproject.png">
+<img src="https://lh3.googleusercontent.com/-1wuOdUmqbUI/TeKIMTnbcUI/AAAAAAAAHcM/-kBRSXGB0bc/s720/newproject.png" alt="new project" />
+</a>
+<p>
+On a second step just select &#8220;Empty&#8221; in &#8220;Select template&#8221; dialog. &#8220;Razor&#8221; would be for view engine.
+</p>
+<h2>Correct system.web assemblies section</h2>
+<p>
+Go to <code>web.config</code> of a new project and comment out <code>System.Web.Mvc</code> and <code>System.Web.WebPages</code> assemblies. By doing that we saying: &#8220;those 2 assemblies are no longer a part of compilation of our application&#8221;.
+</p>
+<!-- webconfig.png -->
+<a href="https://lh3.googleusercontent.com/-Va0g0ltK6WE/TeKIMjzGltI/AAAAAAAAHcQ/dyR3mI2B1B4/webconfig.png">
+<img src="https://lh3.googleusercontent.com/-Va0g0ltK6WE/TeKIMjzGltI/AAAAAAAAHcQ/dyR3mI2B1B4/webconfig.png" alt="web.config" />
+</a>
+<p>
+<strong>UPDATE:</strong> If you do just that, later you will get an exception from Razor assemblies, about wrong type cast. To avoid that, it is even better to remove all assemblies in this section, plus Find/Replace PublicKeyToken=31bf3856ad364e35 to PublicKeyToken=null. That would do not make application to search GAC for missing assemblies and load locally built ones.
+</p>
+<h2>Correct application references</h2>
+<p>
+Now, remove existing references for <code>System.Web.Mvc</code> and <code>System.Web.WebPages</code> and put locally built ones instead. Right click on references project section and browse to the Debug folder of mvc3-rtm build directory. Try to build application now, it should be build without any issues.
+</p>
+<a href="https://lh4.googleusercontent.com/-ZxDsNTzlZ8w/TeKIMIG5lgI/AAAAAAAAHcE/f-RS0YrnwXM/addreferences.png">
+<img src="https://lh4.googleusercontent.com/-ZxDsNTzlZ8w/TeKIMIG5lgI/AAAAAAAAHcE/f-RS0YrnwXM/addreferences.png" alt="setup" />
+</a>
+<h2>Home controller</h2>
+<p>
+Further steps are pretty simple, just add a test controller - <code>HomeController</code> with <code>Index</code> action. Add just a simple view for that.
+</p>
+<!-- controller.png -->
+<a href="https://lh5.googleusercontent.com/-WMscnqODvIU/TeKIMHyuGBI/AAAAAAAAHcA/-3W-2nlB_RQ/controller.png">
+<img src="https://lh5.googleusercontent.com/-WMscnqODvIU/TeKIMHyuGBI/AAAAAAAAHcA/-3W-2nlB_RQ/controller.png" alt="controller" />
+</a>
+<h2>Check it out!</h2>
+<p>
+Place a breakpoint into action method and press F5 to start debugger. Now you we&#8217;ve got a full stack trace that allows to see every aspect of MVC world.
+</p>
+<!-- stack.png -->
+<a href="https://lh5.googleusercontent.com/-H0makF0CB_4/TeKIMbLt2bI/AAAAAAAAHcI/0nhnBobKnuA/stack.png">
+<img src="https://lh5.googleusercontent.com/-H0makF0CB_4/TeKIMbLt2bI/AAAAAAAAHcI/0nhnBobKnuA/stack.png" alt="stack" />
+</a>
+<h2>Conclusion</h2>
+<p>
+The setup is easy and allows to jump in very quick. If you got any issues with that, please let me know.
+</p>
+<h2>
+What is next?
+</h2>
+<p>
+Next I will hack the entry point of MVC application called <code>MvcHandler</code> and understand how it works.
+</p>
+<p>
+Please stay tuned.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1270,91 +1377,6 @@ Sergey has created an Excel spreadsheet (that is available <a href="http://www.a
 </p>
 <p>
 The presentation slides are located <a href="http://www.slideshare.net/Blackie6/ss-7654382">here</a>.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/04/agilebasecamp-kiev-2011-alexey.html">
-    
-      AgileBaseCamp Kiev 2011: Alexey Krivitsky: The Future is Now</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-18T07:51:00+03:00" pubdate data-updated="true">Apr 18<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<small>
-<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<p>
-That was the opening speech of <a href="http://kiev.agilebasecamp.org/">AgileBaseCamp</a> conference that took place in Kiev, 16-Apr-2011. <a href="http://twitter.com/#!/alexeykri">Alexey Krivitsky</a> who is head of ScrumGuides was sharing his vision about Agile through last years.  
-</p>
-<p>
-The dates for this Base camp were dedicated to major event in Agile world, namely it is 10 years from <a href="http://agilemanifesto.org/">Agile Manifesto</a> has been signed. All of us know who the software development changed with this event, but was it in good way, bad way? Who know&#8217;s and Alexey tries to analyze that.
-</p>
-<h2>Past</h2>
-<p>
-Alexey shared his personal story of starting up with Agile. He used to work in big Ukrainian outsourcing company. That time (I think it was somewhere around 2003) this company was adopting CMM3 and customer company was adopting CMM2 itself. Alexey took part on both processes of adoption and did great job there (I know that, because I worked the same company that time and know that efforts were successful :). That was both good experience and key factor to change his mind on software production. He quit the company realizing that his vision very different from one dictated by CMM. 
-</p>
-<p>
-That time Agile was not so well-spread as it is now (I&#8217;m pretty sure that time very few people in Ukraine knew something about Agile, Scrum, Kanban etc). So, having <a href="http://alistair.cockburn.us/">Alistair Cockburn</a> book printed out on corporate printer he started his journey in Agile world. Not only improving own knowledge and experience, but sharing the information with community.
-</p>
-<h2>Present</h2>
-<p>
-One of the software development institutes does statistics of projects success in 1994 and 2004. Figures are: 
-</p>
-<ul>
-<li>1994 - success rate 15%</li>
-<li>2004 - success rate 34%</li>
-</ul>
-<p>
-This is a definitely impact of agile. There was an interesting speech about details of this impact on Agilee 2010 <a href="http://www.beletsky.net/2010/10/agileee-2010-henrik-kniberg-speech.html">Henrik Kniberg speech: The essence of Agile</a>. In a little other words in 10 years we&#8217;ve learned to &#8220;suck less&#8221;.
-</p>
-<p>
-A lot of information about Agile nowadays. Many, many books became available.. a lot of conferences, trainings, blogs. New brands became popular as <a href="http://manifesto.softwarecraftsmanship.org/main">Software Craftsmanship</a>, <a href="http://en.wikipedia.org/wiki/Lean_Startup">Lean Startup</a>, <a href="http://www.management30.com/">Management 3.0</a> and more. From the management factors agile moving to engineering and business factors. Code is still the key in software (even if a lot of people thinks it is not). 
-</p>
-<h2>Future</h2>
-<p>
-Even with a great popularity of Agile it is still not mainstream. We still talk about Agile itself a lot and would continue to talk at least 2 years. Originally it was Waterfall as biggest enemy of Agile, but now this enemy is weak and it is no longer interesting to fight it :). Due to <a href="http://www.mountaingoatsoftware.com/company/about-mike-cohn">Mike Cohn</a> we would stop to talk about Agile at all and simply start to do that. To reach that stage we need to have crowd of people who are &#8220;on-the-same-page&#8221; with understanding of Agile, but it is not the time now. 
-</p>
-<p>
-There is no silver bullet, but there is super glue that unite teams.. Agile is this kind of glue.
 </p></div>
 
       
