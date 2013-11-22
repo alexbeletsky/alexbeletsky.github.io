@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-11-01T15:28:25+02:00</updated>
+  <updated>2013-11-22T16:46:39+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,204 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>
+    <link href="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html"/>
+    <updated>2013-11-22T13:51:00+02:00</updated>
+    <id>http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app</id>
+    <content type="html"><![CDATA[<p>So, you are building pure client side application that works against REST API. The client and server are completely decoupled and typically deployed separately of each other.</p>
+
+<p>API&rsquo;s have one or another way of authenticating it&rsquo;s users. It could be some simple flows, like basic authorization or more complex ones as OAuth/OAuth2. But at the very end you have <code>token</code> that placed either as cookie value or HTTP request header parameter. API is then responsible to check the token for validity and if it&rsquo;s not valid respond with 401.</p>
+
+<!-- More -->
+
+
+<h2>Configure the Routes</h2>
+
+<p>First we need to have <code>/login</code> router where user is redirected in case of unauthorized access.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>var app = angular.module(&lsquo;dashboardApp&rsquo;, [</p>
+
+<pre><code>'ngCookies',
+'ngResource',
+'ngSanitize'
+</code></pre>
+
+<p>]);</p>
+
+<p>app.config(function ($routeProvider, $locationProvider, $httpProvider) {</p>
+
+<pre><code>$httpProvider.responseInterceptors.push('httpInterceptor');
+
+$routeProvider
+    .when('/', { templateUrl: 'views/dashboard.html', controller: 'dashboard' })
+    .when('/login', { templateUrl: 'views/auth.html', controller: 'auth' })
+    .otherwise({ redirectTo: '/' });
+
+$locationProvider.html5Mode(true);
+</code></pre>
+
+<p>});</p>
+
+<p>app.run(function (api) {</p>
+
+<pre><code>api.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Authentication Controller and View</h2>
+
+<p>The authentication controller is simple module. It&rsquo;s responsible for sending user credentials to server and handle the response. If server authenticates user, it would return the value of access token in <code>.token</code> attribute. Otherwise, user have to be notified that something went wrong.</p>
+
+<p>Btw, in <a href="https://github.com/likeastore/seismo-dashboard">likeastore/seismo-dashboard</a> I&rsquo;ve tried to use the model based on <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">GitHub personal tokens</a> instead of passwords, that simplifies server a bit allowing it to do not store and sessions, hashed passwords etc. If you interested, take a look at <a href="https://github.com/likeastore/seismo/blob/master/source/server.js#L40">likeastore/seismo/source/server.js</a>.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).controller(&lsquo;auth&rsquo;, function ($scope, $location, $cookieStore, authorization, api) {</p>
+
+<pre><code>$scope.title = 'Likeastore. Analytics';
+
+$scope.login = function () {
+    var credentials = {
+        username: this.username,
+        token: this.token
+    };
+
+    var success = function (data) {
+        var token = data.token;
+
+        api.init(token);
+
+        $cookieStore.put('token', token);
+        $location.path('/');
+    };
+
+    var error = function () {
+        // TODO: apply user notification here..
+    };
+
+    authorization.login(credentials).success(success).error(error);
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<p>As you can see, it just delegates the call to <code>authorizationn</code> service, which is very simple wrap of <code>$http</code>.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;authorization&rsquo;, function ($http, config) {</p>
+
+<pre><code>var url = config.analytics.url;
+
+return {
+    login: function (credentials) {
+        return $http.post(url + '/auth', credentials);
+    }
+};
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>Ones server responds with success, controller will place the token to cookie.</p>
+
+<p>The view is just a <code>form</code> with binded <code>ng-submit</code> event to call <code>auth.login()</code> function of controller.</p>
+
+<p>```html</p>
+
+<div class="login-panel">
+    <h1>Welcome to Analytics.</h1>
+    <p>We are using GitHub for authorization. Please obtain your personal token and use it to sign in.</p>
+    <form class="pure-form" ng-submit="login()">
+        <input type="password" class="pure-input-1-3" placeholder="Personal Token..." name="token" ng-model="token" required/>
+
+        <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+    </form>
+</div>
+
+
+<p>```</p>
+
+<h2>HTTP Interceptor</h2>
+
+<p>In case of any API call returns <code>401</code> we have to redirect user to login page. Angular&rsquo;s HTTP interceptor is great for that job. As you can see from <code>app.js</code> above, it&rsquo;s been pushed to pipe here:</p>
+
+<p><code>js
+$httpProvider.responseInterceptors.push('httpInterceptor');
+</code></p>
+
+<p>The interceptor implementation itself,</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;httpInterceptor&rsquo;, function httpInterceptor ($q, $window, $location) {</p>
+
+<pre><code>return function (promise) {
+    var success = function (response) {
+        return response;
+    };
+
+    var error = function (response) {
+        if (response.status === 401) {
+            $location.url('/login');
+        }
+
+        return $q.reject(response);
+    };
+
+    return promise.then(success, error);
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Placing Token to HTTP Headers</h2>
+
+<p>Finally, we need to supply that token as HTTP header parameter to all API calls that client issues. Again, you might notice in <code>app.js</code> there is an API initialization call.</p>
+
+<p>```js
+app.run(function (api) {</p>
+
+<pre><code>api.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>API initialization services looks like that,</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;api&rsquo;, function ($http, $cookies) {</p>
+
+<pre><code>return {
+    init: function (token) {
+        $http.defaults.headers.common['X-Access-Token'] = token || $cookies.token;
+    }
+};
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>This authentication model is very easy to integrate into any existing apps and just keep in mind while creating new ones.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
