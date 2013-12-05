@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Spell checker for VS2010 Jul 7th, 2010 Tools I&#8217;ve noticed that I do a lot of spell mistakes in my posts, so I started to think about some &hellip;">
+  <meta name="description" content="Using of Mutation Testing in real project Jul 9th, 2010 TDD Recently I&#8217;ve been shared with a very interesting article by Jeremy Jarrel about a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,160 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/using-of-mutation-testing-in-real.html">
+    
+      Using of Mutation Testing in real project</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-09T16:00:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Recently I&#8217;ve been shared with a very interesting article by <a href="http://www.simple-talk.com/author/jeremy-jarrell-/">Jeremy Jarrel</a> about a <a href="http://www.simple-talk.com/dotnet/.net-tools/mutation-testing/">mutating testing</a>. I was really exited about that cause I really like different techniques and approaches that could help to gather better level of code quality (and tests quality). I would like to share my experience of first try it on project I&#8217;m working on now.   
+</p>
+<h2>What Mutating testing is all about?</h2>
+<p>
+The idea is fairly simple. As soon as you have a code that is being tested by a series of unit tests and all of these unit tests are currently in green state, you are able to validate how good your unit tests are, by changing a tested code a bit a see the results. This &#8220;changing&#8221; procedure is actually called - mutation. In ideal case all green tests have to be turned red, if some of tests are still green that means that testing code is not good enough to react on mutation, so actual test code must be reviewed and corrected. This is something that is called - mutation testing analysis.
+</p>
+<h2>The project to try on</h2>
+<p>
+I&#8217;m currently working on project that has been developed for some time, but with no tests. So a lot of legacy code has to be supported. We started to do tests where and thought about 4 months created nearly 300 tests. It is good time to try mutation on those cases. I&#8217;ve assured once more that all tests are good and no failures at this moment. Let&#8217;s go!
+</p>
+<h2>MutantPower application</h2>
+<p>
+In the article that I referenced above Jeremy not only gave a theoretical aspects but also provided with a simple mutation tool, called MutantPower. This is also what I&#8217;m going to use throught. So, I&#8217;ve downloaded sources and reviewed them. Code is a really simple, uses Mono <a href="http://www.mono-project.com/Cecil">Cecil</a> framework to load assembly, get all instructions and change instruction <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.opcodes.brtrue_s.aspx">Brtrue_S</a> to <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.opcodes.brfalse_s.aspx">Brfalse_S</a>, and otherwise. So, I&#8217;ve built application and was ready to start experimenting.
+</p>
+<h2>First failure</h2>
+<p>
+I have a one big assembly with a tested code, so what I need to do is to mutate this assembly and re-run all tests to see results. But on a first run of MutantPower I got a <i>NullReferenceException</i>. I&#8217;ve checked out in debugger and the problem was that MutualPower use the Body of MethodDefinition object, but not always methodDefinition contains a Body, so check for null is missing. After some corrections it started to work and I could successfully instrument the assembly.
+</p>
+<h2>Re-signing of tested assembly</h2>
+<p>
+I&#8217;ve successfully mutate my assembly and tried to re-run unit tests. It failed at the very beginning, since it was a strong named, run time detects failure of digital signature and refuses to load library. It has to be resigned each time after mutating. It could be easily done by <a href="http://msdn.microsoft.com/en-us/library/k5b5tt23(VS.80).aspx">sn.exe</a> tool. 
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black">sn.exe -R tested_assembly.dll C:\Work\rd\Testing\TestApplication\bin\Debug\Company.snk</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<h2>First unit tests results</h2>
+<p>
+After resigning assembly successfully loaded and unit tests started. Some tests were passing and a lot of tests were failing (that is have to be during mutation testing). I was quite happy to see first results. But with mutation you have to be really careful and understand real reason of failures. I found out that most of tests failed with <i>NullReferenceException</i> somewhere from deep parts tested assembly. After a bit of investigation I found out that one of the vital application classes could be instantiated. Sure, MutualPower does not distinguish between &#8220;code need to be tested&#8221; and &#8220;infrastructure code&#8221; that makes application able to run at all. So these first results had no sense at all, since the testing not even started.</p>
+<h2>Configuration for MutualPower</h2>
+<p>
+I came up with one simple idea. Extend MutualPower with a configuration file that would say what exact types must be included for mutating to leave infrastructure code as is but affect the rest of code (BLL, DAL, pages etc.). So, I&#8217;ve changed the application to take such configuration into account. After inspection of all test cases created so far I came up with such configuration file: 
+</p>
+<p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;?</font><font color="#800000">xml</font> <font color="#ff0000">version</font><font color="#0000ff">="1.0"</font> <font color="#ff0000">encoding</font><font color="#0000ff">="utf-8"</font> ?<font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">types</font><font color="#0000ff">&#62;</font><br>&nbsp;<font class="rem">&#60;!-- ASP.net pages types --&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="ard_ardrequest"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="ard_periods"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="ard_closingsheet"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="ard_copyfinancecodes"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font class="rem">&#60;!-- DAL types --&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdCompanyData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdDepartmentData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdPeriodData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdPeriodData.ArdRequestData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdPeriodData.ClosingSheetData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdPeriodData.CopyFinanceCodesData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.src.AnnualReport.DAL.ArdPeriodData.PeriodsData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font class="rem">&#60;!-- BLL types --&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.Ard"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.ArdCacheClosingSheetData"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.ArdUpdateBalance"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font class="rem">&#60;!-- Forms and control types --&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.ArdReportTemplate"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.EditTypes.ReportDesignerTemplateTypes"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.EditTypes.TemplateGroupField"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.FormArdCompanyReport"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.FormArdTemplateCopy"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.FormArdTemplate"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.FormCompanies"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">type</font> <font color="#ff0000">included</font><font color="#0000ff">="Company.FormCompanyGroup"</font><font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">types</font><font color="#0000ff">&#62;</font></font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Now MutualPower will change only types mentioned in configuration file as &#8220;included&#8221;. 
+</p>
+<h2>Next run and Timeout exception</h2>
+<p>
+After re-mutating and re-signing assembly again I got first more or less meaningful results. Yes, a lot of failures and even more.. my tested hanged out in a middle! This is something that is never have to be happen as soon as you do <a href="http://artofunittesting.com/">good unit tests</a>. 
+</p>
+<p><blockquote><code><font size="2" face="Courier New" color="black">System.InvalidOperationException : Timeout expired.&nbsp;The timeout period elapsed prior to obtaining a connection from the pool.&nbsp;This may have occurred because all pooled connections were in use and max pool size was reached.</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote></p>
+<p>
+Skipping the details, I found that there is a huge bug in my testing framework that doesn&#8217;t dispose connection to database in case of exception in constructor, so then you have a lot of failures the connection pool is quickly overused and you got TimeOut. Bingo. That might be first valuable result from mutating. Of cause, it is not a but in some production code, but keeping testing code in good shape is also very important. So I fixed the problem and ready to go for next iteration.  
+</p>
+<h2>Analysis of passed</h2>
+<p>
+Finally, I&#8217;ve got some results for analysis. Only 27 tests are passing, so all of them should be reviewed for actual reason.</p>
+<p>
+<p>
+I&#39;ll do high-level breakdown of &quot;why tests passed&quot;..</p>
+<p>
+<ul>
+<li>
+<b>Tests from a 3rd parties</b> - we are using <a href="http://haacked.com/archive/2007/06/19/unit-tests-web-code-without-a-web-server-using-httpsimulator.aspx">HttpSimulator</a> and with a sources, test cases was also included to project. Since we are not modifying and it just works as expected, no need to keep it in test assembly. Should be removed.
+</li>
+<li>
+<b>Tests on code that has not been mutated</b> - tests are passing because you forget to include tested class into MutantPowerConfiguration. Should correct configuration and run again.
+</li>
+<li>
+<b>Empty test cases</b> - test that have no asserts in it. These are not the tests, so it might be either refactored to do asserts either removed at all.
+</li>
+<li>
+<b>Smoke test</b> - the type of test I just to prefer start development with, it just creates a tested object and expects that no failures happened.
+</li>
+</ul>
+</p>
+<p>
+That&#8217;s it! Nothing that could show a dumb mistakes either in code or tests that I really wanted to archive. So, I&#8217;ve cleaned up tests a bit and came up with only 8 passing ones.
+</p>
+<h2>Analysis of failed</h2>
+<p>
+So, why tests are failing? 99.9% of all failures came from DAL level with a <i>ArgumentOutOfRangeException</i> exception. Meaning that MutantPower changed the assembly so badly that no data could be even retrieved. If no data retrieved -> logic does not start to work -> tests are failed. That turns out to something not mutation, but breaking. MutualPower in its initial version is to simple and for sure required more fine tuning except configuration file. Another aspect related to our architectural/design problem. Currently code of business logic is high cohesion of data access layer, namely all testing is goes on SQL database with no mocks. So, since the lowest layer is corrupted all upper layers just could not stay alive. OK, this conclusion might be a second valuable result gave by mutation. 
+</p>
+<p>
+In ideal case all tests my be clearly separated on BLL tests, DAL tests. It has no much sense to mutate DAL code, as for me. BLL tests must use mocks, so be completely independent on database, database testing should be part of integration testing. By doing this it might happen that mutation give a valuable feedback.
+</p>
+<p>
+So, just initial analysis of failures showed architectural drawbacks of application that must be some how corrected to get more benefits of mutating testing.
+</p>
+<h2>Conclusion</h2>
+<ol>
+<li>
+Mutation testing is definitely something interesting but requires an effort to get benefits from it.
+</li>
+<li>
+It would give more meaningful results if application is created with a good separation of layers and usage a mocks in unit tests.
+</li>
+<li>
+It helped out to see behavior of tests in more stressed conditions and find a recourse leakage in tests. 
+</li>
+<li>
+Some areas for improvements exists to update MutantPower with fine tuning.
+</li>
+<li>
+It is not seems to be daily based practice, but more likely once for iteration of two. Also thinking about criteria related to tests number like, as soon as next 100 tests added, run mutation testing to check quality.
+</li>
+</ol>
+<p>
+Finally I&#8217;ve put sources and binaries on github.
+</p>
+<p>
+Source code - <a href="http://github.com/alexanderbeletsky/MutantPower">http://github.com/alexanderbeletsky/MutantPower</a>
+<br />
+MutantPower application - <a href="http://github.com/alexanderbeletsky/MutantPower/downloads">http://github.com/alexanderbeletsky/MutantPower/downloads</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="How to be better developer or 3 accounts rule Jul 22nd, 2011 Life, Tips Oh no, not again! - you might think. Yet another Mr.SmartyPants are going to &hellip;">
+  <meta name="description" content="Analog of SVN branch switch for Git Aug 1st, 2011 Git, GitSVN, Tips Working with Git in SVN based organization is possible and make a lot of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,84 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/analog-of-svn-branch-switch-for-git.html">
+    
+      Analog of SVN branch switch for Git</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-01T11:16:00+03:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Working with Git in SVN based organization is <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">possible</a> and make a lot of benefits. Sources checked out once are now at you local repository, so all you do is commits, rebases and dcommits back to SVN. But sometimes you need to be able to switch to another SVN branch. You need something equivalent to &#8220;SVN switch&#8221; command inside Git environment.
+</p>
+<p>
+I’m been trying to switch to new branch, but I found no related information about that. I ended up this solution, I would like to share.
+</p>
+<ol>
+<li>Manually add new configuration into <code>~/.gitconfig</code>, for new SVN location</li>
+<pre>
+    [svn-remote "svn25"]
+        url = https://svn.server/branches/branch25
+        fetch = :refs/remotes/git-svn-25
+</pre>
+<li>Fetch changes from svn25</li>
+<pre>
+    git svn fetch svn25
+</pre>
+<li>Checkout that branch</li>
+<pre>
+    git checkout git-svn-25
+</pre>
+<li>Create new “master” branch</li>
+<pre>
+    git checkout -b master-25
+</pre>
+<li>
+Now, master-25 is your “master” for <code>branch25</code> SVN branch.
+</li>
+</ol>
+<p>
+You can merge you previous changes.. and continue to work with <code>master-25</code> as you worked with usual master.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -905,97 +983,6 @@ Next: <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuild
 <li>jQuery + some small pluggins</li>
 <li>UppercuT build framework</li>
 </ul><p>A picture says 1000 words, so here my little screencast of Candidate.net in action. It demonstrates the ability of setting up new application and hooking github push requests to build new application instance. </p><iframe src="http://www.screenr.com/embed/X48s" width="560" height="345" frameborder="0"></iframe> <p>Source code is hosted on github <a href="https://github.com/alexanderbeletsky/candidate">https://github.com/alexanderbeletsky/candidate</a>. Don&#8217;t forget it is really early prototype, the code is in big mess now.. I&#8217;m going to improve it much soon, so please keep watching repository. </p><p>I had a lot of fun of building this and have a better vision of how the application should look like. Hope to share it soon. I would be happy to hear some feedback on this.. and of cause you are free to fork repo and make your improvement (especially in UI/UX :). </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/06/hackatone-in-kiev-11-12-june.html">
-    
-      Hackatone in Kiev 11-12 June</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-13T14:44:00+03:00" pubdate data-updated="true">Jun 13<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/hackatone/'>Hackatone</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-This weekend I&#8217;ve been visiting very interesting event - <a href="http://www.developers.org.ua/calendar/615/">Hackatone</a> that took place in <a href="http://www.ciklum.net/">Ciklum</a> office. Hackatone is whole night hacking session there every team or person could came up with any idea, implement it and present to crowd. Many times I heard about similar events either in podcasts or blogs that I read.. but never tried that myself. Thank&#8217;s for <a href=""http://www.developers.org.ua/">DOU</a> enthusiasts I got opportunity to try that. Here is my report of that event. There would be some mix of English and Russian language, hope that would not make you confuse :)
-</p>
-<p>
-The event began with common meeting there people were sharing ideas of applications they are going to build. During my pretty long journey with in <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Production</a> I already got my idea - I wanted to build Deployment-as-Service product that easily integrated with github and utilizes power of UppercuT for building .NET web applications. There was very few .NET developers there, already having their own ideas to build.. so I went alone. 
-</p>
-<p>
-If you have been to Ciklum office, you probably know what SkyPoint is.. It is 20-th floor in office that resides on one Kiev&#8217;s hills, so you might imagine this exceptional view from there. I grabbed a chair started to work. 
-</p>
-<p>
-Due to experience I got with .NET deployments and Jenkins I had pretty much well understanding what the workflow should be. I&#8217;ve created ASP.NET MVC3 in my Visual Studio and stared to develop. The scope of work I planned to do was pretty much big and I a little nervous about my ability to finish everything. I tried to work as fast as I can.. Full hour, that 10 minutes break and full hour again. Maybe because of that creative atmosphere around or straight orientation on final result but I think I really got a <a href="http://en.wikipedia.org/wiki/Flow_(psychology)">Flow</a>..
-</p>
-<p>
-So, after ~3 hour of work I&#8217;ve created my github repository for new project - Candidate.net:
-</p>
-<a href="http://twitter.com/#!/alexbeletsky/status/79592735673303040">
-<img src="https://lh5.googleusercontent.com/-EB45A9ltPj4/TfX3yjW1xBI/AAAAAAAAHeQ/6flibleXfdk/tweet-github.png" alt="tweet" />
-</a>
-<p>
-Keeping that rhythm I continued to work mostly till 3.00 AM.. About 60% of work were done. I felt a little tired and decided to stop for today and had a good sleep to continue tomorrow. My plans were ruined as soon as I stepped to 19th there people gathered together.. So, in 5 minutes I got several shots of cognac and was sitting on a floor with guitar in my hands :). I had a real fun and relax there. Haven&#8217;t noticed at all how 2 hours are gone and sun started to rise.. We had a really nice moment of meeting new day on staying on office balcony. 
-</p>
-<a href="http://twitter.com/#!/alexbeletsky/status/79730442869293056">
-<img src="https://lh5.googleusercontent.com/-YoDuw9t7AxU/TfX3yt71IQI/AAAAAAAAHeI/GZ-utUiR0IQ/tweet-morning.png" alt="tweet" />
-</a>
-<p>
-I have to continue the implementation, so I went back to SkyPoint and run my Visual Studio again. Of cause I could not get such rhythm as I got yesterday, the process were much slower. I had to refuse of several more ideas I wanted to build, ignore the rules of Clean Code, SOLID and DRY. Did some ugly tricks, just to make application work. I had issues with testing and deployment since WiFi connection were quite slow. But, long story short - I implemented very basic workflow and realized that would be it for presentation.
-</p>
-<a href="http://twitter.com/#!/alexbeletsky/status/79814256295550976">
-<img src="https://lh5.googleusercontent.com/--LWi6MlSOjo/TfX3ysS1-WI/AAAAAAAAHeM/XdE5KC4fx5w/tweet-done.png" alt="tweet" />
-</a>
-<p>
-I found a sofa and finally got a change to have a sleep. Don&#8217;t know why but I managed to sleep only for one hour, just woke up and could not sleep again. So, I had a shower (yes, there are showers in Ciklum office), coffee.. and very nice breakfast. I had some time before presentation began, so I re-tested my application several times more and was happy about results. 
-</p>
-<p>
-At 15.00 PM presentations began! I showed Candidate.net ability to initialize new application, build and deploy it in minutes.. How you can deliver with just a push a code to github, the rest of job done by Candidate. I don&#8217;t think I really impress people there, because of .NET crowd were to small.. but I tried to do best. After the presentation I&#8217;ve been contacted by several guys who interested with such concept.
-</p>
-<p>
-Most of the presented projects were either old-school games implemented with new technologies or mobile applications. One guys did a nice linux kernel exploration and share his ideas. 
-</p>
-<p>
-After there was a manual voting for each project to decide on 3 best, I didn&#8217;t win :). Winners got their congratulations and presents for sponsors. I quit really quickly since I was a little late for my friend wedding that was that day :) 
-</p>
-<p>
-That was really nice experience for me. I appreciate <a href="http://www.ciklum.net/">Ciklum</a>, <a href=""http://www.developers.org.ua/">DOU</a> and everyone involved, who make that possible. Thank you guys :)
-</p></div>
 
       
       

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Switching from ASP.NET development server (Cassini) to IIS with MVC applications Oct 15th, 2010 AJAX, MVC, Tips, asp.net Start developing new &hellip;">
+  <meta name="description" content="Test Driven Design and levels of testing Oct 19th, 2010 TDD, Tips Major benefit of TDD is not coverage, regression stability, test problem solving &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,147 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/10/test-driven-design-and-levels-of.html">
+    
+      Test Driven Design and levels of testing</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-19T19:26:00+03:00" pubdate data-updated="true">Oct 19<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Major benefit of TDD is not coverage, 
+    regression stability, test problem solving - NO. It is - Test Driven Design 
+    (Architecture). Test Driven Design is something that is being born of writing 
+    tests before code, writing tests before functionality started to work, 
+    writing the tests before you really clear about the rest of system (data 
+    flow, integration etc.). Test Driven Design forces you to use old good patterns 
+    as Factories, Template Methods.. it forces you to hide implementation behind 
+    interface.. it forces you to separate concerns and divide functionality on small objects, each of it responsible for its small function 
+    and could be tested exactly for its function. Instead of increase functionality by appending some code to already big function, you encapsulate new functionality to new object, test it in isolation and then easily integrate it to the place where it have to start work on. 
+</p>
+<p>
+The reason why Test Driven Design works is that doing a tests make you a class user, make you focus on its primary goal and interface and just make it impossible (or difficult and annoying) to make a class with multiple responsibilities. 
+</p>
+<p>
+How to get practical benefits of TDD, what level of testing should I consider to be sure I following the plan of TDD? 
+</p>
+<p>
+<small>
+<b>Disclaimer:</b> all code samples are created very quickly, just to demonstrate ideas, should not be considered as working examples.
+</small>
+</p>
+<h2>Level 1 - Unit tests</h2>
+<p>
+Here it all begins. Unit tests are kind of testing of really small parts of objects, like method properties and so on. This is there the actual requirements for the object is 
+    created and verified. The major point of unit tests is - they have to be isolated! That means, all object(s), data, view etc. that tested object is 
+    depend on, must be hidden behind corresponding interfaces. Please note, that at initial state those interface could not be defined at all (contains no methods) and its actual form will be dictated by actual object needs. 
+    Object needs will be clarified on a way of applying next test cases to testable object.  
+</p>
+<p>
+    You have to be always focus on business object or primary object. This is the one that you have to test first. If you are doing registration functionality on site, <code>Registration</code> is class to start. If you are doing calculation application <code>Calculate</code> is class to start. If you are doing web crawling application, <code>Crawler</code> is class to start.
+</p>
+<p>
+It is always like that - business object typically requires 2 things, data and view. In some particular case BO could depend on some external services, that would mean that interface to the service should pass to constructor as well. Also, in some cases it doesn&#8217;t require a view, just returns some data to outside consumer.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> Some<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> Some(IData data, IView view)<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;}<br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IData<br>{<br>&nbsp;&nbsp;<font color="#008000">//empty</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IView<br>{<br>&nbsp;&nbsp;<font color="#008000">//empty</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Then tests are being created:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> SomeTests<br>{<br>&nbsp; <font color="#008000">//create method</font><br>&nbsp; <font color="#0000ff">public</font> Some CreateSome()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> Some(<font color="#0000ff">new</font> DataMock(), <font color="#0000ff">new</font> ViewMock());<br>&nbsp; }<br>&nbsp; <br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioOne() { }<br>&nbsp; <br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioTwo() { }<br><br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioThree() { }<br><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataMock : IData<br>{<br>&nbsp;&nbsp;<font color="#008000">//some methods here</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> View :&nbsp;IView<br>{<br>&nbsp;&nbsp;<font color="#008000">//some methods here</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+It is good design that constructor receives the interfaces only, the rest of parameters required supplied by corresponding methods arguments.
+</p>
+<p>
+Once again, business object <strong>asks</strong> interfaces for required data or methods for displaying data. What exact data and methods are required, could be unknown at the beginning, it only depends on current business object needs. So, in a way of implementation goes interfaces of IData and IView started to form its shape. So, at the end they could look like this:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IData <br>{<br>&nbsp; IQueryable&#60;Columns&#62; GetColumns();<br>&nbsp; <font color="#0000ff">void</font> UpdateColumn(<font color="#0000ff">int</font> id, <font color="#0000ff">string</font> name, Column column);<br>&nbsp; <font color="#0000ff">void</font> DeleteColumn(Column column);<br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IView<br>{<br>&nbsp; <font color="#0000ff">void</font> ShowSuccessMessage(<font color="#0000ff">string</font> message);<br>&nbsp; <font color="#0000ff">void</font> ShowFailMessage(<font color="#0000ff">string</font> fail);<br><br>&nbsp; <font color="#0000ff">void</font> DisplayResults(IQueryable&#60;Column&#62; columns);<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Note, that we are absolutely don&#8217;t care about actual implementation of both interfaces at the current moment. For instance <code>Data</code> could use SQL database for columns, <code>View</code> could call some Win32 API functions for displaying results. Doesn&#8217;t matter - forget about this at all, just continue with primary object and its functionality and tests.
+</p>
+<p>
+Mock objects should provide required methods in most simple way, like:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataMock : IData <br>{<br>&nbsp; <font color="#0000ff">public</font> IQueryable&#60;Column&#62; GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> list = <font color="#0000ff">new</font> <font color="#2B91AF">List</font>&#60;Column&#62; { <font color="#0000ff">new</font> Column(1), <font color="#0000ff">new</font> Column(2) };<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> list.AsQuearyable();<br>&nbsp; }<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+For the different type of test data you could have a different mocks. Also, it is better to use some existing <a href="http://code.google.com/p/moq/">mock frameworks</a>.
+</p>
+<h2>Level 2 - Data/View tests</h2>
+<p>
+As interfaces of Data/View granulated after level 1 testing, it is time to implement them. At this time we are really clear of what exactly we are going to implement, since there is already defined contract between client (primary object) and supplier (data/view classes). 
+</p>
+<p>
+Data/View implementation have to be tested also. There are more difficulties in testing them: data depends on SQL Server, that must be up and running, some test data have to be prepared before. View could not be tested in many cases. Netherless, why are implemented in same test before style and finally we have <code>Impl</code> classes implementation. Ones that would be used with primary object after its integration to application.   
+</p>
+<p>Implementation</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataImpl : IData <br>{<br>&nbsp; <font color="#0000ff">private</font> DataContext _context;<br><br>&nbsp; <font color="#0000ff">public</font> DataImpl(DataContext context)<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;_context = context;<br>&nbsp; }<br><br>&nbsp; <font color="#0000ff">public</font> IQueryable&#60;Column&#62; GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _context.Exec(<font color="#A31515">"SELECT * FROM COLUMNS"</font>).AsQueryable();<br>&nbsp; }<br> <br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> ViewImpl : IView<br>{<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> ShowSuccessMessage(<font color="#0000ff">string</font> message)<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;MessageBox(message);<br>&nbsp; }<br><br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Tests:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataImplTest : IData <br>{<br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> DataImpl(<font color="#0000ff">new</font> DataContext());<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> columns = data.GetColumns();<br><br>&nbsp;&nbsp;&nbsp;Assert.That(columns.Count,Is.EqualTo(10));<br>&nbsp; }<br> <br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Level 3 - Integration tests</h2>
+<p>
+Integration tests are considered to be <a href="http://blog.jbrains.ca/integrated_tests_are_a_scam">evil</a>. I also think so, but I don&#8217;t think that it is possible to completely to avoid them. They are difficult to support and difficult to maintain them, but I think some number of integration tests have to be present to cover some typical scenarios of bugfix test cases.
+</p>
+<p>
+In general, integration would mean - test the primary objects with concrete instances of dependent objects. Integration tests would cover a place where primary object is going to be integrated to. So, if we plan to use <code>Some</code> in <code>SomeAnother</code> you have to test the impact of this class after integration.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> SomeIntegrationTests<br>{<br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> IntegrationScenario()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//arrange</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> some = <font color="#0000ff">new</font> Some(<font color="#0000ff">new</font> DataImpl(), <font color="#0000ff">new</font> ViewImpl());<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//act</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> results = some.Act(param1, param2);<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//post</font><br>&nbsp;&nbsp;&nbsp; <font color="#008000">//do assert</font><br>&nbsp; }<br><br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> IntegrationScenarioTwo()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//arrange (some is integrated to SomeAnother)</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> someAnother = <font color="#0000ff">new</font> SomeAnother(<font color="#0000ff">new</font> DataImpl(), <font color="#0000ff">new</font> ViewImpl());<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//act</font><br>&nbsp;&nbsp;&nbsp; someAnother.Act();<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//post</font><br>&nbsp;&nbsp;&nbsp; <font color="#008000">//assert on actual influence of Some class on SomeAnother class</font><br>&nbsp; }<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Level 4 - Spec tests</h2>
+<p>
+The final level is Spec tests. BDD (Behavior Driven Development) is next generation of TDD, focusing on user acceptance criteria&#8217;s as development driver. There are quite good tools for that already like, <a href="http://specflow.org/">SpecFlow</a> or <a href="http://storyq.codeplex.com/">StoryQ</a>.
+</p>
+<p>
+Having those type of testing on Level 4, doesn&#8217;t mean that they are created after functionality is ready. It is recommended to create such tests first working with product owner and defining a test stories. 
+</p>
+<p>
+Personally I have no rich experience in BDD, but ideas and success stories with Cucumber (Ruby) makes them worth to look at.
+</p>
+<h2>Conclusion</h2>
+<p>
+Testing is important. But testing to create tests are pointless. Tests have to be created to create good design, easy to read and maintain code.   
+</p>
+<p>
+By doing tests right, they won&#8217;t complicate your life but make it easier.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1081,77 +1222,6 @@ My little feedback on organization.
 </h2>
 <p>
 The organization is really great, keep doing that guys :). What I personally complain about are: bad quality of WiFi connection, and few plugs to recharge of notebook&#8217;s battery.  
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/09/regex-to-match-words-in-dictionary-on.html">
-    
-      Regex to match a words in dictionary on page body</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-23T14:52:00+03:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns. 
-</p>
-<p>
-My goal was to create a code, that would give an answer: does this particular text contain some words from dictionary or not? Using a regular expressions is an obvious choice then you do such type of operation. So, I was trying to understand what technology is demanded by job offer (Cpp, Java or .NET) and is TDD skill demanded. To archive that I created a set of &#8220;matchers&#8221; small classes each of its own area. Crawler just used those matchers to get actual data.  
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToTdd(<font color="#0000ff">string</font> description)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> TddMatcher().Match(description);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToJava(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> JavaMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToCpp(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> CppMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToDotNet(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> DotNetMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-As you see, I have 4 matchers to cover my requirements: <em>CppMatcher</em>, <em>DotNetMatcher</em>, <em>JavaMatcher</em>, <em>TddMatcher</em>. All of them implements simple <em>IMatcher</em> interface.
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">interface</font> IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-Now, let&#8217;s review the matcher. Because all the matchers do basically the same operations and differ only but its dictionary contents, they contain a dictionary of target words and delegates matching functionality to <em>MatchUtil</em> class. Let&#8217;s see C++ matcher for instance.
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> CppMatcher : IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> IList&#60;<font color="#0000ff">string</font>&#62; _patterns = <font color="#0000ff">new</font> <font color="#2B91AF">List</font>&#60;<font color="#0000ff">string</font>&#62;()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"c\\+\\+"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cpp"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"stl"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cppunit"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> MatchUtil.Match(input, _patterns);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-I wanted to design <em>MatchUtil.Match</em> to be universal, as much as possible and to do not depend on kind of input words. Matching words with boundaries &#8220;\b&#8221; works perfecly, as soon as you have a simple words, like &#8216;java&#8217;, &#8216;nunit&#8217;, &#8216;tests&#8217; and so on, but my tests stated to fail as soon as I tried &#8216;c++&#8217; or &#8216;.net&#8217;. Because of &#8216;\b&#8217; matches boudary between 2 alphanumeric symbols, in my case &#8216;+&#8217; or &#8216;.&#8217; is not alphanumeric. That made a problem to me and asked <a href="http://stackoverflow.com/questions/3641985/regex-to-match-a-word-with-plus-signs">StackOverflow</a> for help. I finished up with such implementation, that I hope could be useful if you do similar stuff.
-</p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> MatchUtil<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input, IList&#60;<font color="#0000ff">string</font>&#62; patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> lower = input.ToLower();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">foreach</font> (<font color="#0000ff">var</font> pattern <font color="#0000ff">in</font> patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> start = pattern.StartsWith(<font color="#A31515">"\\."</font>) ? <font color="#A31515">"(?!\\w)"</font> : <font color="#A31515">"\\b"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (Regex.IsMatch(lower, start + pattern + <font color="#A31515">"(?!\\w)"</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">true</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<p>
-So, <em>Regex.IsMatch</em> static method is used to perform match. 
-</p>
-<p>
-This is it. If you see some issues or improvements, please let me know. <a href="http://github.com/alexanderbeletsky/TddDemand">http://github.com/alexanderbeletsky/TddDemand</a>
 </p></div>
 
       

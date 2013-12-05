@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Approval Tests, Alternative View on Test Automation Dec 11th, 2011 Approvals, Open source, TDD, Tools Approval Tests or simply Approvals in a &hellip;">
+  <meta name="description" content="ELMAH MVC: Answering questions Dec 11th, 2011 ELMAH.MVC, MVC, NuGet, Tools, asp.net I&#8217;ve received some questions recently regarding ELMAH.MVC &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,69 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/12/elmah-mvc-answering-questions.html">
+    
+      ELMAH MVC: Answering questions</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-11T12:25:00+02:00" pubdate data-updated="true">Dec 11<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/nuget/'>NuGet</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I&#8217;ve received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
+</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
+</p><pre class="brush: xml">&lt;elmah&gt;
+    &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
+    &lt;errorLog type=&quot;Elmah.MemoryErrorLog, Elmah&quot;/&gt;
+    &lt;!--&lt;errorLog type=&quot;Elmah.SqlErrorLog, Elmah&quot; connectionStringName=&quot;elmah&quot; /&gt;--&gt;
+    &lt;!--&lt;errorLog type=&quot;Elmah.XmlFileErrorLog, Elmah&quot; logPath=&quot;~/App_Data/Elmah.Errors&quot; /&gt;--&gt;
+&lt;/elmah&gt;
+</pre><p>Just comment out <code>Elmah.MemoryErrorLog</code> and de-comment <code>Elmah.SqlErrorLog</code> (will store errors to SQL database) or <code>Elmah.XmlFileErrorLog</code> (will store errors to XML files). XML logger, just requires a virtual path to folder there files will be stored. Sql logger, requires a connection string name for ELMAH database. The same web.config contains:<br />
+</p><pre class="brush: xml">&lt;connectionStrings&gt;
+    &lt;add name=&quot;elmah&quot; connectionString=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=elmah;Integrated Security=True&quot; providerName=&quot;System.Data.SqlClient&quot; /&gt;
+&lt;/connectionStrings&gt;
+</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
+</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
+</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
+</p><p>Short answer is, ELMAH.MVC is nothing more that boilerplate code. As soon as you can see it work and it works OK for you, adopt it for your custom needs. That&#8217;s it.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -953,76 +1016,6 @@ namespace Sba.Web.Areas.Sales
 </a><br />
 <p>Besides of that we had several cool evenings, drinking beers. I would say that was great week and I&#8217;m really happy to meet you guys. I would also say big thanks to <a href="http://kievalt.net/">KievAltNet</a>, <a href="http://www.luxoft.com/">Luxoft</a> with support they provided to make this happen. I know this in not your last visit to Kiev, so see you soon! <br />
 </p><p>ps. As more you know as more unknown you are able to see&#8230;<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/10/network-conference-in-kharkiv.html">
-    
-      NETWork Conference in Kharkiv</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-16T16:55:00+03:00" pubdate data-updated="true">Oct 16<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>In short, it was one of the most exciting and interesting conferences I ever been (and participated) so far. My big respect goes to organizers: <a href="http://sigmaukraine.com/">Sigma Ukraine</a>, <a href="http://www.akvelon.com.ua/">Akvelon</a> and <a href="http://ciklum.net/">Ciklum</a> as main sponsor. <br />
-</p><p>In a little long, I&#8217;ve been invited to participate this conference by <a href="http://www.facebook.com/anastasiakladova">Anastasia Kladova</a>, the PR manager of <a href="http://sigmaukraine.com/">Sigma Ukraine</a> during my visit of <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">IT Jam 2011</a> this summer. It sounded so cool to me, since so famous guys as <a href="http://network-ua.com/speaker/ayende-rahien-aka-oren-eini/">Ayende</a>, <a href="http://network-ua.com/speaker/greg-young/">Greg Young</a> and <a href="http://network-ua.com/speaker/rinat-abdullin/">Rinat Abdulin</a> would be the speakers there as well. I had not other choice, just to agree.<br />
-</p><p>Well, my trip to Kharkiv started not very good. Due to my personal awkwardness I simply missed the train. Now I have fun of that fact, by then I was standing on station and seeing my train passing away - it was not so fun to me. Anyway, with great advice of <a href="">@chaliy</a> by phone I switched to another train. The one one problem was - it comes to Kharkiv pretty late, at 10.00 o&#8217;clock.<br />
-</p><p>Unfortunately I missed first keynote by <a href="http://network-ua.com/speaker/sander-hoogendorn/">Sander</a> and first session of speeches. But I was ready for the rest of the day. I would not describe long my feelings to meet colleagues from other cities, which we communicate thought twitter. But it is exactly the conferences like that, where we have real opportunity to talk to each other. As for me, such communication is a bigger asset of any conference including NETWork.<br />
-</p><a href="https://lh6.googleusercontent.com/-kH4mZBDxBug/Tp2QkwVhZ1I/AAAAAAAAHmo/DRX7IEoA1pI/s720/DSC_2356.JPG"><br />
-<img src="https://lh6.googleusercontent.com/-kH4mZBDxBug/Tp2QkwVhZ1I/AAAAAAAAHmo/DRX7IEoA1pI/s720/DSC_2356.JPG" /><br />
-</a><br />
-<p>Let me share some feedback I got about the speeches I visited:<br />
-</p><ul><li><br />
-<strong>CQRS AND EVENT SOURCING</strong> by <a href="http://network-ua.com/speaker/greg-young/">Greg Young</a> - I really much enjoyed the that speech. Doesn&#8217;t matter I&#8217;ve seen it before on video :) - still I was amazed about his speakers skill and energy he exposed towards the audience. His mimic, body language and personal behavior - made the speech really attractive. I would not say I heard something really new to me, but at least I improved some knowledge I already had.<br />
-</li>
-<li><br />
-<strong>APPLIED CODE GENERATION IN .NET</strong> by <a href="http://network-ua.com/speaker/dmitro-mindra/">Dmitry Mindra</a> - great talk about Code Generation in .NET application. Even, if I dislike code generation much, Dmitry managed to find good Pros. and Cons. of code generation. So, at the end of the speech I even was not possible to start holy war on that topic, since really strong facts he had.<br />
-</li>
-<li><br />
-<strong>INSIDE ASP.NET MVC FRAMEWORK</strong> be me - yeah, that&#8217;s my speech so I&#8217;m not really happy as usual. Again, I didn&#8217;t fit everything I wanted to say. Something that I did seems was not really clear and far away from comprehensive. It would be last attempt I do that &#8216;Inside MVC&#8217; talk - it is simply too big, so probably next time I just select one small topic and focus on that. Anyway, I all the time enjoy the speaking and I really like that feeling of stress before and relax after :).  <br />
-</li>
-<li><br />
-<strong>NOSQL – A CHANGE OF PERSPECTIVE FOR THE DEVELOPER OF TODAY</strong> by <a href="http://network-ua.com/speaker/ayende-rahien-aka-oren-eini/">Ayende</a> - I have a split decision on that. The beginning of the speech was simply boring, I don&#8217;t understand the reason of spending 0.5h do describe the difference of price of 1 Mb HDD in 80&#8217;s and 00&#8217;s. Moreover, due to Ayende&#8217;s accent sometimes I just missed the idea. The end of the speech were more exiting but still I was disappointed. Ayende is great developer, everybody knows that - but it was not even one small example of code working with RavenDB. Probably he left it for some practical session, but still I think it is kind of drawback of his presentation.<br />
-</li>
-</ul><p>And after all speeches we had a kind of Round Table. All speaker got on stage and answering the questions of audience. It was a little funny to me how it went. First, the language - some questions were in English but answered in Russian, some was Russian but answered English :). I actually used English in respect towards our foreign guests, but anyway. The answers were long, not exact and mainly loosing the point of original question. I think the moderation (with a timing and topics) is really important here. <br />
-</p><p>What I remembered the most is the question to Ayende - &#8220;How you became so productive?&#8221;, and the answer was something that great developer should answer &#8220;I&#8217;m not so productive, I just code a lot and do some blog posts&#8221;. Yeah, &#8220;Code a lot&#8221; - so simple rule to became from good to great. I&#8217;ll remember that.<br />
-</p><p>Finally we had a great dinner at the one of Kharkiv&#8217;s restaurant&#8217;s. And I went to train station (0.5 hours ahead). There I met my guys from <a href="http://kievalt.net/">Kiev ALT.NET</a> who had a great mood and bag full of beer. So, we&#8217;ve had nice Beer && Talk session till 3.00 AM on our way back home. <br />
 </p></div>
 
       
