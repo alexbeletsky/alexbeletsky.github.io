@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Baby steps to Backbone.js: Exploring collections Mar 27th, 2013 BabyStepsBackbone, Backbone.js After initial introduction to Backbone&#8217;s views &hellip;">
+  <meta name="description" content="Likeastore, Application Built on Hackathone Mar 31st, 2013 Applications, Hackatone, Likeastore, Social It&#8217;s my second time I attended &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,58 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/03/likeastore-application-built-on.html">
+    
+      Likeastore, Application Built on Hackathone</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-31T18:52:00+03:00" pubdate data-updated="true">Mar 31<span>st</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/hackatone/'>Hackatone</a>, <a class='category' href='/blog/categories/likeastore/'>Likeastore</a>, <a class='category' href='/blog/categories/social/'>Social</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        It&#8217;s my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can&#8217;t guess which projects will be popular or not.. and the second, that it&#8217;s hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - &#8220;Likeastore&#8221;<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/03/likeastore-application-built-on.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -854,77 +906,6 @@
         </a><br />
         <h2>Conclusions</h2>        <p>            Testing of Backbone.Model&#8217;s is pretty simple thing. It&#8217;s nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
         </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/11/javascript-object-creation-by-new.html">
-    
-      JavaScript Object Creation by New Operator</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-12T15:50:00+02:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
-    </p>    <pre class="brush: js">function Person (name) {
-    this.name = name;
-}
-
-var person = new Person('John Smith');
-console.log(person.name);
-    </pre>    <p>        If you try to run this code, you will see &#8216;John Smith&#8217; in console. Now, try to delete new operator.<br />
-    </p>    <p>        Instead of &#8216;John Smith&#8217; you will see undefined. Why?<br />
-    </p>    <p>        The difference is that without new operator it is just function call. During the call `this` points global namespace. If you running the code in browser, global namespace is bind to `window`.<br />
-    </p>    <p>        It&#8217;s important to understand how new operator works. Internally, operator new is converted to NEW(Person, &#8216;John Smith&#8217;);. It does several things.<br />
-    </p>    <ol>        <li>Creates new native object and initializes the __proto__ of object by function.prototype.</li>
-        <li>Calls function, applying newly created object as value for <code>this</code>.</li>
-        <li>Returns newly created object.</li>
-    </ol>    <p>        It can be expressed in this kind of pseudo-code:<br />
-    </p>    <pre class="brush: js">function NEW(f) {
-    var obj = { '__proto__': f.prototype };
-    f.apply(obj, arguments.slice(1));
-    return obj;
-}
-</pre>    <p>        (It&#8217;s a bit more complex actually, for details check this <a href="http://stackoverflow.com/questions/6750880/javascript-how-does-new-work-internally">great answer</a> on SO).<br />
-    </p>    <p>        It means that during function call with `new operator()`, <code>this</code> always points to a new object, created based on function prototype. You can initialize the properties of new object inside the function. It&#8217;s no longer a simple function, but it is constructing function, or more simply - constructor.<br />
-    </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
-    </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
-    </p></div>
 
       
       

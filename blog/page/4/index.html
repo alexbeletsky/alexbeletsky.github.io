@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="ELMAH.MVC 2.0.2 is out Nov 9th, 2012 ELMAH.MVC ELMAH MVC 2.0.2 has been just pushed recently. This is a contribution by James Crowley which adds a &hellip;">
+  <meta name="description" content="JavaScript Object Creation by New Operator Nov 12th, 2012 JavaScript, Tips There are different approaches of how to create object in JavaScript. C# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,77 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/11/javascript-object-creation-by-new.html">
+    
+      JavaScript Object Creation by New Operator</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T15:50:00+02:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
+    </p>    <pre class="brush: js">function Person (name) {
+    this.name = name;
+}
+
+var person = new Person('John Smith');
+console.log(person.name);
+    </pre>    <p>        If you try to run this code, you will see &#8216;John Smith&#8217; in console. Now, try to delete new operator.<br />
+    </p>    <p>        Instead of &#8216;John Smith&#8217; you will see undefined. Why?<br />
+    </p>    <p>        The difference is that without new operator it is just function call. During the call `this` points global namespace. If you running the code in browser, global namespace is bind to `window`.<br />
+    </p>    <p>        It&#8217;s important to understand how new operator works. Internally, operator new is converted to NEW(Person, &#8216;John Smith&#8217;);. It does several things.<br />
+    </p>    <ol>        <li>Creates new native object and initializes the __proto__ of object by function.prototype.</li>
+        <li>Calls function, applying newly created object as value for <code>this</code>.</li>
+        <li>Returns newly created object.</li>
+    </ol>    <p>        It can be expressed in this kind of pseudo-code:<br />
+    </p>    <pre class="brush: js">function NEW(f) {
+    var obj = { '__proto__': f.prototype };
+    f.apply(obj, arguments.slice(1));
+    return obj;
+}
+</pre>    <p>        (It&#8217;s a bit more complex actually, for details check this <a href="http://stackoverflow.com/questions/6750880/javascript-how-does-new-work-internally">great answer</a> on SO).<br />
+    </p>    <p>        It means that during function call with `new operator()`, <code>this</code> always points to a new object, created based on function prototype. You can initialize the properties of new object inside the function. It&#8217;s no longer a simple function, but it is constructing function, or more simply - constructor.<br />
+    </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
+    </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -849,74 +920,6 @@ $.get(url1, function (r) {
     </p>    <h2>Don&#8217;t repeat yourself</h2>    <p>        Now, please let me know. How many times did you create (read copy-n-paste) the code for RESTful data persistence? How many times, you did you create code for validation? How many hours you spend for looking for some event listener provoking the bug in your app and hiding somewhere among 200 .js files?<br />
     </p>    <p>        If your answer, more that 2 - stop doing that. Don&#8217;t repeat yourself - reuse. And better - reuse from best.<br />
     </p>    <h2>Conclusions</h2>    <p>        There are great solutions, created by people experienced than me, amplified by huge community behind. <a href="https://github.com/documentcloud/backbone">Backbone.js</a> is one best representatives of such solutions. Having a something that I could rely on, that works good and there <a href="http://stackoverflow.com/questions/tagged/backbone.js">places</a> to get help is very strong reason for me, to keep doing that, instead of re-invent wheel yet another time.<br />
-    </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/09/new-candidate-overview.html">
-    
-      New Candidate Overview</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-05T21:56:00+03:00" pubdate data-updated="true">Sep 5<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/candidate/'>Candidate</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
-    </p>    <h2>        Overall application architecture<br />
-    </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
-    </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
-    </p>    <p>        The primary application change is that it&#8217;s no longer IIS application, but just standalone app.<br />
-    </p>    <a href="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png"><br />
-        <img src="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png" style="width: 620px" /><br />
-    </a><br />
-    <p>    So, you just launch an .exe file, after application warm up, candidate is available at <a href="#">http://localhost:12543</a>.<br />
-    </p>    <a href="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png"><br />
-        <img src="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png" style="width: 620px" /><br />
-    </a><br />
-    <p>        To simplify a life a bit (and do not harm they eyes of users) I&#8217;m using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> CSS framework and happy with it.<br />
-    </p>    <h2>Server side</h2>    <p>        <a href="https://github.com/NancyFx/Nancy">NancyFX</a> is very lightweight framework, but it requires some skills. So far, I met <a href="http://www.beletsky.net/search/label/NancyFX">several</a> interesting challenges, that has been successfully solved. But, Nancy does it job and does it pretty well.<br />
-    </p>    <p>        <a href="http://ravendb.net/">RavenDB</a> initial impressions are really positive. I&#8217;m currently doing very basic functionality (as inserting, querying and deletion of documents). But, indeed working with document oriented database feels much simple and native for C# developer. Forget about any SQL, schemas, ORM&#8217;s - store and restore POCO&#8217;s, that all you need to know. RavenDB API is very clear and intuitive. <br />
-    </p>    <p>        I used embedded version of RavenDB, which suites me best - since I want to minimize an effort for application installation.<br />
-    </p>    <p>        As I said above, server side exposes HTTP API which receives and responds with JSON based payload. There would be some interfaces for starting/stopping the deployment tasks.. but the rest is happening in client.<br />
-    </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: &#8220;I will never ever writing &#8216;scripts&#8217; in front-end, instead I&#8217;ll be doing browser powered applications&#8221;. Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones&#8217;s main entities you build front-end apps in similar way as it would be desktop applications.<br />
-    </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I&#8217;m using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone&#8217;s views as kind of widgets (or modules).<br />
-    </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don&#8217;t need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
-    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
     </p></div>
 
       

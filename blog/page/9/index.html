@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="New Tools in My TDD Arsenal Feb 2nd, 2012 Clean Code, Mocks, TDD, Tools Recently my TDD arsenal has been enhanced with 3 new cool tools, which I&# &hellip;">
+  <meta name="description" content="Few Things I Learned From IdeaStrike Project Feb 9th, 2012 Applications, GitHub, Open source First of all, I have to say Code52 team is doing just &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,106 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/02/few-things-i-learned-from-ideastrike.html">
+    
+      Few Things I Learned From IdeaStrike Project</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-09T20:20:00+02:00" pubdate data-updated="true">Feb 9<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It&#8217;s very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have &#8220;product envy&#8221; inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />
+</p><p>My attention this time was attracted by <a href="">IdeaStrike</a> project. It suppose to be analog of <a href="">uservoice</a> for OS community. As always, first release was very fast and I was very curious what&#8217;s inside. So, I cloned the <a href="https://github.com/Code52/Ideastrike">repo</a> and did small hacker session. I&#8217;ve spend some hours with it and would like to share some initial thoughts.<br />
+</p><h2>Build script is small and clean</h2><p>Project contains <code>build.cmd</code> as I run it downloaded all dependencies by NuGet, build web site and run all unit test. Basically, all you need for any small project. Then I looked inside, it turns out like:<br />
+</p><pre class="brush: plain">@echo Off
+set config=%1
+if "%config%" == "" (
+   set config=Debug
+)
+
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+</pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
+</p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
+</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that&#8217;s also, just a C# code), so at application bootstrap you call the code like:<br />
+</p><pre class="brush: csharp">private static void DoMigrations()
+{
+    var settings = new IdeastrikeDbConfiguration();
+    var migrator = new DbMigrator(settings);
+    migrator.Update();
+}
+</pre><p>The database and schema will be automatically deployed on first application run.<br />
+</p><h2>Social login with Janrain</h2><p>As I clicked to Sign In button, I&#8217;ve been showed nice dialog to select my existing social account to login. <br />
+</p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
+</a><br />
+<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
+</p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that&#8217;s the rule of pragmatic programmer.<br />
+</p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
+</p><h2>Nancy as web framework</h2><p>I&#8217;ve heard about Nancy many times, but it&#8217;s only now I got a change to touch it. For me it&#8217;s just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module&#8217;s logic is placed inside the constructor:<br />
+</p><pre class="brush: csharp">public FeatureModule(IIdeaRepository ideas, IFeatureRepository features, IUserRepository users)
+    : base("/idea")
+{
+    _ideas = ideas;
+    _features = features;
+
+    this.RequiresAuthentication();
+
+    Post["/{idea}/feature"] = _ =>
+    {
+        int id = _.Idea;
+        var feature = new Feature
+                        {
+                            Time = DateTime.UtcNow,
+                            Text = Request.Form.feature,
+                            User = Context.GetCurrentUser(users)
+                        };
+        _features.Add(id, feature);
+
+        return Response.AsRedirect(string.Format("/idea/{0}#{1}", id, feature.Id));
+    };
+}
+</pre><p>Nancy application could be hosted as ASP.NET / WCF / Self hosted runtimes, it supports different View Engines (including Razor). In short, it is great ALT.NET tool and will find a lot of applications in different projects. More details on <a href="https://github.com/NancyFx/Nancy">Nancy</a> github account.<br />
+</p><h2>Conclusions</h2><p>IdeaStrike is great example of open source project you can learn something from. I would not say I got only positive impressions, moreover there are some obstacles that block me from my normal development flow. I&#8217;ll try to share my observations on next blog posts.<br />
+</p><p>NancyFX, probably be my next web framework to learn, since I need to move out of ASP.NET MVC which is comfortable zone for me now. I&#8217;ll be keep looking for IdeaStrike and hope to do some pull requests as well.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -941,89 +1041,6 @@ public void should_try_to_cover_it()
 </a>
 <h2>Locking down</h2><p>The process of controlling the legacy code in that way is called &#8220;Locking down&#8221;. After the code is locked down, you have high confidence (read low risk) of breaking changes you introduce. Please note how low effort it was to create all that 1560 tests and how much value gained in that.
 </p><p>Notice, that test like <code>should_try_to_cover_it</code> is not supposed to &#8220;live forever&#8221;. You probably even don&#8217;t need to check it in to source control. You just do your job, either refactoring or changing that functionality and use Approvals to notify you as fast as possible of something goes wrong.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/12/why-new-technologies-move-your-product.html">
-    
-      Why New Technologies Move Your Product Faster?</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-13T10:15:00+02:00" pubdate data-updated="true">Dec 13<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>This summer my company <a href="http://www.e-conomic.co.uk/">e-conomic</a> started new project with a working title SBA (Small Business Accounting). The project is about the creation of the product for small business owner, like consultants,  web shops, freelancers etc. Since my company already had great expertise in that area the product vision and initial backlog of stories was already in place. Even more, we already had a product that does nearly the same but for a different target user - so, it was kind of natural to try to build SBA based on existing one. We started our journey having very ambitious plan in our mind meaning release in less than 6 month.<br />
-</p><p>But to our great disappointment the progress for next 2 month appeared very low. We underestimated one thing - the existing product is a great  but some of the underlying technologies were ill-suited for the new projects. Very simple things, like adding new custom form, UI changes, data access etc. were hard and unpleasant.<br />
-</p><p>The legacy code, de-motivation and low progress.. were about to bury the project. Fortunately, the company were brave enough to change something on a fly. We went a very risky way, to build new product not based on old technologies, but almost from scratch. And as for me, that was great decision! So, somewhere in October we re-started the project.<br />
-</p><p>What have we changed and how it went?<br />
-</p><h2>SVN => Git</h2><p>I have <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">posted earlier</a> some my experience of starting to use Git in SVN-based organization. That time it was 2-3 people that tried to adopt that process, now it is only 2-3 who are not using it. We are thinking about moving to pure Git environment, but our deployment procedure slightly depends on SVN. As soon as we fix it, we can get rid of SVN completely.<br />
-</p><p>You might argue, that changing source management tool is not exactly technological change and not affecting development velocity! But wait a minute.. How much time did you waste to resolve stupid tree conflicts? How much time you waste waiting for new branch, at the code freeze period? How many times your thrown away yours refactoring results, simply because you are not able to commit that now? <br />
-</p><p>All of that factors are contra-productive. It could be not even seen from first sight, but Git improves the velocity simply by getting rid of annoying things that are natural to centralized source control management systems.<br />
-</p><a href="https://lh5.googleusercontent.com/-XG2gEof9UpY/TucIbWZAFWI/AAAAAAAAH1A/1CWmMN_-chQ/s620/git.jpg"><br />
-<img src="https://lh5.googleusercontent.com/-XG2gEof9UpY/TucIbWZAFWI/AAAAAAAAH1A/1CWmMN_-chQ/s620/git.jpg" alt="git" /><br />
-</a><br />
-<h2>ASP.NET WebForms => ASP.NET MVC</h2><p>Supporting WebForm&#8217;s code is a big mess. It&#8217;s is difficult to test, difficult to understand and to change. We had a bunch of custom controls that worked fine, but adopting them to something different is hard.<br />
-</p><p>For the year I&#8217;m <a href="http://www.beletsky.net/search/label/MVC">studding</a> ASP.NET MVC and much inspired by it&#8217;s clear and powerful design. So, I was really happy we finally <a href="http://www.beletsky.net/2011/10/integrating-aspnet-mvc-into-legacy-web.html">moved</a> that direction. <br />
-</p><p>We are using MVC in both modes: as for our web UI pages and for REST services. The same URL could produce both HTML or JSON response, depending on context. Having that, we are much flexible and not duplicate the code on pages and web services. MVC controllers are easy testable, Views are clean having only HTML with only few server side code snippets. Switch to ASP.NET MVC boosts us pretty much.<br />
-</p><p>I think the adaption of new technology was really fast, even if we had some issues at the beginning they have been solved. I have to say that to use ASP.NET MVC we have to update production environment, namely upgrade in Windows 2008 with II7 which requires additional investment. But I think it&#8217;s only for good, cause having environment debt is the same as having technical debt in code.<br />
-</p><a href="https://lh6.googleusercontent.com/-3FyOP31U69I/TucImLlSZvI/AAAAAAAAH1I/lWulB9EVFeo/s620/mvc.jpg"><br />
-<img src="https://lh6.googleusercontent.com/-3FyOP31U69I/TucImLlSZvI/AAAAAAAAH1I/lWulB9EVFeo/s620/mvc.jpg" alt="asp.net mvc" /><br />
-</a><br />
-<h2>Pure jQuery => Backbone.js</h2><p>jQuery is the best javascript framework ever. It suites so nicely till the application is not getting to much big. As you getting out some imaginary &#8220;bounds&#8221; jQuery code get out of the control. Till that time we already had huge amount of .js files mixing out logic and UI stuff. <br />
-</p><p>We were choosing between Knockout.js and Backbone.js and finally stopped at Backbone. Backbone.js introduce order in client-side code. It has clear separation of concerns for Models, Views, Controllers.. so we can say Backbone.js is MVC framework on client.<br />
-</p><p>Having order is first step for productivity. The things are more predicable, read more fast to getting things done. Of cause, it takes a lot of effort to learn it. And no surprise some we still having some challenges caused by lack of expertise. But having <a href="http://lostechies.com/derickbailey/">Derick Bailey</a> as our consultant making it better. <br />
-</p><p>I would add that ASP.NET MVC and Backbone.js suits each other very nicely, since Backbone.js is REST oriented and ASP.NET MVC exposing REST in a right way.<br />
-</p><a href="https://lh6.googleusercontent.com/-Ww_ElYoIAVo/TucIx1wP6tI/AAAAAAAAH1Q/jmKpUE2jjQY/s620/backbone.jpg"><br />
-<img src="https://lh6.googleusercontent.com/-Ww_ElYoIAVo/TucIx1wP6tI/AAAAAAAAH1Q/jmKpUE2jjQY/s620/backbone.jpg" alt="backbone.js" /><br />
-</a><br />
-<h2>Super.Tricky.NHibernate.Wrapper => ADO.NET</h2><p>One of the pain-in-neck points of our application is data access. We have huge wrapper around the NHibernate framework. Words &#8220;Wrapper on NHibernate&#8221; could make someone sick, what if I say, &#8220;Wrapper on HHibernate, which is code generated&#8221;? <br />
-</p><p>So, someone might treat that are making step back. But I don&#8217;t agree. Whatever things you can do in C# code, it is SQL only the language your Database can speak. Having a ORM&#8217;s are kind of having translator during the conversation with foreign guy. It works great as soon you speak simply, it&#8217;s getting worse than conversation going complicated, so translator hardly could translate everything you want to say. And of cause, it almost has no sense to have a translator, as soon if you can speak that language.<br />
-</p><p>We are not using pure ADO.NET, it would be complicated. We have a tiny wrapper on that that basically run queries and returns result sets. It might seem harder, but I would say it&#8217;s very flexible. You can create what ever queries you need and map them what ever models you have. It works fine, it works fast. It is easy to test, since you no longer need NHibernate profiler to understand what&#8217;s wrong in you application, code just close to you.<br />
-</p><p>After last <a href="http://kievalt.net/">Kiev ALT.NET</a> meeting I understood we are not alone here. A lot of people start to understand that NHibernate becoming to heavyweight. New movement of MicroORM&#8217;s appeared, that combines power of SQL and functionality of mapping tables to objects. I want to believe that some MicroORM framework could be our next thing to adopt. <br />
-</p><a href="https://lh5.googleusercontent.com/-8g_ydfqm6NU/TucI50rybVI/AAAAAAAAH1Y/PzhnR_Eudzo/s623/sql.jpg"><br />
-<img src="https://lh5.googleusercontent.com/-8g_ydfqm6NU/TucI50rybVI/AAAAAAAAH1Y/PzhnR_Eudzo/s623/sql.jpg" alt="sql" /><br />
-</a><br />
-<h2>De-motivation => Obsession</h2><p>It is not technological factor.. it is not even something I easy describe. Developers are taking responsibility by changing the things or advocating for some particular technology. You are no longer have excuse of bad quality because of legacy reasons. Sure, legacy still plays some role but impact is not so high.<br />
-</p><p>Having a new technologies on board simply makes developers happier. Happy developer is obsessed developer, he is commited to success. He will work as much as he can to make good results. <br />
-</p><p>With a consistent challenge, every day is no longer &#8220;another day in office&#8221;, but rather &#8220;yet another day on pirate ship&#8221;. It starts to smell start-up shop, that tried to get on market as soon as possible, adapting last available tools. The project now is not something I just had to do, but kind of pet project, where you trying things out and feel great if those things works.<br />
-</p><p>That&#8217;s why in particular I think it is great to start from scratch (or near to scratch) one a year or something. Pick up last thing, learn them, adopt and build something valuable - it is nothing to compare with maintenance of 5 year old code.<br />
-</p><p>New technologies moves you product faster!<br />
 </p></div>
 
       

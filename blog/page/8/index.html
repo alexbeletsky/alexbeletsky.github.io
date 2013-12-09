@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="MS SWIT 2012 Mar 27th, 2012 Conference, Speeches, asp.net The 22-23 of March this year I had a chance to participate biggest event organized by &hellip;">
+  <meta name="description" content="New in ASP.NET MVC4: Bundling and Minification Apr 2nd, 2012 CSS, JavaScript, MVC, asp.net Next new feature that appeared in MVC 4 beta is bundling &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,254 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/new-in-aspnet-mvc4-bundling-and.html">
+    
+      New in ASP.NET MVC4: Bundling and Minification</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-02T09:44:00+03:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>CSS</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
+</p><p>The problem is, each HTTP request takes time. One of the most critical Yahoo web applications performance recommendation says - <a href="http://developer.yahoo.com/performance/rules.html">Minimize HTTP request</a>. As few HTTP requests you need to load application as better.<br />
+</p><h2>System.Web.Optimization<br />
+</h2><p>Bundling and minification is located in it&#8217;s own namespace <code>System.Web.Optimization</code> and resides in assembly named <code>Microsoft.Web.Optimization</code>, which is installed by default with new ASP.NET MVC4 application template as NuGet package. Since it&#8217;s still in beta, namespaces and class names are probably be changing, but let&#8217;s look on that we have now.<br />
+</p><h2>What is bundle?<br />
+</h2><p>Bundle is simply logical group of files that could be referenced by unique name and being loaded with one HTTP request. Suppose, we have a Layout.cshtml that might look something like that:<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/jquery.mobile-1.0b3.min.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/reset.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/foundation.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Fonts.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Layout.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Mobile.css&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;        
+</pre><p>You can see, that&#8217;s a lot of css and javascript that will be loaded for page. With bundling we can rewrite it with very simple code<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Content/css&quot;)&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>In this case <code>"~/Content/css"</code> and <code>"~/Scripts/js"</code> are no longer virtual paths, but bundle names. <br />
+</p><p>The the browser would load this page, rendered HTML would look like:<br />
+</p><pre class="brush: html">&lt;link href=&quot;/Content/css?v=q_sftc19r22licIM8-Ar58FwviyWry1JuYbA-iATm4M1&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+&lt;script src=&quot;/Scripts/js?v=_8kyYWxz-Je_VE0p3_w5nbcjAhq0Qj4vZiNxvYU_oBg1&quot;&gt;&lt;/script&gt;
+</pre><p>Note, it would reference the bundle with version. The version is a kind of hash taken on all files in bundle content. This enables browser caching, if content of bundle is not change browser will take it from cache, which is much faster. In case of changes, new version token is generated, so browser would be forced to reload bundle.<br />
+</p><a href="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png" alt="chrome development tools" /><br />
+</a><br />
+<h2>Bundle registration<br />
+</h2><p>In <code>global.asax</code> file you will see new line:<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.RegisterTemplateBundles();
+</pre><p>It&#8217;s only one small line of code that enables bundling and minification framework.<br />
+</p><h2>RegisterTemplateBundles() vs. EnableDefaultBundles()<br />
+</h2><p>It looks fine so far, so I tried to add new javascript file into Scripts folder. Unfortunately, my application did not work. I think this is first very contra-intuitive fact of bundling framework. Googling a bit I found quick solution, change RegisterTemplateBundles() to EnableDefaultBundles().. I tried that and it really works.<br />
+</p><p>Since the <code>System.Web.Optimization</code> has not been opened sourced yet (in case you haven&#8217;t heard - ASP.NET web stack is <a href="http://weblogs.asp.net/scottgu/archive/2012/03/27/asp-net-mvc-web-api-razor-and-open-source.aspx">open source</a>, even with accepting pull request) I had to go to <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> to understand why is that.<br />
+</p><p>So, RegisterTemplateBundles() is looks like that,<br />
+</p><pre class="brush: csharp">public void RegisterTemplateBundles()
+{
+    bool flag;
+    bool flag2;
+    bool flag3;
+    bool flag4;
+    bool flag5;
+    bool flag6;
+    bool flag7;
+    Bundle bundle1 = new Bundle("~/Scripts/js", new JsMinify());
+    bool flag8 = false.AddDirectory("~/Scripts", "jquery-*", flag, flag8);
+    bool flag9 = false.AddDirectory("~/Scripts", "jquery.mobile*", flag2, flag9);
+    bool flag10 = false.AddDirectory("~/Scripts", "jquery-ui*", flag3, flag10);
+    bool flag11 = false.AddDirectory("~/Scripts", "jquery.unobtrusive*", flag4, flag11);
+    bool flag12 = false.AddDirectory("~/Scripts", "jquery.validate*", flag5, flag12);
+    bool flag13 = false.AddFile("~/Scripts/MicrosoftAjax.js", flag13);
+    bool flag14 = false.AddFile("~/Scripts/MicrosoftMvc.js", flag14);
+    bool flag15 = false.AddDirectory("~/Scripts", "modernizr*", flag6, flag15);
+    bool flag16 = false.AddFile("~/Scripts/AjaxLogin.js", flag16);
+    this.Add(bundle1);
+    Bundle bundle2 = new Bundle("~/Content/css", new CssMinify());
+    bool flag17 = false.AddFile("~/Content/site.css", flag17);
+    bool flag18 = false.AddDirectory("~/Content/", "jquery.mobile*", flag7, flag18);
+    this.Add(bundle2);
+    Bundle bundle3 = new Bundle("~/Content/themes/base/css", new CssMinify());
+    bool flag19 = false.AddFile("~/Content/themes/base/jquery.ui.core.css", flag19);
+    bool flag20 = false.AddFile("~/Content/themes/base/jquery.ui.resizable.css", flag20);
+    bool flag21 = false.AddFile("~/Content/themes/base/jquery.ui.selectable.css", flag21);
+    bool flag22 = false.AddFile("~/Content/themes/base/jquery.ui.accordion.css", flag22);
+    bool flag23 = false.AddFile("~/Content/themes/base/jquery.ui.autocomplete.css", flag23);
+    bool flag24 = false.AddFile("~/Content/themes/base/jquery.ui.button.css", flag24);
+    bool flag25 = false.AddFile("~/Content/themes/base/jquery.ui.dialog.css", flag25);
+    bool flag26 = false.AddFile("~/Content/themes/base/jquery.ui.slider.css", flag26);
+    bool flag27 = false.AddFile("~/Content/themes/base/jquery.ui.tabs.css", flag27);
+    bool flag28 = false.AddFile("~/Content/themes/base/jquery.ui.datepicker.css", flag28);
+    bool flag29 = false.AddFile("~/Content/themes/base/jquery.ui.progressbar.css", flag29);
+    bool flag30 = false.AddFile("~/Content/themes/base/jquery.ui.theme.css", flag30);
+    this.Add(bundle3);
+}
+</pre><p>As you can see it adds all recourses that came just in template, including jQuery Mobile and jQuery UI. <br />
+</p><p>In the same time, EnableDefaultBundles()<br />
+</p><pre class="brush: csharp">public void EnableDefaultBundles()
+{
+    this.Add(new DynamicFolderBundle("js", JsMinify.Instance, "*.js"));
+    this.Add(new DynamicFolderBundle("css", CssMinify.Instance, "*.css"));
+}
+</pre><p>So, what it does - it matches all javascript and css files in project, minify them and create to bundles out of it.<br />
+</p><p>As you can see <code>EnableDefaultBundles()</code> is also uses Minification policy for bundle content.<br />
+</p><h2>How add my own custom bundle?<br />
+</h2><p>As simple as create new <code>Bundle</code> object, put files inside and then add it to Bundles collection.<br />
+</p><pre class="brush: csharp">var bundle = new Bundle("~/Scripts/libs", new JsMinify());
+bundle.AddFile("~/Scripts/knockout-2.0.0.js");
+BundleTable.Bundles.Add(bundle);
+</pre><p>But there two issues here. First of all, you don&#8217;t always want to minify. Second, adding bundles with many files will make global.aspx.cs looks messy. I really liked approached proposed by Scott K. Allen in his <a href="http://odetocode.com/Blogs/scott/archive/2012/03/20/yet-another-bundling-approach-for-mvc-4.aspx">Yet Another Bundling Approach for MVC 4</a> blog post. He does it in more object-oriented way including smart code to decide, should the bundle be minified or not. All you need is just take code he created and after you are able to make bundles like that.<br />
+</p><pre class="brush: csharp">public class JsLibsBundle : JsBundle
+{
+    public JsLibsBundle() : base("~/js/libs")
+    {
+        AddFiles(
+            "~/Scripts/jquery-1.6.4-vsdoc.js",
+            "~/Scripts/jquery-1.6.4.js",
+            "~/Scripts/jquery.mobile-1.0b3.js",
+            "~/Scripts/knockout-2.0.0.js",
+            "~/Scripts/modernizr-2.0.6-development-only.js",
+            "~/Scripts/underscore.js"
+        );
+    }
+}
+
+public class CssAppBundle : CssBundle
+{
+    public CssAppBundle() : base("~/css/mobile")
+    {
+        AddFiles(
+            "~/Content/jquery.mobile-1.0b3.css",
+            "~/Content/Site.Mobile.css"
+        );
+    }
+}
+</pre><p>And put them to registered those classes in global.asax.cs<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.Add(new JsLibsBundle());
+    BundleTable.Bundles.Add(new CssAppBundle());
+</pre><h2>Ok, how all that stuff works?<br />
+</h2><p>Now let&#8217;s do a really brief look under the hood. Again, <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> is our friend here. <br />
+</p><p>It was interesting to me to find out new cool way of registration modules in ASP.NET. No longer entry points in web.config or other magic. You can have a special class <code>PreApplicationStartCode</code> that would be called then assembly is loaded, but before application is stated.<br />
+</p><pre class="brush: csharp">public static class PreApplicationStartCode
+{
+    private static bool _startWasCalled;
+
+    public static void Start();
+}
+</pre><p>Here <code>System.Web.Optimization</code> register it&#8217;s own module, called <code>BundleModule</code>.<br />
+</p><pre class="brush: csharp">public static void Start()
+{
+    if (PreApplicationStartCode._startWasCalled)
+    {
+        return;
+    }
+    PreApplicationStartCode._startWasCalled = 1;
+    DynamicModuleUtility.RegisterModule(typeof(BundleModule));
+}
+</pre><p>Then the module is intialized, it subscribes for event called <a href="http://msdn.microsoft.com/en-us/library/system.web.httpapplication.postresolverequestcache(v=vs.90).aspx">HttpApplication.PostResolveRequestCache</a> and inside the callback it would register the <code>BundleHandler</code>.<br />
+</p><pre class="brush: csharp">private void OnApplicationPostResolveRequestCache(object sender, EventArgs e)
+{
+    HttpApplication httpApplication = (HttpApplication)sender;
+    if (BundleTable.Bundles.Count > 0)
+    {
+        BundleHandler.RemapHandlerForBundleRequests(httpApplication);
+    }
+}
+</pre><p>The handler is now responsible for dirty job. Through the <code>RequestBundle</code> class it finally comes to <code>ProcessRequest</code> method.<br />
+</p><pre class="brush: csharp">internal void ProcessRequest(BundleContext context)
+{
+    context.EnableInstrumentation = Bundle.GetInstrumentationMode(context.HttpContext);
+    BundleResponse bundleResponse = this.GetBundleResponse(context);
+    Bundle.SetHeaders(bundleResponse, context);
+    context.HttpContext.Response.Write(bundleResponse.Content);
+}
+</pre><p>So, the <code>GetBundleResponse</code> is there magic is happens. <br />
+</p><pre class="brush: csharp">private BundleResponse GetBundleResponse(BundleContext context)
+{
+    BundleResponse bundleResponse = Bundle.CacheLookup(context);
+    if (bundleResponse == null || context.EnableInstrumentation)
+    {
+        bundleResponse = this.GenerateBundleResponse(context);
+        if (!context.EnableInstrumentation)
+        {
+            Bundle.UpdateCache(context, bundleResponse);
+        }
+    }
+    return bundleResponse;
+}
+</pre><p>What&#8217;s important here is that it uses cache. So, it makes bundling rather efficient. In case if there are no cached result, it will run the <code>GenerateBundleResponse</code> to generate actual response:<br />
+</p><pre class="brush: csharp">public virtual BundleResponse GenerateBundleResponse(BundleContext context)
+{
+    if (context == null)
+    {
+        throw new ArgumentNullException("context");
+    }
+    IEnumerable&lt;FileInfo&gt; fileInfos = this.EnumerateFiles(context);
+    fileInfos = context.BundleCollection.IgnoreList.FilterIgnoredFiles(fileInfos);
+    fileInfos = this.Orderer.OrderFiles(context, fileInfos);
+    fileInfos = this.ReplaceFileExtensions(context, fileInfos);
+    string str = this.Builder.BuildBundleContent(this, context, fileInfos);
+    BundleResponse bundleResponse = new BundleResponse(str, fileInfos);
+    this.Transform.Process(context, bundleResponse);
+    return bundleResponse;
+}
+</pre><p>Yet another interesting finding here is <code>this.Orderer</code>. Sometime ago I did smalltalk on <a href="http://kievalt.net">Kiev ALT.NET</a> meeting about new stuff in VS2011 and being asked a question, how is possible to order the files. I didn&#8217;t know answer then. It is actually possible to setup the order of files inside bundle, in case you have cross-file dependencies:<br />
+</p><pre class="brush: csharp">public interface IBundleOrderer
+{
+ IEnumerable&lt;FileInfo&gt; OrderFiles(BundleContext context, IEnumerable&lt;FileInfo&gt; files);
+}
+</pre><p>That&#8217;s it, the generated response than just being written to <code>context.HttpContext.Response</code>.<br />
+</p><h2>Conclusions</h2><p>Bundling and minification is something that I personally wanted so much, to appear in new MVC framework. Now it&#8217;s there, it works.. but I would not say I&#8217;m 100% happy. There are several things that makes it a little difficult to use, as for me. I did want to place it in this post, but appeared to big.. So, I&#8217;ll probably do a separate one on this matter. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -854,106 +1102,6 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
  </p> <h2>Wanna join?</h2> <p>  I would be happy to. I&#8217;ll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
  </p> <p>  Thanks for you help.<br />
  </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/02/few-things-i-learned-from-ideastrike.html">
-    
-      Few Things I Learned From IdeaStrike Project</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-09T20:20:00+02:00" pubdate data-updated="true">Feb 9<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>First of all, I have to say <a href="">Code52</a> team is doing just amazing job. It&#8217;s very original initiative, cool ideas and highly productive team. Each time they announce next thing to build I have &#8220;product envy&#8221; inside me. Check out their <a href="">blog</a> or <a href="">github</a> account to be updated.<br />
-</p><p>My attention this time was attracted by <a href="">IdeaStrike</a> project. It suppose to be analog of <a href="">uservoice</a> for OS community. As always, first release was very fast and I was very curious what&#8217;s inside. So, I cloned the <a href="https://github.com/Code52/Ideastrike">repo</a> and did small hacker session. I&#8217;ve spend some hours with it and would like to share some initial thoughts.<br />
-</p><h2>Build script is small and clean</h2><p>Project contains <code>build.cmd</code> as I run it downloaded all dependencies by NuGet, build web site and run all unit test. Basically, all you need for any small project. Then I looked inside, it turns out like:<br />
-</p><pre class="brush: plain">@echo Off
-set config=%1
-if "%config%" == "" (
-   set config=Debug
-)
-
-%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
-</pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
-</p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
-</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that&#8217;s also, just a C# code), so at application bootstrap you call the code like:<br />
-</p><pre class="brush: csharp">private static void DoMigrations()
-{
-    var settings = new IdeastrikeDbConfiguration();
-    var migrator = new DbMigrator(settings);
-    migrator.Update();
-}
-</pre><p>The database and schema will be automatically deployed on first application run.<br />
-</p><h2>Social login with Janrain</h2><p>As I clicked to Sign In button, I&#8217;ve been showed nice dialog to select my existing social account to login. <br />
-</p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
-<img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
-</a><br />
-<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
-</p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that&#8217;s the rule of pragmatic programmer.<br />
-</p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
-</p><h2>Nancy as web framework</h2><p>I&#8217;ve heard about Nancy many times, but it&#8217;s only now I got a change to touch it. For me it&#8217;s just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module&#8217;s logic is placed inside the constructor:<br />
-</p><pre class="brush: csharp">public FeatureModule(IIdeaRepository ideas, IFeatureRepository features, IUserRepository users)
-    : base("/idea")
-{
-    _ideas = ideas;
-    _features = features;
-
-    this.RequiresAuthentication();
-
-    Post["/{idea}/feature"] = _ =>
-    {
-        int id = _.Idea;
-        var feature = new Feature
-                        {
-                            Time = DateTime.UtcNow,
-                            Text = Request.Form.feature,
-                            User = Context.GetCurrentUser(users)
-                        };
-        _features.Add(id, feature);
-
-        return Response.AsRedirect(string.Format("/idea/{0}#{1}", id, feature.Id));
-    };
-}
-</pre><p>Nancy application could be hosted as ASP.NET / WCF / Self hosted runtimes, it supports different View Engines (including Razor). In short, it is great ALT.NET tool and will find a lot of applications in different projects. More details on <a href="https://github.com/NancyFx/Nancy">Nancy</a> github account.<br />
-</p><h2>Conclusions</h2><p>IdeaStrike is great example of open source project you can learn something from. I would not say I got only positive impressions, moreover there are some obstacles that block me from my normal development flow. I&#8217;ll try to share my observations on next blog posts.<br />
-</p><p>NancyFX, probably be my next web framework to learn, since I need to move out of ASP.NET MVC which is comfortable zone for me now. I&#8217;ll be keep looking for IdeaStrike and hope to do some pull requests as well.<br />
-</p></div>
 
       
       

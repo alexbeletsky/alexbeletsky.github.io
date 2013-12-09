@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="AgileBaseCamp Kiev 2011: Vitaly Stakhov: Working safety net Apr 18th, 2011 Agile, Conference Disclaimer: text below is compilation of notes I made &hellip;">
+  <meta name="description" content="AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET Apr 20th, 2011 Agile, Conference Disclaimer: text below is compilation of notes I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,165 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/04/agilebasecamp-kiev-2011-dmitry-mindra.html">
+    
+      AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-20T12:05:00+03:00" pubdate data-updated="true">Apr 20<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/agile/'>Agile</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<small>
+<strong>Disclaimer:</strong> text below is compilation of notes I made on AgileBaseCamp 2011 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
+</small>
+</p>
+<p>
+<a href="http://kiev.agilebasecamp.org/mindra/">Dmitry Mindra</a> prepared very nice speech dedicated to <a href=http://en.wikipedia.org/wiki/Design_by_Contract">Code Contracts</a>. He opens ideas what the Code Contacts are and more important how to &#8220;Design by contract&#8221;. This speech has been especially interested to me, since I never heard/used such type of design.
+</p>
+<h2>Design by contract in short</h2>
+<p>
+Desing by contracts has been introduced by <a href="http://en.wikipedia.org/wiki/Bertrand_Meyer">Bertrand Mayer</a>. He is one of original creator of Eiffel language. No surprise that first time contract&#8217;s have been added in Eiffel. The contract consists on 3 parts: Preconditions/Postconditions/Invariants.
+</p>
+<ul>
+<li><strong>Preconditions</strong> - check that client does everything OK</li>
+<li><strong>Postconditions</strong> - check that server does everything OK</li>
+<li><strong>Invariant</strong> - check that state of object valid for next call</li>
+</ul>
+<p>
+In Eiffel you have special sections in each method called (require, do, post) there it is possible to put contract definition.
+</p>
+<p>
+By specifying the contract we specify exact constraints for code. Typically methods have some input parameters and return some results to outside world. For instance we have class <code>Account</code> with method <code>Withdraw</code>, we are expecting that argument that <code>Withdraw</code> receives are always positive and return results also is greater than zero. 
+</p>
+<h2>Wait, I can already specify contract with my beloved exceptions</h2>
+<p>
+Many of us, get used to write such code..
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ if (amountToWithdraw == null)
+ {
+  throw new ArgumentException("amountToWithdraw");
+ }
+ 
+ if (amountToWithdraw.Value <= 0)
+ {
+  throw new ArgumentException("amountToWithdraw.Value");
+ }
+ 
+ var result = //.. calculate operation here.. ;
+ 
+ if (result.Value <= 0)
+ {
+  throw new AccountOperationException();
+ }
+ 
+ return result;
+}
+</pre>
+<p>
+It is definitely the way of creation robust application (in case of all those conditions are tested and client code properly handles exceptions). But is has several drawbacks:
+</p>
+<ul>
+<li>It is only run-time mechanism</li>
+<li>It is not possible to turn on or turn off the exceptions</li>
+<li>This type of contract is &#8220;method-wide&#8221;, but how can you specify &#8220;class-wide&#8221; contract?</li>
+<li>All of if / throw statements are &#8220;code-garbage&#8221; that make it difficult to read</li>
+</ul>
+<h2>What we have in .NET?</h2>
+<p>
+The Common Language Runtime (CLR) team is introducing a library to allow programming with contracts in the Microsoft .NET Framework 4. Adding them as a library allows all .NET languages to take advantage of contracts. This is different from Eiffel or Spec#, a language from Microsoft Research (research.microsoft.com/en-us/projects/specsharp/), where the contracts are baked into the language. Code Contracts System in .NET consists of 4 parts: 
+</p>
+<ul>
+<li><code>System.Diagnostics.Contracts</code> contract library where <code>Contract</code> class is defined.</li>
+<li><code>ccrewrite.exe</code> tool that modifies the Microsoft Intermediate Language (MSIL) instructions of an assembly to place the contract checks where they belong.</li>
+<li><code>cccheck.exe</code> contract static checker, that examines code without executing it and tries to prove that all of the contracts are satisfied.</li>
+<li><code>ccrefgen.exe</code> which will create separate contract reference assemblies that contain only the contracts.
+</ul>
+<h2>Why is it useful?</h2>
+<p>
+Let&#8217;s rewrote the previous example with code contracts:
+</p>
+<pre class="brush: csharp">
+public Amount Withdraw(Amount amountToWithdraw)
+{
+ // preconditions..
+ Contract.Requires&lt;NullReferenceException&gt;(amountToWithdraw);
+ Contract.Requires(amountToWithdraw.Value);
+
+ // action
+ var result = //.. calculate operation here.. ;
+ 
+ // postconditions 
+ Contract.Ensures(result.Value <= 0);
+ 
+ return result;
+}
+</pre>
+<p>
+I like the style, because this code a little reminds me TDD AAA (arrange/act/assert) pattern, code side is smaller and we are getting benefits of .NET Code Contracts.
+</p>
+<p>
+What benefits here?
+</p>
+<ul>
+<li>Static code analysis - during the compilation code is checked for contracts, if somewhere I wrote <code>account.Withdraw(null)</code> it would be immediately caught by cccheck.exe</li>
+<li>Runtime execution - if error is missed on compilation time, it would be caught on run time and proper exception is thrown</li>
+<li>I could configure to include or exclude contracts check at final assembly</li>
+</ul>
+<h2>Ok, I want to use it</h2>
+<p>
+To have a full support of Code Contracts you have to have .NET framework 4.0 and Visual Studio Premium or Ultimate. So, Code contracts are pretty expensive stuff. As far as I get from Dmitry speech it is possible to use <code>System.Diagnostics.Contracts</code> but limited capabilities are enabled only.
+</p>
+<p>
+So, contract are great for building Life-critical and High-robust application where the quality / cost ratio makes sense for you.
+</p>
+<h2>Materials</h2>
+<ul style="list-style: none outside none;">
+<li><a href="http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed">http://www.slideshare.net/dmytromindra/code-contracts-abc-16042011-7656875?from=ss_embed</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/magazine/ee236408.aspx">http://msdn.microsoft.com/en-us/magazine/ee236408.aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/devlabs/dd491992">http://msdn.microsoft.com/en-us/devlabs/dd491992</a></li>
+</ul></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -864,7 +1023,7 @@ Additional information on project <a href="http://sharptestex.codeplex.com/">sit
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/life/'>Life</a>
+    <a class='category' href='/blog/categories/e-conomic/'>e-conomic</a>, <a class='category' href='/blog/categories/life/'>life</a>
   
 </span>
 
@@ -878,131 +1037,20 @@ Additional information on project <a href="http://sharptestex.codeplex.com/">sit
 It is exactly one year since I joined <a href="http://e-conomic.com">E-conomic</a> company. Last year I decided to switch the jobs and now I realize how much right decision it was. I got invitation on interview to <a href="http://e-conomic.com">E-conomic</a> where I did a small test application and presented it to management and technical guys (hi Jakob, Chistian). I had no great experience with ASP.net that time, since last years of my career I spent mostly on management tasks. Really, I just reviewed the code that I created year ago and I see it was not so good :). Fortunately, those guys believed that I could bring a value and offer me a job. Since then I try to do my best to proof - you were not wrong.
 </p>
 <p>
-I see work in company as kind of mariage. Indeed, to feel happy in marriage you should have really strong match and level of trust to each other. Probably it is <a href="http://e-conomic.com">E-conomic</a> where I first time understood how important trust between development and management. I forgot what the &#8220;estimation negotiation&#8221;, I forgot the problems with unrealistic project plans created by management and business guys. A lot of problems that only created conflicts on my previous jobs here done in very smooth way.  
+I see work in company as kind of mariage. Indeed, to feel happy in marriage you should have really strong match and level of trust to each other. Probably it is <a href="http://e-conomic.com">E-conomic</a> where I first time understood how important trust between development and management. I forgot what the &#8220;estimation negotiation&#8221;, I forgot the problems with unrealistic project plans created by management and business guys. A lot of problems that only created conflicts on my previous jobs here done in very smooth way.
 </p>
 <p>
 We are developer-centric company. Developers have power here, developers take a decisions, developers do the job. But <a href="http://en.wikipedia.org/wiki/Uncle_Ben">with great power comes great responsibility</a>. Developers are totally responsible for product quality. Here I saw a new model, not &#8220;Software Developer&#8221; but rather &#8220;Product Developer&#8221;.. Product developers job is not ended on coding and integration changes, but it is more for verification, configuration management and release. We don&#8217;t have testers here, but we have QA. And developers are part of QA also.
 </p>
 <p>
-I enjoy the environment here very much. Even we are highly distributed team I feel the shoulder of each team mate. We working closer, doesn&#8217;t matter we are sitting &gt;1000 km from each other. That was not so fast to get used to work like that, but now I have no problems at all. I really think that I&#8217;m part of the rest of team who mainly located in Copenhagen. This environment constantly inspires: I was happy to restore my blog (that I created in 2008, but then froze it), I do a lot of reading to understand modern web development, I <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my small product.. and have bunch of new ideas and feel only lack of time to work on all of them :).  
+I enjoy the environment here very much. Even we are highly distributed team I feel the shoulder of each team mate. We working closer, doesn&#8217;t matter we are sitting &gt;1000 km from each other. That was not so fast to get used to work like that, but now I have no problems at all. I really think that I&#8217;m part of the rest of team who mainly located in Copenhagen. This environment constantly inspires: I was happy to restore my blog (that I created in 2008, but then froze it), I do a lot of reading to understand modern web development, I <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my small product.. and have bunch of new ideas and feel only lack of time to work on all of them :).
 </p>
 <p>
-I would also say that <a href="http://www.ciklum.net/">Ciklum</a> as Ukrainian representative does job very well. Basically 2 major things that I see Ciklum is great: it handles all infrastructure and finance very professional and does not interfere to work directly with client. If I have some kind of problem I know Ciklum would solve it, this is also good level of trust and I appreciate that. 
+I would also say that <a href="http://www.ciklum.net/">Ciklum</a> as Ukrainian representative does job very well. Basically 2 major things that I see Ciklum is great: it handles all infrastructure and finance very professional and does not interfere to work directly with client. If I have some kind of problem I know Ciklum would solve it, this is also good level of trust and I appreciate that.
 </p>
 <p>
 Yes, I&#8217;m just happy developer now. And I really much correlate this with <a href="http://e-conomic.com">E-conomic</a>. Last year decision changed my life. I think I found the place where I like to work, even if I spend more than 7 years for that.
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/03/integrating-elmah-to-aspnet-mvc-in.html">
-    
-      Integrating ELMAH to ASP.NET MVC in right way</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-05T19:36:00+02:00" pubdate data-updated="true">Mar 5<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p><small> I&#8217;ve received great feedback on this article. Thanks all of you guys, who provided valuable comments and pull requests on github. I edited the article several time, hope its up-to-date now. You can go directly to <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">code repository</a> and get the test application, to see what it is all about. In case if you having some issues, just let me know. </small> </p><p style="color: red"><strong>UPDATE:</strong> Elmah.MVC is now <a href="http://www.beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html">released</a> as NuGet package. No need to read that long blog post, just install it.  <p>Many of you know what the ELMAH is. If you still don&#8217;t, go and read <a href="http://code.google.com/p/elmah/">here</a>. If you care about monitoring and stability of your web application, you definitely consider to integrate ELMAH. There are number of guidelines of how to do that. But all of them do not answer several question that MVC developers really concerned about: </p><ul><li> How to add ELMAH as usual MVC controller? </li>
-<li> How to add ELMAH handler to make it secure (accessible only by authorized users) in MVC application? </li>
-</ul><p>I&#8217;ll shed the light on both questions here. </p><h2>Quick start up </h2><p>The best way to add ELMAH is to use <a href="http://nuget.codeplex.com/">Nuget</a> package manager (really recommend to install it). I&#8217;m using Nuget UI, so just right click on MVC application, select <i>&#8220;Add Library Package Reference</i> and pickup ELMAH from nuget feed. Nuget will add reference and update <code>web.config</code> with all required configuration. Basically you can start you application with <code>http://localhost/yourapp/elmah.asx</code> and see main ELMAH page. </p><h2>Changing the configuration </h2><p>ELMAH have been developed in ancient history times of Web Forms. And it is nicely done to be as much universal as possible and implemented as HttpHandler. In <code>web.config</code> you have several line of configuration that register this handler. This is of cause works, but URI like this <code>http://localhost/yourapp/elmah.asx</code> is absolutely not MVC way. So, what you have to do is simply comment out those configuration. </p><pre class="brush: xml">&lt;system.web&gt;
-
-        &lt;!--&lt;httpHandlers&gt;
-            &lt;add verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
-        &lt;/httpHandlers&gt;--&gt;
-  
-    &lt;/system.web&gt;
-
-&lt;system.webServer&gt;
-
-    &lt;!--&lt;handlers&gt;
-    &lt;remove name=&quot;Wild&quot; /&gt;
-    &lt;add name=&quot;Elmah&quot; verb=&quot;POST,GET,HEAD&quot; path=&quot;elmah.axd&quot; type=&quot;Elmah.ErrorLogPageFactory, Elmah&quot; /&gt;
-    &lt;/handlers&gt;--&gt;
- 
-&lt;/system.webServer&gt;
-</pre><h2>Add ELMAH controller </h2><p>Now add ELMAH controller to application, the code of controller is: </p><pre class="brush: csharp">public class ElmahController : Controller
-{
-    public ActionResult Index(string type)
-    {
-        return new ElmahResult(type);
-    }
-}
-</pre><p>And setup a proper routing for it: </p><pre class="brush: csharp">context.MapRoute(
-    "Admin_elmah",
-    "Admin/elmah/{type}",
-    new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
-);
-</pre><h2>Implementation of ElmahResult action result </h2><p>He we go for most interesting part. I&#8217;ve checked the sources of ELMAH and reused <code>Elmah.ErrorLogPageFactory</code> to handle those custom HTTP request. After several modifications and pull request by <a href="https://github.com/seba-i">seba-i</a> the code is: </p><pre class="brush: csharp">class ElmahResult : ActionResult
-{
-    private string _resouceType;
-
-    public ElmahResult(string resouceType)
-    {
-        _resouceType = resouceType;
-    }
-
-    public override void ExecuteResult(ControllerContext context)
-    {
-        var factory = new Elmah.ErrorLogPageFactory();
-
-        if (!string.IsNullOrEmpty(_resouceType)) {
-            var pathInfo = "." + _resouceType;
-            HttpContext.Current.RewritePath(PathForStylesheet(), pathInfo, HttpContext.Current.Request.QueryString.ToString());
-        }
-
-        var httpHandler = factory.GetHandler(HttpContext.Current, null, null, null);
-        httpHandler.ProcessRequest(HttpContext.Current);
-    }
-
-    private string PathForStylesheet() 
-    {
-        return _resouceType != "stylesheet" ? HttpContext.Current.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : HttpContext.Current.Request.Path;
-    }
-}
-</pre><h2>Try it now </h2><p>Just build the application and put <code>http://localhost/yourapp/admin/elmah</code> and you will get nice looking ELMAH main page. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s1600/screen.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/-4zN-4tT3uVQ/TXJ0td3aMhI/AAAAAAAAHUs/i9qSfE3rG3w/s400/screen.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5580651212725432850" /></a> <h2>Making it secure </h2><p><a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.authorizeattribute.aspx">AuthorizeAttribute</a> works great for this purpose. Just put this attribute to <code>ElmahController</code> and now it is only Admin, who has access to it.  </p><pre class="brush: csharp">[Authorize(Users = "Admin")]
-public class ElmahController : Controller
-{
-    // ...
-</pre><p>In my applications I use a custom attribute, but the idea still the same.  </p><h2>Allow to view results remotely </h2><p>You definitely want to see results remotely, with no need to access hosting machine. By default, ELMAH do not allow this, but it is easily changed in configuration: </p><pre class="brush: xml">&lt;elmah&gt;
-  &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
-</pre><h2>Code example </h2><p>Full code example is located in my github repository <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Areas/Admin/Controllers/ElmahController.cs">here</a>. </p><br />
-<h2>UPD:</h2><p>I&#8217;ve moved out controller to separate github repostitory. You are free and very welcome to use/fork/pull changes :). Fork & fix it here - <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">https://github.com/alexanderbeletsky/elmah.mvc.controller</a>. </p><h2>UPD2:</h2><p>Instead of placing just controller I create test MVC3 application that clearly show how to use Elmah in MVC. Plese check code and README  <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">here</a>. </p><h2>UPD3:</h2><p>Code placed in this blog post has been changed drastically by latest feedback I recieved for this controller. Please better refer code on github or latest blog post here <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">Latest version of ELMAH MVC controller</a> </p></div>
 
       
       

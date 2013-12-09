@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Blogging with a GitHub and Blogspot? Ideas? Jul 27th, 2010 AJAX, Design, GitHub I do use Blogger as my blog engine and really like it. Right, as &hellip;">
+  <meta name="description" content="7 links challenge from Problogger.net Aug 1st, 2010 Tips I&#8217;m not doing blogging for a long time, event if I started on march of 2008 I had a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,85 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/7-links-challenge-from-probloggernet.html">
+    
+      7 links challenge from Problogger.net</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-01T11:17:00+03:00" pubdate data-updated="true">Aug 1<span>st</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;m not doing blogging for a long time, event if I started on march of 2008 I had a great pause in it. Originally I started a blog in Russian, but later I&#8217;ve decided to switch to English, mainly because I wanted to my colleagues from Denmark to read my blog.. and probably got bit wider audience.
+</p>
+<p>
+<a href="http://www.problogger.net/">Problogger.net</a> is a great place for bloggers. Even if you don&#8217;t plan to get money from your blog (as me) there are great number of tips/tricks for bloggers, as well as some inspiring information. I&#8217;ve started to read it recently I found it very interesting.
+</p>
+<p>
+<a href="http://www.problogger.net/archives/2005/01/06/about-darren/">Daren Rowse</a> is a man behing Problogger.net, professional blogger who live in Melbourne, Australia. He announced <a href="http://www.problogger.net/archives/2010/07/16/take-the-7-link-challenge-today/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+ProbloggerHelpingBloggersEarnMoney+(ProBlogger:+Helping+Bloggers+Earn+Money)">7 Links challenge</a>. I also decided to pick it up. Here we go:
+</p>
+<p>
+<ul>
+<li><b>First post - </b><a href="http://www.beletsky.net/2008/03/blog-post.html">Первое сообщение</a> it was a small introduction of myself to the world, as well as setting up objectives for this blog. It was in Russian, so what I said there is that I going to write about challenges that I met in my development course everyday, to keep and share the knowledge I got. I still doing that.. I think.</li>
+<li><b>The post I enjoyed writing the most -</b> I have a lot of fun during my blogging (even if sometimes it is hard to finish up some post) I enjoyed the <a href="http://www.beletsky.net/2010/07/github-social-coding.html">GitHub Social coding</a> the most. It was my first, not so technical, with elements of philosophy post.. I liked that!</li>
+<li>
+<b>A post which had a great discussion - </b> I haven&#8217;t created a post that really attracted big attention and discussion. I&#8217;m OK with that, I still think 
+    I create one. 
+</li>
+<li><b>A post  on someone else’s blog that you wish you’d written -</b> This is the one that <a href="http://disqus.com/shmonder/">Anton Litvinenko</a> created recently, called <a href="http://blog.devpulse.com/post/871510417/the-biggest-demotivator-for-programmer">The biggest demotivator for programmer</a>. Nicely written and describing very actual things for every developer. It is not only me, who liked that it was in top of dzone.com for several days.</li>
+<li><b>A post with a title I am proud of - </b> Hard to say may be <a href="http://www.beletsky.net/2010/07/no-back-up-fail.html">No back up&#8230; Fail!</a>. Don&#8217;t know why, but I liked the most.</li>
+<li>
+<b>A post that you wish more people had read -</b> It might be the set of my first blog posts, related to TDD. I&#8217;ve tried to describe my vision of TDD and why I like it. It was in Russian and my first bloggin experience.. but anyway <a href="http://www.beletsky.net/2008/03/1.html">Разработка ведомая тестированием. Часть 1. Описание</a>. And also I tried to find some ideas in <a href="http://www.beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas.html">Blogging with a GitHub and Blogspot? Ideas?</a>.
+</li>
+<li>
+<b>My most helpful/visited post -</b> so far it is <a href="http://www.beletsky.net/2010/06/ddd-implementation-of-repository.html">DDD, Implementation of Repository pattern with Linq to SQL</a> that I created after discussion of Repositories on <a href="http://forums.asp.net/">asp.net forum</a> that I try to read/write periodically.
+</li>
+</ul>
+</p>
+<p>
+This is it.. You can also join such challenge, please do that.
+</p>
+<p>
+Happy blogging!
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -684,79 +763,6 @@ But please be sure <b>what you are doing</b>, because this exception could also 
 What happened to me with my Linq to SQL application is following: there are two 
     classes that create instance of DataModel class, first one is DbSetup that responsible for some preparation of data for tests, second is Repository object. DbSetup was also opening a TransactionScope object, to rollback all data that is being created during tests. This what created a problem - as soon as TransactionScope opened in scope of DataModel within DbSetup class, DataModel created in Repository was treated by runtime as a part of another transaction. That&#8217;s why runtime starting to request &#8220;Distributed Transactions Coordinator&#8221; to manage transactions. So, in unit test code I changed the constructor of Repository to accept DataModel created in DbSetup as constructor argument, so only one &#8220;transacted&#8221; DataModel object used in application. That solved my problem, without starting up coordinator.   
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/interesting-from-my-reader-this-week_09.html">
-    
-      Interesting from my Reader this week</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-09T17:58:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/reading/'>Reading</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-My weekly update is what is going on in my Reader:
-</p>
-<ul>
-<li>
-<a href="http://weblogs.asp.net/scottgu/archive/2010/07/06/introducing-webmatrix.aspx">Introducing WebMatrix</a>. Next and very loud announcement by ScottGu. WebMatrix is something that .NET platform lacks for years. Now it brings the gaps between complexity of ASP.net application and current needs for rapid web development. It could be analog of <a href="http://instantrails.rubyforge.org/wiki/wiki.pl">Instant Rails</a> for Ruby on Rails developers. So, Web Matrix is a tiny package including simple IDE, IIS Express, SQL compact edition and number of templates. It believe it will be used by bloggers and small size web site holders.
-</li>
-<li>
-<a href="http://www.joelonsoftware.com/items/2010/07/07.html">Web Applications Stack Exchange now in beta</a>. Joel Spolsky did announce of Wep Applications product. Next product after a very popular <a href="http://stackoverflow.com/">StackOverflow</a>. Like a StackOverflow it is done like QnA site, but maybe for more broader audience.
-</li>
-<li>
-<a href="http://5whys.com/blog/scrum-vs-kanban-attitudes.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+5whys+(5+Whys)">Scrum vs. Kanban attitudes</a>. Roy Osherove gives a link about comparing Scrum vs. Kanban. I&#8217;m quite new with Kanban and I didn&#8217;t want to spend to much time to understand what it&#8217;s all about, so I found this comparison interesting.
-</li>
-<li>
-<a href="http://blog.objectmentor.com/articles/2010/07/05/software-calculus-the-missing-abstraction">Software Calculus - The Missing Abstraction</a>. A little bit geek philosophy from Object Mentor. 
-</li>
-<li>
-<a href="http://www.codeproject.com/KB/aspnet/ASP_NET_MVC_WITH_EF.aspx">Architecture Guide: ASP.NET MVC Framework + N-tier + Entity Framework and Many More</a>. Good and comprehensive tutorial on ASP.NET MVC with Entity framework.
-</li>
-<li>
-<a href="http://odetocode.com/Blogs/scott/archive/2010/07/04/what-a-difference-8-years-makes-in-code.aspx">What a Difference 8 Years Makes (In Code)</a>. Just a nice to look of how code is changing with time and technologies, by K. Scott Allen.
-</li>
-</ul>
-<!-- AddThis Button BEGIN -->
-<div><a expr:addthis:title='data:post.title' expr:addthis:url='data:post.url' class='addthis_button'><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c30246f249329c8"></script></div>
-<!-- AddThis Button END --></div>
 
       
       
