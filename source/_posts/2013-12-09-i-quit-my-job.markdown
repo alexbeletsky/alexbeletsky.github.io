@@ -8,7 +8,7 @@ categories: e-conomic life changes
 
 Since 6 Dec 2013, I'm officially unemployed. I quit my job in E-conomic there I [spent almost 3.5 years](http://beletsky.net/blog/categories/e-conomic/) of happy life. Leaving the company was a really tough decision, but it had to be made.
 
-A lot of things happed during that time. No doubts, E-conomic did the most significant impact of my professional career so far. The reason for that is simple: the people surrounds you are most important aspect in your job. From the very first days, till last ones - I worked with high qualified professionals there.
+A lot of things happed during that time. No doubts, E-conomic and Ciklum did the most significant impact of my professional career so far. The reason for that is simple: the people surrounds you are most important aspect in your job. From the very first days, till last ones - I worked with high qualified professionals there.
 
 <!-- More -->
 
