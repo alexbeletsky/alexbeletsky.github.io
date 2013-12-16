@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="An Architectural Design Challenge by James Shore Jun 14th, 2010 Design, TDD This is a response to James Shore blog entry. James has started &#8220; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/21/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/06/architectural-design-challenge-by-james.html">
+    
+      An Architectural Design Challenge by James Shore</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-14T20:58:00+03:00" pubdate data-updated="true">Jun 14<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+This is a response to <a href="http://jamesshore.com/Blog/">James Shore</a> blog entry. James has started &#8220;An Architectural Design Challenge&#8221; to create a simple application, but with architecture on top of the mind.
+<br />
+<br />
+James is a famous blogger and author of great book that I&#8217;m reading online <a href="http://jamesshore.com/Agile-Book/">&#8220;The art of Agile development&#8221;</a>. I suggest you both familarize with blog and book.
+<br />
+<br />
+So, he is proposing to took an <a href="http://jamesshore.com/Blog/Architectural-Design-Challenge.html">&#8220;An Architectural Design Challenge&#8221;</a>. It is required to create a small application that should expose some major architectural aspects of software development. I&#8217;ve decied to take part of this challange also. Task has been posted awhile ago, unfortunately I&#8217;ve been busy with another stuff, but as a saying goes &#8220;better later than never&#8221;. 
+<br />
+<br />
+Requirements are:
+<br />
+<br />
+<ol>
+ <li>Write the ROT-13 tool described above. Note that the input file must be loaded entirely <em>into memory</em>.</li>
+ <li>Provide a configuration mechanism that reads and writes files from one directory when &#8220;in testing&#8221; and another directory when &#8220;in production.&#8221;</li>
+ <li>Wrap your platform&#8217;s console and file I/O methods as if each call actually required a dozen lines of code. Your configuration mechanism can use file I/O directly, though.</li>
+ <li>No slideware allowed. You can use diagrams to illustrate your architecture, but you must code the entire solution. This prevents seemingly-elegant solutions that don&#8217;t work in practice.</li>
+ <li>Use <a href="http://jamesshore.com/Agile-Book/test_driven_development.html">test-driven development</a> to code everything.</li>
+</ol>
+<br />
+<br />
+I would not say that I&#8217;m using some special technics or patterns, just following most simple implementation and tests.
+<br />
+<br />
+<h2>Preparation</h2>
+<br />
+<br />
+As always starting with new design I try to bring it down to 3 major piecies: Business Function, Data, Presentation. So, I&#8217;ve added new project Rot13.Core.Library with 3 folders in it - BLL, DAL, Presentation. BLL is a heart will contain implementation of all functions required by application, DAL will provide those functions with required data and Presentation is responsibe how to display information to user. Right after that I&#8217;ve added a corresponding test project that would contain all required tests, as we are following TDD strictly tests will be first we we would create. So, solution look like:
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TBZuILhJ__I/AAAAAAAAGpc/FLhPGS_z0vI/s1600/solution.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 245px; height: 400px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TBZuILhJ__I/AAAAAAAAGpc/FLhPGS_z0vI/s400/solution.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5482690683180023794" /></a>
+<br />
+<br />
+<h2>Functions</h2>
+<br />
+<br />
+Well, what we need is function that is able to get some input stream, do transformation of the data extracted from stream and send data back to output stream. This ROT13 algorigtm is core function, without all other architectural stuff is senceless, so let&#8217;s start and implement it!
+<br />
+<br />
+ROT13 is primitive cipher, wikipedia contail a lot <a href="http://en.wikipedia.org/wiki/ROT13">info</a> about it. 
+<br />
+<br />
+After a several interations of testing and refactoring and came up with such implementation:
+<br />
+Tests:
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> Rot13.Core.Library.BLL;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests.BLL_Tests<br>{<br>&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Summary description for TransformTests</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br><br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Rot13Tests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> <font color="#0000ff">void</font> TestCipher(<font color="#0000ff">char</font>[] input, <font color="#0000ff">char</font>[] expected)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">char</font>[] output = Rot13Algorithm.Process(input);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CollectionAssert.AreEqual(expected, output);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> CipherSmallTest()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = <font color="#0000ff">new</font> <font color="#0000ff">char</font>[] {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">'a'</font>, <font color="#A31515">'b'</font>, <font color="#A31515">'c'</font>, <font color="#A31515">'d'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expected = <font color="#0000ff">new</font> <font color="#0000ff">char</font>[] {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">'n'</font>, <font color="#A31515">'o'</font>, <font color="#A31515">'p'</font>, <font color="#A31515">'q'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestCipher(input, expected);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> CipherFullTest()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = <font color="#A31515">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expected = <font color="#A31515">"NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm"</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestCipher(input.ToCharArray(), expected.ToCharArray());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> CipherTestFromJamesArcticle()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = <font color="#A31515">"The dog barks at midnight."</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expected = <font color="#A31515">"Gur qbt onexf ng zvqavtug."</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestCipher(input.ToCharArray(), expected.ToCharArray());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> CipherRevertTransform()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = <font color="#A31515">"The dog barks at midnight."</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expected = <font color="#A31515">"Gur qbt onexf ng zvqavtug."</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestCipher(input.ToCharArray(), expected.ToCharArray());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestCipher(expected.ToCharArray(), input.ToCharArray());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+Rot13 (preatty small, heh?):
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.BLL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Rot13Algorithm<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> <font color="#0000ff">string</font> _original = <font color="#A31515">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> <font color="#0000ff">string</font> _lookup = <font color="#A31515">"NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">char</font>[] Process(<font color="#0000ff">char</font>[] input)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> (<font color="#0000ff">from</font> s <font color="#0000ff">in</font> input let position = _original.IndexOf(s) <font color="#0000ff">select</font> ((position != -1) ? _lookup[position] : s)).ToArray();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>Configuration</h2>
+<br />
+Now, what I need is to make application configurable. It is OK if we put the configuration to a special config file and have a class to work with configuration data. My preference is to have configurations as singletone&#8217;s (in the same time I realize some major drawbacks of singletone&#8217;s and try to void usage of it, but let&#8217;s keep most simple implementation in this solution). Implementation uses Linq to XML to handle XML data. Let&#8217;s not forget about one of requirements.. we have several types of configuration: Test, Production. We could decide on run-time what current configuration is active.  
+<br />
+<br />
+Configuration file. 
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;?</font><font color="#800000">xml</font> <font color="#ff0000">version</font><font color="#0000ff">="1.0"</font> <font color="#ff0000">encoding</font><font color="#0000ff">="utf-8"</font> ?<font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">configurations</font><font color="#0000ff">&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">active</font> <font color="#ff0000">type</font><font color="#0000ff">="test"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;<br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">configuration</font> <font color="#ff0000">type</font><font color="#0000ff">="test"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">val</font><font color="#0000ff">="./testInput"</font><font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">output</font> <font color="#ff0000">val</font><font color="#0000ff">="./testOutput"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">configuration</font><font color="#0000ff">&#62;</font><br>&nbsp;<br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">configuration</font> <font color="#ff0000">type</font><font color="#0000ff">="production"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">val</font><font color="#0000ff">="./input"</font><font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">output</font> <font color="#ff0000">val</font><font color="#0000ff">="./output"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">configuration</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">configurations</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black">using System;<br>using System.Text;<br>using System.Collections.Generic;<br>using System.Linq;<br>using Microsoft.VisualStudio.TestTools.UnitTesting;<br><br>namespace Rot13.Core.Library.Tests<br>{<br>&nbsp;&nbsp;/// <font color="#0000ff">&#60;</font><font color="#800000">summary</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;/// Summary description for ConfigurationTests<br>&nbsp;&nbsp;/// <font color="#0000ff">&#60;/</font><font color="#800000">summary</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;public class ConfigurationTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configuration.Init();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void Init()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var value = Configuration.Settings["some"];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch (Exception)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//OK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.Fail();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void InputFolderTestMode()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestValueInMode("configuration_test.xml", "input", "./testInput");<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void InputFolderProductionMode()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestValueInMode("configuration_production.xml", "input", "./input");<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void OutputFolderTestMode()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestValueInMode("configuration_test.xml", "output", "./testOutput");<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;public void OutputFolderProductionMode()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TestValueInMode("configuration_production.xml", "output", "./output");<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private void TestValueInMode(string configFile, string p, string p_2)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configuration.ReInit(configFile);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var value = Configuration.Settings[p];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(p_2, value);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>Business object</h2>
+<br />
+Next will be development of Business class responsible for primary application feature - transformation of input data, storing it and displaying to user. All these can be repesented as such test (I&#8217;m using <a href="http://www.ayende.com/projects/rhino-mocks.aspx">Rhino mocks</a> here as my favorite mocking framework):
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><font color="#0000ff">using</font> Rot13.Core.Library.BLL;<br><font color="#0000ff">using</font> Rhino.Mocks;<br><font color="#0000ff">using</font> Rot13.Core.Library.Presentation;<br><font color="#0000ff">using</font> Rot13.Core.Library.DAL;<br><font color="#0000ff">using</font> Rhino.Mocks.Constraints;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests.BLL_Tests<br>{<br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Rot13ProcessorTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;MockRepository _mocks = <font color="#0000ff">new</font> MockRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> view = _mocks.StrictMock&#60;IRot13ProcessorView&#62;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = _mocks.StrictMock&#60;IRot13ProcessorData&#62;();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> r = <font color="#0000ff">new</font> Rot13Processor(view, data);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Process()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> view = _mocks.StrictMock&#60;IRot13ProcessorView&#62;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = _mocks.StrictMock&#60;IRot13ProcessorData&#62;();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With.Mocks(_mocks).Expecting(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">delegate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expect.Call(data.Read()).Return(<font color="#A31515">"abcd"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expect.Call(<font color="#0000ff">delegate</font> { data.Store(<font color="#0000ff">string</font>.Empty); }).Constraints(Is.Equal(<font color="#A31515">"nopq"</font>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expect.Call(<font color="#0000ff">delegate</font> { view.Display(<font color="#0000ff">string</font>.Empty); }).Constraints(Is.Equal(<font color="#A31515">"nopq"</font>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;).Verify(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">delegate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> processor = <font color="#0000ff">new</font> Rot13Processor(view, data);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT </font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processor.Process();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Corresponding implementation:
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Rot13.Core.Library.Presentation;<br><font color="#0000ff">using</font> Rot13.Core.Library.DAL;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.BLL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Rot13Processor<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> Rot13Processor(IRot13ProcessorView view, IRot13ProcessorData data)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View = view;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data = data;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Process()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = Data.Read();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> output = <font color="#0000ff">new</font> <font color="#0000ff">string</font>(Rot13Algorithm.Process(input.ToCharArray()));<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data.Store(output);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View.Display(output);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#region</font> Properties<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> IRot13ProcessorData Data { <font color="#0000ff">get</font>; <font color="#0000ff">protected</font> <font color="#0000ff">set</font>; }<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> IRot13ProcessorView View { <font color="#0000ff">get</font>; <font color="#0000ff">protected</font> <font color="#0000ff">set</font>; }<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#endregion</font><br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>Context</h2>
+<br />
+Before implementation of Data/View classes let&#8217;s thing how those will be created and configured. One of my favorite desing pattern is <a href="http://en.wikipedia.org/wiki/Factory_method_pattern">Factory Method</a>. 
+So, both of them should be created by corresponding factories, but what about 
+configuration? For instance Data class have to know what is input and output 
+files? We have to have some kind of Context that would hold all reaquired 
+information. Context itself is constructed from command line arguments of application.
+<br />
+<br />
+Tests:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests<br>{<br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ContextTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> args = <font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> };<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(args);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ExpectedException(<font color="#0000ff">typeof</font>(ArgumentException), <font color="#A31515">"Insufficient number of arguments"</font>)]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> InsuffientArguments()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> args = <font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font> };<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT / POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(args);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ExpectedException(<font color="#0000ff">typeof</font>(ArgumentNullException))]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> NullArguments()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT / ACT / POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(<font color="#0000ff">null</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ExpectedException(<font color="#0000ff">typeof</font>(ArgumentException), <font color="#A31515">"Too many of arguments"</font>)]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> TooManyArguments()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> args = <font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font>, <font color="#A31515">"fail.txt"</font> };<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT / POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(args);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> ContextCorreclyInitialized()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configuration.Init();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> args = <font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> };<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(args);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(<font color="#A31515">"./testInput/in.txt"</font>, context.InputFIlename);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(<font color="#A31515">"./testOutput/out.txt"</font>, context.OutputFilename);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Code:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Context<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> Context(<font color="#0000ff">string</font>[] arguments)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (arguments == <font color="#0000ff">null</font>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">throw</font> <font color="#0000ff">new</font> ArgumentNullException(<font color="#A31515">"Arguments parameter is null"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (arguments.Count() &#60; 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">throw</font> <font color="#0000ff">new</font> ArgumentException(<font color="#A31515">"Insufficient number of arguments"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (arguments.Count() &#62; 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">throw</font> <font color="#0000ff">new</font> ArgumentException(<font color="#A31515">"Too many of arguments"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InputFIlename = Configuration.Settings[<font color="#A31515">"input"</font>] + <font color="#A31515">"/"</font> + arguments[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OutputFilename = Configuration.Settings[<font color="#A31515">"output"</font>] + <font color="#A31515">"/"</font> + arguments[1];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#region</font> Properties<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> InputFIlename { <font color="#0000ff">get</font>; <font color="#0000ff">private</font> <font color="#0000ff">set</font>; }<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> OutputFilename { <font color="#0000ff">get</font>; <font color="#0000ff">private</font> <font color="#0000ff">set</font>; }<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">#endregion</font><br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>Data object</h2>
+<br />
+Now, go back to data class. It is rather simple, main resposibility is to be able to read string from file and to store string to file.
+<br />
+<br />
+Tests:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><font color="#0000ff">using</font> Rot13.Core.Library.DAL;<br><font color="#0000ff">using</font> Rhino.Mocks;<br><font color="#0000ff">using</font> System.IO;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests.DAL_Tests<br>{<br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Ro13ProcessDataTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;MockRepository _mocks = <font color="#0000ff">new</font> MockRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestInitialize]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Setup()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configuration.ReInit(<font color="#A31515">"configuration_test.xml"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(<font color="#0000ff">new</font> <font color="#0000ff">string</font>[] {<font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font>} );<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = Rot13ProcessDataFactory.Create(context);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(data);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ExpectedException(<font color="#0000ff">typeof</font>(ArgumentNullException))]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> ContextIsNull()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT / ACT / POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = Rot13ProcessDataFactory.Create(<font color="#0000ff">null</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Read()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(<font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = Rot13ProcessDataFactory.Create(context);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> input = data.Read();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(input, <font color="#A31515">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Store()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(<font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = Rot13ProcessDataFactory.Create(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> testContent = <font color="#A31515">"tests,tests,tests"</font>;<br> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.Store(testContent);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> actual = <font color="#2B91AF">File</font>.ReadAllText(context.OutputFilename);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(testContent, actual);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Code:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> System.IO;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.DAL.Impl<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> Rot13FileDataImpl : IRot13ProcessorData<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> _outputFilename;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> _inputFilename;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> Rot13FileDataImpl(Context context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (context == <font color="#0000ff">null</font>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">throw</font> <font color="#0000ff">new</font> ArgumentNullException();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_inputFilename = context.InputFIlename;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_outputFilename = context.OutputFilename;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> Read()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#2B91AF">File</font>.ReadAllText(_inputFilename);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Store(<font color="#0000ff">string</font> content)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#2B91AF">File</font>.WriteAllText(_outputFilename, content);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>View object</h2>
+<br />
+After the data View is something we need to care about. On our application View is rather simple, so its just pust value on console out put. As with a data class I&#8217;m going to use Factory to produce View instance. Factory method will recieve Console object to put values on it. It will allow us to use mocks and make testing of View class more easy.
+<br />
+<br />
+Tests:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><font color="#0000ff">using</font> Rhino.Mocks;<br><font color="#0000ff">using</font> Rot13.Core.Library.Presentation;<br><font color="#0000ff">using</font> Rhino.Mocks.Constraints;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests.Presentation_Tests<br>{<br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Rot13ProcessorViewTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;MockRepository _mocks = <font color="#0000ff">new</font> MockRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> console = _mocks.StrictMock&#60;IConsole&#62;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> view = Rot13ProcessorViewFactory.Create(console);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(view);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Display()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> console = _mocks.StrictMock&#60;IConsole&#62;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> view = Rot13ProcessorViewFactory.Create(console);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> content = <font color="#A31515">"some sort of string"</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// ACT/POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With.Mocks(_mocks).Expecting(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">delegate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expect.Call(<font color="#0000ff">delegate</font> { console.Write(<font color="#0000ff">string</font>.Empty); }).Constraints(Is.Equal(content));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;).Verify(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">delegate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view.Display(content);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Code:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Presentation.Impl<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> Rot13ConsoleViewImpl : IRot13ProcessorView<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> IConsole _console;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> Rot13ConsoleViewImpl(IConsole console)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_console = console;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Display(<font color="#0000ff">string</font> output)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_console.Write(output);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Interface and default implementation of Console:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Presentation<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">interface</font> IConsole<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">void</font> Write(<font color="#0000ff">string</font> <font color="#0000ff">value</font>);<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> <font color="#2B91AF">Console</font> : IConsole<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Write(<font color="#0000ff">string</font> <font color="#0000ff">value</font>)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.<font color="#2B91AF">Console</font>.Write(<font color="#0000ff">value</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+And.. Thats actually it! Everything is ready to be integrated. Let&#8217;s re-run all tests to make sure that everything is still as expected. So far we&#8217;ve got 23 tests and all are green.
+<br />
+<br />
+<h2>Integration</h2>
+<br />
+Let&#8217;s create an Application class that will be responsible for application behavior.
+<br />
+<br />
+Tests:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Microsoft.VisualStudio.TestTools.UnitTesting;<br><font color="#0000ff">using</font> System.IO;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library.Tests<br>{<br>&nbsp;&nbsp;[TestClass]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> ApplicationTests<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Smoke()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> app = <font color="#0000ff">new</font> Application(<font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> });<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsNotNull(app);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[TestMethod]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> RunApplication()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> app = <font color="#0000ff">new</font> Application(<font color="#0000ff">new</font> <font color="#0000ff">string</font>[] { <font color="#A31515">"in.txt"</font>, <font color="#A31515">"out.txt"</font> });<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app.Run();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> outputFilename = <font color="#A31515">"./output/out.txt"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(<font color="#2B91AF">File</font>.Exists(outputFilename));<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> expectedContent = <font color="#A31515">"Yberz vcfhz qbybe fvg nzrg, pbafrpgrghe nqvcvfvpvat ryvg, frq qb rvhfzbq grzcbe vapvqvqhag hg ynober rg qbyber zntan nyvdhn."</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> actualContent = <font color="#2B91AF">File</font>.ReadAllText(outputFilename);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(expectedContent, actualContent);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+Code:
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Rot13.Core.Library.Presentation;<br><font color="#0000ff">using</font> Rot13.Core.Library.BLL;<br><font color="#0000ff">using</font> Rot13.Core.Library.DAL;<br><br><font color="#0000ff">namespace</font> Rot13.Core.Library<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> Application<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font>[] _arguments;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> Application(<font color="#0000ff">string</font>[] args)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_arguments = args;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> Run()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//initialize configuration</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configuration.Init();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//initialize console</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> console = <font color="#0000ff">new</font> Rot13.Core.Library.Presentation.<font color="#2B91AF">Console</font>();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//initialize context</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> context = <font color="#0000ff">new</font> Context(_arguments);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//intialize business object</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> processor = <font color="#0000ff">new</font> Rot13Processor(Rot13ProcessorViewFactory.Create(console), Rot13ProcessDataFactory.Create(context));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//run..</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processor.Process();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+<h2>Console application</h2>
+<br />
+<br />
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Rot13.Core.Library;<br><br><font color="#0000ff">namespace</font> Rot13.Application<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> Program<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">static</font> <font color="#0000ff">void</font> Main(<font color="#0000ff">string</font>[] args)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">try</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> app = <font color="#0000ff">new</font> Rot13.Core.Library.Application(args);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app.Run();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">catch</font> (Exception e)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#2B91AF">Console</font>.WriteLine(e.Message);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<br />
+<br />
+It has no sence to create a separate test cases on that class, since we&#8217;ve got preatty good coverage following TDD rules implementing core of application.
+<br />
+<br />
+<h2>Conclusions</h2>
+<br />
+<br />
+<ul>
+    <li>Follow path from business requirements to implementation</li>
+    <li>Keep implementation as simple as possible</li>
+    <li>Test everything, because TDD rules</li>
+</ul>
+<br />
+<br />
+Source code of <a href="https://docs.google.com/leaf?id=0Bz70dGvwjh5zMzRjNTQ0MmYtMDE5YS00NjM0LTk2MGItNDYyYmUzYWZjMmFj&hl=en">application</a>.
+<br />
+<br />
+<h2>Updated</h2>
+<br />
+I&#8217;ve inited github repository, so sources are available here:
+<br />
+<br />
+<a href="http://github.com/alexanderbeletsky/JamesShoreRot13">http://github.com/alexanderbeletsky/JamesShoreRot13</a></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/20/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2013 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

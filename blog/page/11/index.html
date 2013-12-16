@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Greg Young and Rinat Abdulin Visited Kyiv Oct 25th, 2011 BeerNCode, Conference, DDD It finally happened, Greg Young and Rinat Abdulin have been &hellip;">
+  <meta name="description" content="Integrating ASP.NET MVC Into Legacy Web Site Oct 30th, 2011 MVC, Tips, asp.net For some quite long time I naively thought that it is not possible ( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,176 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/integrating-aspnet-mvc-into-legacy-web.html">
+    
+      Integrating ASP.NET MVC Into Legacy Web Site</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-30T09:05:00+02:00" pubdate data-updated="true">Oct 30<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>For some quite long time I naively thought that it is not possible (or at least very difficult) to make ASP.NET MVC stuff work on a Web Site project. But, my latest <a href="http://www.beletsky.net/search/label/InsideMVC">hacking of MVC</a> opened another perspectives. There are no any difficulties with ASP.NET MVC on Web Sites. I&#8217;ll share an experience of integration ASP.NET MVC in my work project legacy Web Site.<br />
+</p><h2>Pre-conditions</h2><p>In my case I integrated ASP.NET MVC2, since we are still running on .NET 3.5. If you are running .NET 4.0 the best is to go with ASP.NET MVC3 already. The difference of setup would not be huge, just in proper versions of assemblies.<br />
+</p><p>I assume you already have ASP.NET MVC2 framework on your machine (if you have VS2010 - you definitely have one), if no just go that <a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=22079">link</a> and install it.<br />
+</p><h2>Web config changes</h2><p>MVC assembly have to be added to <code>web.config</code>. Since the MVC infrastructure heavily depends on Routing mode, it have to be put to <code>web.config</code> as well.<br />
+</p><p>Register MVC assemblies:<br />
+</p><pre class="brush: xml">&lt;compilation defaultLanguage=&quot;c#&quot; debug=&quot;true&quot;&gt;
+ &lt;assemblies&gt;
+  &lt;add assembly=&quot;System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot;/&gt;
+  &lt;add assembly=&quot;System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot;/&gt;
+
+  &lt;!-- Your application specific assemblies--&gt;
+        ...
+
+  &lt;!-- ASP.NET MVC --&gt;
+  &lt;add assembly=&quot;System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;add assembly=&quot;System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+ &lt;/assemblies&gt;
+&lt;/compilation&gt;
+</pre><p>Namespaces:<br />
+</p><pre class="brush: xml">&lt;pages enableViewStateMac=&quot;false&quot; enableViewState=&quot;false&quot; validateRequest=&quot;true&quot; viewStateEncryptionMode=&quot;Never&quot;&gt;
+  &lt;controls&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+    &lt;add tagPrefix=&quot;asp&quot; namespace=&quot;System.Web.UI.WebControls&quot; assembly=&quot;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;/&gt;
+  &lt;/controls&gt;
+  
+  &lt;-- ASP.NET MVC --&gt;
+  &lt;namespaces&gt;
+    &lt;add namespace=&quot;System.Web.Mvc&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Ajax&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Mvc.Html&quot;/&gt;
+    &lt;add namespace=&quot;System.Web.Routing&quot;/&gt;
+    &lt;add namespace=&quot;System.Linq&quot;/&gt;
+    &lt;add namespace=&quot;System.Collections.Generic&quot;/&gt;
+    &lt;add namespace=&quot;Microsoft.Web.Mvc&quot;/&gt;
+  &lt;/namespaces&gt;
+&lt;/pages&gt;
+</pre><p>Register URLRouting module and handler.<br />
+</p><pre class="brush: xml">&lt;system.webServer&gt;
+  &lt;validation validateIntegratedModeConfiguration=&quot;false&quot;/&gt;
+  &lt;modules&gt;
+ ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingModule&quot; type=&quot;System.Web.Routing.UrlRoutingModule, System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot; /&gt;
+  &lt;/modules&gt;
+  &lt;handlers&gt;
+    ...
+ 
+ &lt;!-- ASP.NET MVC --&gt;
+    &lt;add name=&quot;UrlRoutingHandler&quot; preCondition=&quot;integratedMode&quot; verb=&quot;*&quot; path=&quot;UrlRouting.axd&quot; type=&quot;System.Web.HttpForbiddenHandler, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; /&gt;
+  &lt;/handlers&gt;
+&lt;/system.webServer&gt;
+</pre><h2>Global.asax changes</h2><p>You would be probably have <code>global.asax</code> without code-behind class. It&#8217;s not a problem, all you need is slightly change the <code>Application_Start()</code> method. Basically you can go and register routes there, as you do in any ASP.NET MVC application. But I didn&#8217;t do that. Instead, I used the advantages of <a href="http://msdn.microsoft.com/en-us/library/ee671793.aspx">Areas</a> feature of MVC2, since it makes better logical grouping. So, my <code>global.asax</code> are:<br />
+</p><pre class="brush: csharp">public void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+}
+</pre><h2>Models, Views, Controllers</h2><p>In typical ASP.NET MVC application you have 3 folders, for - Models, Views, Controllers. Models/Controllers are C# code, views are .aspx pages. With a Web Site you typically place code into <code>App_Code</code> folder. But you should not do that. Instead, it it better to create a separate class library project that would hold your models and controllers. Views would be placed under corresponding Area folder.<br />
+</p><h2>New project for Models/Controllers</h2><p>Just create a new class library project with such folder structure:<br />
+</p><a href="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png"><br />
+<img src="https://lh4.googleusercontent.com/-ny77OywB_Pk/Tqz2RrcVfCI/AAAAAAAAHnM/P2Awn0D79zc/s391/img-1.png" alt="asp.net mvc class library" /><br />
+</a><br />
+<p>The most important - it should contain Area Registration class inside. This is the one that suppose to register all router for your application:<br />
+</p><pre class="brush: csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.Mvc;
+
+namespace Sba.Web.Areas.Sales
+{
+ public class SalesAreaRegistration : AreaRegistration 
+ {
+  public override string AreaName
+  {
+   get 
+   {
+    return "Sales";
+   }
+  }
+
+  public override void RegisterArea(AreaRegistrationContext context)
+  {
+            // All routes are here..
+
+   context.MapRoute(
+    "Sba_Sales",
+    "sba/sales/{controller}/{action}/{id}",
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+   );
+  }
+ }
+}
+</pre><p>That&#8217;s it. Now you implement Controller/Models in usual way and able to add unit tests project for new assembly.<br />
+</p><p>Make sure that assembly will be placed into to Web Site <code>/Bin</code> folder. I simply added <code>../Site/Bin</code> as project output directory. At the site initialization and <code>Application_Start()</code> call of Global.asax, all <code>AreaRegistration</code> instances would be created and routes being registered.<br />
+</p><h2>Views</h2><p>Views have to be placed in the Web Site folder itself. MVC has several rules for views placements, so you have to follow them. Views for controllers that are part of Area&#8217;s have to be places into <code>Site/Areas/AreaName/Views</code>, the common stuff line master pages are in <code>Site/Views/Shared</code>. It is very important that each View folder must contain the <code>web.config</code> inside. You can either pick it up from default MVC2 application of just grab from <a href="https://gist.github.com/1325577">gist</a>.<br />
+</p><a href="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png"><br />
+<img src="https://lh3.googleusercontent.com/-1oPOjbGMkIA/Tqz2Rs4oS6I/AAAAAAAAHnE/_jP0yI97UZg/s313/img-3.png" alt="views folder structure" /><br />
+</a><br />
+<h2>IIS configuration</h2><p>Our application previously worked in &#8220;Classic&#8221; mode. Even thought, it is possible to run MVC on &#8220;Classic&#8221; I would not really recommend it to do and if production environment allows, just switch you application pool to &#8220;Integrated mode&#8221;.   <br />
+</p><a href="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png"><br />
+<img src="https://lh6.googleusercontent.com/-cgYuQPO2v3o/Tqz2Rho34dI/AAAAAAAAHnI/jP_SfDVxFcY/s349/img-2.png" alt="iis application pool config" /><br />
+</a><br />
+<p>After you did it, you can go and run you application. If you setup basic Home controller and view, you should be able to access it by given route. If you receiving 403 HTTP error check:<br />
+</p><ul><li>Are you really on integrated mode?</li>
+<li>Are there any physical folders that the same as you routing, e.g /sba/sales route and /site/sba/sales folder? In such case you either should correct the routing or change site folder structure.</li>
+</ul><h2>Session is Null issue</h2><p>Moving along and starting implementation of some real controllers, we&#8217;ve got very strange <code>NullReferenceException</code> problem. After bit debugging it turned out that <code>HttpContext.Current.Session</code> is null in controller actions. That&#8217;s the common problem for legacy web sites. It is very well described in this <a href="http://stackoverflow.com/questions/218057/httpcontext-current-session-is-null-when-routing-requests">stackoverflow</a> answer. So, you just need to add one more section into <code>web.config</code> file.<br />
+</p><pre class="brush: xml">&lt;configuration&gt;
+  ...
+  &lt;system.webServer&gt;
+    ...
+    &lt;modules&gt;
+      &lt;remove name=&quot;Session&quot; /&gt;
+      &lt;add name=&quot;Session&quot; type=&quot;System.Web.SessionState.SessionStateModule&quot;/&gt;
+      ...
+    &lt;/modules&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+</pre><p>After all of those configuration changes your Web Site is fully adopted to ASP.NET MVC framework usage. So, just go ahead and feel the awesomeness of MVC!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -781,85 +951,6 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
 </h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never &#8216;mix&#8217; both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
 </p><h2>What&#8217;s next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
 </p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/08/my-application-for-10kappart.html">
-    
-      My application for 10KAppart competition</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-24T10:37:00+03:00" pubdate data-updated="true">Aug 24<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Recently, I&#8217;ve met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
-</p>
-<p>
-I&#8217;ve spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexanderbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge. 
-</p>
-<p>
-I did it a style of weekend project, started up Friday evening, I&#8217;ve spend 3 hours to complete github API adapter and application logic. As always, hard part was - design.
-</p>
-<p>
-Even I a bit improved my design skill through this year.. still it is big challenge. I choose light blue color for main color and dark blue as auxiliary. I went with <a href="http://www.google.com/webfonts#ChoosePlace:select">Google Web Fonts</a> that I used before and was happy with results. Playing out with colors and gradients, I came up with such front page:
-</p>
-<a href="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg">
-<img src="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg" alt="code" />
-</a>
-<p>
-With much help of <a href="http://twitter.com/#!/Porosyaka">Sasha</a> we have designed badges part of application. I still not 100% happy, but at least it was quite fast.
-</p>
-<a href="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg">
-<img src="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg" alt="code" />
-<p>
-</a>
-After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart. 
-</p>
-<p>
-I&#8217;ve been waiting about 4 days, to receive an answer. Meanwhile, I&#8217;ve seen that new application are being posted.. but not mine. Finally, they responded to me saying &#8220;Sorry, but Google Web Fonts are not allowed&#8221;. That was actually my bad, but I haven&#8217;t thought that are treated as 3rd party. Anyway, I had to switch to <a href="http://typekit.com/">TypeKit</a> very fast. I didn&#8217;t get same results as with Web Fonts, but I had no time for finding perfect match and reapplied again.
-</p>
-<p>
-It finally available here - <a href="http://10k.aneventapart.com/Entry/Details/512">http://10k.aneventapart.com/Entry/Details/512</a>
-</p>
-<p>
-I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexanderbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
 </p></div>
 
       

@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-09T17:21:55+02:00</updated>
+  <updated>2013-12-16T15:34:39+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore is Becoming a Company]]></title>
+    <link href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html"/>
+    <updated>2013-12-16T12:48:00+02:00</updated>
+    <id>http://beletsky.net/2013/12/likeastore-is-becoming-a-company</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last update on <a href="https://likeastore.com/">Likeastore</a> progress. It doesn&rsquo;t mean the application development is stopped, otherwise &ndash; we did a final breakthrough and today is my first day in <a href="http://eastlabs.co/">EastLabs</a> business accelerator. Yes, side project we&rsquo;ve started to have fun on hackathon is becoming a company today.</p>
+
+<p>I always wanted to build a product that could became the foundation for company. I did a few unsuccessful attempts before. There was few reason of failures: either I tried to attack very big problem or I didn&rsquo;t have enough motivation to make the stuff done.</p>
+
+<!-- More -->
+
+
+<p>Likeastore appeared to be different &ndash; first, very positive feedback from out first public release. A lot of people being contacting us, sharing their impressions and asked for additional features. That gave an energy to proceed and improve existing features and design and plan for further grow. And second, I got brilliant co-founder <a href="https://twitter.com/voronianski">@voronianski</a> &ndash; besides great design and coding skills, he shares the passion of Likeastore product, so you don&rsquo;t feel alone in the dark.</p>
+
+<p>Together, we did good team. I knew for sure, that technically we are unstoppable, but product development is not only coding. Realizing that we have a good beginning, very nice potential to grow &ndash; but absolutely not clear where to move on, depressed me a bit.</p>
+
+<p>By the chance, I&rsquo;ve seen <a href="http://www.eventbrite.com/e/kiev-startup-party-tickets-8509553303">Startup Party</a> is taking place in Kiev. And I went there. That was a changing night. I&rsquo;ve met quite few interesting people there who are doing business in Ukraine. I was trying to understand which direction we should go, can someone help us. And of the most realistic ways was to apply to business accelerator. That night I got back home and spend a lot of time reading about business accelerators and options available in Kiev.</p>
+
+<p>We applied to <a href="http://eastlabs.co/">EastLabs</a> accelerator program. We waited long, maybe about a month or so. I even thought, it&rsquo;s not gonna happen, so we need to find out other ways. But finally, we&rsquo;ve received invitation to interview (btw, I wish to say thanks to my friend Yulian who probably triggered that). The interview was really interesting, even if we are not accepted I would treat it as asset. It also took a bit of time from interview, but we finally received an offer from EastLabs to join their program.</p>
+
+<p><img src="https://lh6.googleusercontent.com/-XS72t-TDB9w/Uq7xtL3JD2I/AAAAAAAAad8/bzEJdq2GZN4/w1736-h1302-no/IMG_20131216_135239.jpg" alt="likeastore"/></p>
+
+<p>Finally, then all cards there on on our hands we needed clearly decide, are we ready to start?</p>
+
+<p>There was a lot doubts.. But there is also one strong feeling &ldquo;Now or never! It&rsquo;s already too late to step back&rdquo;.. We have a chance, now it&rsquo;s our primary job &ndash; not waste it.</p>
+
+<p>So, now with <a href="https://twitter.com/voronianski">@voronianski</a> we are not only developers but also co-founders, ones that are responsible for company grow. That&rsquo;s just a begining of our ride. I only hope it&rsquo;s interesting and fun. For sure, it&rsquo;s gonna be hard, but I&rsquo;m ready to take a challenge.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[I Quit My Job]]></title>
@@ -2560,127 +2590,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 <h2>Conclusions</h2><p>JavaScript is awesome. I like the experience of JavaScript programming so far. Whatever you do, front-end or back-end you stay in one &#8220;language context&#8221;. I would not call a huge problem, but usually context switching from one language to another can take something.<br />
 </p><p>Picking up technology for next <a href="http://www.likeastore.com/">side-project</a> or quick hack I&#8217;m selecting JavaScript.<br />
 </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
-    <link href="http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring.html"/>
-    <updated>2013-04-10T20:53:00+03:00</updated>
-    <id>http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
-    <!-- more -->
-    </p>    <h2>Backbone.Collection events</h2>    <p>        Will have a test suite for that,<br />
-    </p>    <pre class="brush: js">describe('collection events', function () {
-    var listener;
-
-    beforeEach(function () {
-        collection = new FeedbackCollection();
-    });
-
-    beforeEach(function () {
-        listener = jasmine.createSpy();
-    });
-    </pre>    <p>        Here we are creating collection for testing and Jasmine spy, special function we going to use as event subscriber.<br />
-    </p>    <h3>Adding element to collection</h3>    <p>        As we saw <a href="http://www.beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html">previously</a> there are several ways of adding new elements to collection. By add and push methods. The important thing, does not matter what API method you use, Backbone.Collection would trigger &#8216;add&#8217; event.<br />
-    </p>    <p>        By <code>add</code> method,<br />
-    </p>    <pre class="brush: js">describe('while adding elements', function () {
-    beforeEach(function () {
-        collection.on('add', listener);
-    });
-
-    beforeEach(function () {
-        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-    });
-
-    it ('should raise add event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-    </pre>    <p>        By <code>push</code> method,<br />
-    </p>    <pre class="brush: js">describe('while pusing elements', function () {
-    beforeEach(function () {
-        collection.on('add', listener);
-    });
-
-    beforeEach(function () {
-        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-    });
-
-    it ('should raise add event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-    </pre>    <p>        Each event handlers receives model itself and reference to collection.<br />
-    </p>    <h3>Removing elements from collection</h3>    <p>        Similarly, there 2 ways of removing items from collection, by remove and pop methods.<br />
-    </p>    <p>        By <code>remove</code> method,<br />
-    </p>    <pre class="brush: js">describe('while removing items', function () {
-    beforeEach(function () {
-        collection.on('remove', listener);
-    });
-
-    beforeEach(function () {
-        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-        var model = collection.get('feedback-1');
-        collection.remove(model);
-    });
-
-    it ('should raise remove event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-    </pre>    <p>        By <code>pop</code> method,<br />
-    </p>    <pre class="brush: js">describe('while poping items', function () {
-    beforeEach(function () {
-        collection.on('remove', listener);
-    });
-
-    beforeEach(function () {
-        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-        collection.pop();
-    });
-
-    it ('should raise remove event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-    </pre>    <h3>Resetting and sorting</h3>    <p>        Besides just adding and removing stuff from collection, it have few more method which reaction is triggering event. It&#8217;s reset and sort. Reset is the bulk insert into collection, it works great when we fetch some data from server and want to push everything just by one operation. Sort, is rarely called manually, since if collection provides <code>comparator</code> function, it would sort itself, during add or reset operations. But sometimes sorting could be triggered from UI as user changes the sort column of table, for example.<br />
-    </p>    <p>        Resetting collection,<br />
-    </p>    <pre class="brush: js">describe('while reseting collection', function () {
-    beforeEach(function () {
-        collection.on('reset', listener);
-    });
-
-    beforeEach(function () {
-        collection.reset([
-            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
-            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
-    });
-
-    it('should raise reset event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-</pre>    <p>        Sorting collection,<br />
-    </p>    <pre class="brush: js">describe('while sorting collection', function () {
-    beforeEach(function () {
-        collection.on('sort', listener);
-    });
-
-    beforeEach(function () {
-        collection.reset([
-            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
-            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
-        collection.sort();
-    });
-
-    it('should raise sort event', function () {
-        expect(listener).toHaveBeenCalled();
-    });
-});
-    </pre>    <h2>Why it matters?</h2>    <p>        Knowing the events of all Backbone.js entities is very important. You should always design you application based on events triggering/subscription, instead of direct function call. That would make your code much de-coupled and UI logic very flexible.<br />
-    </p></div>
 ]]></content>
   </entry>
   

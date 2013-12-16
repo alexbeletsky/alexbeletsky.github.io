@@ -4,7 +4,7 @@
   <title><![CDATA[Category: likeastore | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/likeastore/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-09T17:21:55+02:00</updated>
+  <updated>2013-12-16T15:34:39+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore is Becoming a Company]]></title>
+    <link href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html"/>
+    <updated>2013-12-16T12:48:00+02:00</updated>
+    <id>http://beletsky.net/2013/12/likeastore-is-becoming-a-company</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last update on <a href="https://likeastore.com/">Likeastore</a> progress. It doesn&rsquo;t mean the application development is stopped, otherwise &ndash; we did a final breakthrough and today is my first day in <a href="http://eastlabs.co/">EastLabs</a> business accelerator. Yes, side project we&rsquo;ve started to have fun on hackathon is becoming a company today.</p>
+
+<p>I always wanted to build a product that could became the foundation for company. I did a few unsuccessful attempts before. There was few reason of failures: either I tried to attack very big problem or I didn&rsquo;t have enough motivation to make the stuff done.</p>
+
+<!-- More -->
+
+
+<p>Likeastore appeared to be different &ndash; first, very positive feedback from out first public release. A lot of people being contacting us, sharing their impressions and asked for additional features. That gave an energy to proceed and improve existing features and design and plan for further grow. And second, I got brilliant co-founder <a href="https://twitter.com/voronianski">@voronianski</a> &ndash; besides great design and coding skills, he shares the passion of Likeastore product, so you don&rsquo;t feel alone in the dark.</p>
+
+<p>Together, we did good team. I knew for sure, that technically we are unstoppable, but product development is not only coding. Realizing that we have a good beginning, very nice potential to grow &ndash; but absolutely not clear where to move on, depressed me a bit.</p>
+
+<p>By the chance, I&rsquo;ve seen <a href="http://www.eventbrite.com/e/kiev-startup-party-tickets-8509553303">Startup Party</a> is taking place in Kiev. And I went there. That was a changing night. I&rsquo;ve met quite few interesting people there who are doing business in Ukraine. I was trying to understand which direction we should go, can someone help us. And of the most realistic ways was to apply to business accelerator. That night I got back home and spend a lot of time reading about business accelerators and options available in Kiev.</p>
+
+<p>We applied to <a href="http://eastlabs.co/">EastLabs</a> accelerator program. We waited long, maybe about a month or so. I even thought, it&rsquo;s not gonna happen, so we need to find out other ways. But finally, we&rsquo;ve received invitation to interview (btw, I wish to say thanks to my friend Yulian who probably triggered that). The interview was really interesting, even if we are not accepted I would treat it as asset. It also took a bit of time from interview, but we finally received an offer from EastLabs to join their program.</p>
+
+<p><img src="https://lh6.googleusercontent.com/-XS72t-TDB9w/Uq7xtL3JD2I/AAAAAAAAad8/bzEJdq2GZN4/w1736-h1302-no/IMG_20131216_135239.jpg" alt="likeastore"/></p>
+
+<p>Finally, then all cards there on on our hands we needed clearly decide, are we ready to start?</p>
+
+<p>There was a lot doubts.. But there is also one strong feeling &ldquo;Now or never! It&rsquo;s already too late to step back&rdquo;.. We have a chance, now it&rsquo;s our primary job &ndash; not waste it.</p>
+
+<p>So, now with <a href="https://twitter.com/voronianski">@voronianski</a> we are not only developers but also co-founders, ones that are responsible for company grow. That&rsquo;s just a begining of our ride. I only hope it&rsquo;s interesting and fun. For sure, it&rsquo;s gonna be hard, but I&rsquo;m ready to take a challenge.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
