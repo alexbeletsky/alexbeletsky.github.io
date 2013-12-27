@@ -4,7 +4,7 @@
   <title><![CDATA[Category: digitalocean | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/digitalocean/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-16T15:34:39+02:00</updated>
+  <updated>2013-12-27T15:30:30+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -99,7 +99,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x6c;&#105;&#x6b;&#101;&#97;&#x73;&#116;&#111;&#114;&#101;&#x2d;&#99;&#111;&#108;&#x6c;&#x65;&#99;&#116;&#x6f;&#x72;&#64;&#x30;&#x2e;&#x30;&#x2e;&#50;&#x2d;&#x32;&#49;">&#108;&#x69;&#x6b;&#101;&#97;&#115;&#x74;&#x6f;&#114;&#x65;&#x2d;&#x63;&#x6f;&#x6c;&#x6c;&#x65;&#x63;&#x74;&#x6f;&#x72;&#64;&#48;&#x2e;&#x30;&#x2e;&#50;&#x2d;&#x32;&#x31;</a> No repository field.
+remote:        npm WARN package.json <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x6c;&#x69;&#107;&#101;&#x61;&#x73;&#116;&#x6f;&#x72;&#101;&#45;&#99;&#111;&#108;&#108;&#101;&#x63;&#116;&#111;&#x72;&#64;&#48;&#46;&#x30;&#46;&#50;&#x2d;&#x32;&#x31;">&#x6c;&#105;&#107;&#101;&#97;&#115;&#116;&#x6f;&#x72;&#x65;&#x2d;&#x63;&#x6f;&#x6c;&#x6c;&#x65;&#99;&#x74;&#x6f;&#114;&#64;&#48;&#46;&#48;&#46;&#50;&#45;&#50;&#x31;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 

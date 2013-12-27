@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-16T15:34:39+02:00</updated>
+  <updated>2013-12-27T15:30:30+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
+    <link href="http://beletsky.net/2013/12/run-several-processes-in-docker-container.html"/>
+    <updated>2013-12-27T14:15:00+02:00</updated>
+    <id>http://beletsky.net/2013/12/run-several-processes-in-docker-container</id>
+    <content type="html"><![CDATA[<p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
+
+<p>With docker, the installation instruction got reduced to something like:</p>
+
+<p><code>
+$ docker pull vendor/package
+$ docker run vendor/package
+</code></p>
+
+<p>Simply like that, forget about missing Java Runtime on your server. It suits perfectly for TCP/HTTP applications.</p>
+
+<!-- More -->
+
+
+<p>Being messing around <a href="https://github.com/seismolabs/seismo">Seismo</a> project I realized, I want to go exactly same way. Since it has few dependencies now, MongoDB and NodeJS &ndash; it should be easier to anyone to try it, even if they do not use that setup. I was happy to see, that GitHub currently offers great support for Docker. Namely, if you have repo with <code>Dockerfile</code> inside, each time you push the code, docker image got rebuild and pushed to public <a href="https://index.docker.io/">index</a>.</p>
+
+<p>I&rsquo;ve created <code>Dockerfile</code> that would build up image, ready to have Seismo run inside.</p>
+
+<p>```plain
+FROM    ubuntu:latest</p>
+
+<h1>Git</h1>
+
+<p>RUN apt-get install -y git</p>
+
+<h1>MongoDB</h1>
+
+<p>RUN apt-key adv &mdash;keyserver hkp://keyserver.ubuntu.com:80 &mdash;recv 7F0CEB10
+RUN echo &lsquo;deb <a href="http://downloads-distro.mongodb.org/repo/ubuntu-upstart">http://downloads-distro.mongodb.org/repo/ubuntu-upstart</a> dist 10gen&rsquo; | tee /etc/apt/sources.list.d/10gen.list
+RUN dpkg-divert &mdash;local &mdash;rename &mdash;add /sbin/initctl
+RUN ln -s /bin/true /sbin/initctl
+RUN apt-get update
+RUN apt-get install mongodb-10gen
+RUN mkdir -p /data/db</p>
+
+<h1>NodeJS</h1>
+
+<p>RUN apt-get update &mdash;fix-missing &amp;&amp; apt-get upgrade -y
+RUN apt-get install -y wget curl build-essential patch git-core openssl libssl-dev unzip ca-certificates
+RUN curl <a href="http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz">http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz</a> | tar xzvf &ndash; &mdash;strip-components=1 -C &ldquo;/usr&rdquo;
+RUN apt-get clean &amp;&amp; rm -rf /var/cache/apt/archives/<em> /var/lib/apt/lists/</em></p>
+
+<h1>Seismo</h1>
+
+<p>RUN git clone <a href="https://github.com/seismolabs/seismo.git">https://github.com/seismolabs/seismo.git</a> /seismo
+RUN cd /seismo; npm install
+ENV PORT 8080
+EXPOSE 8080</p>
+
+<p>WORKDIR /seismo
+ENTRYPOINT [&ldquo;./bin/run.sh&rdquo;]
+```</p>
+
+<p>It&rsquo;s based on latest Ubuntu server, installs Git, MongoDB and NodeJS runtime and clones Seismo itself inside image.</p>
+
+<p>But, I&rsquo;ve met a problem to start few processes inside the container. Since I need both MongoDB for storage and NodeJS for API server, it&rsquo;s required both be running inside one container. If shell script just starts one, <code>mongod</code> for example, <code>node app.js</code> is not executed.</p>
+
+<p>I was a little worried, thinking it&rsquo;s not possible to run more that one process inside container.</p>
+
+<p>But solution was found. I&rsquo;ve created another shell script that starts <code>mongod</code> as background process and starts <code>node</code> after.</p>
+
+<p>```bash</p>
+
+<h1>!/bin/bash</h1>
+
+<p>mongod &amp; node ./source/server.js
+```</p>
+
+<p>That worked as charm.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
@@ -226,7 +303,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x72;&#111;&#111;&#116;&#64;&#x64;&#x6f;&#x6b;&#x6b;&#117;&#46;&#109;&#x65;">&#x72;&#x6f;&#111;&#x74;&#64;&#x64;&#111;&#107;&#107;&#x75;&#x2e;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x72;&#x6f;&#x6f;&#116;&#64;&#100;&#111;&#107;&#x6b;&#x75;&#x2e;&#x6d;&#x65;">&#114;&#x6f;&#x6f;&#116;&#64;&#x64;&#111;&#107;&#x6b;&#117;&#x2e;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>

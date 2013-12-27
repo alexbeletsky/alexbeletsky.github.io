@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Likeastore is Becoming a Company Dec 16th, 2013 likeastore, startup It&rsquo;s been a while since my last update on Likeastore progress. It doesn& &hellip;">
+  <meta name="description" content="Run Several Processes in Docker Container Dec 27th, 2013 docker, mongodb, nodejs, seismo What I like the most about Docker project is new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,67 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/12/run-several-processes-in-docker-container.html">
+    
+      Run Several Processes in Docker Container</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-27T14:15:00+02:00" pubdate data-updated="true">Dec 27<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/mongodb/'>mongodb</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/seismo/'>seismo</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
+
+<p>With docker, the installation instruction got reduced to something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ docker pull vendor/package
+</span><span class='line'>$ docker run vendor/package</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simply like that, forget about missing Java Runtime on your server. It suits perfectly for TCP/HTTP applications.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/12/run-several-processes-in-docker-container.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -549,59 +610,6 @@
       
         <div class="show-more pure-u-1">
           <a href="/2013/09/playing-with-dokku-on-vagrant.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">
-    
-      Digital Ocean + Dokku = 10$ Heroku</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-28T22:00:00+03:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/digitalocean/'>digitalocean</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
-
-<p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">Continue reading &rarr;</a>
         </div>
       
     </div>

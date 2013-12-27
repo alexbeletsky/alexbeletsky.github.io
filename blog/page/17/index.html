@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Roundhouse your database Oct 26th, 2010 Open source, Tips, Tools As you started to use UppercuT for your builds, it is definitely worth to try worth &hellip;">
+  <meta name="description" content="Testing database and Test database Nov 5th, 2010 DAL, Linq, TDD, Tips Testing the database is important. It is absolutely required then your DAL is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,113 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/11/testing-database-and-test-database.html">
+    
+      Testing database and Test database</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-05T08:43:00+02:00" pubdate data-updated="true">Nov 5<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dal/'>DAL</a>, <a class='category' href='/blog/categories/linq/'>Linq</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Testing the database is important. It is absolutely required then your DAL is simply a bunch of methods that do SQL against the DB. It still required to be done then you rely on some ORM (like Linq to SQL, NHibernate etc).
+</p>
+<h2>Testing database</h2>
+<p>
+By testing the database I mean unit tests that runs database operation tasks (create, update, delete, stored procedures calls) and test asserts that operation is being completed successfully.  
+</p>
+<p>
+Even the SQL is simple enough (like a <code>SELECT</code> or <code>UPDATE</code>) it have to be tested. More complex stuff, like <code>JOIN</code>, <code>UNION</code> etc. have to tested with much more care (meaning different scenarios, different input set etc.). As more complex query you have, as more complex test you should do. I personally trying to avoid complex SQL queries, because they difficult to read and support, but in many cases is the only way you can do.
+</p>
+<p>
+Example of test case of DAL methods that runs <code>SELECT</code> statement:
+</p>
+<a href="https://gist.github.com/662906">https://gist.github.com/662906</a>
+<script src="https://gist.github.com/662906.js?file=gistfile1.cs"></script>
+<p>
+Using ORM simplifies life a bit. You are working with objects, creation of new record in DB is just creation of new object and call <code>InsertOnSubmit()</code> method. In many cases you have to trust that framework does its job correctly and do not write the tests for framework, that is simple waste of time. But what usually happens is that you have a wrappers against ORM <code>DataContext</code>, like a <code>Repository</code> and the behavior of <code>Repository</code> have to be validated with tests (check out about repositories <a href="http://www.beletsky.net/2010/06/ddd-implementation-of-repository.html">here</a>). Typically repositories interface looks like that:
+</p>
+<a href="https://gist.github.com/662918">https://gist.github.com/662918</a>
+<script src="https://gist.github.com/662918.js?file=gistfile1.cs"></script>
+<p>
+All interface methods and properties are covered by tests. Moreover, if you have repositories <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Core/DAL/Extensions/BlogPostsExtensions.cs">extensions</a> that helps you to select record by Id, or do paging they are also part of testing. Please check how this <code>IBlogPostsRepostitory</code> is tested by this example - <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Database.Tests/Tests/DAL/BlogPostsRepositoryTests.cs">example</a>.
+</p>
+<p>
+What else about testing database you should know?
+</p>
+<p>
+First of all, database tests might required some initial data to be put in database before each test start. It could be easily solved by using <code>[TestSetup]</code> and <code>[TestTearDown]</code> methods of Fixture. Bad side of this that you could not customize the data for particular test, because Setup/TearDown runs the same code that you could not parameterize. I prefer to use a static method (or methods) that is placed in <code>TestFixture</code> and called at the beginning of unit test. Please see <code>SubmitTenBlogpostsToRepository</code> from previous example.
+</p>
+<p>
+Second at all, you have to care about test isolation some how. It means that previous tests results should not affect next test cases, each tests case have to leave the database in the same state as it enters it. There are different approaches how to do that, I like something like this. I&#8217;m having <code>FixtureInit</code> that does kind of initialization for any test case and it contains <code>DbSetup</code> instance in it. <code>DbSetup</code> itself holds <code>DataContext</code> as well as <code>TransactionScope</code> object. <code>TransactionScope</code> is a very nice way of handling <a href="http://msdn.microsoft.com/en-us/library/ms172152(VS.90).aspx">implicit transactions</a>. Inside <code>DbSetup</code> constructor we also could put some test data initialization, as it would be shared thought all tests. <code>Dispose</code> methods of the <code>DbSetup</code> disposes a transaction without committing it. Each test case body is placed in <code>using (var fixture = new FixtureInit("http://localhost"))</code>, 
+    so any data that is placed (or deleted) from database during the tests would not 
+    affect the database then test is finished. It is simple and works good, please 
+    check out for implementation <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/tree/master/src/Trackyourtasks.Database.Tests/Framework">here</a>.
+</p>
+<p>
+The last thing - layout and naming of database tests. Database tests have to be separated from application unit tests. It a good way of doing the testing. Database tests are usually too slow and you do not need to re-run them after minor changes (except changes in DAL). That&#8217;s why it is better to place DB tests to separate assembly. The name of assembly should contain <code>*Database.Tests</code>. It gives a clear understanding of assembly goal, as well as it will not be re-runned every time as you do <code>build.bat</code> by <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a>
+</p>
+<h2>Test database</h2>
+<p>
+Test database is database against that database tests are running.. and typically <code>Test Database == Developer Database</code>, meaning the same database as developer tests the application is used for database unit tests. 
+</p>
+<p>
+It it bad in several reasons. 
+</p>
+<p>
+By doing developers testing you make database really &#8220;dirty&#8221;. Putting new records in DB or deleting existing ones, doesn&#8217;t matter. I usually do a small test that if I put new object(s) I check the count of objects in table after, like <code>Assert.That(foundTasks.Count(), Is.EqualTo(2));</code>. But if I <code>Tasks</code> table will have some data before, I&#8217;m not guaranteed that count will be 2, but <code>Assert.That(foundTasks.Count(), Is.EqualTo(countOfObjectBeforeInsert + 2));</code> will be running OK. It works, but I don&#8217;t really like it, because it mess up test with some not required details.
+</p>
+<p>
+It is possible that some complex database tests, could leave database in inconsistency state 
+    during its failure (that is actually bad and you have to design the tests to prevent this happening.. but it is happening especially with no-ORM, no-Transactions DAL). Also, one bad surpise could be if database tests deletes some data required for development testing.
+</p>
+<p>
+So, it should be <code>Test Database != Developer Database</code>, test database and developer database are different instances actually. Test database must be restored with save version of developers database, but in general it is empty and its state is not changed after testing complete.
+</p>
+<p>
+I&#8217;m using <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to deploy database. As I was describing in previous post I use <code>initdb.bat</code> and <code>resetdb.bat</code> to initialize and reset developer database. I&#8217;ve just created 2 others that do exactly the same but for <code>trackytest</code> database, <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/inittestdb.bat">inittestdb.bat</a>, <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/resettestdb.bat">resettestdb.bat</a>. In the same time, <code>app.confing</code> of test project is pointed to <code>trackytest</code> (instead of <code>trackydb</code> before). So now tests are running on <code>trackytest</code>, but the application itself on <code>trackydb</code>.
+</p>
+<p>
+It is very convenient to work like that.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1107,122 +1214,6 @@ QnA session turns to be a nightmare :). 90% were out of context of speech, like 
 </p>
 <p>
 I personally like the idea of - create software by developers only. But as for me, it could work good only for small product shops (there customers are product creators actually). It does not fit big organization and outsourcing companies, mainly to to reasons above: in such organization there is just very low percentage of really professional developers.   
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/10/agileee-2010-mary-poppendieck-it-is-not.html">
-    
-      Agileee 2010: Mary Poppendieck: It is not about working software</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-09T12:13:00+03:00" pubdate data-updated="true">Oct 9<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<small>
-<strong>Disclamer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLAyiWOHiXI/AAAAAAAAG94/hIhrdFxO_jE/s1600/DSC03683.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLAyiWOHiXI/AAAAAAAAG94/hIhrdFxO_jE/s400/DSC03683.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5525972308445333874" /></a>
-<p>
-Mary&#8217;s speech was quite long with a lot of details and information and it was quite hard to me to understand everything she said. Moreover I was sitting to far from scene, so hardly could see anything on screen. It is definitely not complete. If anyone has a presentation file it would be great to share it. Anyway, I put here what I caught so far.
-</p>
-<h2>Strategic Inflection Point</h2>
-<p>
-Mary introduces the concept of &#8220;Strategic Inflection Point&#8221;, as some point on timeframe for every organization were strategic decisions are made. Such decisions are vital for further organization development and growth. 
-</p>
-<h2>Strategic Inflection Point for Agile?</h2>
-<p>
-Agile has been created 10 years ago, it is quite old stuff.. and it is time to change!
-</p>
-<p>
-The milestones of Agile could be described as:
-</p>
-<ul>
-<li>version 1.0: processes and tools, comprehensive documentation, contract negotiation, follow plan</li>
-<li>version 2.0: individuals and interactions, working software, customer collaboration</li>
-<li>version 3.0: team vision and initiatives, validated learning, customer discovery, initiating change</li>
-</ul>
-<p>
-Mary emphasis that now it is time for Management version 3.0!
-</p>
-<p>
-Let&#8217;s try to review key points for version 3.0.
-</p>
-<h2>
-Team vision and initiatives
-</h2>
-<p>
-&#8220;There is nothing useless as efficiently that which should not be done at all&#8221; - Petter Ducrker.
-</p>
-<p>
-<strong>Most products failures are caused by lack of customers.</strong>
-</p>
-<p>
-Bring the team to customers, to understand that actually customer wants.
-</p>
-<p>
-Mary introduces concept of MVP, Minimum Viable Product. It is something with minimal scope that could run to see actual customer demand - does it do the job? Will customers pay for it? What do we need to learn next? You have to measure and repeat.
-Experiment -> Learn -> Adjust!
-</p>
-<p>
-And it is vital to make sure that you are building right think and that make sure, that it is build right! 
-</p>
-<h2>Customer discovery</h2>
-<p>
-It is like ethnography - watch persons! what do they do, learn it! Try to understand what is happening. Ideation - do prototypes, do iteration. 
-</p>
-<p>
-&#8220;Brilliant Systems are result of matching of mental models between those developing a system and those who will be using the system.&#8221;
-</p>
-<h2>
-Initiation change
-</h2>
-<p>
-Just making a change happen. Every iteration is vital to make sure that customers see results and giving feedback on that. If you know that customer download your software every month, you&#8217;ll to make it stable! Make what customers wants, not what promised to executives.. the change is coming from team, by elaborating customers feedbacks. 
-</p>
-<p>
-Extra features are biggest waste in Software development! 45% of features is never used..
-Write less code! Developers productivity - less code, less features. 
-</p>
-<p>
-Later in twitter I&#8217;ve seen a link to new Mary&#8217;s book regarding <a href="http://www.amazon.com/gp/product/0321712471?ie=UTF8&tag=noopnl-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321712471">Management 3.0</a>, that you might be interesting to.
 </p></div>
 
       

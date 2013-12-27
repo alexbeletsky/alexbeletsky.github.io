@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="An Architectural Design Challenge by James Shore Jun 14th, 2010 Design, TDD This is a response to James Shore blog entry. James has started &#8220; &hellip;">
+  <meta name="description" content="Gallio runs MbUnit tests very slowly? Jun 18th, 2010 TDD, Tools Currently I&#8217;m looking close to one interesting project called Subtext. It &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,73 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/06/gallio-runs-mbunit-tests-very-slowly.html">
+    
+      Gallio runs MbUnit tests very slowly?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-18T18:28:00+03:00" pubdate data-updated="true">Jun 18<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+Currently I&#8217;m looking close to one interesting project called <a href="http://subtextproject.com/default.aspx?AspxAutoDetectCookieSupport=1">Subtext</a>. It being developed and managed by <a href="http://haacked.com/">Phil Haack</a> and recently he <a href="http://haacked.com/archive/2010/06/06/subtext-2-5-released.aspx">announced</a> release of version 2.5. It open-souce so anyone is able to get SVN snapshot and digg into code and 
+    even to contribute to this project. I would like to do a separate blog post on Subtext, but now I want to touch another topic.
+<br />
+<br />
+Subtext project uses <a href="http://www.mbunit.com/">MbUnit</a> test framework, that I have no chance to work before. So as my first goal I started to look for tools to work with MbUnit and ways of its integration to Visual Studio. Obvious choice was a <a href="http://www.gallio.org/">Gallio</a>. Gallio is open-source automation test framework, a bundle contains *maybe* all known unit-test systems (NUnit, MbUnit, NCover, TypeMock etc.) as well as add-on to Visual Studio that allows to run MbUnit tests by <a href="http://testdriven.net/">Testdriven.net</a> runner. 
+<br />
+<br />
+I was preatty happy to find that one exists. I&#8217;ve installed the version that official page refered to Gallio v3.1 Update 2 build 397 - x86. Installed on VS 2008 no problem and I&#8217;ve started to play with Subtext tests. But I&#8217;ve noticed that it works very slow, namely run of particular test takes about 20 sec on my machine. That is too much time for ordinar test. At first I blamed Subtext that it performs test database initialization in [SetUp] function of test assembly. But I just commented out this initialization I saw that situation has not changed.
+<br />
+<br />
+I googled a bit I found that Oliver Sturm also experienced same problem and did a post on his <a href="http://www.sturmnet.org/blog/2010/03/11/gallio-mbunit-very-slow">blog.</a> He did a great job and noticed that reason for such slow down was gallio.utility.exe application that hangs for about 20 sec on each start. Tests are using that for initialization so it slows down each start of tests. He had created a <a href="http://code.google.com/p/mb-unit/issues/detail?id=634">bug report</a> and as <a href="http://code.google.com/u/jeff.brown/">Jeff Brown</a> the problem was fixed for v3.2.380. I went to a <a href="http://ccnet.gallio.org/Distributables/">distribution site</a> and downloaded latest 3.2 vesrion. I&#8217;ve installed it and try to run test. Woow, it was run for 
+    just a second! Good news I thought! But when I tried to run all tests from a test assembly I was disappointed that it simply does not work. It says about exception during initialization of Gallio. I reported on that with <a href="http://code.google.com/p/mb-unit/issues/detail?id=673">new issue</a> to Gallio.
+<br />
+<br />
+I&#8217;ve decied to try earlier verions of 3.2.. But still had the same problem. So, 3.2 realease does not work on my machine at all and do not know the reason. My only choice was to back to 3.1 but try some more recent daily builds. I&#8217;ve got Version 3.1 build 514 and finally it started to work as expected. Test case run took about 4 seconds, slower that 3.2 456 but anyway, not so bad as for 3.1 397. 
+<br />
+<br />
+Gallio is preatty good software, so I really recommed to to check it out. 3.1 514 works fine on Visual Studio 2008.  
+<br />
+<br />
+Hope this one will be useful to one who is going to start with Gallio or met same problem as me.</div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>

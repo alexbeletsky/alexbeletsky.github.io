@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="My first year in company Mar 10th, 2011 e-conomic, life It is exactly one year since I joined E-conomic company. Last year I decided to switch the &hellip;">
+  <meta name="description" content="Clean tests with SharpTestsEx Mar 12th, 2011 Clean Code, Open source, TDD, Tools I was recently been adding NUnit to one of mine project&#8217;s and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,126 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/03/clean-tests-with-sharptestsex.html">
+    
+      Clean tests with SharpTestsEx</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-12T10:25:00+02:00" pubdate data-updated="true">Mar 12<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I was recently been adding NUnit to one of mine project&#8217;s and noticed one interesting framework in <a href="http://nuget.codeplex.com/">Nuget</a> channel. It is <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a> by <a href="http://twitter.com/#!/fabiomaulo">Fabio Maulo</a> and its primary goal is to make your assertions shorter, cleaner and easy to read.
+</p>
+To start with, it is just enough to install it through Nuget (or manually) and add using statement in your test class file.
+<p>
+<pre class="brush: csharp">
+using SharpTestsEx;
+</pre>
+<p>
+SharpTestsEx would add number of <code>Should()</code> extension methods. Suppose you have such case:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    Assert.That(result, Is.Equal("&lt;div&gt;&lt;/div&gt;"), "expected and actual results are different");
+}
+</pre>
+<p>
+With SharpTestsEx I&#8217;m changing assert part of test to,
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    result.Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+Note, it is much shorter and mostly plain English sentence: <i>result should be equal to something</i>.. The assertion message for this test is really clean and sufficient, so you mostly won&#8217;t needed and custom messages.
+</p>
+<p>
+If I go further and implement extension method for this <code>Compile</code> method:
+</p>
+<pre class="brush: csharp">
+static class CompilerTestExtension
+{
+    public static string Compile(this string expression)
+    {
+        var c = new Compiler();
+        return с.Compile(expression);
+    }
+}
+</pre>
+<p>
+My tests case would be just one line of code:
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange / act / assert
+    "div".Compile().Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+This is very short and clean notation of test case, even not technical person could read this. You can do more complicated assertions, combining them by <code>And</code> / <code>Not</code> conditions. There are also bunch of useful extensions for strings, sequences.
+</p>
+</p>
+Additional information on project <a href="http://sharptestex.codeplex.com/">site</a> as well as author <a href="http://fabiomaulo.blogspot.com/search/label/SharpTestEx">blog</a>.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1214,110 +1334,6 @@ Well, don&#8217;t get me wrong here. I&#8217;m not saying that now only Extensio
 </p>
 <p>
 You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexanderbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexanderbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/02/how-to-export-sql-data-script-for-sql.html">
-    
-      How to export SQL data script for SQL Express 2008 R2</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-06T15:33:00+02:00" pubdate data-updated="true">Feb 6<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/dal/'>DAL</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Before deployment of new version of my application I wanted to make sure that everything is alright, by doing development test on my machine. I backed up production database and copied it my local environment. Task was easy, restore database from backup and run all unit/integration tests, run the smoke test of application manually. But as I started to restore database I got such error from my SQL Express Management Studio: 
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s1600/sqlerror.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 149px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s400/sqlerror.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5570569906084188642" /></a>
-<pre>
-<code>
-TITLE: Microsoft SQL Server Management Studio
-------------------------------
-
-Restore failed for Server 'LOCAL\SQLEXPRESS'.  (Microsoft.SqlServer.SmoExtended)
-
-------------------------------
-ADDITIONAL INFORMATION:
-
-System.Data.SqlClient.SqlError: The database was backed up on a server running version 10.50.1600. That version is incompatible with this server, which is running version 10.00.2531. Either restore the database on a server that supports the backup, or use a backup that is compatible with this server. (Microsoft.SqlServer.Smo)
-</code>
-</pre>
-<p>
-Basically it meant that my production and local environment are different. On production I have SQL Express 2008 R2, locally I have SQL Express 2008. It was a surprise to me, cause my <a href="http://www.microsoft.com/web/downloads/platform.aspx">WebPI</a> shows me that I&#8217;m upgraded up to R2.
-</p>
-<p>
-Anyway, I had no time to upgrade my local environment and I did very simple workaround that might work for you as you don&#8217;t have very big database to handle.
-</p>
-<p>
-There is a feature of SQL Express (and Server) that allows you to export your database as SQL script and you can run this script on local SQL instance and got exactly same version.
-</p>
-<p>
-It is easy taks, but by doing that initially I successfully exported schema only, but not data itself. So, script generated didn&#8217;t contain and INSERT statement. As it turns out you have to change some default options, to export both schema and data. Follow the instructions: 
-</p>
-<ol>
-<li>
-Expand your database list and right click on target database.
-</li>
-<li>
-Select &#8220;Tasks&#8221; -> &#8220;Generate Scripts&#8221; context menu item. Generate scripts wizard will open.
-</li>
-<li>
-Press &#8220;Next&#8221; on welcome screen and select your database from databases list.<br />
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s1600/selectdb.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s400/selectdb.png" border="0" alt=""id="Img1" /></a>
-</li>
-<li>
-Make sure you checked option &#8220;Script all object in selected database&#8221; if you want to script all db. In case you need only some particular table you might consider to select it later. Click &#8220;Next&#8221;.
-</li>
-<li>
-On Script option step, make sure to select &#8220;Script Data&#8221; option (this is exactly what I missed and didn&#8217;t understand why data is not present in final script).
-<br />
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s1600/scriptdata.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s400/scriptdata.png" border="0" alt=""id="Img2" /></a>
-</li>
-<li>
-Proceed to the end of wizard to complete it.
-</li>
-</ol>
-<p>
-At the end you will got SQL script with schema and data that you can run on SQL Express 2008 and got exactly the same database as on R2. 
-</p>
-<p>
-This helped me quickly to workaround &#8220;version incompatibility&#8221; issue, hope it might help you as well.
 </p></div>
 
       
