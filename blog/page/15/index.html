@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Clean tests with SharpTestsEx Mar 12th, 2011 Clean Code, Open source, TDD, Tools I was recently been adding NUnit to one of mine project&#8217;s and &hellip;">
+  <meta name="description" content="The best day in developer&#8217;s life Mar 16th, 2011 Life What would you think is best day in developers life? First day of work, last one? Salary &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,64 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/03/best-day-in-developers-life.html">
+    
+      The best day in developer&#8217;s life</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-16T21:27:00+02:00" pubdate data-updated="true">Mar 16<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+What would you think is best day in developers life? First day of work, last one? Salary or bonuses payment day? All of those are pretty nice, indeed. But I think best day in developers life is day of Release. It is exactly the time than the code you created recently is being pushed out to production and customers are able to see what changes you&#8217;ve done so far. Release makes a really good feeling of &#8220;work is done&#8221;. In reality, of cause, work is not stopped but only begins after release date - production issues, customer reports, change requests.. all of these still need to be handled.
+</p>
+<p>
+Releasing a product is big job. And it is not all about coding. First of all it is well coordinated effort of all groups - Development, QA, Documentation, Product Owners, Stakeholders etc. I&#8217;ve seen situations than products that could be potentially released just stuck on a line, because of lack of coordination. Here the team atmosphere plays important role. If team sees the goal, agreed on method and tools and communicated well it is a big step to success.  
+</p>
+<p>
+Yesterday, Report Designer product that is part of <a href="http://e-conomic.com">E-conomic</a> has been released. It took about an year to make this happen. Huge amount of work were done, many lessons learned. We&#8217;ve passed long way from Specification till Integration code to main branch. I personally that it was just too long. With current experience I see a lot of value in frequent releases, so I tend to just-in-time production practices as <a href="http://en.wikipedia.org/wiki/Kanban">Kanban</a>. I world of web products, feedback is extremely fast and cost of defect is not so high, comparing to desktop. 
+</p>
+<p>
+It is good time to exhale, inhale fresh air and self-motivate for next interesting projects. We are now looking forward to make a better codebase, better processes and better products as result. Let&#8217;s start new adventure!
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1170,170 +1228,6 @@ namespace Web.Infrastructure
 </pre>
 <p>
 Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/02/extension-methods-and-clean-code.html">
-    
-      Extension methods and clean code</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-10T10:52:00+02:00" pubdate data-updated="true">Feb 10<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/code-kata/'>Code Kata</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension methods</a> is one of my favorite features of C# language. It appeared from version 3.0 and became very popular.
-</p>
-<p>
-The main goal of Extension Methods is to provide ability of extension of any class, without creating any derived classes, modifying original type or do &#8220;whatever&#8221; hacks. It is allowed to extend any type with any functionality in a very seamless fashion. What also great about Extension Methods is they allow to beautifully emulate behavior usually called pipelining (in <a href="http://lorgonblog.wordpress.com/2008/03/30/pipelining-in-f/">F#</a> or <a href="http://www.gnu.org/software/bash/manual/html_node/Pipelines.html">Bash</a>) and implement <a href="http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern">Chain of responsibility</a> pattern.
-</p>
-<p>
-But the most important as for me - Extension Methods help to keep my <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">code clean</a>. Clean code criteria is something I concerned a lot, nowadays.
-</p>
-<p>
-I recently started to practice with <a href="http://en.wikipedia.org/wiki/Kata_(programming)">code katas</a>, that I found essential for any developers who cares about <a href="http://www.hanselman.com/blog/SharpenTheSawForDevelopers.aspx">keeping their saw sharp</a>. So, after several iterations I came up with extension methods implementation that I pretty happy about. I&#8217;m using Roy Osherove&#8217;s <a href="http://www.osherove.com/tdd-kata-1/">StringCalculator</a> kata. It is about the implementation of simple method <code>Add</code> that:  
-</p>
-<ul>
-<li>Takes numbers separated by delimiter, as string</li>
-<li>Determines if custom delimiter is set</li>
-<li>Split up original string to array of number tokens</li>
-<li>Validates the input (no negatives allowed) and returns the sum of numbers, ignoring numbers greater than 1000</li>
-</ul>
-<p>
-I would like to show to you both implementation and try to evaluate them from &#8220;clean code&#8221; point of view.
-</p>
-<p>
-Original one (this is of cause a little &#8220;unwinded&#8221; version, I had a different structure with smaller methods.. But idea still the same).
-</p>
-<pre class="brush: csharp;">
-public int Add(string numbers)
-{
-    var delimiters = new[] { ",", "\n" };
-
-    if (IsCustomDelimeterProvided(numbers))
-    {
-        delimiters = GetDelimitersFromNumbers(numbers);
-    }
-
-    var processed = numbers;
-    if (IsCustomDelimeterProvided(numbers))
-    {
-        processed = processed.Substring(processed.IndexOf('\n') + 1);
-    }
-
-    if (IsContainDelimeters(processed, delimiters))
-    {
-        var splittedNumbers = numbers.Split(delimiters, StringSplitOptions.None);
-        var validation = new NumbersValidation();
-
-        foreach (var number in splittedNumbers)
-        {
-            validation.Check(number);
-        }
-
-        validation.Validate();
-
-        return splittedNumbers.Sum(p => GetIntegerWithCondition(p, IgnoreNumbersMoreThatThousand()));
-    }
-
-    return Convert.ToInt32(processed);
-}
-</pre>
-<p>
-Do you think is this code clean? I don&#8217;t think so.. Of cause, it might be not so difficult to understand it, but:
-</p>
-<ul>
-<li>Method is just too long</li>
-<li>A lot of <code>if</code> statements make it difficult to see instruction flow</li>
-<li>It messes up &#8220;infrastructure&#8221; code (splits, validation) with primary functionality (sum of numbers)</li>
-</ul>
-<p>
-Let&#8217;s try to read it: <i>I got the numbers and I check if custom delimiter is set on the beginning of numbers string, if so I try to extract the custom delimiters from original string. After I pre-process the string to remove custom delimiter prefix, so do not break the rest of function. If numbers string contains the delimiters, I split it up, perform the validation by helper object (which will throw exception is something wrong). Run Sum algorithm that would: covert string to integer and ignore one if it is greater that 1000.. Otherwise, it just tries to convert to integer and return</i>.
-</p>
-<p>
-A lot of words, a lot of ifs isn&#8217;t it? Thats not good.
-</p>
-<p>
-Now, my last implementation with using of Extension Methods:
-</p>
-<pre class="brush: csharp;">
-public int Add(string numbers)
-{
-    var defaultDelimiters = new string[] { ",", "\n" };
-    var delimiters = numbers.CustomDelimiters().Concat(defaultDelimiters).ToArray();
-
-    return numbers.Replace(" ", "").Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
-        .RemoveSpecialSymbols().ToIntegersArray().ValidateIntegersArray().IgnoreIntegersGreatThanThousand().Sum();
-}
-</pre>
-<p>
-Do you feel the power? I definitely do!
-</p>
-<p>
-I believe that this code is very clean. It basically does not require any comments, because it looks like &#8220;plain English&#8221; explanation of what&#8217;s the functionality is all about! Anyway, let&#8217;s try to read: <i>I extract custom delimiters from numbers string and concatenate them with default delimiters. I replace all space with empty symbol (note: this step is not in original requirement, but I put it to keep code robust), then I split them with delimiters ignoring empty lines. After I remove all special symbols in numbers string and convert the result to array of integers. I validate this array (no negatives) and ignore any numbers great than thousand. At the end I sum up everything and return the result</i>.
-</p>
-<p>
-What is good about this code:
-</p>
-<ul>
-<li>
-Method is very short
-</li>
-<li>
-All details are hidden
-</li>
-<li>
-Control flow is very straightforward
-</li>
-<li>
-All dependent methods has meaningful names
-</li>
-<li>
-Method does exactly what it is suppose to do
-</li>
-</ul>
-<h2>Conclusion</h2>
-<p>
-Well, don&#8217;t get me wrong here. I&#8217;m not saying that now only Extension Methods is a way of solving the issues. Of cause not. But if you feel the smell of pipeline of chain of responsibility patters, extension methods are right choice. As always you should consider to do not &#8220;overplay&#8221; with some particular feature of language/framework. 
-</p>
-<p>
-You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexanderbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexanderbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
 </p></div>
 
       

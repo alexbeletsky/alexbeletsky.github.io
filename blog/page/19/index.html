@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Does TDD find bugs? Aug 23rd, 2010 TDD No, of cause not. TDD doesn&#8217;t find bugs in your application. This is a very frequent misconception &hellip;">
+  <meta name="description" content="Failed to generate user instance of SQL Server exception Aug 25th, 2010 Tips If you just switched from ASP.net development server to IIS, you might &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,66 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/failed-to-generate-user-instance-of-sql.html">
+    
+      Failed to generate user instance of SQL Server exception</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-25T20:58:00+03:00" pubdate data-updated="true">Aug 25<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+If you just switched from ASP.net development server to IIS, you might appear to see such exception from data access layer of application:
+</p>
+<p><i>Failed to generate a user instance of SQL Server due to failure in retrieving the user&#8217;s local application data path. Please make sure the user has a local user profile on the computer. The connection will be closed.</i></p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s1600/failed.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 245px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/THVaEkj5R6I/AAAAAAAAG38/8n27Vn-ruXA/s400/failed.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5509408753737877410" /></a>
+<p>
+Don&#8217;t panic, it is easy to fix. Go to Internet Information Services (IIS) Manager console panel. Check out what Application Pool is set for your application, in Basic settings. It would probably be ASP.NET 4.0 Classic. Go to Application Pools section, select ASP.NET 4.0 Classic and go to Advanced Settings. In Advanced Settings. In Process Model, Identity - ApplicationPoolIdentiry would be selected.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s1600/apppool-before.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaLnzy8XI/AAAAAAAAG4E/dLsopVvYP3U/s400/apppool-before.png" border="0" alt=""id="Img1" /></a>
+<p>
+ You must change it with a credentials of user that has physical access to App_Data folder of application.</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s1600/apppool-after.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 352px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/THVaReqXJvI/AAAAAAAAG4M/SxWiFou02tE/s400/apppool-after.png" border="0" alt=""id="Img2" /></a>
+<p>
+You should restart IIS and start application again.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -720,77 +780,6 @@ What my initial feedback on it could be:
 </p>
 <p>
 Anyway, TestLint is free, it doesn&#8217;t crash your Visual Studio, it helps you to do better job in some way - there are no reasons not to install it! I would recommend it and waiting for next versions with improvements. 
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/ndc2010-conference-videos-available-on.html">
-    
-      NDC2010 conference videos available on torrent</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-13T09:52:00+03:00" pubdate data-updated="true">Jul 13<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/video/'>Video</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Huge amount of priceless information is not available on legal torrent server. It is a video from this year <a href="http://www.ndc2010.no">NDC2010.htm</a>. Just check out a list of <a href="http://www.ndc2010.no/index.aspx?cat=1070">speakers</a>, so you could imagine how interesting in should be. 
-</p>
-<p>
-Just a top from a list:
-</p>
-<p>
-<ul>
-<li>.NET Design Patterns for Agile Software Processes 16 Ju.mp4</li>
-<li>5 reasons why projects using DDD fail 17 Jun 10 440 PM.mp4</li>
-<li>A Style of Programming 16 Jun 10 917 AM.mp4</li>
-<li>Advanced Debugging with Visual Studio 17 Jun 10 1017 AM.mp4</li>
-<li>Advanced Tips & Tricks for ASP.NET MVC 2 17 Jun 10 157 .mp4</li>
-<li>Advanced Topics in Agile Planning 18 Jun 10 1240 PM.mp4</li>
-<li>Agile Estimating 18 Jun 10 1038 AM.mp4</li>
-<li>Agile Release Strategy 18 Jun 10 1237 PM.mp4</li>
-<li>Architecting for the .NET Event Model 17 Jun 10 525 PM.mp4</li>
-<li>Architecture of the Client Tier for WPF & Silverlight 1.mp4</li>
-<li>ASP.NET MVC vs Ruby on Rails - The .NET Rocks Smackdown.mp4</li>
-</ul>
-<i> and many more&#8230;</i>
-</p>
-<p>
-So, run your torrent clients and start to download. Torrent file is <a href="http://dl.dropbox.com/u/1373839/NDC2010%20Sessions.torrent">here</a>.
 </p></div>
 
       

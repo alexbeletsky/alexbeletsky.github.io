@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vagrant | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/vagrant/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-27T15:30:30+02:00</updated>
+  <updated>2013-12-31T15:43:00+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -110,7 +110,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x72;&#111;&#111;&#x74;&#64;&#100;&#x6f;&#107;&#107;&#117;&#x2e;&#109;&#101;">&#114;&#x6f;&#111;&#x74;&#x40;&#100;&#111;&#107;&#x6b;&#117;&#x2e;&#x6d;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x72;&#111;&#111;&#116;&#64;&#100;&#x6f;&#107;&#107;&#x75;&#46;&#x6d;&#x65;">&#114;&#x6f;&#x6f;&#116;&#x40;&#100;&#111;&#107;&#107;&#x75;&#x2e;&#x6d;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>

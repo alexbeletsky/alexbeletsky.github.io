@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Thinking about cloud.. Jun 22nd, 2011 Cloud I&#8217;m really inspired with cloud ideas since I first time met it. No doubt, that clouds are future &hellip;">
+  <meta name="description" content="How to start using Git in SVN-based organization Jun 29th, 2011 Git, GitHub, GitSVN I&#8217;ve been using Git about a year now, immediately after &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,147 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/06/how-to-start-using-git-in-svn-based.html">
+    
+      How to start using Git in SVN-based organization</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T22:04:00+03:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been using Git about a year now, immediately after creation my <a href="https://github.com/alexanderbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
+</p>
+<p>
+You are probably aware about all good thing with Git. If you still don&#8217;t you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well. 
+</p>
+<p>
+After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues &#8220;Are you ready to go with Git?&#8221; you would probably hear &#8220;No!&#8221;. It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
+</p>
+<p>
+Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I&#8217;m talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>. 
+</p>
+<p>
+Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I&#8217;ll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.  
+</p>
+<h2>Setup you environment</h2>
+<ul>
+<li>
+Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a> 
+</li>
+<li>
+Setup local user information, example
+<pre>
+    git config --global user.name “alexander.beletsky”
+    git config --global user.email “alexander.beletsky@gmail.com”
+</pre>
+</li>
+<li>
+If you are on Windows and doing only-Windows development, it is recommended to turn off <code>autocrlf</code>
+<pre>
+    git config core.autocrlf false
+</pre>
+</li>
+</ul>
+<h2>Checking out code from SVN repository</h2>
+<ul>
+<li>
+Run git clone command (it might take some time, depending on repository and history size)
+<pre>
+    git svn clone https://mysvnserver/repo 
+</pre>
+</li>
+</ul>
+<p>
+As clone finished, you will see that new folder <code>repo</code> created with the content of your SVN repository. Now, this folder is actually Git repository + you local sources copy. Try to run <code>git log</code> inside the repository and you will see that all your history are there!
+</p>
+<h2>Let&#8217;s do some work</h2>
+<p>
+Now, suppose you start to work on some bugfix. By default, git repository contains one branch called <code>master</code>. Good style is do not do direct commits into master at all, just keep it as synchronization point between SVN repository and your local repository. So, to do actual job you to create branch.
+</p>
+<pre>
+    git checkout -b bugfix-id-1453
+</pre>
+<p>
+This command will create new branch called <code>bugfix-id-1453</code> and immediately switch to it. If you haven&#8217;t noticed how that happened - please welcome to git&#8217;s high performance world.
+</p>
+<p>
+You changed some file and ready to commit. In git it&#8217;s a 2 steps operation. First, you need to put content to stage.. second, you store the content in new commit object.
+</p>
+<pre>
+    git add .
+    git commit -m "issue has been fixed"
+</pre>
+<h2>Commit changes back to SVN</h2>
+<p>
+You&#8217;ve fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world. 
+</p>
+<p>
+Checkout your master branch:
+</p>
+<pre>
+    git checkout master
+</pre>
+<p>
+Get the latest changes from SVN:
+</p>
+<pre>
+    git svn rebase
+</pre>
+<p>
+Now SVN server and local master branch are identical. We have to merge our fix into master:
+</p>
+<pre>
+    git merge bugfix-id-1453
+</pre>
+<p>
+Now master contains previous SVN state + new fix. We have to synchronize local repository and SVN server:
+</p>
+<pre>
+    git svn dcommit
+</pre>
+<h2>Conclusions</h2>
+<p>
+Git-svn is perfect tool to start using git without radical changes in organization. It gives everybody change to try it out, how much it really fits your needs. I&#8217;m having a big pleasure now of working with Git. I&#8217;m not saying it&#8217;s ideal smooth process, sure I met some difficulties. But for me those difficulties are nothing comparing the benefits I&#8217;m getting with it.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1082,259 +1223,6 @@ What we did is only very basic setup, but it already gives a lot of power. It is
 </p>
 <!-- dashboard -->
 <img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/TcpEsDXvmmI/AAAAAAAAHZ8/c7ttFDLm_fA/s912/dashboard.png" alt="dashboard" /></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/05/continues-production-setup-and-run.html">
-    
-      Continuous Delivery: Setup and run</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-02T11:39:00+03:00" pubdate data-updated="true">May 2<span>nd</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/continuous/'>Continuous</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-In my <a href="http://www.beletsky.net/2011/04/continuous-production-overview-and.html">previous post</a> I tried to make it clear that continuous production is for good. This post I&#8217;ll show how to prepare environment for continuous production. The idea is that you should be able to configure and test it locally. All configurations have to be part of source code under SCM. It should not depend on machine and run any environment you like. Success criteria is: pick up clean machine, do checkout, run build.bat/deploy.bat and have installed web application.
-</p>
-<h2>Integration and database deployment</h2>
-<p>
-As I said, <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> are really nice tools for that. As soon as you follow the instruction&#8217;s you will have a <code>build.bat</code>, that would be able to build up all binaries, run tests against that and put all build artifacts to package. That is pretty good for start, but we still missing &#8220;deployment&#8221; part.
-</p>
-<p>
-As you a little bit more familiar with UppercuT, it provides good facilities for deployment as well. Basically, there are folder <code>deployment\templates\</code> where you able to define your custom deployment scripts. Typical web application requires 2 scripts:
-</p>
-<ul>
-<li>AppDeployment.bat - for web site deployment</li>
-<li>DbDeployment.bat - for database deployment</li>
-</ul>
-<p>
-There files are templates, from which script for particular <code>environment</code> is generated. The environment is defined in <code>settings</code> folder and include such information as deploy folder, web site name, database name, server name as number of variables. Example,
-</p>
-<pre class="brush: xml">
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-&lt;project name=&quot;Settings&quot;&gt;
-  &lt;!-- environment settings --&gt;
-  &lt;property name=&quot;environment&quot; value=&quot;PRODUCTION&quot; /&gt;
-  &lt;!-- servers --&gt;
-  &lt;property name=&quot;server.database&quot; value=&quot;.\SQLEXPRESS&quot; /&gt;
-  &lt;property name=&quot;web.deploy.folder&quot; value=&quot;c:\trackyt.net\web\&quot; /&gt;
-  &lt;property name=&quot;web.site.name&quot; value=&quot;trackyt.net&quot; /&gt;
-
-  &lt;property name=&quot;database.name&quot; value=&quot;trackytdb&quot; /&gt;
-  &lt;property name=&quot;log.level&quot; value=&quot;DEBUG&quot; /&gt;
-  &lt;property name=&quot;app.user.name&quot; value=&quot;alexander.beletsky&quot; /&gt;
-
-  &lt;!-- base settings --&gt;
-  &lt;property name=&quot;project.name&quot; value=&quot;trackyt.net&quot; overwrite=&quot;false&quot; /&gt;
-  &lt;property name=&quot;repository.path&quot; value=&quot;git://github.com/alexanderbeletsky/trackyt.net&quot; /&gt;
-  &lt;property name=&quot;folder.app.drop&quot; value=&quot;${project.name}&quot; overwrite=&quot;false&quot; /&gt;
-  &lt;property name=&quot;folder.database&quot; value=&quot;db&quot; overwrite=&quot;false&quot; /&gt;
-
-  &lt;!-- database deployment --&gt;
-  &lt;property name=&quot;dirs.db&quot; value=&quot;..\${folder.database}&quot; /&gt;
-  &lt;property name=&quot;file.version&quot; value=&quot;_BuildInfo.xml&quot; overwrite=&quot;false&quot; /&gt;
-  &lt;property name=&quot;restore.from.path&quot; value=&quot;..\${database.name}.bak&quot; overwrite=&quot;false&quot; /&gt;
-  
-&lt;/project&gt;
-</pre>
-<p>
-In template .bat file it is possible to refer, to some particular variable, so it is possible to make those quite generic. After build, template .bat files are post-processed and actual batch is generated. The name would be like <code>ENVIRONMENT.AppDeployment.bat</code>, where ENVIRONMENT is type of environment you defined.
-</p>
-<h2>Web site deployment script</h2>
-<p>
-If you do ASP.net (MVC) website in 99.9% cases you will be happy with simple <code>XCOPY</code> deployment type. Basically it means, simple copy of website to defined IIS folder. 
-</p>
-<p>
-But, as soon it is continuous production deploy it means that Web Site is already running. It would not be possible to re-write some files, since they could be used by IIS. So, we need to stop the site before update. I found very good possibility for that with <code>%windir%\system32\inetsrv\appcmd</code> command. After site is stopped, we just copy full content of Web folder, remove some redundant files and run site again. In batch code it would look like,
-</p>
-<pre class="brush: plain">
-@echo off
-
-SET DIR=%~d0%~p0%
-
-SET web.deploy.folder="${web.deploy.folder}"
-
-echo stopping web site..
-call %windir%\system32\inetsrv\appcmd stop site ${web.site.name}
-if %ERRORLEVEL% NEQ 0 goto errors
-
-echo copy application content
-rmdir /s /q %web.deploy.folder%
-xcopy /E /F /H /R ..\_PublishedWebSites\Web %web.deploy.folder%
-xcopy ..\build_artifacts\_BuildInfo.xml %web.deploy.folder%
-if %ERRORLEVEL% NEQ 0 goto errors
-
-echo remove redudant files
-del %web.deploy.folder%*Tests*.htm*
-del %web.deploy.folder%Web.Debug.config  
-del %web.deploy.folder%Web.Release.config 
-del %web.deploy.folder%*packages* 
-if %ERRORLEVEL% NEQ 0 goto errors
-
-echo starting web site
-%windir%\system32\inetsrv\appcmd start site ${web.site.name}
-if %ERRORLEVEL% NEQ 0 goto errors
-
-goto finish
-
-:errors
-EXIT /B %ERRORLEVEL%
-
-:finish
-</pre>
-<h2>Database deployment script</h2>
-<p>
-<a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> does all infrastructure work for us. All we need to create a batch file, that would be able to run during continuous production cycle. As well as <code>AppDeployment.bat</code> I defined <code>DbDeployment.bat</code> in <code>deployment\templates\</code> folder. But before any update of database it is always good to have a backup, to be able to restore from it if something went wrong. Actually, RoundhousE should have such ability, but unfortunately I didn&#8217;t get how to use it. I&#8217;ve created my simple SQL script that is able to backup.
-</p>
-<pre class="brush: sql">
-USE $(Database);
-GO
-BACKUP DATABASE $(Database)
-TO DISK = 'C:\backup\$(Database).bak'
-   WITH FORMAT,
-      MEDIANAME = 'C_SQLServerBackups',
-      NAME = 'Full Backup of $(Database)';
-GO
-</pre>
-<p>
-And corresponding batch file, that would run <code>backup.sql</code>.
-</p>
-<pre class="brush: plain">
-@echo off
-
-if '%1' == '' goto usage
-if '%2' == '' goto usage
-
-sqlcmd -S %1 -i .\scripts\backupdb.sql -v Database = %2 -e
-if %ERRORLEVEL% NEQ 0 goto errors
-
-goto finish
-
-:usage
-echo.
-echo Usage: backup.bat [server] [database]
-echo [server] - server eg. mymachine\SQLEXPRESS
-echo [database] - name of database to backup
-echo.
-EXIT /B 1
-
-:errors
-EXIT /B %ERRORLEVEL%
-
-:finish
-</pre>
-<p>
-Both files are placed into <code>deployment\scripts</code> folder. So, the <code>DbDeployment.bat</code> template, would first run database backup and if it is successfull, run RoundhousE to update database.
-</p>
-<pre class="brush: plain">
-@echo off
-
-SET database.name="${database.name}"
-SET sql.files.directory="${dirs.db}"
-SET server.database="${server.database}"
-SET repository.path="${repository.path}"
-SET version.file="${file.version}"
-SET version.xpath="//buildInfo/version"
-SET environment="${environment}"
-
-echo backup database
-call .\scripts\backupdb.bat %server.database% %database.name%
-if %ERRORLEVEL% NEQ 0 goto errors
-
-echo update database
-"%DIR%rh\rh.exe" /d=%database.name% /f=%sql.files.directory% /s=%server.database% /vf=%version.file% /vx=%version.xpath% /r=%repository.path% /env=%environment% --ni --simple
-if %ERRORLEVEL% NEQ 0 goto errors
-
-goto finish
-
-:errors
-EXIT /B %ERRORLEVEL%
-
-:finish
-</pre>
-<h2>Putting it all together</h2>
-<p>
-We already have <code>build.bat</code> as part of UppercuT, now we need to define <code>deploy.bat</code> that would do deployment of product. It would be called immediately after build.bat finished, so binaries are ready, tests passed and <code>code_drop</code> folder contains all artifacts for deployment. The script is rather simple and utilize stuff we did previously.
-</p>
-<pre class="brush: plain">
-@echo off
-
-if '%1' == '' goto usage
-
-SET ENV=%1
-
-cd .\code_drop\deployment
-
-echo Deploy database
-call .\%ENV%.DbDeployment.bat
-if %ERRORLEVEL% NEQ 0 goto errors
-
-echo Deploy application
-call .\%ENV%.AppDeployment.bat
-if %ERRORLEVEL% NEQ 0 goto errors
-
-goto finish
-
-:usage
-echo.
-echo tracky.net deploy script
-echo Usage: deploy.bat [environment]
-echo [environment] - deployment environment could be STAGING or PRODUCTION
-echo.
-EXIT /B 1
-
-:errors
-echo Build FAILED
-EXIT /B %ERRORLEVEL%
-
-:finish
-echo Build SUCCESS
-</pre>
-<p>
-Notice, it receives the parameter <code>ENV</code>. It will contain type of environment for deployment. For staging environment, you should call <code>deploy.bar STAGING</code>, for production <code>deploy.bat PRODUCTION</code>.
-</p>
-<h2>Testing it out</h2>
-<p>
-That&#8217;s basically it. Now, you should make sure everything works as expected. Run <code>build.bat/deploy.bat</code>, make sure build went with no errors, deploy.bat correctly does back up of database, updates database and update site content. 
-</p>
-<p>
-As I said on top, it is very important that configuration is part of product, part of source code. If you follow this, it will be possible to deploy application but just getting sources from SCM. This is first step of setting up your Continuous Production server.
-</p></div>
 
       
       
