@@ -10,7 +10,7 @@ Traditionally, first Saturday of New Year - time look back for year that passed.
 
 <!-- More -->
 
-## Starting up own company
+## Starting up company
 
 I no longer work for [e-conomic]() where I spent almost 4 years. I have extended [explanation](http://beletsky.net/2013/12/i-quit-my-job.html) for the reasons I did so. But in short, my current primarily goal is build my own company, something meaningful and remarkable.
 
