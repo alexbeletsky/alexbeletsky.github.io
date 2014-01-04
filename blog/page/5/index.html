@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Company Days 2012 in E-conomic Sep 20th, 2012 E-conomic, Mind Company Days is a yearly event in E-conomic, then all employees gather together. It&# &hellip;">
+  <meta name="description" content="The Game of Life Sep 27th, 2012 Clean Code, Code Kata, JavaScript, TDD Last weekend the good friends of mine were organizing great event, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,83 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/09/the-game-of-life.html">
+    
+      The Game of Life</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-27T11:52:00+03:00" pubdate data-updated="true">Sep 27<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/code-kata/'>Code Kata</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
+    </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
+    </p>    <p>        To do not stay with my misery of missing event, I decided to &#8220;play&#8221; game of life at home. Trying to follow the rules of sessions, I started to write some JavaScript code. It&#8217;s even hard to tell, how much fun I had during this implementation.<br />
+    </p>    <h2>Tests, code, tests</h2>    <p>        TDD is very recommended way of development in CodeRetreats. I love TDD and fortunately the game of life is very TDD friendly. It&#8217;s all about the logic. Logic seems to be very simple and easy describe with tests. For my JavaScript testing I used to use <a href="http://pivotal.github.com/jasmine/">Jasmine</a> testing framework. Jasmine is BDD tests style, which was a little difficult to me at very beginning, but not I tend to write all my tests with BDD style.<br />
+    </p>    <p>        I&#8217;ve spent first two sessions for idea elaboration. At the end third session, I got something working. As I said, the process of writing that code was so fun to me, that I even decided to <a href="https://gist.github.com/3763692">gist</a> the code I created so far. <br />
+    </p>    <a href="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png" /><br />
+    </a><br />
+    <p>        My big disappointment after was that code is actually not working.<br />
+    </p>    <h2>Understanding the problem</h2>    <p>        Even if I had good tests suite, that showed my code works as expected the game was broken. And the issue is that I didn&#8217;t understand the domain good enough. It took me 4 sessions (about 4 hours) to finally understand the game.<br />
+    </p>    <p>        I proved it once again for myself, there are no perfect code; the code you created at first time is probably broken (unless you understand the domain perfectly, but it&#8217;s rarely happen in reality). It&#8217;s OK to completely remove the code you created before and start from the beginning. And with each iteration you moving faster and faster.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png"><br />
+        <img src="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png" /><br />
+    </a><br />
+    <p>        Knowing the requirements I was able to create good test suite. <br />
+    </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it&#8217;s state and position. The <a href="https://github.com/alexanderbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
+        <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
+    </a><br />
+    <p>        Again, I was so happy with code. It looked very readable as for me, without nested cycles and if-else statements.<br />
+    </p>    <h2>Visualisation</h2>    <p>        You can really understand if something works or not, only if you see it in action. I had to have some UI to see, how game is actually working. <br />
+    </p>    <p>        I&#8217;ve created very simple HTML based UI. The number of div&#8217;s which change it&#8217;s state, depending on cell state (alive or dead).<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        The visualization of results is very important part. It&#8217;s only then I tried to run the game on 64x64 square, I realized that performance of my implementation is so terribly poor. It runs very slowly on Chrome, it makes IE10 die.<br />
+    </p>    <p>        It means that, all beautiful code, tests, specs and so on - is almost useless, than it comes to performance. My 2-pass algorithm, with a simple implementation is not &#8220;production&#8221; ready, if we talk about some real software. Unit tests are usually done on smaller sets of data. Visualisation and trying the things on larger set of data opens up the reality.<br />
+    </p>    <h2>Conclusions</h2>    <p>        As I already said, it&#8217;s so much fun. It makes you feel like &#8220;back to roots&#8221;, forget about your enterprise stuff and do some real work. Besides it&#8217;s great TDD exercise. It&#8217;s probably to big to be called code kata, but it is still great for sharping an axe. Focusing on simple design is important. But making things &#8220;visible&#8221; and running them in real mode is vital. <br />
+    </p>    <p>        The most important conclusion for me is: I&#8217;m still newbie developer, with so many areas to improve.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -711,72 +788,6 @@
 }
 </pre><p>    For view location conventions you just need to provider the folder (relative to rootfolder), where the view are located. I used only 2 simple conventions: 1) view is just placed under /views folder 2) view is placed under /view/moduleName folder. <br />
 </p><p>    For static resources, it a little bit trickier. You have to return the *response* object, for corresponding request. Fortunately, <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Conventions/StaticContentConventionBuilder.cs">StaticContentConventionBuilder</a> class, has some helper methods that make it simpler. <br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/08/re-thinking-candidate-application.html">
-    
-      Re-thinking Candidate application</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T10:05:00+03:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/candidate/'>Candidate</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>   I&#8217;ve released 0.0.1 version of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> pretty long time ago. I was actually quite happy how the things went, before I collected some initial feedback. Even, if I can see the application useful, almost all responders had a different opinion. Let&#8217;s briefly see the major concerns.<br />
-</p><h2>IIS hosting</h2><p>    Original idea of Candidate was that it works as usual ASP.NET application, hosted under IIS. That worked really bad, though. Candidate is performing a some operations that requires extended permissions (for git, msbuild, file system operations etc.). That means that IIS web site has to be configured to run under under your personal account (or any other administrative account, with set-up SSH keys, access to msbuild etc). <br />
-</p><p>    All of that created a bit of overhead. First of all, Candidate has to be installed and configured on IIS. Even, it is possible to create kind of installer to automate this job, it does not sound good. In other hand, some people might have very strict policies on their machines, so it is not even possible to change any kind of IIS settings under it.<br />
-</p><p>    So, it turned out to be bad idea for this particular application.<br />
-</p><h2>Deployment scenarios</h2><p>    The primary deployment scenario that implemented in Candidate is local one. It means, it&#8217;s able to build and test the site and deploy it to local IIS. I did so, since I use the same scenario for deployment of <a href="http://trackyt.net/">trackyt.net</a>, which is hosted on VPS and deployed by Jenkins running on the same server.<br />
-</p><p>    But many people are not using VPS, but rather sharing hosting there they are not even able to install any kind of other software. So, they are more interested in <i>remote</i> deployment, not <i>local</i> one. With the re-invention of <a href="http://www.windowsazure.com/en-us/">Azure</a>, you might consider scenarios of deployment existing web application to it seamlessly.<br />
-</p><p>    Local deployments was a good for prototype, but not good at all for product.<br />
-</p><h2>Technical stuff</h2><p>    I stick to framework named <a href="https://github.com/alexanderbeletsky/bounce">Bounce</a>. It&#8217;s very powerful product, that basically allows to write a deployment scripts in .NET languages. Then I originally saw it, I thought it&#8217;s great since it does everything I need, including git operations, msbuild and IIS sites deployment. Even more, Bounce is the one of the best .NET code I ever seen, so respect to <a href="https://github.com/refractalize">refractalize</a>.<br />
-</p><p>    But.. Bounce, is not that good for long perspective. It required to create a lot of <a href="https://github.com/alexanderbeletsky/candidate/tree/master/Candidate.Core/Configurations">configuration code</a>, hard to change logging options and further extension.<br />
-</p><p>    For a long running product I need more lightweight and robust approach.<br />
-</p><h2>Starting it over again</h2><p>    Considering all things above, I decided to re-start the project, almost from the scratch.<br />
-</p><p>    It would be based on 3 different technologies, that in my opinion are agile enough to allow me to build what I want. <br />
-</p><ul>    <li><strong>NancyFX</strong> - will be used as application host. Currently Nancy is 0.11 version, that has a lot of improvements comparing to 0.9 that I used. The main reason to choose that, is Nancy allows to create self-hosted application. It&#8217;s basically .exe application, that you can run and it starts the HTTP server. I plan to have all-in-one executable, that do not require any installations and will prepare all required infrastructure and first run. That would solve both installation and IIS limitations problem.<br />
-    </li>
-    <li><strong>RavenDB</strong> - as application document storage. In previous version I didn&#8217;t use any kind of database at all, being happy with simple <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Settings/SettingsManager.cs">SettingsManager</a> to store .NET objects into JSON files. The reason is that I didn&#8217;t have any dependencies on any software (as SQL Express). With Raven it is possible to use Embedded mode, so it does not require any service running, just the assemblies.<br />
-    </li>
-    <li><strong>PowerShell</strong> - as deployment scripts. No more VCS, build, test and deploy code in C#. I plan to have a generic PowerShell scripts that would be easy to run and maintain. With a PowerShell I hope to extend the deployment scenarios to support Local, FTP, MS Deploy, Azure deployments.</li>
-</ul><p>    Unfortunately, I&#8217;m not yet proficient with any of these technologies. It makes me very exited to learn something new. I&#8217;ve already created a <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">branch</a> where some basic infrastructure is prepared. My goal would be create first prototype in 2 - 3 weeks.<br />
-</p><p>    And I want to appreciate everyone who provided feedback and useful technical suggestions. I hope it would turn in something good.<br />
 </p></div>
 
       

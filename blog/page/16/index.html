@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Extension methods and clean code Feb 10th, 2011 Clean Code, Code Kata, Tips Extension methods is one of my favorite features of C# language. It &hellip;">
+  <meta name="description" content="Ninject provider as factory method Feb 13th, 2011 Design, MVC, Tips, Tools, Trackyt.net, asp.net Ninject is a very nice and easy to use, open source &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,151 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/ninject-provider-as-factory-method.html">
+    
+      Ninject provider as factory method</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-13T19:22:00+02:00" pubdate data-updated="true">Feb 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
+</p>
+<p>
+I was implementing small feature recently. As user registered on site, he receives confirmation email and registration details. Pretty common functionality along the sites. So, I add next application service <code>INotificationService</code> that took responsibility of sending email message to user. Nothing special, nothing complex. 
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationService : INotificationService
+    {
+        private IEMailService _emailService;
+
+        public NotificationService(IEMailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        public void NotifyUserOnRegistration(string usersEmail, string password)
+        {
+            var emailMessage = CreateEmailMessageForUser(usersEmail, password);
+            _emailService.SendEmail(emailMessage, "support");
+        }
+
+        //...
+</pre>
+<p>
+As I&#8217;ve tested and integrated it to application, everything were just fine. Till the time I reset database and re-run tests. The problem, that <code>INotificationService</code> itself depends on <code>IEmailService</code> that uses <code>ICredentialsRepository</code> to extract email server credentials (account, password, settings) from database. After database is reset, <code>Credentials</code> table is just empty and <code>IEmailService</code> throws exception that there are no credentials, so send email is impossible. I could not add credentials as SQL to database script, since it depend on configuration and exposes private password. Do it manually after each reset of database is boring task. Furthermore, I don&#8217;t want my application to send any emails as I just do some development testing.
+</p>
+<p>
+The obvious design workaround is - define <code>INotificationServiceFactory</code> that responsible for <code>NotificationService</code> instantiation. Factory decides, if application run in <code>debug</code> mode, just stub of <code>NotificationService</code> is used, otherwise real implementation is used.
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationServiceFactory : INotificationServiceFactory
+    {
+        public INotificationService GetService()
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                // just stub..
+                return new NotificationServiceForDebug();
+            }
+
+            // here I need to pass EmailService to constructor
+            return new NotificationService ( // ??? );
+        }
+
+        // ...
+</pre>
+<p>
+But it is not so easy as it seems to.. Here the problem: <code>NotificationService</code> have to accept <code>EmailService</code>, that have to be created created by DI framework (I could not create it by <code>new</code> since I loose all benefits of inversion of control). So, in factory I need to have a <code>IKernel</code> object - Ninject core object, for instantiating of objects from Inversion of Control container. It should be extended with constructor taking <code>IKernel</code> as argument.
+</p>
+<p>Issues:</p>
+<ul>
+<li><strong>Circular dependency</strong> - factory is defined in Core assembly, kernel is defined in Web application.. Web application references Core, to make it work now Core need to reference Web (it is actually possible, but very ugly.. I try to avoid such things).</li>
+<li><strong>Additional references</strong> - now Core also need to reference Ninject, to make it compliable.</li>
+<li><strong>Violation of Dependency inversion principle</strong> - <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">one</a> of the <a href="http://en.wikipedia.org/wiki/Solid_(object-oriented_design)">SOLID</a> principles of object oriented systems. Model must not depend on infrastructure.</li>
+</ul>
+<p>
+Fortunately Ninject provides functionality to avoid issues mentioned above! Instead of binding to exact type, like
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationServiceFactory&gt;().To&lt;NotificationServiceFactory&gt;();
+
+</pre>
+<p>
+I can bind creation of type to Provider:
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationService&gt;().ToProvider&lt;TrackyNotificationServiceProvider&gt;();
+
+</pre>
+<p>
+Provider is class that implement <a href="https://github.com/ninject/ninject/wiki/Providers,-Factory-Methods-and-the-Activation-Context">IProvider</a> interface, which is actually just one method <code>CreateInstance</code>. CreateInstance, receives <code>IContext</code> object as parameter that contains <code>IKernel</code>. <code>TrackyNotificationServiceProvider</code> is placed on same level as the rest of Ninject infrastructure code is placed. Model remains clear and exact and do not mess up with infrastructure code.
+</p>
+<pre class="brush: csharp">
+namespace Web.Infrastructure
+{
+    public class TrackyNotificationServiceProvider : Provider&lt;INotificationService&gt; 
+    {
+        protected override INotificationService CreateInstance(IContext context)
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                return new NotificationServiceForDebug();
+            }
+
+            return new NotificationService(context.Kernel.Get&lt;IEMailService&gt;());
+        }
+    }
+}
+</pre>
+<p>
+Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1285,95 +1430,6 @@ Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextRun and assi
 Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextDebug and assign it to &#8220;Ctrl + R, Ctrl + D&#8221; (run debugger)
 </p>
 <a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s1600/resharper.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s400/resharper.png" border="0" alt=""id="Img1" /></a></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/11/you-stucked-stop-and-ask-for-help.html">
-    
-      You stucked? Stop and ask for help!</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-26T13:24:00+02:00" pubdate data-updated="true">Nov 26<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I&#8217;ve been working on one task for last several days. In a product I work there is feature that looks like Excel - template editor. User is able to put a data to sheets and do some simple calculation with formulas (SUM, MUL etc.). This functionality has been created far ago and worked fine. But recently we&#8217;ve changed our engine and now we support not only &#8220;plain&#8221; data structure, but expanded one - when user is able to say - &#8220;this column or row is expanded with such data&#8221;. Data size is dynamic and could be predicted while template edition and SUM function have to take into account that data is expanded.
-</p>
-<p>
-So, I&#8217;ve created a number of test cases that cover new functionality and implemented simple mechanism that process formula like SUM(A1:B2) and adjust start and finish indexes according to size of expansion. At the beginning that <code>AdjustIndexes</code> function were small and easy to read, it just perform simple calculation based on current row/current column, original indexes places and some information from expanded data. 
-</p>
-<p>
-But after a demo we&#8217;ve found some bugs: if several expansions present in template - it fails. If not expanded data comes after expanded it fails and some more..
-</p>
-<p>
-I&#8217;ve extended tests cases with all found issues and start to attack problem. I start to adjust <code>AdjustIndexes</code> to work with new cases. And after a while I&#8217;ve completed it, but this function started to look scary - a lot of nested if-else cases, calculation of indexes, += operations etc. OK, I thought.. it could be refactored later, so I did a checkin. My happiness was not long, because while developers tests I just found another bug. OK, usual stuff - test and fix. Let&#8217;s go.
-</p>
-<p>
-Meanwhile I&#8217;ve already spent about 6 hours on that. At stand-up I said - &#8220;it seems to be alright, only one case is failing now, I&#8217;m finishing up and commit&#8221;. But I was wrong. As I changed the function to work with new case, new case became green but existing ones became red.. I fell stress that task originally estimated for 1 day is now 1.5 and supposed to be about 2 days. I wanted to do quickly, so started to play a game - &#8220;Change something, re-run the tests if GREEN - you win!&#8221; (such approach actually works some time as soon as you got good test cases and double check the results). Already created function became more scary and what is worse - it does not satisfied all tests. I lost the control of it and only one I understand - &#8220;I do not now understand this function works now.. It does something wrong and I have to go with another idea to solve the problem&#8221;.
-</p>
-<p>
-It was about 10 hours spend on that. I started to lose the game, but just didn&#8217;t want to give up. I need another idea, I need another approach.. I need additional data structures that would help to map original table indexes to expanded ones, I need to change the engine to fill those mapping, I need to change <code>AdjustIndexes</code> function to take mapping into account. I felt a little tired and stressed but proceed with coding like crazy. 
-</p>
-<p>
-14 hours passes, late evening, and I was finishing up my <code>Mapping</code> mechanism, while I was contacted by my teammate Carsten - &#8220;How is it going with SUM?&#8221;. I&#8217;ve explained my issues, my approach and my status, but basically it was like - &#8220;It is not yet done&#8221;. But he said that it seems like I&#8217;m doing something wrong and proposed another algorithm of doing this adjustment, with no other additional data structures. I probably was to tired to understand everything there, so he just said &#8220;Wait for 30 minutes, I&#8217;ll do some code and show to?&#8221;.  I&#8217;ve been shocked, something I worked for 14 already he want to do in 0.5 hour? OK.  
-</p>
-<p>
-He sent his first solution. Hopefully it was only one function to change I could easily integrated and re-run all test cases I had so far. Most of them were failed at first try. We started a pair session and after several run/fix/test sessions it started to work! All tests are green! It works in application.. Function is quite small and easy to read.
-</p>
-<p>
-Yeahh.. that was such great work (respect to Carsten) and so such shame on me. 15 hours.. vs 40 minutes.. 30 lines of code vs. 300.. one point of integration vs. many. I&#8217;ve been defeated.
-</p>
-<p>
-When I finished it up and went a street to walk with dog, I&#8217;ve tried to find at lest something positive in all this situation. And you know what? I can up with one another feature to <a href="http://trackyt.net">trackyt.net</a>. 
-</p>
-<p>
-If you have a task in progress and you spend 12 (8, 6 or even 4) hours, task is became red and interacts with user:
-</p>
-<ul>
-<li>Take a rest, re-think</li>
-<li>Ask for help</li>
-</ul>
-<p>
-That would prevent my situation somehow. It will try to say to you &#8220;Man, you probably stucked with that, ask some one to take a look&#8221;.. This seems to be obvious, but if you are in hurry you are not just doing that hoping to handle everything by yourself. This is not good. I was happy about such idea and lesson learned, so back to home with good mood already :).
-</p>
-<p>
-Have you been to such situation, do you think it&#8217;s valuable if you have some stopwatch and notifier that would push you shoulder and say &#8220;Stop now ask for help!&#8221; ?
-</p></div>
 
       
       

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Continuous Delivery: Setup and run May 2nd, 2011 Continuous In my previous post I tried to make it clear that continuous production is for good. &hellip;">
+  <meta name="description" content="Continuous Delivery: Make it work May 11th, 2011 Continuous As soon as we setup project infrastructure in a way that build and deploy is done by one &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,160 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/05/continuous-production-make-it-work.html">
+    
+      Continuous Delivery: Make it work</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-11T10:27:00+03:00" pubdate data-updated="true">May 11<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/continuous/'>Continuous</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+As soon as we <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">setup</a> project infrastructure in a way that build and deploy is done by one batch command, we are ready to run this process continuously. It is possible to take any CI server you want, I stopped on <a href="http://jenkins-ci.org/">Jenkins</a>.. basically it contains everything I need. But before start with Jenkins, let&#8217;s one more time take a look current infrastructure and goals.
+</p>
+<h2>Git branching model</h2>
+<p>
+There is great <a href="http://nvie.com/posts/a-successful-git-branching-model">article</a> on that topic, I used main ideas from that. So, I have 2 branches in my <code>origin</code> that exists all the time. They are: <code>master</code> and <code>development</code>. All pushes I do during implementation are going to <code>development</code> branch. No direct pushes are made to <code>master</code> at all (there are some exceptions of cause, but I try to follow that rule). As soon as code in <code>development</code> is stabilized, I prepare special <code>release</code> branch (update version and small clean up there) and <code>release</code> is being merged to <code>master</code> as it tested and everything is fine.
+</p>
+<h2>Staging and Production environments</h2>
+<p>
+I define 2 types of environments: Staging and Production. Environment includes: binaries, markup, database, deploy scripts.
+</p>
+<p>Everything that is being developed are goes to staging environment immediately (and automatically). Production update is being run manually as soon as all testing on Staging are finished. Separation of environments is great idea. Even if we are trying hard to have potentially shippable software during each build, this is not true. It is usually a lot of problems in latest version that need to be fixed before production server update.
+</p>
+<p>
+So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>. 
+</p>
+<p>
+In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexanderbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexanderbeletsky/trackyt.net">this</a>.
+</p>
+<h2>What I want to get?</h2>
+<p>
+I want to have automatic system that would update my <a href="http://stage.trackyt.net/">Staging</a> with every push to <code>development</code> branch and I want automatic system that would update my <a href="http://www.trackyt.net/">Production</a> as soon as <code>master</code> branch is ready to. As it said in <a href="http://www.beletsky.net/2011/04/continues-production-overview-and.html">overview</a> having such system is great reduce of deployment overhead. Let&#8217;s make this happen!
+</p>
+<p>
+As I said earlier I would use <a href="http://jenkins-ci.org/">Jenkins</a>. Great stuff about this software that is very intuitive! Setup is easy and fun, I would put just a little guidance of process.
+</p>
+<h2>Local Jenkins server setup</h2>
+<p>
+As you download Jenkins WAR file, it is easy to start just with <code>java -jar jenkins.war</code>. Now, the dashboard is available at <code>http://localhost:8080/</code>.
+</p>
+<h3>Plugins</h3>
+<p>
+First, you should add all required plugins. It already contains some, but some are missing. I&#8217;ve add such to my default configuration:
+</p>
+<ul>
+<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Jenkins GIT plugin</a></li>
+<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin">Github plugin</a></li>
+<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/NUnit+Plugin">NUnit Plugin</a></li>
+</ul>
+<p>
+Go to &#8220;Manage Jenkins&#8221; -> &#8220;Manage Plugins&#8221; and install missing one.
+</p>
+<p>
+So, my configuration looks like this:
+</p>
+<!-- plugins.png -->
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7BUnOiGI/AAAAAAAAHZk/XSxs5Y_zrR0/plugins.png" alt="plugins" />
+<h3>Configure system</h3>
+<p>
+Now go to &#8220;Manage Jenkins&#8221; -> &#8220;Configure System&#8221; and find &#8220;Git&#8221; section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same). 
+</p>
+<h3>Create new job</h3>
+<p>
+After basic configuration is done, let&#8217;s define new job. Go to &#8220;New job&#8221;. In common section you should give your job name and provide with githib path to repository.
+</p>
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Tco7A-XTqYI/AAAAAAAAHZg/0kLPsWXWj6k/common-section.png" alt="common section" />
+<p>
+In Source Control Management: URL to Git repository, Branch to build and Repository browser (optional).
+</p>
+<!-- SCM.png -->
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7Bh2RuUI/AAAAAAAAHZs/p568dcfUStk/SCM.png" alt="SCM" />
+<p>
+Build triggers (explain a bit later).
+</p>
+<!-- build-triggers.png -->
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Tco7A6XC3ZI/AAAAAAAAHZY/X39bPBs9U3Q/build-triggers.png" alt="build-triggers" />
+<p>
+In Build section you specify commands to build/test/package and to deploy results. See my <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">previous post</a> for details.
+</p>
+<!-- build.png -->
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Tco7A76md_I/AAAAAAAAHZc/5JPyCIL5Pek/build.png" alt="build" />
+<p>
+Finally in Post-build section, specify path to grab artifacts.
+</p>
+<!-- post-build.png -->
+<h3>Test it locally</h3>
+<p>
+As soon as configuration is done, you can test your build locally. Just start your job and make sure that: build run, tests executed, new database deployed, new application deployed. Basically if everything done correctly in previous <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">steps</a> you should not experience any troubles. If it is fine that means the configuration is simply ready to be put to production server.
+</p>
+<h2>Move it to production</h2>
+<p>
+As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server. 
+</p>
+<p>
+Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP&#8217;ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard. 
+</p>
+<h3>Little adjustments for production server</h3>
+<p>
+My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning. 
+</p>
+<h3>Using Github hook to automate build run</h3>
+<p>
+I want my every commit to <code>development</code> to be tested and to be visible on Stage. As it said in <strong>Configure system</strong> part, you can setup build triggers. With build trigger you can run build just by requesting this URL <code>http://jenkins.server/jobname/build?token=TOKEN</code>.
+</p>
+<p>
+In github repository go to Admin section and setup new hook in &#8220;Post Recieve URLs&#8221; section, like this:
+</p>
+<!-- gtihub -->
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/TcpDr67qBpI/AAAAAAAAHZ4/bL1s9Lwhh7g/s912/github.png" alt="github" />
+<p>
+This concludes the setup.
+</p>
+<h2>Control your builds all the time</h2>
+<p>
+What we did is only very basic setup, but it already gives a lot of power. It is really easy to track all builds/artifacts/history of changes. Downtime of site is extreamly slow (comparing to manual changes). Dashboard is very convenient to control builds:
+</p>
+<!-- dashboard -->
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/TcpEsDXvmmI/AAAAAAAAHZ8/c7ttFDLm_fA/s912/dashboard.png" alt="dashboard" /></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1218,71 +1372,6 @@ I recently opened podcasts power for myself. I spend at least several hours walk
 </ul>
 <p>
 Picking a little bit from every source of information make you more comfortable in our fast changing world :).. If you know some great resources that you like, please share as comments.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/03/aspnet-developers-disease.html">
-    
-      ASP.NET developers disease</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-22T14:06:00+02:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/life/'>Life</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/MVC etc. So, I do a lot of interviews nowadays and I found out interesting fact. I&#8217;ve noticed symptoms of disease many of many ASP.net guys suffer from. The people who spent a lot of time with WebForms do not really understand web.
-</p>
-<p>
-Originally WebForms has been designed in perspective to be conveniently used by Visual Basic developers. Ones who created UI in designers and put logic of application into control event handlers methods. That was a good idea because that gave possibility to many people switch to web world, without too much 
-    harm their own world of Windows programming (controls, events, handlers). That worked great, because all you have to understand is Page Lifecycle, be aware of controls that Microsoft created for you and be able to drag the control in WYSIWYG editor. The application created in this way was mostly fine, because it was to far to Web 2.0, AJAX, CSS and HTML revolutions.
-</p>
-<p>
-Time has passed. Web stepped far away from a <code>form</code> with <code>submit</code> button and tables for everything, into rich UI applications with complex client side code, styled up with CSS. WebForms issues appeared really seriously, because it too much abstracted you from &#8220;what is actually going on&#8221;. WebForms controls generated HTML for you, did a server side validation. You could tweak a bit of CSS on server side as well. But this is a not controlling of your application, but rather adapting to &#8220;old-school&#8221; type of web development with ASP.net. With such level of abstraction you were loosing many important things.
-</p>
-<p>
-I&#8217;m not saying the WebForms is bad. I&#8217;m saying that WebForms did a bad joke for the people who do not try to see bit far from their nose. If you open your eyes you would see how much web development is far from ASP.net WebForms development. Modern web development is actually started on client side. You have to understand HTML/JS really fine to be efficient in it. You might not be a designer, but you have to be able to style up your HTML from UI mock in PSD. You should understand REST and AJAX to make go from web page to web application. And the issue is - the most ASP.net developers do not know these things. They think that knowing a C# or VB.net is much OK for creation of web application and the rest is work for front-end developers. 
-</p>
-<p>
-Guys, seriously.. If you think: &#8220;HTML is easy, I could do learn in 5 mins&#8221;, &#8220;CSS is nothing to do..&#8221;, &#8220;I don&#8217;t want to do javascript&#8221; - you have those symptoms. Please try to markup the page that might look like <a href="http://onehub.com/">that</a>, enchase it with CSS3 transitions and shadows. Try to use jQuery for handling UI. You will see it is not easy at all. And basically your knowledge on C# does not make help you. I would say, it might be even harder than you application server side. Knowing how to do things with WebForms is great, but you should not be only limited to WebForms.
-</p>
-<p>
-So, if your CV says you are <i>web developer</i>, please make sure that your are really able to do <i>web products</i>. Do not limit your self to &#8220;client-side&#8221; or &#8220;server-side&#8221; developer, it does not work any more. Be universal, look for the same things in a different angles, that helps sometimes. 
 </p></div>
 
       

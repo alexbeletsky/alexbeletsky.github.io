@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2013-12-31T15:43:00+02:00</updated>
+  <updated>2014-01-04T13:53:35+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Looking Back to 2013]]></title>
+    <link href="http://beletsky.net/2014/01/looking-back-to-2013.html"/>
+    <updated>2014-01-04T11:05:00+02:00</updated>
+    <id>http://beletsky.net/2014/01/looking-back-to-2013</id>
+    <content type="html"><![CDATA[<p>Traditionally, first Saturday of New Year &ndash; time look back for year that passed. As usually, I do analisys throught a several aspects. Primary job, blogging and speaking, communities and side projects.</p>
+
+<!-- More -->
+
+
+<h2>Starting up company</h2>
+
+<p>I no longer work for <a href="">e-conomic</a> where I spent almost 4 years. I have extended <a href="http://beletsky.net/2013/12/i-quit-my-job.html">explanation</a> for the reasons I did so. But in short, my current primarily goal is build my own company, something meaningful and remarkable.</p>
+
+<p>I joined <em>funemployment</em> mode, changing my vision of building products. I treated startups as venture of several people, who just decided to build something cool. Reality if much more tough. Coding eventually becomes less priority thing in startup, but seeking for a sustainable business model become first one.</p>
+
+<p>As passioned developer, it&rsquo;s really hard to change your mind. Instead of coding new features, you have to build a set of hypotheses and try to validate them as soon as possible. You have to find your target audience, valuable proposition and best user experience. Startup is all about uncertainty and <a href="https://likeastore.com">Likeastore</a> is currently in the most uncertain position.</p>
+
+<p>I&rsquo;m really happy that now I can spend full-time effort for company. We&rsquo;ve joined <a href="http://eastlabs.co/">EastLabs</a> business accelerator program as most efficient way to gather required skills and experience.</p>
+
+<h2>Speaking and blogging</h2>
+
+<p>Comparing to 2012, I both speak and blog less. I don&rsquo;t think it&rsquo;s bad sign, but it&rsquo;s more a way of finding some balance.</p>
+
+<p>I&rsquo;ve produced 27 blog post, against 63 of 2012. I covered various topics, I would say less specific that I did previously. I <a href="http://beletsky.net/2013/06/moved-from-blogger-to-octopress.html">switched</a> from blogger to github + octopress, feel great about so far.</p>
+
+<p>As for stats, last year <a href="http://beletsky.net">beletsky.net</a> got: 68,182 visits, 53,248 unique visitors. That&rsquo;s much less than year <a href="http://beletsky.net/2013/01/looking-back-to-2012.html">before</a>, quite expected in the same time.</p>
+
+<p>Top read content of 2013:</p>
+
+<ul>
+<li><a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">Digital Ocean + Dokku = 10$ Heroku</a> describing experience of building micro PaaS for internal needs on top of Dokku.</li>
+<li><a href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html">Playing with Dokku on Vagrant</a> easy playground for Dokku based on Vagrant virtual environment.</li>
+<li><a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">Why We Moved From AppFog to Nodejitsu</a> just my rant about AppFog quality of service.</li>
+</ul>
+
+
+<p>As for talks, I&rsquo;ve prepared 5 <a href="https://speakerdeck.com/alexanderbeletsky">presentations</a>. As achievement of 2013 I see my talk on <a href="https://www.youtube.com/watch?feature=player_embedded&amp;v=EaoRDrdqm-E">RejectJS</a> conference. It was so cool and I really liked Berlin.</p>
+
+<h2>Communities</h2>
+
+<p><a href="https://www.facebook.com/groups/574355212591240/">Kyiv Beer&#8217;N&#8217;Code</a> &ndash; still small, but it exists. We&rsquo;ve concluded season 2012-2013 very nicely. And season 2013-2014 is on it&rsquo;s way, but I have to admit we are now less active. Hope that after all Christmas and New Year holidays we will go back to nice discussions and coding together.</p>
+
+<p><a href="http://kievalt.net/">Kyiv ALT.NET</a> &ndash; being not involved to .NET development for several years I could not contribute to that community anyhow. Unfortunately it&rsquo;s slowly dying now. Only had 3 meetups in 2013.</p>
+
+<p>Being full-stack JS development I didn&rsquo;t participate in any Kyiv JS communities. I don&rsquo;t see much activity in those communities as well.</p>
+
+<h2>Technologies</h2>
+
+<p>As for technologies, 2013 for me was: Express.js, MongoDB, Angular.js, Docker, Dokku, Ubuntu, DigitalOcean.</p>
+
+<h2>Side projects and contributions</h2>
+
+<p>As for contributions I&rsquo;ve participated such projects:</p>
+
+<ul>
+<li><a href="https://github.com/progrium/dokku">Dokku</a> &ndash; Docker powered mini-Heroku in less than 100 lines of Bash.</li>
+<li><a href="rockbot/vektor">vektor</a> &ndash; A robotics-focused linear algebra module.</li>
+<li><a href="https://github.com/alexanderbeletsky/24pullrequests">24PullRequest</a> &ndash; Giving back little gifts of code for Christmas.</li>
+<li><a href="https://github.com/alexanderbeletsky/grunt-hashres">grunt-hashres</a> &ndash; Grunt task for hashing js and css files.</li>
+<li><a href="https://github.com/alexanderbeletsky/edge">edge</a> &ndash; Run .NET and node.js code in-process.</li>
+<li><a href="https://github.com/alexanderbeletsky/flight">flight</a> &ndash; A lightweight, component-based JavaScript framework.</li>
+</ul>
+
+
+<p>For side projects, of cause it&rsquo;s <a href="https://likeastore.com">Likeastore</a> which started as side project, but became a platform of starting business with.</p>
+
+<ul>
+<li><a href="https://github.com/alexanderbeletsky/dokku-bower-install">dokku-bower-install</a> &ndash; Plugin for Dokku that installs bower dependecies, if needed.</li>
+<li><a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> &ndash; Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.</li>
+<li><a href="https://github.com/alexanderbeletsky/jshint-run">jshint-run</a> &ndash; Tiny tool for running jshint, then you don&rsquo;t use grunt.</li>
+<li><a href="https://github.com/alexanderbeletsky/toml-js">toml-js</a> &ndash; TOML parser implementation (node.js + browser).</li>
+</ul>
+
+
+<h2>Conclusions</h2>
+
+<p>2013 was amazing in many aspects. 2014 will be year of Likeastore, <a href="http://beletsky.net/2013/12/open-source.html">open source</a> and experiments.</p>
+
+<p>I wish to try some alternative technologies, like Go, Rust.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Open Source]]></title>
@@ -2606,62 +2689,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
     </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It&#8217;s so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it&#8217;s the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/issues">questions</a>. <br />
     </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
     </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
-    </p></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Building Single Pages Applications]]></title>
-    <link href="http://beletsky.net/2013/04/building-single-pages-applications.html"/>
-    <updated>2013-04-29T20:26:00+03:00</updated>
-    <id>http://beletsky.net/2013/04/building-single-pages-applications</id>
-    <content type="html"><![CDATA[<div class='post'>
-    <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
-    </p>
-    <h2>        What is SPA?<br />
-    </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We&#8217;ll check out new concept of web applications, that are called - Single Page Applications.<br />
-    </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it&#8217;s UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
-    <!-- more -->
- <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
-    </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
-    </p>    <h2>        API oriented architecture<br />
-    </h2>    <p>        Before we jump into SPA details, let&#8217;s talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it&#8217;s being adopted by many vendors and became kind of default. We are talking about &#8216;API oriented&#8217; architecture.<br />
-    </p>    <p>        Basically, it&#8217;s just a deviation of classical &#8216;Server-client&#8217;, where we have server that provides an open API.. and where client is browser, powered by JavaScript engine.<br />
-    </p>    <p>        It&#8217;s quite typically that server and client are communicating through HTTP, using JSON as payload format and relying on REST principles. I&#8217;m saying <i>typically</i>, since it&#8217;s not always the case. Some apps might takes XML and use RPC instead of REST, but that actually doesn&#8217;t really matter.<br />
-    </p>    <p>        Client is browser, that runs JavaScript code. JavaScript code is requesting the data and updating the DOM. Few years ago, jQuery was the primary tool of making such applications. Nowadays, we see MV* JavaScript frameworks are gaining a lot of traction and simplifying front-end development. It&#8217;s not only about simplification, but also bringing the architecture principles on front-end, something that we haven&#8217;t seen earlier.<br />
-    </p>    <h2>How to build Single Page applications?</h2>    <p>        We have a bunch of technologies, server and client that would allow to do that. ASP.NET MVC, Web API, NancyFX, ServiceStack, Express.js, RoR.. etc, on server and Backbone.js, Knockout.js, Angular.js, Marrionette.js, Durandal.js etc. from client.<br />
-    </p>    <p>        It gives a lot of options, actually. All of them have their pro/cons. I&#8217;ve used to use ASP.NET MVC as platform to build open API&#8217;s and was quite happy with that. Nowadays, I&#8217;m using Node.js / Express.js and it works really great, as well.<br />
-    </p>    <p>        The truth is, with SPA, the front-end technology plays a bit more significant role. Of course, server still performs important role for authorization, data access, business logic.. but in API oriented architecture is turns to be a kind of CRUD exposed through HTTP.<br />
-    </p>    <p>        As for front-end, my experience lies in Backbone.js. Preventing the questions, I would say - Backbone.js is not perfect (as there are nothing perfect in this world). Bare Backbone.js app would require a lot of manual coding, but it would also allows to see some important implementation details that could be good for general SPA understanding.<br />
-    </p>    <h2>Server architecture</h2>    <p>        Server is responsible for two principal things. First, it provides with API. Second, it server the master page (again, it&#8217;s not always the case, master.html could be places in some static resource server).<br />
-    </p>    <p>        Master page, is the one that being rendered in browser should bring basic DOM structure + reference the JavaScript code to initialize and run application. That&#8217;s it.<br />
-    </p>    <p>        As always, it&#8217;s important to think about scalability. Doesn&#8217;t matter what technology you pick up, it&#8217;s able to scale and hanlde more incoming request with given response time is vital.<br />
-    </p>    <h2>Client architecture</h2>    <p>        Scalability is important here, as well. That&#8217;s a different scalability, though.<br />
-    </p>    <p>        I liked the way <a href="https://twitter.com/derickbailey">Derick Bailey</a> stated in one of <a href="http://javascriptjabber.com/056-jsj-marionette-js-with-derick-bailey/">JavaScript Jabber</a> show:<br />
-    </p>    <blockquote>        &#8230; scalability in this case is not the number of users running the code at any given time. It’s the number of features in the system, how those features interact, and how you can start up and shut down and do all these things with these different features so that your application can grow in size, grow in features, and grow in capabilities.<br />
-    </blockquote>    <p>        That&#8217;s were there the JavaScript pattern, MV* frameworks are shine. And without simple modularity, it&#8217;s very hard to build scalable JavaScript applications.<br />
-    </p>    <h2>Require.js and AMD</h2>    <p>        Modularity is important. Each module represents some small piece of application functionality. The problem that JavaScript (ES5, to be precise) doesn&#8217;t have modules as part of language.<br />
-    </p>    <p>        Require.js helps to solve the problem. Instead of referencing hundreds of JavaScript files which expose itself to global namespace, Require.js relies on, so called, Asynchronous Module Definition. The special rules which you code have to follow, to be able to act as module and being loaded by request.<br />
-    </p>    <p>        Besides of that, Require.js comes with building/optimization tools, that helps to prepare application to production.<br />
-    </p>    <p>        So, the Master html has a reference to Require.js main file, which will be responsible for configuration and initialization of app. This typically includes setup of view state management (ViewManager) and routing (Backbone.Router).<br />
-    </p>    <h2>Routing</h2>    <p>        Router, handles in-browser URL change events and notifies about that changes. <br />
-    </p>    <p>        The URL change might appear of 2 things: user clicks some href or submits the form with re-direct. The SPA prevents those things. Instead, all <code>href</code> click are overloaded, so instead of performing GET request on given URL, JavaScript code would let router know that URL is changing. Router receives the message and using some route rules, call corresponding handler.<br />
-    </p>    <p>        The handler job is to load the application and execute it.<br />
-    </p>    <h2>Applications</h2>    <p>        Applications in terms of code, are simple objects with <code>run</code> (or <code>execute</code>) function.<br />
-    </p>    <p>        The responsibility of application is to fetch all required data and intitialize application Main View. The Main view is then passed to a ViewManager, which is responsible to render it and attach to DOM.<br />
-    </p>    <p>        Besides of that, application is also &#8216;logical&#8217; group of different modules with one goal. Imagine GMail application again - Contacts, Mails, Tasks are different applications. Each application, could have sub applications (with their own data and views).<br />
-    </p>    <p>        The rule of thumb, one route one application.<br />
-    </p>    <h2>        View Manager<br />
-    </h2>    <p>        As it&#8217;s been mentioned about, View Manager is important part of SPA architecture.<br />
-    </p>    <p>        It handles the aspects of switching one application (MainView) to another. So, the content of application div is cleared up and than updated with new one. In Backbone.js application, that is particularly important, since besides the DOM update View Manager is responsible to clear up unsubscribe all events that views might be subscribed to, to prevent, so called <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Zombie View</a> problem.<br />
-    </p>    <h2>Main View and Subviews</h2>    <p>        Not trivial application could contain some complex UI. All complex UI is being divided on many smaller components.<br />
-    </p>    <p>        MainView is responsible for whole application UI. It&#8217;s typical job to instantiate and render all required subviews. It also stores the references for all subviews into some internal data structure, so it&#8217;s been able to close all them, while main view is closed.<br />
-    </p>    <h2>TheMailer - demo application</h2>    <p>        Here is <a href="https://github.com/alexanderbeletsky/themailer">TheMailer</a> - very simple application that implements all the ideas above. I&#8217;ve created that very quickly and I could not call it completed. At the backend it runs ASP.NET MVC/WebAPI and using Require.js + Backbone.js at front end.<br />
-    </p>    <p>        It allows you to view and compose email, as well as some simple management of tasks and contacts. <br />
-    </p>    <p>        Under the debugger, it is clear how the application is initialized and starting up, how MainView creates Subviews and how Routing and ViewManager works.<br />
-    </p>    <h2>Conclusions</h2>    <p>        I would call it SPA bare bones. As I mentioned above, using pure Backbone.js is good, since Backbone.js contains all required components which any SPA need (most important it have Backbone.Router).<br />
-    </p>    <p>        But I would recommended to check further. If you plan stick to Backbone.js, <a href="http://marionettejs.com/">Backbone.Marionette</a> by <a href="https://twitter.com/derickbailey">Derick Beiley</a> could be really nice option. For Google technologies fans, <a href="http://angularjs.org/">Angular.JS</a> makes a lot of sense. For ones that liked <a href="http://caliburnmicro.codeplex.com/">Caliburn.Micro</a> during WPF programming, could play with new framework <a href="http://durandaljs.com/">Durandal.js</a> by <a href="https://twitter.com/eisenbergeffect">Rob Eisenberg</a>.<br />
-    </p>    <p>        SPA is a lot of fun and adventure, welcome in!<br />
     </p></div>
 ]]></content>
   </entry>

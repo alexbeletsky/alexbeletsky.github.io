@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Retrospective 2011 Dec 29th, 2011 Retrospective Last year I failed to create retrospective blog post, so lesson learned and I started a little bit &hellip;">
+  <meta name="description" content="Approval Tests: Locking down an output Jan 6th, 2012 Approvals We have seen how Approval Tests are useful for locking down some legacy code. You &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,116 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/01/approval-tests-locking-down-output.html">
+    
+      Approval Tests: Locking down an output</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T17:52:00+02:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/approvals/'>Approvals</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        We have <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">seen</a> how Approval Tests are useful for locking down some legacy code. You might say, that on practice we are having much more bigger problem, like some code that executes queries against the database. We need somehow to be able to work with that code, without worries of brake it down. Approvals could help here. <br />
+    </p>    <h2>The case</h2>    <p>        Again I just imagine some legacy code that works with DB, it might look something like that:<br />
+    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
+{
+ private static Connection _connection;
+
+ public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
+ {
+  if (!IsConnectionOpened())
+  {
+   OpenConnection();
+  }
+
+  var connection = GetConnection();
+
+  var value = HugeAndScarryLegacyCode.TheUgliesMethodYouMightEverSeen(parameterOne, parameterTwo, 'c');
+
+  var query = string.Format(&quot;INSERT INTO TableName (SomeColumn) VALUES ({0})&quot;, value);
+  connection.ExecuteQuery(query);
+ }
+
+    // ...
+    </pre>    <p>        The <code>MethodThatProduceSomeResults</code> takes some arguments, call another method to get value and then store value to database. It will be problematic to tests what exactly is happening there. We might consider approach to check the difference in <code>TableName</code> before code execution and after, but we will go smarter and easier way. <br />
+    </p>    <p>        Let&#8217;s prepare the test for that code.<br />
+    </p>    <h2>Tests</h2>    <p>        The great thing with Approvals is the tests are really elegant. Just 2 steps - DO and VERIFY.<br />
+    </p>    <pre class="brush: csharp">[Test]
+public void should_be_able_to_test()
+{
+ // DO
+ var some = new ClassThatOutputsSomething();
+ some.MethodThatProduceSomeResults('some_input', 221);
+
+ // VERIFY
+ Approvals.Approve(...);
+}
+    </pre>    <p>        But you can see, the problem here is that we don&#8217;t have any return value of that method. Instead, it does something inside and keep that action in secret. We need some how to log all internal activities and than verify that log. <code>Approval.Utilities</code> contains exactly what we need.<br />
+    </p>    <pre class="brush: csharp">[Test]
+public void should_be_able_to_test()
+{
+ // DO
+ var output = ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder();
+ new ClassThatOutputsSomething().MethodThatProduceSomeResults('some_input', 221);
+
+ // VERIFY
+ Approvals.Approve(output);
+}
+    </pre>    <p>        I have just added logger <code>ApprovalUtilities.SimpleLogger.Logger.LogToStringBuilder</code> and do approve against it. But if I run this test I could see that output is just empty. Sure, we need to change <code>MethodThatProduceSomeResults</code> a little.<br />
+    </p>    <pre class="brush: csharp">public class ClassThatOutputsSomething
+{
+ private static Connection _connection;
+
+ public void MethodThatProduceSomeResults(string parameterOne, int parameterTwo)
+ {
+        // ...
+
+        connection.ExecuteQuery(query);
+        ApprovalUtilities.SimpleLogger.Logger.Event(query);
+ }
+    </pre>    <p>        So, in the place where query is being executed, we placed the logger and put exact some query inside it. Now if I run the test I will got application output, that I will approve and use those approved results after. <br />
+    </p>    <p>        I&#8217;m not limited with only one place I could put logger. On practice, would more that one places to grab the results, as well as more that one argument for <code>MethodThatProduceSomeResults</code> method. By analysis of particular practical case, it is possible to place logger exactly where it&#8217;s needed, plus prepare best matching inputs. Just for example: after code examination it might happen that <code>parameterOne</code> is ProductId, but <code>parameterTwo</code> is ProductPrice. In my test I could query the database to select all products and prices and call <code>MethodThatProduceSomeResults</code> in loop, to get all potential output. That approved test will give me much confidence during refactoring.<br />
+    </p>    <h2>Conclusion</h2>    <p>        Locking down output is very powerful technique, you can use it for any kind of objects that are &#8220;hidden&#8221; inside legacy classes, like SQL or console outputs.  <br />
+    </p>    <p>        On <a href="http://herdingcode.com/?p=329">Herding Code</a> episode <a href="https://twitter.com/#!/LlewellynFalco">Llewellyn</a> describes the case of some legacy project he worked on. There was a kind of report generator and it&#8217;s code was just a big mess. He did copy of production database and put it in &#8220;Read-Only&#8221; mode. By running the report, he was able to find all places where code was accessing DB, since exception is thrown in that place. Putting in just the same log instructions as I did above, he managed to grab all SQL queries that run for that particular report. Everything were just in one file.<br />
+    </p>    <p>        That&#8217;s the good example of reaching 100% code coverage just with one test.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -944,61 +1054,6 @@ public void should_have_approved_layout() {
 <img src="https://lh3.googleusercontent.com/-wRTF3X1cJm0/TsPgJH6ryEI/AAAAAAAAH0M/H51scOr_Gf8/s620/dwt.jpg" alt="develop with tests" /><br />
 </a><br />
 <p>I think a some developers might say, &#8220;Oh, I&#8217;m using DWT as well&#8221;. Others will say, &#8220;I will use DWT since TDD is boring and requires too much time&#8221;. Please do not do that. I strongly believe that is TDD that could make you stronger as developers and your code robust and good looking. So follow the rules before you absolutely sure, you ready to break them.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/11/its-writing-time.html">
-    
-      It&#8217;s Writing Time</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-14T10:10:00+02:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mind/'>Mind</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>There are great series of stories called <a href="http://en.wikipedia.org/wiki/Azazel_(Asimov)">&#8220;Azazel&#8221;</a> by <a href="http://en.wikipedia.org/wiki/Isaac_Asimov">Isaac Asimov</a>. They are about 2 cm demon named Azazel and George, guy who is able to talk to him. Azazel knows actually nothing about demons or angels, hell or haven.. But he understands the nature of things able to change them. The stories are short and fun and smart, so I would recommend it to read.<br />
-</p><p>In particular, there is one great story called &#8220;Writing time&#8221;. It&#8217;s about the man whose name is Mordehai and he is writer. He has a great issue. He always need to wait for something, like wait for doctors, waiters, cab drivers, wait in a shop lines etc. Mordehai treated that time as completely wasted, because he could not spent it for job.<br />
-</p><p>He shared that problem with George. George asked Azazel if it&#8217;s possible to help to poor Mordehai. As always Azazel was angry about peoples misery, but agreed to help. He could introduce change that make it possible to Mordehai never need to wait for somebody. That change required a little cost, literally the sun will stop shining in 2 million years earlier, but who cares.<br />
-</p><p>George met Mordehai again in several month. For his great disappointment, writer created simply nothing in that time! Not even a small story. Instead of being hyper productive he became non productive at all.<br />
-</p><p>How could it be, that person who spend all his time for work are not able to do the work? As Mordehai understood as he sat behind his type writer - he had no ideas. Simply, he don&#8217;t know what to write about. <br />
-</p><p>As it turned out all that time he waited actually spent for thinking. It was absolutely not a waste for him, otherwise it was the most productive time.. But he did not realized that before. Unfortunately, Mordehai&#8217;s career totally ruined. <br />
-</p><p>You know what? I think that I&#8217;m wasting the time instead of doing &#8220;cool things&#8221;. I work as hard as I can, but the results aren&#8217;t impressive. I neither could find good idea nor have good rest recently - I&#8217;m exactly like Mordehai who blames waiting line for his problems.<br />
-</p><p>I&#8217;ll try not to repeat this issue. Having a rest, spending time with family or sport activities are equally important as job (perhaps even more important). And even if you are &#8220;doing nothing&#8221;, something is still going on your head. If inputs are right, outputs will be right as well.. Sooner or later.<br />
 </p></div>
 
       
