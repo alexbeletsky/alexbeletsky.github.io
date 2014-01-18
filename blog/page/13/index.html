@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Inside ASP.NET MVC: ControllerBuilder class Jul 9th, 2011 InsideMVC, MVC, asp.net Integral part of MvcHanlder is ControllerBuilder. &hellip;">
+  <meta name="description" content="Git with SVN, what the benefits are? Jul 13th, 2011 Git, GitSVN My previous post about starting up of using Git inside on SVN organization appeared &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,79 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/git-with-svn-what-benefits-are.html">
+    
+      Git with SVN, what the benefits are?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-13T08:50:00+03:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+My previous <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">post</a> about starting up of using Git inside on SVN organization appeared to be really attractive, I received many questions through <a href="http://twitter.com/#!/alexbeletsky">twitter</a> and <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">dzone</a>. All of them are really interesting and I going to do a separate posting on that, but primary question is &#8220;Why, oh why?&#8221;.  
+</p>
+<p>
+So, what actual benefits I see by using approach of git-svn?
+</p>
+<p>
+First, let&#8217;s see the root, what kind of VCS Git is? It is distributed one. The distribution basically means that each developer host the repository on it&#8217;s own machine. Not a working copy as in SVN case, but real repository with all corresponding functionality - commits, reverts, branches, merges etc. You are not longer depend on server, even if sever is not available you still able to continue your job. 
+</p>
+<p>
+Since you have your local repository, you can do whatever you want without interfering the rest of the world. In SVN all operations like commit or branch creation or tag - they are global one. As soon as you created branch for instance, everybody will notice that; if you committed something, everybody will notice that. In many organizations SVN has policies, like you have access only for some branches.. you can&#8217;t create branches, only by request to admin etc. But, what I basically do on my job - I want to try out something (new idea or apply some refactoring) without disturbing a lot of people, I want that quickly. It perfectly works with Git, I create the branch just by one command, work inside (means do what ever number of commits I want) and if I think I&#8217;m ready, merge it back to master and push changes to SVN.
+</p>
+<p>
+Remember you last merge operation with SVN? If you haven&#8217;t seen &#8216;Tree conflict&#8217; type of conflict, you are not SVN user. I&#8217;ve seen them a lot and many people suffer much of it! This type of conflict happens because SVN keeping and tracking information about folder in which file is placed. Git does not do that, it is basically content tracking system - Git cares about content of the file, not file it self. Since the information about content (blob) and filesystem information (tree) is separated each of other, you will never get a &#8216;Tree conflict&#8217; in Git.
+</p>
+<p>
+By the fact that branches and merges are very easy in Git you are getting one really cool bonus. Have you ever been in situation then in a middle of your flow, then tens files are already changed, but you still struggling with task, your boss is contacting you saying - &#8216;Hey, we have critical bug, required to be fixed now&#8217;? Such things make you a little uncomfortable, you already got some changes, but they are not &#8216;commitable&#8217;.. you could not throw it away, because some value is already there, but you need to get SVN update and start to fix bug. With git, you can switch from one task to another with out any problems. You just commit your results (even if they are not compliable or tests are red, who cares - it&#8217;s yours repository) create another branch for bugfix and start to work.  
+</p>
+<p>
+To summarize that a little I would say that my personal benefits of starting using Git are: 
+</p>
+<ul>
+<li><strong>Isolation</strong> - do whatever I want, whenever I want</li>
+<li><strong>Merges</strong> - forget about &#8216;Tree conflicts&#8217;</li>
+<li><strong>Task switching</strong> - no more, &#8220;please wait till I commit this, so I can start to work on that&#8221;</li>
+<li><strong>Fun</strong> - it is interesting to me to learn new system and to change a mind how VCS can work</li>
+</ul></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1110,68 +1183,6 @@ Next, I will setup a test project which allow us to fully get in deep of details
 </p>
 <p>
 Please stay tuned.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/05/net-saturday-in-ciklum.html">
-    
-      .NET Saturday in Ciklum</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-14T21:19:00+03:00" pubdate data-updated="true">May 14<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-This Saturday it was really nice event organized and hosted by <a href="http://www.ciklum.net/">Ciklum</a>. I had a big pleasure to be part of the event and was given a speech about Continues Production (Delivery) and my experience of using UppercuT, RoundhouE and Jenkinks for that. 
-</p>
-<img style="position: relative; display: inline; float: left; " src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tc68_M3LaaI/AAAAAAAAHaM/TrFD0GQgQq0/IMG_4956.JPG" />
-<p>
-The organization of event was really nice. Only the speakers were one who introduced disorder there :). Some speeches were bit longer than planned, that&#8217;s why schedule ruined from the very beginning of event. My speech was planned for 0.5 hour, but I&#8217;ve been 1 hour on stage.
-</p>
-<p>
-I&#8217;ve been pretty nervous since I never gave public speeches, but I really liked that experience. I hope to visit/participate more .NET events in future. At the end I was happy that everything is alright and I&#8217;m finally done. So, in great mood and relaxed I stayed to listen for the rest of speakers.
-</p>
-<p>
-Also I was really nice to meet <a href="http://twitter.com/#!/skalinets">Sergey Kalinets</a>, <a href="http://twitter.com/#!/antonvidishchev">Anton Vidishchev</a> who shared their experience in TDD and ASP.net MVC framework. Such type of event are really great for professionals gathering, helping to better communication and knowledge sharing. 
-</p>
-<p>
-Let me wish Ciklum and Inna Tueva in particular to have will and energy for organizing such events. Thanks a lot!
 </p></div>
 
       

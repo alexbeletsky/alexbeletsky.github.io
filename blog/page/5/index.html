@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="The Game of Life Sep 27th, 2012 Clean Code, Code Kata, JavaScript, TDD Last weekend the good friends of mine were organizing great event, &hellip;">
+  <meta name="description" content="Looking at TypeScript Oct 5th, 2012 JavaScript, Mind, TypeScript Four days ago my twitter has been nuked. The bomb has exploded after TypeScript &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,66 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/10/typescript-language.html">
+    
+      Looking at TypeScript</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-05T21:24:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/typescript/'>TypeScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
+</p><p>For ones who missed the video (I can&#8217;t believe you did) I shortly describe - TypeScript in new open source project, by Microsoft. It&#8217;s leader <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a> is very famous developer (my bad, I always forget his name), creator of C# and one of the persons who most influenced .NET platform. TypeScript compiled down to JavaScript, but it introduce the types checking during compilation, so it could be called &#8216;static typed language&#8217;.<br />
+</p><p>First of all, TypeScript is definitely <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">not the first language</a>, that complies to JavaScript. It&#8217;s not the first one that augments JavaScript with new statements like class, interface or module. So, what&#8217;s so interesting on it?<br />
+</p><p>I&#8217;ve been using static type languages for about 10 years. I&#8217;ve very much got used to compiler error messages and truly believed that it helps to build applications. Meaning, the complier is first guard towards the &#8216;good&#8217; code. To the code that could be called reliable, error free. <br />
+</p><p>But situation much changed after I start programming JavaScript. <br />
+</p><p>I feel myself quite productive with using of using JavaScript. Of cause, there are some best practice & patters are collected nowadays, we have better tools, faster engines and JavaScript has been so much adopted by community. But JavaScript is indeed, so powerful language. I really like the dynamic typing, that bit more forces to unit testing, making code changes more easy in the same time creating some very beautiful code structures.<br />
+</p><p>I know that some people are saying, &#8220;we don&#8217;t need any static typing for JavaScript; please don&#8217;t change the language&#8221;. Such developers could be called &#8220;purists&#8221;. And they are absolutely right - if you feel confidence in something you do, you should not change the way you do it. <br />
+</p><p>In another hand, I came to conclusion that it&#8217;s not dynamic types that makes me productive with JavaScript, but rather the experience I gathered with programming lately. It&#8217;s always only experience, that allows you to work faster, better quality and had fun of your job.<br />
+<p>And it&#8217;s absolutely not about Static vs. Dynamic languages.<br />
+</p><p>Static types are not useless, though. I think, in average it reduces the chances of bug introduction into the code. That&#8217;s at least what I&#8217;ve seen so far. And that&#8217;s why &#8220;purists&#8221; are running JSLint. Basically, Static Types should provide better application quality. This is of cause not completely true, since we know great software written in Python and poor systems written in C++.<br />
+</p><p>It&#8217; about the engineers who build that software.<br />
+</p><p>In my opinion the TypeScript will grow. It would have it&#8217;s own army of fans, like CoffeeScript have or Ruby have. The code that TypeScript outputs is nice and clean, that make easy of debugging it. TypeScript is designed to be closer to ECMAScript6 (Harmony), so in near future the pure JavaScript would start to look like TypeScript.<br />
+</p><p>TypeScript is interesting project and open minded guys will like one. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -697,97 +757,6 @@
 </p><h2>VB.NET projects support</h2><p>    For quite a while, I&#8217;ve been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I&#8217;ve just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
 </p><h2>Custom ELMAH route</h2><p>    Another demanded feature was to provide custom path to ELMAH controller. By default ELMAH is available under <code>/elmah</code>, which is nice, but sometimes you what to have a freedom to change it. It&#8217;s now possible, <code>web.config</code> has additional configuration section, <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;</code>. By setting up elmah.mvc.route parameter, you can tweek a default one, like <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;secure/admin/errors&quot; /&gt;</code> for instance.<br />
 </p><h2>Besides of that&#8230;</h2><p>    ELMAH.MVC does not depend on WebActivator any longer. I&#8217;ve removed <code>App_Start.cs</code> code and used <a href="http://haacked.com/archive/2010/05/16/three-hidden-extensibility-gems-in-asp-net-4.aspx">PreApplicationStartMethodAttribute</a> attribute. That allows to make a package more tiny + actually made it possible to avoid separate NuGet package for VB.NET projects.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/08/customizing-folders-layout-for-nancyfx.html">
-    
-      Customizing Folders Layout for NancyFX Application</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-14T20:05:00+03:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/nancyfx/'>NancyFX</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don&#8217;t even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
-</p><p>    In my case, during <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
-</p><a href="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png"><br />
-    <img src="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png" alt="folder layout" /><br />
-</a><br />
-<p>    &#8216;Bin&#8217; folder would contain the application itself, as well as all referenced assemblies. &#8216;Client&#8217; folder would contain all client side code - HTML/CSS/Javascript. Initially I thought to make all of those as embedded resources, but firstly <a href="http://stackoverflow.com/questions/11888813/nancyfx-using-embedded-views">did not worked</a> on Nancy v.0.11.0, secondly having those files placed separately make it possible to easy application updates (patching).<br />
-</p><p>    Fortunately, it is easy to apply any folder layout you want. There are 2 types of recourses that Nancy is looking from outside, they are - views and static content. Both of them are resolved by default conventions and those conventions applied against the application root.<br />
-</p><h2>Changing the application root</h2><p>    In my case, executables are places in Bin folder, but resources are placed one level above. By default, the application root is <code>Environment.CurrentDirectory</code> and I need to changed that. In order to make this happen, you have to implement <code>IRootProvider</code> instance.<br />
-</p><pre class="brush: csharp">namespace Candidate.Nancy.Selfhosted.App
-{
-    public class PathProvider : IRootPathProvider
-    {
-        public string GetRootPath()
-        {
-            return Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\"));
-        }
-    }
-}
-</pre><p>    There is a little pitfall, that I got into. Please, make sure that root folder is <strong>absolute</strong> path (<code>Path.GetFullPath</code> - returns absolute path). If you didn&#8217;t do that, some part of application could not work right. I&#8217;ve sent a <a href="https://github.com/NancyFx/Nancy/pull/706">pull request</a> for <code>StaticContentConventionBuilder</code> class, but more appropriate fix is actually having it rooted. <br />
-</p><p>    After, just place the type of path provider instance into Nancy bootstrapper class, as overridable property:<br />
-</p><pre class="brush: csharp">protected override Type RootPathProvider
-{
-    get
-    {
-        return typeof(PathProvider);
-    }
-}
-</pre><h2>Changing the default conventions</h2><p>    Now, we have to teach Nancy to look for view and static resources right.<br />
-</p><p>    The bootstapper contains corresponding virtual method, called <code>ConfigureConventions</code>. There I&#8217;ll overrider the default ones, like that:<br />
-</p><pre class="brush: csharp">protected override void ConfigureConventions(NancyConventions nancyConventions)
-{
-    // static content
-    nancyConventions.StaticContentsConventions.Clear();
-    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("scripts",
-                                                                                                "Client/scripts"));
-    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("content",
-                                                                                                "Client/content"));
-    // view location
-    nancyConventions.ViewLocationConventions.Clear();
-    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", viewName));
-    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", context.ModuleName, "/", viewName));
-}
-</pre><p>    For view location conventions you just need to provider the folder (relative to rootfolder), where the view are located. I used only 2 simple conventions: 1) view is just placed under /views folder 2) view is placed under /view/moduleName folder. <br />
-</p><p>    For static resources, it a little bit trickier. You have to return the *response* object, for corresponding request. Fortunately, <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Conventions/StaticContentConventionBuilder.cs">StaticContentConventionBuilder</a> class, has some helper methods that make it simpler. <br />
 </p></div>
 
       

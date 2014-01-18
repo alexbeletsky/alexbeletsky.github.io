@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Looking Back to 2013 Jan 4th, 2014 retrospective Traditionally, first Saturday of New Year &ndash; time look back for year that passed. As usually, &hellip;">
+  <meta name="description" content="Keeping Node.js Processes Running Jan 18th, 2014 javascript, nodejs Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,59 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2014/01/keeping-node-dot-js-processes-running.html">
+    
+      Keeping Node.js Processes Running</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-18T13:38:00+02:00" pubdate data-updated="true">Jan 18<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
+
+<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2014/01/keeping-node-dot-js-processes-running.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -555,59 +608,6 @@
       
         <div class="show-more pure-u-1">
           <a href="/2013/10/catch-errors-in-express-dot-js-application.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2013/10/securing-express-dot-js-http-endpoints.html">
-    
-      Securing Express.js HTTP Endpoints</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-15T21:54:00+03:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/authorization/'>authorization</a>, <a class='category' href='/blog/categories/expressjs/'>expressjs</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/security/'>security</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
-
-<p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2013/10/securing-express-dot-js-http-endpoints.html">Continue reading &rarr;</a>
         </div>
       
     </div>

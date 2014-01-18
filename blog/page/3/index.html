@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Building Single Pages Applications Apr 29th, 2013 Backbone.js, Conference, SPA This is transcript of talk I gave on #msswit conference 25 April 2013 &hellip;">
+  <meta name="description" content="Github as blogging platform May 16th, 2013 GitHub, Mind, Open source No, I&#8217;m not going to talk about creation some github-backed blogging &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,58 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/05/github-as-blogging-platform.html">
+    
+      Github as blogging platform</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-16T18:55:00+03:00" pubdate data-updated="true">May 16<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how&#8217;s while I create some code. It&#8217;s just hard to blog about. As you didn&#8217;t do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/05/github-as-blogging-platform.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -541,233 +593,6 @@
         <div class="show-more pure-u-1">
           <a href="/2012/12/introducing-backbonecomputedfields.html">Continue reading &rarr;</a>
         </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/12/baby-steps-to-backbonejs-unit-testing.html">
-    
-      Baby steps to Backbone.js: Unit testing of views</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-19T21:52:00+02:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-    <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
-</p><p>Next very important Backbone&#8217;s entry to test is View.<br />
-</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don&#8217;t have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
-</p><h2>What to test?</h2><p>You should focus on such things: <br />
-</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
-<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
-<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
-<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
-</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It&#8217;s typically that view tests are catching most regression issues.<br />
-</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don&#8217;t need any special HTML on test page, since view holding all it&#8217;s DOM structure inside <code>this.el</code>. By means of jQuery, it&#8217;s easy to change DOM values or trigger events.<br />
-</p><p>Since view also holds reference to model, it&#8217;s easy to check model&#8217;s attributes changes or spying on particular models methods.<br />
-</p><p>First red test,<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
-
-    beforeEach(function () {
-        view = new FeedbackFormView();
-    });
-
-    describe('when view is constructing', function () {
-
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
-
-    });
-    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
-</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
-</p><pre class="brush: js">describe('when view is initialized', function () {
-
-    describe('without model', function () {
-
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView();
-            }).toThrow(new Error('model is required'));
-        });
-
-    });
-
-    describe('without default feedback', function () {
-            
-        it('should throw exception', function () {
-            expect(function () {
-                new FeedbackFormView({model: new Backbone.Model() });
-            }).toThrow(new Error('feedback is required'));
-        });
-    });
-
-});
-    </pre><p>To turn from Red to Green, let&#8217;s add <code>initialize</code> function to view,<br />
-</p><pre class="brush: js">initialize: function (options) {
-
-    if (!this.model) {
-        throw new Error('model is required');
-    }
-
-    if (!(options && options.feedback)) {
-        throw new Error('feedback is required');
-    }
-
-    this.feedback = options.feedback;
-},
-    </pre><p>Btw, after that change it&#8217;s required to fix previous test, since it start to fail.<br />
-</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
-    var view, model;
-
-    beforeEach(function () {
-        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
-    });
-
-    describe('when view is constructing', function () {
-
-        it ('should exist', function () {
-            expect(view).toBeDefined();
-        });
-
-    });
-    </pre><p>Now, let&#8217;s test how rendering works.<br />
-</p><pre class="brush: js">describe('when view is rendered', function () {
-
-    beforeEach(function () {
-        view.render();
-    });
-
-    it ('should email field be empty', function () {
-        expect(view.$el.find('input#email')).toHaveValue('');
-    });
-
-    it ('should website field be empty', function () {
-        expect(view.$el.find('input#website')).toHaveValue('');
-    });
-
-    it ('should feedback field with default feedback', function () {
-        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
-    });
-
-});
-</pre><p>Here and after I&#8217;m using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
-</p><p>We&#8217;ve tested initialization and rendering, now let&#8217;s test last aspect, model changes and persistence.<br />
-</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
-</p><pre class="brush: js">describe('when form is submitted', function () {
-
-    describe('no inputs are filled', function () {
-
-        beforeEach(function () {
-            view.$el.find('#email').val('').trigger('change');
-            view.$el.find('#feedback').val('').trigger('change');
-        });
-
-        beforeEach(function () {
-            view.$el.find('#submit').trigger('click');
-        });
-
-        it('email field should be invalidated', function () {
-            expect(view.$el.find('.control-group.email')).toHaveClass('error');
-        });
-
-        it('feedback field should be invalidated', function () {
-            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-        });
-
-        it('website field should be valid', function () {
-            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-        });
-
-    });
-</pre><p>That&#8217;s cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
-</p><pre class="brush: js">describe('only email field filled', function () {
-
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('').trigger('change');
-    });
-
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
-
-    it('email field should be valid', function () {
-        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
-    });
-
-    it('feedback field should be invalidated', function () {
-        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
-    });
-
-    it('website field should be valid', function () {
-        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
-    });
-
-});
-</pre><p>And finally, if view is filled correctly,<br />
-</p><pre class="brush: js">describe('email and feedback filled', function () {
-
-    beforeEach(function () {
-        spyOn(view.model, 'save').andCallThrough();
-    });
-
-    beforeEach(function () {
-        view.$el.find('#email').val('a@a.com').trigger('change');
-        view.$el.find('#feedback').val('some feedback').trigger('change');
-    });
-
-    beforeEach(function () {
-        view.$el.find('#submit').trigger('click');
-    });
-
-    it('should show no errors', function () {
-        expect(view.$el.find('.error').length).toBe(0);
-    });
-
-    it('should save model', function () {
-        expect(view.model.save).toHaveBeenCalled();
-    });
-
-});
-</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
-</p><p>I&#8217;m skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
-</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how &#8220;deep&#8221; you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
-</p></div>
-
-      
       
     </div>
   </div>

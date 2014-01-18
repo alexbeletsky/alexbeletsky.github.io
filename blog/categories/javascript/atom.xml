@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-01-13T18:16:49+02:00</updated>
+  <updated>2014-01-18T14:17:49+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
+    <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
+    <updated>2014-01-18T13:38:00+02:00</updated>
+    <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
+    <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
+
+<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
+
+<!-- More -->
+
+
+<p>To mitigate the issue few <a href="http://stackoverflow.com/questions/1972242/auto-reload-of-files-in-node-js">known solutions</a> exist, common idea is that there is watchdog that keeping eye on <code>node</code> process and if crashed, restarts application again.</p>
+
+<p>Recently I&rsquo;ve used great library by <a href="https://github.com/mafintosh">@mafintosh</a> called <a href="https://github.com/mafintosh/respawn">respawn</a>. I liked it&rsquo;s minimalistic style and decided to try it out.</p>
+
+<p>The bare-bones code is very simple. Without modification of your application, just create file <code>monitor.js</code> with nearly such code:</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);</p>
+
+<p>var monitor = respawn([&lsquo;node&rsquo;, &lsquo;server.js&rsquo;], {</p>
+
+<pre><code>env: {ENV_VAR:'test'}, // set env vars
+cwd: '.',              // set cwd
+maxRestarts:10,        // how many restarts are allowed within 60s
+sleep:1000,            // time to sleep between restarts
+</code></pre>
+
+<p>});</p>
+
+<p>monitor.start(); // spawn and watch
+```</p>
+
+<p><code>monitor</code> will spawn new node process and in case of crash it will be restarted. You can also specify <code>maxRestars</code> (I recommend to do that, if something is really bad it won&rsquo;t be restarted infinitely) and <code>sleep</code> time.</p>
+
+<p>I&rsquo;ve tried that, by implementing <code>/fail</code> end-point in my app, to see that <code>respawn</code> really works.</p>
+
+<p>```js
+app.get(&lsquo;/fail&rsquo;, function (req, res, next) {</p>
+
+<pre><code>setTimeout(function () {
+    var nu = null;
+    nu.access();
+
+    res.send('Hello World');
+}, 1000);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>if I try to hit <code>/fail</code> I&rsquo;ll see no results in browser, but if I go back to <code>/</code> the application is running in normal state.</p>
+
+<p>But simple respawning of application is not complete solution. You need to know what exactly happened to be able to fix issue. <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">Proper logging</a> of your application is essential. I&rsquo;ll show my small setup around <code>respawn</code> that send critical message to <a href="https://logentries.com">Logentries</a>, so all crashes are logged.</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);
+var util = require(&lsquo;util&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var proc = respawn([&lsquo;node&rsquo;, &lsquo;app.js&rsquo;], {</p>
+
+<pre><code>cwd: '.',
+maxRestarts: 10,
+sleep: 1000,
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;spawn&rsquo;, function () {</p>
+
+<pre><code>util.print('application monitor started...');
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;exit&rsquo;, function (code, signal) {</p>
+
+<pre><code>logger.fatal({msg: 'process exited, code: ' + code + ' signal: ' + signal});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stdout&rsquo;, function (data) {</p>
+
+<pre><code>util.print(data.toString());
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stderr&rsquo;, function (data) {</p>
+
+<pre><code>logger.error({msg: 'process error', data: data.toString()});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.start();
+```</p>
+
+<p>(details of logger you can find in this <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">post</a>)</p>
+
+<p>All process output is goes to <code>stdout</code>, which is convinient for development, but in case of <code>stderr</code> or <code>exit</code> everything is logged to cloud and notification to <code>dev-team</code> sent.</p>
+
+<p>It worked really nice, now I&rsquo;m not worry even if something bad happens on production, <code>respawn</code> will make sure that rest of users are not affected. As a developer you can much quicker found bug and push hotfix.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>

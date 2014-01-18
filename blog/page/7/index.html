@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="7 Weeks With Python Jun 2nd, 2012 Mind, Python, Udacity During my CS101 class I first time meet Python. That&#8217;s not completely true, since I &hellip;">
+  <meta name="description" content="Is TDD Required Skill? - Two Years Later Jun 5th, 2012 TDD Two years ago I&#8217;ve concluded an interesting research. I was thinking how much &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,69 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/is-tdd-required-skill-two-years-later.html">
+    
+      Is TDD Required Skill? - Two Years Later</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-05T21:00:00+03:00" pubdate data-updated="true">Jun 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            Two years ago I&#8217;ve concluded an interesting research. I was thinking how much employers care about hiring developers with TDD skills while looking for suitable candidates. As output of this research I&#8217;ve created a <a href="https://github.com/alexanderbeletsky/TddDemand">simple crawler</a>, that is able to crawl vacancy web sites and perform the simple analysis does this vacancy description require TDD skill or not. As well, I&#8217;ve created some <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">blog posts</a>, where I did share results + some technical issues I met during building this crawler. <br />
+        </p>        <p>            At the weekend, I&#8217;ve decided to repeat this experiment. The code of crawler worked perfectly, except some correction I had to apply to conform the markup changes of sites that happed through these two years. Leaving the technical part of this blog post, I want to share the results with you.    <br />
+        </p>        <h2>What was at 2010?</h2>        <p>            Let&#8217;s recap what it was at 2010. I&#8217;ve crawled 978 records from <a href="http://rabota.ua">rabota.ua</a> site and 150 of 978 (about 15%) contained TDD requirement. For <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> the results was a little better, ~23% (49 of 212) contained some mention on TDD. <br />
+        </p>        <p>            The quote from 2 year ago report:<br />
+        </p>        <blockquote>            .. such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.<br />
+        </blockquote>        <p>            I believe the awareness of TDD and general software quality got higher along the way. But let&#8217;s see the figures of 2012.<br />
+        </p>        <h2>What we have in 2012?</h2>        <p>            This time I got a litle more data. 1067 records of <a href="http://rabota.ua">rabota.ua</a> and 560 records of <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a>. But what about demand? <br />
+        </p>        <p>            All right, it&#8217;s only 77 vacancies of 1067 is requiring TDD, which is 7.22% in <a href="http://rabota.ua">rabota.ua</a>. <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> has 127 vacancies requiring TDD which is 22.68%.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png"><img src="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png" style="width: 620px"/></a><br />
+        <p>            The technologies breakdown is follows. Java leads as a technology with the highest demand on TDD. During this post creation I thought that my results does include JavaScript, which gain much popularity recently. It&#8217;s interesting to see what&#8217;s there.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png"><img src="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png" style="width: 620px"/></a><br />
+        <h2>Conclusions</h2>        <p>            Ukrainian market demand lowered almost twice. USA market demand is stable, with a little change which is almost the noise.<br />
+        </p>        <ul>            <li>Ukraine: 2010 -> 15.34%, 2012 -> 7.22% ( -8.12% )</li>
+            <li>USA: 2010 -> 23.11%, 2012 -> 22.68% ( -0.43% )</li>
+        </ul>        <p>            I can see very low demand on TDD in C/C++ field. Almost equal demand between Java and .NET with a slight win of Java. <br />
+        </p>        <p>            I personally wanted to see different figures. Anyway, it was interesting to see actual results and restored some code that worked 2 years ago. Probably this analysis required to be done more frequently to have a kind of valuable statistics.  <br />
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -698,136 +761,6 @@ public ActionResult Send(string token, Notification notification)
     // ...
 }
     </pre><p>I re-raised <a href="http://aspnetwebstack.codeplex.com/workitem/99">issue</a> again, now on ASP.NET Web Stack site on <a href="http://aspnetwebstack.codeplex.com/">Codeplex</a>. I also tried to quickly write the unit test that show the existence of problem, but it&#8217;s not that easy to do that, so it requires some time. Hope I can do that later.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/04/cs101-building-search-engine-week-1.html">
-    
-      CS101 Building a Search Engine: Week 1</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-21T20:54:00+03:00" pubdate data-updated="true">Apr 21<span>st</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/stanford/'>Stanford</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
-</small><br />
-</p><p>CS101 is fundamental course that supposes you have no background in programming at all. That&#8217;s why all lectures was very-very basic and sometimes I felt really bored. If you fell the same, that&#8217;s probably ok, since the most interesting stuff is about to start from Unit 3. <br />
-</p><p>In the same time, for guys who has no programming skill&#8217;s that might be even a little tough. To be honest, I had really tough moment during my first homework, that should not be a problem for professional programmer, but I&#8217;ll describe it later. <br />
-</p><h2>Unit 1: Basics, Python, Numbers and Strings</h2><p>What I understood from my entire career is that: backing to basics is always great. The years of enterprise development makes you strong in technologies and frameworks, but I managed to lost almost everything I got during my university days. Restoring that knowledge is very good brain exercise, constant repetition of basic is the way to mastery.    <br />
-</p><p>So, even that simple unit gave me a lot of things to remember, plus I learned some elementary of Python language.<br />
-</p><h2>Backus Naur Form</h2><p>What was really interesting to me during Unit 1 is so called <a href="http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form">Backus-Naur Form</a>, for describing the computer language grammar. This is a method of formalizing any (probably) computer language syntaxes. It has been invented by <a href="http://en.wikipedia.org/wiki/John_W._Backus">John Backus</a> American scientist, how is famous as creator of FORTRAN and ALGOL computer languages, as well as his researches in <a href="http://en.wikipedia.org/wiki/Function-level_programming">functional programming</a>. <br />
-</p><p>Backus-Naur form is really simple and really powerful. It is described by the set of <code>non-terminals</code> and <code>terminals</code>. Each language expression is derived from BN form. Let&#8217;s take and example,<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= &lt;subject&gt; &lt;verb&gt; &lt;object&gt;
-        &lt;subject&gt; ::= &lt;noun&gt;
-        &lt;object&gt; ::= &lt;noun&gt;
-    </pre><p>Here is the primitive BNF for English language. Each sentence in English should contain Subject, Verb, Object to be complete and have a meaning. Of course, BNF is not suppose to describe natural languages as English or Russian, since it much more complex.. but it works very fine with computer languages, which are strict. So, everything in brackets are so called <code>non-terminals</code>, it simply means that expression could not be terminated (completed) based on them. To complete we need <code>terminals</code>. Each <code>non-terminal</code> is replaced by <code>terminal</code> till it&#8217;s done.<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= &lt;subject&gt; &lt;verb&gt; &lt;object&gt;
-        &lt;subject&gt; ::= &lt;noun&gt;
-        &lt;object&gt; ::= &lt;noun&gt;
-        noun ::= I
-        noun ::= Python
-        noun ::= Cookies
-        verb ::= Eat
-        verb ::= Like
-    </pre><p>Now, the form is completed, so we can try to derive expression out of it. Let&#8217;s try that. So, we start from the top line<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= &lt;subject&gt; &lt;verb&gt; &lt;object&gt;
-    </pre><p>Derive all non-terminals from expression<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= &lt;noun&gt; &lt;verb&gt; &lt;noun&gt;    
-    </pre><p>First &#8220;noun&#8221; is still non-terminal, so we proceed. Due to form, noun could be any of three (I, Python, Cookies) - so I can pick up any.<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= I &lt;verb&gt; &lt;noun&gt;    
-    </pre><p>&#8220;I&#8221; is the terminal, so we process next non terminal which is verb. Verb could be any of (Eat, Like). I&#8217;ll take &#8220;Like&#8221;.<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= I Like &lt;noun&gt;    
-    </pre><p>The last non-terminal is noun again. The same three options (I, Python, Cookies). Let&#8217;s pick &#8220;Python&#8221;.<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= I Like Python    
-    </pre><p>All non-terminals are replaced with terminals, that means we derieved the expression completely. Based on that simple algorithm I can derive other expressions that would be valid for that form.<br />
-</p><pre class="brush: plain">&lt;sentence&gt; ::= I Like Cookies    
-        &lt;sentence&gt; ::= I Like I    
-        &lt;sentence&gt; ::= I Eat Python    
-        &lt;sentence&gt; ::= Python Like Cookies
-        &lt;sentence&gt; ::= Python Eat I
-    </pre><p>As you can see, some of them are completely non-sense, but still they are totally valid expressions. If you are curious, you can find BNF&#8217;s for many know languages <a href="http://goldparser.org/grammars/index.htm">here</a>. <br />
-</p><h2>Starting up Python</h2><p>Start with Python programming language was one of my goals, dusted for quite long time on goals shelf. Hope that CS101 and further courses would be motivating enough to finally learn it. So, if you are like me - .NET, no Python background - don&#8217;t worry, that&#8217;s easy enough. Basically, all you need is Python interpreter and some text editor.  <br />
-</p><p>I really like <a href="http://chocolatey.org/">Chocolatey</a> for installing that stuff. Chocolatey is like NuGet package manager, but for software. I encourage you to try. So, instead of going to site, looking for latest version etc. I just opened my Power Shell command like and put:<br />
-</p><pre class="brush: plain">cinst python
-    </pre><p>In 3 minutes, Python was on my machine. <br />
-</p><p>The editor, you can pick up any you like. I prefer <a href="http://www.sublimetext.com/2">Sublime Text 2</a>, it&#8217;s really cool. Again, you can install it by Chocolatey.<br />
-</p><pre class="brush: plain">cinst sublimetext2
-    </pre><p>After that you are almost Python developer. Just need to learn the language.<br />
-</p><h2>Strings, Find in strings<br />
-</h2><p>The rest of Unit 1, was mostly string operations in Python. And I was surprised how easy Python syntax is. First, you don&#8217;t need to &#8216;mark&#8217; varible declaration anyhow.. No types, no &#8216;var&#8217; just the name and value.<br />
-</p><pre class="brush: python">s = "Hello World"
-    </pre><p>You can access each char inside the string just with [] operator.<br />
-</p><pre class="brush: python">s = "Hello World"
-        print s[0]
-    </pre><p>It would print &#8220;H&#8221; char into console. It&#8217;s not really cool, what cool is - substrings by index and negative indexes.<br />
-</p><pre class="brush: python">print s[0:5] # -> Hello
-        print s[:5]  # -> Hello
-        print s[6:]  # -> World
-        print s[:]   # -> Hello World
-        print s[-1]  # -> d
-        print s[:-5] # -> Hello     
-    </pre><p>The find operation is very similar to what we have in C++ and C#. It, tried to find substring in string if it&#8217;s find, position returned or -1.<br />
-</p><pre class="brush: python">print s.find('World') # -> 6
-        print s.find('o')  # -> 4
-        print s.find('o', 5) # -> 7
-    </pre><p>The last thing in the unit was <code>str()</code> method, that able convert any number (integer or float) into string representation.<br />
-</p><pre class="brush: python">print str(3.14)  # -> 3.14
-        print str(100)  # -> 100
-    </pre><p>That&#8217;s it. Based on that knowledge I suppose to complete my homework.<br />
-</p><h2>Homework</h2><p>Again, as whole unit - there was really simple problems. The &#8216;real&#8217; tough guy to me was very simple problem - &#8220;Rounding numbers&#8221;. So, you are given with float number and you have to return it&#8217;s integer representation. If numbers fraction is greater than 0.5, it should go ceil otherwise it goes floor. Not big deal I thought to my self and start to write code..<br />
-</p><p>I spend around 10 minutes to create code like that:<br />
-</p><pre class="brush: python">number_as_string = str(x)
-        dot_position = number_as_string.find('.')
-        if dot_position != -1:
-         integer_part = int(number_as_string[0:dot_position])
-         decimal_part = int(number_as_string[dot_position + 1:])
-         decimal_length = len(number_as_string[dot_position + 1:]) 
-         dividor = pow(10, decimal_length - 1) * 5 
-
-         if decimal_part >= dividor :
-          integer_part += 1
-
-         print integer_part
-    </pre><p>While writing that I had a bad feeling, that I&#8217;m using something that I&#8217;m not supposed to know, actually. The code worked and I submitted the solution. I received a response, that it actually giving right answer.. but, I was asked to create solution without <code>if</code>, <code>int()</code> or <code>round()</code>.<br />
-</p><p>Believe me or not, but I really frustrated on that task. I just didn&#8217;t understood how it&#8217;s possible to do not use any <code>if</code> here, but I have a condition inside the problem. I spend additional 10 minutes, starting to think it&#8217;s just impossible. It&#8217;s really funny, but indeed I thought it&#8217;s something strange and had a great temptation to go and check for correct answer. Fortunately, I got this this online <a href="http://forums.udacity.com/cs101-april2012/questions/345/rounding-without-an-if-statement?page=1&focusedAnswerId=386#386">discussion</a> (each course has it&#8217;s discussion board, where student&#8217;s can share the info). It turns out I&#8217;m not alone, some professional programmers did the look like I did with if&#8217;s and calls to other functions.<br />
-</p><p>Finally, I just tried to concentrate and really pretend to be a person how is just listen to that material first time, using the only knowledge I got in Unit 1. And solution came up to my mind! It was sooo easy, so I felt really ashamed for the code I wrote above. It&#8217;s 3 lines of code, using just <code>str()</code> and <code>find()</code> method, so simple.<br />
-</p><p>That was definitely facepalm situation. But, it really encourage me to continue!<br />
 </p></div>
 
       

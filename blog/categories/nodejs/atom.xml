@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-01-13T18:16:49+02:00</updated>
+  <updated>2014-01-18T14:17:49+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
+    <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
+    <updated>2014-01-18T13:38:00+02:00</updated>
+    <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
+    <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
+
+<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
+
+<!-- More -->
+
+
+<p>To mitigate the issue few <a href="http://stackoverflow.com/questions/1972242/auto-reload-of-files-in-node-js">known solutions</a> exist, common idea is that there is watchdog that keeping eye on <code>node</code> process and if crashed, restarts application again.</p>
+
+<p>Recently I&rsquo;ve used great library by <a href="https://github.com/mafintosh">@mafintosh</a> called <a href="https://github.com/mafintosh/respawn">respawn</a>. I liked it&rsquo;s minimalistic style and decided to try it out.</p>
+
+<p>The bare-bones code is very simple. Without modification of your application, just create file <code>monitor.js</code> with nearly such code:</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);</p>
+
+<p>var monitor = respawn([&lsquo;node&rsquo;, &lsquo;server.js&rsquo;], {</p>
+
+<pre><code>env: {ENV_VAR:'test'}, // set env vars
+cwd: '.',              // set cwd
+maxRestarts:10,        // how many restarts are allowed within 60s
+sleep:1000,            // time to sleep between restarts
+</code></pre>
+
+<p>});</p>
+
+<p>monitor.start(); // spawn and watch
+```</p>
+
+<p><code>monitor</code> will spawn new node process and in case of crash it will be restarted. You can also specify <code>maxRestars</code> (I recommend to do that, if something is really bad it won&rsquo;t be restarted infinitely) and <code>sleep</code> time.</p>
+
+<p>I&rsquo;ve tried that, by implementing <code>/fail</code> end-point in my app, to see that <code>respawn</code> really works.</p>
+
+<p>```js
+app.get(&lsquo;/fail&rsquo;, function (req, res, next) {</p>
+
+<pre><code>setTimeout(function () {
+    var nu = null;
+    nu.access();
+
+    res.send('Hello World');
+}, 1000);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>if I try to hit <code>/fail</code> I&rsquo;ll see no results in browser, but if I go back to <code>/</code> the application is running in normal state.</p>
+
+<p>But simple respawning of application is not complete solution. You need to know what exactly happened to be able to fix issue. <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">Proper logging</a> of your application is essential. I&rsquo;ll show my small setup around <code>respawn</code> that send critical message to <a href="https://logentries.com">Logentries</a>, so all crashes are logged.</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);
+var util = require(&lsquo;util&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var proc = respawn([&lsquo;node&rsquo;, &lsquo;app.js&rsquo;], {</p>
+
+<pre><code>cwd: '.',
+maxRestarts: 10,
+sleep: 1000,
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;spawn&rsquo;, function () {</p>
+
+<pre><code>util.print('application monitor started...');
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;exit&rsquo;, function (code, signal) {</p>
+
+<pre><code>logger.fatal({msg: 'process exited, code: ' + code + ' signal: ' + signal});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stdout&rsquo;, function (data) {</p>
+
+<pre><code>util.print(data.toString());
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stderr&rsquo;, function (data) {</p>
+
+<pre><code>logger.error({msg: 'process error', data: data.toString()});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.start();
+```</p>
+
+<p>(details of logger you can find in this <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">post</a>)</p>
+
+<p>All process output is goes to <code>stdout</code>, which is convinient for development, but in case of <code>stderr</code> or <code>exit</code> everything is logged to cloud and notification to <code>dev-team</code> sent.</p>
+
+<p>It worked really nice, now I&rsquo;m not worry even if something bad happens on production, <code>respawn</code> will make sure that rest of users are not affected. As a developer you can much quicker found bug and push hotfix.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
@@ -514,206 +623,6 @@ demo with node-sample
 <p>You are able to configure environment variables, as well as configure SSL connection.</p>
 
 <p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
-    <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
-    <updated>2013-09-03T19:57:00+03:00</updated>
-    <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
-    <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
-
-<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
-
-<!-- More -->
-
-
-<h2>Prepearing Environment</h2>
-
-<p>You box should contain few things: git (github account), VirtualBox and Vagrant. If you don&rsquo;t have Vagrant installed, please do now. It makes a lot of sense to keep such kind software on machine.</p>
-
-<p>Here you can find <a href="http://docs.vagrantup.com/v2/getting-started/index.html">some instructionn</a> of how to do that.</p>
-
-<h3>Cloning Dokku</h3>
-
-<p>You should clone Dokku repo locally. In your development folder, run</p>
-
-<p>```bash</p>
-
-<blockquote><p>git clone git@github.com:progrium/dokku.git
-cd dokku
-```</p></blockquote>
-
-<p>Dokku repository already contains Vagrant file, with all required configuration.</p>
-
-<h3>Local Networking</h3>
-
-<p>Just in sake of convenience, will map <code>10.0.0.2</code> ip address (the one that Vagrant machine is assigned with), to <code>dokku.me</code> DNS name, so it&rsquo;s just handy for testing.</p>
-
-<p><code>bash
-› sudo nano /private/etc/hosts
-</code></p>
-
-<p>and put last 2 lines, as it shown in my example:</p>
-
-<p>```plain</p>
-
-<h1>#</h1>
-
-<h1>Host Database</h1>
-
-<p>#</p>
-
-<h1>localhost is used to configure the loopback interface</h1>
-
-<h1>when the system is booting.  Do not change this entry.</h1>
-
-<h1>#</h1>
-
-<p>127.0.0.1       localhost
-255.255.255.255 broadcasthost
-::1             localhost
-fe80::1%lo0     localhost
-10.0.0.2        dokku.me
-10.0.0.2        node-simple.dokku.me
-```</p>
-
-<h3>Fire Up Virtual Machine</h3>
-
-<p>In <code>dokku</code> folder, you should run</p>
-
-<p>```bash</p>
-
-<blockquote><p>vagrant up
-```</p></blockquote>
-
-<p>It will start to prepare new virtual environment for you,</p>
-
-<p><code>bash
- vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-[default] Setting the name of the VM...
-[default] Clearing any previously set forwarded ports...
-[default] Creating shared folders metadata...
-[default] Clearing any previously set network interfaces...
-[default] Preparing network interfaces based on configuration...
-[default] Forwarding ports...
-[default] -- 22 =&gt; 2222 (adapter 1)
-[default] -- 80 =&gt; 8080 (adapter 1)
-[default] Running any VM customizations...
-[default] Booting VM...
-[default] Waiting for VM to boot. This can take a few minutes.
-</code></p>
-
-<p>I have a problem with this step few times, so if you machine could not be booted, try to run <code>vagrant reload</code>, it should help.</p>
-
-<p>It would took about up to 20 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
-
-<p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
-
-<p>```bash</p>
-
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#114;&#x6f;&#111;&#116;&#x40;&#x64;&#111;&#107;&#107;&#117;&#x2e;&#109;&#x65;">&#114;&#111;&#x6f;&#116;&#64;&#x64;&#x6f;&#x6b;&#107;&#117;&#46;&#109;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
-```</p></blockquote>
-
-<p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
-
-<p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
-
-<p>```bash</p>
-
-<blockquote><p>vagrant ssh
-```</p></blockquote>
-
-<p>So, just try that everything is running fine by checking version of Docker:</p>
-
-<p>```bash</p>
-
-<blockquote><p>docker -v
-Docker version 0.6.1, build 5105263
-```</p></blockquote>
-
-<p>The instance is ready for deployment.</p>
-
-<h2>Deploy to Dokku</h2>
-
-<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexanderbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
-
-<p>So, what you need to setup is remote repository to push to:</p>
-
-<p>```bash</p>
-
-<blockquote><p>git remote add local-deploy git@dokku.me:node-simple
-```</p></blockquote>
-
-<p>That&rsquo;s all. You ready for first deploy, just push code to machine with Dokku:</p>
-
-<p>```bash
-git push local-deploy master
-› git push local-deploy master &mdash;force
-Counting objects: 5, done.
-Delta compression using up to 8 threads.
-Compressing objects: 100% (3/3), done.
-Writing objects: 100% (3/3), 289 bytes | 0 bytes/s, done.
-Total 3 (delta 2), reused 0 (delta 0)
-&mdash;&mdash;&ndash;> Building node-simple &hellip;</p>
-
-<pre><code>   Node.js app detected
-</code></pre>
-
-<p>&mdash;&mdash;&ndash;> Resolving engine versions</p>
-
-<pre><code>   Using Node.js version: 0.8.25
-   Using npm version: 1.2.30
-</code></pre>
-
-<p>&mdash;&mdash;&ndash;> Fetching Node.js binaries
-&mdash;&mdash;&ndash;> Vendoring node into slug
-&mdash;&mdash;&ndash;> Installing dependencies with npm</p>
-
-<pre><code>   npm WARN package.json application-name@0.0.5 No repository field.
-   npm WARN package.json application-name@0.0.5 No readme data.
-   npm WARN package.json send@0.1.0 No repository field.
-   ...
-</code></pre>
-
-<p>=====> Application deployed:</p>
-
-<pre><code>   http://node-simple.dokku.me
-</code></pre>
-
-<p>To git@dokku.me:node-simple
-   dd05aae..ac5b6da  master &ndash;> master
-```</p>
-
-<h2>Setting up Environment</h2>
-
-<p>Every application requires environment. It&rsquo;s common practice to set at least <code>NODE_ENV</code> variable for Node.js applications. To do that, you need to create <code>ENV</code> file inside the <code>/home/git/node-simple</code> folder.</p>
-
-<p><code>bash
-› ssh root@dokku.me "echo export NODE_ENV="development" &gt; /home/git/node-simple/ENV"
-</code></p>
-
-<p>Now, let&rsquo;s re-deploy the application, change the version in <code>package.json</code> and push code again.</p>
-
-<p><code>bash
-› git push local-deploy master
-</code></p>
-
-<p>Now, application is ready to be accessed.</p>
-
-<h2>Accessing the Application</h2>
-
-<p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
-
-<p><img src="/images/blog/node-simple-run.png"></p>
-
-<p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
-
-<p>Just looking on logs while new application is deployed, would give pretty much idea of what&rsquo;s going on there.</p>
-
-<p>So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.</p>
 ]]></content>
   </entry>
   

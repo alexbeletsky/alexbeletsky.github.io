@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Approval Tests: Locking down an output Jan 6th, 2012 Approvals We have seen how Approval Tests are useful for locking down some legacy code. You &hellip;">
+  <meta name="description" content="Using ASP.NET MVC Validation Mechanism without ASP.NET MVC Jan 10th, 2012 Tips, asp.net I get used to DataAnnotations for model validation very &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,93 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/01/using-aspnet-mvc-validation-mechanism.html">
+    
+      Using ASP.NET MVC Validation Mechanism without ASP.NET MVC</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-10T21:30:00+02:00" pubdate data-updated="true">Jan 10<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />
+</p><p>During implementation of some feature for <a href="https://github.com/alexanderbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
+</p><h2>Basic start</h2><p>Assume you have such model:<br />
+</p><pre class="brush: csharp">public class SimpleModel
+{
+ [Required]
+ public string SomeProperty { get; set; }
+ 
+ [Range(0,50)]
+ public int SomeAnotherProperty { get; set; }
+}
+    </pre><p>If your goal is just to get answer &#8220;yes or no&#8221;, you can create such function:<br />
+</p><pre class="brush: csharp">public bool ValidateSimpleModel(SimpleModel validate)
+{
+ return Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), null);
+}
+    </pre><p><a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validator.aspx">Validator</a> is a static class in DataAnnotations namespace. It takes target object, validation context and validation results collection. But due, to it just &#8220;tries&#8221; to perform validation, most of all parameters could be null.<br />
+</p><h2>Use validation results</h2><p>If you need more specific information, like which field is exactly invalid you need to have <code>ICollection&lt;ValidationResult&gt;</code><br />
+</p><pre class="brush: csharp">public ICollection&lt;ValidationResult&gt; ValidateSimpleModel(SimpleModel validate)
+{
+ var validationResults = new List&lt;ValidationResult&gt;();
+ Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), validationResults);
+ 
+ return validationResults;
+}
+    </pre><p>In case of invalid object it would return non-empy collection of <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validationresult.aspx">ValidationResult</a>, that would contain all relevant information.<br />
+</p><h2>Wrapping up to extension method</h2><p>Finally, you can create simple extension extension method and apply DataAnnotations validation to any kind of object:<br />
+</p><pre class="brush: csharp">public static class ValidatorExtensions
+{
+    public static bool TryValidateObject(this object validate)
+    {
+        return Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), null);
+    }
+}
+    </pre><p>So, the model could just have IsValid() method, like:<br />
+</p><pre class="brush: csharp">public bool IsValid()
+{
+ return this.TryValidateObject();
+}
+    </pre><p>It works great for such simple task I need to accomplish.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -998,62 +1085,6 @@ public void should_have_approved_layout() {
 </p><p>What&#8217;s important, Mike involved me to do my own speech. I remember that first time when I was sharing my experience with <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Deployment</a> based on Chuck Norris tools and Jenkins. That was a good start and I did several more speeches after. I would say it happened only because of Kiev ALT.NET.<br />
 </p><p>Getting of knowledge for me is not only books, podcasts and just coding practice. But also, discussions, questions and speeches. I this is definitely productive way of learning. <br />
 </p><p>So, I&#8217;m very thankful to Kiev ALT.NET for that positive feel of progress, pleasure of communication with smart guys and fun time of after parties.I wish a long life for community and try to help it as much as I can.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/11/develop-with-tests.html">
-    
-      Develop With Tests</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-16T18:10:00+02:00" pubdate data-updated="true">Nov 16<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>I&#8217;ve been recently thinking about my TDD and I came to interesting conclusion.  I&#8217;m not TDD practitioner any more!<br />
-</p><p>TDD is quite strict  practice, it suppose you following certain rules. The main rule is test first. You create test, you create code after. For years I&#8217;ve been using that practice as dogma. I&#8217;ve seen a lot of value with such approach and that worked for me really much. <br />
-</p><p>Do you use that rules now? Not always.. Do you use something different than TDD? Yes, I do <strong>develop with tests</strong>.<br />
-</p><p>See, TDD main power is not in tests itself. The power of TDD is Test Driven Design. This is design that makes code more readable and maintainable. Tests of cause helps regression and general quality, but it is not always the truth. As long as you practice TDD much you feel how designed for tests code should look like. You do not need to create test to prove that code is testable. Following very simple rules you simply guarantee that tests are possible here. <br />
-</p><p>Now, I simply optimize the process a bit. I could skip first step and go ahead for code. That does not mean I&#8217;m skipping test. No, I&#8217;ll create there I feel it necessary.. And I feel that mostly to all code I create. But this is no longer TDD, I call that develop with tests. DWT as you want ;)<br />
-</p><a href="https://lh3.googleusercontent.com/-wRTF3X1cJm0/TsPgJH6ryEI/AAAAAAAAH0M/H51scOr_Gf8/s620/dwt.jpg"><br />
-<img src="https://lh3.googleusercontent.com/-wRTF3X1cJm0/TsPgJH6ryEI/AAAAAAAAH0M/H51scOr_Gf8/s620/dwt.jpg" alt="develop with tests" /><br />
-</a><br />
-<p>I think a some developers might say, &#8220;Oh, I&#8217;m using DWT as well&#8221;. Others will say, &#8220;I will use DWT since TDD is boring and requires too much time&#8221;. Please do not do that. I strongly believe that is TDD that could make you stronger as developers and your code robust and good looking. So follow the rules before you absolutely sure, you ready to break them.<br />
 </p></div>
 
       
