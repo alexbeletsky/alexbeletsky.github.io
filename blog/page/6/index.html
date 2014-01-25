@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Customizing Folders Layout for NancyFX Application Aug 14th, 2012 NancyFX, Tips NancyFX applications are full of conventions. The default &hellip;">
+  <meta name="description" content="ELMAH.MVC 2.0.1 Update is Out Aug 16th, 2012 ELMAH.MVC I&#8217;ve just pushed new version of ELMAH.MVC NuGet package - 2.0.1. It covers some &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,57 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/08/elmahmvc-201-update-is-out.html">
+    
+      ELMAH.MVC 2.0.1 Update is Out</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-16T20:01:00+03:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    I&#8217;ve just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can&#8217;t wait to share.<br />
+</p><h2>VB.NET projects support</h2><p>    For quite a while, I&#8217;ve been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I&#8217;ve just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
+</p><h2>Custom ELMAH route</h2><p>    Another demanded feature was to provide custom path to ELMAH controller. By default ELMAH is available under <code>/elmah</code>, which is nice, but sometimes you what to have a freedom to change it. It&#8217;s now possible, <code>web.config</code> has additional configuration section, <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;</code>. By setting up elmah.mvc.route parameter, you can tweek a default one, like <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;secure/admin/errors&quot; /&gt;</code> for instance.<br />
+</p><h2>Besides of that&#8230;</h2><p>    ELMAH.MVC does not depend on WebActivator any longer. I&#8217;ve removed <code>App_Start.cs</code> code and used <a href="http://haacked.com/archive/2010/05/16/three-hidden-extensibility-gems-in-asp-net-4.aspx">PreApplicationStartMethodAttribute</a> attribute. That allows to make a package more tiny + actually made it possible to avoid separate NuGet package for VB.NET projects.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -827,59 +878,6 @@ private string RemoveFooter(string content)
     </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
     </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
     </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/06/cs101-building-search-engine-week-7-and.html">
-    
-      CS101 Building a Search Engine: Week 7 and Final Exams</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-08T22:06:00+03:00" pubdate data-updated="true">Jun 8<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>As I said in my <a href="http://www.beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html">previous</a> post, last several units of CS101 were a little tought. Not so difficult, but it made me a little worry what&#8217;s it gonna be in final exams. Being posted right in time, I had to conclude Unit 7 before I start with exams. That time, I had some doubts if I&#8217;m able to meet course deadline.<br />
-</p><p>Fortunatelly, Unit 7 was non-technical one. I went throught it rather quickly. Some scenes for this unit were taken in <a href="http://www.computerhistory.org/">Compute History Museum</a>. This place is just amazing, I wish I had a chance to visit it someday. We&#8217;ve been passed throught a pre-historical computers (like Babbage machine), first hard drives and other interesting stuff. Besides of that we guested Mozilla company talking to it&#8217;s president and developers about open source projects, infuence of open source and some thoughts on how to be involved in open source community.<br />
-</p><p>The final exam appeared to be not so difficult. I submitted it in time, even earlier than expected. I was also quite surpised, to see that deadline is a little prolonged up to 4th of June. Anyway, the solutions are submitted and now it would take up to 2 weeks waiting for results. I really looking forward and hoping to get my certificate.<br />
-</p><p>Conluding this series of posts I have to say - Udacity courses are awesome! I really appreciate <a href="http://www.cs.virginia.edu/~evans/">David Evans</a> and <a href="http://robots.stanford.edu/">Sebastian Thrun</a> for making all that happen. My big credit goes to David who had lead CS101 and was just a perfect professor, clearly describe all the material and showing nice examples. I would like to say &#8216;Thank you&#8217; for everyone envolved.<br />
-</p><p>I think CS101 was great &#8216;warm-up&#8217; course. I would not stop on that, but I already enrolled for next ones. This time I&#8217;ve choosen more fundametal -  <a href="http://www.udacity.com/overview/Course/st101/CourseRev/1">ST101 - Introduction to Statistics</a> and <a href="http://www.udacity.com/overview/Course/cs215/CourseRev/1">CS215 - Algorithms, Crunching Social Networks</a>. Both courses are starting June 25. Not sure, would it be possible to make them on parallel, so I might hold one if it would be to difficult. Besides of that I&#8217;m currenty looking throught <a href="http://www.udacity.com/overview/Course/cs253/CourseRev/apr2012">CS253 - Web Application Engineering</a> with <a href="http://en.wikipedia.org/wiki/Steve_Huffman">Steve Huffman</a> (the creator of <a href="http://www.reddit.com/">reddit.com</a>) just as a free course, to play a little more with Python and Google App Engine.<br />
-</p><p>I highly recomend you to pickup some course today. And once again, thanks a lot to <a href="http://www.udacity.com">Udacity</a> for that priceless opportunity to learn!<br />
-</p></div>
 
       
       

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Develop With Tests Nov 16th, 2011 TDD I&#8217;ve been recently thinking about my TDD and I came to interesting conclusion. I&#8217;m not TDD &hellip;">
+  <meta name="description" content="Kiev ALT.NET Community Thoughts Dec 3rd, 2011 KievAltNet, Mind I&#8217;ve just reviewed blog posts I created thought that year and realized that I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,62 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/12/kiev-altnet-community-thoughts.html">
+    
+      Kiev ALT.NET Community Thoughts</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-03T11:52:00+02:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/kievaltnet/'>KievAltNet</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>I&#8217;ve just reviewed blog posts I created thought that year and realized that I miss very important piece of information here. Something that literally changed my developers life. And I&#8217;m talking about <a href="http://kievalt.net/">Kiev ALT.NET</a> community.<br />
+</p><p>From my first join at the beginning of the year I amazed with very cool and friendly atmosphere there. I tried to visit every meeting and each of them brought some value for me. And the most valuable asset I got there is people I met. Those guys simply rock.<br />
+</p><a href="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-3_a5l569SpU/TtnvsnVAekI/AAAAAAAAH0g/gQeYOduVHZM/s512/kiev.jpg" alt="kiev alt.net" /><br />
+</a><br />
+<p><a href="http://twitter.com/chaliy">Mike Chaliy</a>, the leader of community does exceptional job. I could imagine how hard could it be to do all organization work and he does that very well. <br />
+</p><p>What&#8217;s important, Mike involved me to do my own speech. I remember that first time when I was sharing my experience with <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Deployment</a> based on Chuck Norris tools and Jenkins. That was a good start and I did several more speeches after. I would say it happened only because of Kiev ALT.NET.<br />
+</p><p>Getting of knowledge for me is not only books, podcasts and just coding practice. But also, discussions, questions and speeches. I this is definitely productive way of learning. <br />
+</p><p>So, I&#8217;m very thankful to Kiev ALT.NET for that positive feel of progress, pleasure of communication with smart guys and fun time of after parties.I wish a long life for community and try to help it as much as I can.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -850,66 +906,6 @@ public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type
 </p><p>So, my point is: if you are in work project - immediately share you problem with colleagues don&#8217;t make yourself <a href="http://www.beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html">completely stucked</a>. If you work on your own project - it is better if you find a collaborator, if you don&#8217;t have one you might find a local group, like <a href="http://kyivbeerncode.org/">Beer && Code</a> or talk to your developers friends whatever. <br />
 </p><p>Remember, as closer the collaborator is as better. Special thank&#8217;s today goes to <a href="http://twitter.com/#!/chaliy">@chaliy</a> who helped to solve the issue.<br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/09/branching-workflow-in-git-svn-mode.html">
-    
-      Branching Workflow in Git-SVN Mode</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-06T17:42:00+03:00" pubdate data-updated="true">Sep 6<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
-<pre>git checkout -b master-nd-177   
-</pre><li>Do your work here, performing as many commits as you need</li>
-<pre>get commit -a -m "some intermediate commit.."
-</pre><li>Now, as you are ready to be merged you to SVN, you checkout and rebase master (to get latest SVN changes from it)</li>
-<pre>git checkout master
-    git svn rebase
-</pre><li>You can simply merge 2 branches, but with simple merge you will get all commits history that you probably don&#8217;t need in SVN at all. You squash to compress number of commits into one nice looking commit object</li>
-<pre>git merge --squash master-nd-177
-</pre><li>It would merge up all changes from master-nd-177 into master. All you need to do is commit</li>
-<pre>git commit -m "ND-177 completed"
-</pre><li>And dcommit changes to SVN server</li>
-<pre>git svn dcommit
-</pre></ol><p>That&#8217;s six basic steps makes really straightforward workflow for everyday usage. </p></div>
 
       
       
