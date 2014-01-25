@@ -3,7 +3,7 @@ layout: post
 title: "Logs Driven Development"
 date: 2014-01-25 13:12
 comments: true
-categories: tdd, logs, practices
+categories: tdd logs practices
 ---
 
 One of the components I currently work on called `collector` and it has no tests. Collector is all about of building queue of tasks, executing them and store data to database after. Tasks are HTTP clients that requests API and process transform responses into generic forms.
