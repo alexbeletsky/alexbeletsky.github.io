@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Pre-announce of Release Candidate Jan 13th, 2012 Candidate For those, who already forgot what the candidate is I&#8217;ll do a small reminder :). &hellip;">
+  <meta name="description" content="Convention based IoC configuration Jan 24th, 2012 Clean Code, Tips, Tools What&#8217;s your favorite IoC container framework? For quite long time I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,159 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/01/convention-based-ioc-configuration.html">
+    
+      Convention based IoC configuration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-24T16:54:00+02:00" pubdate data-updated="true">Jan 24<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>What&#8217;s your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it&#8217;s my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I&#8217;ll still be using Ninject, through.<br />
+</p><h2>What&#8217;s are conventions?<br />
+</h2><p><a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over configuration</a> is very popular trend nowadays. Many frameworks trying to adopt it, including ASP.NET MVC. In short, that means you are relying on some front-know conventions, like names of files, folder or classes and system does something meaningful, based on those conventions. Like, all controllers in ASP.NET MVC should have &#8220;Controller&#8221; postfix, so the framework is able to find and <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">instantiate</a> it. <br />
+</p><p>Conventions make a developer&#8217;s life a little easier, you are no longer spending efforts on configuration, instead following some simple rules. <br />
+</p><h2>What we have for IoC?<br />
+</h2><p>My <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Shu&#8221;</a> level of IoC containers learning was configuration based. This is something you learn at very beginning. So, in case of Ninject, sooner of later you have huge file with dependencies configuration: <br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Bind&lt;ISettingsManager&gt;().To&lt;SettingsManager&gt;();
+ kernel.Bind&lt;IDirectoryProvider&gt;().To&lt;DirectoryProvider&gt;().InSingletonScope();
+ kernel.Bind&lt;ISetupFactory&gt;().To&lt;SetupFactory&gt;();
+ kernel.Bind&lt;ITargetsObjectBuilder&gt;().To&lt;DefaultTargetsObjectBuilder&gt;();
+ kernel.Bind&lt;ITargetsBuilder&gt;().To&lt;TargetsBuilder&gt;();
+ kernel.Bind&lt;IBounceFactory&gt;().To&lt;BounceFactory&gt;();
+ kernel.Bind&lt;ITargetsRetriever&gt;().To&lt;TargetsRetriever&gt;();
+ kernel.Bind&lt;IConfigObjectBuilder&gt;().To&lt;ConfigObjectBuilder&gt;();
+ kernel.Bind&lt;ILoggerFactory&gt;().To&lt;LoggerFactory&gt;();
+ kernel.Bind&lt;IHashService&gt;().To&lt;HashService&gt;();
+ kernel.Bind&lt;IAuthentication&gt;().To&lt;Authentication&gt;();
+ kernel.Bind&lt;IConfigurationsFactory&gt;().To&lt;ConfigurationsFactory&gt;();
+ 
+ // More, more, more...
+}
+</pre><p>As more your application grows, as more services, repositories, factories you have. As long <code>RegisterServices</code> method becomes longer, as more you forgot to correct correct it after some new dependency added, so you see YSOD during application run.<br />
+</p><p>But please, put your attention to interface and class names. What we have here - <code>ISettingsManager</code> and <code>SettingsManager</code>; <code>IDirectoryProvider</code> and <code>DirectoryProvider</code>.. <code>ILoggerFactory</code> and <code>LoggerFactory</code>. Do you see pattern here? Exactly, it is [&#8220;I&#8221; + entity name] for interfaces and [entity name] for implementation.<br />
+</p><p>Here we go for <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Ha&#8221;</a> level of IoC and apply convention based configuration.<br />
+</p><h2>Convention over configuration</h2><p>Let&#8217;s take an advance of the fact above and shrink our configuration code. First of all, you need to get great extension for Ninject, called <a href="http://nuget.org/packages/ninject.extensions.conventions/2.2.0.5">ninject.extensions.conventions</a>.<br />
+</p><p>After the package is installed, the simples Ninject start-up code ever would be:<br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromCallingAssembly();
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><p>What it does? It has an abstraction called &#8220;scanner&#8221;. You instruct scanner what to do. In this example, I said - take calling assembly and bind all interfaces to implementation class having Default conventions. The default conventions are ones that I shown above. <br />
+</p><p>That&#8217;s it, all those lines of code are simply gone away, since we rely on conventions and Ninject is aware how to deal with those conventions. If you added new dependency and followed convention, nothing you should do manually any more.<br />
+</p><h2>I have some questions!?</h2><p>Ok, typically you have something little more complex. I&#8217;ll try to predict some questions you might have.<br />
+</p><h3>I have a lot of assemblies in my application, but want only particular ones to be scanned?</h3><p>You can easily use only assemblies that matches particular patterns, like:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><h3>Is it only default conventions I can use?</h3><p>No, you can specify your own rules. Scanner has <code>BindWith</code> method, that receives <code>IBindingGenerator</code> type. You can implement your own binding generator for custom conventions.<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><h3>What if I have several cases of convention violations?</h3><p>You are still able to bind in exactly same way as before:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+
+    // classes that violates conventions
+    kernel.Bind&lt;IMyInterface&gt;().To&lt;MyImpl&gt;();
+}
+</pre><h3>What is I have dependencies in different assemblies?</h3><p>Best thing is to go with Ninject modules. First, correct the scanner:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+                        scanner.AutoLoadModules();
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><p>Now, each assembly should include module instance:<br />
+</p><pre class="brush: csharp">namespace Candidate.Core
+{
+    public class CoreModule : NinjectModule
+    {
+        public override void Load()
+        {
+            // place convention-violation classes here
+   // Bind&amp;lt;IMyInterface&amp;gt;().To&amp;lt;MyImpl&amp;gt;();
+        }
+    }
+}
+</pre><p>Another one good feature of Convention based IoC is - &#8220;Config and forget&#8221;. Once done, use always and forget about manual binding once and for all.<br />
+</p><p>I&#8217;ve heard about this on <a href="http://www.beletsky.net/2011/12/xp-days-ukraine-2011.html">XP Days 2011</a> conference, by <a href="https://twitter.com/#!/ploeh">Mark Seemann</a>. I think it&#8217;s nice approach.. I adopt it and going to use in my projects.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -882,217 +1035,6 @@ public void should_have_approved_layout() {
 </p><p>Legacy is another story: you have no tests there at all, but you have to change code to implement new feature or refactor. The interesting thing about legacy code - It works! It works for years, no matter how it written (remember, virtual box). And this is a very great advantage of that code. With approvals, with only one test you can get all possible outputs (HTML, XLM, JSON, SQL or whatever output it could be) and approve, because you know - it works! After you have such test and approved result you are really much safe with a refactoring, since now you &#8220;locked down&#8221; all existing behavior.<br />
 </p><p>Approvals are not something you need to run all the time, like units or integration tests. It more like handy tool. You create approval tests, you do your job and at the end of the day it might happen - you no longer needed, so you can just throw it away.<br />
 </p><h2>Want to hear more?</h2><p>Just go and listen to <a href="http://herdingcode.com/?p=329">this</a> Herding Code podcast episode, or visit project <a href="https://sourceforge.net/projects/approvaltests/">web site</a> or join me at 17 December on <a href="http://xpdays.com.ua/program/">XP Days Ukraine</a> conference in Kiev, where I&#8217;m going to have a speech dedicated to Approvals.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/12/inside-aspnet-mvc-instantiation-of.html">
-    
-      Inside ASP.NET MVC: Instantiation of Controller</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-05T21:05:00+02:00" pubdate data-updated="true">Dec 5<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>Controller are being created by <code>ControllerFactory</code>, by default <code>IControllerFactory</code> type is being resolved to <code>DefaultControllerFactory</code>. Today&#8217;s post is dedicated to some details of how actually <code>DefaultControllerFactory</code> works and creates instance of required controller. Let&#8217;s go from the beginning!<br />
-</p><h2>Request for controller instance</h2><p>Initially, we are at <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">MvcHandler</a>&#8217;s <code>ProcessRequestInit</code> method, where we extract controllers name from RouteData and request controller factory to create corresponding controller.<br />
-</p><pre class="brush: csharp">private void ProcessRequestInit(HttpContextBase httpContext, out IController controller, out IControllerFactory factory) {
- // If request validation has already been enabled, make it lazy. This allows attributes like [HttpPost] (which looks
- // at Request.Form) to work correctly without triggering full validation.
- bool? isRequestValidationEnabled = ValidationUtility.IsValidationEnabled(HttpContext.Current);
- if (isRequestValidationEnabled == true) {
-  ValidationUtility.EnableDynamicValidation(HttpContext.Current);
- }
-
- AddVersionHeader(httpContext);
- RemoveOptionalRoutingParameters();
-
- // Get the controller type
- string controllerName = RequestContext.RouteData.GetRequiredString(&quot;controller&quot;);
-
- // Instantiate the controller and call Execute
- factory = ControllerBuilder.GetControllerFactory();
- controller = factory.CreateController(RequestContext, controllerName);
- if (controller == null) {
-  throw new InvalidOperationException(
-   String.Format(
-    CultureInfo.CurrentCulture,
-    MvcResources.ControllerBuilder_FactoryReturnedNull,
-    factory.GetType(),
-    controllerName));
- }
-}
-</pre><h2>DefaultControllerBuilder internals<br />
-</h2><p><code>CreateController</code> is rather elegant method, basically it does some arguments check&#8217;s, resolve the controller type by it&#8217;s name and then call to <code>GetControllerIntance</code> to instantiate that type.<br />
-</p><pre class="brush: csharp">public virtual IController CreateController(RequestContext requestContext, string controllerName) {
- if (requestContext == null) {
-  throw new ArgumentNullException(&quot;requestContext&quot;);
- }
- if (String.IsNullOrEmpty(controllerName)) {
-  throw new ArgumentException(MvcResources.Common_NullOrEmpty, &quot;controllerName&quot;);
- }
- Type controllerType = GetControllerType(requestContext, controllerName);
- IController controller = GetControllerInstance(requestContext, controllerType);
- return controller;
-}
-</pre><h2>Getting the controller type</h2><p><code>GetControllerType</code> is delegating it&#8217;s call to internal <code>GetControllerTypeWithinNamespaces</code>. It receives Route, Controller&#8217;s name and Namespaces.  <br />
-</p><pre class="brush: csharp">private Type GetControllerTypeWithinNamespaces(RouteBase route, string controllerName, HashSet&lt;string&gt; namespaces) {
- // Once the master list of controllers has been created we can quickly index into it
- ControllerTypeCache.EnsureInitialized(BuildManager);
-
- ICollection&lt;Type&gt; matchingTypes = ControllerTypeCache.GetControllerTypes(controllerName, namespaces);
- switch (matchingTypes.Count) {
-  case 0:
-   // no matching types
-   return null;
-
-  case 1:
-   // single matching type
-   return matchingTypes.First();
-
-  default:
-   // multiple matching types
-   throw CreateAmbiguousControllerException(route, controllerName, matchingTypes);
- }
-}
-</pre><p>The namespaces parameter are quite important. If you remember, you can explicitly mention the namespace during the route definition, with overloaded MapRoute method:<br />
-</p><pre class="brush: csharp">public static Route MapRoute(this RouteCollection routes, string name, string url, string[] namespaces) {
- return MapRoute(routes, name, url, null /* defaults */, null /* constraints */, namespaces);
-}
-</pre><p>Namespaces parameter then being stored to Route.DataTokens[&#8220;Namespaces&#8221;]. Namespaces parameter matters, then you have controllers with same names. This is in particular makes sense then you have different areas.<br />
-</p><h2>Caching Controller Types</h2><p>The interesting thing is that framework not re-reads types for each request, that would be just to expesive, but instead it uses a cache which is initialized at the very first request and used at the life time of application. The call <code>ControllerTypeCache.EnsureInitialized(BuildManager);</code> makes sure that cache is in actual state. How does MVC caching the types?<br />
-</p><p>Very simple and straight forward solution - in .XML file.<br />
-</p><pre class="brush:csharp">public static List&lt;Type&gt; GetFilteredTypesFromAssemblies(string cacheName, Predicate&lt;Type&gt; predicate, IBuildManager buildManager) {
- TypeCacheSerializer serializer = new TypeCacheSerializer();
-
- // first, try reading from the cache on disk
- List&lt;Type&gt; matchingTypes = ReadTypesFromCache(cacheName, predicate, buildManager, serializer);
- if (matchingTypes != null) {
-  return matchingTypes;
- }
-
- // if reading from the cache failed, enumerate over every assembly looking for a matching type
- matchingTypes = FilterTypesInAssemblies(buildManager, predicate).ToList();
-
- // finally, save the cache back to disk
- SaveTypesToCache(cacheName, matchingTypes, buildManager, serializer);
-
- return matchingTypes;
-}
-</pre><p>It try&#8217;s read cache from file, if there are not matching types there it would try to read assemblies and then store it to cache. You might be interested where this file is actually located, so take a look:<br />
-</p><a href="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg"><br />
-<img src="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg" alt="cache file name" /><br />
-</a><br />
-<p>And for the most curious guys, here is the content:<br />
-</p><pre class="brush: xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;!--This file is automatically generated. Please do not modify the contents of this file.--&gt;
-&lt;typeCache lastModified=&quot;14.10.2011 19:33:03&quot; mvcVersionId=&quot;aa5414f4-4d8e-4f2a-a98b-7334bf15d104&quot;&gt;
-  &lt;assembly name=&quot;MvcForDebug2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;&gt;
-    &lt;module versionId=&quot;1ad99820-dc17-4be0-9f56-6dd2bdcd7950&quot;&gt;
-      &lt;type&gt;MvcForDebug2.Controllers.HomeController&lt;/type&gt;
-    &lt;/module&gt;
-  &lt;/assembly&gt;
-&lt;/typeCache&gt;
-</pre><p><code>FilterTypesInAssemblies</code> method tries to get all controllers it can. What it does, it goes throught all referenced assemblies and using special predicate class matching the types. <br />
-</p><pre class="brush:csharp">private static IEnumerable&lt;Type&gt; FilterTypesInAssemblies(IBuildManager buildManager, Predicate&lt;Type&gt; predicate) {
- // Go through all assemblies referenced by the application and search for types matching a predicate
- IEnumerable&lt;Type&gt; typesSoFar = Type.EmptyTypes;
-
- ICollection assemblies = buildManager.GetReferencedAssemblies();
- foreach (Assembly assembly in assemblies) {
-  Type[] typesInAsm;
-  try {
-   typesInAsm = assembly.GetTypes();
-  }
-  catch (ReflectionTypeLoadException ex) {
-   typesInAsm = ex.Types;
-  }
-  typesSoFar = typesSoFar.Concat(typesInAsm);
- }
- return typesSoFar.Where(type =&gt; TypeIsPublicClass(type) &amp;&amp; predicate(type));
-}
-</pre><p>So, the last interesting thing here is the predicate that actually used:<br />
-</p><pre class="brush:csharp">internal static bool IsControllerType(Type t) {
- return
-  t != null &amp;&amp;
-  t.IsPublic &amp;&amp;
-  t.Name.EndsWith(&quot;Controller&quot;, StringComparison.OrdinalIgnoreCase) &amp;&amp;
-  !t.IsAbstract &amp;&amp;
-  typeof(IController).IsAssignableFrom(t);
-}
-</pre><p>You can see, it tries to match any public, ends with &#8220;Controller&#8221; not abstract and implementing <code>IController</code> interface. That&#8217;s why important do not forget to call all your controller with &#8220;Controller&#8221; suffix (yes, I did that mistake several times in the beginning of my MVC journey).<br />
-</p><p>Note, that if you have 2 controllers with same names in different namespaces, but did not provide namespace constraint you will have several <code>matchingTypes</code>, so the <code>CreateAmbiguousControllerException</code> will be thrown. I believe each of us seen that kind of exception at least once.<br />
-</p><h2>Instantiating the Type</h2><p>As we go a little back and check the code of <code>CreateController</code>: now, we&#8217;ve got the type (or null if type has not been resolved). Next thing is to instantiate it. Nothing really fancy here:<br />
-</p><pre class="brush:csharp">protected internal virtual IController GetControllerInstance(RequestContext requestContext, Type controllerType) {
- if (controllerType == null) {
-  throw new HttpException(404,
-   String.Format(
-    CultureInfo.CurrentCulture,
-    MvcResources.DefaultControllerFactory_NoControllerFound,
-    requestContext.HttpContext.Request.Path));
- }
- if (!typeof(IController).IsAssignableFrom(controllerType)) {
-  throw new ArgumentException(
-   String.Format(
-    CultureInfo.CurrentCulture,
-    MvcResources.DefaultControllerFactory_TypeDoesNotSubclassControllerBase,
-    controllerType),
-   &quot;controllerType&quot;);
- }
- return ControllerActivator.Create(requestContext, controllerType);
-}
-</pre><p>If everything is all right with controller type it ask ControllerActivator to create the instance. In default case, ControllerActivator is <code>DefaultControllerActivator</code>:<br />
-</p><pre class="brush:csharp">public IController Create(RequestContext requestContext, Type controllerType) {
- try {
-  return (IController)(_resolverThunk().GetService(controllerType) ?? Activator.CreateInstance(controllerType));
- }
- catch (Exception ex) {
-  throw new InvalidOperationException(
-   String.Format(
-    CultureInfo.CurrentCulture,
-    MvcResources.DefaultControllerFactory_ErrorCreatingController,
-    controllerType),
-   ex);
- }
-}
-</pre><p>As for the rest of MVC entities it would use <code>IDependencyResolver</code> to resolve that type. <code>IDependecyResolved</code> is detailed <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">here</a>, but as you remember by default at the very end it calls <code>Activator.CreateInstance(type)</code> method.<br />
-</p><h2>Conclusions</h2><p>New controller is instantiated on each HTTP request. The instantiation is in-directed, means first we retrieve Type, after creating Instance. The type is being searched dynamically by getting out reflection information from assemblies. To optimize the performance of ASP.NET MVC application, the internal cache of types is used. The cache is stored in file in &#8220;Temporary ASP.NET Files\root\cdd53039\36a27802\UserCache\MVC-ControllerTypeCache.xml&#8221; folder. Namespaces of controllers are matters, in case of two or more controllers has the same name but different namespaces the exception would be thrown. In case of controller type could not be resolved, the HTTP 404 response is generated. Otherwise, the controller instance would be created by <code>IControllerActivator</code> instance.<br />
-</p><p>Previous post: <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a><br />
 </p></div>
 
       

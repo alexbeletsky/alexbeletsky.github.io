@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-01-25T14:56:59+02:00</updated>
+  <updated>2014-03-04T18:31:52+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,298 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testable API's with Node.js]]></title>
+    <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
+    <updated>2014-03-04T15:36:00+02:00</updated>
+    <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
+
+<p>I&rsquo;ve changed my mind on testing with Node.js/Express.js development. For API&rsquo;s I prefer &ldquo;end-to-end&rdquo; testing: setting up user account, authentication, HTTP calls to server, real calls to DB and serving JSON payload back. API&rsquo;s have to be tested from consumer point of few to be able to give some meaningful results.</p>
+
+<!-- MORE -->
+
+
+<h2>Tools and Frameworks</h2>
+
+<p>Pretty standard setup: <a href="http://visionmedia.github.io/mocha/">mocha</a>, <a href="http://chaijs.com/">chai</a>, <a href="https://github.com/mikeal/request">request</a>.</p>
+
+<p>Mocha is time proven tool for testing Node.js applications, Chai is good enough expectation framework and Request as one best HTTP clients I even worked with.</p>
+
+<h2>Prepare application for testing</h2>
+
+<p>Dependencies above is installed via <code>npm install</code> and should be saved to <code>package.json</code> file (with <code>--save</code> option). Your project structure should have <code>test</code> folder inside, which mocha is using as default to look tests inside. Few files should be added there, current structure I have that works.</p>
+
+<p>```plain
+/test</p>
+
+<pre><code>/specs
+    auth.spec.js
+    ...
+common.js
+mocha.opts
+utils.js
+runMocha.js
+</code></pre>
+
+<p>```</p>
+
+<p><code>/api</code> folder is the one that would contain specifications for you API, <code>mocha.opts</code> &ndash; contains global mocha configuration, <code>common.js</code> is common require file, that all tests are using, <code>utils.js</code> &ndash; test helper that would contain everything you need during testing, <code>runMocha.js</code> utility that would be tests entry point.</p>
+
+<h3>mocha.opts</h3>
+
+<p><code>plain
+--require ./test/common.js
+--reporter spec
+--ui bdd
+--recursive
+--colors
+--timeout 60000
+--slow 300
+</code></p>
+
+<p>Mocha options allow to require some additional javascript file, as well as setting up global Mocha settings as what reporter to use, timeouts etc.</p>
+
+<h3>common.js</h3>
+
+<p><code>js
+global.chai = require('chai');
+global.expect = global.chai.expect;
+</code></p>
+
+<p>To do not require <code>chai</code> in each spec files, it&rsquo;s possible to require it once and place to global scope.</p>
+
+<h3>runMocha.js</h3>
+
+<p>```js
+process.env.NODE_ENV = process.env.NODE_ENV || &lsquo;test&rsquo;;
+process.env.TEST_ENV = process.env.TEST_ENV || &lsquo;test&rsquo;;</p>
+
+<p>var exit = process.exit;
+process.exit = function (code) {</p>
+
+<pre><code>setTimeout(function () {
+    exit();
+}, 200);
+</code></pre>
+
+<p>};</p>
+
+<p>require(&lsquo;../source/server&rsquo;);
+require(&lsquo;../node_modules/mocha/bin/_mocha&rsquo;);
+```</p>
+
+<p>The secret sauce is last 2 lines. Since <code>require</code> is synchronous we first &ldquo;call&rdquo; API server to get up and after that &ldquo;call&rdquo; mocha engine to start testing. So, inside each tests we can do real HTTP calls to real HTTP servers. No mocks.</p>
+
+<h3>package.json</h3>
+
+<p>```js
+// &hellip;
+&ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"test": "node test/runMocha",
+</code></pre>
+
+<p>  },
+// &hellip;
+```</p>
+
+<p>Package file should contain script to call API tests with simple <code>npm test</code> command.</p>
+
+<h2>Test driven API</h2>
+
+<p>Mocha is using BDD (behaviour driven development) approach to testing. Comparing to classical TDD, BDD encourage to write specifications in plain English, which works good especially when you just starting with particular feature.</p>
+
+<p>What I typically do is just writing down specification of API, without any thinking of how to implement it. Give you example of something that I worked with recently.</p>
+
+<p>```js
+var request = require(&lsquo;request&rsquo;);
+var testUtils = require(&lsquo;../utils&rsquo;);</p>
+
+<p>describe(&lsquo;collections.spec.js&rsquo;, function () {</p>
+
+<pre><code>describe('when non authorized', function () {
+    it ('should not be authorized', function () {
+    });
+});
+
+describe('when authorized', function () {
+    describe('when new collection created', function () {
+        describe('public', function () {
+            it('should respond with 201 (created)', function () {
+            });
+
+            it('should create new collection', function () {
+            });
+
+            it('should have user', function () {
+            });
+
+            it('should collection be public', function () {
+            });
+
+            describe('and title is missing', function () {
+                it('should respond with 412 (bad request)', function () {
+                });
+            });
+
+            describe('with description', function () {
+                it('should respond with 201 (created)', function () {
+                });
+
+                it('should create new collection', function () {
+                });
+            });
+        });
+    });
+
+    // etc..
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>This is kind of skeleton I to have before start anything else.</p>
+
+<h3>Unauthorized access</h3>
+
+<p>If your API or part of it requires authorization, I prefer to test it.</p>
+
+<p>```js</p>
+
+<pre><code>var token, user, url, headers, response, results;
+
+beforeEach(function () {
+    url = testUtils.getRootUrl() + '/api/collections';
+});
+
+describe('when non authorized', function () {
+    beforeEach(function (done) {
+        request.get({url: url, json: true}, function (err, resp, body) {
+            response = resp;
+            done(err);
+        });
+    });
+
+    it ('should not be authorized', function () {
+        expect(response.statusCode).to.equal(401);
+    });
+});
+</code></pre>
+
+<p>```</p>
+
+<p><code>testUtils.getRootUrl()</code> returns qualified URL for API, depending on test environment. During development, it&rsquo;s just <code>http://localhost:3000</code> where your <code>server.js</code> started.</p>
+
+<h3>Authorized access</h3>
+
+<p>Authorized access typically requires some kind of <code>access_token</code> sent either by headers or query string. Doesn&rsquo;t matter how, but <code>utils.js</code> must have method that would create new user and obtain access token from API. The actual implementation of such method would depend on your API auth mechanism.</p>
+
+<p>All tests that required authorization access, should have such <code>beforeEach()</code>,</p>
+
+<p>```js
+beforeEach(function (done) {</p>
+
+<pre><code>testUtils.createTestUserAndLoginToApi(function (err, createdUser, accessToken) {
+    token = accessToken;
+    user = createdUser;
+    headers = {'X-Access-Token': accessToken};
+    done(err);
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>After <code>access_token</code> is acquired, it can be used as part of any authorized calls.</p>
+
+<h3>Behavior tests</h3>
+
+<p>Now, everything is ready to test the behavior of API. Nothing fancy here, just act as clients do. Send HTTP requests, receive responses and check HTTP statuses. I&rsquo;ll just post some code, so it would give you direction.</p>
+
+<p>```js
+describe(&lsquo;when new collection created&rsquo;, function () {</p>
+
+<pre><code>describe('public', function () {
+    beforeEach(function () {
+        collection = {title: 'This is test collection', public: true};
+    });
+
+    beforeEach(function (done) {
+        request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+            response = resp;
+            results = body;
+            done(err);
+        });
+    });
+
+    it('should respond with 201 (created)', function () {
+        expect(response.statusCode).to.equal(201);
+    });
+
+    it('should create new collection', function () {
+        expect(results.title).to.be.ok;
+        expect(results._id).to.be.ok;
+    });
+
+    it('should have user', function () {
+        expect(results.user).to.equal(user.email);
+    });
+
+    it('should collection be public', function () {
+        expect(results.public).to.equal(true);
+    });
+
+    describe('and title is missing', function () {
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: {}, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 412 (bad request)', function () {
+            expect(response.statusCode).to.equal(412);
+        });
+    });
+
+    describe('with description', function () {
+        beforeEach(function () {
+            collection = {title: 'This is test collection', description: 'description'};
+        });
+
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 201 (created)', function () {
+            expect(response.statusCode).to.equal(201);
+        });
+
+        it('should create new collection', function () {
+            expect(results.description).to.equal('description');
+        });
+    });
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Conclusions</h2>
+
+<p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
+
+<p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
@@ -507,122 +799,6 @@ function patchRoute (route) {
 
 <p>module.exports = applyAuthentication;
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
-    <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
-    <updated>2013-09-16T21:21:00+03:00</updated>
-    <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
-    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
-
-<p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
-
-<!-- More -->
-
-
-
-
-<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script>
-
-
-<h2>Background</h2>
-
-<p>So, some background on me. My name is Alexander and I live in Kiev and work for Danish company, named E-conomic. There we do, we interesting product called Debitoor and a lot of cool stuff happens there.. But besides of that full-time job, with a friend of mine, I&rsquo;m doing a small project called Likeastore.</p>
-
-<p>And this is exactly, side-project are something <strong>there you learn some new things and you try these things</strong>. So, it&rsquo;s started out as hackathon project, it&rsquo;s Node.js, MongoDB, Angular.js &ndash; so highly JS related thing (even if my talk is not so JS oriented). On a hackathon we got really exited on the way it went, soon we realized that we want to push things out. So, we wanted to release, and conquer the world with the cool idea we had.</p>
-
-<p>Probably the most important lesson I&rsquo;ve learned in whole my career &ndash; the way you ship the code, matters!</p>
-
-<p>It matters a lot, but the key fact &ndash; as faster you can ship the code from machine A to machine B, as faster you running business as happy team you have. So, if you shipping once a 2-weeks, you are fine, if you shipping 1-week are are great, if you shipping 1-per-hour you are superb (if you don&rsquo;t believe me, take a look on github guys, how happy they are all the time).</p>
-
-<p>And long time I realized that deployment of code, should be as easy as:</p>
-
-<p><code>
-git push origin master
-git push heroku master
-af deploy
-jitsu deploy
-</code></p>
-
-<p>Whatever, important is &ndash; one click (command, shell script) you are done.</p>
-
-<p>So, we were seeking for good deployment and hosting options. And I love Node.js in particular for it&rsquo;s &ldquo;deployment-friendly&rdquo; environment.</p>
-
-<p>Code deployment in general is very known developers problem. It solved many time and with cloud computing it <strong>evolutionized in something that&rsquo;s know as PaaS (platform as service)</strong>. And PaaS is something that brings a lot of value for any project, since you abstract out the exact infrastructure, and what you do is write code push it out, the rest is solved by PaaS.</p>
-
-<p>Of cause, we started to look for PaaS that fits us best.</p>
-
-<p>Started with AppFog, jumped to Nodejitsu, but met few constrains that forced us to gave up. Namely, that we had to have SSL connection, since we dealing with users private data, but Nodejitsu is proposing SSL for 120 USD that, simply too much of the project you begin with and don&rsquo;t have great budget behind.</p>
-
-<p>I was really unhappy that time, since I realized a lot of overhead work that comes to you, then you drop PaaS.</p>
-
-<p>This is where constraints coming from, and sometimes they are very unpleasant, but in general constraints are good. With perfect timing, I&rsquo;ve seen Dokku project.</p>
-
-<p>Even if I said Dokku is small project, it&rsquo;s standing on shoulders of giants, and those giants are Docker &amp; Builtpacks &amp; Gitrecieve (there is a few more, but those are most important ones).</p>
-
-<p>During this talk, I&rsquo;ll highlight both Docker and Dokku internals, but my primary goal is to rather share the <strong>experience of using Dokku that helped to making the things done</strong>.</p>
-
-<h2>Dokku</h2>
-
-<p>Dokku is created by bright hacker &ndash; Jeff Lindsay. And what Jeff did is he saw the opportunity of mixing all the pieces together in one tasty cocktail.</p>
-
-<p>Dokku relying on Docker for running containers (as isolated application instance), it uses Gitrecive to implement git interface for server, and it&rsquo;s relying on Buildpacks, for preparing environment for container.</p>
-
-<p>Now, it&rsquo;s time to show you how it works in reality:</p>
-
-<p><code>
-demo with node-sample
-</code></p>
-
-<h2>Gitrecieve</h2>
-
-<p>Gitrecieve is a component which is able to recieve you git push command, create repository on fly and trigger recieve script. Recieve script could be anything you want.</p>
-
-<h2>Buildpacks</h2>
-
-<p>Buildpacks are open source components released by Heroku. How many of you guys ever used Heroku? All right, so the output you see, while pushing code to Heroku is exactly the <strong>result of work by Buildpack</strong>.</p>
-
-<p>Buildpack is responsible for few things: it detects the environment of you app (like if I can see <code>package.json</code>, that would probably mean Node.js app), downloads all required runtime components and run build script. Once it run, we have created infrastructure where application is ready to start up.</p>
-
-<p>So, Heroku created a lot of buildpacks, for Ruby, Python, Java, etc., and all that goodness is reused by Dokku.</p>
-
-<h2>Docker</h2>
-
-<p>How many of guys seen the videos, or read the materials about Docker? I hope many of you, because it&rsquo;s kind on noisy now.</p>
-
-<p>So, Docker in essence, is the engine of <strong>portable containers</strong>. Portable? Containers? You are probably very interesting what actually goes, behind these words.</p>
-
-<p>Docker is open-source project by dotCloud. And the dotCloud is actually specializing on shipping the code. Company&rsquo;s co-founder Salmon Hykes, gives are very nice metaphor on containers: imaging a shipping of goods like, 100 years ago &ndash; where were ships and barrels and bags and boxes, etc. Because of that variety you had a different options for shipping. In middle 1950, the idea of container born. Container defines size and dimensions, but in essence &ndash; you can put what ever you like there, close the door and that&rsquo;s it. It&rsquo;s guaranteed that you container is shipped, because all equipment fits it.</p>
-
-<p>So, in dotCloud they&rsquo;ve developed a fairly complex infrastructure, that would allow to run their business. After 5 years of hacking that, they reached <strong>great level of expertise</strong>, as well they realized the need to take out the core system, rewrite it completely and open source it. That was then Docker project born and if Salmon would ever listen to my talk, I would like to give tons of Kudos for him, for that job.</p>
-
-<p>Docker itself is hack above the Linux kernel technology called LXC. And LXC is the of running isolated processes. LXC is a Linux process, that have it&rsquo;s own file system, networking interfaces, processes etc.</p>
-
-<p>Sure, you might think &ndash; it smells like virtual machines, why containers are better?</p>
-
-<p>Image container is immutable entity. Once the command run, it&rsquo;s changed.. but as soon as change is not committed the image remain the same. That mean, you can re-use some existing image as many time as you want, all the time starting up, so called clean environment. The clean environment is something we like of using VM.</p>
-
-<p>Startup time of container is <strong>many times faster, then booting up new VM image</strong>. And this is it&rsquo;s primary benefit.</p>
-
-<p>Besides of that, Docker comes with so called Index. Index is a public repository of ready to use images. Different operations systems and different pre-installed software is there.</p>
-
-<h2>Nginx</h2>
-
-<p>All HTTP / HTTPS orchestration is done by Nginx.</p>
-
-<h2>Deploying the applications with Dokku</h2>
-
-<p>So, we&rsquo;ve came to the most interesting part, how Dokku is <strong>helpful for the product development</strong>. Theoretically, Dokku can work on any Linux machine with LXC support, to run docker, dokku itself is written on shell script, which make it really portable. Practically it works on Ubuntu 13 64b.</p>
-
-<p>You build you own small PaaS on any IaaS as you want. One&rsquo;s which is able to fire up Ubuntu machine and give you ssh access to it. For a few reasons, I&rsquo;ve picked up Digital Ocean, since they indeed provide really nice service and competitive prices.</p>
-
-<p>Once the machine is started, you push have to install Dokku there. After it&rsquo;s installed, you upload you SSH key there, so you are able to do git push.</p>
-
-<p>You are able to configure environment variables, as well as configure SSL connection.</p>
-
-<p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
 ]]></content>
   </entry>
   

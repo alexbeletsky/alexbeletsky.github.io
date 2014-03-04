@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: tdd | Alexander Beletsky's development blog]]></title>
-  <link href="http://beletsky.net/blog/categories/tdd/atom.xml" rel="self"/>
+  <title><![CDATA[Category: bdd | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/bdd/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
   <updated>2014-03-04T18:31:52+02:00</updated>
   <id>http://beletsky.net/</id>
@@ -302,28 +302,6 @@ describe(&lsquo;when new collection created&rsquo;, function () {</p>
 <p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
 
 <p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Logs Driven Development]]></title>
-    <link href="http://beletsky.net/2014/01/logs-driven-development.html"/>
-    <updated>2014-01-25T13:12:00+02:00</updated>
-    <id>http://beletsky.net/2014/01/logs-driven-development</id>
-    <content type="html"><![CDATA[<p>One of the components I currently work on called <code>collector</code> and it has no tests. Collector is all about of building queue of tasks, executing them and store data to database after. Tasks are HTTP clients that requests API and process transform responses into generic forms.</p>
-
-<p>I&rsquo;ve started it with tests using <a href="https://github.com/pgte/nock">nock</a> component to mock HTTP requests, but quickly I found those tests both hard to write and no real benefit cause real responses that could broke it differs from ones I mock inside the tests.</p>
-
-<p>In the same time, I regularly change that component and after changes and deployments I pretty quickly see the regressions and non-expected behavior, cause all information I need is inside of application logs. I call that &ldquo;Logs Driven Development&rdquo;.</p>
-
-<!-- More -->
-
-
-<p>The key point of Logs Driven Development is then you know your logs so good, so you easily detect patterns and performance indicators, so if anything goes wrong, it became obvious. When reading logs of your application became a habit it works really well.</p>
-
-<p>It probably have some similarities with <a href="http://en.wikipedia.org/wiki/Characterization_test">Characterization test</a>, where the behavior of application is clearly projected into logs. There are tools like <a href="http://approvaltests.sourceforge.net/">Approval Tests</a> that utilize that kind of testing and automate them.</p>
-
-<p>That&rsquo;s of cause could not be taken seriously as recommended practice since it doesn&rsquo;t scale well.</p>
 ]]></content>
   </entry>
   

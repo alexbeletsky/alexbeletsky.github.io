@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-01-25T14:56:59+02:00</updated>
+  <updated>2014-03-04T18:31:52+02:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,447 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testable API's with Node.js]]></title>
+    <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
+    <updated>2014-03-04T15:36:00+02:00</updated>
+    <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
+
+<p>I&rsquo;ve changed my mind on testing with Node.js/Express.js development. For API&rsquo;s I prefer &ldquo;end-to-end&rdquo; testing: setting up user account, authentication, HTTP calls to server, real calls to DB and serving JSON payload back. API&rsquo;s have to be tested from consumer point of few to be able to give some meaningful results.</p>
+
+<!-- MORE -->
+
+
+<h2>Tools and Frameworks</h2>
+
+<p>Pretty standard setup: <a href="http://visionmedia.github.io/mocha/">mocha</a>, <a href="http://chaijs.com/">chai</a>, <a href="https://github.com/mikeal/request">request</a>.</p>
+
+<p>Mocha is time proven tool for testing Node.js applications, Chai is good enough expectation framework and Request as one best HTTP clients I even worked with.</p>
+
+<h2>Prepare application for testing</h2>
+
+<p>Dependencies above is installed via <code>npm install</code> and should be saved to <code>package.json</code> file (with <code>--save</code> option). Your project structure should have <code>test</code> folder inside, which mocha is using as default to look tests inside. Few files should be added there, current structure I have that works.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/test
+</span><span class='line'>  /specs
+</span><span class='line'>      auth.spec.js
+</span><span class='line'>      ...
+</span><span class='line'>  common.js
+</span><span class='line'>  mocha.opts
+</span><span class='line'>  utils.js
+</span><span class='line'>  runMocha.js</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>/api</code> folder is the one that would contain specifications for you API, <code>mocha.opts</code> &ndash; contains global mocha configuration, <code>common.js</code> is common require file, that all tests are using, <code>utils.js</code> &ndash; test helper that would contain everything you need during testing, <code>runMocha.js</code> utility that would be tests entry point.</p>
+
+<h3>mocha.opts</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>--require ./test/common.js
+</span><span class='line'>--reporter spec
+</span><span class='line'>--ui bdd
+</span><span class='line'>--recursive
+</span><span class='line'>--colors
+</span><span class='line'>--timeout 60000
+</span><span class='line'>--slow 300</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mocha options allow to require some additional javascript file, as well as setting up global Mocha settings as what reporter to use, timeouts etc.</p>
+
+<h3>common.js</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">chai</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">global</span><span class="p">.</span><span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To do not require <code>chai</code> in each spec files, it&rsquo;s possible to require it once and place to global scope.</p>
+
+<h3>runMocha.js</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;test&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">TEST_ENV</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">TEST_ENV</span> <span class="o">||</span> <span class="s1">&#39;test&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">exit</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">;</span>
+</span><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">exit</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">exit</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">200</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../source/server&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../node_modules/mocha/bin/_mocha&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The secret sauce is last 2 lines. Since <code>require</code> is synchronous we first &ldquo;call&rdquo; API server to get up and after that &ldquo;call&rdquo; mocha engine to start testing. So, inside each tests we can do real HTTP calls to real HTTP servers. No mocks.</p>
+
+<h3>package.json</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// ...</span>
+</span><span class='line'><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;test&quot;</span><span class="o">:</span> <span class="s2">&quot;node test/runMocha&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'><span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Package file should contain script to call API tests with simple <code>npm test</code> command.</p>
+
+<h2>Test driven API</h2>
+
+<p>Mocha is using BDD (behaviour driven development) approach to testing. Comparing to classical TDD, BDD encourage to write specifications in plain English, which works good especially when you just starting with particular feature.</p>
+
+<p>What I typically do is just writing down specification of API, without any thinking of how to implement it. Give you example of something that I worked with recently.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">testUtils</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../utils&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;collections.spec.js&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;when non authorized&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">it</span> <span class="p">(</span><span class="s1">&#39;should not be authorized&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;when authorized&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;when new collection created&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 201 (created)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should create new collection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should have user&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should collection be public&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;and title is missing&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 412 (bad request)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="p">});</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;with description&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 201 (created)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>                  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should create new collection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="p">});</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">// etc..</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is kind of skeleton I to have before start anything else.</p>
+
+<h3>Unauthorized access</h3>
+
+<p>If your API or part of it requires authorization, I prefer to test it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">token</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">results</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">url</span> <span class="o">=</span> <span class="nx">testUtils</span><span class="p">.</span><span class="nx">getRootUrl</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/api/collections&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;when non authorized&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">json</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">response</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="p">(</span><span class="s1">&#39;should not be authorized&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">expect</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">401</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>testUtils.getRootUrl()</code> returns qualified URL for API, depending on test environment. During development, it&rsquo;s just <code>http://localhost:3000</code> where your <code>server.js</code> started.</p>
+
+<h3>Authorized access</h3>
+
+<p>Authorized access typically requires some kind of <code>access_token</code> sent either by headers or query string. Doesn&rsquo;t matter how, but <code>utils.js</code> must have method that would create new user and obtain access token from API. The actual implementation of such method would depend on your API auth mechanism.</p>
+
+<p>All tests that required authorization access, should have such <code>beforeEach()</code>,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">testUtils</span><span class="p">.</span><span class="nx">createTestUserAndLoginToApi</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">createdUser</span><span class="p">,</span> <span class="nx">accessToken</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">token</span> <span class="o">=</span> <span class="nx">accessToken</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">user</span> <span class="o">=</span> <span class="nx">createdUser</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X-Access-Token&#39;</span><span class="o">:</span> <span class="nx">accessToken</span><span class="p">};</span>
+</span><span class='line'>      <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After <code>access_token</code> is acquired, it can be used as part of any authorized calls.</p>
+
+<h3>Behavior tests</h3>
+
+<p>Now, everything is ready to test the behavior of API. Nothing fancy here, just act as clients do. Send HTTP requests, receive responses and check HTTP statuses. I&rsquo;ll just post some code, so it would give you direction.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;when new collection created&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">collection</span> <span class="o">=</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;This is test collection&#39;</span><span class="p">,</span> <span class="kr">public</span><span class="o">:</span> <span class="kc">true</span><span class="p">};</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">body</span><span class="o">:</span> <span class="nx">collection</span><span class="p">,</span> <span class="nx">json</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">response</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
+</span><span class='line'>              <span class="nx">results</span> <span class="o">=</span> <span class="nx">body</span><span class="p">;</span>
+</span><span class='line'>              <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 201 (created)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">expect</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should create new collection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">title</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">_id</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should have user&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">user</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should collection be public&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="kr">public</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;and title is missing&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">body</span><span class="o">:</span> <span class="p">{},</span> <span class="nx">json</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">response</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
+</span><span class='line'>                  <span class="nx">results</span> <span class="o">=</span> <span class="nx">body</span><span class="p">;</span>
+</span><span class='line'>                  <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 412 (bad request)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">expect</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">412</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;with description&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">collection</span> <span class="o">=</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;This is test collection&#39;</span><span class="p">,</span> <span class="nx">description</span><span class="o">:</span> <span class="s1">&#39;description&#39;</span><span class="p">};</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">body</span><span class="o">:</span> <span class="nx">collection</span><span class="p">,</span> <span class="nx">json</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">response</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
+</span><span class='line'>                  <span class="nx">results</span> <span class="o">=</span> <span class="nx">body</span><span class="p">;</span>
+</span><span class='line'>                  <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should respond with 201 (created)&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">expect</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should create new collection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">description</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusions</h2>
+
+<p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
+
+<p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Logs Driven Development]]></title>
@@ -2704,42 +3145,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 <p>I&rsquo;ve used that for <a href="http://likeastore.com">likeastore</a> app I currently working on and it works just fine. Having such logs gave a lot of information after we went to private-beta phase. When you see how application behaves then real users start to use, it gives you good insights about fixes and improvements to apply.</p>
 
 <p>Taking into account that approach above is very universal and easy to adopt, to it today.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
-    <link href="http://beletsky.net/2013/06/we-were-wrong-10-years-ago.html"/>
-    <updated>2013-06-20T23:43:00+03:00</updated>
-    <id>http://beletsky.net/2013/06/we-were-wrong-10-years-ago</id>
-    <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
-
-<p>Early 2000&rsquo;s I was programming C/C++ and the best way of passing some data from one machine to another, was &ndash; <em>socket</em>. The time took understanding of sockets, I clearly saw it&rsquo;s the best solution for that task.</p>
-
-<!-- more -->
-
-
-<p>Sending and receiving strings and binary structures was very nice comparing to using C or assembler to directly talk to network driver. Sockets allowed to build server-client architectures, in theory allowing application written in different languages to communicate each other.</p>
-
-<p>But time passed and COM / DCOM technologies appeared. Data transport operations was completely hidden, a lot of abstraction put above objects and marshaling. Again, that technology was massively adopted by developers, many projects were created based on COM / DCOM (or similar technology called CORBA).</p>
-
-<p>Marshaling, IDL, ATL and other stuff was very difficult to understand and to use. But still there was much better than implement something similar on raw sockets.</p>
-
-<p>Era of Web Services has begun. Web Services indeed allowed build highly distributed systems based on reliable HTTP protocol. Data transport mechanisms appeared to be transparent and very clear. Data transfered back and forth as XML payloads. Almost all web service technologies were build in concept on <a href="http://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>.</p>
-
-<p><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> was primary payload format, formalized XML with metadata inside. Again, previous DCOM / COBRA things looked very ugly, Web services looked very promising.</p>
-
-<p>Web Services, definitely affected the way we architecture distributed systems now. It formalized a lot, <code>WS-*</code> set of standards came out. Many vendors like Microsoft or Sun created bunch of frameworks to support it. Many books, many blog posts and speaks issued on that topic.</p>
-
-<p>Nowadays, <code>RPC-based</code> services completely substituted with <code>REST-style</code>. XML as payload, seems to be awful, cause its verbose, requires more bandwidth comparing to <code>JSON</code>. <code>JSON</code> in conjunction with dynamic languages gives great framework of building distributed systems. We are currently in era of <em>API oriented</em> systems and as soon as you adopted that, SOAP and RPC makes no sense to you.</p>
-
-<p>What I&rsquo;m telling is, technologies are improving very fast. What was great today, will appear awful tomorrow.</p>
-
-<p>We were wrong 10 years ago that some particular technology is cool. So now, than I see some new and shinny thing I&rsquo;m no longer blindly excited about that. It will gone&hellip; and substituted with something better.</p>
-
-<p>Developers ultimate goal remains to <em>influence</em> that process. And make influence is easy &ndash; share your thoughts, implement prototypes, talk to people.</p>
-
-<p>Make things simpler, make things better.</p>
 ]]></content>
   </entry>
   

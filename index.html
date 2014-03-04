@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Logs Driven Development Jan 25th, 2014 logs, practices, tdd One of the components I currently work on called collector and it has no tests. &hellip;">
+  <meta name="description" content="Testable API&#8217;s with Node.js Mar 4th, 2014 bdd, javascript, nodejs, nomocks, tdd API is heart of modern web application. It&rsquo;s all about &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,59 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2014/03/testable-apis-with-node-dot-js.html">
+    
+      Testable API&#8217;s with Node.js</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-04T15:36:00+02:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bdd/'>bdd</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/nomocks/'>nomocks</a>, <a class='category' href='/blog/categories/tdd/'>tdd</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
+
+<p>I&rsquo;ve changed my mind on testing with Node.js/Express.js development. For API&rsquo;s I prefer &ldquo;end-to-end&rdquo; testing: setting up user account, authentication, HTTP calls to server, real calls to DB and serving JSON payload back. API&rsquo;s have to be tested from consumer point of few to be able to give some meaningful results.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2014/03/testable-apis-with-node-dot-js.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -555,59 +608,6 @@
       
         <div class="show-more pure-u-1">
           <a href="/2013/11/simple-authentication-in-angular-dot-js-app.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2013/11/using-angular-dot-js-with-require-dot-js.html">
-    
-      Using Angular.js with Require.js</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-01T11:36:00+02:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/frontend/'>frontend</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/requirejs/'>requirejs</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
-
-<p>There was a few difficulties with that.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2013/11/using-angular-dot-js-with-require-dot-js.html">Continue reading &rarr;</a>
         </div>
       
     </div>

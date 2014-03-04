@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Branching Workflow in Git-SVN Mode Sep 6th, 2011 Git, GitSVN, Tips As you might already know branches are primary power of Git. You should create &hellip;">
+  <meta name="description" content="The Power of Close Collaboration Oct 5th, 2011 BeerNCode, Mind The collaboration and communication is very important in solving problems. As much &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,60 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/power-of-close-collaboration.html">
+    
+      The Power of Close Collaboration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-05T20:06:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/beerncode/'>BeerNCode</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>The collaboration and communication is very important in solving problems. As much better collaboration you have as much fast you are able to handle different issue. As closer people to each other, as better they able to work. That&#8217;s why I think that distributed teams even if they consists of great engineers could not work 100% of their potential. Lags in communications, language barrier, loose of body languages etc. makes it 80% for best cases.<br />
+</p><p>As you might know I&#8217;m currently working on <a href="https://github.com/alexanderbeletsky/candidate.net">candidate.net</a> project. I really want to release that and according to my original plans I was really close to do that. But, suddenly my application just stopped to work. I&#8217;ll skip details of bug, but it was a ship killer. Application was not able to clone/pull github repositories. The only thing that happened between periods of working and non-working states is that I upgraded my Windows 7 up to SP1.<br />
+</p><p>Even if I had great support by <a href="http://twitter.com/#!/ukraitor">@ukraitor</a> who forked my project recently, we were not able to solve it (remember, distributed teams - he is from Odessa, far from me). I was pulling out my hair and mostly lost a hope to solve that. But I decided to share the problem on latest <a href="http://kyivbeerncode.org/">Beer && Code</a> meeting we had this Tuesday.<br />
+</p><p>It is usually hard to explain your problem. Along the process, I think to myself - &#8220;those people are pretty far from problem context, could they indeed help me?&#8221;. The simple answer is &#8220;Yes, they can&#8221;. Never underestimate the people around you.<br />
+</p><p>During 2 hours we&#8217;ve been able to try different scenarios, discuss some potential issues and finally found a clue! I was so happy about that, at least my work moved from a dead point. I&#8217;m sure, I could not complete it by my own (in reasonable time). <br />
+</p><p>So, my point is: if you are in work project - immediately share you problem with colleagues don&#8217;t make yourself <a href="http://www.beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html">completely stucked</a>. If you work on your own project - it is better if you find a collaborator, if you don&#8217;t have one you might find a local group, like <a href="http://kyivbeerncode.org/">Beer && Code</a> or talk to your developers friends whatever. <br />
+</p><p>Remember, as closer the collaborator is as better. Special thank&#8217;s today goes to <a href="http://twitter.com/#!/chaliy">@chaliy</a> who helped to solve the issue.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -754,100 +808,6 @@ Well, do you think it is useful? It works for me and I&#8217;m going to proceed.
 </p>
 <p>
 PS. That&#8217;s my 100 post for this blog.. and that&#8217;s my Friday before week vacation.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/07/little-bit-on-javascript-magic-inside-c.html">
-    
-      A little bit on Javascript magic inside C# code</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-15T17:28:00+03:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/csharp/'>CSharp</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-C# and Javascript are both my favorite languages. I believe that those two are best languages in a world (perhaps I haven&#8217;t started to learn Ruby). With a quite long practice in Javascript, you start to feel real power of dynamic language. Even more, you are so much get used for particular code constructions that you try to do the same things in C#.
-</p>
-<p>
-This is something you might do in javascript a lot. Consider that code, 
-</p>
-<a href="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png">
-<img src="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png" alt="code" />
-</a>
-<p>
-Method <code>createConfig</code> takes options object, dynamically construct <code>config</code> object and returns it back to client. Maybe it is the best example, but shows - I dynamically able to construct an object, just putting new properties into it.
-</p>
-<p>
-Now, let&#8217;s try to do that same with C#. Believe me or not, but I can do exactly (OK, mostly exactly) code with C#.
-</p>
-<a href="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png">
-<img src="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png" alt="code" />
-</a>
-<p>
-We can play &#8220;Find a difference&#8221; game here. Anyway, what I can say: <strong>&#8220;anonymous types + dynamic + ExtendoObject&#8221;</strong>, is a magic spell that turn you C# code into Javascript.
-</p>
-<ul>
-<li>
-With <a href="http://msdn.microsoft.com/en-us/library/bb397696.aspx">Anonymous Types</a> you easy get a notion of JavaScript dynamic object, just use <code>new { MyProp = 1 }</code> JavaScript analog <code>{ MyProp: 1 }</code>.
-</li>
-<li>
-<a href="http://msdn.microsoft.com/en-us/library/dd264741.aspx">Dynamic</a> would tell to compiler - &#8220;Do not check my type now, let Runtime do that&#8221;. So, with dynamic objects you can do <code>obj.MyProp</code>, compiler would allow this code, existence of property would be checked on runtime, if absent - exception will be thrown.
-</li>
-<li>
-<a href="http://msdn.microsoft.com/en-us/library/system.dynamic.expandoobject.aspx">ExpandoObject</a> is a super-power of .NET, allows you to construct object at runtime. You can see, that I just assign new property, that property would be dynamically added to <code>config</code> object.
-</li>
-</ul>
-<p>
-Life would not be so interesting if every thing is so easy. My first implementation failed to work, in line <code>if (option.Ip || option.Proto)</code> then I called <code>createConfig</code> with object that actually contains no such properties. As I said above, dynamic simply throws an exception if property is missing. I could wrap code in some <code> try / catch</code> cases, but it would be to ugly and magic would gone. We have to extend our magic formula with one component - Reflection. So, let&#8217;s pronounce spell again, <strong>&#8220;anonymous types + dynamic + ExtendoObject + Reflection&#8221;</strong> and check out final secret piece of code.
-</p>
-<p>
-<code>DynamicProxy</code> is simple wrapper around the dynamic, it overloads [] operator and check availability of property using Reflection.
-</p>
-<a href="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png">
-<img src="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png" alt="code" />
-</a>
-<p>
-That&#8217;s it. I&#8217;ve made C# code look like and behave like JavaScript, utilizing power of .NET platform. As always, you can find a source code on github - <a href="https://github.com/alexanderbeletsky/csharp-js">csharp-js</a>.
-</p>
-<h2>Disclaimer</h2>
-<p>
-You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :). 
 </p></div>
 
       
