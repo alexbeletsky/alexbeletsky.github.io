@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-03-04T18:31:52+02:00</updated>
+  <updated>2014-03-31T16:15:36+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
+    <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
+    <updated>2014-03-31T13:09:00+03:00</updated>
+    <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
+    <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
+
+<p>The year, seems to be a huge period of time. It is, but I have to say it&rsquo;s only few last months (from the middle of December till today), we are fully dedicated to project. It&rsquo;s been great ride so far, so I wish to share some interesting moments.</p>
+
+<!--More-->
+
+
+<h2>What we started with</h2>
+
+<p>Let me remind you, <a href="https://likeastore.com">Likeastore</a> is a web application that allow users to connect their social accounts and collect all their favorite items from them. We are 2 founders, me and <a href="https://twitter.com/voronianski">Dima</a> who committed themselves to build product that matters.</p>
+
+<p>As founders we felt that &ldquo;likes&rdquo; are kind of new way of bookmarking. Then you favorite something on social network you do 2 things &ndash; you send appreciate to author content, as well as marking the content as interesting to you.</p>
+
+<p>The problem that we try to solve. First, there are too many sources of information (social networks) where we spend time and receive content from, so tracking all social likes is extremely difficult. And second, it&rsquo;s very hard to find exact favorite item since social networks provide poor search functionality.</p>
+
+<p>So, our initial hypothesis for application was &ndash; <em>people want to collect their likes in one place and be able to search them</em>.</p>
+
+<h2>Where are we now</h2>
+
+<p>After successful demonstration on hackathon, we&rsquo;ve reimplemented application from scratch and did first private beta in May 2013. It was pretty painful, since after 10 minutes of fly my inbox was full of error messages. But, general impression of people we spoken was positive. We&rsquo;ve crossed the line from hack to side project.</p>
+
+<p>Our public beta released at July 2013. All major issues were solved, the infrastructure established and UI/UX of product were done. We were lucky enough to be featured by Codrops and after by SmashingMagazine twitter, which gave us first 500 beta users.</p>
+
+<p>At the end of 2013 we&rsquo;ve dropped our full time jobs, joined business accelerator and totally focused on a product. I would say, that was the point then we crossed the next line, from side-project to startup.</p>
+
+<p>We are at the full speed, full time, 2 people dedicated to Likeastore. And since then, we did major step forward. Let me share some of current statistics:</p>
+
+<ul>
+<li>6.370 <strong>signups</strong> (+ ~4.000 from January till today)</li>
+<li>2.700.000 <strong>likes collected</strong> (+ ~1.500.00 from January till today)</li>
+<li>~200 <strong>active users</strong> (+185 from January till today)</li>
+<li>~600 <strong>feedback emails received</strong></li>
+<li>452 <strong>collections created</strong></li>
+</ul>
+
+
+<h2>How does it feel like</h2>
+
+<p>First of all, time flows 2x faster compare to anything I was involved before. You put yourself in a very constraint environment: lack of money, lack of time, not clear whats happens tomorrow. Multitasking is second name of startup, you don&rsquo;t have time to be focused on one task during the day.</p>
+
+<p>Every day you feel ups and downs. The mood is changing constantly. You have growth and receive users feedback &ndash; it feels great. You talk to investors or mentors that find weaks and leaks of idea &ndash; it feels bad. And it&rsquo;s all the time like that.</p>
+
+<p>Founders job here is to supporters to each other, motivate for further wins.</p>
+
+<h2>What we learned so far</h2>
+
+<p><strong> Product / Market Fit </strong> &ndash; basically all you do in startup is finding a balance between value you can propose and market that meets that value. It doesn&rsquo;t matter what the initial idea is, more important is to be able to change direction and put maximum efforts to find the fit. The search could be blind or educated, educated search is probably more successful.</p>
+
+<p>You will never know about that fit, before you try. Almost no idea will survive after it hits the customers. Steve Blanks calls that as &ldquo;getting out of the building&rdquo;, talk to people and show your product before you even built it and spend a lot of money for it.</p>
+
+<p>The product have to solve real customer pain or need to survive.</p>
+
+<p><strong> Metrics are important </strong> &ndash; all decisions have to be taken on metrics. Retention, Cohort analysis, Viral coefficients &ndash; that was all new words for me and only now I realize how metrics are important.</p>
+
+<p>Startup dashboard that aggregates major metrics and KPI&rsquo;s is something that founders spend a lot of time with, finding new strategies and forecasting startup future. Measure everything.</p>
+
+<p><strong> Marketing and Growth </strong> &ndash; current market is already very tight. People are constantly releasing new web and mobile applications, solving different problems, targeting different customer groups. You are a drop of water in the ocean and you have to be noticed to have growth.</p>
+
+<p>I see marketing as car&rsquo;s engine starter &ndash; you built the car, put powerful engine, comfortable chairs and high quality audio system. But without starter, engine won&rsquo;t start and car won&rsquo;t move.</p>
+
+<p>At least basic marketing skills are vital for startup. If founders are more technically oriented (as we are) someone either have to learn it, or you have to hire specialist to help.</p>
+
+<h2>Smooth pivot</h2>
+
+<p>We are growing, average 10% per week. In the same time, we have quite low retention coefficient. People are quite excited about idea of application, but very fast they simply forget about and don&rsquo;t come back.</p>
+
+<p>To be successful on B2C segment, you have to have hundred thousands of users to be sustainable. Likeastore is very far from sustain state as for now.</p>
+
+<p>In the other hand, startup is great place to change your mind. I change my mind all the time. The change of mind in startup have a fancy word for it &ndash; pivot. Pivot is the change of direction that startup does, to find it&rsquo;s product / market fit.</p>
+
+<p>We are going to pivot Likeastore in a very smooth way. As we previously was &ldquo;Dropbox of Likes&rdquo;, just allowing to collect and search.. we now want to try something like &ldquo;Pinterest of Likes&rdquo;, allowing people to collect best content into sharable collections, following that collections and collaborating on them.</p>
+
+<h2>Ultimate goal</h2>
+
+<p>We are putting our bar much higher. Our ultimate goal now is to gather 20.000 users at the end of the May 2014. If it happens, that would mean the idea of Likeastore is alive, otherwise the chances it survives are very low.</p>
+
+<p>Both me and Dima really believe in what we do. We have the vision, will try to turn it to reality and either pivot or try something completely new.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testable API's with Node.js]]></title>
@@ -2717,434 +2802,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 <p>I know, there is nothing ideal in this world &ndash; but if you have choice, it&rsquo;s fine pick up best (or at least better). I would not say AppFog completely sucks, but it didn&rsquo;t work for me as I was expecting.</p>
 
 <p>PS. While writing this post I&rsquo;ve noticed that AppFog being <a href="https://www.appfog.com/savvis/">acquired</a> by CentruLink. I only wish that it would positively affect service and support, so wish good luck for AppFog.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
-    <link href="http://beletsky.net/2013/07/think-ahead-think-logging.html"/>
-    <updated>2013-07-04T09:02:00+03:00</updated>
-    <id>http://beletsky.net/2013/07/think-ahead-think-logging</id>
-    <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
-
-<p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
-
-<p>Prepare application to production, means prepare good error logging. I&rsquo;m going to show how to extend your Express.js with proper logs.</p>
-
-<!-- More -->
-
-
-<h2>What it means to have good logs?</h2>
-
-<p>In my perspective good logs are ones satisfying following criterias:</p>
-
-<ul>
-<li>All unhandled errors are logged</li>
-<li>Log records are comprehensive and clear</li>
-<li>Logs are easily accessible</li>
-<li>If critical error logged, developers have to be notified</li>
-</ul>
-
-
-<h2>Logger</h2>
-
-<p>Logger is object responsible to take some message or object and log it. The example of one,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">moment</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;moment&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">colorsMap</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="s1">&#39;success&#39;</span><span class="o">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="s1">&#39;warning&#39;</span><span class="o">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="s1">&#39;err&#39;</span><span class="o">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="s1">&#39;info&#39;</span><span class="o">:</span> <span class="s1">&#39;grey&#39;</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">warning</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;err&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">info</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">timestamptMessage</span><span class="p">(</span><span class="nx">util</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">&#39;%s: %s&#39;</span><span class="p">,</span> <span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">formatMessage</span><span class="p">(</span><span class="nx">message</span><span class="p">)));</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">record</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">colorsMap</span><span class="p">[</span><span class="nx">type</span><span class="p">]]);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">formatMessage</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">typeof</span> <span class="nx">message</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span> <span class="o">?</span> <span class="nx">message</span> <span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">timestamptMessage</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">util</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">&#39;[%s] %s&#39;</span><span class="p">,</span> <span class="nx">moment</span><span class="p">(),</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">logger</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Logger</code> could be used everywhere you need to get some info. But our ultimate goal is to be aware of all errors might appear in application.</p>
-
-<h2>Augmenting Express.js application with logs</h2>
-
-<p>We never know then error might appear. But, we can catch all unhandled errors + if some web request failed to complete with success code, we have to log that as well.</p>
-
-<h3>Handling &ldquo;unhandled&rdquo; errors</h3>
-
-<p>We can listen to process &lsquo;uncaughtException&rsquo; event. It just placed in <code>app.js</code> file. The best place is just after require section and before any object is used.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">({</span><span class="nx">msg</span><span class="o">:</span><span class="s1">&#39;Uncaught exception&#39;</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stack</span><span class="o">:</span><span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From official docs,</p>
-
-<blockquote><p>Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.</p></blockquote>
-
-<p>So, we just redirecting that error to logger. Also, docs say following:</p>
-
-<blockquote><p>Don&rsquo;t use it, use <a href="http://nodejs.org/api/domain.html">domains</a> instead. If you do use it, restart your application after every unhandled exception!</p></blockquote>
-
-<p>I still not switched to domain version for that, need to consider that advice.</p>
-
-<p>Anyway, this <code>uncaughtException</code> will give us only information typically about <code>undefined</code> variables used, that&rsquo;s pretty simple to caught during development testing. More interesting stuff is what&rsquo;s actually happening on runtime, while application handling HTTP requests.</p>
-
-<h3>Logging failing HTTP requests</h3>
-
-<p>Express.js power feature is <em>middleware</em>. It&rsquo;s possible to do a lot of cool stuff based on middleware functions. We&rsquo;ll utilize that feature to create a few middleware function that would allow to log all failed HTTP requests.</p>
-
-<p>First one,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// have to be injected as last middlware function for all routes</span>
-</span><span class='line'><span class="kd">function</span> <span class="nx">logErrors</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="nx">logErrors</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span> <span class="o">=</span> <span class="nx">err</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Second one,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="nx">logHttpErrors</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">;</span>
-</span><span class='line'>          <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">url</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">headers</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">status</span><span class="o">:</span> <span class="nx">status</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">body</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">params</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span>
-</span><span class='line'>          <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">message</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span><span class="p">;</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">warning</span><span class="p">(</span><span class="nx">status</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">(</span><span class="nx">status</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="nx">end</span><span class="p">.</span><span class="nx">call</span> <span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">next</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">warning</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">400</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">error</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Look a bit closer: <code>logError()</code> produces middleware function that expected to be the last in chain, and if previous function retured an error, it stores that error object in in requests. <code>logHttpErrors()</code> produces middleware function that would override response <code>.end()</code> function and logs warning or error, depending on response status code.</p>
-
-<p>Let&rsquo;s integrate to app.</p>
-
-<p><code>logHttpErrors()</code> could be put into <code>app.configure()</code> function,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VCAP_APP_PORT</span> <span class="o">||</span> <span class="mi">3001</span><span class="p">);</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logHttpErrors</span><span class="p">());</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&rsquo;s a bit more trickier with <code>logError()</code> function. As I said above, it have to be <strong>last</strong> callback in chain.</p>
-
-<p>So, it&rsquo;s only possible to apply it in <code>app.configure()</code> since the routes are not defined yet. Even it&rsquo;s possible to manually add it to each endpoint manually, I don&rsquo;t think it&rsquo;s good idea, because it&rsquo;s easy to forgot do that.</p>
-
-<p>I came up to following solution,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// here .logError() will be added to end of chain</span>
-</span><span class='line'><span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Likeastore app listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">env</span> <span class="o">+</span> <span class="s1">&#39; mongo: &#39;</span> <span class="o">+</span> <span class="nx">config</span><span class="p">.</span><span class="nx">connection</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And <code>applyErrorLogging()</code> function,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
-</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logErrors</span><span class="p">());</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyErrorLogging</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, it&rsquo;s everything in place, so all <code>4xx</code> are logged as warnings, all <code>5xx</code> are logged as errors.</p>
-
-<h2>Move your logs to cloud</h2>
-
-<p>Simply logging information is not enough. While your application writes info to console on production machine, this information worthless to you. You have to put you logs to the place where is easily accessible.</p>
-
-<p>There are few services like that. One of I recently hooked with in <a href="https://logentries.com/">Logentries</a>.</p>
-
-<p>Logentries gives you API to submit information there + Dashboard, there logs can be viewed, search and analyzed.</p>
-
-<p><img src="http://beletsky.net/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
-
-<p>Install <code>node-logentries</code> client,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install node-logentries --save
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And now, we need to update logger, to not only <code>console.log</code> but send it to Logentries.</p>
-
-<p>Will create Logentries client,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">log</span> <span class="o">=</span> <span class="nx">logentries</span><span class="p">.</span><span class="nx">logger</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">token</span><span class="o">:</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">LOGENTRIES_TOKEN</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">log</span><span class="p">.</span><span class="nx">level</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Will extend existing logger and override current <code>.log()</code> function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">logentriesLogger</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">_super</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>          <span class="nx">log</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">_super</span><span class="p">),</span> <span class="nx">child</span><span class="p">);</span>
-</span><span class='line'><span class="p">})(</span><span class="nx">logger</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">logentriesLogger</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Checkout this <a href="https://gist.github.com/alexanderbeletsky/5921464">gist</a> where you can see all things put together.</p>
-
-<p>So, now wherever <code>logger</code> is used, logs will both shown to screen (which is cool for development) and submitted to Logentries (which is cool for production).</p>
-
-<h2>Setup notification on critical errors</h2>
-
-<p>If error appeared on production, developers attention should be there. Without good notification system, is too easy to skip the moment then error arises.</p>
-
-<p>Again, it&rsquo;s easy to do with Logentries. Just go to <code>Alerts</code> section and setup patterns of errors you interested and email addresses for notifications.</p>
-
-<p><img src="http://beletsky.net/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
-
-<p>Email is not only one option, you can setup for SMS or webhook for your app. So, anytime error or warning appeared you will be notified and take action on it.</p>
-
-<h2>Conclusions</h2>
-
-<p>I&rsquo;ve used that for <a href="http://likeastore.com">likeastore</a> app I currently working on and it works just fine. Having such logs gave a lot of information after we went to private-beta phase. When you see how application behaves then real users start to use, it gives you good insights about fixes and improvements to apply.</p>
-
-<p>Taking into account that approach above is very universal and easy to adopt, to it today.</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="No back up&#8230; Fail! Jul 21st, 2010 Life It might seem that investment into UPS is a big deal.. as far as you lost a data after power outage. &hellip;">
+  <meta name="description" content="JSON / JSONP and Same Origin policy issue Jul 22nd, 2010 AJAX, Tips, Tools First of all, what the JSON is? It is very, very simple! JSON acronym of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,83 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/json-jsonp-and-same-origin-policy-issue.html">
+    
+      JSON / JSONP and Same Origin policy issue</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-22T17:17:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+First of all, what the JSON is? It is very, very simple! JSON  acronym of a JavaScript Object Notation. It is a data interchange format, analog of XML. It became very popular because of AJAX applications, which receive a data from web services called from a javascript. Web services typically use XML as format of exchanging data, that works great because of SOAP standard and so on.. But in javascript client application you had to put additional effort of parsing XML data, and create an XML to post to web service. JSON simplifies it, because it is native to javascript.
+</p>
+<p>
+JSON is a serialization of javascript object to string. It based on javascript basic types as Number, String, Boolean, Array, Object and null and looks like that: 
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">{<br>&nbsp;&nbsp; <font color="#A31515">"id"</font>: 1023,<br>&nbsp;&nbsp; <font color="#A31515">"description"</font>: <font color="#A31515">"new assigment"</font>,<br>&nbsp;&nbsp; <font color="#A31515">"data"</font>: {<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"size"</font>: 117,<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"url"</font>: <font color="#A31515">"/local/data/jhsr2kk"</font><br>&nbsp;&nbsp; }<br> }</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+As you receive such string from web service (for instance) you can just evaluate it (with eval() function) and use as javascipt object. (I have to mention that direct using of eval() is not recommended way since security issues, all modern browsers have built-in JSON parsers and you can use that. Best way is to use a libraries, like <a href="http://jquery.com/">jQuery</a> or <a href="http://www.prototypejs.org/">Prototype</a> and hides such details from you).
+</p>
+<p>
+JSON exchanging of data works great as soon as your application and data source service are in one domain. As you want to receive some data outside of your domain, it simply won&#8217;t work (it actually works, with IE but it gives security notification and does not work in Chrome at all). This because of <a href="http://en.wikipedia.org/wiki/Same_origin_policy">Same origin policy</a>, security concept that disallow such operations. So, as you considered to do something like, 
+<blockquote><code><font size="2" face="Courier New" color="black">$.getJSON(<font color="#A31515">"http://external.com/json"</font>, <font color="#0000ff">function</font>(data) { });</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+you will not get any result. There are a different approaches of workaround of same policy origin (please check nice <a href="http://www.wait-till-i.com/2010/01/10/loading-external-content-with-ajax-using-jquery-and-yql/">article</a> on that), but as you know that web service supports JSON, JSONP comes to help.
+</p>
+<p>
+JSONP is a JSON with padding (or it also called JSON with prefix). With JSONP you are specifying URL and callback function, like http://external.com/json?callback=f. This must be put into script tag.
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="http://external.com/json?callback=f"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">function</font> f(data) {<br><br>}<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+It is allowed and works perfectly fine. 
+</p>
+<p>
+But what if you need a dynamic calls? It is also not a problem, it is possible to create script tag dynamically and attach it to DOM. A nice way of doing that. I&#8217;ve seen in <a href="http://github.com/alexanderbeletsky/github-api/blob/master/github.js">github-api</a> project. Original code is from here, I just removed some details and made it more reusable.  
+<blockquote><code><font size="2" face="Courier New" color="black">(<font color="#0000ff">function</font> (globals) {<br>&nbsp;&nbsp;<font color="#0000ff">var</font> json = {<br>&nbsp;&nbsp;&nbsp;&nbsp;__jsonp_callbacks: {},<br>&nbsp;&nbsp;&nbsp;&nbsp;call: <font color="#0000ff">function</font> (url, callback, context) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> id = +<font color="#0000ff">new</font> Date;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> script = <font color="#0000ff">document</font>.createElement(<font color="#A31515">"script"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json.__jsonp_callbacks[id] = <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete json.__jsonp_callbacks[id];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback.apply(context, arguments);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> prefix = <font color="#A31515">"?"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (url.indexOf(<font color="#A31515">"?"</font>) &#62;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix = <font color="#A31515">"&#38;"</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url += prefix + <font color="#A31515">"callback="</font> + encodeURIComponent(<font color="#A31515">"json.__jsonp_callbacks["</font> + id + <font color="#A31515">"]"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;script.setAttribute(<font color="#A31515">"src"</font>, url);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">document</font>.getElementsByTagName(<font color="#A31515">'head'</font>)[0].appendChild(script);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;globals.json = json;<br>})(window);<br>&nbsp;&nbsp;</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Example of usage:
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;!</font><font color="#800000">DOCTYPE</font> <font color="#ff0000">html</font> <font color="#ff0000">PUBLIC</font> <font color="#0000ff">"-//W3C//DTD XHTML 1.0 Transitional//EN"</font> <font color="#0000ff">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</font><font color="#0000ff">&#62;</font><br><br><font color="#0000ff">&#60;</font><font color="#800000">html</font> <font color="#ff0000">xmlns</font><font color="#0000ff">="http://www.w3.org/1999/xhtml"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">title</font><font color="#0000ff">&#62;</font>Test page<font color="#0000ff">&#60;/</font><font color="#800000">title</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="json.js"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&#60;/head&#62;<br>&#60;body&#62;<br>&#60;script type=<font color="#A31515">"text/javascript"</font>&#62;<br>&nbsp;&nbsp;json.call(<font color="#A31515">"http://ws.geonames.org/citiesJSON?north=44.1&#38;south=-9.9&#38;east=-22.4&#38;west=55.2&#38;lang=de"</font>, <font color="#0000ff">function</font> (data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> d = data;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">html</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+This code very useful for small &#8220;depends-on-nothing&#8221; applications. Of cause jQuery has its own support of JSONP, so as soon as you already using jQuery you should consider <a href="http://api.jquery.com/jQuery.getJSON/">$.getJSON</a> for your needs. 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -745,65 +822,6 @@ Finally I&#8217;ve put sources and binaries on github.
 Source code - <a href="http://github.com/alexanderbeletsky/MutantPower">http://github.com/alexanderbeletsky/MutantPower</a>
 <br />
 MutantPower application - <a href="http://github.com/alexanderbeletsky/MutantPower/downloads">http://github.com/alexanderbeletsky/MutantPower/downloads</a>
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/spell-checker-for-vs2010.html">
-    
-      Spell checker for VS2010</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-07T15:56:00+03:00" pubdate data-updated="true">Jul 7<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tools/'>Tools</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
- I&#8217;ve noticed that I do a lot of spell mistakes in my posts, so I started to 
-    think about some online tools that would do spell checking before submit post to blog. There are several good enough, but the problem is that they work with a plain text, but I do posts in HTML first.. so checker was giving a lot of mistakes on HTML tags, that is pretty annoying.
-</p>
-<p>
-As I do my posts in VS initially I started to look for some pluggins that would do spell checking just within Visual Studio, so you don&#8217;t need any other tools. I came up with very nice one, so I want to share it with you:
-</p>
-<p>
-<a href="http://visualstudiogallery.msdn.microsoft.com/en-us/7c8341f1-ebac-40c8-92c2-476db8d523ce">Checker for VS 2010 by Noah Richards</a>
-</p>
-<p>
-Easy to install and use.. Spell checking for HTML/ASP.net code, as well as source code (commentaries). So, I hope are not going to see spell any bugs in my posts any more. 
 </p></div>
 
       
