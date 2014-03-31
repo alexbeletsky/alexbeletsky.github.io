@@ -44,7 +44,7 @@ First of all, time flows 2x faster compare to anything I was involved before. Yo
 
 Every day you feel ups and downs. The mood is changing constantly. You have growth and receive users feedback - it feels great. You talk to investors or mentors that find weaks and leaks of idea - it feels bad. And it's all the time like that.
 
-Founders have to supporters to each other, motivate for further wins.
+Founders job here is to supporters to each other, motivate for further wins.
 
 ## What we learned so far
 
