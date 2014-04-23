@@ -4,7 +4,7 @@
   <title><![CDATA[Category: expressjs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/expressjs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-03-31T16:18:38+03:00</updated>
+  <updated>2014-04-23T12:49:11+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,81 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
+    <link href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html"/>
+    <updated>2014-04-23T11:19:00+03:00</updated>
+    <id>http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware</id>
+    <content type="html"><![CDATA[<p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
+
+<p>The <code>maintenance</code> package is now available on <a href="https://www.npmjs.org/package/maintenance">npm</a> and you welcome to use it. But I would like to share the way I developed and test it.</p>
+
+<!-- More -->
+
+
+<p>So, <code>maintenance</code> is a function that takes <code>app</code> instance and <code>options</code> as a parameters. Then it augments <code>app</code> with additional endpoint (if there is such preference) and injects middleware function that would render maintenance page in case of mode is set to <code>true</code>.</p>
+
+<p>It&rsquo;s really small piece functionality, but still I wanted to make sure, it&rsquo;s gonna work in my application without annoying restarts of servers and debugging the stuff. And TDD is right approach to solve the pain.</p>
+
+<p>TDD is quite commonly trade-off of <code>unit tests</code> and <code>integration tests</code>. And it&rsquo;s always up to developer which direction go in particular case. Let&rsquo;s take a look on my case:</p>
+
+<p>If you go <code>unit test</code> way, it would be something like that:</p>
+
+<ul>
+<li>call <code>maintenance</code> function, pass mock of <code>express</code> instance
+
+<ul>
+<li>verify that new <code>route</code> is added after function completes</li>
+<li>verify that all <code>route.callbacks</code> now have callback to check the mode</li>
+<li>verify that <code>route.callbacks[0]</code> contains mode check function</li>
+</ul>
+</li>
+<li>call <code>route.callbacks[0]</code>, mock <code>req</code> and <code>res</code> object
+
+<ul>
+<li>verify that <code>res.render</code> called with <code>maintanance.html</code> argument</li>
+<li>etc..</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Is all of that kind of <strong>suck</strong>? It is, since it would take too much effort for mocking the stuff.. But more important, all of that is nothing more as just testing of <strong>implementation details</strong> of Express.js, but not <strong>behavior details</strong> of application.</p>
+
+<p>Now, let&rsquo;s consider <code>integration tests</code> way for same stuff:</p>
+
+<ul>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+</ul>
+</li>
+<li>run application is maintenance mode
+
+<ul>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+<li>sent HTTP POST to maintenance endpoint</li>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Does it look like real <strong>behavior</strong> testing? Indeed, test acts as <code>user</code> and checks that application actually behaves right, doesn&rsquo;t matter of implementation details.</p>
+
+<p>With spending more time with Express.js and Node.js I see much <a href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html">more value</a> in integration way of testing. It&rsquo;s very easy to spin-up a server and send HTTP requests and check responses.</p>
+
+<p>If you are interested, check out <a href="https://github.com/likeastore/maintenance/blob/master/test/spec/maintenence.spec.js">specification</a> and <a href="https://github.com/likeastore/maintenance/blob/master/test/app/app.js">test application</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Agile Base Camp 2012 Jan 30th, 2012 Conference, Continuous Past Saturday I was a part of big Ukrainian event Agile Base Camp: From Idea to Product. &hellip;">
+  <meta name="description" content="New Tools in My TDD Arsenal Feb 2nd, 2012 Clean Code, Mocks, TDD, Tools Recently my TDD arsenal has been enhanced with 3 new cool tools, which I&# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,95 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/02/new-tools-in-my-tdd-arsenal.html">
+    
+      New Tools in My TDD Arsenal</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-02T11:36:00+02:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/mocks/'>Mocks</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I&#8217;m about to share with you. More precisely it one tool and two frameworks. Let&#8217;s go for it.<br />
+</p><h2>NCrunch<br />
+</h2><p><a href="http://www.ncrunch.net/">NCrunch</a> is just amazing extension for Visual Studio created by <a href="https://twitter.com/#!/remcomulder">@remcomulder</a>. It automatically detects all your tests and re-running those as soon as source code changes happen. Forget about manual test re-running, it&#8217;s just waste of time. You even do not need to press Ctrl + S, just continue coding as you usually do. <br />
+</p><p>Initially I had big doubts about such kind of tools, but NCrunch changed my mind. It supports major unit test frameworks NUnit, XUnit, MSpec etc. Besides of that it allows to collect code coverage metrics (and show it just in VS editor), run tests under debugger, supports multi-core systems etc.<br />
+</p><p>In short, NCruch is something that makes your TDD very smooth, allowing to focusing on important things and forgot about some routine.<br />
+</p><a href="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg" alt="ncrunch" /><br />
+</a><br />
+<h2>NSubstitute<br />
+</h2><p>I stick to <a href="http://code.google.com/p/moq/">Moq</a> for quite awhile and saw no reason to switch it.. Till I saw <a href="http://nsubstitute.github.com/">NSubsitute</a>. I hardly could imagine someone who staring &#8220;yet another mocking framework project&#8221;, it looks like absolute non-sense.. But <a href="https://github.com/nsubstitute">those</a> guys proves me wrong.<br />
+</p><p>Well, what&#8217;s so new there? First of all it have very clean API. No more <code>new Mock()</code> or <code>MockGenerator.GenerateMock()</code>, creation of test doubles are nothing more as <code>Substitute.For&lt;IEntityToMock&gt;()</code>. Mocking properties, multiple return values, events etc. in very easy fashion. Check out their <a href="http://nsubstitute.github.com/help/getting-started/">getting started</a> materials for further info. <br />
+</p><p>Best feature as for me, that by using extension methods they got rid of lambdas for setting up mocks. It makes test code more readable and clean. See this small <a href="https://gist.github.com/1722396">gist</a> there I placed just some Moq and NSubstitue tests together.<br />
+</p><p>I would not say that Rhino or Moq is now much worse that NSubstitute.. No, I would just say NSubstitute is a little better. Even same functionality, with less amount of code is already big argument for me.<br />
+</p><pre class="brush: csharp">[Test]
+public void should_send_an_email_if_users_signs_up_nsub()
+{ 
+ // arrange
+ var emailService = Substitute.For&lt;IEMailService&gt;();
+ var controller = new LoginController(emailService);
+
+ // act
+ controller.SignUp(new SignUpModel { Email = &quot;a@a.com&quot;, Password = &quot;xxx&quot; });
+
+ // assert
+ emailService.Received().SendEmail(Arg.Any&lt;EmailMessage&gt;(), &quot;current&quot;);
+}
+</pre><h2>FluentAssertions<br />
+</h2><p>Again, for years I followed classic NUnit&#8217;s <code>Assert.That()</code> method. I also played a bit with <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a>, but FluentAssertions by <a href="https://twitter.com/#!/ddoomen">@ddoomen</a> is going to change that.<br />
+</p><p>FluentAssertions are based on extension methods and allows you to get rid of Assert.That call and just wrote your assertion directly to object. Here some example: <br />
+</p><pre class="brush: csharp">{
+    // NUnit.Assert style..
+    Assert.That(result, Is.EqualTo(3));
+
+    // FluentAssert style..
+    result.Should().Be(3);
+}
+</pre><p>This is very simple example. The power of FluentAssertions arise then you need to have either multiple assertions or assertions on complex objects. Multiple assertion could be combined by <code>And</code>, like:<br />
+</p><pre class="brush: csharp">{
+    "somestring".Should().Contain("some").And.HaveLength(10);
+}
+</pre><p>It also provides great support for working with Collections, DateTimes, Guids, Exceptions, XML etc. Project is hosted on codeplex, here is <a href="http://fluentassertions.codeplex.com/documentation">documentation</a>. Easy start, easy go.<br />
+</p><h2>Conclusions</h2><p>Now, I&#8217;m sharpening my axe on those tools and have very nice impressions so far. Special thanks goes to <a href="https://twitter.com/#!/skalinets">@skalinets</a> who introduced me with those tools.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -935,69 +1024,6 @@ public void should_try_to_cover_it()
 </p><p>With a consistent challenge, every day is no longer &#8220;another day in office&#8221;, but rather &#8220;yet another day on pirate ship&#8221;. It starts to smell start-up shop, that tried to get on market as soon as possible, adapting last available tools. The project now is not something I just had to do, but kind of pet project, where you trying things out and feel great if those things works.<br />
 </p><p>That&#8217;s why in particular I think it is great to start from scratch (or near to scratch) one a year or something. Pick up last thing, learn them, adopt and build something valuable - it is nothing to compare with maintenance of 5 year old code.<br />
 </p><p>New technologies moves you product faster!<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/12/elmah-mvc-answering-questions.html">
-    
-      ELMAH MVC: Answering questions</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-11T12:25:00+02:00" pubdate data-updated="true">Dec 11<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/nuget/'>NuGet</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>I&#8217;ve received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
-</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
-</p><pre class="brush: xml">&lt;elmah&gt;
-    &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
-    &lt;errorLog type=&quot;Elmah.MemoryErrorLog, Elmah&quot;/&gt;
-    &lt;!--&lt;errorLog type=&quot;Elmah.SqlErrorLog, Elmah&quot; connectionStringName=&quot;elmah&quot; /&gt;--&gt;
-    &lt;!--&lt;errorLog type=&quot;Elmah.XmlFileErrorLog, Elmah&quot; logPath=&quot;~/App_Data/Elmah.Errors&quot; /&gt;--&gt;
-&lt;/elmah&gt;
-</pre><p>Just comment out <code>Elmah.MemoryErrorLog</code> and de-comment <code>Elmah.SqlErrorLog</code> (will store errors to SQL database) or <code>Elmah.XmlFileErrorLog</code> (will store errors to XML files). XML logger, just requires a virtual path to folder there files will be stored. Sql logger, requires a connection string name for ELMAH database. The same web.config contains:<br />
-</p><pre class="brush: xml">&lt;connectionStrings&gt;
-    &lt;add name=&quot;elmah&quot; connectionString=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=elmah;Integrated Security=True&quot; providerName=&quot;System.Data.SqlClient&quot; /&gt;
-&lt;/connectionStrings&gt;
-</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
-</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
-</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
-</p><p>Short answer is, ELMAH.MVC is nothing more that boilerplate code. As soon as you can see it work and it works OK for you, adopt it for your custom needs. That&#8217;s it.<br />
 </p></div>
 
       

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My little experience with GitHub collaboration</title>
+  <title>Integration or Unit Tests Trade-Off</title>
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="My little experience with GitHub collaboration Jul 19th, 2010 GitHub, Social Recently I&#8217;ve started my tiny project. For this project I &hellip;">
+  <meta name="description" content="Integration or Unit Tests Trade-Off Apr 23rd, 2014 expressjs, nodejs, tdd Recently, I&rsquo;ve released small Express.js extension for easy &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://beletsky.net/2010/07/my-little-experience-with-github.html">
+  <link rel="canonical" href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -74,7 +74,7 @@
 </div>
 	<div id="content" class="inner pure-g-r"><article class="post">
 	  
-  <h1 class="title pure-u-1">My little experience with GitHub collaboration</h2>
+  <h1 class="title pure-u-1">Integration or Unit Tests Trade-Off</h2>
 
   <div class="meta pure-u-1-5">
     <div class="date icon-calendar">
@@ -89,12 +89,12 @@
   
 
 
-<time datetime="2010-07-19T19:00:00+03:00" pubdate data-updated="true">Jul 19<span>th</span>, 2010</time></div>
+<time datetime="2014-04-23T11:19:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2014</time></div>
     <div class="tags icon-tag-2">
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/social/'>Social</a>
+    <a class='category' href='/blog/categories/expressjs/'>expressjs</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/tdd/'>tdd</a>
   
 </span>
 
@@ -103,26 +103,77 @@
 
   <div class="entry-content pure-u-4-5">
     <div class="content">
-      <div class='post'>
-<p>
-Recently I&#8217;ve started my tiny project. For this project I required access to GitHub by it&#8217;s open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I&#8217;ve opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I&#8217;m not very experienced in that). That was a good news!
-</p>
-<p>
-But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I&#8217;ve considered it as my change to do first fork!
-</p>
-<p>
-Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I&#8217;ve decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
-</p>
-<p>
-After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I&#8217;ve done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
-</p>
-<p>
-That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
-</p></div>
+      <p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
+
+<p>The <code>maintenance</code> package is now available on <a href="https://www.npmjs.org/package/maintenance">npm</a> and you welcome to use it. But I would like to share the way I developed and test it.</p>
+
+<!-- More -->
+
+
+<p>So, <code>maintenance</code> is a function that takes <code>app</code> instance and <code>options</code> as a parameters. Then it augments <code>app</code> with additional endpoint (if there is such preference) and injects middleware function that would render maintenance page in case of mode is set to <code>true</code>.</p>
+
+<p>It&rsquo;s really small piece functionality, but still I wanted to make sure, it&rsquo;s gonna work in my application without annoying restarts of servers and debugging the stuff. And TDD is right approach to solve the pain.</p>
+
+<p>TDD is quite commonly trade-off of <code>unit tests</code> and <code>integration tests</code>. And it&rsquo;s always up to developer which direction go in particular case. Let&rsquo;s take a look on my case:</p>
+
+<p>If you go <code>unit test</code> way, it would be something like that:</p>
+
+<ul>
+<li>call <code>maintenance</code> function, pass mock of <code>express</code> instance
+
+<ul>
+<li>verify that new <code>route</code> is added after function completes</li>
+<li>verify that all <code>route.callbacks</code> now have callback to check the mode</li>
+<li>verify that <code>route.callbacks[0]</code> contains mode check function</li>
+</ul>
+</li>
+<li>call <code>route.callbacks[0]</code>, mock <code>req</code> and <code>res</code> object
+
+<ul>
+<li>verify that <code>res.render</code> called with <code>maintanance.html</code> argument</li>
+<li>etc..</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Is all of that kind of <strong>suck</strong>? It is, since it would take too much effort for mocking the stuff.. But more important, all of that is nothing more as just testing of <strong>implementation details</strong> of Express.js, but not <strong>behavior details</strong> of application.</p>
+
+<p>Now, let&rsquo;s consider <code>integration tests</code> way for same stuff:</p>
+
+<ul>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+</ul>
+</li>
+<li>run application is maintenance mode
+
+<ul>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+<li>sent HTTP POST to maintenance endpoint</li>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Does it look like real <strong>behavior</strong> testing? Indeed, test acts as <code>user</code> and checks that application actually behaves right, doesn&rsquo;t matter of implementation details.</p>
+
+<p>With spending more time with Express.js and Node.js I see much <a href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html">more value</a> in integration way of testing. It&rsquo;s very easy to spin-up a server and send HTTP requests and check responses.</p>
+
+<p>If you are interested, check out <a href="https://github.com/likeastore/maintenance/blob/master/test/spec/maintenence.spec.js">specification</a> and <a href="https://github.com/likeastore/maintenance/blob/master/test/app/app.js">test application</a>.</p>
 
       <div class="post sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/07/my-little-experience-with-github.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/07/my-little-experience-with-github.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
