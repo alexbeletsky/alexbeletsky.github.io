@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="IT Jam 2012 in Kiev Sep 3rd, 2012 Conference, ITJam It&#8217;s been my second time I attended IT Jam, the biggest IT gathering in Ukraine. This time &hellip;">
+  <meta name="description" content="New Candidate Overview Sep 5th, 2012 Candidate It&#8217;s been a almost a month how I started to re-implement my continues delivery application - &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,74 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/09/new-candidate-overview.html">
+    
+      New Candidate Overview</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-05T21:56:00+03:00" pubdate data-updated="true">Sep 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/candidate/'>Candidate</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
+    </p>    <h2>        Overall application architecture<br />
+    </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
+    </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
+    </p>    <p>        The primary application change is that it&#8217;s no longer IIS application, but just standalone app.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>    So, you just launch an .exe file, after application warm up, candidate is available at <a href="#">http://localhost:12543</a>.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        To simplify a life a bit (and do not harm they eyes of users) I&#8217;m using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> CSS framework and happy with it.<br />
+    </p>    <h2>Server side</h2>    <p>        <a href="https://github.com/NancyFx/Nancy">NancyFX</a> is very lightweight framework, but it requires some skills. So far, I met <a href="http://www.beletsky.net/search/label/NancyFX">several</a> interesting challenges, that has been successfully solved. But, Nancy does it job and does it pretty well.<br />
+    </p>    <p>        <a href="http://ravendb.net/">RavenDB</a> initial impressions are really positive. I&#8217;m currently doing very basic functionality (as inserting, querying and deletion of documents). But, indeed working with document oriented database feels much simple and native for C# developer. Forget about any SQL, schemas, ORM&#8217;s - store and restore POCO&#8217;s, that all you need to know. RavenDB API is very clear and intuitive. <br />
+    </p>    <p>        I used embedded version of RavenDB, which suites me best - since I want to minimize an effort for application installation.<br />
+    </p>    <p>        As I said above, server side exposes HTTP API which receives and responds with JSON based payload. There would be some interfaces for starting/stopping the deployment tasks.. but the rest is happening in client.<br />
+    </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: &#8220;I will never ever writing &#8216;scripts&#8217; in front-end, instead I&#8217;ll be doing browser powered applications&#8221;. Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones&#8217;s main entities you build front-end apps in similar way as it would be desktop applications.<br />
+    </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I&#8217;m using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone&#8217;s views as kind of widgets (or modules).<br />
+    </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don&#8217;t need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
+    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -855,110 +923,6 @@
 </p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It&#8217;s much more closer to Microsoft technologies, like IIS, Azure etc.<br />
 </p><p>    So, what to pick up you might ask?<br />
 </p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/06/using-approval-testing-for-elmahmvc.html">
-    
-      Using Approval Testing for ELMAH.MVC project</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-16T15:23:00+03:00" pubdate data-updated="true">Jun 16<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/approvals/'>Approvals</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>    During the ELMAH.MVC 2.0 preparation I had a bit challenging task. As I <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">mentioned</a>, I was about to adopt some code from <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandox</a> project. The 2.0 release included some new features, but what was important to me is make sure I keep previous ELMAH.MVC functionality.<br />
-</p><p>    In case you are following my blog, you probably read about <a href="http://www.beletsky.net/search/label/Approvals">Approval.Test</a> framework, which I personally like and recommend to my fellow developers. I did some posts, there I tried to show some Approvals benefits. Today, I&#8217;ll show some real-life use case.<br />
-</p><h2>Installing by NuGet</h2><p>    Last time I played with Approvals, the binaries were only available at SourseForge project page. It is not convenient at all. I was happy to see the tweet from <a href="http://twitter.com/#!/llewellynfalco">Llewellyn Falco</a>, he mentioned that ApprovalTests are now available on <a href="http://nuget.org/packages/ApprovalTests">NuGet</a>. So, installation now as easy as:<br />
-</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            PM&gt; Install-Package ApprovalTests<br />
-        </p>    </div></div><h2>Thinking of test</h2><p>I had to have some kind of assurance, that I will not break existing ELMAH pages after I switch to new ELMAH controller. Basically, I need to have some &#8216;Master Database&#8217; that would contain all logged errors and I need to grab all possible output that is being generated by ELMAH error log page handler. <br />
-</p><p>This is what perfectly match the &#8216;Locking Down&#8217; testing strategy. In locking down testing, you try to get all possible system output, and approve it. In my case, I wanted to approve that all HTTP calls to ELMAH pages, like &#8216;/elmah&#8217;, &#8216;/elmah/stylesheet&#8217;, &#8216;/elmah/rss&#8217; and so on, still work as they worked before, meaning producing the same output as they produced before.  <br />
-</p><h2>Test implementation</h2><p>For my &#8216;do&#8217; step of the the test, I need to collect all possible applications output. I already know all URL&#8217;s, so I just fired up the site with ELMAH.MVC 1.3.2 version installed. I configured the site to use XML files for storing the tests, so I can easily copy them before each test run. That made a kind of &#8216;Master Database&#8217; for me.<br />
-</p><p>For the verification, all I need to have is <code>ApprovalTests.Approvals.Verify()</code>.<br />
-</p><pre class="brush: csharp">[UseReporter(typeof(DiffReporter))]
-public class ElmahMvcTests
-{
- private const string ElmahMvcAppUrl = &quot;http://localhost:49800/elmah&quot;;
-
- [Test]
- public void lock_elmah_mvc_pages()
- {
-  // do
-  var content = new StringBuilder();            
-  var pages = new[] 
-      {
-       ElmahMvcAppUrl,
-       ElmahMvcAppUrl + &quot;/&quot;,
-       ElmahMvcAppUrl + &quot;/stylesheet&quot;,
-       ElmahMvcAppUrl + &quot;/rss&quot;,
-       ElmahMvcAppUrl + &quot;/digestrss&quot;,
-       ElmahMvcAppUrl + &quot;/detail?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
-       ElmahMvcAppUrl + &quot;/json?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
-       ElmahMvcAppUrl + &quot;/xml?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;
-      };
-
-  foreach (var page in pages)
-  {
-   content.Append(GetContent(page));
-  }
-
-  // verify
-  ApprovalTests.Approvals.Verify(content.ToString());
- }
-</pre><p>The <code>GetContent()</code> is responsible for getting page content. It could be as simple as <code>ApprovalTests.Asp.AspApprovals.GetUrlContents(url)</code>, but you might get in the trap, as I did so.<br />
-</p><h2>Dealing dynamic data</h2><p>The trap is called &#8216;Dynamic Data&#8217;. Dynamic data is every dynamic part of you output. In my case, the dynamic part was a server time generated by ELMAH and putting into page footer. Of cause, even if I run the test and approve the results, on a next test run I still have red test, since I have differences in a seconds of timestamps in footer. It&#8217;s annoying, but nothing  you can do about it.<br />
-</p><p>My solution was simple. Since I actually don&#8217;t care about those timestamps at all, I can simple cut it away from output. The rest of the document, including structure and content would remain the same, so testing quality will not be lower. <br />
-</p><p>So, the <code>GetContent()</code> method will look as follows,<br />
-</p><pre class="brush: csharp">private string GetContent(string url)
-{
- return RemoveFooter(ApprovalTests.Asp.AspApprovals.GetUrlContents(url));
-}
-
-private string RemoveFooter(string content)
-{
- var pattern = &quot;&lt;p id=\&quot;Footer\&quot;&gt;(.*)&lt;/p&gt;&quot;;
- return new Regex(pattern).Replace(content, string.Empty);
-}
-</pre><h2>Approving the results</h2><p>After I had stable test output, I safely approved that test. Approving in terms of ApprovalTest framework, is simple copy of Accepted file into Approved file.<br />
-</p><p>Now the system got into &#8216;Locked&#8217; state and I&#8217;m safe to do the changes. This is something as Llewellyn mentioned 100% test coverage with one test. Indeed, having only one test and spent 10 minutes to create it I covered huge piece of functionality.<br />
-</p><h2>Keep that safe</h2><p>After I applied all my changes, I re-run approval test to see how it works. I was happy to see, that I&#8217;m still generating the same output as it was before. It means, the system still functions as it&#8217;s expected. All routes works, generated content does not have differences inside. Cool!<br />
-</p><p>As I <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">said</a> earlier, you don&#8217;t need to keep the test for all time. In my case, as I completed my refactoring and saw that code still works (and of cause, manually tested the application), it&#8217;s OK just to delete approval test. No longer needed.<br />
-</p><p><a href="http://approvaltests.sourceforge.net/">Approval.Tests</a> are really shines for a scenarios like that. <br />
 </p></div>
 
       

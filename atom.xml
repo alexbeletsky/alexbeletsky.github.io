@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-14T11:43:55+03:00</updated>
+  <updated>2014-05-15T17:48:05+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,188 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
+    <link href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html"/>
+    <updated>2014-05-15T11:29:00+03:00</updated>
+    <id>http://beletsky.net/2014/05/got-tired-of-mongodb-full-text</id>
+    <content type="html"><![CDATA[<p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
+
+<p>I knew about search oriented storages as <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://sphinxsearch.com/">Sphinx</a>, <a href="http://lucene.apache.org/solr/">Solr</a>, etc. but the migration process always seemed a bit scary to me. After a bit of elaboration I decided to go with Elastic and the migration was quite fun and not so difficult as I initially expected.</p>
+
+<!-- MORE -->
+
+
+<h2>What&rsquo;s wrong with MongoDB?</h2>
+
+<p>We are using MongoDB 2.4 and full text search is experimental feature there. By default, it&rsquo;s turned off on production instances of MongoHQ. Anyway, it&rsquo;s very easy to turn it on and run <code>text</code> commands against it. But we met it&rsquo;s bottleneck when indexed collection start to grow (>3M documents).</p>
+
+<p>We are doing a lot of <code>inserts</code> and if you have full text index, each <code>insert</code> triggers index re-calculation. Few weeks ago I&rsquo;ve noticed huge performance issues of our DB. After first glance of monitoring information it&rsquo;s was pretty clear that <code>Locked</code> index is >110% and a lot requests got timed-out. Application became low responsive.</p>
+
+<p>It could be potentially solved by moving on more powerful server (more CPU and RAM) or by sharding database into few instances. Both costs money. Costs are something that I would like to avoid, if possible. It was time to move to specialized solution.</p>
+
+<p>This is the reason to deploy ElasticSearch &ndash; put less strain on MongoDB and to use as an asynchronous index.</p>
+
+<h2>Migration plan</h2>
+
+<p>Before starting out, I&rsquo;ve consulted with my guru <a href="http://www.vinaysahni.com/">Vinay Sahni</a> and his experience of ElasticSeach in <a href="http://www.supportfu.com/">SuportFu</a>. The general feedback on ElasticSeach was really nice. They don&rsquo;t use any <a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">rivers</a> instead use <code>after_save</code> hook of their ORM, so each time new document is created it&rsquo;s pushed to ElasticSearch index.</p>
+
+<p>I decided to go similar way, so my migration plan was:</p>
+
+<ol>
+<li>Export all existing documents to ElasticSearch.</li>
+<li>Correct the code and after each new insert send update to ElasticSearch.</li>
+</ol>
+
+
+<p>In my situation it&rsquo;s a bit simpler, by the fact, I have only one collection to index and major part of DB operations are <code>inserts</code> not <code>updates</code>, otherwise I believe using of <code>river</code> has more sense (and a more effort to setup).</p>
+
+<h2>Deploy instance on Digital Ocean</h2>
+
+<p>I&rsquo;ve spin-up <a href="https://www.digitalocean.com/?refcode=de56d081b272">Digital Ocean</a> droplet and used that great <a href="https://www.digitalocean.com/community/articles/how-to-install-elasticsearch-on-an-ubuntu-vps">instructions</a> for installation (btw, I recommend to install from Debian package, since it&rsquo;s easier to run elastic as <code>init.d</code> service).</p>
+
+<p>Just in 10 minutes you have working ElasticSeach cluster, ready to rock.</p>
+
+<h2>Migrate MongoDB data to ElasticSearch index</h2>
+
+<p>Then I needed to move about 12GB of data from my production MongoDB instance to Elastic. To accomplish that, I&rsquo;ve created really simple tool &ndash; <a href="https://github.com/likeastore/elaster">elaster</a>. Elaster streams MongoDB collection into ElasticSearch index, based on <a href="https://github.com/likeastore/elaster/blob/master/config/index.js">configuration</a> you provide.</p>
+
+<p>I&rsquo;ve installed <code>nodejs</code> on ElasticSeach server, cloned elaster there and run,</p>
+
+<p><img src="https://pbs.twimg.com/media/Bmpa3QGCcAAOHSZ.png:large" alt="elaster" /></p>
+
+<p>Both elaster and application code use <a href="https://www.npmjs.org/package/elasticsearch">elasticsearch</a> npm package.</p>
+
+<p>The whole process took ~2 hours.</p>
+
+<h2>Update the application code</h2>
+
+<p>Right after documents are inserted to MongoDB and initialized with <code>_id</code>, they are ready to be saved to index. I use bulk operation for that,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">index</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">state</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">items</span> <span class="o">||</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">items</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">commands</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>  <span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">commands</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;_index&#39;</span><span class="o">:</span> <span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="o">:</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;_id&#39;</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_id</span><span class="p">.</span><span class="nx">toString</span><span class="p">()}});</span>
+</span><span class='line'>      <span class="nx">commands</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">elastic</span><span class="p">.</span><span class="nx">bulk</span><span class="p">({</span><span class="nx">body</span><span class="o">:</span> <span class="nx">commands</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Simple search query</h2>
+
+<p>ElasticSearch comes with very nice <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html">Query DSL</a>. I&rsquo;m very new to the technology, so I&rsquo;ve managed to create really simple query, which already gives quite nice results.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">fullTextItemSearch</span> <span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">paging</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span> <span class="nx">data</span><span class="o">:</span> <span class="p">[],</span> <span class="nx">nextPage</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">page</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">elastic</span><span class="p">.</span><span class="nx">search</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">index</span><span class="o">:</span> <span class="s1">&#39;items&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">from</span><span class="o">:</span> <span class="p">(</span><span class="nx">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">size</span><span class="o">:</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">body</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">filtered</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="s1">&#39;query_string&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                          <span class="nx">query</span><span class="o">:</span> <span class="nx">query</span>
+</span><span class='line'>                      <span class="p">},</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nx">filter</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="nx">term</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                          <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span>
+</span><span class='line'>                      <span class="p">}</span>
+</span><span class='line'>                  <span class="p">}</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">hits</span><span class="p">.</span><span class="nx">hits</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">hit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">_source</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span> <span class="nx">items</span><span class="p">,</span> <span class="nx">nextPage</span><span class="o">:</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It just uses <code>query_string</code> and <code>filter</code> term, to filter out results for given user. The interface of Search API remained the same, just instead of querying MongoDB, now we query ElasticSearch.</p>
+
+<h2>Summary</h2>
+
+<p>The main conclusion is &ndash; ElasticSearch is kind of technology that works out of the box. It&rsquo;s very complex inside, but have great interface that hides all the complexity. First and good enough results can be archived very quickly.</p>
+
+<p>In the same time, the technology requires time and effort to understand it and to use it right. I have absolutely no experience with full text search, so it&rsquo;s really journey for me.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
@@ -2684,95 +2866,6 @@
 <li><strong>CDN</strong> &ndash; currently all static resources are handled by node.js, which is terrible slow, will move all our stuff to Amazon CloudFront.</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
-    <link href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html"/>
-    <updated>2013-07-28T09:30:00+03:00</updated>
-    <id>http://beletsky.net/2013/07/likeastore-app-goes-to-public</id>
-    <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
-
-<p>Bootstrapping is always hard, despite of the actual product size. Finishing something that other people will see, just doubles the stake &ndash; you could not fail, wish to do best of the best. It&rsquo;s been really breathtaking journey (or I would call it beginning of the path), so if you are interested I&rsquo;ll share some details of product and it&rsquo;s development.</p>
-
-<!--More-->
-
-
-<p><img src="http://beletsky.net/images/blog/likeastore-home.png" alt="likeastore" /></p>
-
-<h2>Likeastore in few simple words</h2>
-
-<p>We all connected to a different social systems, like twitter, github or stackoverlow. All of those are constant flow of information and we clasiffy that information by &ldquo;liking&rdquo; them.</p>
-
-<p>The usual problem though, is it&rsquo;s very hard to remember where you saw some information. For instance, I just remember <em>&ldquo;hm..I read great post of configuring nginx for Node.js application..&rdquo;</em>, but totally forget &ndash; was on github readme, twitted blog post or answer on stackoverflow.</p>
-
-<blockquote><p>Likeastore tool that helps you to survive information overload.</p></blockquote>
-
-<p>Likeastore fixes the problem, it stores all information that you might be interested in, by collecting your &ldquo;likes&rdquo; throught a different social applications and allow you to search that information.</p>
-
-<h2>After hackathon time</h2>
-
-<p>We took a second place on hackathon and a lot of people were interested in Likeastore idea. We just wanted to make it right and enhance the code we already had.</p>
-
-<p>Our plan was simple: make everything we had right, improve the UI and found reliable hosting for our product. As this is done, we go for a private mode, sharing application with limited number of users. If everything is good, will release it public. Pretty standard approach for different kinds of SaaS.</p>
-
-<p>At May, 2013 we had our application deployed on <a href="https://www.appfog.com/">AppFog</a> and subscribers been invited.</p>
-
-<h2>Private beta results</h2>
-
-<p>After few hours on production site running, we&rsquo;ve got first users, first real data and even first feedback in twitter.
-But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and understanding we are not that far from previous milestone.</p>
-
-<p>Application stopped to work on next day. We&rsquo;ve <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">moved</a> to another PaaS <a href="https://www.nodejitsu.com/">Nodejitsu</a>. A lot of different things happen.</p>
-
-<p>Looking back, I have to say &ndash; <em>it&rsquo;s great we didn&rsquo;t show it to public immediately</em>, cause it would be a bit shameful. Decrypting the logs, gave us better understanding of problems you face collecting big amount of data through different API&rsquo;s. There was obviously huge amount of work to make it better.</p>
-
-<h2>Focusing on quality</h2>
-
-<p>Originally, we&rsquo;ve planned to push more features to public version: facebook and tumlr connectors, full text search and other stuff. But private beta clearly showed &ndash; the <em>focus have to be on quality</em>.</p>
-
-<p>We literally re-wrote the application from scratch, both server side and client. Applied integration tests and unit tests whereever it&rsquo;s possible, also covering main application pathes with zombie.js <a href="http://pixelhunter.me/post/54753803233/end-to-end-testing-with-zombie-js-mocha-js-and">end-to-end</a> tests.</p>
-
-<p>Our <a href="https://github.com/likeastore/app/tree/master/source/api">API</a> became stable and fully tested, our <a href="https://github.com/likeastore/app/tree/master/public/js">client</a> solid rock and very reliable. The trickiest part of application, the <a href="https://github.com/likeastore/collector">collector</a> &ndash; it became smarter, with a scheduler that schedules optimal requests to avoid API rate limits.</p>
-
-<h2>Making the product beautiful</h2>
-
-<p>Beautiful UI/UX for applications like a crucial. And that&rsquo;s why I&rsquo;m happy that <a href="https://twitter.com/voronianski">@voronianski</a> is a part of team.</p>
-
-<p>He did amazing job by visualizing both site and application. Design became very clean, contrast and looks great on numerous of devices, from smart phones to huge desktop monitors.</p>
-
-<p>Following the modern trend of flat design, we&rsquo;ve picked up colors and styles, showing the way we see application, as modern and useful. Just <em>making the things look nicer</em> would be a real further strategy for us.</p>
-
-<h2>Security is concern</h2>
-
-<p>We collect users private data, it was obvioulsy just impossible to give a chance of someone else access it. So, have to secure the application with SSL connection, so all trafic between API and browser is crypted. SSL became a quite hard, first because certificate is rather expensive, second you have to install on server, which I never did before.</p>
-
-<p>The importance of SSL left us with a no-go on <a href="https://www.nodejitsu.com/">Nodejitsu</a>. Nodejitsu policies allows to have SSL connections only on &ldquo;Bussiness Plan&rdquo;, which costs 120USD/month. That was not that money we ready to put on table. We had to have change the way we host application. Basically, it meant &ndash; move out from PaaS to IaaS, and do all the stuff on your own.</p>
-
-<p>I personally felt bad about, since we&rsquo;ve really get used to PaaS. But, we&rsquo;ve found a way around, having place own application on <a href="https://www.digitalocean.com/">Digital Ocean</a> cloud, in conjunction with <a href="https://github.com/progrium/dokku">dokku</a>, which allows us to Heroku-like deployment model. That also gave me the chance to play vagrant/linux/docker more that I could ever image. I contributed <a href="https://github.com/progrium/dokku">dokku</a> some important stuff as SSL and ENV support and that gave ability to use it for production needs.</p>
-
-<h2>Current technology stack</h2>
-
-<p>So, a little bit of geeky info. We running on:</p>
-
-<ul>
-<li><a href="https://www.digitalocean.com/">Digital Ocean</a>, 2 droplets one for staging and one for production</li>
-<li><a href="http://nginx.org/">Nginx</a> 1.4, ssl, routing and balancing 2 Node.js servers on each droplet</li>
-<li><a href="http://nodejs.org/">Node.js</a> 0.8.25 + <a href="http://expressjs.com/">Express.js</a> based API</li>
-<li><a href="http://www.mongohq.com/home">MongoHQ</a> deplyment for staging and production database</li>
-<li>Each Node.js server runs in <a href="http://www.docker.io/">docker</a> container</li>
-<li>Deployments and docker orchestration by <a href="https://github.com/progrium/dokku">dokku</a></li>
-<li><a href="http://angularjs.org/">AngularJS</a> driven client</li>
-<li>Handcrafted CSS, HTML (no frameworks)</li>
-</ul>
-
-
-<p>Each of these is very interesting and demands dedicated posts. Hope, we do some in future.</p>
-
-<h2>Conclusions</h2>
-
-<p>Just current results: 18 hours after, we have 40 users, 62 network connections, 10861 item collected. That&rsquo;s the motivating stuff, so we feel very positive to carry that on.</p>
 ]]></content>
   </entry>
   
