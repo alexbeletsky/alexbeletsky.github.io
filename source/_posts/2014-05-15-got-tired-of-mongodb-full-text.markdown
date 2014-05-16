@@ -24,7 +24,7 @@ This is the reason to deploy ElasticSearch - put less strain on MongoDB and to u
 
 ## Migration plan
 
-Before starting out, I've consulted with my guru [Vinay Sahni](http://www.vinaysahni.com/) and his experience of ElasticSeach in [SuportFu](http://www.supportfu.com/). The general feedback on ElasticSeach was really nice. They don't use any [rivers](https://github.com/richardwilly98/elasticsearch-river-mongodb) instead use `after_save` hook of their ORM, so each time new document is created it's pushed to ElasticSearch index.
+Before starting out, I've consulted with my guru [Vinay Sahni](http://www.vinaysahni.com/) and his experience of ElasticSeach in [SupportFu](http://www.supportfu.com/). The general feedback on ElasticSeach was really nice. They don't use any [rivers](https://github.com/richardwilly98/elasticsearch-river-mongodb) instead use `after_save` hook of their ORM, so each time new document is created it's pushed to ElasticSearch index.
 
 I decided to go similar way, so my migration plan was:
 
