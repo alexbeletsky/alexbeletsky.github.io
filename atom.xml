@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-15T17:48:05+03:00</updated>
+  <updated>2014-05-16T13:58:54+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -37,7 +37,7 @@
 
 <h2>Migration plan</h2>
 
-<p>Before starting out, I&rsquo;ve consulted with my guru <a href="http://www.vinaysahni.com/">Vinay Sahni</a> and his experience of ElasticSeach in <a href="http://www.supportfu.com/">SuportFu</a>. The general feedback on ElasticSeach was really nice. They don&rsquo;t use any <a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">rivers</a> instead use <code>after_save</code> hook of their ORM, so each time new document is created it&rsquo;s pushed to ElasticSearch index.</p>
+<p>Before starting out, I&rsquo;ve consulted with my guru <a href="http://www.vinaysahni.com/">Vinay Sahni</a> and his experience of ElasticSeach in <a href="http://www.supportfu.com/">SupportFu</a>. The general feedback on ElasticSeach was really nice. They don&rsquo;t use any <a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">rivers</a> instead use <code>after_save</code> hook of their ORM, so each time new document is created it&rsquo;s pushed to ElasticSearch index.</p>
 
 <p>I decided to go similar way, so my migration plan was:</p>
 
