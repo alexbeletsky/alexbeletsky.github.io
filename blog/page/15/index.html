@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="AgileBaseCamp Kiev 2011: Dmitry Mindra: Design by Contract in .NET Apr 20th, 2011 Agile, Conference Disclaimer: text below is compilation of notes I &hellip;">
+  <meta name="description" content="Prevention of JS/CSS content to be cached Apr 22nd, 2011 JavaScript, MVC, Tips, asp.net To do not waste a time in pauses between AgileBaseCamp talks &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,117 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/04/prevention-of-jscss-content-to-be.html">
+    
+      Prevention of JS/CSS content to be cached</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-22T18:50:00+03:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+To do not waste a time in pauses between <a href="http://www.beletsky.net/search/label/Agile">AgileBaseCamp</a> talks I&#8217;ve created an utility that I wish to have, but had not time to do. It is very simple and solves caching issue for CSS and JS that we all suffered many times. Because every modern browsers try to cache static content, to make site rendering faster, we having trap then CSS or JS is being updated, but after deployment on production customers still see no results, because they use previous versions of files.
+</p>
+<h2>Classical way</h2>
+<p>
+Classical way of solving the issue is to add version info to content url and update it after each production update.
+</p>
+<pre class="brush: html">    
+&lt;link rel=&quot;stylesheet&quot; href=&quot;Content/public.css?v=123&quot; type=&quot;text/css&quot; media=&quot;all&quot; /&gt;
+&lt;script src=&quot;Scripts/script.js?v=123&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+<p>
+The problem is that you have to remember to update version manually, before each deployment to production. That was something I was doing a lot and now decieded to automate it.
+</p>
+<h2>Better way</h2>
+<p>
+Idea is very simple, create a helper that would use version from assembly and append version to resource. Now, in markup I wrote:
+</p>
+<pre class="brush: html">
+&lt;link rel=&quot;stylesheet&quot; href=&quot;@Url.ContentWithVersion(&quot;~/Content/public.css&quot;)&quot; type=&quot;text/css&quot; media=&quot;all&quot; /&gt;
+&lt;script src=&quot;@Url.ContentWithVersion(&quot;~/Scripts/script.js&quot;)&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+<h2>Code</h2>
+<pre class="brush: csharp">
+namespace Web.Helpers.Extensions
+{
+    public static class UrlContentWithVersionExtension
+    {
+        private static string _currentAssemblyVersion;
+
+        public static string ContentWithVersion(this UrlHelper helper, string path)
+        {
+            var contentPath = helper.Content(path);
+            var assemblyVersionString = GetAssemblyVersionString();
+
+            return string.Format("{0}?ver={1}", contentPath, assemblyVersionString);
+        }
+
+        private static string GetAssemblyVersionString()
+        {
+            if (_currentAssemblyVersion == null)
+            {
+                var currentAssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                _currentAssemblyVersion = currentAssemblyVersion.ToString().Replace(".", "");
+            }
+
+            return _currentAssemblyVersion;
+        }
+    }
+}
+</pre>
+<p>
+And don&#8217;t forget that each page that uses the extension method, should include this namespace:
+</p>
+<pre class="brush: html">
+&lt;!-- For MVC2 --&gt;
+&lt;%@Import Namespace=&quot;Web.Helpers.Extensions&quot; %&gt;
+
+&lt;!-- For MVC3 (Razor) --&gt;
+@using Web.Helpers.Extensions
+</pre>
+<h2>Example of usage</h2>
+<p>
+As always all code is on github, so extension itself is <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Helpers/Extensions/UrlContentWithVersionExtension.cs">here</a>. And commit there I integrated changes is <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef38ebcd1230404b9e5c62877e256aff7e95ad64">here</a> (would be useful to review, before your actual changes).
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -987,70 +1098,6 @@ This is very short and clean notation of test case, even not technical person co
 </p>
 </p>
 Additional information on project <a href="http://sharptestex.codeplex.com/">site</a> as well as author <a href="http://fabiomaulo.blogspot.com/search/label/SharpTestEx">blog</a>.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/03/my-first-year-in-company.html">
-    
-      My first year in company</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-10T10:02:00+02:00" pubdate data-updated="true">Mar 10<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/e-conomic/'>e-conomic</a>, <a class='category' href='/blog/categories/life/'>life</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-It is exactly one year since I joined <a href="http://e-conomic.com">E-conomic</a> company. Last year I decided to switch the jobs and now I realize how much right decision it was. I got invitation on interview to <a href="http://e-conomic.com">E-conomic</a> where I did a small test application and presented it to management and technical guys (hi Jakob, Chistian). I had no great experience with ASP.net that time, since last years of my career I spent mostly on management tasks. Really, I just reviewed the code that I created year ago and I see it was not so good :). Fortunately, those guys believed that I could bring a value and offer me a job. Since then I try to do my best to proof - you were not wrong.
-</p>
-<p>
-I see work in company as kind of mariage. Indeed, to feel happy in marriage you should have really strong match and level of trust to each other. Probably it is <a href="http://e-conomic.com">E-conomic</a> where I first time understood how important trust between development and management. I forgot what the &#8220;estimation negotiation&#8221;, I forgot the problems with unrealistic project plans created by management and business guys. A lot of problems that only created conflicts on my previous jobs here done in very smooth way.
-</p>
-<p>
-We are developer-centric company. Developers have power here, developers take a decisions, developers do the job. But <a href="http://en.wikipedia.org/wiki/Uncle_Ben">with great power comes great responsibility</a>. Developers are totally responsible for product quality. Here I saw a new model, not &#8220;Software Developer&#8221; but rather &#8220;Product Developer&#8221;.. Product developers job is not ended on coding and integration changes, but it is more for verification, configuration management and release. We don&#8217;t have testers here, but we have QA. And developers are part of QA also.
-</p>
-<p>
-I enjoy the environment here very much. Even we are highly distributed team I feel the shoulder of each team mate. We working closer, doesn&#8217;t matter we are sitting &gt;1000 km from each other. That was not so fast to get used to work like that, but now I have no problems at all. I really think that I&#8217;m part of the rest of team who mainly located in Copenhagen. This environment constantly inspires: I was happy to restore my blog (that I created in 2008, but then froze it), I do a lot of reading to understand modern web development, I <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my small product.. and have bunch of new ideas and feel only lack of time to work on all of them :).
-</p>
-<p>
-I would also say that <a href="http://www.ciklum.net/">Ciklum</a> as Ukrainian representative does job very well. Basically 2 major things that I see Ciklum is great: it handles all infrastructure and finance very professional and does not interfere to work directly with client. If I have some kind of problem I know Ciklum would solve it, this is also good level of trust and I appreciate that.
-</p>
-<p>
-Yes, I&#8217;m just happy developer now. And I really much correlate this with <a href="http://e-conomic.com">E-conomic</a>. Last year decision changed my life. I think I found the place where I like to work, even if I spend more than 7 years for that.
 </p></div>
 
       

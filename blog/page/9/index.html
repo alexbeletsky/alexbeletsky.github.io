@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="New in ASP.NET MVC4: Bundling and Minification Apr 2nd, 2012 CSS, JavaScript, MVC, asp.net Next new feature that appeared in MVC 4 beta is bundling &hellip;">
+  <meta name="description" content="Why I&#8217;m Not Using Bundling.. Yet Apr 4th, 2012 MVC, asp.net Last time I a posted some initial info about Bundling and Minification abilities &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,78 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/why-im-not-using-bundling-yet.html">
+    
+      Why I&#8217;m Not Using Bundling.. Yet</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-04T18:32:00+03:00" pubdate data-updated="true">Apr 4<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Last time I a <a href="http://www.beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html">posted</a> some initial info about Bundling and Minification abilities of MVC4. In this post, I describe some concerns that prevents me of using it right now. Let me remind that I&#8217;m doing review of MVC 4 beta and I hope some of those concern would not be actual at the time of release. This is only personal considerations, you might not agree with everything here.<br />
+</p><h2>It&#8217;s contra-intuitive</h2><p>Maybe the &#8216;contra-intuitive&#8217; is not exact word that reflects my frustration. What I mean, it does not do what you might expect by default. Remember I described two methods RegisterTemplateBundles() and EnableDefaultBundles()? It was really unclear to me what they do until I looked into code. Modern frameworks tend to be as less surprise as possible, but not in case of <code>System.Web.Optimizations</code>. <br />
+</p><h2>Development and production mode</h2><p>The fact it does not take into account &#8216;Debug&#8217; and &#8216;Release&#8217; mode is also very confusing. As same as in point above, I have a different expectations how it should behave. For &#8216;Debug&#8217; mode it simply should do nothing - no optimization, no compression. For release mode it should do as much as possible to minify the number of HTTP request. It turns out that you have to create some code on your own to make it happen. <br />
+</p><h2>Bundling is bad during debugging</h2><p>While you in development mode you do debug, no surprise here. Having FireBug or Chrome Development tools it&#8217;s very easy to debug javascript, you can pick up any file and place breakpoint inside.<br />
+</p><a href="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-gVLbEPHXI40/T3xo1NZddXI/AAAAAAAAIUQ/ZYjIwH4W1Tw/s619/image-1.png" alt="chrome development" /><br />
+</a><br />
+<p>It is no so easy with bundling, cause it will package all your files in one big chunk, so you need to open and find right place there. Since the total number of line could be huge there, it&#8217;s turns to be big deal.<br />
+</p><p>As a workaround you have to have a copies of references, one you using on development and ones you use on production.<br />
+</p><pre class="brush: csharp">&lt;!-- Development --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;     
+
+&lt;!-- Production 
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+--&gt;
+</pre><h2>It&#8217;s not well ironed</h2><p>Since it&#8217;s very young obviously it has some problems. <br />
+</p><p>Be honest, I haven&#8217;t seen on my own but one of the comments in my previous post described the issue with minification of CSS files that include <code>-ie-</code> specific selectors. That&#8217;s probably not only one issue found.<br />
+</p><h2>What did I expect?</h2><p>To do not have only critics I try to put some constructive part in post as well. Ok, so I see it should work to meet my needs? <br />
+</p><p>First of all, it should be implemented as simple HTML razor helpers. You just specify the name of bundle there, like &#8220;scripts/js&#8221; and that&#8217;s it. Helper is smart enough to understand what is active environment at the moment. In case of &#8216;Debug&#8217; it expanded to a bunch of script references or links, for JS and CSS respectively. In &#8216;Release&#8217; mode it&#8217;s indeed refers the bundle, so it&#8217;s packaged and minified for best performance.<br />
+</p><p>You might say, that 1. this is out of scope for <code>System.Web.Optimization</code> framework 2. you can create this behavior easily on your own. This is right, but in the same time if you deal with ASP.NET MVC4 you have some expectation that is should work right and you are not forced to invent the wheel again, so you have kind of consistency between numerous projects.<br />
+</p><p>I&#8217;ve been thinking about to create something like that, but during the chat with fellow developer <a href="">@andrexx</a> about bundling and he showed me something interesting. <a href="https://twitter.com/#!/tdupont750">Tom DuPont</a> has already implemented something that&#8217;s really reflects my needs. It&#8217;s the <a href="http://www.tomdupont.net/2012/03/configuring-bundles-in-mvc-4.html">way</a> of configuring bundles both from code and web.config. It looks like a very handy tool.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1036,73 +1108,6 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
 <h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it&#8217;s place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
 </p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I&#8217;m about to create bunch of &#8220;ready-to-use&#8221; Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/02/candidate-v001rc-released.html">
-    
-      Candidate v.0.0.1rc - Released</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-14T07:37:00+02:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/candidate/'>Candidate</a>, <a class='category' href='/blog/categories/continuous/'>Continuous</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it&#8217;s good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
- </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />
- </p> <a href="http://alexanderbeletsky.github.com/candidate/"><br />
-  <img src="https://lh5.googleusercontent.com/-WIUMqyz3naI/TznyBp-dQbI/AAAAAAAAH4A/exqlfJUQr8o/s1024/screenshot-1.jpg" alt="candidate web site" style="width: 620px;" /><br />
- </a><br />
- <h2>  What&#8217;s the goal?<br />
- </h2> <p>  Thinking about nearest &#8220;competitors&#8221; in this area I would re-call <a href="http://www.paulstovell.com/octopus/intro">Octopus</a> by <a href="https://twitter.com/#!/paulstovell">Paul Stovell</a>. Octopus uses Build Server / Tentacle (Agent) architecture principal, while Candidate is simple Agent architecture - you host it the same machine as your environment is (stage, production) providing both integration and deployment functionality.<br />
- </p> <p>  My goal is stabilize and improve Candidate through this year, so it fulfill different requirements including performance and scalability. I switched all my projects to use Candidate now, so it would give me some initial feedback.<br />
- </p> <p>  Nevertheless, Candidate may turn out to be a powerful deployment application I&#8217;m still thinking about &#8220;Deployement as Service&#8221; product like <a href="https://appharbor.com/">AppHabor</a> and <a href="http://www.heroku.com/">Heroku</a> or <a href="http://travis-ci.org/">Travis-CI</a> as it was <a href=
-  "http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">original</a> idea.<br />
- </p> <h2>  What&#8217;s next?<br />
- </h2> <p>  Following the principle &#8220;Build product X to learn technology Y&#8221; I&#8217;m going to proceed with Candidate to shape following areas that I wish to improve now:<br />
- </p> <ul>  <li>Processes, threads, synchronization in .NET</li>
-  <li>Async, Tasks library</li>
-  <li>Robust applications architecture</li>
-  <li>Different deployment scenarios for .NET platform</li>
- </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I&#8217;m looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
- </p> <p>  I also try to target UI / UX issues as much as possible.<br />
- </p> <h2>Wanna join?</h2> <p>  I would be happy to. I&#8217;ll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
- </p> <p>  Thanks for you help.<br />
- </p></div>
 
       
       

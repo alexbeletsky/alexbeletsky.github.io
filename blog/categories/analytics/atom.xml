@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: analytics | Alexander Beletsky's development blog]]></title>
+  <title><![CDATA[Category: analytics, | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/analytics/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-16T13:58:54+03:00</updated>
+  <updated>2014-05-22T12:51:56+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -14,44 +14,126 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Seismo - Analytics For Your Startup]]></title>
-    <link href="http://beletsky.net/2013/12/analytics-for-your-startup.html"/>
-    <updated>2013-12-05T15:32:00+02:00</updated>
-    <id>http://beletsky.net/2013/12/analytics-for-your-startup</id>
-    <content type="html"><![CDATA[<p>Sometimes ago I <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">wrote the post</a>, where was thinking about importance of logging of application state to clearly see what&rsquo;s going on inside and react accordingly. Logging is vital for any reliable system.</p>
+    <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
+    <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
+    <updated>2014-05-22T11:15:00+03:00</updated>
+    <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
+    <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
 
-<p>If <em>logging</em> is a must from development point of view, <em>analytics</em> is a must from business point of view. You would like to see, how many users signs-in and signs-up during the day, what actions they do inside the app, what issues they use all the time, what issues they never touch.</p>
+<p>The most important thing for every startup are metrics. In web application we use <a href="https://mixpanel.com">Mixpanel</a> together with <a href="https://www.google.com.ua/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CCkQFjAA&amp;url=http%3A%2F%2Fwww.google.com%2Fanalytics%2F&amp;ei=0sB9U_OyJMvc4QSYsYCoDA&amp;usg=AFQjCNFz3Lrd3h9xlat60IUur_H8rmADdw&amp;sig2=3VSXbRKyt9hgF6viPp2ahA&amp;bvm=bv.67229260,d.bGE">Google Analytics</a> and <a href="https://github.com/seismolabs">Seismo</a>. For browser extension I also needed some simple metrics, like &ldquo;usage&rdquo;, &ldquo;clicks&rdquo;, &ldquo;shares&rdquo; etc. Unfortunately, if you just try to reference <code>mixpanel-2.2.min.js</code> it won&rsquo;t work.</p>
 
-<p>Following &ldquo;Invent Own Bicycle&rdquo; principle, I&rsquo;ve created small project to attack the problem &ndash; <a href="https://github.com/likeastore/seismo">Seismo</a>.</p>
-
-<!-- More -->
+<!-- MORE -->
 
 
-<h2>Overview</h2>
+<p>Instead, you will see error message in console,</p>
 
-<p>Right now, <a href="https://github.com/likeastore/seismo">seismo</a> repository is a bunch of javascript files and I&rsquo;m going to decouple project a bit to have it in more structured way. But in essence, there is REST API, with token-based authentication model, which allows you to push application events, store them to MongoDB and then build reports on those events.</p>
+<p><code>plain
+Mixpanel error: 'mixpanel' object not initialized. Ensure you are using the latest version of the Mixpanel JS Library along with the snippet we provide.
+</code></p>
 
-<p>To simplify the integration, there are <a href="https://github.com/likeastore/seismo-node-client">seismo-node-client</a>. It&rsquo;s <a href="https://github.com/mikeal/request">request</a>-based application, ready to use from Node.js backends. Very soon, I&rsquo;m going to add <a href="https://github.com/likeastore/seismo-browser-client">seismo-browser-client</a> to be used in browser.</p>
+<p>There are few reasons for that. One is described in SO <a href="http://stackoverflow.com/questions/15837450/content-security-policy-cannot-load-mixpanel-in-chrome-extension">question</a>. But after I did same manipulations as answer mentioned it still didn&rsquo;t work. For extension I only have content script, there is no place there I can put <code>&lt;script&gt;&lt;/script&gt;</code> tag with markup. It seems like <code>mixpanel-2.2.min.js</code> have some dependencies that just prevents it to start normally inside extension, not usual web application.</p>
 
-<p>To allow the deployment be as easy as possible, I want to pack seismo server as <a href="http://www.docker.io/">docker</a> image and put it to public <a href="https://index.docker.io/">index</a>, so it could be deployed on any Linux machine with few seconds.</p>
+<p>I had no time to investigate the problem deeply, but instead found workaround that works.</p>
 
-<h2>Other languages support</h2>
+<h2>Mixpanel HTTP API</h2>
 
-<p>For now, it has good support for JavaScript and Express.js platform. I wish to have support for other platforms like, Ruby, Python, .NET and Java. It&rsquo;s important not only to support particular languages, but support particular platform &ndash; so, we have good examples and reusable components for RoR, ASP.NET MVC or Spring.</p>
+<p>Besides platform-dependent libraries, Mixpanel provides access to <a href="https://mixpanel.com/help/reference/http">HTTP API</a>. This is the most &ldquo;pure&rdquo; way of communication between services, so I decided to try it.</p>
 
-<h2>Dashboard</h2>
+<p>Since, I already used <code>jQuery</code> in my application, I ended-up with such module,</p>
 
-<p>Data is useless without visualization. Seismo project includes <a href="https://github.com/likeastore/seismo-dashboard">seismo-dashboard</a>.</p>
+<p>```js
+;(function (window) {</p>
 
-<p>It&rsquo;s pure client side application, build with Yeoman/Angular.js and could be deployed to any static server, it works great on <a href="http://pages.github.com/">gh-pages</a> as well.</p>
+<pre><code>var api = 'https://api.mixpanel.com';
+var app = window.app = window.app || {};
 
-<p><img src="http://beletsky.net/images/blog/seismo-dashboard.png" alt="seismo dashboard" class="no-shadow" /></p>
+var mixpanel = {};
 
-<p>At the moment, the dashboard is not flexible at all. But I wish to create it fully customizable and widget based.</p>
+function init(token, user) {
+    mixpanel.token = token;
+    mixpanel.distinct_id = user.email;
+}
 
-<h2>Conclusion</h2>
+function track(event) {
+    var payload = {
+        event: event,
+        properties: {
+            distinct_id: mixpanel.distinct_id,
+            token: mixpanel.token,
+            browser: app.browser.name
+        }
+    };
 
-<p>Even if we already used that for <a href="https://likeastore.com/">Likeastore</a> the project is far away from being generally used. The project currently is nothing more as prototype now, but I would like to improve it in nearest future, so I hope something interesting might came out.</p>
+    var data = window.base64(JSON.stringify(payload));
+    var url = api + '/track?data=' + data;
+
+    $.get(url);
+}
+
+app.analytics = {
+    init: init,
+    track: track
+};
+</code></pre>
+
+<p>})(window);
+```</p>
+
+<p>Here, I&rsquo;m using <a href="https://gist.github.com/alexanderbeletsky/3f850467bc23d40ef51e">this</a> implementation of <code>base64</code> (copied from <code>mixpanel-2.2.js</code>). So, to track the <code>event</code> you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of <code>event</code> and <code>properties</code>.</p>
+
+<h2>Initialization</h2>
+
+<p>To init <code>mixpanel</code> you need both <code>token</code> and <code>distinct_id</code>. The <code>distinct_id</code> is unique value, that Mixpanel generates itself and stores the value to cookie, to identify the user. If you send events from different applications, say web app, mobile web extension etc. &ndash; I would recommend to user <code>mixpanel.alias()</code> call, so you &ldquo;link&rdquo; unknown <code>distinct_id</code> with some user&rsquo;s attribute (<code>id</code> from database or <code>email</code> would work).</p>
+
+<p>On our web application, once user logged on we call <code>mixpanel.alias()</code> with email of user, so all other applications could use that as <code>distinct_id</code> of user.</p>
+
+<p>The entry point of content script is <code>run()</code> method, where user is fetched from server and initialize <code>mixpanel</code> module,</p>
+
+<p>```js
+var ready = function (user) {</p>
+
+<pre><code>app.analytics.init('[MIXPANEL_TOKEN_HERE]', user);
+</code></pre>
+
+<p>};</p>
+
+<p>return {</p>
+
+<pre><code>run: function () {
+    $.get(api + '/users/me')
+        .done(ready)
+        .done(search)
+        .fail(login);
+}
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Tracking</h2>
+
+<p>Once content script injects it&rsquo;s HTML into target page DOM, it&rsquo;s possible to listen to DOM events and call <code>.track()</code> function.</p>
+
+<p>```js
+self.bindEvents = function () {</p>
+
+<pre><code>self.$.find('.item a').click(function () {
+    app.analytics.track('search extension results clicked');
+});
+
+self.$.find('.ls-more a').click(function () {
+    app.analytics.track('search extension more clicked');
+});
+
+app.analytics.track('search extension');
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Conclusions</h2>
+
+<p>I consider Mixpanel HTTP API as very nice substitution of library, in those rare cases when library is not applicable. This would work perfectly if you need simple events tracking. If you interested, feel free to check <a href="https://github.com/likeastore/browser-extension">sources</a>.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-16T13:58:54+03:00</updated>
+  <updated>2014-05-22T12:51:56+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,175 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
+    <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
+    <updated>2014-05-22T11:15:00+03:00</updated>
+    <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
+    <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
+
+<p>The most important thing for every startup are metrics. In web application we use <a href="https://mixpanel.com">Mixpanel</a> together with <a href="https://www.google.com.ua/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CCkQFjAA&amp;url=http%3A%2F%2Fwww.google.com%2Fanalytics%2F&amp;ei=0sB9U_OyJMvc4QSYsYCoDA&amp;usg=AFQjCNFz3Lrd3h9xlat60IUur_H8rmADdw&amp;sig2=3VSXbRKyt9hgF6viPp2ahA&amp;bvm=bv.67229260,d.bGE">Google Analytics</a> and <a href="https://github.com/seismolabs">Seismo</a>. For browser extension I also needed some simple metrics, like &ldquo;usage&rdquo;, &ldquo;clicks&rdquo;, &ldquo;shares&rdquo; etc. Unfortunately, if you just try to reference <code>mixpanel-2.2.min.js</code> it won&rsquo;t work.</p>
+
+<!-- MORE -->
+
+
+<p>Instead, you will see error message in console,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Mixpanel error: 'mixpanel' object not initialized. Ensure you are using the latest version of the Mixpanel JS Library along with the snippet we provide.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are few reasons for that. One is described in SO <a href="http://stackoverflow.com/questions/15837450/content-security-policy-cannot-load-mixpanel-in-chrome-extension">question</a>. But after I did same manipulations as answer mentioned it still didn&rsquo;t work. For extension I only have content script, there is no place there I can put <code>&lt;script&gt;&lt;/script&gt;</code> tag with markup. It seems like <code>mixpanel-2.2.min.js</code> have some dependencies that just prevents it to start normally inside extension, not usual web application.</p>
+
+<p>I had no time to investigate the problem deeply, but instead found workaround that works.</p>
+
+<h2>Mixpanel HTTP API</h2>
+
+<p>Besides platform-dependent libraries, Mixpanel provides access to <a href="https://mixpanel.com/help/reference/http">HTTP API</a>. This is the most &ldquo;pure&rdquo; way of communication between services, so I decided to try it.</p>
+
+<p>Since, I already used <code>jQuery</code> in my application, I ended-up with such module,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">;(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="s1">&#39;https://api.mixpanel.com&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">app</span> <span class="o">||</span> <span class="p">{};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">mixpanel</span> <span class="o">=</span> <span class="p">{};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">init</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">mixpanel</span><span class="p">.</span><span class="nx">token</span> <span class="o">=</span> <span class="nx">token</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">mixpanel</span><span class="p">.</span><span class="nx">distinct_id</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">track</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">event</span><span class="o">:</span> <span class="nx">event</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">distinct_id</span><span class="o">:</span> <span class="nx">mixpanel</span><span class="p">.</span><span class="nx">distinct_id</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">token</span><span class="o">:</span> <span class="nx">mixpanel</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span>
+</span><span class='line'>              <span class="nx">browser</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">base64</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">payload</span><span class="p">));</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">api</span> <span class="o">+</span> <span class="s1">&#39;/track?data=&#39;</span> <span class="o">+</span> <span class="nx">data</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">analytics</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">init</span><span class="o">:</span> <span class="nx">init</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">track</span><span class="o">:</span> <span class="nx">track</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">})(</span><span class="nb">window</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, I&rsquo;m using <a href="https://gist.github.com/alexanderbeletsky/3f850467bc23d40ef51e">this</a> implementation of <code>base64</code> (copied from <code>mixpanel-2.2.js</code>). So, to track the <code>event</code> you just HTTP GET to Mixpanel API, with a payload of base64&#8217;ed JSON string of <code>event</code> and <code>properties</code>.</p>
+
+<h2>Initialization</h2>
+
+<p>To init <code>mixpanel</code> you need both <code>token</code> and <code>distinct_id</code>. The <code>distinct_id</code> is unique value, that Mixpanel generates itself and stores the value to cookie, to identify the user. If you send events from different applications, say web app, mobile web extension etc. &ndash; I would recommend to user <code>mixpanel.alias()</code> call, so you &ldquo;link&rdquo; unknown <code>distinct_id</code> with some user&rsquo;s attribute (<code>id</code> from database or <code>email</code> would work).</p>
+
+<p>On our web application, once user logged on we call <code>mixpanel.alias()</code> with email of user, so all other applications could use that as <code>distinct_id</code> of user.</p>
+
+<p>The entry point of content script is <code>run()</code> method, where user is fetched from server and initialize <code>mixpanel</code> module,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">ready</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="s1">&#39;[MIXPANEL_TOKEN_HERE]&#39;</span><span class="p">,</span> <span class="nx">user</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">api</span> <span class="o">+</span> <span class="s1">&#39;/users/me&#39;</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">ready</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">search</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="nx">login</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tracking</h2>
+
+<p>Once content script injects it&rsquo;s HTML into target page DOM, it&rsquo;s possible to listen to DOM events and call <code>.track()</code> function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">self</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">self</span><span class="p">.</span><span class="nx">$</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.item a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">app</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="s1">&#39;search extension results clicked&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">self</span><span class="p">.</span><span class="nx">$</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ls-more a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">app</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="s1">&#39;search extension more clicked&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="s1">&#39;search extension&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusions</h2>
+
+<p>I consider Mixpanel HTTP API as very nice substitution of library, in those rare cases when library is not applicable. This would work perfectly if you need simple events tracking. If you interested, feel free to check <a href="https://github.com/likeastore/browser-extension">sources</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
@@ -2811,61 +2980,6 @@
 <p>It&rsquo;s fast and it&rsquo;s pretty reliable.</p>
 
 <p>For conclusion, I would say that using both Digial Ocean and Dokku was a clear win for <a href="https://likeastore.com/">Likeastore</a> being released.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First Week in The Air]]></title>
-    <link href="http://beletsky.net/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+03:00</updated>
-    <id>http://beletsky.net/2013/08/first-week-in-the-air</id>
-    <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
-
-<p>Here is a little retrospective on the things happened through that seven days.</p>
-
-<!-- More -->
-
-
-<h2>Few hours after release</h2>
-
-<p>We&rsquo;ve deployed about 6.00 PM at Saturday, sending out a bunch of invitation latters. Right after that, users began to register.</p>
-
-<p>Small script that sends <em>&ldquo;New user registered&rdquo;</em> notification has been rolled out as well, so it was easy to see how things are going. Saturday both me and <a href="https://twitter.com/voronianski">@voronianski</a> were completely tired. No doubt, it has been quite an exhausting journey, we worked hard last 3 weeks at nights and weekends, so I just came home and fall asleep, just checking that application is still running.</p>
-
-<h2>Unpredictable thing</h2>
-
-<p>Next morning, I found a bunch of emails in my box, maybe 40-50 subscribed. Mostly from my &ldquo;nearest&rdquo; network, after notification in twitter and facebook.</p>
-
-<p>But then, something unpredictable happened &ndash; we&rsquo;ve announced in amazing <a href="http://t.co/4DinPVlcdk">Collective #74</a> issue.</p>
-
-<p>That gave us a lot of traffic and sign-ups. Monday and Tuesday, we had a rush hours then every minute new user sign-up. My phone was ringing all the time, and my email box was full of notifications. People were <a href="https://twitter.com/search?q=likeastore&amp;src=typd">tweeting</a> about, we recieved few request for new service connectors as well.</p>
-
-<p>I have to say, I was really pleased with that. We did something noticeable, something that other people liked.</p>
-
-<h2>First problems</h2>
-
-<p>Real user experience shows real application issues. We had few..</p>
-
-<p>First is that our app failed to work in IE. It appeared that our <em>nginx</em> configuration. Since we are using <a href="https://github.com/progrium/dokku">Dokku</a> for deployment, it have to be fixed there. Thanks to Dokku community, the issue has been resolved rather quickly and fix being <a href="https://github.com/progrium/dokku/commit/33a3b85674e92fe883ba3151dee861f53914718a">pushed</a>.</p>
-
-<p>Another thing, that was not possible to see without some <em>real</em> data &ndash; stackoverflow OAuth token is very short living.. So, if you enabled stackoverlow connector, next day it fail to collect the data, since token in not valid any more. Unfortunately, there is no way to workaround this issue automatically, only ask user to re-enable the network.</p>
-
-<p>We had several outages of data collection caused be bugs not noticed on staging. Also, to improve <em>initial collecting velocity</em>, we run 2 instances of collector in parallel. That worked, so just subscribed users are served fast, but it&rsquo;s not ideal yet.</p>
-
-<h2>What&rsquo;s coming?</h2>
-
-<p>The last week was really motivating. We are continue to improve the service and expecting new users to come.</p>
-
-<p>Through the next month we&rsquo;ll be focusing on:</p>
-
-<ul>
-<li><strong>Facebook connector</strong> &ndash; the top most requested connector to be implemented.</li>
-<li><strong>Likes indexing</strong> &ndash; currenly implemented search is very simple, just to show the idea, what is really needed is to perform the search based in likes content.</li>
-<li><strong>UI improvements</strong> &ndash; we are still improving the design of application, to make it attractive and unique.</li>
-<li><strong>Performance</strong> &ndash; our core component <a href="https://github.com/likeastore/collector">collector</a> will be deployed on dedicated core 2 machine and re-written to be easily scaled.</li>
-<li><strong>CDN</strong> &ndash; currently all static resources are handled by node.js, which is terrible slow, will move all our stuff to Amazon CloudFront.</li>
-</ul>
-
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="New Candidate Overview Sep 5th, 2012 Candidate It&#8217;s been a almost a month how I started to re-implement my continues delivery application - &hellip;">
+  <meta name="description" content="Why Use Backbone.js? Sep 7th, 2012 Backbone.js, JavaScript Even JavaScript language and front-end development has been much matured recent time, I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,68 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/09/why-use-backbonejs.html">
+    
+      Why Use Backbone.js?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-07T18:30:00+03:00" pubdate data-updated="true">Sep 7<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Even JavaScript language and front-end development has been much matured recent time, I still see a lot of confusion about usage of different frameworks and libraries.<br />
+    </p>    <p>        For a half of year I use Backbone.js and feel much satisfied with it. It&#8217;s very popular library, probably because of personal popularity of the creator of Backbone.js <a href="http://en.twitter.com/jashkenas">Jeremy Ashkenas</a>, very much known also as author of CoffeScript language.<br />
+    </p>    <h2>Frameworks and libraries</h2>    <p>        There are differences between frameworks and libraries. In one sentence, &#8220;library is then you call some code, framework is then your code is called from somewhere&#8221;. The Backbone.js is clearly library. You usually have a lot of different options with libraries and less with frameworks. It&#8217;s very minimalistic, actually.<br />
+    </p>    <p>        At core it only contains of only 4 components (Model, Collection, View, Router). This minimalism is both power and weak side of Backbone.js. The power is that you can build things whatever you like, Backbone fits the experience really smoothly. In the same time, you are really confused the time you just started, since you simply don&#8217;t understand how to make everything work together properly.<br />
+    </p>    <h2>The essence of Backbone.js</h2>    <p>        In one of the podcasts with Jeremy, he said &#8220;Backbone is something that almost every developer will come to theirselves.. dealing with JavaScript applications for a while&#8221;. I could not agree more. If you have previous experience in programming and you see the value of architecture and design, you will definitely start to invent something similar to Backbone.<br />
+    </p>    <p>        After some time spend of development jQuery based application you will realize many fundamental issues, like: data does not belong to DOM, events are not limited on jQuery and so on. But the main issue is jQuery apps usually violates the &#8220;Single Responsibility Principle&#8221;, mixing and manipulation with data and views in the same time. Experienced developers, tries to eliminate SRP issues as soon as possible, almost naturally coming to MVC pattern.<br />
+    </p>    <p>        In essence the Backbone is a way to structure you application better. It makes clear de-coupling between data and views that render that data. It&#8217;s nothing more than that.<br />
+    </p>    <h2>Abstracting things out</h2>    <p>        Programming is a matter of abstractions. As better abstractions you have as better code you have. <br />
+    </p>    <p>        Every application works with data. The data does not appear in browser just like that, it have to fetched from somewhere. It&#8217;s also have to be persisted somewhere. The data could be changed and you have to validate that change is right. If some part of data is changing, you want to be notified on that change. Notice that, this is a very common functionality you want to keep between all data classes - initialization, validation, persistence. This is where the <code>Backbone.Model</code> comes out. With <code>Backbone.Model</code> all that things are already &#8220;in the box&#8221; you just need to apply your own strategies of implementation.<br />
+    </p>    <p>        You typically don&#8217;t deal with one instance of model. REST interfaces are usually expose something like <code>/api/tasks</code> or <code>/api/photos</code> and so on. You need to group the models into collections. Collection (similar to model) are able fetch and persist itself, all it needs to know is the actual type of Model and URL. This is where <code>Backbone.Collection</code> shies. You are keeping all models close together, if some model become destroyed the collection will be updated, so it always in consistent state.<br />
+    </p>    <p>        With view is basically render your models as DOM structure. So, the <code>Backbone.View</code> is abstraction with primarily method - <code>render</code>. Backbone does not say, how exactly you are going to do that. You can create handcrafted HTML and append it DOM, or use some templating mechanisms. Instead, it provides you convenient methods for listening to view events (like clicks, focusout or any other DOM supported events). Inside the handlers you either could update related model or apply some changes to view parts, whatever.<br />
+    </p>    <p>        And finally <code>Backbone.Router</code> is a facility to building, so called Single Page Applications (SPA). SPA&#8217;s most popular example is GMail. You browsing emails, writing and sending - without and page reloads. What&#8217;s changing is only hash part of URL (like #inbox, #sent, #all). Router is handling hash change events and triggers registered handler. Inside the handler, you can initialize the corresponding application.<br />
+    </p>    <h2>Don&#8217;t repeat yourself</h2>    <p>        Now, please let me know. How many times did you create (read copy-n-paste) the code for RESTful data persistence? How many times, you did you create code for validation? How many hours you spend for looking for some event listener provoking the bug in your app and hiding somewhere among 200 .js files?<br />
+    </p>    <p>        If your answer, more that 2 - stop doing that. Don&#8217;t repeat yourself - reuse. And better - reuse from best.<br />
+    </p>    <h2>Conclusions</h2>    <p>        There are great solutions, created by people experienced than me, amplified by huge community behind. <a href="https://github.com/documentcloud/backbone">Backbone.js</a> is one best representatives of such solutions. Having a something that I could rely on, that works good and there <a href="http://stackoverflow.com/questions/tagged/backbone.js">places</a> to get help is very strong reason for me, to keep doing that, instead of re-invent wheel yet another time.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -797,132 +859,6 @@
 </p><p>    JavaScript is difficult language and Node.js is new platform that requires respect and time to learn. Node.js is probably one of the best <a href="http://nodejs.org/api/">documented</a> projects I ever worked with. Besides, it&#8217;s open source. It means you can learn from sources. I haven&#8217;t dig inside Node.js code itself, but I did look inside the Express.js then I had an issue and I found the answer as I see how particular method works.<br />
 </p><p>    Even though, Backbone.js code and Node.js code are completely different stuff, having the same language both front-end and back-end is great thing. In particular it minimizes the language context-switching then you do coding. It&#8217;s possible to apply similar patterns and practices both ends.<br />
 </p><h2>Conclusions</h2><p>    Being a JavaScript developer works good for me so far. I opened just entire new world and would like to explore it more. I hope JavaScript would be my comfort zone some day.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/06/starting-up-nodejs-development-on.html">
-    
-      Starting Up Node.js Development on Windows</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-27T20:40:00+03:00" pubdate data-updated="true">Jun 27<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/nodejs/'>NodeJs</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
-</p><p>    If you are .NET developer addicted to Visual Studio, you might feel a little frustration about joining new camp. Primarily, because of lacking proper development environment. This is not quite true. You can setup very solid development environment for Node.js on Windows box.<br />
-</p><h2>Installing node.js</h2><p>    Node.js is nothing more as node.exe file. It&#8217;s very easy to install with latest installer available on <a href="http://nodejs.org">nodejs.org</a> web site. <br />
-</p><p>    Installing the software is always a little mess. You have to download, un-package, run.. go different wizards - it&#8217;s boring! Do you remember how you life changed after NuGet release? What if say, you can do exactly the same thing, but instead of installing .NET packages, you can install software. This is possible by brilliant project called <a href="http://chocolatey.org/">Chocolatey</a>.<br />
-</p><p>    After <a href="http://chocolatey.org/">Chocolatey</a> is setup, you can easily install any <a href="http://chocolatey.org/packages">package</a> you like, including one for <a href="http://chocolatey.org/packages/nodejs">node.js</a>. <br />
-</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            c:&gt; cinst nodejs<br />
-        </p>    </div></div><p>    Nice and easy.<br />
-</p><h2>Trying things out</h2><p>    As Chocolatey installed node, it should be available in your PATH. So, fire up new cmd window and put &#8216;node&#8217; in command line. node.exe acts as javascript interpreter, so you can directly put some code in console. Here is simple example of Fibonacci number&#8217;s calculation in node.<br />
-</p><a href="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png"><br />
-    <img src="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png" alt="node.js command line"/><br />
-</a><br />
-<p>    Instead of typing the code into interpreter console, you can save it to local file &#8216;fib.js&#8217; and run it with node.<br />
-</p><a href="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png"><br />
-    <img src="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png" alt="node.js command line 2"/><br />
-</a><br />
-<h2>Setting up development environment</h2><p>    Basically all you need with node.js is command line and text editor. Any text editor you like. You just code in you favorite one and then switch to command line to start up application, like &#8216;node app.js&#8217;. <br />
-</p><p>    You can go further this minimalistic setup, thought. I&#8217;ll show the best options I&#8217;ve tried so far.<br />
-</p><h3>Sublime Text 2</h3><p>    <a href="http://www.sublimetext.com/2">Sublime Text 2</a> is a superior development-oriented text editor. Even with plain installation it&#8217;s very useful. Available on many platforms, including Windows makes it really &#8216;must-have&#8217; tool for any developer. <br />
-</p><p>    You can turn Sublime Text 2 into quite powerful node.js IDE with plug called <a href="https://github.com/tanepiper/SublimeText-Nodejs">SublimeText-NodeJs</a>.<br />
-</p><p>    It provides with basic code completion functionality.<br />
-</p><a href="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png"><br />
-    <img src="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png" alt="SublimeText-NodeJs"/><br />
-</a><br />
-<p>    But it also gives you ability to simply run node.js scripts inside the editor and see resulted output.<br />
-</p><a href="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png"><br />
-    <img src="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png" alt="SublimeText-NodeJs"/><br />
-</a><br />
-<p>    Just inside the editor you able to access &#8216;npm&#8217; and &#8216;node&#8217; command line, so it&#8217;s pretty possible to work with project without leaving text Sublime at all. Reality is a little different, thought.<br />
-</p><p>    You can handle pretty big projects inside Sublime. It is able to open folders, providing great file navigation options. Pressing &#8216;Ctrl+P&#8217; will bring navigation console. Start typing the file name and relevant suggestion will appear.<br />
-</p><a href="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png"><br />
-    <img src="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png" alt="SublimeText-NodeJs"/><br />
-</a><br />
-<p>    As well, you can easily navigate inside javascript file, by functions or object properties. Press &#8216;Ctrl+P&#8217; after put &#8216;@&#8217; sign and type function name.<br />
-</p><a href="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png"><br />
-    <img src="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png" alt="SublimeText-NodeJs"/><br />
-</a><br />
-<h3>JetBrains Web Storm</h3><p>    JetBrains produces great <a href="http://www.jetbrains.com/products.html">products</a> including <a href="http://www.jetbrains.com/webstorm/index.html">Web Storm</a>. Web Storm is full feature IDE from a world-class vendor. Being HTML/CSS/JS editor, it could be easily adopted for Node.js development. <br />
-</p><a href="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png"><br />
-    <img src="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png" alt="JetBrains WebStorm - nodejs"/><br />
-</a><br />
-<p>    With a WebStorm you just create a new project, place javascript files inside and configure IDE to run Node.js configuration. You have ready to use presets, including one for node.<br />
-</p><a href="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png"><br />
-    <img src="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png" alt="JetBrains WebStorm - nodejs"/><br />
-</a><br />
-<p>    As you start to work with any Node.js internal modules (as http, fs etc.) WebStorm would propose to download sources and index them to be able to produce IntelliSence-like suggestions. I was really happy to see how fast and precise it works.<br />
-</p><a href="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png"><br />
-    <img src="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png" alt="JetBrains WebStorm - nodejs"/><br />
-</a><br />
-<p>    Besides of that, you are getting all JetBrains IDE&#8217;s goodness - Refactoring, Integration with VCS, Code Formatting, Navigation etc. But the most sweet feature as for me is - Debugging. Just place the break point in the line you want to halt and press &#8216;Debug&#8217; button.<br />
-</p><a href="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png"><br />
-    <img src="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
-</a><br />
-<p>   App would run and debugger will stop on breakpoint, showing current Frames, Local or Watched variables. <br />
-</p><a href="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png"><br />
-    <img src="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
-</a><br />
-<h3>Microsoft Web Matrix 2</h3><p>    New kid in the block of Node.js development on Windows is <a href="http://jbeckwith.com/2012/06/07/node-js-meet-webmatrix-2/">Web Matrix 2</a>, currently beta version.<br />
-</p><a href="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png"><br />
-    <img src="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png" alt="Welcome to Web Matrix 2"/><br />
-</a><br />
-<p>    Web Matrix 2 is a lightweight IDE suitable for ASP.NET, PHP, HTML development. It&#8217;s easy to install it by Web Installer. As soon as it&#8217;s installed, you can pretty nice templates for Node.js applications.<br />
-</p><a href="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png"><br />
-    <img src="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png" alt="Welcome to Web Matrix 2"/><br />
-</a><br />
-<p>    Web Matrix works differently. As Sublime and WebStorm depend on &#8216;node.exe&#8217; and work directly with it, Web Matrix uses another component, called <a href="https://github.com/tjanczuk/iisnode/">iisnode</a>. IISNode is a host of node.js on IIS web server. This approach of course brings a lot of <a href="https://github.com/tjanczuk/iisnode/wiki">benefits</a>, but in the same way it might give you some limitations of IIS itself. Web Matrix comes with IIS Express web server, which is perfect for web development. One very obvious benefit of using &#8216;iisnode&#8217; is that you no longer need to restart &#8216;node.exe&#8217; process manually, as you changing sources.<br />
-</p><p>    But let&#8217;s go back to IDE itself. As for IntelliSence it much more worse that WebStorm and even Sublime, I would say. It works really strange, for instance knowing nothing about embedded node components. <br />
-</p><a href="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png"><br />
-    <img src="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png" alt="Welcome to Web Matrix 2"/><br />
-</a><br />
-<p>    No internal debugger, no refactoring tools. The code editor is more than good enough. Almost the same user experience as Visual Studio. <br />
-</p><p>    Besides of the code editor, you create databases and different report for sites.<br />
-</p><a href="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png"><br />
-    <img src="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png" alt="Welcome to Web Matrix 2"/><br />
-</a><br />
-<h2>Conclusions</h2><p>    Even with plugins, Sublime Text 2 still more text editor than IDE. Definitely, more than good enough text editor, but still. I personally using it. First of all, because I like.. second, because I would like to be closer to &#8216;node.exe&#8217; at least at the period I&#8217;m learning the platform. Available as unlimited trial for now, makes it really attractive.<br />
-</p><p>    WebStorm, no doubt is the most valuable player now. It works great, even If I heard some rumors that it sucks a little on Linux. This should be the choice for professional development. It costs money.<br />
-</p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It&#8217;s much more closer to Microsoft technologies, like IIS, Azure etc.<br />
-</p><p>    So, what to pick up you might ask?<br />
-</p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
 </p></div>
 
       
