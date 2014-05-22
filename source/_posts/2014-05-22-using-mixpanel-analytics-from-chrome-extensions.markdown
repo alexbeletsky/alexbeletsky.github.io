@@ -89,7 +89,7 @@ return {
 };
 ```
 
-## Tracking the events
+## Tracking
 
 Once content script injects it's HTML into target page DOM, it's possible to listen to DOM events and call `.track()` function.
 
