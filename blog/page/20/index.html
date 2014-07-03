@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Web development: Lightweight AJAX thought jQuery, JSon.net and HttpHandlers Aug 9th, 2010 AJAX, JavaScript, asp.net If you are about to start using &hellip;">
+  <meta name="description" content="Does TDD find bugs? Aug 23rd, 2010 TDD No, of cause not. TDD doesn&#8217;t find bugs in your application. This is a very frequent misconception &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,73 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/08/does-tdd-find-bugs.html">
+    
+      Does TDD find bugs?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-23T09:36:00+03:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+No, of cause not. TDD doesn&#8217;t find bugs in your application. This is a very frequent misconception about TDD, I would like to shed a light on it today.
+</p>
+<p>
+Why tests do not find bugs? Why applications created with TDD still has bugs?
+</p>
+<p>
+<b>Tests are replication of developers mind</b>. As good as problem understood, as good it could be tested, as good it could be solved. That means that tests and code are very <i>subjective</i>. It all depends on developer. If the requirement is treated wrong, or implemented not completely it will be a bug, even if all tests are passing. If developer is not aware of existing of some problem he won&#8217;t be able to create a corresponding case/fix.     
+</p>
+<p>
+<b>Tests are limited</b>. It is just not possible to test everything. Especially in middle/big size applications. Even having a 100% coverage metrics, does not guarantee that code is 100% tested, it only means that existing test suite runs each line at least ones. There always be a corner cases, that are not really seen during requirements/implementation phase and could appear only on acceptance or maintanance. There are high chances to <i>miss something important</i> during development.  
+</p>
+<p>
+<b>Tests have a quality</b>. We frequently hear term code quality. Code quality is some measure that shows how easy code could be understood, changed. We all know that usage of design patterns, enterprise libraries, refactoring.. all of this aimed to improve code quality. Tests are also code, but easy to read and maintain <i>is not primary test quality factors</i>. Test quality is some measure of <i>how good test code is executing and asserting against production code</i>. Number of asserts is a simplest metric. As soon as tests doesn&#8217;t have any assert in it, tests have no sence.. it useless. Quality highly depends on actual scenario of test, <i>as much smarter scenario is as much quality test is</i>.      
+</p>
+<p>
+<b>Tests are not intelligent</b>. Tests are code, created by developer, proves that functionality created works as expected at the <i>current moment on time</i>. Test suite is something that could produce a snapshot of particular functionality. They become very useful than they are created before code, because it guides through to solve problem and reach the goal, as well as they are useful after the code is created, minifying the risk of regression during any of code changes (fixes, refactoring, new functionality etc.). But test itself could not give any new information.
+</p>
+<p>
+Why TDD is still important, you might ask? Even if TDD still leave a room for bugs, it radically decreases overall number of bugs. First of all because many silly mistakes are being found during creation of tests and first tests runs. Second, that good number of tests creates a kind of bounds that helps to keep existing functionality in it.     
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -734,86 +801,6 @@ So, run your torrent clients and start to download. Torrent file is <a href="htt
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/07/github-social-coding.html">
-    
-      GitHub Social coding</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-12T19:44:00+03:00" pubdate data-updated="true">Jul 12<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/social/'>Social</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-Programming has changed a lot thought last years, for sure. Solving a problem is no longer now, like sitting with a bunch of books or opened MSDN help and Visual Studio, trying a different approaches. It has began with specialized forums where developers shared the problems they met and expecting other developers to help them out. It worked. Maybe because of developers like to help someone by means of computer stuff, even if they could not talk to the person sitting next table. After, developers started to create personal blogs where written a problems and solutions they met every day. Google search helped a lot to get information from blogs.. and to make this information be helpful. So now, a term &#8220;solving a problem&#8221; turns to &#8220;googling a problem&#8221; and it is very likely that someone with blog, or someone in forum or group has already solved something similar. I hardly could image development now without google.. really.      
-</p>
-<p>
-Web 2.0 bring a new type of communication and collaboration people in internet - social networks. Social networks might be a kind of evolution from forums and groups, but participants of social network has more personality in it (with a rich profile, photos and bio, ratings and so on) and a community around yourself (friends, colleagues, groups etc). If you friend of someone, you are tracking someone&#8217;s activities.. as current status, shared links, new audio or video clips and so on. Social network is so popular now, so I can bet that there no person who uses internet more than several month, who do not have an account in any social network. 
-</p>
-<p>
-Have you ever hear a term &#8220;social coding&#8221;? If you try to google it you definitely be pointed to <a href="http://github.com">http://github.com</a>. GitHub is a social network, for developers. What developers need from social network? They need the same profiles as in common social network, with information, link to blogs etc, but developer is someone who supposed to produce a code and GitHub makes it possible to submit your code, so other people could see it and comment. GitHub is based on Git source control system. It has a lot of differences with more widely used Subversion and I would say Git is more complex and mature than Subversion. You have to spent some effort to switch your mind from Subversion to Git, but it not really hard to do.
-</p>
-<p>
-Within your account you are creating a Repositories. You can have as many open repositories as you like, and you can submit any code you want. Repositories are main artifacts of network. In a Repository it is not only the source files you can store, but also it provides you with issue tracking system, binary storage for builds, wiki pages. That mean that GitHub could be also treated like a open source project management/development site like a <a href="http://code.google.com/intl/uk-UA/">Code</a> from Google or <a href="http://www.codeplex.com/">Codeplex</a> from Microsoft or old good <a href="http://sourceforge.net/">Sourceforge</a>.
-</p>
-<p>
-Like any other networks it gives you ability to follow and be followed by other participants. Following means you are start to track all persons actions in GitHub, like creation of new repositories, commits, forks, code commentaries. You can also watch some particular Repository of someone, so you will track all changes that happens in repository. If you find something interesting and want to participate you can do a fork of repository (analog of branch in svn) commit to you fork and do a pull request to author, so he can review what you did and merge changed to master branch. Of all that is done nicely in GitHub, with a intuitive dashboard and tools. 
-</p>
-<p>
-GitHub is implemented in Ruby on Rails in very popular in Ruby community. It currently hosts <a href="http://github.com/rails">Rails</a>, and lot of other Ruby project. Also, you will find <a href="http://github.com/mirrors/linux-2.6">Linux-2.6 kernel</a> sources of <a href="http://github.com/git/git">git</a> itself.. and <a href="http://github.com/jquery/jquery">jQuery</a> and <a href="http://github.com/repositories">many many more</a>.
-</p> 
-<p>
-GitHub really bring something new into open source development world.
-</p>
-<p>
-How I use GitHub? Ok, first of all - my blog articles are there. I have a special repository to store html, so I commit drafts and as soon as I&#8217;m ready I put html to my blogspot. All code examples and projects I show in my blog is also in GitHub, so if you would like to check the code you are just following the link I give in post and do that. I&#8217;m educating myself in ASP.net/C#/MVC/JavaScript and so on, so now I also put my tests project there.. so they are accessible in any machine with Git. I follow several persons to see what they are doing. My network is tiny yet.. but let&#8217;s see how it goes! 
-</p>
-<p>
-If you liked idea&#8217;s of GitHub, please create your account and let&#8217;s join.
-</p>
-<p>
-See you on network! 
-</p>
-<!-- AddThis Button BEGIN -->
-<div><a expr:addthis:title='data:post.title' expr:addthis:url='data:post.url' class='addthis_button'><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c30246f249329c8"></script></div>
-<!-- AddThis Button END --></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -829,7 +816,7 @@ See you on network!
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2013 beletsky.net
+		Copyright © 2010 - 2014 beletsky.net
 	</p>
 </div>
 

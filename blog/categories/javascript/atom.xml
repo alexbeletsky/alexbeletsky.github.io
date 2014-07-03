@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: javascript, | Alexander Beletsky's development blog]]></title>
+  <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-22T12:51:56+03:00</updated>
+  <updated>2014-07-03T16:51:41+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -134,6 +134,857 @@ app.analytics.track('search extension');
 <h2>Conclusions</h2>
 
 <p>I consider Mixpanel HTTP API as very nice substitution of library, in those rare cases when library is not applicable. This would work perfectly if you need simple events tracking. If you interested, feel free to check <a href="https://github.com/likeastore/browser-extension">sources</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testable API's with Node.js]]></title>
+    <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
+    <updated>2014-03-04T15:36:00+02:00</updated>
+    <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
+
+<p>I&rsquo;ve changed my mind on testing with Node.js/Express.js development. For API&rsquo;s I prefer &ldquo;end-to-end&rdquo; testing: setting up user account, authentication, HTTP calls to server, real calls to DB and serving JSON payload back. API&rsquo;s have to be tested from consumer point of few to be able to give some meaningful results.</p>
+
+<!-- MORE -->
+
+
+<h2>Tools and Frameworks</h2>
+
+<p>Pretty standard setup: <a href="http://visionmedia.github.io/mocha/">mocha</a>, <a href="http://chaijs.com/">chai</a>, <a href="https://github.com/mikeal/request">request</a>.</p>
+
+<p>Mocha is time proven tool for testing Node.js applications, Chai is good enough expectation framework and Request as one best HTTP clients I even worked with.</p>
+
+<h2>Prepare application for testing</h2>
+
+<p>Dependencies above is installed via <code>npm install</code> and should be saved to <code>package.json</code> file (with <code>--save</code> option). Your project structure should have <code>test</code> folder inside, which mocha is using as default to look tests inside. Few files should be added there, current structure I have that works.</p>
+
+<p>```plain
+/test</p>
+
+<pre><code>/specs
+    auth.spec.js
+    ...
+common.js
+mocha.opts
+utils.js
+runMocha.js
+</code></pre>
+
+<p>```</p>
+
+<p><code>/api</code> folder is the one that would contain specifications for you API, <code>mocha.opts</code> &ndash; contains global mocha configuration, <code>common.js</code> is common require file, that all tests are using, <code>utils.js</code> &ndash; test helper that would contain everything you need during testing, <code>runMocha.js</code> utility that would be tests entry point.</p>
+
+<h3>mocha.opts</h3>
+
+<p><code>plain
+--require ./test/common.js
+--reporter spec
+--ui bdd
+--recursive
+--colors
+--timeout 60000
+--slow 300
+</code></p>
+
+<p>Mocha options allow to require some additional javascript file, as well as setting up global Mocha settings as what reporter to use, timeouts etc.</p>
+
+<h3>common.js</h3>
+
+<p><code>js
+global.chai = require('chai');
+global.expect = global.chai.expect;
+</code></p>
+
+<p>To do not require <code>chai</code> in each spec files, it&rsquo;s possible to require it once and place to global scope.</p>
+
+<h3>runMocha.js</h3>
+
+<p>```js
+process.env.NODE_ENV = process.env.NODE_ENV || &lsquo;test&rsquo;;
+process.env.TEST_ENV = process.env.TEST_ENV || &lsquo;test&rsquo;;</p>
+
+<p>var exit = process.exit;
+process.exit = function (code) {</p>
+
+<pre><code>setTimeout(function () {
+    exit();
+}, 200);
+</code></pre>
+
+<p>};</p>
+
+<p>require(&lsquo;../source/server&rsquo;);
+require(&lsquo;../node_modules/mocha/bin/_mocha&rsquo;);
+```</p>
+
+<p>The secret sauce is last 2 lines. Since <code>require</code> is synchronous we first &ldquo;call&rdquo; API server to get up and after that &ldquo;call&rdquo; mocha engine to start testing. So, inside each tests we can do real HTTP calls to real HTTP servers. No mocks.</p>
+
+<h3>package.json</h3>
+
+<p>```js
+// &hellip;
+&ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"test": "node test/runMocha",
+</code></pre>
+
+<p>  },
+// &hellip;
+```</p>
+
+<p>Package file should contain script to call API tests with simple <code>npm test</code> command.</p>
+
+<h2>Test driven API</h2>
+
+<p>Mocha is using BDD (behaviour driven development) approach to testing. Comparing to classical TDD, BDD encourage to write specifications in plain English, which works good especially when you just starting with particular feature.</p>
+
+<p>What I typically do is just writing down specification of API, without any thinking of how to implement it. Give you example of something that I worked with recently.</p>
+
+<p>```js
+var request = require(&lsquo;request&rsquo;);
+var testUtils = require(&lsquo;../utils&rsquo;);</p>
+
+<p>describe(&lsquo;collections.spec.js&rsquo;, function () {</p>
+
+<pre><code>describe('when non authorized', function () {
+    it ('should not be authorized', function () {
+    });
+});
+
+describe('when authorized', function () {
+    describe('when new collection created', function () {
+        describe('public', function () {
+            it('should respond with 201 (created)', function () {
+            });
+
+            it('should create new collection', function () {
+            });
+
+            it('should have user', function () {
+            });
+
+            it('should collection be public', function () {
+            });
+
+            describe('and title is missing', function () {
+                it('should respond with 412 (bad request)', function () {
+                });
+            });
+
+            describe('with description', function () {
+                it('should respond with 201 (created)', function () {
+                });
+
+                it('should create new collection', function () {
+                });
+            });
+        });
+    });
+
+    // etc..
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>This is kind of skeleton I to have before start anything else.</p>
+
+<h3>Unauthorized access</h3>
+
+<p>If your API or part of it requires authorization, I prefer to test it.</p>
+
+<p>```js</p>
+
+<pre><code>var token, user, url, headers, response, results;
+
+beforeEach(function () {
+    url = testUtils.getRootUrl() + '/api/collections';
+});
+
+describe('when non authorized', function () {
+    beforeEach(function (done) {
+        request.get({url: url, json: true}, function (err, resp, body) {
+            response = resp;
+            done(err);
+        });
+    });
+
+    it ('should not be authorized', function () {
+        expect(response.statusCode).to.equal(401);
+    });
+});
+</code></pre>
+
+<p>```</p>
+
+<p><code>testUtils.getRootUrl()</code> returns qualified URL for API, depending on test environment. During development, it&rsquo;s just <code>http://localhost:3000</code> where your <code>server.js</code> started.</p>
+
+<h3>Authorized access</h3>
+
+<p>Authorized access typically requires some kind of <code>access_token</code> sent either by headers or query string. Doesn&rsquo;t matter how, but <code>utils.js</code> must have method that would create new user and obtain access token from API. The actual implementation of such method would depend on your API auth mechanism.</p>
+
+<p>All tests that required authorization access, should have such <code>beforeEach()</code>,</p>
+
+<p>```js
+beforeEach(function (done) {</p>
+
+<pre><code>testUtils.createTestUserAndLoginToApi(function (err, createdUser, accessToken) {
+    token = accessToken;
+    user = createdUser;
+    headers = {'X-Access-Token': accessToken};
+    done(err);
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>After <code>access_token</code> is acquired, it can be used as part of any authorized calls.</p>
+
+<h3>Behavior tests</h3>
+
+<p>Now, everything is ready to test the behavior of API. Nothing fancy here, just act as clients do. Send HTTP requests, receive responses and check HTTP statuses. I&rsquo;ll just post some code, so it would give you direction.</p>
+
+<p>```js
+describe(&lsquo;when new collection created&rsquo;, function () {</p>
+
+<pre><code>describe('public', function () {
+    beforeEach(function () {
+        collection = {title: 'This is test collection', public: true};
+    });
+
+    beforeEach(function (done) {
+        request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+            response = resp;
+            results = body;
+            done(err);
+        });
+    });
+
+    it('should respond with 201 (created)', function () {
+        expect(response.statusCode).to.equal(201);
+    });
+
+    it('should create new collection', function () {
+        expect(results.title).to.be.ok;
+        expect(results._id).to.be.ok;
+    });
+
+    it('should have user', function () {
+        expect(results.user).to.equal(user.email);
+    });
+
+    it('should collection be public', function () {
+        expect(results.public).to.equal(true);
+    });
+
+    describe('and title is missing', function () {
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: {}, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 412 (bad request)', function () {
+            expect(response.statusCode).to.equal(412);
+        });
+    });
+
+    describe('with description', function () {
+        beforeEach(function () {
+            collection = {title: 'This is test collection', description: 'description'};
+        });
+
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 201 (created)', function () {
+            expect(response.statusCode).to.equal(201);
+        });
+
+        it('should create new collection', function () {
+            expect(results.description).to.equal('description');
+        });
+    });
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Conclusions</h2>
+
+<p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
+
+<p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
+    <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
+    <updated>2014-01-18T13:38:00+02:00</updated>
+    <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
+    <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
+
+<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
+
+<!-- More -->
+
+
+<p>To mitigate the issue few <a href="http://stackoverflow.com/questions/1972242/auto-reload-of-files-in-node-js">known solutions</a> exist, common idea is that there is watchdog that keeping eye on <code>node</code> process and if crashed, restarts application again.</p>
+
+<p>Recently I&rsquo;ve used great library by <a href="https://github.com/mafintosh">@mafintosh</a> called <a href="https://github.com/mafintosh/respawn">respawn</a>. I liked it&rsquo;s minimalistic style and decided to try it out.</p>
+
+<p>The bare-bones code is very simple. Without modification of your application, just create file <code>monitor.js</code> with nearly such code:</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);</p>
+
+<p>var monitor = respawn([&lsquo;node&rsquo;, &lsquo;server.js&rsquo;], {</p>
+
+<pre><code>env: {ENV_VAR:'test'}, // set env vars
+cwd: '.',              // set cwd
+maxRestarts:10,        // how many restarts are allowed within 60s
+sleep:1000,            // time to sleep between restarts
+</code></pre>
+
+<p>});</p>
+
+<p>monitor.start(); // spawn and watch
+```</p>
+
+<p><code>monitor</code> will spawn new node process and in case of crash it will be restarted. You can also specify <code>maxRestars</code> (I recommend to do that, if something is really bad it won&rsquo;t be restarted infinitely) and <code>sleep</code> time.</p>
+
+<p>I&rsquo;ve tried that, by implementing <code>/fail</code> end-point in my app, to see that <code>respawn</code> really works.</p>
+
+<p>```js
+app.get(&lsquo;/fail&rsquo;, function (req, res, next) {</p>
+
+<pre><code>setTimeout(function () {
+    var nu = null;
+    nu.access();
+
+    res.send('Hello World');
+}, 1000);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>if I try to hit <code>/fail</code> I&rsquo;ll see no results in browser, but if I go back to <code>/</code> the application is running in normal state.</p>
+
+<p>But simple respawning of application is not complete solution. You need to know what exactly happened to be able to fix issue. <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">Proper logging</a> of your application is essential. I&rsquo;ll show my small setup around <code>respawn</code> that send critical message to <a href="https://logentries.com">Logentries</a>, so all crashes are logged.</p>
+
+<p>```js
+var respawn = require(&lsquo;respawn&rsquo;);
+var util = require(&lsquo;util&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var proc = respawn([&lsquo;node&rsquo;, &lsquo;app.js&rsquo;], {</p>
+
+<pre><code>cwd: '.',
+maxRestarts: 10,
+sleep: 1000,
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;spawn&rsquo;, function () {</p>
+
+<pre><code>util.print('application monitor started...');
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;exit&rsquo;, function (code, signal) {</p>
+
+<pre><code>logger.fatal({msg: 'process exited, code: ' + code + ' signal: ' + signal});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stdout&rsquo;, function (data) {</p>
+
+<pre><code>util.print(data.toString());
+</code></pre>
+
+<p>});</p>
+
+<p>proc.on(&lsquo;stderr&rsquo;, function (data) {</p>
+
+<pre><code>logger.error({msg: 'process error', data: data.toString()});
+</code></pre>
+
+<p>});</p>
+
+<p>proc.start();
+```</p>
+
+<p>(details of logger you can find in this <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">post</a>)</p>
+
+<p>All process output is goes to <code>stdout</code>, which is convinient for development, but in case of <code>stderr</code> or <code>exit</code> everything is logged to cloud and notification to <code>dev-team</code> sent.</p>
+
+<p>It worked really nice, now I&rsquo;m not worry even if something bad happens on production, <code>respawn</code> will make sure that rest of users are not affected. As a developer you can much quicker found bug and push hotfix.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>
+    <link href="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html"/>
+    <updated>2013-11-22T13:51:00+02:00</updated>
+    <id>http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app</id>
+    <content type="html"><![CDATA[<p>So, you are building pure client side application that works against REST API. The client and server are completely decoupled and typically deployed separately of each other.</p>
+
+<p>API&rsquo;s have one or another way of authenticating it&rsquo;s users. It could be some simple flows, like basic authorization or more complex ones as OAuth/OAuth2. But at the very end you have <code>token</code> that placed either as cookie value or HTTP request header parameter. API is then responsible to check the token for validity and if it&rsquo;s not valid respond with 401.</p>
+
+<!-- More -->
+
+
+<h2>Configure the Routes</h2>
+
+<p>First we need to have <code>/login</code> router where user is redirected in case of unauthorized access.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>var app = angular.module(&lsquo;dashboardApp&rsquo;, [</p>
+
+<pre><code>'ngCookies',
+'ngResource',
+'ngSanitize'
+</code></pre>
+
+<p>]);</p>
+
+<p>app.config(function ($routeProvider, $locationProvider, $httpProvider) {</p>
+
+<pre><code>$httpProvider.responseInterceptors.push('httpInterceptor');
+
+$routeProvider
+    .when('/', { templateUrl: 'views/dashboard.html', controller: 'dashboard' })
+    .when('/login', { templateUrl: 'views/auth.html', controller: 'auth' })
+    .otherwise({ redirectTo: '/' });
+
+$locationProvider.html5Mode(true);
+</code></pre>
+
+<p>});</p>
+
+<p>app.run(function (api) {</p>
+
+<pre><code>api.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Authentication Controller and View</h2>
+
+<p>The authentication controller is simple module. It&rsquo;s responsible for sending user credentials to server and handle the response. If server authenticates user, it would return the value of access token in <code>.token</code> attribute. Otherwise, user have to be notified that something went wrong.</p>
+
+<p>Btw, in <a href="https://github.com/likeastore/seismo-dashboard">likeastore/seismo-dashboard</a> I&rsquo;ve tried to use the model based on <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">GitHub personal tokens</a> instead of passwords, that simplifies server a bit allowing it to do not store and sessions, hashed passwords etc. If you interested, take a look at <a href="https://github.com/likeastore/seismo/blob/master/source/server.js#L40">likeastore/seismo/source/server.js</a>.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).controller(&lsquo;auth&rsquo;, function ($scope, $location, $cookieStore, authorization, api) {</p>
+
+<pre><code>$scope.title = 'Likeastore. Analytics';
+
+$scope.login = function () {
+    var credentials = {
+        username: this.username,
+        token: this.token
+    };
+
+    var success = function (data) {
+        var token = data.token;
+
+        api.init(token);
+
+        $cookieStore.put('token', token);
+        $location.path('/');
+    };
+
+    var error = function () {
+        // TODO: apply user notification here..
+    };
+
+    authorization.login(credentials).success(success).error(error);
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<p>As you can see, it just delegates the call to <code>authorizationn</code> service, which is very simple wrap of <code>$http</code>.</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;authorization&rsquo;, function ($http, config) {</p>
+
+<pre><code>var url = config.analytics.url;
+
+return {
+    login: function (credentials) {
+        return $http.post(url + '/auth', credentials);
+    }
+};
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>Ones server responds with success, controller will place the token to cookie.</p>
+
+<p>The view is just a <code>form</code> with binded <code>ng-submit</code> event to call <code>auth.login()</code> function of controller.</p>
+
+<p>```html</p>
+
+<div class="login-panel">
+    <h1>Welcome to Analytics.</h1>
+    <p>We are using GitHub for authorization. Please obtain your personal token and use it to sign in.</p>
+    <form class="pure-form" ng-submit="login()">
+        <input type="password" class="pure-input-1-3" placeholder="Personal Token..." name="token" ng-model="token" required/>
+
+        <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+    </form>
+</div>
+
+
+<p>```</p>
+
+<h2>HTTP Interceptor</h2>
+
+<p>In case of any API call returns <code>401</code> we have to redirect user to login page. Angular&rsquo;s HTTP interceptor is great for that job. As you can see from <code>app.js</code> above, it&rsquo;s been pushed to pipe here:</p>
+
+<p><code>js
+$httpProvider.responseInterceptors.push('httpInterceptor');
+</code></p>
+
+<p>The interceptor implementation itself,</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;httpInterceptor&rsquo;, function httpInterceptor ($q, $window, $location) {</p>
+
+<pre><code>return function (promise) {
+    var success = function (response) {
+        return response;
+    };
+
+    var error = function (response) {
+        if (response.status === 401) {
+            $location.url('/login');
+        }
+
+        return $q.reject(response);
+    };
+
+    return promise.then(success, error);
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Placing Token to HTTP Headers</h2>
+
+<p>Finally, we need to supply that token as HTTP header parameter to all API calls that client issues. Again, you might notice in <code>app.js</code> there is an API initialization call.</p>
+
+<p>```js
+app.run(function (api) {</p>
+
+<pre><code>api.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>API initialization services looks like that,</p>
+
+<p>```js
+&lsquo;use strict&rsquo;;</p>
+
+<p>angular.module(&lsquo;dashboardApp&rsquo;).factory(&lsquo;api&rsquo;, function ($http, $cookies) {</p>
+
+<pre><code>return {
+    init: function (token) {
+        $http.defaults.headers.common['X-Access-Token'] = token || $cookies.token;
+    }
+};
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>This authentication model is very easy to integrate into any existing apps and just keep in mind while creating new ones.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
+    <link href="http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js.html"/>
+    <updated>2013-11-01T11:36:00+02:00</updated>
+    <id>http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js</id>
+    <content type="html"><![CDATA[<p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
+
+<p>There was a few difficulties with that.</p>
+
+<!-- More -->
+
+
+<h2>Why to use Require.js with Angular.js?</h2>
+
+<p>Some people argue about rationality of using Require and Angular together. Indeed, Angular has it&rsquo;s own module system, dependency resolve system etc. I agree with that, but still my point is: Require.js comes with very handy add-on, called <code>r.js</code> &ndash; it&rsquo;s code minimizer and optimizer.</p>
+
+<p>Having <code>grunt</code> build system (which is de-facto standard for JS applications) you can easily integrate with your deployment scenarios.</p>
+
+<h2>Project organization</h2>
+
+<p>Before deep dive, I want to share you some simple ideas of client side code organization that I think makes sense:</p>
+
+<p>```plain</p>
+
+<pre><code>    /
+    + - build
+    |
+    + - components
+    |
+    + - js
+        |
+        + - controllers
+        |
+        + - directives
+        |
+        + - services
+        |
+        + - app.js
+            |
+            main.js
+            |
+            config.js
+</code></pre>
+
+<p>```</p>
+
+<ul>
+<li><strong>build</strong> &ndash; results of build .js and .css is placed here (these files are used in production).</li>
+<li><strong>components</strong> &ndash; bower components are configured to be placed in this folder.</li>
+<li><strong>js</strong> &ndash; source code of application, divided to <code>contollers</code>, <code>directives</code> and <code>services</code>.</li>
+</ul>
+
+
+<h3>main.js</h3>
+
+<p>Require.js main file, that contains configuration and main entry.</p>
+
+<p>```js
+require.config({</p>
+
+<pre><code>paths: {
+    'angular' : '../components/angular/angular',
+    'ngResource': '../components/angular-resource/angular-resource',
+    'ngCookies': '../components/angular-cookies/angular-cookies',
+    'ngProgressLite': '../components/ngprogress-lite/ngprogress-lite'
+},
+shim: {
+    ngResource: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    ngCookies: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    ngProgress: {
+        deps: ['angular'],
+        exports: 'angular'
+    },
+    angular: {
+        exports : 'angular'
+    }
+},
+baseUrl: '/js'
+</code></pre>
+
+<p>});</p>
+
+<p>require([&lsquo;app&rsquo;], function (app) {</p>
+
+<pre><code>app.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<h3>app.js</h3>
+
+<p>Instance of application, where all Angular.js bootstraping taking place.</p>
+
+<p>```js
+define(function (require) {</p>
+
+<pre><code>'use strict';
+
+var angular = require('angular');
+var services = require('./services/services');
+var controllers = require('./controllers/controllers');
+var directives = require('./directives/directives');
+
+var app = angular.module('likeastore', ['services', 'controllers', 'directives']);
+
+app.init = function () {
+    angular.bootstrap(document, ['likeastore']);
+};
+
+app.config(['$routeProvider', '$locationProvider', '$httpProvider',
+    function ($routeProvider, $locationProvider, $httpProvider) {
+        $httpProvider.responseInterceptors.push('httpInterceptor');
+
+        $routeProvider
+            .when('/', { templateUrl: 'partials/dashboard', controller: 'dashboardController' })
+            .when('/inbox', { templateUrl: 'partials/dashboard', controller: 'dashboardController' })
+            .when('/facebook', { templateUrl: 'partials/dashboard', controller: 'facebookController' })
+            .when('/github', { templateUrl: 'partials/dashboard', controller: 'githubController' })
+            .when('/twitter', { templateUrl: 'partials/dashboard', controller: 'twitterController' })
+            .when('/stackoverflow', { templateUrl: 'partials/dashboard', controller: 'stackoverflowController' })
+            .when('/search', { templateUrl: 'partials/dashboard', controller: 'searchController' })
+            .when('/settings', { templateUrl: 'partials/settings', controller: 'settingsController' })
+            .when('/ooops', { templateUrl: 'partials/dashboard', controller: 'errorController' })
+            .otherwise({ redirectTo: '/' });
+
+        $locationProvider.html5Mode(true);
+    }
+]);
+
+app.run(function ($window, auth, user) {
+    auth.setAuthorizationHeaders();
+    user.initialize();
+});
+
+return app;
+</code></pre>
+
+<p>});
+```</p>
+
+<h3>config.js</h3>
+
+<p>Configuration object that contains application settings, like <code>itemsPerPage</code>, <code>logoutTimeout</code> etc.</p>
+
+<p>```js
+define(function (require) {</p>
+
+<pre><code>'use strict';
+
+return {
+    dashboard: {
+        limit: 30
+    }
+};
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Master HTML</h2>
+
+<p>The first noticable difference is the way master HTML file is organized. You are no longer define application with directive <code>&lt;html lang="en" ng-app&gt;</code>, but instead using manual <em>booting</em> of application.</p>
+
+<p>```html
+&lt;!doctype html>
+<html>
+<head></p>
+
+<pre><code>&lt;meta charset="utf-8"&gt;
+</code></pre>
+
+<p></head>
+<body></p>
+
+<pre><code>&lt;div class="main-viewer" ng-view&gt;&lt;/div&gt;
+
+&lt;script type="text/javascript" src="http://beletsky.net/components/requirejs/require.js" data-main="/js/main.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p></body>
+</html>
+```</p>
+
+<h2>Booting application</h2>
+
+<p>Once master HTML is loaded, Require.js will execute <code>main.js</code> file. This is were the action should be taken to bootstrap Angular.js application.</p>
+
+<p>Take a look at <code>main.js</code> file from above, here we start application bootstrapping:</p>
+
+<p>```js
+require([&lsquo;app&rsquo;], function (app) {</p>
+
+<pre><code>app.init();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>The <code>init()</code> function of application,</p>
+
+<p>```js
+var app = angular.module(&lsquo;likeastore&rsquo;, [&lsquo;services&rsquo;, &lsquo;controllers&rsquo;, &lsquo;directives&rsquo;]);</p>
+
+<p>app.init = function () {</p>
+
+<pre><code>angular.bootstrap(document, ['likeastore']);
+</code></pre>
+
+<p>};
+```</p>
+
+<p>By doing this, you should be able to start the application and make sure that all modules, controllers and directives are loaded without any issues.</p>
+
+<h2>Build configuration</h2>
+
+<p>Next tricky part is to configure application for production. There is a great <a href="http://tech.pro/blog/1639/using-rjs-to-optimize-your-requirejs-project">blog post</a> of using <code>r.js</code> to optimize the project.</p>
+
+<p>In short, you need to add <a href="https://github.com/gruntjs/grunt-contrib-requirejs">grunt-contrib-requirejs</a> grunt task and configure it.</p>
+
+<p>The problem with Angular.js optimization is that it using dependency injection mechanism, which resolves the services to inject by it&rsquo;s name. If optimizer would change the name of function parameters, when application would not work. Fortunately, there is workaround for that.</p>
+
+<p>```js
+requirejs: {</p>
+
+<pre><code>js: {
+    options: {
+        uglify2: {
+            mangle: false
+        },
+        baseUrl: "public/js",
+        mainConfigFile: "public/js/main.js",
+        name: 'main',
+        out: "public/build/main.js",
+        optimize: 'uglify2'
+    }
+}
+</code></pre>
+
+<p>},
+```</p>
+
+<p>You have to use <code>uglify2</code> optimizer, that has an option <a href="https://github.com/mishoo/UglifyJS2#mangler-options">mangle</a> that have to set to <code>false</code>. In this case, <code>uglify2</code> will do full optimization and minification of javascript code, without ruing functions parameters names, with is vital for Angular.js.</p>
 ]]></content>
   </entry>
   

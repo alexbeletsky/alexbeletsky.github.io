@@ -4,7 +4,7 @@
   <title><![CDATA[Category: likeastore | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/likeastore/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-05-22T12:51:56+03:00</updated>
+  <updated>2014-07-03T16:51:41+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
+    <link href="http://beletsky.net/2014/07/working-on-startup.html"/>
+    <updated>2014-07-03T10:41:00+03:00</updated>
+    <id>http://beletsky.net/2014/07/working-on-startup</id>
+    <content type="html"><![CDATA[<p>Last year, July 2013 public version of Likeastore been <a href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html">released</a>. It gave momentum to change the mind, went out of comfort zone, reconsider priorities and literally change my life. Earlier I <a href="http://beletsky.net/2014/03/from-side-project-to-start.html">blogged</a> about transformation of Likeastore from side project to startup.</p>
+
+<p>Today, I want to share some info on where are we now and lessons I learned so far.</p>
+
+<!-- MORE -->
+
+
+<h2>Focus on search</h2>
+
+<p>One of the most significant <a href="http://www.amazon.com/The-Startup-Owners-Manual-Step-By-Step/dp/0984999302">books</a> on startups, defines startup as temporary organization aims to find sustainable business idea. It&rsquo;s not about coding, testing or anything related to development. It&rsquo;s all about the search.</p>
+
+<p>The biggest mistake of Likeastore, we never did any kind of search before the project started. It was a cool idea that made sense to me and I wanted to make it happen. Development is very expensive process. It&rsquo;s not possible to do good looking and well functioning product without long hours of work. And we worked hard.</p>
+
+<p>Many times I heard opinion <em>&ldquo;work smarter, not harder&rdquo;</em>. That principle transformed to something we know now as <a href="http://theleanstartup.com/">Lean Startup</a>, that basically says <em>&ldquo;do as less as possible before your idea is validated&rdquo;</em>. The only way to validate it is to show it to people and talk to that people after. There is no truth inside the organization, founders might have vision but that vision could be wrong.</p>
+
+<p>Engaging with users, processing the feedback and correction of idea is something that called is Customer Development. Customer Development is vital part of search. Unfortunately, we never accomplish any kind of customer development and currently we suffer that. &ldquo;Likeastore is so cool idea&rdquo; &ndash; we still receiving that kind of emails from our users, that stays for 3 weeks and then slipping away.</p>
+
+<p>Working smarter is hard. For me, that&rsquo;s completely different set of skills and habits. The founder is the one who is able to tweak himself for new conditions and focus on search.</p>
+
+<h2>Coding is easy part</h2>
+
+<p>Being the programmer and spent over 10 years in software development I was sure that I&rsquo;m doing the most complex part of work. All those business guys, product owners and so on, seemed to be auxiliary people, sometimes ones who are just interfere the work.</p>
+
+<p>Working in the company, together with business people, your area of responsibility is primarily the code. But at the end of the day, you don&rsquo;t know what&rsquo;s happening after deployment. How customers work with your code, are they happy.. are they ready to pay the money? Business people care about it and plan on what exactly need to be done further. You turning their ideas into code and get salary not because your code is good, but because business works.</p>
+
+<p>Working in startup is different. No more product owner who says what to do next. You are the product owner. And generating ideas is hard. Talking to customers is hard. Search of product/market fit is hard.</p>
+
+<p>Being able to sit and spend 10 hours for programming is fun for me, but it turned out it&rsquo;s the most easiest part of journey.</p>
+
+<h2>Measure everything</h2>
+
+<p>The code is deployed, some traffic lead to site &ndash; now what? In Likeastore we were blind for quite long time without good understanding of what actually happening inside the application.</p>
+
+<p>The truth is, without data it&rsquo;s not possible to make decisions. We are now utilize <a href="http://mixpanel.com">Mixpanel</a>, <a href="http://www.google.com/analytics/">Google Analytics</a>, <a href="https://github.com/seismolabs/seismo">Seismo</a> custom dashboards etc. in order to understand what&rsquo;s works or not.</p>
+
+<p><em>Build, Measure, Learn</em> &ndash; the mantra of Lean Startup. What we focused on previously is <em>Build</em> part only and that&rsquo;s not right. Startup is ability to make educated guesses, guesses should be based on learnings, learnings are based on measurements.</p>
+
+<p>We are at very stage, but now working hard to create good framework for analytics and measurements.</p>
+
+<h2>Build your own culture</h2>
+
+<p>Even if your are very small, culture plays major role. At the early stage you affect the culture, later stages culture affects you. At Likeastore, we care about marketing and development culture much.</p>
+
+<p>Being based on <a href="http://beletsky.net/2013/12/open-source.html">open source</a> we try to contribute back to open source. I&rsquo;m really happy with our <a href="https://github.com/likeastore">github</a> profile and only predict it&rsquo;s going to grow. We try to open source as much as possible, sometimes even solutions that quite specific to Likeastore.</p>
+
+<p>Our later obsession with metrics and numbers will be part of culture as well. As founder you should see where you want to be in 2-3 years, not only in terms of product, but the way other people know about the company. For me, saying &ldquo;I work on Likeastore&rdquo; means a lot and I want it mean a lot for everyone works here.</p>
+
+<h2>Listen what they say</h2>
+
+<p>It&rsquo;s a common practice for business accelerators accepts teams with at least 2-3 founders. I didn&rsquo;t really understand why.</p>
+
+<p>There are few things here. First of all, if you are not able to inspire at least one person with your idea it&rsquo;s likely going to fail. Second, founders should complement each others skills. There are <a href="http://www.marsdd.com/news-and-insights/hacker-hustler-and-designer-building-the-tech-team/">rule of 3</a> that ideal startup team should consists of hacker, hustler, designer.</p>
+
+<p>But there is more important aspect. Founders have to talk all the time, brainstorm and share ideas, discuss competitors etc. You need at least 2 people for discussion. More importantly, you should be able to share your idea with other people. Once we&rsquo;ve <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">joined</a> business accelerator, first advice that I received &ndash; &ldquo;talk to other teams, they will help you&rdquo;. I didn&rsquo;t take that advice seriously and I was really wrong. Startups are huge community and you either part of that community or out.</p>
+
+<p>You have to both talk a lot and listen what they say. Co-founders, users, colleagues &ndash; they know something you don&rsquo;t. It doesn&rsquo;t mean you have to do everything they say, but definitely <a href="http://dcurt.is/there-is-no-solution-to-this-problem">listen</a> and analyze.</p>
+
+<p>We are now team of 3 and it feels really good. Each of us have own experience, so we need to combine and make something real out of it. Don&rsquo;t keep secrets, share the stuff. Doesn&rsquo;t matter what exactly your role is, talk to the team, talk to other guys, feel the influence.</p>
+
+<p>Don&rsquo;t close the door of your garage.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
@@ -269,110 +337,6 @@ But what&rsquo;s more important, we&rsquo;ve got a logs full of errors and under
 <h2>Conclusions</h2>
 
 <p>Just current results: 18 hours after, we have 40 users, 62 network connections, 10861 item collected. That&rsquo;s the motivating stuff, so we feel very positive to carry that on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Why We Moved From AppFog to Nodejitsu]]></title>
-    <link href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html"/>
-    <updated>2013-07-19T19:36:00+03:00</updated>
-    <id>http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu</id>
-    <content type="html"><![CDATA[<p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
-
-<p>But very fast we realized that AppFog does not suite us at lot.</p>
-
-<!--More-->
-
-
-<h2>Why to mess up with PaaS?</h2>
-
-<p>If you never tried things like <a href="https://www.heroku.com/">Heroku</a>, <a href="https://www.appfog.com/">AppFog</a>, or <a href="https://appharbor.com/">AppHabor</a> you might have a question, why to pay for something you &ldquo;almost&rdquo; can do your self just by renting VPS.</p>
-
-<p>Renting VPS seems to be nice idea, but the problem is &ndash; you taking to much responsibility to manage the server by your own. You have to have certain skills to configure nginx, git repositories, ssh keys etc. It&rsquo;s possible to do, but it takes a lot time.. time you can spend on code something will be spend to configure something.</p>
-
-<p>Another very important point is deployments. Usually deployments are hard and time consuming, since you have to do them manually. But with PaaS all you have to do to deploy the up is either, <code>git push</code> to some remote repo.. or call a special script like <code>af push app</code>, to do all the magic.</p>
-
-<p>For small companies and side-projects PaaS is a really good opportunity to actually ship something, instead of fail to customize the web server.</p>
-
-<h2>Why AppFog?</h2>
-
-<p>I&rsquo;ve heard about AppFog before from twitter and hacker news. It looked very attractive.</p>
-
-<p>But it was not the only one on the market. So, really competitive feature for me was: 8 running instances, for 20 USD. Very good price. We need 4 at that time, so AppFog was very good choice.</p>
-
-<p>But as always, with time you start to see some negative moments. Something that lead us to finally drop AppFog. I would like to quickly go through good and less good things.</p>
-
-<h2>Dashboard and UI</h2>
-
-<p>AppFog dashboard is quite nicely designed. But sometimes I felt difficulties to just find the things.</p>
-
-<p>I was not happy with performance of dashboard as well. It was really slow for me usually, so you click to check instance state and wait for 30 seconds while the page opens. You can leave with that, but the time comes than you start to hate it.</p>
-
-<h2>AppFog CLI</h2>
-
-<p>To create / run / stop applications on AppFog, you get a special command line utility, called <code>af</code>. It&rsquo;s typically for all PaaS to have some CLI to communicate to it. It&rsquo;s easy to install and configure, everything is nice.</p>
-
-<p>It&rsquo;s written on Ruby, so you won&rsquo;t have any problems on Mac, but Ruby have to installed on Windows machine.</p>
-
-<p>Once it&rsquo;s installed you have to login to you AppFog account and start to deploy.</p>
-
-<h2>Deployment experience</h2>
-
-<p>Even if CLI itself was quite nicely done, deployment experience was not so nice &ndash; it was too slow.</p>
-
-<p>Node.js is deployment-friendly platform. No build steps, no linking, no packaging &ndash; nothing. All you have to do, is to push the sources to remote machine. Sure, PaaS is doing a lot magic behind the scences, like firing new virtual machines and configuring network interfaces etc.</p>
-
-<p>And all that magic for AppFog works too long.</p>
-
-<p>Deployment could took up to 40 seconds, which is fine if you do it once in week. But it bothers you a lot while you do that once in hour.</p>
-
-<h2>Release management</h2>
-
-<p>If your plan is continuous delivery and frequent deployments, you have to be ready for frequent rollbacks as well. Without that feature, you are in trouble.</p>
-
-<p>AppFog does not afford anything like that. Correctly say, you have to do it manually, like tagging sources, then fetching by tag and push again.</p>
-
-<p>That&rsquo;s not big issue, I would say. Nevertheless, developers are too optimistic thinking that everything works great (and indeed in always works fine, on my machine), but the time you see issues on production you just panic and loosing control of what to do.</p>
-
-<h2>Support</h2>
-
-<p>Even if you running tiny bussiness and no one hurt if your application is down, still you expect that you&rsquo;ll get help if you are in trouble. That&rsquo;s the whole idea of support, especially if you pay money for it.</p>
-
-<p>AppFog support is not good. Few times my tickets were unanswered for 2 days. Then they answered I found the reason or was able to fix it by myself.</p>
-
-<p>This is just makes very bad impression of service. You start to think, it&rsquo;s not so reliable, so the time you&rsquo;ll be really screwed, they won&rsquo;t come help.</p>
-
-<h2>Load balancing and cookies</h2>
-
-<p>So, all mentioned above is something that we would prioritize as &ldquo;cosmetic&rdquo; issues. A bit ugly, but you can leave with it. The real and unexpected problem appeared as we did first announcement and users came to check the application.</p>
-
-<p>We are using <a href="">passport</a> for user authorization, which depends on sessions. Each request contains contains a <code>session_state</code> which being persisted in cookie. The problem was that, on AppFog for some unknown dropped that <code>session_state</code>. So, after user just logged on and clicked somewhere, she was immediately redirected back to login page, as unauthorized.</p>
-
-<p>Absolutely unclear behavior to me.</p>
-
-<p>I definitely know I&rsquo;m not the <a href="https://www.google.com/search?q=appfog+session+lost&amp;oq=appfog+session+lost">only one</a> who was suffering that issue. Supported failed to answer quickly and even on my next request they didn&rsquo;t provide anything constructive.</p>
-
-<p>That was the show-stopper with AppFog.</p>
-
-<h2>.. and now Nodejitsu?</h2>
-
-<p>Meanwhile, I just deployed application to <a href="">Nodejtsu</a> and it worked fine there. I was really happy to see the features I missed with AppFog:</p>
-
-<ul>
-<li>Clear and fast dashboard</li>
-<li>Release management (you can go back and forth with any version you deployed)</li>
-<li>Node.js written CLI and fast deployments</li>
-<li>Good support</li>
-</ul>
-
-
-<p>The time we joined Nodejitsu it costs 33 USD for 3 instances, that didn&rsquo;t match our needs ideally, but we had to embrace the constraints.</p>
-
-<h2>Conclusions</h2>
-
-<p>I know, there is nothing ideal in this world &ndash; but if you have choice, it&rsquo;s fine pick up best (or at least better). I would not say AppFog completely sucks, but it didn&rsquo;t work for me as I was expecting.</p>
-
-<p>PS. While writing this post I&rsquo;ve noticed that AppFog being <a href="https://www.appfog.com/savvis/">acquired</a> by CentruLink. I only wish that it would positively affect service and support, so wish good luck for AppFog.</p>
 ]]></content>
   </entry>
   

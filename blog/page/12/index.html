@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Integrating ASP.NET MVC Into Legacy Web Site Oct 30th, 2011 MVC, Tips, asp.net For some quite long time I naively thought that it is not possible ( &hellip;">
+  <meta name="description" content="Using Ninject.MVC For Better ASP.NET MVC Integration Oct 31st, 2011 MVC, asp.net After the ASP.NET MVC infrastructure is ready, next logical step it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,129 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/10/using-ninjectmvc-for-better-aspnet-mvc.html">
+    
+      Using Ninject.MVC For Better ASP.NET MVC Integration</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-31T16:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>After the ASP.NET MVC infrastructure is <a href="http://www.beletsky.net/2011/10/integrating-aspnet-mvc-into-legacy-web.html">ready</a>, next logical step it to setup IoC container for application. Ninject setup is easy task, usually you solve that by implementation of your own <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">ControllerFactory</a> and put it to <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">ControllerBuilder</a>. As soon it is good enough approach it does not solve some important MVC implications, like injection of prosperities into filters. To make our lives a little easier Ninject team released <a href="https://github.com/ninject/ninject.web.mvc">Ninject.Web.MVC</a> extension library that solves a lot of similar problems.<br />
+</p><h2>Getting binaries</h2><p>Just follow the github to <a href="https://github.com/ninject/ninject.web.mvc/downloads">download</a> latest version of Ninject.Web.MVC and place it to web site <code>/Bin</code> directory. No changes to <code>web.config</code> or something.<br />
+</p><h2>Tweaking global.asax</h2><p>Now, let&#8217;s change <code>global.asax</code> according to Ninject.Web.MVC guidelines. I&#8217;ll just show how my current <code>global.aspx</code> looks like:<br />
+</p><pre class="brush: xml">&lt;%@ Application Language='C#' Inherits=&quot;Ninject.Web.Mvc.NinjectHttpApplication&quot; %&gt;
+&lt;%@ Import Namespace=&quot;Ninject&quot; %&gt;
+
+&lt;script RunAt=&quot;server&quot;&gt;
+ public void Application_Start()
+ {
+
+ }
+
+ protected override void OnApplicationStarted()
+ {
+  AreaRegistration.RegisterAllAreas();
+ }
+ 
+ protected override IKernel CreateKernel()
+ {
+  var kernel = new StandardKernel();
+  Sba.Web.Infrastructure.RegisterServices.For(kernel);
+  
+  return kernel;
+ }
+
+ public void Application_End()
+ {
+ }
+
+ public void Application_Error(object sender, EventArgs args)
+ {
+ }
+&lt;/script&gt;
+</pre><p>So, we basically inherit from <code>NinjectHttpApplication</code> class and override <code>CreateKernel()</code> method. You can see that inside the method I do call to <code>RegisterServices</code> - it is nothing more as static class, with <code>For</code> method that actually do the registration. Here is example:<br />
+</p><pre class="brush: csharp">using Ninject;
+using Ninject.Web.Mvc;
+using Sba.Common.Repositories;
+using Sba.Sales.Models;
+using Sba.Sales.Repositories;
+using Sba.Sales.Repositories.ViewHandlerRepositories;
+
+namespace Sba.Web.Infrastructure
+{
+ public class RegisterServices
+ {
+  public static void For(IKernel kernel)
+  {
+   kernel.Bind&lt;ISessionLoader&gt;().To&lt;LazySessionLoader&gt;();
+   kernel.Bind&lt;ILazyLoadChecker&gt;().To&lt;NHibernateLazyLoadChecker&gt;();
+   kernel.Bind&lt;IDraftInvoicesRepository&gt;().To&lt;DraftInvoicesRepository&gt;();
+   kernel.Bind&lt;IDraftInvoiceLinesRepository&gt;().To&lt;DraftInvoiceLinesRepository&gt;();
+   kernel.Bind&lt;IPaymentTermsRepository&gt;().To&lt;PaymentTermsRepository&gt;();
+   kernel.Bind&lt;IUnitsRepository&gt;().To&lt;UnitsRepository&gt;();
+   kernel.Bind&lt;ICustomersRepository&gt;().To&lt;CustomersRepository&gt;();
+  }
+ }
+}
+</pre><h2>Injection the properties into filters</h2><p>The main advantage of <code>NinjectHttpApplication</code> class usage, that now it handles the injection in different MVC entities by itself. For instance if you need inject to filter:<br />
+</p><pre class="brush: csharp">using System.Web.Mvc;
+using Ninject;
+using Economic2.Core;
+using Sba.Common.Repositories;
+
+namespace Sba.Common.Infrastructure.Filters
+{
+ public class SbaAuthorizeAttribute : AuthorizeAttribute
+ {
+  [Inject]
+  public ISessionLoader SessionLoader { get; set; }
+
+  public override void OnAuthorization(AuthorizationContext filterContext)
+  {
+            // some authorization logic here..
+  }
+ }
+}
+</pre></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -814,153 +937,6 @@ public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/08/inside-aspnet-mvc-iresolver-and-its.html">
-    
-      Inside ASP.NET MVC: IResolver and it&#8217;s implementations</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-27T16:06:00+03:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through &#8216;new&#8217; operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
-</p><pre class="brush:csharp">namespace System.Web.Mvc {
-    internal interface IResolver&lt;T&gt; {
-        T Current { get; }
-    }
-}
-</pre><p>We can just ask the instance of type we would like to resolve. Please also note, that <code>IResolver</code> is internal class, so it is not exposed and you will never use it in application directly.<br />
-</p><p>All major entities of MVC framework (ControllerFactory, Filters, ViewEngines etc.) from now resolved by <code>IResolver</code> implementation class. That improves extensibility of framework very much and introduces new strategy of creation objects.<br />
-</p><h2>Implementations of IResolver interface</h2><p>There are two classes that implements <code>IResolver</code> - <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code>. Primary responsibility of those are delegation call to <code>IDependencyResolver</code> methods <code>GetService</code> and <code>GetServices</code>, respectively.<br />
-</p><p>If they just recalling method of <code>IDependecyResolver</code> class, what&#8217;s are the purpose of those two classes?<br />
-</p><p>There are 2 purposes I can see:<br />
-</p><ol><li>To provide default type instance in case of type is not resolved by <code>IDependencyResolver</code>.</li>
-<li>To create instance only once.</li>
-</ol><h2>How it works?<br />
-</h2><p>Now, let&#8217;s take a look how it actually works. It is really simple and small, so I&#8217;m able to put most of code here. <br />
-</p><p>Construction:<br />
-</p><pre class="brush:csharp">public SingleServiceResolver(Func&lt;TService&gt; currentValueThunk, TService defaultValue, string callerMethodName) {
- if (currentValueThunk == null) {
-  throw new ArgumentNullException(&quot;currentValueThunk&quot;);
- }
- if (defaultValue == null) {
-  throw new ArgumentNullException(&quot;defaultValue&quot;);
- }
-
- _resolverThunk = () =&gt; DependencyResolver.Current;
- _currentValueThunk = currentValueThunk;
- _defaultValue = defaultValue;
- _callerMethodName = callerMethodName;
-}
-</pre><p>You can see, it receives default factory method, default type instance and the name of caller method (used as additional information in exception).<br />
-</p><p>Here, how <code>ControllerBuilder</code> creates the <code>SingleServiceResolver</code>, for instance:<br />
-</p><pre class="brush:csharp">internal ControllerBuilder(IResolver&lt;IControllerFactory&gt; serviceResolver) {
- _serviceResolver = serviceResolver ?? new SingleServiceResolver&lt;IControllerFactory&gt;(
-  () =&gt; _factoryThunk(),
-   new DefaultControllerFactory { ControllerBuilder = this },
-  &quot;ControllerBuilder.GetControllerFactory&quot;
- );
-}
-</pre><p>Since it implements only one property, current <code>Current</code>:<br />
-</p><pre class="brush:csharp">public TService Current {
- get {
-  if (_resolverThunk != null) {
-   lock (_currentValueThunk) {
-    if (_resolverThunk != null) {
-     _currentValueFromResolver = _resolverThunk().GetService&lt;TService&gt;();
-     _resolverThunk = null;
-
-     if (_currentValueFromResolver != null &amp;&amp; _currentValueThunk() != null) {
-      throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, MvcResources.SingleServiceResolver_CannotRegisterTwoInstances, typeof(TService).Name.ToString(), _callerMethodName));
-     }
-    }
-   }
-  }
-  return _currentValueFromResolver ?? _currentValueThunk() ?? _defaultValue;
- }
-}
-</pre><p>First, we check the existence of <code>_resolverThunk</code> it would always exist (having value of <code>() => DependencyResolver.Current</code>) for first call of the method. Then, we locking on <code>_currentValueThunk</code> protecting for multiple threads access the same method, same time. Then, we try to resolve given type by asking <code>_resolverThunk()</code> to <code>GetService&lt;TService&gt;()</code>.<br />
-</p><p>After that we have an if-statement that I didn&#8217;t get from the very beginning. Fortunately, MVC project has bunch of good unit tests. As I found the test it turns clear to me. The test called <code>CurrentThrowsIfCurrentSetThroughServiceAndSetter</code> and it&#8217;s Assert part: <br />
-</p><pre class="brush:csharp">[TestMethod]
-public void CurrentThrowsIfCurrentSetThroughServiceAndSetter() {
- // Arrange
- TestProvider providerFromCurrentValueThunk = new TestProvider();
- TestProvider providerFromServiceLocation = new TestProvider();
- TestProvider providerFromDefaultValue = new TestProvider();
- Mock&lt;IDependencyResolver&gt; resolver = new Mock&lt;IDependencyResolver&gt;();
-
- resolver.Setup(r =&gt; r.GetService(typeof(TestProvider)))
-   .Returns(providerFromServiceLocation);
-
- SingleServiceResolver&lt;TestProvider&gt; singleResolver = new SingleServiceResolver&lt;TestProvider&gt;(() =&gt; providerFromCurrentValueThunk, providerFromDefaultValue, resolver.Object, &quot;TestProvider.Current&quot;);
-
- //Act &amp; assert
- ExceptionHelper.ExpectException&lt;InvalidOperationException&gt;(
-  () =&gt; singleResolver.Current,
-  &quot;An instance of TestProvider was found in the resolver as well as a custom registered provider in TestProvider.Current. Please set only one or the other.&quot;
- );
-}
-</pre><p>This is really <strong>important</strong> and says: you should not create same type instance both with <code>IDependencyResolver</code> and factory method! In case of <code>ControllerFactory</code>: you should never provide your implementation of <code>IControllerFactory</code> and in the same time resolve <code>IControllerFactory</code> instance by <code>IDependencyResolver</code>. Same rule for all other types. You should decide how you would like to override default behavior. In MVC3 usage of <code>IDependencyResolver</code> is a preferable.<br />
-</p><p>The code below is wrong:<br />
-</p><pre class="brush:csharp">DependencyResolver.SetResolver(new DummyDependencyResolver());
-ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
-</pre><p>So, after that <code>_resolverThunk</code> is reset and we no longer ask <code>IDependencyResolver</code>, just returning the resolved value.<br />
-</p><p><code>MultiServiceResolver</code> is even a little simpler. <br />
-</p><pre class="brush:csharp">public IEnumerable&lt;TService&gt; Current {
- get {
-  if (_itemsFromService == null) {
-   lock (_itemsThunk) {
-    if (_itemsFromService == null) {
-     _itemsFromService = _resolverThunk().GetServices&lt;TService&gt;();
-    }
-   }
-  }
-  return _itemsFromService.Concat(_itemsThunk());
- }
-}
-</pre><p>The same, singleton strategy of resolving types and then just concatenating resolved by <code>IDependencyResolver</code> with ones retuned by default factory method. It looks strange, but it is legal here to have types resolved both by <code>IDependencyResolver</code> and factory.<br />
-</p><h2>Conclusions<br />
-</h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never &#8216;mix&#8217; both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
-</p><h2>What&#8217;s next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
-</p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -976,7 +952,7 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2013 beletsky.net
+		Copyright © 2010 - 2014 beletsky.net
 	</p>
 </div>
 

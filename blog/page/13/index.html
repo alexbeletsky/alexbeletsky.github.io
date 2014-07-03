@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="My application for 10KAppart competition Aug 24th, 2011 Applications, Design, GitHub Recently, I&#8217;ve met really interesting competition by @ &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: IResolver and it&#8217;s implementations Aug 27th, 2011 InsideMVC, MVC, asp.net One of the major changes between MVC2 and MVC3 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,153 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/inside-aspnet-mvc-iresolver-and-its.html">
+    
+      Inside ASP.NET MVC: IResolver and it&#8217;s implementations</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T16:06:00+03:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through &#8216;new&#8217; operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    internal interface IResolver&lt;T&gt; {
+        T Current { get; }
+    }
+}
+</pre><p>We can just ask the instance of type we would like to resolve. Please also note, that <code>IResolver</code> is internal class, so it is not exposed and you will never use it in application directly.<br />
+</p><p>All major entities of MVC framework (ControllerFactory, Filters, ViewEngines etc.) from now resolved by <code>IResolver</code> implementation class. That improves extensibility of framework very much and introduces new strategy of creation objects.<br />
+</p><h2>Implementations of IResolver interface</h2><p>There are two classes that implements <code>IResolver</code> - <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code>. Primary responsibility of those are delegation call to <code>IDependencyResolver</code> methods <code>GetService</code> and <code>GetServices</code>, respectively.<br />
+</p><p>If they just recalling method of <code>IDependecyResolver</code> class, what&#8217;s are the purpose of those two classes?<br />
+</p><p>There are 2 purposes I can see:<br />
+</p><ol><li>To provide default type instance in case of type is not resolved by <code>IDependencyResolver</code>.</li>
+<li>To create instance only once.</li>
+</ol><h2>How it works?<br />
+</h2><p>Now, let&#8217;s take a look how it actually works. It is really simple and small, so I&#8217;m able to put most of code here. <br />
+</p><p>Construction:<br />
+</p><pre class="brush:csharp">public SingleServiceResolver(Func&lt;TService&gt; currentValueThunk, TService defaultValue, string callerMethodName) {
+ if (currentValueThunk == null) {
+  throw new ArgumentNullException(&quot;currentValueThunk&quot;);
+ }
+ if (defaultValue == null) {
+  throw new ArgumentNullException(&quot;defaultValue&quot;);
+ }
+
+ _resolverThunk = () =&gt; DependencyResolver.Current;
+ _currentValueThunk = currentValueThunk;
+ _defaultValue = defaultValue;
+ _callerMethodName = callerMethodName;
+}
+</pre><p>You can see, it receives default factory method, default type instance and the name of caller method (used as additional information in exception).<br />
+</p><p>Here, how <code>ControllerBuilder</code> creates the <code>SingleServiceResolver</code>, for instance:<br />
+</p><pre class="brush:csharp">internal ControllerBuilder(IResolver&lt;IControllerFactory&gt; serviceResolver) {
+ _serviceResolver = serviceResolver ?? new SingleServiceResolver&lt;IControllerFactory&gt;(
+  () =&gt; _factoryThunk(),
+   new DefaultControllerFactory { ControllerBuilder = this },
+  &quot;ControllerBuilder.GetControllerFactory&quot;
+ );
+}
+</pre><p>Since it implements only one property, current <code>Current</code>:<br />
+</p><pre class="brush:csharp">public TService Current {
+ get {
+  if (_resolverThunk != null) {
+   lock (_currentValueThunk) {
+    if (_resolverThunk != null) {
+     _currentValueFromResolver = _resolverThunk().GetService&lt;TService&gt;();
+     _resolverThunk = null;
+
+     if (_currentValueFromResolver != null &amp;&amp; _currentValueThunk() != null) {
+      throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, MvcResources.SingleServiceResolver_CannotRegisterTwoInstances, typeof(TService).Name.ToString(), _callerMethodName));
+     }
+    }
+   }
+  }
+  return _currentValueFromResolver ?? _currentValueThunk() ?? _defaultValue;
+ }
+}
+</pre><p>First, we check the existence of <code>_resolverThunk</code> it would always exist (having value of <code>() => DependencyResolver.Current</code>) for first call of the method. Then, we locking on <code>_currentValueThunk</code> protecting for multiple threads access the same method, same time. Then, we try to resolve given type by asking <code>_resolverThunk()</code> to <code>GetService&lt;TService&gt;()</code>.<br />
+</p><p>After that we have an if-statement that I didn&#8217;t get from the very beginning. Fortunately, MVC project has bunch of good unit tests. As I found the test it turns clear to me. The test called <code>CurrentThrowsIfCurrentSetThroughServiceAndSetter</code> and it&#8217;s Assert part: <br />
+</p><pre class="brush:csharp">[TestMethod]
+public void CurrentThrowsIfCurrentSetThroughServiceAndSetter() {
+ // Arrange
+ TestProvider providerFromCurrentValueThunk = new TestProvider();
+ TestProvider providerFromServiceLocation = new TestProvider();
+ TestProvider providerFromDefaultValue = new TestProvider();
+ Mock&lt;IDependencyResolver&gt; resolver = new Mock&lt;IDependencyResolver&gt;();
+
+ resolver.Setup(r =&gt; r.GetService(typeof(TestProvider)))
+   .Returns(providerFromServiceLocation);
+
+ SingleServiceResolver&lt;TestProvider&gt; singleResolver = new SingleServiceResolver&lt;TestProvider&gt;(() =&gt; providerFromCurrentValueThunk, providerFromDefaultValue, resolver.Object, &quot;TestProvider.Current&quot;);
+
+ //Act &amp; assert
+ ExceptionHelper.ExpectException&lt;InvalidOperationException&gt;(
+  () =&gt; singleResolver.Current,
+  &quot;An instance of TestProvider was found in the resolver as well as a custom registered provider in TestProvider.Current. Please set only one or the other.&quot;
+ );
+}
+</pre><p>This is really <strong>important</strong> and says: you should not create same type instance both with <code>IDependencyResolver</code> and factory method! In case of <code>ControllerFactory</code>: you should never provide your implementation of <code>IControllerFactory</code> and in the same time resolve <code>IControllerFactory</code> instance by <code>IDependencyResolver</code>. Same rule for all other types. You should decide how you would like to override default behavior. In MVC3 usage of <code>IDependencyResolver</code> is a preferable.<br />
+</p><p>The code below is wrong:<br />
+</p><pre class="brush:csharp">DependencyResolver.SetResolver(new DummyDependencyResolver());
+ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+</pre><p>So, after that <code>_resolverThunk</code> is reset and we no longer ask <code>IDependencyResolver</code>, just returning the resolved value.<br />
+</p><p><code>MultiServiceResolver</code> is even a little simpler. <br />
+</p><pre class="brush:csharp">public IEnumerable&lt;TService&gt; Current {
+ get {
+  if (_itemsFromService == null) {
+   lock (_itemsThunk) {
+    if (_itemsFromService == null) {
+     _itemsFromService = _resolverThunk().GetServices&lt;TService&gt;();
+    }
+   }
+  }
+  return _itemsFromService.Concat(_itemsThunk());
+ }
+}
+</pre><p>The same, singleton strategy of resolving types and then just concatenating resolved by <code>IDependencyResolver</code> with ones retuned by default factory method. It looks strange, but it is legal here to have types resolved both by <code>IDependencyResolver</code> and factory.<br />
+</p><h2>Conclusions<br />
+</h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never &#8216;mix&#8217; both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
+</p><h2>What&#8217;s next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
+</p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -857,83 +1004,6 @@ Git-svn is perfect tool to start using git without radical changes in organizati
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/06/thinking-about-cloud.html">
-    
-      Thinking about cloud..</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-22T10:09:00+03:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cloud/'>Cloud</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<img src="http://t0.gstatic.com/images?q=tbn:ANd9GcStTBpwTeKUQEuBeVN6mrRWGCQD3B-2scSFb_Yro1HLzMvXPW5_" alt="cloud" />
-<p>
-I&#8217;m really inspired with cloud ideas since I first time met it. No doubt, that clouds are future of computing. I like the metaphor comparing cloud and electric power plant: &#8220;Last century if you plan your business depend on electricity, you have to afford huge and expensive electric generator - you have to host it, support it and do all maintenance stuff by yourself. You pay for everything by yourself, just to be able to plug one device. Then power plant come and electric wires covered a country, you no longer need your own electric generator, you can buy the electricity from power plant station. You pay only for that you used and it is much cheeper, since a lot of people using it together with you&#8221;. Clouds are modern power plants - to be online you no longer need to buy servers, establish a data center, maintenance all infrastructure. You could by the resources from cloud services provider. 
-</p>
-<p>
-Clouds are about to change the business. It is much more easy to start-up new product in web, since you have to care only about product, not infrastructure. I knew some companies in past with quite good ideas, but those ideas buried under infrastructure complexity and expensiveness. And the clouds are about to solve that problem, microISV should be happy about.
-</p>
-<p>
-I was thinking about all my current and future products are going to in cloud for sure. First and obvious point to look was Microsoft Azure. But after some elaboration I disappointed a bit: 
-</p>
-<ol>
-<li>Azure is overcomplicated. I&#8217;m not saying I&#8217;m not able to understand that.. But all those Roles, Processes, Blobs - it is just too much details. But what I basically waht is to place my <a href="http://trackyt.net">existing</a> working product into elastic space, that&#8217;s it.
-</li>
-<li>
-It is still expensive. This Azure price calculator, my simplest configuration would be ~50 USD/month. This is more than I currently pay for VPS.
-</li>
-</ol>
-<p>
-So, I saw not enough reasons to switch immediately. 
-</p>
-<p>
-Yesterday, I&#8217;ve been contacted by <a href="http://www.host1plus.com/">Host1Plus</a> company. They started out beta cloud in the new datacenter which is located in Frankfurt Main, Germany. And they are looking for beta testers of new service. The proposition looks really fine to me, since I could try the power of clouds and in the same time help a company with a feedback I could provide.  
-</p>
-<p>
-I&#8217;m going to join. If it is interesting for you, join with me. Here is some links that could be helpful:
-</p>
-<ul>
-<li><a href="http://www.host1plus.com/press/beta-cloud-vps-will-be-launched-by-host1plus/">http://www.host1plus.com/press/beta-cloud-vps-will-be-launched-by-host1plus/</a> press release about it</li>
-<li><a href="http://www.host1plus.com/beta-invitations/">http://www.host1plus.com/beta-invitations/</a> mailing list for all the beta testers who wants to join the campaign</li>
-<li><a href="http://www.host1plus.com/forum/">http://www.host1plus.com/forum/</a> the community forum where all beta testers can join to start the discussions</li>
-</ul></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -949,7 +1019,7 @@ I&#8217;m going to join. If it is interesting for you, join with me. Here is som
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2013 beletsky.net
+		Copyright © 2010 - 2014 beletsky.net
 	</p>
 </div>
 

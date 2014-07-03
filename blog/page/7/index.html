@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Starting Up Node.js Development on Windows Jun 27th, 2012 NodeJs, Tools Node.js is very interesting platform, it allows to unleash your internal &hellip;">
+  <meta name="description" content="Three month without .NET code Jul 11th, 2012 E-conomic, JavaScript, Node.js It&#8217;s not farewell letter in style of &#8220;Goodbye .NET&#8221;. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,71 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/07/three-month-without-net-code.html">
+    
+      Three month without .NET code</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T13:29:00+03:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/node-dot-js/'>Node.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    It&#8217;s not farewell letter in style of &#8220;Goodbye .NET&#8221;. But, I just realized that I haven&#8217;t created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />
+</p><p>    I love .NET and love C# language. C# is probably one of the best language I ever programmed with. I think that .NET is my comfort zone. Web technologies as ASP.NET MVC, Web API, NancyFX are great. But, as I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">said</a> long time ago server side development is not enough to create cool web apps.<br />
+</p><h2>Front-end development</h2><p>    For modern web application, the front-end part became as equally important as back-end. In <a href="http://www.e-conomic.com/">e-conomic</a> we are doing large scale JavaScript applications. According to <a href="http://addyosmani.com/">Addy Osmani&#8217;s</a> definition, the large scale JavaScript applications are:<br />
+</p><blockquote>non-trivial applications requiring significant developer effort to maintain, where most heavy lifting of data manipulation and display falls to the browser.<br />
+</blockquote><p>    This is exactly definition of application we released just few days ago, <a href="https://www.debitoor.de/">debitoor.de</a>. And if you are doing front-end, the JavaScript is your friend. Actually, you don&#8217;t even have a choice.. It&#8217;s either JavaScript or some another language that could be compiled down to JavaScript as <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="https://github.com/clojure/clojurescript/">ClojureScript</a> or <a href="http://www.dartlang.org/">Dart</a> languages. The importance of JavaScript, it&#8217;s common adoption, growing of community knowledge base made Scott Hanselman call JavaScript <a href="http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx">assembly language for web</a>. <br />
+</p><p>    We&#8217;ve chosen <a href="http://backbonejs.org/">Backbone</a> as front end development framework. With a backbone JavaScript code became to have structure. Having a proper code structure is vital for any project. I&#8217;ve started to learn Backbone and even I still thinking it&#8217;s too minimalistic and non-complete, I believe that was a huge step forward.<br />
+</p><p>    Having implemented and stabilized HTTP API for application, almost all new features implementation was at front end. That means, new features for product were actually born in JavaScript code.<br />
+</p><h2>Back-end development</h2><p>    As might know from my earlier <a href="http://www.beletsky.net/2011/12/why-new-technologies-move-your-product.html">post</a> we&#8217;ve chosen ASP.NET MVC to build our HTTP API on. That worked well at the beginning, but later decision were taken to move out the API to Node.js platform. So, another team started to work on new API project, basically implementing existing API interfaces from ASP.NET MVC in Node.js.<br />
+</p><p>    Being wisely architected, our front-end did not have major ASP.NET MVC dependencies. We did not use any specific features (like Razor) or anything else just in sake of minification of efforts during switching back-end platform. And I would say it worked really well.<br />
+</p><p>    Node.js based API built on <a href="http://expressjs.com/">Express.js</a> framework, that suites nice for such kind of work. There is a great blog post about <a href="http://nodeguide.com/convincing_the_boss.html">convincing</a> you boss to use <a href="http://nodejs.org/">Node.js</a>. Node.js + <a href="http://www.mongodb.org/">MondoDB</a> is very suitable for JSON API applications, for several reasons. First of all is performance, Node.js is known for it&#8217;s async I/O operations that is so perfect for web. Second is simplicity (relational simplicity, of course). Serving JSON objects inside JavaScript, storing/restoring them as MongoDB documents makes the platform and approaches very solid.<br />
+</p><p>    So, the new stuff from HTTP API also got born of JavaScript code. Check out nice post of <a href="https://plus.google.com/107092994415731288478/posts">Allan Ebdrup</a> (one of the Node.js inspiration guys inside e-conomic) about our experience with <a href="http://techtalk.e-conomic.com/developing-with-node-js-and-mongodb-part-i/">Node.js and MongoDB</a>.<br />
+</p><h2>How does it feel like?</h2><p>    So, I&#8217;ve started to work almost all the time for front-end having Sublime Text 2 + Chrome Developers Tools as IDE. It was a really unusual at the beginning, after many years in Visual Studio. <br />
+</p><p>    I feel myself more productive with JavaScript now. I write the code with JavaScript construction and sometimes thinking myself &#8220;how would I do in C#?&#8221; and it feels like in C# it would be much harder. I like dynamic nature of language.<br />
+</p><p>    Besides the coding I have pleasure of new infrastructure. Setting up .NET solution, containing ~80 projects, long build process, setup of MS SQL and re-staring of IIS.. All of that made a lot of idle time, read wasted time. I&#8217;m in idle, during waiting till build is finished.. or waiting 30 sec while IIS update AppDomain if I rebuild and press F5. It easily can take up to 2 hours per working day just wasted. <br />
+</p><p>    Node.js + MongoBD environment is extremely easy to setup, amazingly fast to work with. I&#8217;m restaring the application in 1 sec, just by stopping node process and running it again. With a tools like <a href="https://github.com/remy/nodemon/">nodemon</a>, you don&#8217;t even need to do that. Just save the code and after a sec, press F5 in browser to test it. All of that are increases general developers happiness.<br />
+</p><p>    JavaScript is difficult language and Node.js is new platform that requires respect and time to learn. Node.js is probably one of the best <a href="http://nodejs.org/api/">documented</a> projects I ever worked with. Besides, it&#8217;s open source. It means you can learn from sources. I haven&#8217;t dig inside Node.js code itself, but I did look inside the Express.js then I had an issue and I found the answer as I see how particular method works.<br />
+</p><p>    Even though, Backbone.js code and Node.js code are completely different stuff, having the same language both front-end and back-end is great thing. In particular it minimizes the language context-switching then you do coding. It&#8217;s possible to apply similar patterns and practices both ends.<br />
+</p><h2>Conclusions</h2><p>    Being a JavaScript developer works good for me so far. I opened just entire new world and would like to explore it more. I hope JavaScript would be my comfort zone some day.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -761,58 +826,6 @@ private string RemoveFooter(string content)
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/05/limit-of-keystrokes.html">
-    
-      The Limit of Keystrokes</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-26T15:03:00+03:00" pubdate data-updated="true">May 26<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/code-kata/'>Code Kata</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>Some time ago I&#8217;ve posted an article called <a href="http://www.beletsky.net/2011/07/how-to-be-better-developer-or-3.html">How to be better developer or 3 accounts rule</a> where I shared my vision on importance of having some accounts if you care about professionalism and mastery. The basic idea there is you have to produce a lot, you have to write a lot. You have to write code, write blog posts and help people on forums.<br />
-</p><p>If you have seen one of the latest Scott Hanselman&#8217;s <a href="http://www.hanselman.com/blog/ItsNotWhatYouReadItsWhatYouIgnoreVideoOfScottHanselmansPersonalProductivityTips.aspx">Productivity Tips</a> video, you probably heard nice metaphor about the &#8220;Limit of Keystrokes&#8221;. It sounds really funny, Scott saying - &#8220;everybody is having limited count of keystokes, if you reach you count - you dead&#8221;. That means, we have to think on each keystroke we do with much care. <br />
-</p><p>And the most efficient usage of keystrokes is for learning. Reading is very important, but nowadays there are so many information that you just not able to consume everything. That&#8217;s why recently I&#8217;ve unsubscribed a lot of RSS channels in my Google Reader, I think I will filter the Twitter as well. Instead, I try to read as few things as possible. Not only read, but try them on practice. Just write some small code to try the idea, pattern, approach of framework. Turning the theory in practice is something that gives me much fun and satisfaction.<br />
-</p><p>Yesterday, we were doing Coding Dojo with good friend of mine <a href="http://twitter.com/skalinets">@skalinets</a> on <a href="http://agilebasecamp.org/">Agile Base Camp</a> conference. Instead of going my default language (which is C# for now) I paired the PHP guy. We were doing String Calculator kata in PHP. It was so great! First of all, I amazed how much PHP improved since the last time I looked on it (about 10 years ago), second is that I used my keystrokes to learn something new. <br />
-</p><p>Writing the code for fun and learning has a huge value. This is definitely good investment of the keystrokes.  <br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -828,7 +841,7 @@ private string RemoveFooter(string content)
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2013 beletsky.net
+		Copyright © 2010 - 2014 beletsky.net
 	</p>
 </div>
 
