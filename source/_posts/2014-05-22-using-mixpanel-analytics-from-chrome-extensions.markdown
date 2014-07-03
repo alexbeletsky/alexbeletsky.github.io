@@ -3,7 +3,7 @@ layout: post
 title: "Using Mixpanel from Chrome Extensions"
 date: 2014-05-22 11:15
 comments: true
-categories: javascript, mixpanel, analytics, chrome
+categories: javascript mixpanel analytics chrome
 ---
 
 Recently we've released Google Chrome [extension](https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&utm_source=chrome-ntp-launcher) for [Likeastore](https://likeastore.com) that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it's nothing more as web development, since primary technologies are still HTML/CSS/JS.
