@@ -2,7 +2,7 @@
 layout: post
 title: "Secure Deployment of ElasticSearch"
 date: 2014-07-18 12:34
-categories: elastic nodejs security docker digitalocean
+categories: elastic nodejs security docker dokku digitalocean
 ---
 
 Remember my success [story](http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html) of moving from MongoDB full text search index to [ElasticSearch](http://www.elasticsearch.com)? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from [Logentries](http://logentiries.com) and [NewRelic](http://newrelic.com) that server is no longer responsive.
