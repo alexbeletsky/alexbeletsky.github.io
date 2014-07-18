@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-07-03T16:51:41+03:00</updated>
+  <updated>2014-07-18T18:47:04+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,262 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
+    <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
+    <updated>2014-07-18T12:34:00+03:00</updated>
+    <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
+    <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+<!-- MORE -->
+
+
+<p>It appeared, if ES is left on default configuration with port opened outside, it will be easy target for bad guys, both of Java and ES vulnerability. Basically, I had to restore server from scratch, but this time I&rsquo;m not goint to be naive, server have to be properly secured.</p>
+
+<p>I&rsquo;ll describe my setup that involves: Node.js, Dokku / Docker, SSL.</p>
+
+<h2>Clean DigitalOcean image</h2>
+
+<p>I had to reinstall my machine from scratch, so instead of creating plain Ubuntu 14 server, but I decided to go dokku/docker path. Something that I tried <a href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html">before</a> and very happy with the <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">results</a>. <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> offers pre-packed image with dokku/docker already on board. As usually it takes just a few seconds to spin up machine on DO.</p>
+
+<p>The plan was the following: deploy ElasticSearch instance inside Docker container, disable dynamic script features of Elastic, deploy Node.js based proxy server with custom authentication by Dokku and link those containers, so only Node.js proxy will have access to Elastic. Finally, all traffic between will by crypted by SSL.</p>
+
+<p>The benefits are obvious, no more <code>:9200</code> is outside the machine, one potential vulnerability with dynamic script feature is disabled, only authenticated client could access Elastic server.</p>
+
+<h2>Deployment of ElasticSearch in Docker</h2>
+
+<p>First we need to have Docker image of ElasticSearch. There few ES plugging for Dokku, I decided to install one by myself, since I thought it is easier to configure. There is a great instruction from Docker <a href="https://registry.hub.docker.com/u/dockerfile/elasticsearch/">here</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker pull docker pull dockerfile/elasticsearch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once the image is there, we need to prepare volume there Elastic stores data and configuration.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /
+</span><span class='line'><span class="nv">$ </span>mkdir elastic
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Elastic folder should contain <code>elasticsearch.yml</code> file, with all required configurations. My case is very simple, I have a cluster of one machine, so default configuration applies to me. One thing, that I mentioned above &ndash; I need to disable dynamic scripting features.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nano elasticsearch.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The content of the file is just one string,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>script.disable_dynamic: true</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once it&rsquo;s done, we are ready to launch the server inside Docker container. Since, it could be done few times (during configuration and debugging), I&rsquo;ve created a small shell script,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run --name elastic -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -v /elastic:/data dockerfile/elasticsearch /elasticsearch/bin/elasticsearch -Des.config<span class="o">=</span>/data/elasticsearch.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please note the important thing, <code>-p 127.0.0.1:9200:9200</code> &ndash; here we are binding <code>:9200</code> to be only accessible on <code>localhost</code>. I&rsquo;ve spend some hours to close <code>:9200</code> by <code>iptables</code> without any success, but that thing works as expected. Thanks a lot to <a href="https://twitter.com/darkproger">@darkproger</a> and <a href="https://twitter.com/kkdoo">@kkdoo</a> for great help.</p>
+
+<p><code>-v /elastic:/data</code> will map the containers volume <code>/data</code> to local one <code>/elastic</code>.</p>
+
+<h2>Front-end Node.js server</h2>
+
+<p>Now, we need to deploy front-end proxy server. It would proxy all traffic from <code>http://localhost:9200</code> into outside world, securely. I&rsquo;ve created small project, based on <a href="https://github.com/nodejitsu/node-http-proxy">http-proxy</a> called <a href="https://github.com/likeastore/elastic-proxy">elastic-proxy</a>. It&rsquo;s very simple one and can be easily re-used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/likeastore/elastic-proxy
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>elastic-proxy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The server itself,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./config&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/utils/logger&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">3010</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">proxy</span> <span class="o">=</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">parseAccessToken</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">referer</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">referer</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">access_token</span> <span class="o">||</span> <span class="nx">referer</span><span class="p">.</span><span class="nx">access_token</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">accessToken</span> <span class="o">=</span> <span class="nx">parseAccessToken</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;request: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">&#39; accessToken: &#39;</span> <span class="o">+</span> <span class="nx">accessToken</span> <span class="o">+</span> <span class="s1">&#39; referer: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">referer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">accessToken</span> <span class="o">||</span> <span class="nx">accessToken</span> <span class="o">!==</span> <span class="nx">config</span><span class="p">.</span><span class="nx">accessToken</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">401</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Missing access_token query parameter&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">proxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span><span class="nx">target</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">false</span><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Likeastore Elastic-Proxy started at: &#39;</span> <span class="o">+</span> <span class="nx">port</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It proxies all the requests and only by-pass ones, who provide <code>access_token</code> as query parameter. The <code>access_token</code> value is <a href="https://github.com/likeastore/elastic-proxy/blob/master/config/production.config.js">configured</a> on server, by applications environment variable <code>PROXY_ACCESS_TOKEN</code>.</p>
+
+<p>As you already <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-dokku-one-click-digitalocean-image-to-deploy-a-python-flask-app">prepared</a> Dokku all you need to do is to push application to your server.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push master production
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After the deployment, you should go to server to configure applications environment,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config proxy <span class="nb">set </span><span class="nv">PROXY_ACCESS_TOKEN</span><span class="o">=</span><span class="s2">&quot;your_secret_value&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I wanted to have SSL and it&rsquo;s very easy to configure with Dokku. Just place your <code>server.crt</code> and <code>server.key</code> to <code>/home/dokku/proxy/tls</code> folder.</p>
+
+<p>Proxy have to be <a href="https://github.com/scottatron/dokku-rebuild">redeployed</a> afterward, to apply configuration changes. Try proxy by hitting it&rsquo;s URL, in my case <a href="https://search.likeastore.com">https://search.likeastore.com</a>. If everything is good, it will reply,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Missing access_token query parameter</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Link containers</h2>
+
+<p>We need to link both containers, so Node.js application is able to access ElasticSeach container. I really liked <a href="https://github.com/rlaneve/dokku-link">dokku-link</a> plugin, that does exactly that&rsquo;s required in very easy way. So, will install it</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /var/lib/dokku/plugins
+</span><span class='line'><span class="nv">$ </span>git clone https://github.com/rlaneve/dokku-link
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we need to link containers,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku link proxy elastic
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And application have to be redeployed again. If everything is good, you will be able to access the server by <code>https://proxy.yourserver.com?access_token=your_secret_value</code> and see the response from ElasticSearch,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nx">status</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Tundra&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">version</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">number</span><span class="o">:</span> <span class="s2">&quot;1.2.1&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_hash</span><span class="o">:</span> <span class="s2">&quot;6c95b759f9e7ef0f8e17f77d850da43ce8a4b364&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_timestamp</span><span class="o">:</span> <span class="s2">&quot;2014-06-03T15:02:52Z&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_snapshot</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">lucene_version</span><span class="o">:</span> <span class="s2">&quot;4.8&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">tagline</span><span class="o">:</span> <span class="s2">&quot;You Know, for Search&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reconfigure the client</h2>
+
+<p>Depending on a client you use, you need to apply a little tweak to configuration. Basically, we need to use <code>access_token</code> for all our request. For Node.js applications,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="nx">elasticsearch</span><span class="p">.</span><span class="nx">Client</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">host</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">protocol</span><span class="o">:</span> <span class="s1">&#39;https&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;search.likeastore.com&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">access_token</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ELASTIC_ACCESS_TOKEN</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">requestTimeout</span><span class="o">:</span> <span class="mi">5000</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, <code>ELASTIC_ACCESS_TOKEN</code> is env variable to hold <code>your_secret_value</code> token.</p>
+
+<p>Now, restart the application, make sure everything is running and exhale.</p>
+
+<p><strong>PS</strong>. I would like to say thank to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> for support and a little credit I received as downtime compensation. Thats awesome.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
@@ -2667,241 +2923,6 @@
 <p>You are able to configure environment variables, as well as configure SSL connection.</p>
 
 <p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
-    <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
-    <updated>2013-09-03T19:57:00+03:00</updated>
-    <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
-    <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
-
-<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
-
-<!-- More -->
-
-
-<h2>Prepearing Environment</h2>
-
-<p>You box should contain few things: git (github account), VirtualBox and Vagrant. If you don&rsquo;t have Vagrant installed, please do now. It makes a lot of sense to keep such kind software on machine.</p>
-
-<p>Here you can find <a href="http://docs.vagrantup.com/v2/getting-started/index.html">some instructionn</a> of how to do that.</p>
-
-<h3>Cloning Dokku</h3>
-
-<p>You should clone Dokku repo locally. In your development folder, run</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git clone git@github.com:progrium/dokku.git
-</span><span class='line'>&gt; <span class="nb">cd </span>dokku
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dokku repository already contains Vagrant file, with all required configuration.</p>
-
-<h3>Local Networking</h3>
-
-<p>Just in sake of convenience, will map <code>10.0.0.2</code> ip address (the one that Vagrant machine is assigned with), to <code>dokku.me</code> DNS name, so it&rsquo;s just handy for testing.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>› sudo nano /private/etc/hosts
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and put last 2 lines, as it shown in my example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>##
-</span><span class='line'># Host Database
-</span><span class='line'>#
-</span><span class='line'># localhost is used to configure the loopback interface
-</span><span class='line'># when the system is booting.  Do not change this entry.
-</span><span class='line'>##
-</span><span class='line'>127.0.0.1       localhost
-</span><span class='line'>255.255.255.255 broadcasthost
-</span><span class='line'>::1             localhost
-</span><span class='line'>fe80::1%lo0     localhost
-</span><span class='line'>10.0.0.2        dokku.me
-</span><span class='line'>10.0.0.2        node-simple.dokku.me</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Fire Up Virtual Machine</h3>
-
-<p>In <code>dokku</code> folder, you should run</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; vagrant up
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It will start to prepare new virtual environment for you,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> vagrant up
-</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Setting the name of the VM...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Preparing network interfaces based on configuration...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">80</span> <span class="o">=</span>&gt; 8080 <span class="o">(</span>adapter 1<span class="o">)</span>
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running any VM customizations...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
-</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I have a problem with this step few times, so if you machine could not be booted, try to run <code>vagrant reload</code>, it should help.</p>
-
-<p>It would took about up to 20 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
-
-<p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; cat ~/.ssh/id_rsa.pub | ssh root@dokku.me <span class="s2">&quot;sudo gitreceive upload-key alexanderbeletsky&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
-
-<p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; vagrant ssh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, just try that everything is running fine by checking version of Docker:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; docker -v
-</span><span class='line'>Docker version 0.6.1, build 5105263
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The instance is ready for deployment.</p>
-
-<h2>Deploy to Dokku</h2>
-
-<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexanderbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
-
-<p>So, what you need to setup is remote repository to push to:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; git remote add <span class="nb">local</span>-deploy git@dokku.me:node-simple
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s all. You ready for first deploy, just push code to machine with Dokku:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git push <span class="nb">local</span>-deploy master
-</span><span class='line'>› git push <span class="nb">local</span>-deploy master --force
-</span><span class='line'>Counting objects: 5, <span class="k">done</span>.
-</span><span class='line'>Delta compression using up to 8 threads.
-</span><span class='line'>Compressing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, <span class="k">done</span>.
-</span><span class='line'>Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, 289 bytes | 0 bytes/s, <span class="k">done</span>.
-</span><span class='line'>Total 3 <span class="o">(</span>delta 2<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
-</span><span class='line'>-----&gt; Building node-simple ...
-</span><span class='line'>       Node.js app detected
-</span><span class='line'>-----&gt; Resolving engine versions
-</span><span class='line'>       Using Node.js version: 0.8.25
-</span><span class='line'>       Using npm version: 1.2.30
-</span><span class='line'>-----&gt; Fetching Node.js binaries
-</span><span class='line'>-----&gt; Vendoring node into slug
-</span><span class='line'>-----&gt; Installing dependencies with npm
-</span><span class='line'>       npm WARN package.json application-name@0.0.5 No repository field.
-</span><span class='line'>       npm WARN package.json application-name@0.0.5 No readme data.
-</span><span class='line'>       npm WARN package.json send@0.1.0 No repository field.
-</span><span class='line'>       ...
-</span><span class='line'><span class="o">=====</span>&gt; Application deployed:
-</span><span class='line'>       http://node-simple.dokku.me
-</span><span class='line'>
-</span><span class='line'>To git@dokku.me:node-simple
-</span><span class='line'>   dd05aae..ac5b6da  master -&gt; master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Setting up Environment</h2>
-
-<p>Every application requires environment. It&rsquo;s common practice to set at least <code>NODE_ENV</code> variable for Node.js applications. To do that, you need to create <code>ENV</code> file inside the <code>/home/git/node-simple</code> folder.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>› ssh root@dokku.me <span class="s2">&quot;echo export NODE_ENV=&quot;</span>development<span class="s2">&quot; &gt; /home/git/node-simple/ENV&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, let&rsquo;s re-deploy the application, change the version in <code>package.json</code> and push code again.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>› git push <span class="nb">local</span>-deploy master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, application is ready to be accessed.</p>
-
-<h2>Accessing the Application</h2>
-
-<p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
-
-<p><img src="http://beletsky.net/images/blog/node-simple-run.png"></p>
-
-<p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
-
-<p>Just looking on logs while new application is deployed, would give pretty much idea of what&rsquo;s going on there.</p>
-
-<p>So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.</p>
 ]]></content>
   </entry>
   

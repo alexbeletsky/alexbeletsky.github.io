@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Three month without .NET code Jul 11th, 2012 E-conomic, JavaScript, Node.js It&#8217;s not farewell letter in style of &#8220;Goodbye .NET&#8221;. &hellip;">
+  <meta name="description" content="ASP.NET MVC Routes and Namespaces Jul 25th, 2012 MVC, asp.net While I was working on ELMAH.MVC v.2.0.0 I noticed a something that contradicts the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,146 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/07/aspnet-mvc-routes-and-namespaces.html">
+    
+      ASP.NET MVC Routes and Namespaces</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T16:42:00+03:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    While I was working on <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC v.2.0.0</a> I noticed a something that contradicts the way I understand how the controller resolving mechanism works. Before, I always thought that namespaces matters, but in practice I saw it otherwise.<br />
+</p><h2>Controller in separate class assembly</h2><p>    The good way of distribution re-usable software is class assembly. Suppose, I have 2 projects - one ASP.NET MVC web application (<code>MvcApplication2</code>), and another one is class assembly (<code>Awesome.Mvc.Lib</code>). Web application references the class library.<br />
+</p><a href="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png" /><br />
+</a><br />
+<p>    I want to have some particular controller to be exposed from <code>Awesome.Mvc.Lib</code>. Namely, I want to have a controller inside the class library, that would be accessible from <code>MvcApplication2</code>. I&#8217;ll add some <code>ShinnyController.cs</code> inside.<br />
+</p><pre class="brush: csharp">namespace Awesome.Mvc.Lib
+{
+    public class ShinnyController : Controller
+    {
+        [HttpGet]
+        public string Index()
+        {
+            return "I'm in Shinny controller";
+        }
+    }
+}    
+</pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be &#8220;invisible&#8221; for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don&#8217;t initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
+</p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
+    <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
+</a><br />
+<p>    This is totally unexpected to me! It turns out that default route is matching the controller/action from <code>Awesome.Mvc.Lib</code> class library.<br />
+</p><pre class="brush: csharp">routes.MapRoute(
+    "Default", // Route name
+    "{controller}/{action}/{id}", // URL with parameters
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+);
+</pre><p>    What I&#8217;m expecting though is that <code>ShinnyController.cs</code> have to be &#8220;explicitly&#8221; routed, and ideally placed into its own sub-URL, like <code>http://localhost:26810/awesome/shinny</code>.<br />
+</p><h2>What about namespaces fallback?</h2><p>    I&#8217;ve asked this question on <a href="http://stackoverflow.com/questions/11077554/controller-in-separate-assembly-and-routing">stackoverflow</a>. Even if I had good answer, it did not make it happy. So, to get the behavior I want, I need to do the following: <br />
+</p><ol>    <li>Change the default routing to explicitly mention the namespace and set fallback to false:</li>
+<pre class="brush: csharp">public class MvcApplication : System.Web.HttpApplication
+{
+    public static void RegisterRoutes(RouteCollection routes)
+    {
+        routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+        var route = routes.MapRoute(
+            "Default", // Route name
+            "{controller}/{action}/{id}", // URL with parameters
+            new { controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+            new[] { "MvcApplication2" }
+        );
+
+        route.DataTokens["UseNamespaceFallback"] = false;
+
+    }
+</pre>    <li>Create an Area in <code>Awesome.Mvc.Lib</code> and configure routing to it:</li>
+<pre class="brush: csharp">public class AwesomeAreaRegistration : AreaRegistration
+{
+    public override void RegisterArea(AreaRegistrationContext context)
+    {
+        context.MapRoute("Awesome_default", "Awesome/{controller}/{action}", new { action = "Index" });
+    }
+
+    public override string AreaName
+    {
+        get { return "Awesome"; }
+    }
+}
+</pre></ol><p>After I did so, I can reach the <code>http://localhost:26810/awesome/shinny</code>:<br />
+</p><a href="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png" /><br />
+</a><br />
+<p>And in the same time, <code>http://localhost:26810/shinny</code> is getting to be rejected:<br />
+</p><a href="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png"><br />
+    <img src="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png" /><br />
+</a><br />
+<p>Even though, it looks like desired behavior.. It sucks.<br />
+</p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I&#8217;m thinking about it&#8217;s distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that&#8217;s it! I don&#8217;t suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexanderbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I&#8217;ll give one more example, to proof it.<br />
+</p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
+</p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers
+{
+    public class SimpleController : Controller
+    {
+        public string Index()
+        {
+            return "I'm simple controller from API area";
+        }
+
+    }
+}
+</pre><p>The controller is reachable, as expected:<br />
+</p><a href="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png"><br />
+    <img src="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png" /><br />
+</a><br />
+<p>But now, I try to access <code>/simple</code>:<br />
+</p><a href="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png"><br />
+    <img src="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png" /><br />
+</a><br />
+<p>Hey WTF? The whole idea of Areas is just ruined. What I&#8217;m doing wrong?<br />
+</p><p>I&#8217;m feeling very frustrated about this issue. Even though I <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">understand</a> why it happens, it smells like a bug for me? It works exactly the same for ASP.NET MVC 2, 3, 4. I&#8217;m asking you guys, to help to clarify the problem. What is your opinion on that? Are you agree on such default behavior?<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -763,61 +903,6 @@ private string RemoveFooter(string content)
         </pre>        <p>            I could understand it would be <code>init</code> or <code>_init</code> or <code>constructor</code>, but I will probably never understand <code>__init__</code> with 2 underscores before and after. It&#8217;s ugly.
         </p>        <h2>Conclusions</h2>        <p>            I&#8217;m about to enroll to next Udactity courses, so my Python journey continues. I hope to get more in language and standard library.
         </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/05/cs101-building-search-engine-week-5-and.html">
-    
-      CS101 Building a Search Engine: Week 5 and 6</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-31T17:28:00+03:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>        <small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 &#8220;Building a Search Engine&#8221; online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I&#8217;m trying to make it generic as possible and do not spoil important things.<br />
-        </small><br />
-    </p>    <p>        With a quite delay I&#8217;ve concluded units 5 and 6. I&#8217;m in a big rush now, since the exam week is already started, but I&#8217;ve not yet completed Unit 7. Fortunately, Unit 7 is not technical one, but rather common computer science education, that helps to shape all knowledge received through seven weeks together.     <br />
-    </p>    <p>        I would say that those 2 units is something where I start to feel some complexity. In Unit 5 we focused on making things faster, basically by introduction more advanced data structures for the same job. We went from a list based index implementation to self-implemented hash table and then utilized the Python dictionary type. Again, abstracting out of many simple things is what good developer should always do, but I was surprised how many things I forgot about main properties of hash functions and hash tables. We were also did a very basic algorithms analysis stuff. <br />
-    </p>    <p>        Unit 6 is a real computer science. Besides of the playing with recursive algorithms we did more advanced things as graph theory. All of that was a fundamentals for implementing Pang Ranking mechanism. We used famous Google&#8217;s (Larry Page&#8217;s) algorithm that everybody heard of <a href="http://en.wikipedia.org/wiki/PageRank">PageRank</a>. This is where my brains start to heat. Will be honest with you, I still missing it&#8217;s some parts, so it will take some time get the clear picture about it.  <br />
-    </p>    <p>        So, the crawler starts to have real search engine features. Not only extracting links and indexing the keywords, that&#8217;s definitely not enough for search engine. But building the links graph and computing page ranks, that then used in lookup functions to provide the best choice on search keyword. It&#8217;s very simplified but working model of something that Google have (probably something that Google <a href="http://infolab.stanford.edu/~backrub/google.html">might have</a> back in 1998).  <br />
-    </p>    <p>        Python. I like language more and more and start to feel some confidence. In the same time there are several things that I dislike. Not so serious, almost cosmetic.. but something that a little bugs me a little.<br />
-    </p>    <p>        Anyway, I have only few days now to submit my exam works. I already glanced on exam tasks and they don&#8217;t appear to much complex, so I have good chances to be in time with it. Wish me a good luck! I&#8217;ll update you as soon as I got any results! <br />
-    </p></div>
 
       
       

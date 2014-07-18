@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="New in ASP.NET MVC4: Razor changes Apr 10th, 2012 MVC, asp.net Razor has been changed a little with ASP.NET MVC 4 beta. It&#8217;s not a kind of &hellip;">
+  <meta name="description" content="ASP.NET Articles Mobile Application Apr 12th, 2012 Mobile, asp.net Do you like asp.net web site content? Do you enjoy reading fine selected articles &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,69 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/04/aspnet-articles-mobile-application.html">
+    
+      ASP.NET Articles Mobile Application</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-12T16:50:00+03:00" pubdate data-updated="true">Apr 12<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mobile/'>Mobile</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Do you like <a href="http://asp.net">asp.net</a> web site content? Do you enjoy reading fine selected articles about ASP.NET and related technologies? Me too, but I spent most of the reading from my iPad. And unfortunately <a href="http://asp.net">asp.net</a> is not that mobile friendly yet, moreover articles are just a bunch of links to developers blogs, that might not so be adapted for mobile devices as well. <br />
+</p><p>So, I would like to introduce mobile application that I created to close the gap. Please welcome <a href="http://aspnetmobile.apphb.com/">http://aspnetmobile.apphb.com/</a>.<br />
+</p><a href="https://lh4.googleusercontent.com/-OG7PCIOHvgg/T4bc0YDkssI/AAAAAAAAIYs/Ml5GW6dmmAg/s720/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-OG7PCIOHvgg/T4bc0YDkssI/AAAAAAAAIYs/Ml5GW6dmmAg/s720/image-1.png" style="width: 620px"/><br />
+</a><br />
+<p><a href="http://aspnetmobile.apphb.com/">aspnet.mobile</a> is rather simple application. Despite of many similar apps that uses RSS channel, it goes for ASP.NET portal simple external API. RSS is bad in the way that you are limited with initial content (typically up to 25 articles on channel). With <a href="http://aspnetmobile.apphb.com/">aspnet.mobile</a> you freely can access any article ever posted on ASP.NET.<br />
+</p><p>It&#8217;s powered by <a href="http://jquerymobile.com/">jQuery Mobile</a> that currently provides more &#8220;iOS-look&#8221; interface. I&#8217;m happy with that currently but I plan to have native look for Android and WP7 as well, so I thinking either to change the framework or to create custom one. But it currently looks and works great on iPad.<br />
+</p><a href="https://lh6.googleusercontent.com/-ieAlxaf1ltM/T4bc0oHZBaI/AAAAAAAAIYw/qzKfJmSfi2A/s720/image-2.PNG"><br />
+    <img src="https://lh6.googleusercontent.com/-ieAlxaf1ltM/T4bc0oHZBaI/AAAAAAAAIYw/qzKfJmSfi2A/s720/image-2.PNG" style="width: 620px"/><br />
+</a><br />
+<p>I didn&#8217;t want to just refer reader to developers blog, for the reason above. Instead, I much inspired by iOS 5.0 Safari feature called &#8216;Reader&#8217;. A bit of googling and I found that Safari using technology called <a href="http://www.readability.com/">Readability</a>. There are different ports of that technology for a different platforms: Ruby, PHP, Python, Node.js.. and I was happy to find great implementation of <a href="https://github.com/marek-stoj/NReadability">NReadability</a> by <a href="http://about.me/marekstoj">Marek Stoj</a>. Basically, it allowed me to render nice looking pages, like:<br />
+</p><a href="https://lh6.googleusercontent.com/-D5ZD6S532PE/T4bc0XPGX1I/AAAAAAAAIYo/oVBo505PNXI/s720/image-3.PNG"><br />
+    <img src="https://lh6.googleusercontent.com/-D5ZD6S532PE/T4bc0XPGX1I/AAAAAAAAIYo/oVBo505PNXI/s720/image-3.PNG" style="width: 620px"/><br />
+</a><br />
+<p>Besides of that it has a basic support of offline mode. All read articles are stored in Local Storage, so once the application offine it will provide proper behavior and propose some content.<br />
+</p><p>I will be happy if you try and let me know your impression. Feel free to check sources at <a href="https://github.com/alexanderbeletsky/aspnet.mobile">github</a>.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1028,62 +1091,6 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
 </p><pre class="brush: csharp">    @Html.Partial("Shared/Templates/upload.html")
     @Html.Partial("Shared/Templates/download.html")
 </pre><p>The reason turned out to be really <a href="https://github.com/NancyFx/Nancy/issues/520#issuecomment-4179548">simple</a>. All templates in IdeaStrike project were using .html extension. For 0.10 it required to be .cshtml. So, renaming from .html to .cshtml made the IdeaStrike up and running again.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/02/speeches-hat-trick-for-this-weekend.html">
-    
-      Speeches Hat-Trick For This Weekend</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-27T10:30:00+02:00" pubdate data-updated="true">Feb 27<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/continuous/'>Continuous</a>, <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/kievaltnet/'>KievAltNet</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>It&#8217;s been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
-</p><p>I would not say I got great experience on Nancy so far. But I&#8217;m pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
-</p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
-<p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday&#8217;s is just great initiative by Ciklum company. I&#8217;s free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
-</p><p>I had two talks there. First one about &#8220;Continuous Delivery&#8221; that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
-</p><p>Another one is for logging and tracking unhandled exceptions in ASP.NET / ASP.NET MVC application based on ELMAH. I showed some basics features as well easiness of ELMAH integration to ASP.NET MVC with <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> NuGet package. It was very light and funny talk, especially discussing Troy Hunt&#8217;s <a href="http://www.troyhunt.com/2012/01/aspnet-session-hijacking-with-google.html">ELMAH attack</a>. <br />
-<script src="http://speakerdeck.com/embed/4f49e9bd2270a2002200a29c.js"></script><br />
-<p>I also really much enjoyed <a href="http://samarskyy.blogspot.com/">Anton Samarskyy</a> talk on jQuery deffered objects and Vitaly Koval did great hacking session of WinRT.<br />
-</p><p>I some of you been listening to me on those speeches and still have any questions or concerns, feel free to contact me by comments or through <a href="http://twitter.com/alexbeletsky">twitter</a>. See you next time!<br />
 </p></div>
 
       

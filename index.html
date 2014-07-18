@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Lessons Learned Working On Startup Jul 3rd, 2014 likeastore, retro, startup Last year, July 2013 public version of Likeastore been released. It gave &hellip;">
+  <meta name="description" content="Secure Deployment of ElasticSearch Jul 18th, 2014 digitalocean, docker, dokku, elastic, nodejs, security Remember my success story of moving from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,59 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2014/07/secure-deployment-of-elasticsearch.html">
+    
+      Secure Deployment of ElasticSearch</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-18T12:34:00+03:00" pubdate data-updated="true">Jul 18<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digitalocean/'>digitalocean</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/elastic/'>elastic</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/security/'>security</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2014/07/secure-deployment-of-elasticsearch.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -546,59 +599,6 @@
       
         <div class="show-more pure-u-1">
           <a href="/2014/01/looking-back-to-2013.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2013/12/open-source.html">
-    
-      Open Source</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-31T12:00:00+02:00" pubdate data-updated="true">Dec 31<span>st</span>, 2013</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mind/'>mind</a>, <a class='category' href='/blog/categories/opensource/'>opensource</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>I heard about open source probably the first year I started programming. I liked the idea of software to be not only presented as a final product, but with ability to see how things are done and change something if you want. For me, open source was really related to operational systems and drivers, Linux as great example.</p>
-
-<p>A bit later I realised that open source is also about contribution. If you have a certain skills, you can join the project you interested in and try to help. I&rsquo;ve seen some nice open source examples &ndash; tiny operational systems, drivers, music players. Almost everything was C++. The problem with C++, it&rsquo;s hard to build something from sources. You typically missing some binaries, headers or SDK&rsquo;s you don&rsquo;t have on your machine.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2013/12/open-source.html">Continue reading &rarr;</a>
         </div>
       
     </div>
