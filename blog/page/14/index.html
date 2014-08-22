@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="How to start using Git in SVN-based organization Jun 29th, 2011 Git, GitHub, GitSVN I&#8217;ve been using Git about a year now, immediately after &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: ControllerBuilder class Jul 9th, 2011 InsideMVC, MVC, asp.net Integral part of MvcHanlder is ControllerBuilder. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,110 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/inside-aspnet-mvc-controllerbuilder.html">
+    
+      Inside ASP.NET MVC: ControllerBuilder class</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-09T12:28:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Integral part of <code>MvcHanlder</code> is <code>ControllerBuilder</code>. <code>ControllerBuilder</code> is a singleton that is responsible to produce <code>IControllerFactory</code> instance. 
+</p>
+<a href="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png">
+<img src="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png" alt="controller builder" />
+</a>
+<h2>Construction</h2>
+<p>
+<code>ControllerBuilder</code> have 2 constructors, the default one and one with parameter. One of the major changes between MVC2 and MVC3 was the improvements of <a href="http://bradwilson.typepad.com/blog/2010/07/service-location-pt1-introduction.html">Dependency Injection</a>. MVC is using <a href="http://en.wikipedia.org/wiki/Service_locator_pattern">Service Locator</a> pattern for resolving dependencies.Default constructor calls constructor with parameter, passing <code>null</code> as argument, saying that <code>SingleServiceResolver</code> object have to be used as default service resolver.
+</p>
+<p>
+Please note, even if MVC is using Service Locator to locate different entities (like Controllers, Views, Filters) and so on, it does not include any kind on IoC frameworks itself. 
+</p>
+<h2>Controller factory get/set</h2>
+<p>
+<code>MvcHanlder</code> uses <code>GetControllerFactory</code> method to get controller factory.
+</p>
+<a href="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png">
+<img src="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png" alt="controller builder" />
+</a>
+<p>
+Method itself is fairly simple, it just ask service resolver to get current instance of controller factory. 
+</p>
+<p>
+Setter method allows you to change default controller factory with custom one. This an extremely useful then you want to change the way of Controller creation. The most useful case is delegate the controller creation to some DI container (Ninject, Unity, StructureMap) to allowing your application to get benefits of using IoC principles.
+</p>
+<p>
+Basically, IControllerFactory is a strategy of controller creation. Depending of implementation it might use different techniques, later on we will see how <code>DefaultControllerFactory</code> works.
+</p>
+<p>As and additional option, it is possible to supply custom controller factory just from the specific type</p>
+<a href="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png">
+<img src="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png" alt="controller builder" />
+</a>
+<h2>Substitute default controller factory</h2>
+<p>
+As you see, we have to options of substitution default factory: 
+</p>
+<ol>
+<li>Call SetControllerFactory method and pass custom object into.</li>
+<li>Implementing new IDependencyResolver.</li>
+</ol>
+<p>
+Here is an example of how that could be done (please note, it is just demostartion.. you typically should not use both approaches in the same type).
+</p>
+<a href="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png">
+<img src="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png" alt="controller builder" />
+</a>
+<h2>Conclusions</h2>
+<p>
+<code>ControllerBuilder</code> is simple class that delegates responsibility to <code>IResolver</code> which is responsible to resolve <code>IControllerFactory</code> instance. <code>IControllerFactory</code> is a strategy of controllers creation. <code>ControllerBuilder</code> is designed in a way of chaning this strategy easily, either by using custom <code>IControllerFactory</code> or by custom <code>IDependencyResolver</code>.
+</p>
+<h2>What is next?</h2>
+<p>
+Next we are going to look closer into <code>SingleServiceResolver</code> and see how it actually acts for resolving types.
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">Inside ASP.NET MVC: All begins here - MvcHanlder</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1070,160 +1174,6 @@ Also I was really nice to meet <a href="http://twitter.com/#!/skalinets">Sergey 
 <p>
 Let me wish Ciklum and Inna Tueva in particular to have will and energy for organizing such events. Thanks a lot!
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/05/continuous-production-make-it-work.html">
-    
-      Continuous Delivery: Make it work</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-11T10:27:00+03:00" pubdate data-updated="true">May 11<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/continuous/'>Continuous</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-As soon as we <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">setup</a> project infrastructure in a way that build and deploy is done by one batch command, we are ready to run this process continuously. It is possible to take any CI server you want, I stopped on <a href="http://jenkins-ci.org/">Jenkins</a>.. basically it contains everything I need. But before start with Jenkins, let&#8217;s one more time take a look current infrastructure and goals.
-</p>
-<h2>Git branching model</h2>
-<p>
-There is great <a href="http://nvie.com/posts/a-successful-git-branching-model">article</a> on that topic, I used main ideas from that. So, I have 2 branches in my <code>origin</code> that exists all the time. They are: <code>master</code> and <code>development</code>. All pushes I do during implementation are going to <code>development</code> branch. No direct pushes are made to <code>master</code> at all (there are some exceptions of cause, but I try to follow that rule). As soon as code in <code>development</code> is stabilized, I prepare special <code>release</code> branch (update version and small clean up there) and <code>release</code> is being merged to <code>master</code> as it tested and everything is fine.
-</p>
-<h2>Staging and Production environments</h2>
-<p>
-I define 2 types of environments: Staging and Production. Environment includes: binaries, markup, database, deploy scripts.
-</p>
-<p>Everything that is being developed are goes to staging environment immediately (and automatically). Production update is being run manually as soon as all testing on Staging are finished. Separation of environments is great idea. Even if we are trying hard to have potentially shippable software during each build, this is not true. It is usually a lot of problems in latest version that need to be fixed before production server update.
-</p>
-<p>
-So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>. 
-</p>
-<p>
-In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexanderbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexanderbeletsky/trackyt.net">this</a>.
-</p>
-<h2>What I want to get?</h2>
-<p>
-I want to have automatic system that would update my <a href="http://stage.trackyt.net/">Staging</a> with every push to <code>development</code> branch and I want automatic system that would update my <a href="http://www.trackyt.net/">Production</a> as soon as <code>master</code> branch is ready to. As it said in <a href="http://www.beletsky.net/2011/04/continues-production-overview-and.html">overview</a> having such system is great reduce of deployment overhead. Let&#8217;s make this happen!
-</p>
-<p>
-As I said earlier I would use <a href="http://jenkins-ci.org/">Jenkins</a>. Great stuff about this software that is very intuitive! Setup is easy and fun, I would put just a little guidance of process.
-</p>
-<h2>Local Jenkins server setup</h2>
-<p>
-As you download Jenkins WAR file, it is easy to start just with <code>java -jar jenkins.war</code>. Now, the dashboard is available at <code>http://localhost:8080/</code>.
-</p>
-<h3>Plugins</h3>
-<p>
-First, you should add all required plugins. It already contains some, but some are missing. I&#8217;ve add such to my default configuration:
-</p>
-<ul>
-<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Jenkins GIT plugin</a></li>
-<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin">Github plugin</a></li>
-<li><a href="http://wiki.jenkins-ci.org/display/JENKINS/NUnit+Plugin">NUnit Plugin</a></li>
-</ul>
-<p>
-Go to &#8220;Manage Jenkins&#8221; -> &#8220;Manage Plugins&#8221; and install missing one.
-</p>
-<p>
-So, my configuration looks like this:
-</p>
-<!-- plugins.png -->
-<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7BUnOiGI/AAAAAAAAHZk/XSxs5Y_zrR0/plugins.png" alt="plugins" />
-<h3>Configure system</h3>
-<p>
-Now go to &#8220;Manage Jenkins&#8221; -> &#8220;Configure System&#8221; and find &#8220;Git&#8221; section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same). 
-</p>
-<h3>Create new job</h3>
-<p>
-After basic configuration is done, let&#8217;s define new job. Go to &#8220;New job&#8221;. In common section you should give your job name and provide with githib path to repository.
-</p>
-<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Tco7A-XTqYI/AAAAAAAAHZg/0kLPsWXWj6k/common-section.png" alt="common section" />
-<p>
-In Source Control Management: URL to Git repository, Branch to build and Repository browser (optional).
-</p>
-<!-- SCM.png -->
-<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7Bh2RuUI/AAAAAAAAHZs/p568dcfUStk/SCM.png" alt="SCM" />
-<p>
-Build triggers (explain a bit later).
-</p>
-<!-- build-triggers.png -->
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Tco7A6XC3ZI/AAAAAAAAHZY/X39bPBs9U3Q/build-triggers.png" alt="build-triggers" />
-<p>
-In Build section you specify commands to build/test/package and to deploy results. See my <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">previous post</a> for details.
-</p>
-<!-- build.png -->
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Tco7A76md_I/AAAAAAAAHZc/5JPyCIL5Pek/build.png" alt="build" />
-<p>
-Finally in Post-build section, specify path to grab artifacts.
-</p>
-<!-- post-build.png -->
-<h3>Test it locally</h3>
-<p>
-As soon as configuration is done, you can test your build locally. Just start your job and make sure that: build run, tests executed, new database deployed, new application deployed. Basically if everything done correctly in previous <a href="http://www.beletsky.net/2011/05/continues-production-setup-and-run.html">steps</a> you should not experience any troubles. If it is fine that means the configuration is simply ready to be put to production server.
-</p>
-<h2>Move it to production</h2>
-<p>
-As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server. 
-</p>
-<p>
-Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP&#8217;ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard. 
-</p>
-<h3>Little adjustments for production server</h3>
-<p>
-My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning. 
-</p>
-<h3>Using Github hook to automate build run</h3>
-<p>
-I want my every commit to <code>development</code> to be tested and to be visible on Stage. As it said in <strong>Configure system</strong> part, you can setup build triggers. With build trigger you can run build just by requesting this URL <code>http://jenkins.server/jobname/build?token=TOKEN</code>.
-</p>
-<p>
-In github repository go to Admin section and setup new hook in &#8220;Post Recieve URLs&#8221; section, like this:
-</p>
-<!-- gtihub -->
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/TcpDr67qBpI/AAAAAAAAHZ4/bL1s9Lwhh7g/s912/github.png" alt="github" />
-<p>
-This concludes the setup.
-</p>
-<h2>Control your builds all the time</h2>
-<p>
-What we did is only very basic setup, but it already gives a lot of power. It is really easy to track all builds/artifacts/history of changes. Downtime of site is extreamly slow (comparing to manual changes). Dashboard is very convenient to control builds:
-</p>
-<!-- dashboard -->
-<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/TcpEsDXvmmI/AAAAAAAAHZ8/c7ttFDLm_fA/s912/dashboard.png" alt="dashboard" /></div>
 
       
       

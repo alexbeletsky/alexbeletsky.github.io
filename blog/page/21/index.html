@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="NDC2010 conference videos available on torrent Jul 13th, 2010 Video Huge amount of priceless information is not available on legal torrent server. &hellip;">
+  <meta name="description" content="TestLint a new tool from TypeMock Jul 15th, 2010 Tools As one of my favorite topics - tools that improve tests quality I would like to describe a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,76 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/testlint-new-tool-from-typemock.html">
+    
+      TestLint a new tool from TypeMock</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-15T09:50:00+03:00" pubdate data-updated="true">Jul 15<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>As one of my favorite topics - tools that improve tests quality I would like to describe a <a href="http://site.typemock.com/test-lint">TestLint</a>. It is a rather new tool from famous TypeMock company, so as soon it has been announced I&#8217;ve immediately downloaded it.</p>
+<p>
+I&#8217;ve used it couple of weeks and want to share what I liked:
+</p>
+<p>
+<ul>
+<li>It is lightweight, easy to install</li>
+<li>It easily detects a empty test cases. In such case it shows a warning near the case</li>
+<li>Documentation says that it is <a href="http://site.typemock.com/creating-a-test-lint-rule/">extendable</a> by custom rules, but I haven&#8217;t tried it yes</li>
+</ul>
+</p>
+<p>
+What my initial feedback on it could be:
+<ul>
+<li>I would believe my tests are perfect, but &#8220;Empty&#8221; case if only one warning I saw from TestLint so far</li>
+<li>Analysis is done on pre-build sources, so to get results you have to build you tests first</li>
+<li>You can get analysis only by browsing a sources. It would be nice, if you can get all warnings in separate window</li>
+<li>It would be nice to see all rules currently used in some UI</li>
+<li>It would be nice if rules could be created not only by API but also through some interface</li>
+</ul>
+</p>
+<p>
+Anyway, TestLint is free, it doesn&#8217;t crash your Visual Studio, it helps you to do better job in some way - there are no reasons not to install it! I would recommend it and waiting for next versions with improvements. 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -838,97 +908,6 @@ So object is marked as to be deleted by calling <a href="http://msdn.microsoft.c
 <br />
 <p>
 It is really easy to start up with Repositories keeping its implementation as simple as possible. Of cause, typicaly data structure in databases are bit more complex than plain table. But it is still possible to work with this pattern, combining with Repositories, Aggregates, Entities and Values.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/06/ddd-domain-driven-development.html">
-    
-      DDD, Domain Driven Design</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-06-28T14:00:00+03:00" pubdate data-updated="true">Jun 28<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ddd/'>DDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-There is one great book by Jimmy Nilsson <a href="http://domaindrivendesign.org/books#DDD_apply">Applying Domain-Driven Design and Patterns</a> (russian translation of that book is just awful, so now I&#8217;m looking for orignal copy). Jimmy is describing DDD with a very nice examples and concepts, also he gives a good attension to TDD 
-    and refactoring. If you want to start with DDD (and you have to) you should 
-    check DDD website <a href="http://domaindrivendesign.org/">http://domaindrivendesign.org/</a> and I really liked personal <a href="http://jimmynilsson.com/blog/">blog</a> of Jimmy Nilsson. 
-<br />
-<br />
-I already did use DDD in my previous <a href="http://abeletsky.blogspot.com/search/label/DDD">posts</a> while I designed registration functionality for web application. I believe that many of you are using DDD in your development practice but it could be rather implicit practice.
-<br />
-<br />
-DDD is not something strict like methodologies or technologies are and give no strict rules how to do things, but rather a way of thinking how to work with domain specific within software development. What I personally like in DDD that it goes with a set of patterns that also helps to form common vocabulary for developers. There is a document that gives short summarize on DDD patterns, you can get is <a href="http://domaindrivendesign.org/sites/default/files/discussion/PatternSummariesUnderCreativeCommons.doc">here</a>.  
-<br />
-<br />
-Let&#8217;s review triangle of What/Why/Where for DDD.
-<br />
-<br />
-<h2>What ?</h2>
-<br />
-Domain Driven Development is a way of thinking for development of software that do focus on:
-<ul>
-<li>
-<u>Core domain</u> - Understanding of domain is vital for any software <i>product</i>. Proper representation of domain with tools and languages you have is vital for any software <i>project</i>.
-</li>
-<li>
-<u>Patterns</u> - If I met some problem I&#8217;m really sure that I&#8217;m not first person who did, and probably this problem is alredy solved (probably well enought). Such &#8220;solved&#8221; problems forms so called patterns, something &#8220;know-how&#8221; that could be reused for another partcular needs. There are <i>no reasons</i> to reinvent wheeel.
-</li>
-<li>
-<u>Collaboration</u> - Collaboration between developers and domain experts as more extensive as possible. Experts could be a customers (customer on site as XP says) or other representive who in charge of product (product owner as Scrum says).
-</li>
-</ul>  
-<br />
-<br />
-<h2>Why ?</h2>
-<br />
-Software is something that suppose to solve problems we met in life. DDD focused on these problems and tries to desing software as closer to problems as possible. Personally I think that DDD is a native way of software development.
-<br />
-<br />
-<h2>Where ?</h2>
-<br />
-Everywhere actually. DDD is not for some specific areas. So, Web, Desktop, Fun or Science.. everything is applicable.
-<br />
-<br />
-<h2>Conclusions</h2>
-<br />
-<p>
-As I said on a beginning DDD is something that every developer shound aware about it (I would highlight word &#8220;aware&#8221; meaning it is not expected to be an expert on it, that always good, but know that it is exists and know key priciples). You will easy found a start up materials in internet. Meanwhile if I meet some examples of DDD patterns implementation I&#8217;ll do blog about it.
 </p></div>
 
       

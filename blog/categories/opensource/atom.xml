@@ -4,7 +4,7 @@
   <title><![CDATA[Category: opensource | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/opensource/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-07-28T17:54:19+03:00</updated>
+  <updated>2014-08-22T18:30:00+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,211 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
+    <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
+    <updated>2014-08-22T15:38:00+03:00</updated>
+    <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
+    <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in you projects as well.</p>
+
+<p>Once you need to setup infrastructure for notifications in your application, it will be really easy to do. It provides transport of <a href="https://github.com/jimrubenstein/node-mandrill">Mandrill</a>, <a href="https://github.com/twilio/twilio-node">Twilio</a>, <a href="https://github.com/ToothlessGear/node-gcm">Android</a> and <a href="https://github.com/argon/node-apn">Apple</a> push notifications.</p>
+
+<!-- MORE -->
+
+
+<h2>Starting up</h2>
+
+<p>The project already has comprehensive <a href="https://github.com/likeastore/notifier/blob/master/README.md">README</a> that explains initial steps. At the moment, the server is available as github repository that you need to clone and prepare entry point for it. I&rsquo;m thinking to pack the things into one <code>npm</code> module. If you see it makes sense, please let me know.</p>
+
+<p>To start, you need to clone the repo,</p>
+
+<p><code>bash
+$ git clone https://github.com/likeastore/notifier.git
+</code></p>
+
+<p>And then create <code>app.js</code> file, there all setup of <code>notifer</code> taking place.</p>
+
+<p>```js
+var notifier = require(&lsquo;./source/notifier&rsquo;);</p>
+
+<p>// TODO: configuration</p>
+
+<p>// start the server
+notifier.start(process.env.PORT || 7000);
+```</p>
+
+<p>Let&rsquo;s go straight to <code>configuration</code> part.</p>
+
+<h2>Events, Actions and Executors</h2>
+
+<p>The <code>notifier</code> is HTTP server, that receives <code>event</code> and turns that event into corresponding <code>action</code>. One event could create as many actions as needed. Actions is something that later is going to be <code>executed</code>.</p>
+
+<p>The basic setup consits of 3 parts: receive event, resolve event and execute it.</p>
+
+<p>```js
+notifier</p>
+
+<pre><code>.receive('incoming-event', function (event, actions, callback) { /* ... */ })
+.resolve('created-action', function (action, actions, callback) { /* ... */ })
+.execute('created-action', function (action, transport, callback) { /* ... */ });
+</code></pre>
+
+<p>```</p>
+
+<p>Say, we have <code>user-registered</code> event which we need to send a welcome email,</p>
+
+<p>```js
+notifier</p>
+
+<pre><code>.receive('user-registered', function (e, actions, callback) {
+    actions.create('send-welcome', {user: e.user}, callback);
+})
+.resolve('send-welcome', function (action, actions, callback) {
+    db.users.findOne({email: action.user}, function (err, user) {
+        if (err) {
+            return callback(err);
+        }
+
+        if (!user) {
+            return callback({message: 'user not found', email: action.email});
+        }
+
+        var data = {
+            email: action.user,
+            user: _.pick(user, userPick)
+        };
+
+        actions.resolved(action, data, callback);
+    });
+})
+.execute('send-welcome', function (action, transport, callback) {
+    var vars = [
+        {name: 'USERID', content: action.data.user._id},
+        {name: 'USER_NAME', content: action.data.user.displayName || action.data.user.name}
+    ];
+
+    transport.mandrill('/messages/send-template', {
+        template_name: 'welcome-email',
+        template_content: [],
+        message: {
+            auto_html: null,
+            to: [{email: action.data.email}],
+            global_merge_vars: vars,
+            preserve_recipients: false
+        }
+    }, callback);
+});
+</code></pre>
+
+<p>```</p>
+
+<ul>
+<li><code>recieve</code> &ndash; receives event from outside and turns the event into corresponding action.</li>
+<li><code>resolve</code> &ndash; step to extend action with additional data, email, name of user etc.</li>
+<li><code>execute</code> &ndash; uses the transport to transmit the event</li>
+</ul>
+
+
+<h2>Transports</h2>
+
+<p>Mandrill provides support from emails notifications,</p>
+
+<p>```js
+.execute(&lsquo;send-welcome&rsquo;, function (action, transport, callback) {</p>
+
+<pre><code>var vars = [
+    {name: 'USERID', content: action.data.user._id},
+    {name: 'USER_NAME', content: action.data.user.displayName || action.data.user.name}
+];
+
+transport.mandrill('/messages/send-template', {
+    template_name: 'welcome-email',
+    template_content: [],
+    message: {
+        auto_html: null,
+        to: [{email: action.data.email}],
+        global_merge_vars: vars,
+        preserve_recipients: false
+    }
+}, callback);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Twilio is used from sms,</p>
+
+<p>```js
+.execute(&lsquo;send-verify-sms&rsquo;, function (a, transport, callback) {</p>
+
+<pre><code>    transport.twilio.messages.create({
+        to: a.data.phone,
+        from: '+12282201270',
+        body: 'Verification code: 1111',
+    }, callback);
+});
+</code></pre>
+
+<p>```</p>
+
+<p>For Android push notifications,</p>
+
+<p>```js
+.execute(&lsquo;send-android-push-notification&rsquo;, function (a, transport, callback) {</p>
+
+<pre><code>var tokens = [];
+tokens.push(a.data.token);
+
+transport.android.push({
+    message: {key1: 'value1', key2: 'value2'},
+    tokens: tokens,
+    retries: 3
+}, callback);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>For Apple push notifications,</p>
+
+<p>```js
+.execute(&lsquo;send-ios-push-notification&rsquo;, function (a, transport, callback) {</p>
+
+<pre><code>var tokens = [];
+tokens.push(a.data.token);
+
+transport.ios.push({
+    production: false, // use specific gateway based on 'production' property.
+    passphrase: 'secretPhrase',
+    alert: { "body" : "Your turn!", "action-loc-key" : "Play" , "launch-image" : "mysplash.png"},
+    badge: 1,
+    tokens: tokens
+}, callback);
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Configuration</h2>
+
+<p>Before the run, you need to make sure the <code>notifier</code> is configured properly. Security tokens and connections strings to MongoDB. If you use Logentries, you can provide token and all logs will be submitted there.</p>
+
+<p>The <code>accessToken</code> is a shared secret between server and client, to prevent unauthorized access.</p>
+
+<p>The <a href="https://github.com/likeastore/notifier/blob/master/config/production.config.js">config</a> is using ENV variables on production and hardcoded values for development and staging.</p>
+
+<h2>Clients</h2>
+
+<p><code>notifier</code> can be used by any HTTP client, in most simple case <code>curl</code>,</p>
+
+<p><code>bash
+$ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -d @- http://notifier.likeastore.com/api/events?access_token=ACCESS_TOKEN
+</code></p>
+
+<p>We already have Node.js client <a href="https://github.com/DemocracyOS/notifier-client">DemocracyOS/notifier-client</a> and plan to have browser client as well. But in essence it&rsquo;s just HTTP post with <code>event</code> payload and <code>access_token</code> in query string, so basically it can be used from any language and platform.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Open Source]]></title>

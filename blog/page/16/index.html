@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="The best day in developer&#8217;s life Mar 16th, 2011 Life What would you think is best day in developers life? First day of work, last one? Salary &hellip;">
+  <meta name="description" content="ASP.NET developers disease Mar 22nd, 2011 Life We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,71 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/03/aspnet-developers-disease.html">
+    
+      ASP.NET developers disease</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-22T14:06:00+02:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+We are trying to hire web developer with using of Microsoft technology stack of ASP.net/C#/WebForm/MVC etc. So, I do a lot of interviews nowadays and I found out interesting fact. I&#8217;ve noticed symptoms of disease many of many ASP.net guys suffer from. The people who spent a lot of time with WebForms do not really understand web.
+</p>
+<p>
+Originally WebForms has been designed in perspective to be conveniently used by Visual Basic developers. Ones who created UI in designers and put logic of application into control event handlers methods. That was a good idea because that gave possibility to many people switch to web world, without too much 
+    harm their own world of Windows programming (controls, events, handlers). That worked great, because all you have to understand is Page Lifecycle, be aware of controls that Microsoft created for you and be able to drag the control in WYSIWYG editor. The application created in this way was mostly fine, because it was to far to Web 2.0, AJAX, CSS and HTML revolutions.
+</p>
+<p>
+Time has passed. Web stepped far away from a <code>form</code> with <code>submit</code> button and tables for everything, into rich UI applications with complex client side code, styled up with CSS. WebForms issues appeared really seriously, because it too much abstracted you from &#8220;what is actually going on&#8221;. WebForms controls generated HTML for you, did a server side validation. You could tweak a bit of CSS on server side as well. But this is a not controlling of your application, but rather adapting to &#8220;old-school&#8221; type of web development with ASP.net. With such level of abstraction you were loosing many important things.
+</p>
+<p>
+I&#8217;m not saying the WebForms is bad. I&#8217;m saying that WebForms did a bad joke for the people who do not try to see bit far from their nose. If you open your eyes you would see how much web development is far from ASP.net WebForms development. Modern web development is actually started on client side. You have to understand HTML/JS really fine to be efficient in it. You might not be a designer, but you have to be able to style up your HTML from UI mock in PSD. You should understand REST and AJAX to make go from web page to web application. And the issue is - the most ASP.net developers do not know these things. They think that knowing a C# or VB.net is much OK for creation of web application and the rest is work for front-end developers. 
+</p>
+<p>
+Guys, seriously.. If you think: &#8220;HTML is easy, I could do learn in 5 mins&#8221;, &#8220;CSS is nothing to do..&#8221;, &#8220;I don&#8217;t want to do javascript&#8221; - you have those symptoms. Please try to markup the page that might look like <a href="http://onehub.com/">that</a>, enchase it with CSS3 transitions and shadows. Try to use jQuery for handling UI. You will see it is not easy at all. And basically your knowledge on C# does not make help you. I would say, it might be even harder than you application server side. Knowing how to do things with WebForms is great, but you should not be only limited to WebForms.
+</p>
+<p>
+So, if your CV says you are <i>web developer</i>, please make sure that your are really able to do <i>web products</i>. Do not limit your self to &#8220;client-side&#8221; or &#8220;server-side&#8221; developer, it does not work any more. Be universal, look for the same things in a different angles, that helps sometimes. 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1084,151 +1149,6 @@ new public ActionResult View(string url)
 </pre>
 <p>
 It will make application compliable and work as expected.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/02/ninject-provider-as-factory-method.html">
-    
-      Ninject provider as factory method</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-13T19:22:00+02:00" pubdate data-updated="true">Feb 13<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
-</p>
-<p>
-I was implementing small feature recently. As user registered on site, he receives confirmation email and registration details. Pretty common functionality along the sites. So, I add next application service <code>INotificationService</code> that took responsibility of sending email message to user. Nothing special, nothing complex. 
-</p>
-<pre class="brush: csharp">
-namespace Trackyt.Core.Services
-{
-    public class NotificationService : INotificationService
-    {
-        private IEMailService _emailService;
-
-        public NotificationService(IEMailService emailService)
-        {
-            _emailService = emailService;
-        }
-
-        public void NotifyUserOnRegistration(string usersEmail, string password)
-        {
-            var emailMessage = CreateEmailMessageForUser(usersEmail, password);
-            _emailService.SendEmail(emailMessage, "support");
-        }
-
-        //...
-</pre>
-<p>
-As I&#8217;ve tested and integrated it to application, everything were just fine. Till the time I reset database and re-run tests. The problem, that <code>INotificationService</code> itself depends on <code>IEmailService</code> that uses <code>ICredentialsRepository</code> to extract email server credentials (account, password, settings) from database. After database is reset, <code>Credentials</code> table is just empty and <code>IEmailService</code> throws exception that there are no credentials, so send email is impossible. I could not add credentials as SQL to database script, since it depend on configuration and exposes private password. Do it manually after each reset of database is boring task. Furthermore, I don&#8217;t want my application to send any emails as I just do some development testing.
-</p>
-<p>
-The obvious design workaround is - define <code>INotificationServiceFactory</code> that responsible for <code>NotificationService</code> instantiation. Factory decides, if application run in <code>debug</code> mode, just stub of <code>NotificationService</code> is used, otherwise real implementation is used.
-</p>
-<pre class="brush: csharp">
-namespace Trackyt.Core.Services
-{
-    public class NotificationServiceFactory : INotificationServiceFactory
-    {
-        public INotificationService GetService()
-        {
-            if (HttpContext.Current.IsDebuggingEnabled)
-            {
-                // just stub..
-                return new NotificationServiceForDebug();
-            }
-
-            // here I need to pass EmailService to constructor
-            return new NotificationService ( // ??? );
-        }
-
-        // ...
-</pre>
-<p>
-But it is not so easy as it seems to.. Here the problem: <code>NotificationService</code> have to accept <code>EmailService</code>, that have to be created created by DI framework (I could not create it by <code>new</code> since I loose all benefits of inversion of control). So, in factory I need to have a <code>IKernel</code> object - Ninject core object, for instantiating of objects from Inversion of Control container. It should be extended with constructor taking <code>IKernel</code> as argument.
-</p>
-<p>Issues:</p>
-<ul>
-<li><strong>Circular dependency</strong> - factory is defined in Core assembly, kernel is defined in Web application.. Web application references Core, to make it work now Core need to reference Web (it is actually possible, but very ugly.. I try to avoid such things).</li>
-<li><strong>Additional references</strong> - now Core also need to reference Ninject, to make it compliable.</li>
-<li><strong>Violation of Dependency inversion principle</strong> - <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">one</a> of the <a href="http://en.wikipedia.org/wiki/Solid_(object-oriented_design)">SOLID</a> principles of object oriented systems. Model must not depend on infrastructure.</li>
-</ul>
-<p>
-Fortunately Ninject provides functionality to avoid issues mentioned above! Instead of binding to exact type, like
-</p>
-<pre class="brush: csharp">
-
-    Bind&lt;INotificationServiceFactory&gt;().To&lt;NotificationServiceFactory&gt;();
-
-</pre>
-<p>
-I can bind creation of type to Provider:
-</p>
-<pre class="brush: csharp">
-
-    Bind&lt;INotificationService&gt;().ToProvider&lt;TrackyNotificationServiceProvider&gt;();
-
-</pre>
-<p>
-Provider is class that implement <a href="https://github.com/ninject/ninject/wiki/Providers,-Factory-Methods-and-the-Activation-Context">IProvider</a> interface, which is actually just one method <code>CreateInstance</code>. CreateInstance, receives <code>IContext</code> object as parameter that contains <code>IKernel</code>. <code>TrackyNotificationServiceProvider</code> is placed on same level as the rest of Ninject infrastructure code is placed. Model remains clear and exact and do not mess up with infrastructure code.
-</p>
-<pre class="brush: csharp">
-namespace Web.Infrastructure
-{
-    public class TrackyNotificationServiceProvider : Provider&lt;INotificationService&gt; 
-    {
-        protected override INotificationService CreateInstance(IContext context)
-        {
-            if (HttpContext.Current.IsDebuggingEnabled)
-            {
-                return new NotificationServiceForDebug();
-            }
-
-            return new NotificationService(context.Kernel.Get&lt;IEMailService&gt;());
-        }
-    }
-}
-</pre>
-<p>
-Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
 </p></div>
 
       

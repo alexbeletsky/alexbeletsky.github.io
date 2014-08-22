@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="I&#8217;ve released my own product - Trackyt.net Nov 24th, 2010 Trackyt.net I&#8217;ve not been blogging for awhile, not because I&#8217;m too lazy &hellip;">
+  <meta name="description" content="You stucked? Stop and ask for help! Nov 26th, 2010 Life, Trackyt.net I&#8217;ve been working on one task for last several days. In a product I work &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,95 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/11/you-stucked-stop-and-ask-for-help.html">
+    
+      You stucked? Stop and ask for help!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-26T13:24:00+02:00" pubdate data-updated="true">Nov 26<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been working on one task for last several days. In a product I work there is feature that looks like Excel - template editor. User is able to put a data to sheets and do some simple calculation with formulas (SUM, MUL etc.). This functionality has been created far ago and worked fine. But recently we&#8217;ve changed our engine and now we support not only &#8220;plain&#8221; data structure, but expanded one - when user is able to say - &#8220;this column or row is expanded with such data&#8221;. Data size is dynamic and could be predicted while template edition and SUM function have to take into account that data is expanded.
+</p>
+<p>
+So, I&#8217;ve created a number of test cases that cover new functionality and implemented simple mechanism that process formula like SUM(A1:B2) and adjust start and finish indexes according to size of expansion. At the beginning that <code>AdjustIndexes</code> function were small and easy to read, it just perform simple calculation based on current row/current column, original indexes places and some information from expanded data. 
+</p>
+<p>
+But after a demo we&#8217;ve found some bugs: if several expansions present in template - it fails. If not expanded data comes after expanded it fails and some more..
+</p>
+<p>
+I&#8217;ve extended tests cases with all found issues and start to attack problem. I start to adjust <code>AdjustIndexes</code> to work with new cases. And after a while I&#8217;ve completed it, but this function started to look scary - a lot of nested if-else cases, calculation of indexes, += operations etc. OK, I thought.. it could be refactored later, so I did a checkin. My happiness was not long, because while developers tests I just found another bug. OK, usual stuff - test and fix. Let&#8217;s go.
+</p>
+<p>
+Meanwhile I&#8217;ve already spent about 6 hours on that. At stand-up I said - &#8220;it seems to be alright, only one case is failing now, I&#8217;m finishing up and commit&#8221;. But I was wrong. As I changed the function to work with new case, new case became green but existing ones became red.. I fell stress that task originally estimated for 1 day is now 1.5 and supposed to be about 2 days. I wanted to do quickly, so started to play a game - &#8220;Change something, re-run the tests if GREEN - you win!&#8221; (such approach actually works some time as soon as you got good test cases and double check the results). Already created function became more scary and what is worse - it does not satisfied all tests. I lost the control of it and only one I understand - &#8220;I do not now understand this function works now.. It does something wrong and I have to go with another idea to solve the problem&#8221;.
+</p>
+<p>
+It was about 10 hours spend on that. I started to lose the game, but just didn&#8217;t want to give up. I need another idea, I need another approach.. I need additional data structures that would help to map original table indexes to expanded ones, I need to change the engine to fill those mapping, I need to change <code>AdjustIndexes</code> function to take mapping into account. I felt a little tired and stressed but proceed with coding like crazy. 
+</p>
+<p>
+14 hours passes, late evening, and I was finishing up my <code>Mapping</code> mechanism, while I was contacted by my teammate Carsten - &#8220;How is it going with SUM?&#8221;. I&#8217;ve explained my issues, my approach and my status, but basically it was like - &#8220;It is not yet done&#8221;. But he said that it seems like I&#8217;m doing something wrong and proposed another algorithm of doing this adjustment, with no other additional data structures. I probably was to tired to understand everything there, so he just said &#8220;Wait for 30 minutes, I&#8217;ll do some code and show to?&#8221;.  I&#8217;ve been shocked, something I worked for 14 already he want to do in 0.5 hour? OK.  
+</p>
+<p>
+He sent his first solution. Hopefully it was only one function to change I could easily integrated and re-run all test cases I had so far. Most of them were failed at first try. We started a pair session and after several run/fix/test sessions it started to work! All tests are green! It works in application.. Function is quite small and easy to read.
+</p>
+<p>
+Yeahh.. that was such great work (respect to Carsten) and so such shame on me. 15 hours.. vs 40 minutes.. 30 lines of code vs. 300.. one point of integration vs. many. I&#8217;ve been defeated.
+</p>
+<p>
+When I finished it up and went a street to walk with dog, I&#8217;ve tried to find at lest something positive in all this situation. And you know what? I can up with one another feature to <a href="http://trackyt.net">trackyt.net</a>. 
+</p>
+<p>
+If you have a task in progress and you spend 12 (8, 6 or even 4) hours, task is became red and interacts with user:
+</p>
+<ul>
+<li>Take a rest, re-think</li>
+<li>Ask for help</li>
+</ul>
+<p>
+That would prevent my situation somehow. It will try to say to you &#8220;Man, you probably stucked with that, ask some one to take a look&#8221;.. This seems to be obvious, but if you are in hurry you are not just doing that hoping to handle everything by yourself. This is not good. I was happy about such idea and lesson learned, so back to home with good mood already :).
+</p>
+<p>
+Have you been to such situation, do you think it&#8217;s valuable if you have some stopwatch and notifier that would push you shoulder and say &#8220;Stop now ask for help!&#8221; ?
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1141,83 +1230,6 @@ Execution of DOD is not possible without responsible persons. Scrum Master (pers
 <li>&#8220;Broken windows&#8221; principle - if someone start to ignore rule, eveybody start to ignore it</li>
 <li>&#8220;Development only&#8221; DOF - care only about development side of process, forget rest (doc, QA, deployment)</li>
 </ul></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/10/agileee-2010-timofey-yevgrashyn-agile.html">
-    
-      Agileee 2010: Timofey Yevgrashyn: Agile in Ukraine</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-09T16:06:00+03:00" pubdate data-updated="true">Oct 9<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/agile/'>Agile</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-<small>
-<strong>Disclaimer:</strong> text below is compilation of notes I made on Agileee 2010 conference, listening to different speakers. I do it to keep knowledge I got on conference, share it with my colleagues and anyone else who interested. It is only about how I heard, interpret, write down the original speech. It also includes my subjective opinion on some topics. So it could not 100% reflects author opinion and original ideas. 
-</small>
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLBo662e88I/AAAAAAAAG-A/KwBb6tTq6L4/s1600/DSC03685.JPG"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLBo662e88I/AAAAAAAAG-A/KwBb6tTq6L4/s400/DSC03685.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5526032104223077314" /></a>
-<p>
-Speech by Timofey Yevgrashyn, the pioneer of Ukrainian Agile movement, shares his vision of the history of Agile in Ukraine.
-</p>
-<h2>Milestones</h2>
-<ul>
-<li>2001: Agile Manifesto signed, dotcom crash, outsourcing growth.. and many Ukrainian outsourcing companies appears</li>
-<li>2005: First Scrum/XP projects in Ukraine, first certified Scrum Master</li>
-<li>2007: First scrum meeting in Ukraine</li>
-<li>2010: a lot of Agile conferences (Agileee, It jam, Agile base camp etc.)</li>
-</ul>
-<h2>Ukranian Agile</h2>
-<p>
-Timofey did a survey for gathering of information about actual Agile state in Ukraine, which he shared on his speach. Here a some facts of it.
-</p>
-<ul>
-<li>300 Ukrainian CSM (Certified Scrum Master) from ~104000 of the world</li>
-<li>Ukraine teams are the &#8220;industry average&#8221;</li>
-<li>Weakest areas on Ukrainian teams: retrospectives, planning</li>
-</ul>
-<p>
-Timofey emphasis that we have to move somewhere, but there is no new methodology. Agile is already &#8220;sold&#8221;.. but not implemented. So, a lot of shops are ready to adapt Agile practices and try to do that, but not right (eventually it ends up with blaming Agile that it does not work). Ukrainian Agile adopters have to avoid &#8220;cherry picking&#8221;, implement all required practices (by book, using Shu-approach).  
-</p>
-<p>
-Allan Kelly were present on session did a several comments, that Ukrainian Agile people behave and do same mistake as in UK, as its in whole world. Later on he did very nice tweet: &#8220;#agileee Its reverse-Tolstoy again: All UnAgile teams are UnAgile in the same ways, all Agile teams are Agile in their own unique way&#8221;.
-</p></div>
 
       
       
