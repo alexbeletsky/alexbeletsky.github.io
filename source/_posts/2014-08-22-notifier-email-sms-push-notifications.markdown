@@ -6,9 +6,9 @@ comments: true
 categories: opensource nodejs javascript likeastore
 ---
 
-I recently came up with very convenient component - [likeastore/notifier](https://github.com/likeastore/notifier). Notifier is easy to setup Email, SMS and Push Notifications Server. It's been open sourced few month, very specific to [Likeastore](https://likeastore.com) needs, but due to great [contributions](https://github.com/likeastore/notifier/graphs/contributors) it became very generic and can be used in you projects as well.
+I recently came up with very convenient component - [likeastore/notifier](https://github.com/likeastore/notifier). Notifier is easy to setup Email, SMS and Push Notifications Server. It's been open sourced few month, very specific to [Likeastore](https://likeastore.com) needs, but due to great [contributions](https://github.com/likeastore/notifier/graphs/contributors) it became very generic and can be used in your projects as well.
 
-Once you need to setup infrastructure for notifications in your application, it will be really easy to do. It provides transport of [Mandrill](https://github.com/jimrubenstein/node-mandrill), [Twilio](https://github.com/twilio/twilio-node), [Android](https://github.com/ToothlessGear/node-gcm) and [Apple](https://github.com/argon/node-apn) push notifications.
+Once you need to setup infrastructure for notifications in your application, it will be really easy to do. It provides transport of [Mandrill](https://github.com/jimrubenstein/node-mandrill), [Twilio](https://github.com/twilio/twilio-node), [Android](https://github.com/ToothlessGear/node-gcm) and [iOS](https://github.com/argon/node-apn) push notifications.
 
 <!-- MORE -->
 
@@ -120,7 +120,7 @@ Mandrill provides support from emails notifications,
 });
 ```
 
-Twilio is used from sms,
+Twilio is used for sms,
 
 ```js
 .execute('send-verify-sms', function (a, transport, callback) {
