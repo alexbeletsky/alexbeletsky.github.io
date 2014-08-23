@@ -4,7 +4,7 @@
   <title><![CDATA[Category: likeastore | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/likeastore/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-08-22T18:30:00+03:00</updated>
+  <updated>2014-08-23T07:19:52+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -18,9 +18,9 @@
     <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
     <updated>2014-08-22T15:38:00+03:00</updated>
     <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
-    <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in you projects as well.</p>
+    <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in your projects as well.</p>
 
-<p>Once you need to setup infrastructure for notifications in your application, it will be really easy to do. It provides transport of <a href="https://github.com/jimrubenstein/node-mandrill">Mandrill</a>, <a href="https://github.com/twilio/twilio-node">Twilio</a>, <a href="https://github.com/ToothlessGear/node-gcm">Android</a> and <a href="https://github.com/argon/node-apn">Apple</a> push notifications.</p>
+<p>Once you need to setup infrastructure for notifications in your application, it will be really easy to do. It provides transport of <a href="https://github.com/jimrubenstein/node-mandrill">Mandrill</a>, <a href="https://github.com/twilio/twilio-node">Twilio</a>, <a href="https://github.com/ToothlessGear/node-gcm">Android</a> and <a href="https://github.com/argon/node-apn">iOS</a> push notifications.</p>
 
 <!-- MORE -->
 
@@ -145,7 +145,7 @@ transport.mandrill('/messages/send-template', {
 <p>});
 ```</p>
 
-<p>Twilio is used from sms,</p>
+<p>Twilio is used for sms,</p>
 
 <p>```js
 .execute(&lsquo;send-verify-sms&rsquo;, function (a, transport, callback) {</p>
