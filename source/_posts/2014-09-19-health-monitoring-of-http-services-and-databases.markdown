@@ -16,7 +16,7 @@ It's really easy to setup and deploy on any server or Dokku/Heroku environment.
 
 ## Overview
 
-The core of heartbeat is about ~300 [lines of code](https://github.com/likeastore/heartbeat/blob/master/source/hearbeat.js), so it's not a big deal to look inside to understand it principles of work. But in general, it's continuously running loop, that executes the small jobs who runs particular check strategy and report results if anything wrong.
+The core of heartbeat is about ~300 [lines of code](https://github.com/likeastore/heartbeat/blob/master/source/hearbeat.js), so it's not a big deal to look inside to understand it principles of work. But in general, it's continuously running loop, that executes the small jobs who runs particular check strategy and report results if anything is wrong.
 
 To make use of it you just need to clone the repo and update [config/index.js](https://github.com/likeastore/heartbeat/blob/master/config/index.js) with your configuration.
 
