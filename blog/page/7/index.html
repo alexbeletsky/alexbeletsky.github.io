@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Re-thinking Candidate application Aug 7th, 2012 Candidate I&#8217;ve released 0.0.1 version of Candidate pretty long time ago. I was actually quite &hellip;">
+  <meta name="description" content="Customizing Folders Layout for NancyFX Application Aug 14th, 2012 NancyFX, Tips NancyFX applications are full of conventions. The default &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,97 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/08/customizing-folders-layout-for-nancyfx.html">
+    
+      Customizing Folders Layout for NancyFX Application</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-14T20:05:00+03:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nancyfx/'>NancyFX</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don&#8217;t even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
+</p><p>    In my case, during <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
+</p><a href="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png"><br />
+    <img src="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png" alt="folder layout" /><br />
+</a><br />
+<p>    &#8216;Bin&#8217; folder would contain the application itself, as well as all referenced assemblies. &#8216;Client&#8217; folder would contain all client side code - HTML/CSS/Javascript. Initially I thought to make all of those as embedded resources, but firstly <a href="http://stackoverflow.com/questions/11888813/nancyfx-using-embedded-views">did not worked</a> on Nancy v.0.11.0, secondly having those files placed separately make it possible to easy application updates (patching).<br />
+</p><p>    Fortunately, it is easy to apply any folder layout you want. There are 2 types of recourses that Nancy is looking from outside, they are - views and static content. Both of them are resolved by default conventions and those conventions applied against the application root.<br />
+</p><h2>Changing the application root</h2><p>    In my case, executables are places in Bin folder, but resources are placed one level above. By default, the application root is <code>Environment.CurrentDirectory</code> and I need to changed that. In order to make this happen, you have to implement <code>IRootProvider</code> instance.<br />
+</p><pre class="brush: csharp">namespace Candidate.Nancy.Selfhosted.App
+{
+    public class PathProvider : IRootPathProvider
+    {
+        public string GetRootPath()
+        {
+            return Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\"));
+        }
+    }
+}
+</pre><p>    There is a little pitfall, that I got into. Please, make sure that root folder is <strong>absolute</strong> path (<code>Path.GetFullPath</code> - returns absolute path). If you didn&#8217;t do that, some part of application could not work right. I&#8217;ve sent a <a href="https://github.com/NancyFx/Nancy/pull/706">pull request</a> for <code>StaticContentConventionBuilder</code> class, but more appropriate fix is actually having it rooted. <br />
+</p><p>    After, just place the type of path provider instance into Nancy bootstrapper class, as overridable property:<br />
+</p><pre class="brush: csharp">protected override Type RootPathProvider
+{
+    get
+    {
+        return typeof(PathProvider);
+    }
+}
+</pre><h2>Changing the default conventions</h2><p>    Now, we have to teach Nancy to look for view and static resources right.<br />
+</p><p>    The bootstapper contains corresponding virtual method, called <code>ConfigureConventions</code>. There I&#8217;ll overrider the default ones, like that:<br />
+</p><pre class="brush: csharp">protected override void ConfigureConventions(NancyConventions nancyConventions)
+{
+    // static content
+    nancyConventions.StaticContentsConventions.Clear();
+    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("scripts",
+                                                                                                "Client/scripts"));
+    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("content",
+                                                                                                "Client/content"));
+    // view location
+    nancyConventions.ViewLocationConventions.Clear();
+    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", viewName));
+    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", context.ModuleName, "/", viewName));
+}
+</pre><p>    For view location conventions you just need to provider the folder (relative to rootfolder), where the view are located. I used only 2 simple conventions: 1) view is just placed under /views folder 2) view is placed under /view/moduleName folder. <br />
+</p><p>    For static resources, it a little bit trickier. You have to return the *response* object, for corresponding request. Fortunately, <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Conventions/StaticContentConventionBuilder.cs">StaticContentConventionBuilder</a> class, has some helper methods that make it simpler. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -790,69 +881,6 @@ private string RemoveFooter(string content)
 </p><p>I think CS101 was great &#8216;warm-up&#8217; course. I would not stop on that, but I already enrolled for next ones. This time I&#8217;ve choosen more fundametal -  <a href="http://www.udacity.com/overview/Course/st101/CourseRev/1">ST101 - Introduction to Statistics</a> and <a href="http://www.udacity.com/overview/Course/cs215/CourseRev/1">CS215 - Algorithms, Crunching Social Networks</a>. Both courses are starting June 25. Not sure, would it be possible to make them on parallel, so I might hold one if it would be to difficult. Besides of that I&#8217;m currenty looking throught <a href="http://www.udacity.com/overview/Course/cs253/CourseRev/apr2012">CS253 - Web Application Engineering</a> with <a href="http://en.wikipedia.org/wiki/Steve_Huffman">Steve Huffman</a> (the creator of <a href="http://www.reddit.com/">reddit.com</a>) just as a free course, to play a little more with Python and Google App Engine.<br />
 </p><p>I highly recomend you to pickup some course today. And once again, thanks a lot to <a href="http://www.udacity.com">Udacity</a> for that priceless opportunity to learn!<br />
 </p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/06/is-tdd-required-skill-two-years-later.html">
-    
-      Is TDD Required Skill? - Two Years Later</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-05T21:00:00+03:00" pubdate data-updated="true">Jun 5<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>            Two years ago I&#8217;ve concluded an interesting research. I was thinking how much employers care about hiring developers with TDD skills while looking for suitable candidates. As output of this research I&#8217;ve created a <a href="https://github.com/alexanderbeletsky/TddDemand">simple crawler</a>, that is able to crawl vacancy web sites and perform the simple analysis does this vacancy description require TDD skill or not. As well, I&#8217;ve created some <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">blog posts</a>, where I did share results + some technical issues I met during building this crawler. <br />
-        </p>        <p>            At the weekend, I&#8217;ve decided to repeat this experiment. The code of crawler worked perfectly, except some correction I had to apply to conform the markup changes of sites that happed through these two years. Leaving the technical part of this blog post, I want to share the results with you.    <br />
-        </p>        <h2>What was at 2010?</h2>        <p>            Let&#8217;s recap what it was at 2010. I&#8217;ve crawled 978 records from <a href="http://rabota.ua">rabota.ua</a> site and 150 of 978 (about 15%) contained TDD requirement. For <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> the results was a little better, ~23% (49 of 212) contained some mention on TDD. <br />
-        </p>        <p>            The quote from 2 year ago report:<br />
-        </p>        <blockquote>            .. such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.<br />
-        </blockquote>        <p>            I believe the awareness of TDD and general software quality got higher along the way. But let&#8217;s see the figures of 2012.<br />
-        </p>        <h2>What we have in 2012?</h2>        <p>            This time I got a litle more data. 1067 records of <a href="http://rabota.ua">rabota.ua</a> and 560 records of <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a>. But what about demand? <br />
-        </p>        <p>            All right, it&#8217;s only 77 vacancies of 1067 is requiring TDD, which is 7.22% in <a href="http://rabota.ua">rabota.ua</a>. <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> has 127 vacancies requiring TDD which is 22.68%.<br />
-        </p>        <a href="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png"><img src="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png" style="width: 620px"/></a><br />
-        <p>            The technologies breakdown is follows. Java leads as a technology with the highest demand on TDD. During this post creation I thought that my results does include JavaScript, which gain much popularity recently. It&#8217;s interesting to see what&#8217;s there.<br />
-        </p>        <a href="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png"><img src="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png" style="width: 620px"/></a><br />
-        <h2>Conclusions</h2>        <p>            Ukrainian market demand lowered almost twice. USA market demand is stable, with a little change which is almost the noise.<br />
-        </p>        <ul>            <li>Ukraine: 2010 -> 15.34%, 2012 -> 7.22% ( -8.12% )</li>
-            <li>USA: 2010 -> 23.11%, 2012 -> 22.68% ( -0.43% )</li>
-        </ul>        <p>            I can see very low demand on TDD in C/C++ field. Almost equal demand between Java and .NET with a slight win of Java. <br />
-        </p>        <p>            I personally wanted to see different figures. Anyway, it was interesting to see actual results and restored some code that worked 2 years ago. Probably this analysis required to be done more frequently to have a kind of valuable statistics.  <br />
-        </p></div>
 
       
       

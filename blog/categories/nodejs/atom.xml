@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-08-23T07:19:52+03:00</updated>
+  <updated>2014-09-19T19:44:54+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,229 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
+    <link href="http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases.html"/>
+    <updated>2014-09-19T18:27:00+03:00</updated>
+    <id>http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases</id>
+    <content type="html"><![CDATA[<p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
+
+<p>There few products on market that can do that, <a href="http://pingdom.com">Pingdom</a> and <a href="http://newrelic.com">New Relic</a> probably the most know. But they are paid and not that flexible as I want. So, I&rsquo;ve created <a href="https://github.com/likeastore/heartbeat">likeastore/heartbeat</a> that for a month or so helps me to provide quality service.</p>
+
+<!-- MORE -->
+
+
+<p>It&rsquo;s really easy to setup and deploy on any server or Dokku/Heroku environment.</p>
+
+<h2>Overview</h2>
+
+<p>The core of heartbeat is about ~300 <a href="https://github.com/likeastore/heartbeat/blob/master/source/hearbeat.js">lines of code</a>, so it&rsquo;s not a big deal to look inside to understand it principles of work. But in general, it&rsquo;s continuously running loop, that executes the small jobs who runs particular check strategy and report results if anything is wrong.</p>
+
+<p>To make use of it you just need to clone the repo and update <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js">config/index.js</a> with your configuration.</p>
+
+<h2>Notifications</h2>
+
+<p>Heartbeat can use 2 types of notifications at the moment. <a href="https://mandrillapp.com/">Mandril</a> based emails and <a href="https://www.twilio.com/">Twilio</a> based SMSs.</p>
+
+<p>Both requires you to create accounts there and provide API access keys.</p>
+
+<p>That&rsquo;s what&rsquo;s configured on <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L67">transport</a> section of configuration:</p>
+
+<p>```js
+transport: {</p>
+
+<pre><code>mandrill: {
+    token: 'fake-token'
+},
+
+twilio: {
+    sid: 'fake-sid',
+    token: 'fake-token'
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>instead of <code>fake-token</code> and <code>fake-sid</code> you provide your real values there.</p>
+
+<p>You have to specify the recipents for notifications, that happens in <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L56">notify</a> section of configuration:</p>
+
+<p>```js
+notify: {</p>
+
+<pre><code>email: {
+    from: 'heartbeat@likeastore.com',
+    to: ['devs@likeastore.com']
+},
+
+sms: {
+    to: ['+3805551211', '+3805551212']
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As you can see, you specifying <code>from</code> and <code>to</code> emails, as well as <code>phone</code> numbers to send SMS.</p>
+
+<h2>Monitoring</h2>
+
+<p>Now the main part, configure monitoring options. The <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L10">monitor</a> section of configuration is responsible for that. At the moment, it provides provides 5 different monitoring strategies.</p>
+
+<ul>
+<li>HTTP</li>
+<li>JSON</li>
+<li>MongoDB</li>
+<li>Ping</li>
+<li>Resolve</li>
+</ul>
+
+
+<h3>HTTP</h3>
+
+<p>The <code>HTTP</code> sends GET request to specified URL and checks the response code. If response code <code>!==200</code> the error notification is reported.</p>
+
+<p>```js
+<a href="http:">http:</a> [</p>
+
+<pre><code>{
+    url: 'https://likeastore.com'
+},
+{
+    url: 'https://stage.likeastore.com'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<p><code>http</code> is an array of urls to monitor.</p>
+
+<h3>JSON</h3>
+
+<p>The <code>JSON</code> strategy suits the best for HTTP API&rsquo;s. It could request particular URL receive JSON response and compare it to expected result.</p>
+
+<p>```js
+json: [</p>
+
+<pre><code>{
+    url: 'https://app.likeastore.com/api/monitor',
+    response: {
+        "app":"app.likeastore.com",
+        "env":"production",
+        "version":"0.0.52",
+        "apiUrl":"/api"
+    }
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h3>MongoDB</h3>
+
+<p>MongoDB is a commonly part of web applications infrastructure. You need to have a connection string and then you specify the checking query. It could be <code>find</code> query or <code>insert</code> query.</p>
+
+<p>```js
+mongo: [</p>
+
+<pre><code>{
+    connection: 'mongodb://localhost:27017/likeastoredb',
+    collections: ['users'],
+    query: function (db, callback) {
+        db.users.findOne({email: 'alexander.beletsky@gmail.com'}, callback);
+    }
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h3>Resolve</h3>
+
+<p>Resolve is something that makes <code>heartbeat</code> a little different. It usually the thing that one <code>domain names</code> is configured for different <code>ip addresses</code>. As it name stands, <code>resolve</code> would resolve all ip&rsquo;s associated with domain name and ping them separately. If even one of them fails, the notification is created.</p>
+
+<p>```js
+resolve: [</p>
+
+<pre><code>{
+    name: 'google.com'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<p><code>nslookup</code> for <code>google.com</code> returns,</p>
+
+<p>```plain
+› nslookup google.com
+Server:     192.168.1.1
+Address:    192.168.1.1#53</p>
+
+<p>Non-authoritative answer:
+Name:   google.com
+Address: 173.194.113.198
+Name:   google.com
+Address: 173.194.113.199
+Name:   google.com
+Address: 173.194.113.200
+Name:   google.com
+Address: 173.194.113.201
+Name:   google.com
+Address: 173.194.113.206
+Name:   google.com
+Address: 173.194.113.192
+Name:   google.com
+Address: 173.194.113.193
+Name:   google.com
+Address: 173.194.113.194
+Name:   google.com
+Address: 173.194.113.195
+Name:   google.com
+Address: 173.194.113.196
+Name:   google.com
+Address: 173.194.113.197
+```</p>
+
+<p>All that addresses will be checked separately.</p>
+
+<h3>Ping</h3>
+
+<p>Finally it&rsquo;s <code>ping</code>, the simples operation. It just pings given <code>ip</code> address.</p>
+
+<p>```js
+ping: [</p>
+
+<pre><code>{
+    ip: '37.139.9.95'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h2>Setting up the interval</h2>
+
+<p>You can specify the interval of checking. By default it&rsquo;s 10 seconds, but you can do more frequent checks if you want.</p>
+
+<p><code>js
+interval: 5000
+</code></p>
+
+<h2>Running and deploying</h2>
+
+<p>If the configuration is set, you can run heartbeat by,</p>
+
+<p><code>bash
+$ node app.js
+</code></p>
+
+<p>The log optionally could be forwared to <a href="logentries.com">Logentries</a>, by setting up <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L6">config/index.js#logentries</a> section.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
@@ -785,115 +1008,6 @@ describe(&lsquo;when new collection created&rsquo;, function () {</p>
 <p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
 
 <p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
-    <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
-    <updated>2014-01-18T13:38:00+02:00</updated>
-    <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
-    <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
-
-<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
-
-<!-- More -->
-
-
-<p>To mitigate the issue few <a href="http://stackoverflow.com/questions/1972242/auto-reload-of-files-in-node-js">known solutions</a> exist, common idea is that there is watchdog that keeping eye on <code>node</code> process and if crashed, restarts application again.</p>
-
-<p>Recently I&rsquo;ve used great library by <a href="https://github.com/mafintosh">@mafintosh</a> called <a href="https://github.com/mafintosh/respawn">respawn</a>. I liked it&rsquo;s minimalistic style and decided to try it out.</p>
-
-<p>The bare-bones code is very simple. Without modification of your application, just create file <code>monitor.js</code> with nearly such code:</p>
-
-<p>```js
-var respawn = require(&lsquo;respawn&rsquo;);</p>
-
-<p>var monitor = respawn([&lsquo;node&rsquo;, &lsquo;server.js&rsquo;], {</p>
-
-<pre><code>env: {ENV_VAR:'test'}, // set env vars
-cwd: '.',              // set cwd
-maxRestarts:10,        // how many restarts are allowed within 60s
-sleep:1000,            // time to sleep between restarts
-</code></pre>
-
-<p>});</p>
-
-<p>monitor.start(); // spawn and watch
-```</p>
-
-<p><code>monitor</code> will spawn new node process and in case of crash it will be restarted. You can also specify <code>maxRestars</code> (I recommend to do that, if something is really bad it won&rsquo;t be restarted infinitely) and <code>sleep</code> time.</p>
-
-<p>I&rsquo;ve tried that, by implementing <code>/fail</code> end-point in my app, to see that <code>respawn</code> really works.</p>
-
-<p>```js
-app.get(&lsquo;/fail&rsquo;, function (req, res, next) {</p>
-
-<pre><code>setTimeout(function () {
-    var nu = null;
-    nu.access();
-
-    res.send('Hello World');
-}, 1000);
-</code></pre>
-
-<p>});
-```</p>
-
-<p>if I try to hit <code>/fail</code> I&rsquo;ll see no results in browser, but if I go back to <code>/</code> the application is running in normal state.</p>
-
-<p>But simple respawning of application is not complete solution. You need to know what exactly happened to be able to fix issue. <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">Proper logging</a> of your application is essential. I&rsquo;ll show my small setup around <code>respawn</code> that send critical message to <a href="https://logentries.com">Logentries</a>, so all crashes are logged.</p>
-
-<p>```js
-var respawn = require(&lsquo;respawn&rsquo;);
-var util = require(&lsquo;util&rsquo;);
-var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
-
-<p>var proc = respawn([&lsquo;node&rsquo;, &lsquo;app.js&rsquo;], {</p>
-
-<pre><code>cwd: '.',
-maxRestarts: 10,
-sleep: 1000,
-</code></pre>
-
-<p>});</p>
-
-<p>proc.on(&lsquo;spawn&rsquo;, function () {</p>
-
-<pre><code>util.print('application monitor started...');
-</code></pre>
-
-<p>});</p>
-
-<p>proc.on(&lsquo;exit&rsquo;, function (code, signal) {</p>
-
-<pre><code>logger.fatal({msg: 'process exited, code: ' + code + ' signal: ' + signal});
-</code></pre>
-
-<p>});</p>
-
-<p>proc.on(&lsquo;stdout&rsquo;, function (data) {</p>
-
-<pre><code>util.print(data.toString());
-</code></pre>
-
-<p>});</p>
-
-<p>proc.on(&lsquo;stderr&rsquo;, function (data) {</p>
-
-<pre><code>logger.error({msg: 'process error', data: data.toString()});
-</code></pre>
-
-<p>});</p>
-
-<p>proc.start();
-```</p>
-
-<p>(details of logger you can find in this <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">post</a>)</p>
-
-<p>All process output is goes to <code>stdout</code>, which is convinient for development, but in case of <code>stderr</code> or <code>exit</code> everything is logged to cloud and notification to <code>dev-team</code> sent.</p>
-
-<p>It worked really nice, now I&rsquo;m not worry even if something bad happens on production, <code>respawn</code> will make sure that rest of users are not affected. As a developer you can much quicker found bug and push hotfix.</p>
 ]]></content>
   </entry>
   

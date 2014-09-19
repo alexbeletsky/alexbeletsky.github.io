@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="TestLint a new tool from TypeMock Jul 15th, 2010 Tools As one of my favorite topics - tools that improve tests quality I would like to describe a &hellip;">
+  <meta name="description" content="StackOverflow usage in Chrome Jul 16th, 2010 Tips It might be well known fact, but I just discovered it to myself. StackOverflow has a nice feature &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,55 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/07/stackoverflow-usage-in-chrome.html">
+    
+      StackOverflow usage in Chrome</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-16T11:16:00+03:00" pubdate data-updated="true">Jul 16<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+It might be well known fact, but I just discovered it to myself. <a href="http://stackoverflow.com/">StackOverflow</a> has a nice feature together with Chrome. If you looking for some information, just start typing stackoverflow.com in Chrome URL bar, as soon as Chrome will suggest you to use http://stackoveflow.com press tab and you will see a prompt to put your query. Just create your query and press enter and you will get results directly from StackOverflow site. It seems a very nice and useful feature, since I frequently use StackOverflow as source of information.  
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TEAVuLm8CQI/AAAAAAAAG3Q/-zJbN13kKEI/s1600/stackoverflow.png"><img style="float:center; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 400px; height: 90px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TEAVuLm8CQI/AAAAAAAAG3Q/-zJbN13kKEI/s400/stackoverflow.png" border="0" alt=""id="Img1" /></a></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -760,154 +809,6 @@ This week I liked such things came up from my reader.
 </ul>
 <p>
 Happy reading!
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/06/ddd-implementation-of-repository.html">
-    
-      DDD, Implementation of Repository pattern with Linq to SQL</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-06-30T19:06:00+03:00" pubdate data-updated="true">Jun 30<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ddd/'>DDD</a>, <a class='category' href='/blog/categories/linq/'>Linq</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-Lets review first and one of major DDD pattern - Repository. Repository is something that provides access to an entities objects (domain objects). Here what DDD patterns guide says on Repositories:
-<br />
-<br />
-<i>
-For each type of object that needs global access, create an object that can provide the illusion of an in-memory collection of all objects of that type. Set up access through a well-known global interface. Provide methods to add and remove objects, which will encapsulate the actual insertion or removal of data in the data store. Provide methods that select objects based on some criteria and return fully instantiated objects or collections of objects whose attribute values meet the criteria, thereby encapsulating the actual storage and query technology. Provide repositories only for aggregate roots that actually need direct access. Keep the client focused on the model, delegating all object storage and access to the repositories.
-</i>
-<br />
-<br />
-<h2>Preparation</h2>
-<br />
-Suppose we are having a database with table Users in it. First of all we have to create a Data Model class. To do that you can add &#8220;New item&#8221; to you class library (or application) and select Linq to Classes.
-<br />
-<br />
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TCtrtiIPoMI/AAAAAAAAG1o/gFWf5MBbwMo/s1600/LinqToClasses.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 247px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TCtrtiIPoMI/AAAAAAAAG1o/gFWf5MBbwMo/s400/LinqToClasses.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5488599000880750786" /></a>
-<br />
-<br />
-This will add new .dbml file your project. There are 2 ways of addition new entities to model. Either by designer (easy to use) or manually by coding .dbml file (harder to user by more flexibility). We will just use first way as more quick one. Just open you db in Server explorer and drag-and-drop Users table to .dbml designer. You will see something like that,
-<br />
-<br />
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TCtr2X9znlI/AAAAAAAAG1w/fTqMklm0_WM/s1600/UsersInDesigner.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 216px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TCtr2X9znlI/AAAAAAAAG1w/fTqMklm0_WM/s400/UsersInDesigner.png" border="0" alt=""id="Img1" /></a>
-<br />
-<br />
-Now if you open corresponding .cs file of Data Model you can easily see what code is actually generated by Linq to SQL. Let&#8217;s quickly review it. So, most improtant class is DataContext.
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;[global::System.Data.Linq.Mapping.DatabaseAttribute(Name=<font color="#A31515">"trackyourtasksdb"</font>)]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">partial</font> <font color="#0000ff">class</font> TrackYourTasksDataContext : System.Data.Linq.DataContext<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> System.Data.Linq.Mapping.MappingSource mappingSource = <font color="#0000ff">new</font> AttributeMappingSource();<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-<a href="http://msdn.microsoft.com/en-us/library/system.data.linq.datacontext.aspx">DataContext</a> is something that suppose provide access to tables and objects and track the state of these objects. It uses SubmitChanges() method to flush the data to database. It is lightweight object and you should instantiate in in method of class scope, there are no reasons to keep a single copy of object for whole application. It is not only possible to work with tables within DataContext, but stored procedures as well.  
-<br />
-<br />
-Besides of that the object represenation of table record is generated. The class is called User (please not that Linq to SQL is removing plural -s suffix by itself). 
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;[global::System.Data.Linq.Mapping.TableAttribute(Name=<font color="#A31515">"dbo.Users"</font>)]<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">partial</font> <font color="#0000ff">class</font> User : INotifyPropertyChanging, INotifyPropertyChanged<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> PropertyChangingEventArgs emptyChangingEventArgs = <font color="#0000ff">new</font> PropertyChangingEventArgs(<font color="#2B91AF">String</font>.Empty);<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">int</font> _Id;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> _Email;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> _SecretPhrase;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> _Password;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> System.Data.Linq.Binary _Timestamp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//...</font><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> User()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OnCreated();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;[global::System.Data.Linq.Mapping.ColumnAttribute(Storage=<font color="#A31515">"_Id"</font>, AutoSync=AutoSync.OnInsert, DbType=<font color="#A31515">"Int NOT NULL IDENTITY"</font>, IsPrimaryKey=<font color="#0000ff">true</font>, IsDbGenerated=<font color="#0000ff">true</font>, UpdateCheck=UpdateCheck.Never)]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">int</font> Id<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">get</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">this</font>._Id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">set</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> ((<font color="#0000ff">this</font>._Id != <font color="#0000ff">value</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.OnIdChanging(<font color="#0000ff">value</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.SendPropertyChanging();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>._Id = <font color="#0000ff">value</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.SendPropertyChanged(<font color="#A31515">"Id"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.OnIdChanged();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;[global::System.Data.Linq.Mapping.ColumnAttribute(Storage=<font color="#A31515">"_Email"</font>, DbType=<font color="#A31515">"NVarChar(MAX) NOT NULL"</font>, CanBeNull=<font color="#0000ff">false</font>, IsPrimaryKey=<font color="#0000ff">true</font>, UpdateCheck=UpdateCheck.Never)]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> Email<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">get</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">this</font>._Email;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">set</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> ((<font color="#0000ff">this</font>._Email != <font color="#0000ff">value</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.OnEmailChanging(<font color="#0000ff">value</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.SendPropertyChanging();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>._Email = <font color="#0000ff">value</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.SendPropertyChanged(<font color="#A31515">"Email"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.OnEmailChanged();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//...</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote><br />
-<br />
-<br />
-So as you see it incapsulates fields of table as corresponding properties of object. 
-<br />
-<br />
-<h2>Interface</h2>
-<br />
-As it said above Repository have to add, remove as well as search and update objects. Note, that we work work with db record (entities classes) as we just work with in-memory objects. 
-<br />
-<br />
-It is always good idea to work with such structures as Repositories, Factories, Services etc. throught interface. First of all, because it conforms to common object oriented design guidlines and make us possibility to have different implementation classes that would provide different behavior. Second, that with interfaces you can substitute real object with mock object during testing. Moreover with interfaces it is easy to use <a href="http://martinfowler.com/articles/injection.html">Dependency Injection</a> pattern, that improves application flexability and testability.
-<br />
-<br />
-User repository interface looks like,
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Trackyourtasks.Core.DAL.DataModel;<br><br><font color="#0000ff">namespace</font> Trackyourtasks.Core.DAL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">interface</font> IUsersRepository<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;User FindUserById(<font color="#0000ff">int</font> id);<br>&nbsp;&nbsp;&nbsp;&nbsp;User FindUserByEmail(<font color="#0000ff">string</font> email);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">void</font> SaveUser(User user);<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">void</font> DeleteUser(User user);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-Now let&#8217;s implement this repository with Linq to SQL tools. We would review all methods, one by one.
-<br />
-<br />
-<u>Construction of Repository:</u>
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Text;<br><font color="#0000ff">using</font> Trackyourtasks.Core.DAL.DataModel;<br><br><font color="#0000ff">namespace</font> Trackyourtasks.Core.DAL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> UsersRepository : IUsersRepository<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;TrackYourTasksDataContext _context = <font color="#0000ff">new</font> TrackYourTasksDataContext();<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-As you see I instantiate DataContext object as a member of UsersRepository class. So, it will be alive and tracking objects since UserRepository class is alive. 
-<br />
-<br />
-<u>Find methods:</u>
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> User FindUserById(<font color="#0000ff">int</font> id)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> (<font color="#0000ff">from</font> user <font color="#0000ff">in</font> _context.Users <font color="#0000ff">where</font> user.Id == id <font color="#0000ff">select</font> user).SingleOrDefault();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> User FindUserByEmail(<font color="#0000ff">string</font> email)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> (<font color="#0000ff">from</font> user <font color="#0000ff">in</font> _context.Users <font color="#0000ff">where</font> user.Email == email <font color="#0000ff">select</font> user).SingleOrDefault();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-Impelementation is just a simple Linq query that selects object either by Id or Email. I use <a href="http://msdn.microsoft.com/en-us/library/system.linq.enumerable.singleordefault.aspx">SingleOrDefault()</a> that returns object if found and default if not (null in my case). 
-<br />
-<br />
-<u>Save and Update methods:</u>
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> SaveUser(User user)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (user.Id == 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.Users.InsertOnSubmit(user);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.SubmitChanges();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-So, if are created user entiry by new operator it will contain Id == 0 (meaning no Id, yet), as we passing it to Save method it will check is this object persistant or not and if not it will be add it to storage. Since context object is not disposed after, it still continue track object changes, so if we decieded to change some object fields and store it all we need to do is call <a href="http://msdn.microsoft.com/en-us/library/system.data.linq.datacontext.submitchanges.aspx">SubmitChanges()</a> method and corrsponding record will be updated. I&#8217;ll put some tests here to see how it works:
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> InsertUser()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> register = <font color="#0000ff">new</font> UsersRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = <font color="#0000ff">new</font> User()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email = <font color="#A31515">"email"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecretPhrase = <font color="#A31515">"sec"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password = <font color="#A31515">"pass"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register.SaveUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> actual = register.FindUserByEmail(<font color="#A31515">"email"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(actual, Is.Not.Null);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ExpectedException(<font color="#0000ff">typeof</font>(DuplicateKeyException))]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> InsertUserTwice()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> register = <font color="#0000ff">new</font> UsersRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT / POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = <font color="#0000ff">new</font> User()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email = <font color="#A31515">"email"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecretPhrase = <font color="#A31515">"sec"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password = <font color="#A31515">"pass"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register.SaveUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> newUser = <font color="#0000ff">new</font> User()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email = <font color="#A31515">"email"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecretPhrase = <font color="#A31515">"sec"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password = <font color="#A31515">"pass"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register.SaveUser(newUser);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[Test]<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> UpdateUser()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//INIT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> register = <font color="#0000ff">new</font> UsersRepository();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = <font color="#0000ff">new</font> User()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email = <font color="#A31515">"email"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecretPhrase = <font color="#A31515">"sec"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password = <font color="#A31515">"pass"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register.SaveUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//ACT</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.SecretPhrase = <font color="#A31515">"newsec"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register.SaveUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//POST</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> foundUser = register.FindUserById(user.Id);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(foundUser, Is.Not.Null);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(foundUser.SecretPhrase, Is.EqualTo(<font color="#A31515">"newsec"</font>));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-<u>Delete Methods:</u>
-<br />
-<br />
-<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> DeleteUser(User user)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.Users.DeleteOnSubmit(user);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.SubmitChanges();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
-<br />
-<br />
-So object is marked as to be deleted by calling <a href="http://msdn.microsoft.com/en-us/library/bb763473.aspx">DeleteOnSubmit()</a> and it will be actually deleted on SubmitChanges() call. 
-<br />
-<br />
-<h2>Conclusions</h2>
-<br />
-<br />
-<p>
-It is really easy to start up with Repositories keeping its implementation as simple as possible. Of cause, typicaly data structure in databases are bit more complex than plain table. But it is still possible to work with this pattern, combining with Repositories, Aggregates, Entities and Values.
 </p></div>
 
       

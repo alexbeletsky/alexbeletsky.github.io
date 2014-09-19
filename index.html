@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Email, SMS and Push Notifications Server Aug 22nd, 2014 javascript, likeastore, nodejs, opensource I recently came up with very convenient component &hellip;">
+  <meta name="description" content="Health Monitoring of Services and Databases Sep 19th, 2014 http, micro, monitoring, nodejs, service Once you are up and running your primary job is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,59 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2014/09/health-monitoring-of-http-services-and-databases.html">
+    
+      Health Monitoring of Services and Databases</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-19T18:27:00+03:00" pubdate data-updated="true">Sep 19<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/http/'>http</a>, <a class='category' href='/blog/categories/micro/'>micro</a>, <a class='category' href='/blog/categories/monitoring/'>monitoring</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/service/'>service</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
+
+<p>There few products on market that can do that, <a href="http://pingdom.com">Pingdom</a> and <a href="http://newrelic.com">New Relic</a> probably the most know. But they are paid and not that flexible as I want. So, I&rsquo;ve created <a href="https://github.com/likeastore/heartbeat">likeastore/heartbeat</a> that for a month or so helps me to provide quality service.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2014/09/health-monitoring-of-http-services-and-databases.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -548,59 +601,6 @@
       
         <div class="show-more pure-u-1">
           <a href="/2014/01/logs-driven-development.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2014/01/keeping-node-dot-js-processes-running.html">
-    
-      Keeping Node.js Processes Running</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-18T13:38:00+02:00" pubdate data-updated="true">Jan 18<span>th</span>, 2014</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
-
-<p>Due to <code>async</code> nature of Node.js <code>try/catch</code> not always works, even with <code>domains</code> and stuff you have a chance that application crashed on production while you sleep.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2014/01/keeping-node-dot-js-processes-running.html">Continue reading &rarr;</a>
         </div>
       
     </div>

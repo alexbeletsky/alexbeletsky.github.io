@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Ninject provider as factory method Feb 13th, 2011 Design, MVC, Tips, Tools, Trackyt.net, asp.net Ninject is a very nice and easy to use, open source &hellip;">
+  <meta name="description" content="ASP.NET MVC controller&#8217;s action with name View() Feb 15th, 2011 MVC, Tips, asp.net If you want to have action with name View in your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,89 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/aspnet-mvc-controllers-action-with-name.html">
+    
+      ASP.NET MVC controller&#8217;s action with name View()</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-15T19:59:00+02:00" pubdate data-updated="true">Feb 15<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+If you want to have action with name <code>View</code> in your controller, you will meet a small problem. Base class of any controller <code>Controller</code> already contains a method, with same name (and it is overloaded):
+</p>
+<pre class="brush: csharp">
+protected internal ViewResult View();
+protected internal ViewResult View(IView view);
+protected internal ViewResult View(object model);
+protected internal ViewResult View(string viewName);
+</pre>
+<p>
+So, you code like this:
+</p>
+<pre class="brush: csharp">
+public ActionResult View(string url)
+{
+    // some action logic...
+
+    return View();
+}
+</pre>
+<p>
+Won&#8217;t complied, because you are adding method with same signature (name and parameters list). You have 2 options here: gave up to compiler and rename action, to something new like <code>ViewPost</code> or insist and try to make it happen.
+</p>
+<p>
+Fortunately C# have beautiful feature for doing this. It is <a href="http://msdn.microsoft.com/en-us/library/435f1dw2.aspx">new Modifier</a>. It hides the member on base class and explicitly says, that now your method is substituting it. So, everything you need is basically this: 
+</p>
+<pre class="brush: csharp">
+new public ActionResult View(string url)
+{
+    // some action logic...
+
+    return View();
+}
+</pre>
+<p>
+It will make application compliable and work as expected.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1363,74 +1446,6 @@ Sure you don&#8217;t want to make those tests public on your site. There are 2 o
 To make picture full, I prepared small screencast that would demonstrate how I used the framework. I like it, it fits my requirements (at least for now). I hope you also like it and find this information useful! And also, you should check the <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/tree/master/src/Web/Scripts/Tests">repository</a> for test code examples.
 </p>
 <object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' /><param name='flashvars' value='i=144436' /><param name='allowFullScreen' value='true' /><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=144436' allowFullScreen='true' width='560' height='345' pluginspage='http://www.macromedia.com/go/getflashplayer'></embed></object></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2010/12/run-and-debug-your-tests-with-shortcuts.html">
-    
-      Run and debug your tests with shortcuts</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-08T12:46:00+02:00" pubdate data-updated="true">Dec 8<span>th</span>, 2010</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-While I&#8217;m working in Visual Studio, I try to use my mouse as less as possible. You should be really comfortable to do 99% of activities just by keyboard. It saves a time.
-</p>
-<p>
-I re-run tests hundred times per day, so clicking by a mouse is a bad option. Doesn&#8217;t matter you use <a href="http://testdriven.net">Testdriven.net</a> or <a href="http://www.jetbrains.com/resharper/">Resharper</a>, you have ability to use shortcuts for quick run.
-</p>
-<h2>Testdriven.net</h2>
-<p>
-Tools -> Options -> Keyboard -> Testdriven.NET.RunTests and assign it to &#8220;Ctrl + R, Ctrl + T&#8221; (run tests)
-</p>
-<p>
-Tools -> Options -> Keyboard -> Testdriven.NET.Debugger and assign it to &#8220;Ctrl + R, Ctrl + D&#8221; (run debugger)
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TP9iM31SeuI/AAAAAAAAG_0/WU7k2RL15b8/s1600/testdriven1.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TP9iM31SeuI/AAAAAAAAG_0/WU7k2RL15b8/s400/testdriven1.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5548261239229151970" /></a>
-<h2>Resharper</h2>
-<p>
-Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextRun and assign it to &#8220;Ctrl + R, Ctrl + T&#8221; (run tests)
-</p>
-<p>
-Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextDebug and assign it to &#8220;Ctrl + R, Ctrl + D&#8221; (run debugger)
-</p>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s1600/resharper.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s400/resharper.png" border="0" alt=""id="Img1" /></a></div>
 
       
       

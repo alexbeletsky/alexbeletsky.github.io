@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: micro | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/micro/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2014-09-19T19:44:54+03:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
+    <link href="http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases.html"/>
+    <updated>2014-09-19T18:27:00+03:00</updated>
+    <id>http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases</id>
+    <content type="html"><![CDATA[<p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
+
+<p>There few products on market that can do that, <a href="http://pingdom.com">Pingdom</a> and <a href="http://newrelic.com">New Relic</a> probably the most know. But they are paid and not that flexible as I want. So, I&rsquo;ve created <a href="https://github.com/likeastore/heartbeat">likeastore/heartbeat</a> that for a month or so helps me to provide quality service.</p>
+
+<!-- MORE -->
+
+
+<p>It&rsquo;s really easy to setup and deploy on any server or Dokku/Heroku environment.</p>
+
+<h2>Overview</h2>
+
+<p>The core of heartbeat is about ~300 <a href="https://github.com/likeastore/heartbeat/blob/master/source/hearbeat.js">lines of code</a>, so it&rsquo;s not a big deal to look inside to understand it principles of work. But in general, it&rsquo;s continuously running loop, that executes the small jobs who runs particular check strategy and report results if anything is wrong.</p>
+
+<p>To make use of it you just need to clone the repo and update <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js">config/index.js</a> with your configuration.</p>
+
+<h2>Notifications</h2>
+
+<p>Heartbeat can use 2 types of notifications at the moment. <a href="https://mandrillapp.com/">Mandril</a> based emails and <a href="https://www.twilio.com/">Twilio</a> based SMSs.</p>
+
+<p>Both requires you to create accounts there and provide API access keys.</p>
+
+<p>That&rsquo;s what&rsquo;s configured on <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L67">transport</a> section of configuration:</p>
+
+<p>```js
+transport: {</p>
+
+<pre><code>mandrill: {
+    token: 'fake-token'
+},
+
+twilio: {
+    sid: 'fake-sid',
+    token: 'fake-token'
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>instead of <code>fake-token</code> and <code>fake-sid</code> you provide your real values there.</p>
+
+<p>You have to specify the recipents for notifications, that happens in <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L56">notify</a> section of configuration:</p>
+
+<p>```js
+notify: {</p>
+
+<pre><code>email: {
+    from: 'heartbeat@likeastore.com',
+    to: ['devs@likeastore.com']
+},
+
+sms: {
+    to: ['+3805551211', '+3805551212']
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As you can see, you specifying <code>from</code> and <code>to</code> emails, as well as <code>phone</code> numbers to send SMS.</p>
+
+<h2>Monitoring</h2>
+
+<p>Now the main part, configure monitoring options. The <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L10">monitor</a> section of configuration is responsible for that. At the moment, it provides provides 5 different monitoring strategies.</p>
+
+<ul>
+<li>HTTP</li>
+<li>JSON</li>
+<li>MongoDB</li>
+<li>Ping</li>
+<li>Resolve</li>
+</ul>
+
+
+<h3>HTTP</h3>
+
+<p>The <code>HTTP</code> sends GET request to specified URL and checks the response code. If response code <code>!==200</code> the error notification is reported.</p>
+
+<p>```js
+<a href="http:">http:</a> [</p>
+
+<pre><code>{
+    url: 'https://likeastore.com'
+},
+{
+    url: 'https://stage.likeastore.com'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<p><code>http</code> is an array of urls to monitor.</p>
+
+<h3>JSON</h3>
+
+<p>The <code>JSON</code> strategy suits the best for HTTP API&rsquo;s. It could request particular URL receive JSON response and compare it to expected result.</p>
+
+<p>```js
+json: [</p>
+
+<pre><code>{
+    url: 'https://app.likeastore.com/api/monitor',
+    response: {
+        "app":"app.likeastore.com",
+        "env":"production",
+        "version":"0.0.52",
+        "apiUrl":"/api"
+    }
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h3>MongoDB</h3>
+
+<p>MongoDB is a commonly part of web applications infrastructure. You need to have a connection string and then you specify the checking query. It could be <code>find</code> query or <code>insert</code> query.</p>
+
+<p>```js
+mongo: [</p>
+
+<pre><code>{
+    connection: 'mongodb://localhost:27017/likeastoredb',
+    collections: ['users'],
+    query: function (db, callback) {
+        db.users.findOne({email: 'alexander.beletsky@gmail.com'}, callback);
+    }
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h3>Resolve</h3>
+
+<p>Resolve is something that makes <code>heartbeat</code> a little different. It usually the thing that one <code>domain names</code> is configured for different <code>ip addresses</code>. As it name stands, <code>resolve</code> would resolve all ip&rsquo;s associated with domain name and ping them separately. If even one of them fails, the notification is created.</p>
+
+<p>```js
+resolve: [</p>
+
+<pre><code>{
+    name: 'google.com'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<p><code>nslookup</code> for <code>google.com</code> returns,</p>
+
+<p>```plain
+› nslookup google.com
+Server:     192.168.1.1
+Address:    192.168.1.1#53</p>
+
+<p>Non-authoritative answer:
+Name:   google.com
+Address: 173.194.113.198
+Name:   google.com
+Address: 173.194.113.199
+Name:   google.com
+Address: 173.194.113.200
+Name:   google.com
+Address: 173.194.113.201
+Name:   google.com
+Address: 173.194.113.206
+Name:   google.com
+Address: 173.194.113.192
+Name:   google.com
+Address: 173.194.113.193
+Name:   google.com
+Address: 173.194.113.194
+Name:   google.com
+Address: 173.194.113.195
+Name:   google.com
+Address: 173.194.113.196
+Name:   google.com
+Address: 173.194.113.197
+```</p>
+
+<p>All that addresses will be checked separately.</p>
+
+<h3>Ping</h3>
+
+<p>Finally it&rsquo;s <code>ping</code>, the simples operation. It just pings given <code>ip</code> address.</p>
+
+<p>```js
+ping: [</p>
+
+<pre><code>{
+    ip: '37.139.9.95'
+}
+</code></pre>
+
+<p>]
+```</p>
+
+<h2>Setting up the interval</h2>
+
+<p>You can specify the interval of checking. By default it&rsquo;s 10 seconds, but you can do more frequent checks if you want.</p>
+
+<p><code>js
+interval: 5000
+</code></p>
+
+<h2>Running and deploying</h2>
+
+<p>If the configuration is set, you can run heartbeat by,</p>
+
+<p><code>bash
+$ node app.js
+</code></p>
+
+<p>The log optionally could be forwared to <a href="logentries.com">Logentries</a>, by setting up <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L6">config/index.js#logentries</a> section.</p>
+]]></content>
+  </entry>
+  
+</feed>

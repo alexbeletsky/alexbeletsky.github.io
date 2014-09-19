@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-08-23T07:19:52+03:00</updated>
+  <updated>2014-09-19T19:44:54+03:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,294 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
+    <link href="http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases.html"/>
+    <updated>2014-09-19T18:27:00+03:00</updated>
+    <id>http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases</id>
+    <content type="html"><![CDATA[<p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
+
+<p>There few products on market that can do that, <a href="http://pingdom.com">Pingdom</a> and <a href="http://newrelic.com">New Relic</a> probably the most know. But they are paid and not that flexible as I want. So, I&rsquo;ve created <a href="https://github.com/likeastore/heartbeat">likeastore/heartbeat</a> that for a month or so helps me to provide quality service.</p>
+
+<!-- MORE -->
+
+
+<p>It&rsquo;s really easy to setup and deploy on any server or Dokku/Heroku environment.</p>
+
+<h2>Overview</h2>
+
+<p>The core of heartbeat is about ~300 <a href="https://github.com/likeastore/heartbeat/blob/master/source/hearbeat.js">lines of code</a>, so it&rsquo;s not a big deal to look inside to understand it principles of work. But in general, it&rsquo;s continuously running loop, that executes the small jobs who runs particular check strategy and report results if anything is wrong.</p>
+
+<p>To make use of it you just need to clone the repo and update <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js">config/index.js</a> with your configuration.</p>
+
+<h2>Notifications</h2>
+
+<p>Heartbeat can use 2 types of notifications at the moment. <a href="https://mandrillapp.com/">Mandril</a> based emails and <a href="https://www.twilio.com/">Twilio</a> based SMSs.</p>
+
+<p>Both requires you to create accounts there and provide API access keys.</p>
+
+<p>That&rsquo;s what&rsquo;s configured on <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L67">transport</a> section of configuration:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">transport</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">mandrill</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="s1">&#39;fake-token&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">twilio</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">sid</span><span class="o">:</span> <span class="s1">&#39;fake-sid&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="s1">&#39;fake-token&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>instead of <code>fake-token</code> and <code>fake-sid</code> you provide your real values there.</p>
+
+<p>You have to specify the recipents for notifications, that happens in <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L56">notify</a> section of configuration:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">notify</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">email</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;heartbeat@likeastore.com&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">to</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;devs@likeastore.com&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">sms</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">to</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;+3805551211&#39;</span><span class="p">,</span> <span class="s1">&#39;+3805551212&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, you specifying <code>from</code> and <code>to</code> emails, as well as <code>phone</code> numbers to send SMS.</p>
+
+<h2>Monitoring</h2>
+
+<p>Now the main part, configure monitoring options. The <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L10">monitor</a> section of configuration is responsible for that. At the moment, it provides provides 5 different monitoring strategies.</p>
+
+<ul>
+<li>HTTP</li>
+<li>JSON</li>
+<li>MongoDB</li>
+<li>Ping</li>
+<li>Resolve</li>
+</ul>
+
+
+<h3>HTTP</h3>
+
+<p>The <code>HTTP</code> sends GET request to specified URL and checks the response code. If response code <code>!==200</code> the error notification is reported.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">http</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://likeastore.com&#39;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://stage.likeastore.com&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>http</code> is an array of urls to monitor.</p>
+
+<h3>JSON</h3>
+
+<p>The <code>JSON</code> strategy suits the best for HTTP API&rsquo;s. It could request particular URL receive JSON response and compare it to expected result.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">json</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://app.likeastore.com/api/monitor&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">response</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;app&quot;</span><span class="o">:</span><span class="s2">&quot;app.likeastore.com&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;env&quot;</span><span class="o">:</span><span class="s2">&quot;production&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;version&quot;</span><span class="o">:</span><span class="s2">&quot;0.0.52&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;apiUrl&quot;</span><span class="o">:</span><span class="s2">&quot;/api&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>MongoDB</h3>
+
+<p>MongoDB is a commonly part of web applications infrastructure. You need to have a connection string and then you specify the checking query. It could be <code>find</code> query or <code>insert</code> query.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">mongo</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">connection</span><span class="o">:</span> <span class="s1">&#39;mongodb://localhost:27017/likeastoredb&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">collections</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">],</span>
+</span><span class='line'>        <span class="nx">query</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">db</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">email</span><span class="o">:</span> <span class="s1">&#39;alexander.beletsky@gmail.com&#39;</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Resolve</h3>
+
+<p>Resolve is something that makes <code>heartbeat</code> a little different. It usually the thing that one <code>domain names</code> is configured for different <code>ip addresses</code>. As it name stands, <code>resolve</code> would resolve all ip&rsquo;s associated with domain name and ping them separately. If even one of them fails, the notification is created.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">resolve</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;google.com&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>nslookup</code> for <code>google.com</code> returns,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>› nslookup google.com
+</span><span class='line'>Server:       192.168.1.1
+</span><span class='line'>Address:  192.168.1.1#53
+</span><span class='line'>
+</span><span class='line'>Non-authoritative answer:
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.198
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.199
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.200
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.201
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.206
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.192
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.193
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.194
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.195
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.196
+</span><span class='line'>Name: google.com
+</span><span class='line'>Address: 173.194.113.197</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All that addresses will be checked separately.</p>
+
+<h3>Ping</h3>
+
+<p>Finally it&rsquo;s <code>ping</code>, the simples operation. It just pings given <code>ip</code> address.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">ping</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">ip</span><span class="o">:</span> <span class="s1">&#39;37.139.9.95&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setting up the interval</h2>
+
+<p>You can specify the interval of checking. By default it&rsquo;s 10 seconds, but you can do more frequent checks if you want.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">interval</span><span class="o">:</span> <span class="mi">5000</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Running and deploying</h2>
+
+<p>If the configuration is set, you can run heartbeat by,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node app.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The log optionally could be forwared to <a href="logentries.com">Logentries</a>, by setting up <a href="https://github.com/likeastore/heartbeat/blob/master/config/index.js#L6">config/index.js#logentries</a> section.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
@@ -2795,297 +3083,6 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyErrorLogging</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
-    <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
-    <updated>2013-10-15T21:54:00+03:00</updated>
-    <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
-    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
-
-<p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
-
-<!-- More -->
-
-
-<h2>Middleware</h2>
-
-<p>Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">access</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">checkAuthorization</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">authorized</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">||</span> <span class="o">!</span><span class="nx">authorized</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;Unauthorized&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">401</span><span class="p">});</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">next</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">checkAuthorization</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// actual auth strategy goes here..</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Of cause, it&rsquo;s simply possible to apply this function to each HTTP method in application, like</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>but, it&rsquo;s really get annoying to do that all the time.. and it&rsquo;s easy to just forgot to secure endpoint. So, it&rsquo;s better to keep the code as clean as possible.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That seems to be like <code>app.use()</code> is good candidate to place <code>access</code> function into, but it&rsquo;s not. <code>app.use()</code> is global apply of middleware function, so if applications serves static resources, that does not need authentication, or simply you want to expose some <strong>guest</strong> endpoints.</p>
-
-<h2>Guest or not?</h2>
-
-<p>Guest endpoints are ones, that can be accessed without authentication. That&rsquo;s a kind of special case, but typically required on any HTTP API projects I worked.</p>
-
-<p>We need to distinguish between <strong>secure</strong> and <strong>guest</strong> endpoints. We&rsquo;ll introduce special middleware function, for guest access.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">guest</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">guestAccess</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">next</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, assume that all endpoints are require authentication by default (which is good assumption), but ones that don&rsquo;t need to have <code>guest()</code> middleware be used.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">peopleApi</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPeople</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/:id&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">getPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/people&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">postPerson</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/people/meta&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">middleware</span><span class="p">.</span><span class="nx">guest</span><span class="p">,</span>             <span class="c1">// no authentication required!</span>
-</span><span class='line'>      <span class="nx">getPeopleMeta</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">peopleApi</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Patch the routes</h2>
-
-<p>After I got a bit deeper with structure of Express.js <code>application</code> I came up to one idea that helped to solve the problem.</p>
-
-<p>Then all endpoints are defined, <code>application</code> would contain initialized <a href="http://expressjs.com/api.html#app.routes">routes</a> object. If you look closer, then you&rsquo;ll see, besides of path and method data it also contains an array of <code>callbacks</code> applied to route. That&rsquo;s exactly middleware functions, so we can simply patch that array with authentication function we want.</p>
-
-<p>The authentication function have to be called first, so it&rsquo;s need to be placed at first position of array.</p>
-
-<p>Right after application configured and all routes are defined, call <code>applyAuthentication()</code> function.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="c1">// configure</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s1">&#39;development&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// configure for development</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s1">&#39;production&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// configure for production</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;/api&#39;</span><span class="p">]);</span>       <span class="c1">// apply authentication here</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;app listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And finally, <code>applyAuthentication</code> function,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">routesToSecure</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
-</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">apply</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nx">routesToSecure</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">route</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">guestAccess</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">&#39;guest&#39;</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">apply</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">guestAccess</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">middleware</span><span class="p">.</span><span class="nx">access</span><span class="p">.</span><span class="nx">authenticatedAccess</span><span class="p">());</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyAuthentication</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
