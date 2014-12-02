@@ -34,7 +34,7 @@ Top read content of 2013:
 * [Playing with Dokku on Vagrant](http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html) easy playground for Dokku based on Vagrant virtual environment.
 * [Why We Moved From AppFog to Nodejitsu](http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html) just my rant about AppFog quality of service.
 
-As for talks, I've prepared 5 [presentations](https://speakerdeck.com/alexanderbeletsky). As achievement of 2013 I see my talk on [RejectJS](https://www.youtube.com/watch?feature=player_embedded&v=EaoRDrdqm-E) conference. It was so cool and I really liked Berlin.
+As for talks, I've prepared 5 [presentations](https://speakerdeck.com/alexbeletsky). As achievement of 2013 I see my talk on [RejectJS](https://www.youtube.com/watch?feature=player_embedded&v=EaoRDrdqm-E) conference. It was so cool and I really liked Berlin.
 
 ## Communities
 
