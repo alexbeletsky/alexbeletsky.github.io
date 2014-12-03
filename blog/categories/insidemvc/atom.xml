@@ -4,7 +4,7 @@
   <title><![CDATA[Category: InsideMVC | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/insidemvc/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: Instantiation of Controller]]></title>
     <link href="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html"/>
-    <updated>2011-12-05T21:05:00+02:00</updated>
+    <updated>2011-12-05T20:05:00+01:00</updated>
     <id>http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Controller are being created by <code>ControllerFactory</code>, by default <code>IControllerFactory</code> type is being resolved to <code>DefaultControllerFactory</code>. Today's post is dedicated to some details of how actually <code>DefaultControllerFactory</code> works and creates instance of required controller. Let's go from the beginning!<br />
@@ -191,7 +191,7 @@
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC]]></title>
     <link href="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html"/>
-    <updated>2011-10-13T21:55:00+03:00</updated>
+    <updated>2011-10-13T20:55:00+02:00</updated>
     <id>http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
@@ -288,7 +288,7 @@ public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: IResolver and it's implementations]]></title>
     <link href="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html"/>
-    <updated>2011-08-27T16:06:00+03:00</updated>
+    <updated>2011-08-27T15:06:00+02:00</updated>
     <id>http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through 'new' operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
@@ -399,7 +399,7 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: ControllerBuilder class]]></title>
     <link href="http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html"/>
-    <updated>2011-07-09T12:28:00+03:00</updated>
+    <updated>2011-07-09T11:28:00+02:00</updated>
     <id>http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -467,7 +467,7 @@ Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-
   <entry>
     <title type="html"><![CDATA[Inside ASP.NET MVC: All begins here - MvcHanlder]]></title>
     <link href="http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html"/>
-    <updated>2011-06-18T18:46:00+03:00</updated>
+    <updated>2011-06-18T17:46:00+02:00</updated>
     <id>http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

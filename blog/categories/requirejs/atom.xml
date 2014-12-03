@@ -4,7 +4,7 @@
   <title><![CDATA[Category: requirejs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/requirejs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
     <link href="http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js.html"/>
-    <updated>2013-11-01T11:36:00+02:00</updated>
+    <updated>2013-11-01T11:36:00+01:00</updated>
     <id>http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js</id>
     <content type="html"><![CDATA[<p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
 

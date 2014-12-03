@@ -4,7 +4,7 @@
   <title><![CDATA[Category: technologies | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/technologies/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
     <link href="http://beletsky.net/2013/06/we-were-wrong-10-years-ago.html"/>
-    <updated>2013-06-20T23:43:00+03:00</updated>
+    <updated>2013-06-20T23:43:00+02:00</updated>
     <id>http://beletsky.net/2013/06/we-were-wrong-10-years-ago</id>
     <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
 

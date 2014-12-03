@@ -4,7 +4,7 @@
   <title><![CDATA[Category: source,github | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/source-github/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Moved from Blogger to Octopress]]></title>
     <link href="http://beletsky.net/2013/06/moved-from-blogger-to-octopress.html"/>
-    <updated>2013-06-15T16:18:00+03:00</updated>
+    <updated>2013-06-15T16:18:00+02:00</updated>
     <id>http://beletsky.net/2013/06/moved-from-blogger-to-octopress</id>
     <content type="html"><![CDATA[<p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
 

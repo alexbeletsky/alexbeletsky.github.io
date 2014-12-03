@@ -4,7 +4,7 @@
   <title><![CDATA[Category: http | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/http/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
     <link href="http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases.html"/>
-    <updated>2014-09-19T18:27:00+03:00</updated>
+    <updated>2014-09-19T18:27:00+02:00</updated>
     <id>http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases</id>
     <content type="html"><![CDATA[<p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
 

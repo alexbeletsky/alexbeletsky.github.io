@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UI | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/ui/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
     <link href="http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles.html"/>
-    <updated>2012-03-07T14:54:00+02:00</updated>
+    <updated>2012-03-07T13:54:00+01:00</updated>
     <id>http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
@@ -38,7 +38,7 @@
   <entry>
     <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
     <link href="http://beletsky.net/2012/02/foundation-framework-for-web-sites.html"/>
-    <updated>2012-02-21T11:15:00+02:00</updated>
+    <updated>2012-02-21T10:15:00+01:00</updated>
     <id>http://beletsky.net/2012/02/foundation-framework-for-web-sites</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />

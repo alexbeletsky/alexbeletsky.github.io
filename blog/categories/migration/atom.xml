@@ -4,7 +4,7 @@
   <title><![CDATA[Category: migration | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/migration/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
     <link href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html"/>
-    <updated>2014-05-15T11:29:00+03:00</updated>
+    <updated>2014-05-15T11:29:00+02:00</updated>
     <id>http://beletsky.net/2014/05/got-tired-of-mongodb-full-text</id>
     <content type="html"><![CDATA[<p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
 

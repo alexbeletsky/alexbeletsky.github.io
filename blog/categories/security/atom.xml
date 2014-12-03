@@ -4,7 +4,7 @@
   <title><![CDATA[Category: security | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/security/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
     <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
-    <updated>2014-07-18T12:34:00+03:00</updated>
+    <updated>2014-07-18T12:34:00+02:00</updated>
     <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
     <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
 
@@ -219,7 +219,7 @@ requestTimeout: 5000
   <entry>
     <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
     <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
-    <updated>2013-10-15T21:54:00+03:00</updated>
+    <updated>2013-10-15T21:54:00+02:00</updated>
     <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
     <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
 

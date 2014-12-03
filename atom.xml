@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
     <link href="http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases.html"/>
-    <updated>2014-09-19T18:27:00+03:00</updated>
+    <updated>2014-09-19T18:27:00+02:00</updated>
     <id>http://beletsky.net/2014/09/health-monitoring-of-http-services-and-databases</id>
     <content type="html"><![CDATA[<p>Once you are up and running your primary job is to monitor that all your services are in good health. If something bad happens, network issue or crashes &ndash; you have to be notified on that as soon as possible. Hardering of the HTTP services and databases became a one of primary activities for any startup.</p>
 
@@ -304,7 +304,7 @@
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
     <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
-    <updated>2014-08-22T15:38:00+03:00</updated>
+    <updated>2014-08-22T15:38:00+02:00</updated>
     <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
     <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in your projects as well.</p>
 
@@ -588,7 +588,7 @@
   <entry>
     <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
     <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
-    <updated>2014-07-18T12:34:00+03:00</updated>
+    <updated>2014-07-18T12:34:00+02:00</updated>
     <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
     <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
 
@@ -844,7 +844,7 @@
   <entry>
     <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
     <link href="http://beletsky.net/2014/07/working-on-startup.html"/>
-    <updated>2014-07-03T10:41:00+03:00</updated>
+    <updated>2014-07-03T10:41:00+02:00</updated>
     <id>http://beletsky.net/2014/07/working-on-startup</id>
     <content type="html"><![CDATA[<p>Last year, July 2013 public version of Likeastore been <a href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html">released</a>. It gave momentum to change the mind, went out of comfort zone, reconsider priorities and literally change my life. Earlier I <a href="http://beletsky.net/2014/03/from-side-project-to-start.html">blogged</a> about transformation of Likeastore from side project to startup.</p>
 
@@ -912,7 +912,7 @@
   <entry>
     <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
     <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
-    <updated>2014-05-22T11:15:00+03:00</updated>
+    <updated>2014-05-22T11:15:00+02:00</updated>
     <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
     <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
 
@@ -1081,7 +1081,7 @@
   <entry>
     <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
     <link href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html"/>
-    <updated>2014-05-15T11:29:00+03:00</updated>
+    <updated>2014-05-15T11:29:00+02:00</updated>
     <id>http://beletsky.net/2014/05/got-tired-of-mongodb-full-text</id>
     <content type="html"><![CDATA[<p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
 
@@ -1263,7 +1263,7 @@
   <entry>
     <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
     <link href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html"/>
-    <updated>2014-04-23T11:19:00+03:00</updated>
+    <updated>2014-04-23T11:19:00+02:00</updated>
     <id>http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware</id>
     <content type="html"><![CDATA[<p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
 
@@ -1338,7 +1338,7 @@
   <entry>
     <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
     <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
-    <updated>2014-03-31T13:09:00+03:00</updated>
+    <updated>2014-03-31T13:09:00+02:00</updated>
     <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
     <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
 
@@ -1423,7 +1423,7 @@
   <entry>
     <title type="html"><![CDATA[Testable API's with Node.js]]></title>
     <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
-    <updated>2014-03-04T15:36:00+02:00</updated>
+    <updated>2014-03-04T15:36:00+01:00</updated>
     <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
     <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
 
@@ -1864,7 +1864,7 @@
   <entry>
     <title type="html"><![CDATA[Logs Driven Development]]></title>
     <link href="http://beletsky.net/2014/01/logs-driven-development.html"/>
-    <updated>2014-01-25T13:12:00+02:00</updated>
+    <updated>2014-01-25T13:12:00+01:00</updated>
     <id>http://beletsky.net/2014/01/logs-driven-development</id>
     <content type="html"><![CDATA[<p>One of the components I currently work on called <code>collector</code> and it has no tests. Collector is all about of building queue of tasks, executing them and store data to database after. Tasks are HTTP clients that requests API and process transform responses into generic forms.</p>
 
@@ -1886,7 +1886,7 @@
   <entry>
     <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
     <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
-    <updated>2014-01-18T13:38:00+02:00</updated>
+    <updated>2014-01-18T13:38:00+01:00</updated>
     <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
     <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
 
@@ -2019,7 +2019,7 @@
   <entry>
     <title type="html"><![CDATA[Looking Back to 2013]]></title>
     <link href="http://beletsky.net/2014/01/looking-back-to-2013.html"/>
-    <updated>2014-01-04T11:05:00+02:00</updated>
+    <updated>2014-01-04T11:05:00+01:00</updated>
     <id>http://beletsky.net/2014/01/looking-back-to-2013</id>
     <content type="html"><![CDATA[<p>Traditionally, first Saturday of New Year &ndash; time look back for year that passed. As usually, I do analisys throught a several aspects. Primary job, blogging and speaking, communities and side projects.</p>
 
@@ -2053,7 +2053,7 @@
 </ul>
 
 
-<p>As for talks, I&rsquo;ve prepared 5 <a href="https://speakerdeck.com/alexanderbeletsky">presentations</a>. As achievement of 2013 I see my talk on <a href="https://www.youtube.com/watch?feature=player_embedded&amp;v=EaoRDrdqm-E">RejectJS</a> conference. It was so cool and I really liked Berlin.</p>
+<p>As for talks, I&rsquo;ve prepared 5 <a href="https://speakerdeck.com/alexbeletsky">presentations</a>. As achievement of 2013 I see my talk on <a href="https://www.youtube.com/watch?feature=player_embedded&amp;v=EaoRDrdqm-E">RejectJS</a> conference. It was so cool and I really liked Berlin.</p>
 
 <h2>Communities</h2>
 
@@ -2102,7 +2102,7 @@
   <entry>
     <title type="html"><![CDATA[Open Source]]></title>
     <link href="http://beletsky.net/2013/12/open-source.html"/>
-    <updated>2013-12-31T12:00:00+02:00</updated>
+    <updated>2013-12-31T12:00:00+01:00</updated>
     <id>http://beletsky.net/2013/12/open-source</id>
     <content type="html"><![CDATA[<p>I heard about open source probably the first year I started programming. I liked the idea of software to be not only presented as a final product, but with ability to see how things are done and change something if you want. For me, open source was really related to operational systems and drivers, Linux as great example.</p>
 
@@ -2132,7 +2132,7 @@
   <entry>
     <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
     <link href="http://beletsky.net/2013/12/run-several-processes-in-docker-container.html"/>
-    <updated>2013-12-27T14:15:00+02:00</updated>
+    <updated>2013-12-27T14:15:00+01:00</updated>
     <id>http://beletsky.net/2013/12/run-several-processes-in-docker-container</id>
     <content type="html"><![CDATA[<p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
 
@@ -2233,7 +2233,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore is Becoming a Company]]></title>
     <link href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html"/>
-    <updated>2013-12-16T12:48:00+02:00</updated>
+    <updated>2013-12-16T12:48:00+01:00</updated>
     <id>http://beletsky.net/2013/12/likeastore-is-becoming-a-company</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last update on <a href="https://likeastore.com/">Likeastore</a> progress. It doesn&rsquo;t mean the application development is stopped, otherwise &ndash; we did a final breakthrough and today is my first day in <a href="http://eastlabs.co/">EastLabs</a> business accelerator. Yes, side project we&rsquo;ve started to have fun on hackathon is becoming a company today.</p>
 
@@ -2263,7 +2263,7 @@
   <entry>
     <title type="html"><![CDATA[I Quit My Job]]></title>
     <link href="http://beletsky.net/2013/12/i-quit-my-job.html"/>
-    <updated>2013-12-09T16:20:00+02:00</updated>
+    <updated>2013-12-09T16:20:00+01:00</updated>
     <id>http://beletsky.net/2013/12/i-quit-my-job</id>
     <content type="html"><![CDATA[<p>Since 6 Dec 2013, I&rsquo;m officially unemployed. I quit my job in E-conomic there I <a href="http://beletsky.net/blog/categories/e-conomic/">spent almost 3.5 years</a> of happy life. Leaving the company was a really tough decision, but it had to be made.</p>
 
@@ -2289,7 +2289,7 @@
   <entry>
     <title type="html"><![CDATA[Seismo - Analytics For Your Startup]]></title>
     <link href="http://beletsky.net/2013/12/analytics-for-your-startup.html"/>
-    <updated>2013-12-05T15:32:00+02:00</updated>
+    <updated>2013-12-05T15:32:00+01:00</updated>
     <id>http://beletsky.net/2013/12/analytics-for-your-startup</id>
     <content type="html"><![CDATA[<p>Sometimes ago I <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">wrote the post</a>, where was thinking about importance of logging of application state to clearly see what&rsquo;s going on inside and react accordingly. Logging is vital for any reliable system.</p>
 
@@ -2331,7 +2331,7 @@
   <entry>
     <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>
     <link href="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html"/>
-    <updated>2013-11-22T13:51:00+02:00</updated>
+    <updated>2013-11-22T13:51:00+01:00</updated>
     <id>http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app</id>
     <content type="html"><![CDATA[<p>So, you are building pure client side application that works against REST API. The client and server are completely decoupled and typically deployed separately of each other.</p>
 
@@ -2601,7 +2601,7 @@
   <entry>
     <title type="html"><![CDATA[Using Angular.js with Require.js]]></title>
     <link href="http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js.html"/>
-    <updated>2013-11-01T11:36:00+02:00</updated>
+    <updated>2013-11-01T11:36:00+01:00</updated>
     <id>http://beletsky.net/2013/11/using-angular-dot-js-with-require-dot-js</id>
     <content type="html"><![CDATA[<p>I got used to idea of AMD quite long time ago. That time Require.js was best (and probably only one) good implementation that supports it. It worked great for me while I was involved into Backbone.js development. So, once I jumped in to Angular.js my first wish was reuse the same experience as previously.</p>
 
@@ -2953,7 +2953,7 @@
   <entry>
     <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
     <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
-    <updated>2013-10-18T09:56:00+03:00</updated>
+    <updated>2013-10-18T09:56:00+02:00</updated>
     <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
     <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
 

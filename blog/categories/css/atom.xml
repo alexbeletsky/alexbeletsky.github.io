@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CSS | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[New in ASP.NET MVC4: Bundling and Minification]]></title>
     <link href="http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
-    <updated>2012-04-02T09:44:00+03:00</updated>
+    <updated>2012-04-02T08:44:00+02:00</updated>
     <id>http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
@@ -228,7 +228,7 @@ public class CssAppBundle : CssBundle
   <entry>
     <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
     <link href="http://beletsky.net/2012/02/foundation-framework-for-web-sites.html"/>
-    <updated>2012-02-21T11:15:00+02:00</updated>
+    <updated>2012-02-21T10:15:00+01:00</updated>
     <id>http://beletsky.net/2012/02/foundation-framework-for-web-sites</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />

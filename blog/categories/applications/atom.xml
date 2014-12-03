@@ -4,7 +4,7 @@
   <title><![CDATA[Category: applications | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/applications/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
     <link href="http://beletsky.net/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+03:00</updated>
+    <updated>2013-08-06T05:40:00+02:00</updated>
     <id>http://beletsky.net/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 
@@ -71,7 +71,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore App Goes to Public]]></title>
     <link href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html"/>
-    <updated>2013-07-28T09:30:00+03:00</updated>
+    <updated>2013-07-28T09:30:00+02:00</updated>
     <id>http://beletsky.net/2013/07/likeastore-app-goes-to-public</id>
     <content type="html"><![CDATA[<p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
 

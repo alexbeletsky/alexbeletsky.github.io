@@ -4,7 +4,7 @@
   <title><![CDATA[Category: expressjs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/expressjs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
     <link href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html"/>
-    <updated>2014-04-23T11:19:00+03:00</updated>
+    <updated>2014-04-23T11:19:00+02:00</updated>
     <id>http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware</id>
     <content type="html"><![CDATA[<p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
 
@@ -91,7 +91,7 @@
   <entry>
     <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
     <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
-    <updated>2013-10-18T09:56:00+03:00</updated>
+    <updated>2013-10-18T09:56:00+02:00</updated>
     <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
     <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
 
@@ -193,7 +193,7 @@ function patchRoute (route) {
   <entry>
     <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
     <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
-    <updated>2013-10-15T21:54:00+03:00</updated>
+    <updated>2013-10-15T21:54:00+02:00</updated>
     <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
     <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
 
@@ -402,7 +402,7 @@ function patchRoute (route) {
   <entry>
     <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
     <link href="http://beletsky.net/2013/07/think-ahead-think-logging.html"/>
-    <updated>2013-07-04T09:02:00+03:00</updated>
+    <updated>2013-07-04T09:02:00+02:00</updated>
     <id>http://beletsky.net/2013/07/think-ahead-think-logging</id>
     <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
 

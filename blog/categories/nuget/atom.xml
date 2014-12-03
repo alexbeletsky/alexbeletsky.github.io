@@ -4,7 +4,7 @@
   <title><![CDATA[Category: NuGet | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/nuget/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH MVC: Answering questions]]></title>
     <link href="http://beletsky.net/2011/12/elmah-mvc-answering-questions.html"/>
-    <updated>2011-12-11T12:25:00+02:00</updated>
+    <updated>2011-12-11T11:25:00+01:00</updated>
     <id>http://beletsky.net/2011/12/elmah-mvc-answering-questions</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>I've received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
@@ -43,7 +43,7 @@
   <entry>
     <title type="html"><![CDATA[ELMAH MVC controller released on NuGet]]></title>
     <link href="http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html"/>
-    <updated>2011-08-29T21:20:00+03:00</updated>
+    <updated>2011-08-29T20:20:00+02:00</updated>
     <id>http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        I dedicated some time for that and happy to announce - ELMAH MVC controller released         on NuGet.     </p><p>        Due to the latest interest, feedback and changes - it has no sense         at all to keep that code just in blog post. In my <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">previous</a> post I promised to create NuGet package for that, so here we are:     </p><div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC</p></div></div><p>        I simplified code even a little more to avoid changing in routes (in case of Admin area already exists in project).     </p><p>        So just grab it from NuGet now.     </p></div>

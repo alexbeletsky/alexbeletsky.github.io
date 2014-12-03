@@ -4,7 +4,7 @@
   <title><![CDATA[Category: opensource | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/opensource/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
     <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
-    <updated>2014-08-22T15:38:00+03:00</updated>
+    <updated>2014-08-22T15:38:00+02:00</updated>
     <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
     <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in your projects as well.</p>
 
@@ -221,7 +221,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[Open Source]]></title>
     <link href="http://beletsky.net/2013/12/open-source.html"/>
-    <updated>2013-12-31T12:00:00+02:00</updated>
+    <updated>2013-12-31T12:00:00+01:00</updated>
     <id>http://beletsky.net/2013/12/open-source</id>
     <content type="html"><![CDATA[<p>I heard about open source probably the first year I started programming. I liked the idea of software to be not only presented as a final product, but with ability to see how things are done and change something if you want. For me, open source was really related to operational systems and drivers, Linux as great example.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: chrome | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/chrome/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
     <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
-    <updated>2014-05-22T11:15:00+03:00</updated>
+    <updated>2014-05-22T11:15:00+02:00</updated>
     <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
     <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
 

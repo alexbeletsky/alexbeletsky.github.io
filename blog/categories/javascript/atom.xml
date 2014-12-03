@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
     <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
-    <updated>2014-08-22T15:38:00+03:00</updated>
+    <updated>2014-08-22T15:38:00+02:00</updated>
     <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
     <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in your projects as well.</p>
 
@@ -221,7 +221,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
     <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
-    <updated>2014-05-22T11:15:00+03:00</updated>
+    <updated>2014-05-22T11:15:00+02:00</updated>
     <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
     <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
 
@@ -345,7 +345,7 @@ app.analytics.track('search extension');
   <entry>
     <title type="html"><![CDATA[Testable API's with Node.js]]></title>
     <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
-    <updated>2014-03-04T15:36:00+02:00</updated>
+    <updated>2014-03-04T15:36:00+01:00</updated>
     <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
     <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
 
@@ -637,7 +637,7 @@ describe(&lsquo;when new collection created&rsquo;, function () {</p>
   <entry>
     <title type="html"><![CDATA[Keeping Node.js Processes Running]]></title>
     <link href="http://beletsky.net/2014/01/keeping-node-dot-js-processes-running.html"/>
-    <updated>2014-01-18T13:38:00+02:00</updated>
+    <updated>2014-01-18T13:38:00+01:00</updated>
     <id>http://beletsky.net/2014/01/keeping-node-dot-js-processes-running</id>
     <content type="html"><![CDATA[<p>Node.js/Express.js is great for Web API&rsquo;s and applications. In contrast to known enterprise technologies, Node.js is very special. It&rsquo;s single process/threaded environment. In case of unhanded exception occurred Node.js virtual machine simply stops, leaving application in unresponsive state.</p>
 
@@ -746,7 +746,7 @@ sleep: 1000,
   <entry>
     <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>
     <link href="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html"/>
-    <updated>2013-11-22T13:51:00+02:00</updated>
+    <updated>2013-11-22T13:51:00+01:00</updated>
     <id>http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app</id>
     <content type="html"><![CDATA[<p>So, you are building pure client side application that works against REST API. The client and server are completely decoupled and typically deployed separately of each other.</p>
 

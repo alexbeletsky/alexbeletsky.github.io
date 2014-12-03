@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bdd | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/bdd/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Testable API's with Node.js]]></title>
     <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
-    <updated>2014-03-04T15:36:00+02:00</updated>
+    <updated>2014-03-04T15:36:00+01:00</updated>
     <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
     <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
 

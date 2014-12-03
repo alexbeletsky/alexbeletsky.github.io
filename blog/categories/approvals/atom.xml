@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Approvals | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/approvals/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Using Approval Testing for ELMAH.MVC project]]></title>
     <link href="http://beletsky.net/2012/06/using-approval-testing-for-elmahmvc.html"/>
-    <updated>2012-06-16T15:23:00+03:00</updated>
+    <updated>2012-06-16T14:23:00+02:00</updated>
     <id>http://beletsky.net/2012/06/using-approval-testing-for-elmahmvc</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>    During the ELMAH.MVC 2.0 preparation I had a bit challenging task. As I <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">mentioned</a>, I was about to adopt some code from <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandox</a> project. The 2.0 release included some new features, but what was important to me is make sure I keep previous ELMAH.MVC functionality.<br />
@@ -84,7 +84,7 @@ private string RemoveFooter(string content)
   <entry>
     <title type="html"><![CDATA[Approval Tests: Locking down an output]]></title>
     <link href="http://beletsky.net/2012/01/approval-tests-locking-down-output.html"/>
-    <updated>2012-01-06T17:52:00+02:00</updated>
+    <updated>2012-01-06T16:52:00+01:00</updated>
     <id>http://beletsky.net/2012/01/approval-tests-locking-down-output</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        We have <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">seen</a> how Approval Tests are useful for locking down some legacy code. You might say, that on practice we are having much more bigger problem, like some code that executes queries against the database. We need somehow to be able to work with that code, without worries of brake it down. Approvals could help here. <br />
@@ -158,7 +158,7 @@ public void should_be_able_to_test()
   <entry>
     <title type="html"><![CDATA[Approval Tests: Locking Down Legacy Code]]></title>
     <link href="http://beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html"/>
-    <updated>2011-12-14T19:06:00+02:00</updated>
+    <updated>2011-12-14T18:06:00+01:00</updated>
     <id>http://beletsky.net/2011/12/approval-tests-locking-down-legacy-code</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Suppose, you working on project with a lot of legacy code inside. I know it makes you sick, but as brave developer you want to improve things. You met that ugliest method in your life and only one thing you want to do - refactor it. But refactoring is dangerous procedure. For safe refactoring you need to have good test coverage. But wait, it is legacy code. You simply have no tests. What to do? Approvals have answer.<br />
@@ -259,7 +259,7 @@ public void should_try_to_cover_it()
   <entry>
     <title type="html"><![CDATA[Approval Tests, Alternative View on Test Automation]]></title>
     <link href="http://beletsky.net/2011/12/approval-tests-alternative-view-on-test.html"/>
-    <updated>2011-12-11T01:19:00+02:00</updated>
+    <updated>2011-12-11T00:19:00+01:00</updated>
     <id>http://beletsky.net/2011/12/approval-tests-alternative-view-on-test</id>
     <content type="html"><![CDATA[<div class='post'>
 <p><a href="https://sourceforge.net/projects/approvaltests/">Approval Tests</a> or simply Approvals in a framework created by <a href="http://twitter.com/#!/LlewellynFalco">Llewellyn Falco</a> and <a href="http://dangilkerson.users.sourceforge.net/">Dan Gilkerson</a>, providing support for .NET, Java, PHP and Ruby. It is not yet another unit testing framework like NUnit or MbUnit etc., instead those frameworks are used to run approval tests.<br />

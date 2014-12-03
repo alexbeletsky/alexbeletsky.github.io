@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Candidate | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/candidate/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[New Candidate Overview]]></title>
     <link href="http://beletsky.net/2012/09/new-candidate-overview.html"/>
-    <updated>2012-09-05T21:56:00+03:00</updated>
+    <updated>2012-09-05T20:56:00+02:00</updated>
     <id>http://beletsky.net/2012/09/new-candidate-overview</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>        It's been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven't managed to make huge progress on project so far, but I got something to show.<br />
@@ -48,7 +48,7 @@
   <entry>
     <title type="html"><![CDATA[Re-thinking Candidate application]]></title>
     <link href="http://beletsky.net/2012/08/re-thinking-candidate-application.html"/>
-    <updated>2012-08-07T10:05:00+03:00</updated>
+    <updated>2012-08-07T09:05:00+02:00</updated>
     <id>http://beletsky.net/2012/08/re-thinking-candidate-application</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>   I've released 0.0.1 version of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> pretty long time ago. I was actually quite happy how the things went, before I collected some initial feedback. Even, if I can see the application useful, almost all responders had a different opinion. Let's briefly see the major concerns.<br />
@@ -78,7 +78,7 @@
   <entry>
     <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
     <link href="http://beletsky.net/2012/02/candidate-v001rc-released.html"/>
-    <updated>2012-02-14T07:37:00+02:00</updated>
+    <updated>2012-02-14T06:37:00+01:00</updated>
     <id>http://beletsky.net/2012/02/candidate-v001rc-released</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
@@ -109,7 +109,7 @@
   <entry>
     <title type="html"><![CDATA[Pre-announce of Release Candidate]]></title>
     <link href="http://beletsky.net/2012/01/pre-announce-of-release-candidate.html"/>
-    <updated>2012-01-13T10:01:00+02:00</updated>
+    <updated>2012-01-13T09:01:00+01:00</updated>
     <id>http://beletsky.net/2012/01/pre-announce-of-release-candidate</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>For those, who already forgot what the candidate is I'll do a small reminder :). This is an <a href="https://github.com/alexanderbeletsky/candidate">application</a> for Continues Deployment for .NET projects. I started the project at <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">Hackatone</a> that took place in summer 2011, in Kyiv. I liked the results I got there, so I didn't throw it away after the contest, but slowly progressed on that through last several months. <br />
@@ -137,7 +137,7 @@
   <entry>
     <title type="html"><![CDATA[Candidate, Application I Made on Hackatone]]></title>
     <link href="http://beletsky.net/2011/06/candidatenet-application-i-made-on.html"/>
-    <updated>2011-06-13T19:26:00+03:00</updated>
+    <updated>2011-06-13T18:26:00+02:00</updated>
     <id>http://beletsky.net/2011/06/candidatenet-application-i-made-on</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Here is quick description of application application I made on <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">Hackatone</a> this weekend. </p><p>Candidate.net is just working name for the project that I'm going to change as soon as I got better idea :). It supposed to be a kind of service that provides integration with your github repositories and provides a Continues Deployment cycle for that repositories. Namely, every code change that being pushed to github is immediately build, tested and deployed, so the time between code push and production is very short excludes any manual work. </p><p>I've spent ~16 hours for building up this application, sure I haven't managed to make it as a service.. but - during the process I've changed my vision for project, so first I would like to create good continues build engine (like Team City or Jenkins) and base my future service on top of it (yeah, I already got some further plans :). </p><p>Technologies behind: </p><ul><li>ASP.NET MVC3</li>

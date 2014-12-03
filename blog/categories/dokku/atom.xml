@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dokku | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/dokku/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
     <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
-    <updated>2014-07-18T12:34:00+03:00</updated>
+    <updated>2014-07-18T12:34:00+02:00</updated>
     <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
     <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
 
@@ -219,7 +219,7 @@ requestTimeout: 5000
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
     <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
-    <updated>2013-09-16T21:21:00+03:00</updated>
+    <updated>2013-09-16T21:21:00+02:00</updated>
     <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
     <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
 
@@ -335,7 +335,7 @@ demo with node-sample
   <entry>
     <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
     <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
-    <updated>2013-09-03T19:57:00+03:00</updated>
+    <updated>2013-09-03T19:57:00+02:00</updated>
     <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
     <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
 
@@ -429,7 +429,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x72;&#111;&#x6f;&#116;&#x40;&#x64;&#111;&#x6b;&#x6b;&#x75;&#x2e;&#109;&#x65;">&#x72;&#x6f;&#x6f;&#116;&#x40;&#100;&#x6f;&#107;&#107;&#x75;&#46;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x72;&#111;&#111;&#x74;&#64;&#x64;&#x6f;&#x6b;&#x6b;&#x75;&#x2e;&#x6d;&#101;">&#x72;&#111;&#x6f;&#x74;&#64;&#100;&#111;&#107;&#x6b;&#x75;&#x2e;&#x6d;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
@@ -535,7 +535,7 @@ Total 3 (delta 2), reused 0 (delta 0)
   <entry>
     <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
     <link href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
-    <updated>2013-08-28T22:00:00+03:00</updated>
+    <updated>2013-08-28T22:00:00+02:00</updated>
     <id>http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
     <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
 
@@ -618,7 +618,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x6c;&#x69;&#x6b;&#101;&#x61;&#115;&#x74;&#111;&#x72;&#x65;&#x2d;&#x63;&#x6f;&#108;&#x6c;&#101;&#x63;&#x74;&#111;&#x72;&#64;&#48;&#x2e;&#x30;&#x2e;&#50;&#45;&#x32;&#49;">&#x6c;&#x69;&#x6b;&#101;&#97;&#x73;&#x74;&#111;&#x72;&#101;&#45;&#99;&#x6f;&#x6c;&#x6c;&#101;&#99;&#116;&#x6f;&#x72;&#64;&#48;&#x2e;&#x30;&#x2e;&#x32;&#45;&#x32;&#x31;</a> No repository field.
+remote:        npm WARN package.json <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#108;&#x69;&#x6b;&#x65;&#97;&#115;&#116;&#x6f;&#x72;&#x65;&#x2d;&#x63;&#x6f;&#x6c;&#108;&#101;&#x63;&#116;&#111;&#114;&#x40;&#x30;&#x2e;&#x30;&#x2e;&#50;&#45;&#x32;&#49;">&#108;&#105;&#107;&#x65;&#97;&#x73;&#116;&#111;&#x72;&#x65;&#45;&#99;&#x6f;&#x6c;&#108;&#101;&#x63;&#116;&#x6f;&#x72;&#64;&#x30;&#46;&#x30;&#x2e;&#x32;&#x2d;&#x32;&#x31;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 

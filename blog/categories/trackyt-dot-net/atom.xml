@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Trackyt.net | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/trackyt-dot-net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Retrospective of Trackyt.net or Best Project I Ever Accomplished]]></title>
     <link href="http://beletsky.net/2012/12/retrospective-of-trackytnet-or-best.html"/>
-    <updated>2012-12-01T16:11:00+02:00</updated>
+    <updated>2012-12-01T15:11:00+01:00</updated>
     <id>http://beletsky.net/2012/12/retrospective-of-trackytnet-or-best</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        It's been to years ago, I've <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I've cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
@@ -31,7 +31,7 @@
     </a><br />
     <p>        I'll try to analyze what actually happened:<br />
     </p>    <ul>        <li><strong>Web development and design:</strong> even my professional involvement into web applications, did not give me a feeling of web development. I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">blame</a> ASP.NET Web Forms for that, but I realized that I lack that kind of skill. That was my first project were I did everything by myself, all HTML/CSS/JS were handmade, not stupid WebControls. My eyes opened on how many things I did not understand, how difficult the front-end might be. Crafting of UI is a huge pleasure for me, I simply like beautiful things. 2 years after I will never call Trackyt.net beautiful, but it was a great point to start.<br />
-            <p>                <i>Outcome</i>: I overstepped the uncertainty and fears of front-end. During the JavaScript programming. I've seen a lot of value in front-end MVC frameworks, so I had no doubts of moving from jQuery based apps to Backbone.js (or other MV*) frameworks. I did a <a href="https://speakerdeck.com/alexanderbeletsky">several speeches</a> of JavaScript applications development and got really cool feedback on it.<br />
+            <p>                <i>Outcome</i>: I overstepped the uncertainty and fears of front-end. During the JavaScript programming. I've seen a lot of value in front-end MVC frameworks, so I had no doubts of moving from jQuery based apps to Backbone.js (or other MV*) frameworks. I did a <a href="https://speakerdeck.com/alexbeletsky">several speeches</a> of JavaScript applications development and got really cool feedback on it.<br />
             </p>        </li>
         <li><strong>Test driven development:</strong> practicing TDD for quite long years already, so Trackyt.net was not my first project were I applied the technique. The difference was that usually the we work with some legacy code at work, so TDD could be difficult to apply. Starting that project I had strong opinion on TDD and literally TDD'ed everything. UI, Controllers, Repositories.. JavaScript and C#. That was so great experience, I never felt on any other projects. During Trackyt.net I think I moved from <a href="http://martinfowler.com/bliki/ShuHaRi.html">Shu</a> to <a href="</a>">Ha</a> level of testing. Now, I <a href="http://www.beletsky.net/2011/11/develop-with-tests.html">more clearly</a> see what and when should I test to stay in good shape of application.<br />
         </li>
@@ -59,7 +59,7 @@
   <entry>
     <title type="html"><![CDATA[Ninject provider as factory method]]></title>
     <link href="http://beletsky.net/2011/02/ninject-provider-as-factory-method.html"/>
-    <updated>2011-02-13T19:22:00+02:00</updated>
+    <updated>2011-02-13T18:22:00+01:00</updated>
     <id>http://beletsky.net/2011/02/ninject-provider-as-factory-method</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -168,7 +168,7 @@ Now, in case of <code>INotificationService</code> object need to be instantiated
   <entry>
     <title type="html"><![CDATA[Testing REST services with javascript]]></title>
     <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
-    <updated>2010-12-30T08:28:00+02:00</updated>
+    <updated>2010-12-30T07:28:00+01:00</updated>
     <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -269,7 +269,7 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   <entry>
     <title type="html"><![CDATA[You stucked? Stop and ask for help!]]></title>
     <link href="http://beletsky.net/2010/11/you-stucked-stop-and-ask-for-help.html"/>
-    <updated>2010-11-26T13:24:00+02:00</updated>
+    <updated>2010-11-26T12:24:00+01:00</updated>
     <id>http://beletsky.net/2010/11/you-stucked-stop-and-ask-for-help</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -322,7 +322,7 @@ Have you been to such situation, do you think it's valuable if you have some sto
   <entry>
     <title type="html"><![CDATA[I've released my own product - Trackyt.net]]></title>
     <link href="http://beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html"/>
-    <updated>2010-11-24T07:53:00+02:00</updated>
+    <updated>2010-11-24T06:53:00+01:00</updated>
     <id>http://beletsky.net/2010/11/ive-release-my-own-product-trackytnet</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

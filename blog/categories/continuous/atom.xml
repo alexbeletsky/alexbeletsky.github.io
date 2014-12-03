@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Continuous | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/continuous/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Speeches Hat-Trick For This Weekend]]></title>
     <link href="http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend.html"/>
-    <updated>2012-02-27T10:30:00+02:00</updated>
+    <updated>2012-02-27T09:30:00+01:00</updated>
     <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
@@ -36,7 +36,7 @@
   <entry>
     <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
     <link href="http://beletsky.net/2012/02/candidate-v001rc-released.html"/>
-    <updated>2012-02-14T07:37:00+02:00</updated>
+    <updated>2012-02-14T06:37:00+01:00</updated>
     <id>http://beletsky.net/2012/02/candidate-v001rc-released</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
@@ -67,7 +67,7 @@
   <entry>
     <title type="html"><![CDATA[Agile Base Camp 2012]]></title>
     <link href="http://beletsky.net/2012/01/agile-base-camp-2012.html"/>
-    <updated>2012-01-30T20:54:00+02:00</updated>
+    <updated>2012-01-30T19:54:00+01:00</updated>
     <id>http://beletsky.net/2012/01/agile-base-camp-2012</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Past Saturday I was a part of big Ukrainian event <a href="http://agilebasecamp.org/">Agile Base Camp: From Idea to Product</a>. It's been organized by <a href="http://www.scrumguides.com/">ScrumGuides</a>, pioneers on Agile in Ukraine and organizers of famous <a href="http://www.beletsky.net/search/label/Agile">Agilee</a> series of conferences.<br />
@@ -88,7 +88,7 @@
   <entry>
     <title type="html"><![CDATA[Continuous Delivery: Make it work]]></title>
     <link href="http://beletsky.net/2011/05/continuous-production-make-it-work.html"/>
-    <updated>2011-05-11T10:27:00+03:00</updated>
+    <updated>2011-05-11T09:27:00+02:00</updated>
     <id>http://beletsky.net/2011/05/continuous-production-make-it-work</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -206,7 +206,7 @@ What we did is only very basic setup, but it already gives a lot of power. It is
   <entry>
     <title type="html"><![CDATA[Continuous Delivery: Setup and run]]></title>
     <link href="http://beletsky.net/2011/05/continues-production-setup-and-run.html"/>
-    <updated>2011-05-02T11:39:00+03:00</updated>
+    <updated>2011-05-02T10:39:00+02:00</updated>
     <id>http://beletsky.net/2011/05/continues-production-setup-and-run</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

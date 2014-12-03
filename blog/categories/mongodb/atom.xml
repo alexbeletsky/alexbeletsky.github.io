@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mongodb | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
     <link href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html"/>
-    <updated>2014-05-15T11:29:00+03:00</updated>
+    <updated>2014-05-15T11:29:00+02:00</updated>
     <id>http://beletsky.net/2014/05/got-tired-of-mongodb-full-text</id>
     <content type="html"><![CDATA[<p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
 
@@ -152,7 +152,7 @@ elastic.search({
   <entry>
     <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
     <link href="http://beletsky.net/2013/12/run-several-processes-in-docker-container.html"/>
-    <updated>2013-12-27T14:15:00+02:00</updated>
+    <updated>2013-12-27T14:15:00+01:00</updated>
     <id>http://beletsky.net/2013/12/run-several-processes-in-docker-container</id>
     <content type="html"><![CDATA[<p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
 

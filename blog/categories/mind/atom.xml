@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mind | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/mind/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
     <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
-    <updated>2014-03-31T13:09:00+03:00</updated>
+    <updated>2014-03-31T13:09:00+02:00</updated>
     <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
     <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
 
@@ -101,7 +101,7 @@
   <entry>
     <title type="html"><![CDATA[Open Source]]></title>
     <link href="http://beletsky.net/2013/12/open-source.html"/>
-    <updated>2013-12-31T12:00:00+02:00</updated>
+    <updated>2013-12-31T12:00:00+01:00</updated>
     <id>http://beletsky.net/2013/12/open-source</id>
     <content type="html"><![CDATA[<p>I heard about open source probably the first year I started programming. I liked the idea of software to be not only presented as a final product, but with ability to see how things are done and change something if you want. For me, open source was really related to operational systems and drivers, Linux as great example.</p>
 
@@ -131,7 +131,7 @@
   <entry>
     <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
     <link href="http://beletsky.net/2013/06/we-were-wrong-10-years-ago.html"/>
-    <updated>2013-06-20T23:43:00+03:00</updated>
+    <updated>2013-06-20T23:43:00+02:00</updated>
     <id>http://beletsky.net/2013/06/we-were-wrong-10-years-ago</id>
     <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: likeastore | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/likeastore/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Email, SMS and Push Notifications Server]]></title>
     <link href="http://beletsky.net/2014/08/notifier-email-sms-push-notifications.html"/>
-    <updated>2014-08-22T15:38:00+03:00</updated>
+    <updated>2014-08-22T15:38:00+02:00</updated>
     <id>http://beletsky.net/2014/08/notifier-email-sms-push-notifications</id>
     <content type="html"><![CDATA[<p>I recently came up with very convenient component &ndash; <a href="https://github.com/likeastore/notifier">likeastore/notifier</a>. Notifier is easy to setup Email, SMS and Push Notifications Server. It&rsquo;s been open sourced few month, very specific to <a href="https://likeastore.com">Likeastore</a> needs, but due to great <a href="https://github.com/likeastore/notifier/graphs/contributors">contributions</a> it became very generic and can be used in your projects as well.</p>
 
@@ -221,7 +221,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
     <link href="http://beletsky.net/2014/07/working-on-startup.html"/>
-    <updated>2014-07-03T10:41:00+03:00</updated>
+    <updated>2014-07-03T10:41:00+02:00</updated>
     <id>http://beletsky.net/2014/07/working-on-startup</id>
     <content type="html"><![CDATA[<p>Last year, July 2013 public version of Likeastore been <a href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html">released</a>. It gave momentum to change the mind, went out of comfort zone, reconsider priorities and literally change my life. Earlier I <a href="http://beletsky.net/2014/03/from-side-project-to-start.html">blogged</a> about transformation of Likeastore from side project to startup.</p>
 
@@ -289,7 +289,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
     <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
-    <updated>2014-03-31T13:09:00+03:00</updated>
+    <updated>2014-03-31T13:09:00+02:00</updated>
     <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
     <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
 
@@ -374,7 +374,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[Likeastore is Becoming a Company]]></title>
     <link href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html"/>
-    <updated>2013-12-16T12:48:00+02:00</updated>
+    <updated>2013-12-16T12:48:00+01:00</updated>
     <id>http://beletsky.net/2013/12/likeastore-is-becoming-a-company</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last update on <a href="https://likeastore.com/">Likeastore</a> progress. It doesn&rsquo;t mean the application development is stopped, otherwise &ndash; we did a final breakthrough and today is my first day in <a href="http://eastlabs.co/">EastLabs</a> business accelerator. Yes, side project we&rsquo;ve started to have fun on hackathon is becoming a company today.</p>
 
@@ -404,7 +404,7 @@ $ echo '{"event": "incoming-event"}' | curl -H "Content-Type:application/json" -
   <entry>
     <title type="html"><![CDATA[First Week in The Air]]></title>
     <link href="http://beletsky.net/2013/08/first-week-in-the-air.html"/>
-    <updated>2013-08-06T05:40:00+03:00</updated>
+    <updated>2013-08-06T05:40:00+02:00</updated>
     <id>http://beletsky.net/2013/08/first-week-in-the-air</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
 

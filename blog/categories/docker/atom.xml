@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
     <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
-    <updated>2014-07-18T12:34:00+03:00</updated>
+    <updated>2014-07-18T12:34:00+02:00</updated>
     <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
     <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
 
@@ -219,7 +219,7 @@ requestTimeout: 5000
   <entry>
     <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
     <link href="http://beletsky.net/2013/12/run-several-processes-in-docker-container.html"/>
-    <updated>2013-12-27T14:15:00+02:00</updated>
+    <updated>2013-12-27T14:15:00+01:00</updated>
     <id>http://beletsky.net/2013/12/run-several-processes-in-docker-container</id>
     <content type="html"><![CDATA[<p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
 
@@ -296,7 +296,7 @@ ENTRYPOINT [&ldquo;./bin/run.sh&rdquo;]
   <entry>
     <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
     <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
-    <updated>2013-09-16T21:21:00+03:00</updated>
+    <updated>2013-09-16T21:21:00+02:00</updated>
     <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
     <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
 
@@ -412,7 +412,7 @@ demo with node-sample
   <entry>
     <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
     <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
-    <updated>2013-09-03T19:57:00+03:00</updated>
+    <updated>2013-09-03T19:57:00+02:00</updated>
     <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
     <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
 
@@ -506,7 +506,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x72;&#111;&#x6f;&#x74;&#64;&#100;&#x6f;&#107;&#x6b;&#x75;&#46;&#x6d;&#101;">&#114;&#x6f;&#x6f;&#116;&#64;&#100;&#x6f;&#x6b;&#x6b;&#x75;&#46;&#x6d;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x72;&#111;&#111;&#116;&#64;&#x64;&#111;&#107;&#x6b;&#x75;&#x2e;&#x6d;&#101;">&#x72;&#x6f;&#111;&#x74;&#x40;&#100;&#111;&#x6b;&#107;&#x75;&#46;&#x6d;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>

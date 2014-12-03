@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tdd | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
     <link href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html"/>
-    <updated>2014-04-23T11:19:00+03:00</updated>
+    <updated>2014-04-23T11:19:00+02:00</updated>
     <id>http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware</id>
     <content type="html"><![CDATA[<p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
 
@@ -91,7 +91,7 @@
   <entry>
     <title type="html"><![CDATA[Testable API's with Node.js]]></title>
     <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
-    <updated>2014-03-04T15:36:00+02:00</updated>
+    <updated>2014-03-04T15:36:00+01:00</updated>
     <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
     <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
 
@@ -383,7 +383,7 @@ describe(&lsquo;when new collection created&rsquo;, function () {</p>
   <entry>
     <title type="html"><![CDATA[Logs Driven Development]]></title>
     <link href="http://beletsky.net/2014/01/logs-driven-development.html"/>
-    <updated>2014-01-25T13:12:00+02:00</updated>
+    <updated>2014-01-25T13:12:00+01:00</updated>
     <id>http://beletsky.net/2014/01/logs-driven-development</id>
     <content type="html"><![CDATA[<p>One of the components I currently work on called <code>collector</code> and it has no tests. Collector is all about of building queue of tasks, executing them and store data to database after. Tasks are HTTP clients that requests API and process transform responses into generic forms.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AJAX | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/ajax/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[How to run multiple AJAX requests]]></title>
     <link href="http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests.html"/>
-    <updated>2012-10-31T21:12:00+02:00</updated>
+    <updated>2012-10-31T20:12:00+01:00</updated>
     <id>http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests</id>
     <content type="html"><![CDATA[<div class='post'>
     <p>        Suppose you have a list of resources that you would like to retrieve by means of AJAX. `$.ajax()` (or it's short variants like `$.get()` or `$.post`) is usual way of making AJAX calls, it works great than you need to fetch one.<br />
@@ -66,7 +66,7 @@ $.get(url1, function (r) {
   <entry>
     <title type="html"><![CDATA[Testing REST services with javascript]]></title>
     <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
-    <updated>2010-12-30T08:28:00+02:00</updated>
+    <updated>2010-12-30T07:28:00+01:00</updated>
     <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -167,7 +167,7 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   <entry>
     <title type="html"><![CDATA[Switching from ASP.NET development server (Cassini) to IIS with MVC applications]]></title>
     <link href="http://beletsky.net/2010/10/switching-from-aspnet-development.html"/>
-    <updated>2010-10-15T12:11:00+03:00</updated>
+    <updated>2010-10-15T11:11:00+02:00</updated>
     <id>http://beletsky.net/2010/10/switching-from-aspnet-development</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>Start developing new applications on IIS already is probably good idea, since it is IIS where you application is finally landed to. Working with Cassini is great, cause it fast, requires no maintenance, very easy to start. But it could hide some issues that would surprise you during deployment. </p><p>Recently I've decided to switch my current Asp.net MVC application from Cassini to IIS. It is done very easy, just go to project, Web tab -> Use local IIS Web Server. Select the option and then click on "Create a virtual directory", to create a virtual directory for application.  </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s1600/projproperties.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 122px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s400/projproperties.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5528198177940745122" /></a> <p>But after I started, application just failed. I'll share the problems I met and how I fix them. </p><h2>IIS identity impersonation and path credentials</h2><p>To make sure your SQL database works fine, you have to configure identity impersonation for application pool and path credentials for folder. </p><p>Go to ISS Management, Application Pools, DefaulAppPool, (you could you another app pool for you application), Advanced Settings, Process Model, Identity and set it for your account (you should have admin permissions on this machine). </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s1600/processidentity.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 338px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s400/processidentity.png" border="0" alt=""id="Img1" /></a> <p>Go to Virtual folder, Basic Setting, Connect As..., use you credentials. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s1600/pathcredentials.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 281px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s400/pathcredentials.png" border="0" alt=""id="Img2" /></a> <h2>JavaScript references from Master page </h2><p>On my master page I've referenced number of javascript files, as jQuery, jPost etc. I did it like that, </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">src</font><font color="#0000ff">="/Scripts/jquery-1.4.1.min.js"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp; <br />
@@ -197,7 +197,7 @@ As javascript could be treated as "pseudo language", since it is easy to read it
   <entry>
     <title type="html"><![CDATA[Web development: Lightweight AJAX thought jQuery, JSon.net and HttpHandlers]]></title>
     <link href="http://beletsky.net/2010/08/web-development-lightweight-ajax.html"/>
-    <updated>2010-08-09T09:43:00+03:00</updated>
+    <updated>2010-08-09T08:43:00+02:00</updated>
     <id>http://beletsky.net/2010/08/web-development-lightweight-ajax</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>
@@ -266,7 +266,7 @@ Such approach serves really great for simple AJAX applications, on pure ASP.net,
   <entry>
     <title type="html"><![CDATA[Blogging with a GitHub and Blogspot? Ideas?]]></title>
     <link href="http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas.html"/>
-    <updated>2010-07-27T22:54:00+03:00</updated>
+    <updated>2010-07-27T21:54:00+02:00</updated>
     <id>http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: startup | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/startup/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-09-19T19:44:54+03:00</updated>
+  <updated>2014-12-03T09:53:07+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
     <link href="http://beletsky.net/2014/07/working-on-startup.html"/>
-    <updated>2014-07-03T10:41:00+03:00</updated>
+    <updated>2014-07-03T10:41:00+02:00</updated>
     <id>http://beletsky.net/2014/07/working-on-startup</id>
     <content type="html"><![CDATA[<p>Last year, July 2013 public version of Likeastore been <a href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html">released</a>. It gave momentum to change the mind, went out of comfort zone, reconsider priorities and literally change my life. Earlier I <a href="http://beletsky.net/2014/03/from-side-project-to-start.html">blogged</a> about transformation of Likeastore from side project to startup.</p>
 
@@ -84,7 +84,7 @@
   <entry>
     <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
     <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
-    <updated>2014-03-31T13:09:00+03:00</updated>
+    <updated>2014-03-31T13:09:00+02:00</updated>
     <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
     <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
 
@@ -169,7 +169,7 @@
   <entry>
     <title type="html"><![CDATA[Likeastore is Becoming a Company]]></title>
     <link href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html"/>
-    <updated>2013-12-16T12:48:00+02:00</updated>
+    <updated>2013-12-16T12:48:00+01:00</updated>
     <id>http://beletsky.net/2013/12/likeastore-is-becoming-a-company</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last update on <a href="https://likeastore.com/">Likeastore</a> progress. It doesn&rsquo;t mean the application development is stopped, otherwise &ndash; we did a final breakthrough and today is my first day in <a href="http://eastlabs.co/">EastLabs</a> business accelerator. Yes, side project we&rsquo;ve started to have fun on hackathon is becoming a company today.</p>
 
@@ -199,7 +199,7 @@
   <entry>
     <title type="html"><![CDATA[Seismo - Analytics For Your Startup]]></title>
     <link href="http://beletsky.net/2013/12/analytics-for-your-startup.html"/>
-    <updated>2013-12-05T15:32:00+02:00</updated>
+    <updated>2013-12-05T15:32:00+01:00</updated>
     <id>http://beletsky.net/2013/12/analytics-for-your-startup</id>
     <content type="html"><![CDATA[<p>Sometimes ago I <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">wrote the post</a>, where was thinking about importance of logging of application state to clearly see what&rsquo;s going on inside and react accordingly. Logging is vital for any reliable system.</p>
 
