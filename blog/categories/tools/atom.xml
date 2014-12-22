@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tools | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/tools/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -42,7 +42,7 @@
 <p>    When I first time tried that, I could not believe how smooth it was. Can't even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
 </p><h2>LiveReload + any IDE</h2><p>    "Any IDE" in my case means Visual Studio, where I spent some time if I'm not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
 </p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I'm not much that comfortable with Ruby, so I went Node.js way.<br />
-</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It's written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexanderbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
+</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It's written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
 </p><pre class="brush: plain">    @echo off
     node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
 </pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />

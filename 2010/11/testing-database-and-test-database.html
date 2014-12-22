@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -110,7 +110,7 @@ Testing the database is important. It is absolutely required then your DAL is si
 </p>
 <h2>Testing database</h2>
 <p>
-By testing the database I mean unit tests that runs database operation tasks (create, update, delete, stored procedures calls) and test asserts that operation is being completed successfully.  
+By testing the database I mean unit tests that runs database operation tasks (create, update, delete, stored procedures calls) and test asserts that operation is being completed successfully.
 </p>
 <p>
 Even the SQL is simple enough (like a <code>SELECT</code> or <code>UPDATE</code>) it have to be tested. More complex stuff, like <code>JOIN</code>, <code>UNION</code> etc. have to tested with much more care (meaning different scenarios, different input set etc.). As more complex query you have, as more complex test you should do. I personally trying to avoid complex SQL queries, because they difficult to read and support, but in many cases is the only way you can do.
@@ -126,7 +126,7 @@ Using ORM simplifies life a bit. You are working with objects, creation of new r
 <a href="https://gist.github.com/662918">https://gist.github.com/662918</a>
 <script src="https://gist.github.com/662918.js?file=gistfile1.cs"></script>
 <p>
-All interface methods and properties are covered by tests. Moreover, if you have repositories <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Core/DAL/Extensions/BlogPostsExtensions.cs">extensions</a> that helps you to select record by Id, or do paging they are also part of testing. Please check how this <code>IBlogPostsRepostitory</code> is tested by this example - <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Database.Tests/Tests/DAL/BlogPostsRepositoryTests.cs">example</a>.
+All interface methods and properties are covered by tests. Moreover, if you have repositories <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Core/DAL/Extensions/BlogPostsExtensions.cs">extensions</a> that helps you to select record by Id, or do paging they are also part of testing. Please check how this <code>IBlogPostsRepostitory</code> is tested by this example - <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Database.Tests/Tests/DAL/BlogPostsRepositoryTests.cs">example</a>.
 </p>
 <p>
 What else about testing database you should know?
@@ -135,33 +135,33 @@ What else about testing database you should know?
 First of all, database tests might required some initial data to be put in database before each test start. It could be easily solved by using <code>[TestSetup]</code> and <code>[TestTearDown]</code> methods of Fixture. Bad side of this that you could not customize the data for particular test, because Setup/TearDown runs the same code that you could not parameterize. I prefer to use a static method (or methods) that is placed in <code>TestFixture</code> and called at the beginning of unit test. Please see <code>SubmitTenBlogpostsToRepository</code> from previous example.
 </p>
 <p>
-Second at all, you have to care about test isolation some how. It means that previous tests results should not affect next test cases, each tests case have to leave the database in the same state as it enters it. There are different approaches how to do that, I like something like this. I&#8217;m having <code>FixtureInit</code> that does kind of initialization for any test case and it contains <code>DbSetup</code> instance in it. <code>DbSetup</code> itself holds <code>DataContext</code> as well as <code>TransactionScope</code> object. <code>TransactionScope</code> is a very nice way of handling <a href="http://msdn.microsoft.com/en-us/library/ms172152(VS.90).aspx">implicit transactions</a>. Inside <code>DbSetup</code> constructor we also could put some test data initialization, as it would be shared thought all tests. <code>Dispose</code> methods of the <code>DbSetup</code> disposes a transaction without committing it. Each test case body is placed in <code>using (var fixture = new FixtureInit("http://localhost"))</code>, 
-    so any data that is placed (or deleted) from database during the tests would not 
-    affect the database then test is finished. It is simple and works good, please 
-    check out for implementation <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/tree/master/src/Trackyourtasks.Database.Tests/Framework">here</a>.
+Second at all, you have to care about test isolation some how. It means that previous tests results should not affect next test cases, each tests case have to leave the database in the same state as it enters it. There are different approaches how to do that, I like something like this. I&#8217;m having <code>FixtureInit</code> that does kind of initialization for any test case and it contains <code>DbSetup</code> instance in it. <code>DbSetup</code> itself holds <code>DataContext</code> as well as <code>TransactionScope</code> object. <code>TransactionScope</code> is a very nice way of handling <a href="http://msdn.microsoft.com/en-us/library/ms172152(VS.90).aspx">implicit transactions</a>. Inside <code>DbSetup</code> constructor we also could put some test data initialization, as it would be shared thought all tests. <code>Dispose</code> methods of the <code>DbSetup</code> disposes a transaction without committing it. Each test case body is placed in <code>using (var fixture = new FixtureInit("http://localhost"))</code>,
+    so any data that is placed (or deleted) from database during the tests would not
+    affect the database then test is finished. It is simple and works good, please
+    check out for implementation <a href="https://github.com/alexbeletsky/Trackyourtasks.net/tree/master/src/Trackyourtasks.Database.Tests/Framework">here</a>.
 </p>
 <p>
 The last thing - layout and naming of database tests. Database tests have to be separated from application unit tests. It a good way of doing the testing. Database tests are usually too slow and you do not need to re-run them after minor changes (except changes in DAL). That&#8217;s why it is better to place DB tests to separate assembly. The name of assembly should contain <code>*Database.Tests</code>. It gives a clear understanding of assembly goal, as well as it will not be re-runned every time as you do <code>build.bat</code> by <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a>
 </p>
 <h2>Test database</h2>
 <p>
-Test database is database against that database tests are running.. and typically <code>Test Database == Developer Database</code>, meaning the same database as developer tests the application is used for database unit tests. 
+Test database is database against that database tests are running.. and typically <code>Test Database == Developer Database</code>, meaning the same database as developer tests the application is used for database unit tests.
 </p>
 <p>
-It it bad in several reasons. 
+It it bad in several reasons.
 </p>
 <p>
 By doing developers testing you make database really &#8220;dirty&#8221;. Putting new records in DB or deleting existing ones, doesn&#8217;t matter. I usually do a small test that if I put new object(s) I check the count of objects in table after, like <code>Assert.That(foundTasks.Count(), Is.EqualTo(2));</code>. But if I <code>Tasks</code> table will have some data before, I&#8217;m not guaranteed that count will be 2, but <code>Assert.That(foundTasks.Count(), Is.EqualTo(countOfObjectBeforeInsert + 2));</code> will be running OK. It works, but I don&#8217;t really like it, because it mess up test with some not required details.
 </p>
 <p>
-It is possible that some complex database tests, could leave database in inconsistency state 
+It is possible that some complex database tests, could leave database in inconsistency state
     during its failure (that is actually bad and you have to design the tests to prevent this happening.. but it is happening especially with no-ORM, no-Transactions DAL). Also, one bad surpise could be if database tests deletes some data required for development testing.
 </p>
 <p>
 So, it should be <code>Test Database != Developer Database</code>, test database and developer database are different instances actually. Test database must be restored with save version of developers database, but in general it is empty and its state is not changed after testing complete.
 </p>
 <p>
-I&#8217;m using <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to deploy database. As I was describing in previous post I use <code>initdb.bat</code> and <code>resetdb.bat</code> to initialize and reset developer database. I&#8217;ve just created 2 others that do exactly the same but for <code>trackytest</code> database, <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/inittestdb.bat">inittestdb.bat</a>, <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/resettestdb.bat">resettestdb.bat</a>. In the same time, <code>app.confing</code> of test project is pointed to <code>trackytest</code> (instead of <code>trackydb</code> before). So now tests are running on <code>trackytest</code>, but the application itself on <code>trackydb</code>.
+I&#8217;m using <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to deploy database. As I was describing in previous post I use <code>initdb.bat</code> and <code>resetdb.bat</code> to initialize and reset developer database. I&#8217;ve just created 2 others that do exactly the same but for <code>trackytest</code> database, <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/inittestdb.bat">inittestdb.bat</a>, <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/resettestdb.bat">resettestdb.bat</a>. In the same time, <code>app.confing</code> of test project is pointed to <code>trackytest</code> (instead of <code>trackydb</code> before). So now tests are running on <code>trackytest</code>, but the application itself on <code>trackydb</code>.
 </p>
 <p>
 It is very convenient to work like that.

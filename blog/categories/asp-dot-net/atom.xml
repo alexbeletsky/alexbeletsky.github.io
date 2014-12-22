@@ -4,7 +4,7 @@
   <title><![CDATA[Category: asp.net | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/asp-dot-net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -35,7 +35,7 @@
             return "I'm in Shinny controller";
         }
     }
-}    
+}
 </pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be "invisible" for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don't initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
 </p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
     <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
@@ -88,7 +88,7 @@
 </a><br />
 <p>Even though, it looks like desired behavior.. It sucks.<br />
 </p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I'm thinking about it's distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that's it! I don't suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
-</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexanderbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
 </p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I'll give one more example, to proof it.<br />
 </p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
 </p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers
@@ -131,7 +131,7 @@
     </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it's shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it's already included into package.<br />
     </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it's own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
     </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
-    </p>    <h3>Logging with customError="On"</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h3>Logging with customError="On"</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
     </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
     </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
             </p>        </div>    </div></div>
@@ -151,8 +151,8 @@
     </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it's a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
     </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don't know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it's still nice step towards compatibility. <br />
     </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won't appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
-    </p>    <h3>Several small fixes</h3>    <p>        So far, I've collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It's a good time to get rid of those.<br />
-    </p>    <h2>What's the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I've created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I'll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I've collected some <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It's a good time to get rid of those.<br />
+    </p>    <h2>What's the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I've created new <a href="https://github.com/alexbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I'll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
     </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I'll update NuGet package as soon as possible.<br />
     </p></div>
 
@@ -217,7 +217,7 @@ public ActionResult Send(string token, Notification notification)
     <img src="https://lh6.googleusercontent.com/-D5ZD6S532PE/T4bc0XPGX1I/AAAAAAAAIYo/oVBo505PNXI/s720/image-3.PNG" style="width: 620px"/><br />
 </a><br />
 <p>Besides of that it has a basic support of offline mode. All read articles are stored in Local Storage, so once the application offine it will provide proper behavior and propose some content.<br />
-</p><p>I will be happy if you try and let me know your impression. Feel free to check sources at <a href="https://github.com/alexanderbeletsky/aspnet.mobile">github</a>.<br />
+</p><p>I will be happy if you try and let me know your impression. Feel free to check sources at <a href="https://github.com/alexbeletsky/aspnet.mobile">github</a>.<br />
 </p></div>
 
 ]]></content>

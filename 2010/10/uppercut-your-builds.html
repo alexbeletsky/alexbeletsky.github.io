@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -129,11 +129,11 @@ If you are having database in your application, you should also be concerned of.
 <li>Updating live database with new patches</li>
 </ul>
 <p>
-Initially I thought to do some very simple by myself, but later I was browsing some repositories on github and noticed interesting project structure - build/deployment folders as well as number of batch files, like build.bat, test.bat, open.bat etc. I digged a bit and found out that it is actually scaffold provided by UppercuT. After I checked some documentation, I realized that it is probably something that I need! So, please met two projects that would simplify your life a bit: UppercuT - automation build/versioning/packaging; RoundhousE - db migration/versioning/deployment. 
+Initially I thought to do some very simple by myself, but later I was browsing some repositories on github and noticed interesting project structure - build/deployment folders as well as number of batch files, like build.bat, test.bat, open.bat etc. I digged a bit and found out that it is actually scaffold provided by UppercuT. After I checked some documentation, I realized that it is probably something that I need! So, please met two projects that would simplify your life a bit: UppercuT - automation build/versioning/packaging; RoundhousE - db migration/versioning/deployment.
 </p>
 <h2>UppercuT setup and usage</h2>
 <p>
-Just go to <a href="http://code.google.com/p/uppercut">UppercuT</a> web site and download latest package. I&#8217;ve used 1.0.5.0, in package you will found some docs, that might be interesting to read and framework itself in UppercuT folder. 
+Just go to <a href="http://code.google.com/p/uppercut">UppercuT</a> web site and download latest package. I&#8217;ve used 1.0.5.0, in package you will found some docs, that might be interesting to read and framework itself in UppercuT folder.
 </p>
 <p>
 What&#8217;s inside? Well, package contains a configuration files, batch/shell scripts, nant scripts and number of tools - <code>MbUnit</code>, <code>MoMa</code>, <code>NAnt</code>, <code>NCover</code>, <code>NUnit</code>. Internally UppercuT uses nant for build automation. If you are not familiar with nant.build scripts, please don&#8217;t worry. UppercuT created in a way, that you very isolated of nant details and perform all configuration only in one place, <code>settings/UppercuT.config</code> - simple XML file.
@@ -157,21 +157,21 @@ Project documentation moved to <code>docs</code> folder.
 As soon as you done, just copy all content of UppercuT folder into your project folder. You are ready to use it. Before actual use you have to configure it. Fortunately, it have to be done only in one place - <code>settings/UppercutT.config</code> file. You have to provide <code>project.name</code>, <code>path_to_solution</code>, <code>repository.path</code> and <code>source_control_type</code>, <code>test.framework</code> and <code>microsoft.framework</code> (net-4.0 is supported).
 </p>
 <p>
-As you provided all required keys you are able to start build! If you have compliable sources and runnable unit tests, you have to receive SUCCESS build status (I failed to start it at first time, having problems with 
-    nunit, please see Issues section below). 
+As you provided all required keys you are able to start build! If you have compliable sources and runnable unit tests, you have to receive SUCCESS build status (I failed to start it at first time, having problems with
+    nunit, please see Issues section below).
 </p>
 <p>
 Lets see what UppercuT does for us:
 </p>
 <ol>
 <li>
-It uses source repository to generate <code>_BuildInfo.xml</code> and <code>SolutionVersion.cs</code> files. <code>_BuildInfo.xml</code> contains a digest of build, with revision, version, path to repository, dot-net framework version etc. <code>SolutionVersion.cs</code> is code file that must be referenced from all projects in solution, so they all have a common version. 
+It uses source repository to generate <code>_BuildInfo.xml</code> and <code>SolutionVersion.cs</code> files. <code>_BuildInfo.xml</code> contains a digest of build, with revision, version, path to repository, dot-net framework version etc. <code>SolutionVersion.cs</code> is code file that must be referenced from all projects in solution, so they all have a common version.
 </li>
 <li>
 It compiles all projects in solution.
 </li>
 <li>
-It runs all unit test in solution (please note, it run only units - projects with *Test* in their names. It does smart job to skip Database, Integration tests). 
+It runs all unit test in solution (please note, it run only units - projects with *Test* in their names. It does smart job to skip Database, Integration tests).
 </li>
 <li>
 It copies all db scripts and documentation to build_output folder.
@@ -197,15 +197,15 @@ You can run <code>open.bat</code> that by default open your Visual Studio with s
 You can run <code>test.bat</code> to build and re-run unit tests, <code>test.bat all</code> will run all types of tests - units, integration, database. <code>test.bat</code> useful to be run by some Continues Integration servers as CruiseControl.
 </li>
 <li>
-You can run <code>zip.bat</code>. Very useful feature, that would run build/tests and zip content of <code>code_drop</code> folder into one single zip file (like <code>trackyourtasks.net.v0.1.0.584b2ef4.zip</code>) that could be copied to production system for deployment and placed to repository to track builds. 
+You can run <code>zip.bat</code>. Very useful feature, that would run build/tests and zip content of <code>code_drop</code> folder into one single zip file (like <code>trackyourtasks.net.v0.1.0.584b2ef4.zip</code>) that could be copied to production system for deployment and placed to repository to track builds.
 </li>
 </ol>
 <h3>Issues and criticism</h3>
 <p>
-As I said above first time I run <code>build.bat</code> it failed. The reason was that <code>nunit-console</code> loaded 2.0 runtime, but my test assemblies are build with 4.0 framework. It have been solved by modification of <code>build\analyzers\nunit.test.step</code> and adding one additional argument in <code>exec</code> of <code>run_tests</code> target <code>&#60;arg value="/framework=${microsoft.framework}" /&#62;</code>. Please check my <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/f3ef494a00237275017053eb62477d7a1bebc974">commit</a> for details. <a href="http://twitter.com/#!/ferventcoder">Ferventcoder</a> already contacted me regarding that issue, for I hope in some nearest versions in would be solved :).
+As I said above first time I run <code>build.bat</code> it failed. The reason was that <code>nunit-console</code> loaded 2.0 runtime, but my test assemblies are build with 4.0 framework. It have been solved by modification of <code>build\analyzers\nunit.test.step</code> and adding one additional argument in <code>exec</code> of <code>run_tests</code> target <code>&#60;arg value="/framework=${microsoft.framework}" /&#62;</code>. Please check my <a href="http://github.com/alexbeletsky/Trackyourtasks.net/commit/f3ef494a00237275017053eb62477d7a1bebc974">commit</a> for details. <a href="http://twitter.com/#!/ferventcoder">Ferventcoder</a> already contacted me regarding that issue, for I hope in some nearest versions in would be solved :).
 </p>
 <p>
-Another problem I met with coverage reports generation. It just generates them empy. It is not blame for UppercuT but rather for NCover, that seems to have issues with .NET 4.0. In the same time, somehow, Testdriven.net is able to run NCover with properly generated coverage reports. 
+Another problem I met with coverage reports generation. It just generates them empy. It is not blame for UppercuT but rather for NCover, that seems to have issues with .NET 4.0. In the same time, somehow, Testdriven.net is able to run NCover with properly generated coverage reports.
 </p>
 <p>
 No more critic yet. What would be nice to have is already defined tasks for <a href="http://code.msdn.microsoft.com/sourceanalysis">Stylecop</a> and <a href="http://msdn.microsoft.com/en-us/library/bb429476(VS.80).aspx">FXCop</a>.

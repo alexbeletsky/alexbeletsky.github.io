@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Continuous | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/continuous/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -20,7 +20,7 @@
     <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
-</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
+</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
 </p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
 <p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday's is just great initiative by Ciklum company. I's free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
 </p><p>I had two talks there. First one about "Continuous Delivery" that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
@@ -57,7 +57,7 @@
   <li>Different deployment scenarios for .NET platform</li>
  </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I'm looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
  </p> <p>  I also try to target UI / UX issues as much as possible.<br />
- </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
+ </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
  </p> <p>  Thanks for you help.<br />
  </p></div>
 
@@ -105,10 +105,10 @@ I define 2 types of environments: Staging and Production. Environment includes: 
 <p>Everything that is being developed are goes to staging environment immediately (and automatically). Production update is being run manually as soon as all testing on Staging are finished. Separation of environments is great idea. Even if we are trying hard to have potentially shippable software during each build, this is not true. It is usually a lot of problems in latest version that need to be fixed before production server update.
 </p>
 <p>
-So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>. 
+So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>.
 </p>
 <p>
-In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexanderbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexanderbeletsky/trackyt.net">this</a>.
+In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexbeletsky/trackyt.net">this</a>.
 </p>
 <h2>What I want to get?</h2>
 <p>
@@ -140,7 +140,7 @@ So, my configuration looks like this:
 <img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7BUnOiGI/AAAAAAAAHZk/XSxs5Y_zrR0/plugins.png" alt="plugins" />
 <h3>Configure system</h3>
 <p>
-Now go to "Manage Jenkins" -> "Configure System" and find "Git" section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same). 
+Now go to "Manage Jenkins" -> "Configure System" and find "Git" section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same).
 </p>
 <h3>Create new job</h3>
 <p>
@@ -172,14 +172,14 @@ As soon as configuration is done, you can test your build locally. Just start yo
 </p>
 <h2>Move it to production</h2>
 <p>
-As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server. 
+As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server.
 </p>
 <p>
-Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP'ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard. 
+Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP'ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard.
 </p>
 <h3>Little adjustments for production server</h3>
 <p>
-My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning. 
+My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning.
 </p>
 <h3>Using Github hook to automate build run</h3>
 <p>
@@ -242,7 +242,7 @@ There files are templates, from which script for particular <code>environment</c
 
   &lt;!-- base settings --&gt;
   &lt;property name=&quot;project.name&quot; value=&quot;trackyt.net&quot; overwrite=&quot;false&quot; /&gt;
-  &lt;property name=&quot;repository.path&quot; value=&quot;git://github.com/alexanderbeletsky/trackyt.net&quot; /&gt;
+  &lt;property name=&quot;repository.path&quot; value=&quot;git://github.com/alexbeletsky/trackyt.net&quot; /&gt;
   &lt;property name=&quot;folder.app.drop&quot; value=&quot;${project.name}&quot; overwrite=&quot;false&quot; /&gt;
   &lt;property name=&quot;folder.database&quot; value=&quot;db&quot; overwrite=&quot;false&quot; /&gt;
 
@@ -250,7 +250,7 @@ There files are templates, from which script for particular <code>environment</c
   &lt;property name=&quot;dirs.db&quot; value=&quot;..\${folder.database}&quot; /&gt;
   &lt;property name=&quot;file.version&quot; value=&quot;_BuildInfo.xml&quot; overwrite=&quot;false&quot; /&gt;
   &lt;property name=&quot;restore.from.path&quot; value=&quot;..\${database.name}.bak&quot; overwrite=&quot;false&quot; /&gt;
-  
+
 &lt;/project&gt;
 </pre>
 <p>
@@ -258,7 +258,7 @@ In template .bat file it is possible to refer, to some particular variable, so i
 </p>
 <h2>Web site deployment script</h2>
 <p>
-If you do ASP.net (MVC) website in 99.9% cases you will be happy with simple <code>XCOPY</code> deployment type. Basically it means, simple copy of website to defined IIS folder. 
+If you do ASP.net (MVC) website in 99.9% cases you will be happy with simple <code>XCOPY</code> deployment type. Basically it means, simple copy of website to defined IIS folder.
 </p>
 <p>
 But, as soon it is continuous production deploy it means that Web Site is already running. It would not be possible to re-write some files, since they could be used by IIS. So, we need to stop the site before update. I found very good possibility for that with <code>%windir%\system32\inetsrv\appcmd</code> command. After site is stopped, we just copy full content of Web folder, remove some redundant files and run site again. In batch code it would look like,
@@ -282,9 +282,9 @@ if %ERRORLEVEL% NEQ 0 goto errors
 
 echo remove redudant files
 del %web.deploy.folder%*Tests*.htm*
-del %web.deploy.folder%Web.Debug.config  
-del %web.deploy.folder%Web.Release.config 
-del %web.deploy.folder%*packages* 
+del %web.deploy.folder%Web.Debug.config
+del %web.deploy.folder%Web.Release.config
+del %web.deploy.folder%*packages*
 if %ERRORLEVEL% NEQ 0 goto errors
 
 echo starting web site
@@ -411,7 +411,7 @@ Notice, it receives the parameter <code>ENV</code>. It will contain type of envi
 </p>
 <h2>Testing it out</h2>
 <p>
-That's basically it. Now, you should make sure everything works as expected. Run <code>build.bat/deploy.bat</code>, make sure build went with no errors, deploy.bat correctly does back up of database, updates database and update site content. 
+That's basically it. Now, you should make sure everything works as expected. Run <code>build.bat/deploy.bat</code>, make sure build went with no errors, deploy.bat correctly does back up of database, updates database and update site content.
 </p>
 <p>
 As I said on top, it is very important that configuration is part of product, part of source code. If you follow this, it will be possible to deploy application but just getting sources from SCM. This is first step of setting up your Continuous Production server.

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DDD | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/ddd/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -205,7 +205,7 @@ As I said on a beginning DDD is something that every developer shound aware abou
     <updated>2010-06-26T23:58:00+02:00</updated>
     <id>http://beletsky.net/2010/06/web-development-aspnet-ajax</id>
     <content type="html"><![CDATA[<div class='post'>
-Remember a site we started to create in previous articles. What we've got is simple web application, 
+Remember a site we started to create in previous articles. What we've got is simple web application,
     with a registration functionality. During registration you submit email, password and secret phrase. We going to use this secret phrase today to recover forgotten passwords. Functionality is bit artifictial but my goal is to demonstrate usage of ASP.NET Ajax framework, namely ScripManager object as very usefully component for ajaxifying your applications.
 <br />
 <br />
@@ -299,7 +299,7 @@ Nowadays it is even hard to imagine serious web application with out AJAX. It is
 <h2>Sources</h2>
 <br />
 <p>
-Sources are available on GitHub: <a href="http://github.com/alexanderbeletsky/Concept">http://github.com/alexanderbeletsky/Concept</a>
+Sources are available on GitHub: <a href="http://github.com/alexbeletsky/Concept">http://github.com/alexbeletsky/Concept</a>
 </p>
 
 <!-- AddThis Button BEGIN -->

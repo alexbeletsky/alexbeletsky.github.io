@@ -4,7 +4,7 @@
   <title><![CDATA[Category: KievAltNet | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/kievaltnet/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -39,7 +39,7 @@
     <id>http://beletsky.net/2012/02/speeches-hat-trick-for-this-weekend</id>
     <content type="html"><![CDATA[<div class='post'>
 <p>It's been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
-</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
+</p><p>I would not say I got great experience on Nancy so far. But I'm pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
 </p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
 <p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday's is just great initiative by Ciklum company. I's free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
 </p><p>I had two talks there. First one about "Continuous Delivery" that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />

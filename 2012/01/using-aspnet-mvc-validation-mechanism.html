@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -106,13 +106,13 @@
     <div class="content">
       <div class='post'>
 <p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />
-</p><p>During implementation of some feature for <a href="https://github.com/alexanderbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
+</p><p>During implementation of some feature for <a href="https://github.com/alexbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
 </p><h2>Basic start</h2><p>Assume you have such model:<br />
 </p><pre class="brush: csharp">public class SimpleModel
 {
  [Required]
  public string SomeProperty { get; set; }
- 
+
  [Range(0,50)]
  public int SomeAnotherProperty { get; set; }
 }
@@ -127,7 +127,7 @@
 {
  var validationResults = new List&lt;ValidationResult&gt;();
  Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), validationResults);
- 
+
  return validationResults;
 }
     </pre><p>In case of invalid object it would return non-empy collection of <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validationresult.aspx">ValidationResult</a>, that would contain all relevant information.<br />

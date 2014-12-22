@@ -4,7 +4,7 @@
   <title><![CDATA[Category: analytics | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/analytics/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -79,7 +79,7 @@ app.analytics = {
 <p>})(window);
 ```</p>
 
-<p>Here, I&rsquo;m using <a href="https://gist.github.com/alexanderbeletsky/3f850467bc23d40ef51e">this</a> implementation of <code>base64</code> (copied from <code>mixpanel-2.2.js</code>). So, to track the <code>event</code> you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of <code>event</code> and <code>properties</code>.</p>
+<p>Here, I&rsquo;m using <a href="https://gist.github.com/alexbeletsky/3f850467bc23d40ef51e">this</a> implementation of <code>base64</code> (copied from <code>mixpanel-2.2.js</code>). So, to track the <code>event</code> you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of <code>event</code> and <code>properties</code>.</p>
 
 <h2>Initialization</h2>
 

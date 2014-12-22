@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -112,7 +112,7 @@ public void Authenticate_AuthenicationSuccess_ReturnApiToken()
 public void Authenticate_AuthenticationFailed_ExceptionThrown()
 {
     // arrange
-    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();            
+    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();
 
     // act
     var apiToken = adapter.Authenticate("nouser", "noemail");
@@ -197,7 +197,7 @@ public IList&lt;Task&gt; GetAllTasks(ApiToken token)
 
         if (!getAllTasksResponse.Success)
         {
-            throw new Exception("Can't get users tasks. " + getAllTasksResponse.Message); 
+            throw new Exception("Can't get users tasks. " + getAllTasksResponse.Message);
         }
 
         return getAllTasksResponse.Data.Tasks;
@@ -205,7 +205,7 @@ public IList&lt;Task&gt; GetAllTasks(ApiToken token)
 }
 </pre>
 <p>
-As reference I'll give you implementation of <a href="https://github.com/alexanderbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
+As reference I'll give you implementation of <a href="https://github.com/alexbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
 </p></div>
 
 ]]></content>
@@ -217,10 +217,10 @@ As reference I'll give you implementation of <a href="https://github.com/alexand
     <updated>2011-01-06T23:39:00+01:00</updated>
     <id>http://beletsky.net/2011/01/implementation-of-rest-service-with</id>
     <content type="html"><![CDATA[<div class='post'>
-<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I'll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into "API epoch", customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he's just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let's implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I've created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexanderbeletsky/rest.mvc.example">github</a> (please don't be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
+<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I'll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into "API epoch", customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he's just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let's implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I've created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexbeletsky/rest.mvc.example">github</a> (please don't be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
 public partial class RestExampleDataContext : System.Data.Linq.DataContext
 {
-    // implementation...  
+    // implementation...
 
 </pre><pre class="brush: csharp;">[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogPosts")]
 public partial class BlogPost : INotifyPropertyChanging, INotifyPropertyChanged
@@ -236,7 +236,7 @@ values ('my-post-2', 'My post 3', 'This is third post', CAST('2011-01-03' as dat
 http://localhost/api/v1/posts/all/{username}
 http://localhost/api/v1/posts/post/{username}
 http://localhost/api/v1/posts/delete/{username}/{posturl}
-</pre><p>For all of these interface methods, I'm adding integration javascript <a href="https://github.com/alexanderbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don't have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) "API". It is really similar with Area, by it's structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: "It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action". So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let's take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
+</pre><p>For all of these interface methods, I'm adding integration javascript <a href="https://github.com/alexbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don't have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) "API". It is really similar with Area, by it's structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: "It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action". So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let's take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
 
 namespace Web.API.v1
 {
@@ -261,7 +261,7 @@ namespace Web.API.v1
     public class ApiV1Controller : Controller
     {
         private RestExampleDataContext _context = new RestExampleDataContext();
-        
+
         // actions..
     }
 }
@@ -285,7 +285,7 @@ public JsonResult Post(string userName, PostDescriptorModel post)
         CreatedDate = DateTime.Now,
         Title = post.Title,
         Body = post.Body,
-        Url = CreatePostUrl(post.Title) 
+        Url = CreatePostUrl(post.Title)
     };
 
     _context.BlogPosts.InsertOnSubmit(blogPost);
@@ -393,7 +393,7 @@ public JsonResult Fail()
     public class ApiV1Controller : Controller
     {
         // code..
-</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexanderbeletsky/rest.mvc.example">https://github.com/alexanderbeletsky/rest.mvc.example</a>.  </p></div>
+</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexbeletsky/rest.mvc.example">https://github.com/alexbeletsky/rest.mvc.example</a>.  </p></div>
 
 ]]></content>
   </entry>
@@ -408,11 +408,11 @@ public JsonResult Fail()
 In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
 </p>
 <p>
-Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn't do any tests, basically because I didn't know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests. 
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn't do any tests, basically because I didn't know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests.
 </p>
 <h2>Simple framework</h2>
 <p>
-I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:  
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:
 </p>
 <blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <p>
@@ -424,7 +424,7 @@ Also, I found useful to create a small helper function that would construct API 
 <blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <h2>Setup the environment</h2>
 <p>
-All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application). 
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application).
 </p>
 <p>
 Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
@@ -469,15 +469,15 @@ Delete task method test:
 </p>
 <blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <p>
-Rest of tests are available on <a href="https://github.com/alexanderbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas. 
+Rest of tests are available on <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas.
 </p>
 <h2>Running tests</h2>
 <p>
-As any kind of qUnit tests they could be easily run in browser. 
+As any kind of qUnit tests they could be easily run in browser.
 </p>
 <a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
 <p>
-For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>. 
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>.
 </p>
 <h2>Debugging the tests</h2>
 <p>

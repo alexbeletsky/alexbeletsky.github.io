@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -212,7 +212,7 @@
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p><a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">Integrating ELMAH to ASP.NET MVC in right way</a> is blog post I created sometime ago. It appears really popular, because a lot of people had the same issue as me and found solution I created really applicable. It was really cool to receive all that feedback! By the way, <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">elmah.mvc.controller</a> is my first github repository I got pull request! </p><p>Especially, I would like to thank to <a href="https://github.com/seba-i">Seba Illingworth</a> and <a href="http://twitter.com/#!/blowdart">Barry Dorrans</a> who found really nasty issues and helped to fix those. </p><p>The controller&#8217;s code has been moved to github long time ago, but what I see many people just copy-past code from article into their solutions. The code I gave in previous post has been changed drastically, but instead of re-writting original post I decided to create new one. </p><h2>Latest version of ELMAH MVC controller</h2><p>So, after all modifications it looks like: </p><pre class="brush: csharp">namespace ElmahMvc.Areas.Admin.Controllers {
+<p><a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">Integrating ELMAH to ASP.NET MVC in right way</a> is blog post I created sometime ago. It appears really popular, because a lot of people had the same issue as me and found solution I created really applicable. It was really cool to receive all that feedback! By the way, <a href="https://github.com/alexbeletsky/elmah.mvc.controller">elmah.mvc.controller</a> is my first github repository I got pull request! </p><p>Especially, I would like to thank to <a href="https://github.com/seba-i">Seba Illingworth</a> and <a href="http://twitter.com/#!/blowdart">Barry Dorrans</a> who found really nasty issues and helped to fix those. </p><p>The controller&#8217;s code has been moved to github long time ago, but what I see many people just copy-past code from article into their solutions. The code I gave in previous post has been changed drastically, but instead of re-writting original post I decided to create new one. </p><h2>Latest version of ELMAH MVC controller</h2><p>So, after all modifications it looks like: </p><pre class="brush: csharp">namespace ElmahMvc.Areas.Admin.Controllers {
     class ElmahResult : ActionResult {
         private string _resouceType;
 
@@ -259,7 +259,7 @@
         "Admin/elmah/{type}",
         new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
     );
-</pre><p>Create ElmahController.cs (just from code above) and place to yours Areas/Admin/Controller folder, add file to project. Don&#8217;t forget to change the namespace according to your project. </p><p>Configure ELMAH logging options (Memory, XML, SQL), use Web.Config of this <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">project</a> as example. Run application, and see that: </p><pre class="brush:plain"> /admin/elmah
+</pre><p>Create ElmahController.cs (just from code above) and place to yours Areas/Admin/Controller folder, add file to project. Don&#8217;t forget to change the namespace according to your project. </p><p>Configure ELMAH logging options (Memory, XML, SQL), use Web.Config of this <a href="https://github.com/alexbeletsky/elmah.mvc.controller">project</a> as example. Run application, and see that: </p><pre class="brush:plain"> /admin/elmah
 </pre><p>works.  </p><p>Optional (but very preferable) is to secure your controller with Authorize attribute: </p><pre class="brush: csharp"> [Authorize(Users = "Admin")]
  public class ElmahController : Controller
  {
@@ -461,7 +461,7 @@ ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
 Recently, I&#8217;ve met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
 </p>
 <p>
-I&#8217;ve spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexanderbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge. 
+I&#8217;ve spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge.
 </p>
 <p>
 I did it a style of weekend project, started up Friday evening, I&#8217;ve spend 3 hours to complete github API adapter and application logic. As always, hard part was - design.
@@ -479,7 +479,7 @@ With much help of <a href="http://twitter.com/#!/Porosyaka">Sasha</a> we have de
 <img src="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg" alt="code" />
 <p>
 </a>
-After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart. 
+After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart.
 </p>
 <p>
 I&#8217;ve been waiting about 4 days, to receive an answer. Meanwhile, I&#8217;ve seen that new application are being posted.. but not mine. Finally, they responded to me saying &#8220;Sorry, but Google Web Fonts are not allowed&#8221;. That was actually my bad, but I haven&#8217;t thought that are treated as 3rd party. Anyway, I had to switch to <a href="http://typekit.com/">TypeKit</a> very fast. I didn&#8217;t get same results as with Web Fonts, but I had no time for finding perfect match and reapplied again.
@@ -488,7 +488,7 @@ I&#8217;ve been waiting about 4 days, to receive an answer. Meanwhile, I&#8217;v
 It finally available here - <a href="http://10k.aneventapart.com/Entry/Details/512">http://10k.aneventapart.com/Entry/Details/512</a>
 </p>
 <p>
-I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexanderbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
+I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
 </p></div>
 
       
@@ -746,7 +746,7 @@ PS. That&#8217;s my 100 post for this blog.. and that&#8217;s my Friday before w
 C# and Javascript are both my favorite languages. I believe that those two are best languages in a world (perhaps I haven&#8217;t started to learn Ruby). With a quite long practice in Javascript, you start to feel real power of dynamic language. Even more, you are so much get used for particular code constructions that you try to do the same things in C#.
 </p>
 <p>
-This is something you might do in javascript a lot. Consider that code, 
+This is something you might do in javascript a lot. Consider that code,
 </p>
 <a href="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png">
 <img src="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png" alt="code" />
@@ -784,11 +784,11 @@ Life would not be so interesting if every thing is so easy. My first implementat
 <img src="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png" alt="code" />
 </a>
 <p>
-That&#8217;s it. I&#8217;ve made C# code look like and behave like JavaScript, utilizing power of .NET platform. As always, you can find a source code on github - <a href="https://github.com/alexanderbeletsky/csharp-js">csharp-js</a>.
+That&#8217;s it. I&#8217;ve made C# code look like and behave like JavaScript, utilizing power of .NET platform. As always, you can find a source code on github - <a href="https://github.com/alexbeletsky/csharp-js">csharp-js</a>.
 </p>
 <h2>Disclaimer</h2>
 <p>
-You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :). 
+You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :).
 </p></div>
 
       
@@ -837,13 +837,13 @@ You should not probably doing such tricks a lot. C# is still static language (ev
     <div class="content">
       <div class='post'>
 <p>
-I&#8217;ve been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don&#8217;t blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much). 
+I&#8217;ve been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don&#8217;t blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much).
 </p>
 <p>
-Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexanderbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it&#8217;s being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
+Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it&#8217;s being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
 </p>
 <p>
-And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips: 
+And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips:
 </p>
 <ul>
 <li>Rename file from *.aspx to *.cshtml</li>
@@ -869,7 +869,7 @@ And you know, it was not so difficult and boring as I originally thought. Here a
 That&#8217;s basically it.. Along the way I&#8217;ve changed all HTML to comply HTML5 standard and reformatted (with Ctrl K + Ctrl D) and now markup looks definitely better!
 </p>
 <p>
-One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in &#8220;None&#8221; item, instead on &#8220;Content&#8221;.. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
+One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in &#8220;None&#8221; item, instead on &#8220;Content&#8221;.. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
 </p>
 <p>
 So, there are no any technical issues with moving from ASPX to Razor, just don&#8217;t be to lazy and do it today :)

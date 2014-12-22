@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -105,7 +105,7 @@
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
+<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
     </p>    <h2>        Overall application architecture<br />
     </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
     </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
@@ -125,7 +125,7 @@
     </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: &#8220;I will never ever writing &#8216;scripts&#8217; in front-end, instead I&#8217;ll be doing browser powered applications&#8221;. Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones&#8217;s main entities you build front-end apps in similar way as it would be desktop applications.<br />
     </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I&#8217;m using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone&#8217;s views as kind of widgets (or modules).<br />
     </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don&#8217;t need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
-    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
+    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
     </p></div>
 
       <div class="post sharing">

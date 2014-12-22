@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -106,7 +106,7 @@
     <div class="content">
       <div class='post'>
 <p>
-As you started to use <a href="http://code.google.com/p/uppercut">UppercuT</a> for your builds, it is definitely worth to try worth to try <a href="http://code.google.com/p/roundhouse/">RoundhousE</a> for versioning, deployment, migration of your database. 
+As you started to use <a href="http://code.google.com/p/uppercut">UppercuT</a> for your builds, it is definitely worth to try worth to try <a href="http://code.google.com/p/roundhouse/">RoundhousE</a> for versioning, deployment, migration of your database.
 </p>
 <h2>RoundhousE - setup and usage</h2>
 <p>
@@ -122,13 +122,13 @@ Before you start, you have to change something in you SQL Express configuration.
 <a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s1600/sqlconfig.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 301px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TMbwcl2QFnI/AAAAAAAAG-8/ZK_EGoi0q5k/s400/sqlconfig.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5532373566257895026" /></a>
 <h3>UppercuT configuration</h3>
 <p>
-Now you have to change something into UppercuT config. First you have to modify <code>LOCAL.settings</code> (file that is used for generation of deployment scripts). You have to supply <code>server.database</code> (in case of local Express it would be .\SQLEXPRESS), <code>database.name</code> the name of your db. 
+Now you have to change something into UppercuT config. First you have to modify <code>LOCAL.settings</code> (file that is used for generation of deployment scripts). You have to supply <code>server.database</code> (in case of local Express it would be .\SQLEXPRESS), <code>database.name</code> the name of your db.
 </p>
 <p>
 After small changes is required for <code>UppercuT.config</code>. First, <code>folder.database</code> I just used &#8220;db&#8221;, short and clear.
 </p>
 <p>
-Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+Check out this <a href="http://github.com/alexbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
 </p>
 <h3>DB folder layout and content</h3>
 <p>
@@ -156,11 +156,11 @@ To go with RH you have to copy it from RoundhousE packages into yours deployment
 </p>
 <h3>Correction of deployment scripts</h3>
 <p>
-Deployment scripts are ones that will be used on production to update database. They are created based on templates and settings you set. You have to modify yours <code>DBDeployment.bat</code> file. Since I use <code>rh.exe</code> I created template for it. It simply runs <code>rh.exe</code> that does the rest of work. 
+Deployment scripts are ones that will be used on production to update database. They are created based on templates and settings you set. You have to modify yours <code>DBDeployment.bat</code> file. Since I use <code>rh.exe</code> I created template for it. It simply runs <code>rh.exe</code> that does the rest of work.
 </p>
 <script src="http://gist.github.com/645211.js"> </script>
 <p>
-Check out this <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
+Check out this <a href="http://github.com/alexbeletsky/Trackyourtasks.net/commit/552895c301426ad413d83eb9c5c7ef00cf8c52a6#diff-7">diff</a>, for instance.
 </p>
 <h3>Running RoundhousE</h3>
 <p>
@@ -171,7 +171,7 @@ That&#8217;s basically it! As soon as its configured you can easily add new scri
 </p>
 <h3>Additional scripts I use</h3>
 <p>
-There are something that I added for my personal needs. If I do build on new environment, I would like to create database first. For such purpose I created <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/initdb.bat"><code>initdb.bat</code></a>, so build procedure on clean environment would be:
+There are something that I added for my personal needs. If I do build on new environment, I would like to create database first. For such purpose I created <a href="http://github.com/alexbeletsky/Trackyourtasks.net/blob/master/initdb.bat"><code>initdb.bat</code></a>, so build procedure on clean environment would be:
 </p>
 <ol>
 <li>run build.bat</li>
@@ -179,7 +179,7 @@ There are something that I added for my personal needs. If I do build on new env
 <li>run test.bat all</li>
 </ol>
 <p>
-I also created script to reset database,  <a href="http://github.com/alexanderbeletsky/Trackyourtasks.net/blob/master/resetdb.bat"><code>resetdb.bat</code></a> drops existing database and just creates new instance. This very useful during development, if you database became &#8220;dirty&#8221;. 
+I also created script to reset database,  <a href="http://github.com/alexbeletsky/Trackyourtasks.net/blob/master/resetdb.bat"><code>resetdb.bat</code></a> drops existing database and just creates new instance. This very useful during development, if you database became &#8220;dirty&#8221;.
 </p></div>
 
       <div class="post sharing">

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: retrospective | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/retrospective/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -71,20 +71,20 @@
 <ul>
 <li><a href="https://github.com/progrium/dokku">Dokku</a> &ndash; Docker powered mini-Heroku in less than 100 lines of Bash.</li>
 <li><a href="rockbot/vektor">vektor</a> &ndash; A robotics-focused linear algebra module.</li>
-<li><a href="https://github.com/alexanderbeletsky/24pullrequests">24PullRequest</a> &ndash; Giving back little gifts of code for Christmas.</li>
-<li><a href="https://github.com/alexanderbeletsky/grunt-hashres">grunt-hashres</a> &ndash; Grunt task for hashing js and css files.</li>
-<li><a href="https://github.com/alexanderbeletsky/edge">edge</a> &ndash; Run .NET and node.js code in-process.</li>
-<li><a href="https://github.com/alexanderbeletsky/flight">flight</a> &ndash; A lightweight, component-based JavaScript framework.</li>
+<li><a href="https://github.com/alexbeletsky/24pullrequests">24PullRequest</a> &ndash; Giving back little gifts of code for Christmas.</li>
+<li><a href="https://github.com/alexbeletsky/grunt-hashres">grunt-hashres</a> &ndash; Grunt task for hashing js and css files.</li>
+<li><a href="https://github.com/alexbeletsky/edge">edge</a> &ndash; Run .NET and node.js code in-process.</li>
+<li><a href="https://github.com/alexbeletsky/flight">flight</a> &ndash; A lightweight, component-based JavaScript framework.</li>
 </ul>
 
 
 <p>For side projects, of cause it&rsquo;s <a href="https://likeastore.com">Likeastore</a> which started as side project, but became a platform of starting business with.</p>
 
 <ul>
-<li><a href="https://github.com/alexanderbeletsky/dokku-bower-install">dokku-bower-install</a> &ndash; Plugin for Dokku that installs bower dependecies, if needed.</li>
-<li><a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> &ndash; Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.</li>
-<li><a href="https://github.com/alexanderbeletsky/jshint-run">jshint-run</a> &ndash; Tiny tool for running jshint, then you don&rsquo;t use grunt.</li>
-<li><a href="https://github.com/alexanderbeletsky/toml-js">toml-js</a> &ndash; TOML parser implementation (node.js + browser).</li>
+<li><a href="https://github.com/alexbeletsky/dokku-bower-install">dokku-bower-install</a> &ndash; Plugin for Dokku that installs bower dependecies, if needed.</li>
+<li><a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> &ndash; Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.</li>
+<li><a href="https://github.com/alexbeletsky/jshint-run">jshint-run</a> &ndash; Tiny tool for running jshint, then you don&rsquo;t use grunt.</li>
+<li><a href="https://github.com/alexbeletsky/toml-js">toml-js</a> &ndash; TOML parser implementation (node.js + browser).</li>
 </ul>
 
 

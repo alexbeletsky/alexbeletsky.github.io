@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -118,12 +118,12 @@
 </p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />
     <img src="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png" alt="foundstyles.com" style="width: 620px" /><br />
 </a><br />
-<p>Unfortunately Foundation does not support LESS from the package, so I need to move colors and layout into corresponding .LESS files, so after it&#8217;s just possible to have a basic <a href="https://github.com/alexanderbeletsky/foundstyles/tree/master/default">template</a> which is possible to customize with own colors.  <br />
+<p>Unfortunately Foundation does not support LESS from the package, so I need to move colors and layout into corresponding .LESS files, so after it&#8217;s just possible to have a basic <a href="https://github.com/alexbeletsky/foundstyles/tree/master/default">template</a> which is possible to customize with own colors.  <br />
 </p><p>As for now, I&#8217;ve created only 3 templates: <a href="http://foundstyles.com/bladesofsteel/">Blades Of Steel</a>, <a href="http://foundstyles.com/evergreen/">Evergreen Tree</a> and <a href="http://foundstyles.com/coffeenmilk/">Coffee and Milk</a>.<br />
 </p><a href="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png"><br />
     <img src="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png" alt="foundstyles.com" style="width: 620px" /><br />
 </a><br />
-<p>I had a lot of joy making those styles. Making web designs and playing with colors is my next hobby, I think. Through, those styles are really simple ones, I&#8217;m going to add more eventually. Since the project is just hosted on <a href="https://github.com/alexanderbeletsky/foundstyles">github</a> you are able to push you own styles. If you feel inspired, I would be really happy for submissions.<br />
+<p>I had a lot of joy making those styles. Making web designs and playing with colors is my next hobby, I think. Through, those styles are really simple ones, I&#8217;m going to add more eventually. Since the project is just hosted on <a href="https://github.com/alexbeletsky/foundstyles">github</a> you are able to push you own styles. If you feel inspired, I would be really happy for submissions.<br />
 </p><p>Nearest plans are apply some fixes for IE (both site and styles) and just go ahead and produce some more. Hope it could be useful for you guys.<br />
 </p></div>
 
@@ -198,10 +198,10 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
 </p><pre class="brush: csharp">    // in 0.9
     public IEnumerable&lt;string&gt; AcceptLanguage { get; }
-    
+
     // in 0.10
     public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
-</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
 </p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
 </p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
 </p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
@@ -254,7 +254,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><pre class="brush: csharp">    // in 0.9
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
 
-    // in 0.10 
+    // in 0.10
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
     &ensp;
 </pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
@@ -276,7 +276,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 
 Sequence contains no elements
 
-Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.
 
 Exception Details: System.InvalidOperationException: Sequence contains no elements
 </pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:
@@ -331,7 +331,7 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
     <div class="content">
       <div class='post'>
 <p>It&#8217;s been great weekend. It started Friday evening with Kiev ALT.NET <a href="http://blog.kievalt.net/post/17767271242/ncrunch-nancyfx-fubumvc-event">meet-up</a> which been in idle for a while and everybody missed that. There was a three planned speeches: by <a href="http://twitter.com/_TLK">@_TKL</a> on Continuous Testing (NCrunch, MightyMoose), NancyFX framework by me and FubuMVC by <a href="http://twitter.com/skalinets">@skalinets</a>.<br />
-</p><p>I would not say I got great experience on Nancy so far. But I&#8217;m pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexanderbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
+</p><p>I would not say I got great experience on Nancy so far. But I&#8217;m pretty exited on frameworks features and super-dupper-happy-path. Almost all knowledge I gathered thought hacking of <a href="https://github.com/alexbeletsky/Ideastrike">IdeaStrike</a>, listening to Herding Code <a href="http://herdingcode.com/?p=350">episode</a> and reading <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">documentation</a>. But anyway, I believe it turns out to be good introductory presentation.   <br />
 </p><script src="http://speakerdeck.com/embed/4f47e42f8448db0022000bf4.js"></script><br />
 <p>Right after my Nancy talk I moved to central train station, since I was about to visit <a href="http://www.ciklum.net/join/community/Ciklum-NET-Saturday-25-02/">Ciklum .NET Saturday</a> in Dnepropetrovsk. .NET Saturday&#8217;s is just great initiative by Ciklum company. I&#8217;s free event, everybody welcome, content is usually nice. I highly recommend to follow their events. <br />
 </p><p>I had two talks there. First one about &#8220;Continuous Delivery&#8221; that I did on <a href="http://www.beletsky.net/2012/01/agile-base-camp-2012.html">Agile Base Camp 2012</a>. Besides of the talk I also did a quick and improvised demo of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> application. Even if I had some technical issues the demo went fine.<br />
@@ -497,7 +497,7 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
   <li>Different deployment scenarios for .NET platform</li>
  </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I&#8217;m looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
  </p> <p>  I also try to target UI / UX issues as much as possible.<br />
- </p> <h2>Wanna join?</h2> <p>  I would be happy to. I&#8217;ll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
+ </p> <h2>Wanna join?</h2> <p>  I would be happy to. I&#8217;ll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
  </p> <p>  Thanks for you help.<br />
  </p></div>
 
@@ -558,7 +558,7 @@ if "%config%" == "" (
 %WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild build.proj /p:Configuration="%config%" /t:AppHarbor /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
 </pre><p>At the time I first looked in it also contained small script for running tests, but later they moved that to .csproj as separate target. <br />
 </p><h2>Use NuGet without committing to SCM</h2><p>I was amazed, how fast git repository was cloned and as I checked out <code>packages</code> folder with all dependencies were just empty. How can it be? As I said in #1 as I run build script they just automatically downloaded for me. As it turns out, this is feature of NuGet that allows to work with dependencies, without real necessity of committing those to SCM. This is very cool, especially if you have big project, so cloning and branching appears to be prolonged operations. The implementation details is on <a href="http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages">nuget</a> site.<br />
-</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexanderbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that&#8217;s also, just a C# code), so at application bootstrap you call the code like:<br />
+</p><h2>Deploy application DB at first launch</h2><p>IdeaStrike is based on <a href="http://blogs.msdn.com/b/adonet/archive/2012/01/12/ef-4-3-beta-1-released.aspx">EF 4.3 Beta 1</a> currently, using Code First approach. EF Code First also includes very cool feature called Migrations. This is something I really lack first time I tried EF Code First approach. You define the  <a href="https://github.com/alexbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Models/IdeastrikeContext.cs">Context</a>, <a href="https://github.com/alexbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Migrations/IdeastrikeDbConfiguration.cs">DbConfiguration</a> class and <a href="https://github.com/alexbeletsky/Ideastrike/tree/master/src/Ideastrike.Nancy/Migrations">migration scripts</a> (that&#8217;s also, just a C# code), so at application bootstrap you call the code like:<br />
 </p><pre class="brush: csharp">private static void DoMigrations()
 {
     var settings = new IdeastrikeDbConfiguration();
@@ -570,7 +570,7 @@ if "%config%" == "" (
 </p><a href="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg"><br />
 <img src="https://lh6.googleusercontent.com/-eJTIkFUrCtA/TzQNiXlAayI/AAAAAAAAH34/gFt_Gn8vAME/s620/image-1.jpg" alt="social login" /><br />
 </a><br />
-<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexanderbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
+<p><a href="http://www.janrain.com/products/engage/engage-introduction?utm_source=login.janrain.com&utm_medium=partner&utm_campaign=attribution">JanRain</a> is very cool solution. I remember I tried to investigate something like that for ASP.NET MVC and was really disappointed, because I actually found nothing. For all of existing solutions you have to read OAuth spec and write own code. JanRain does all dirty job for you. As user authorized you receive POST on given URL, with a special token. By given token you request the details about the user, like name and email and so on (see <a href="https://github.com/alexbeletsky/Ideastrike/blob/master/src/Ideastrike.Nancy/Modules/LoginModule.cs">LoginModule.cs</a>). It has fair <a href="http://www.janrain.com/products/engage/pricing">plans</a> for hobby projects and bloggers.<br />
 </p><h2>Bootstrap your CSS and HTML</h2><p><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> neither new nor very unique, at least I know several good CSS/HTML frameworks. But IdeaStrike proved one more time - it has no sense to invent the wheel. Take advantage of results produced by people who are smarter than you, that&#8217;s the rule of pragmatic programmer.<br />
 </p><p> Dear future me, please never ever again start your application with HTML/CSS from scratch, you can build nothing more as shit. Bootstrap is great for different kind of projects and prototypes. Taking into account number of watches and forks on <a href="https://github.com/twitter/bootstrap/">github</a> I expect even more improvements and features in future. <br />
 </p><h2>Nancy as web framework</h2><p>I&#8217;ve heard about Nancy many times, but it&#8217;s only now I got a change to touch it. For me it&#8217;s just alternative reality comparing to ASP.NET MVC. It is not hard to understand what the code does. It is not hard to apply changes there. You are very explicit of what you are doing, by specifying HTTP verb, route and action as lambda. First class citizen in Nancy is Module, all module&#8217;s logic is placed inside the constructor:<br />
@@ -945,7 +945,7 @@ private static void RegisterServices(IKernel kernel)
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p>For those, who already forgot what the candidate is I&#8217;ll do a small reminder :). This is an <a href="https://github.com/alexanderbeletsky/candidate">application</a> for Continues Deployment for .NET projects. I started the project at <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">Hackatone</a> that took place in summer 2011, in Kyiv. I liked the results I got there, so I didn&#8217;t throw it away after the contest, but slowly progressed on that through last several months. <br />
+<p>For those, who already forgot what the candidate is I&#8217;ll do a small reminder :). This is an <a href="https://github.com/alexbeletsky/candidate">application</a> for Continues Deployment for .NET projects. I started the project at <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">Hackatone</a> that took place in summer 2011, in Kyiv. I liked the results I got there, so I didn&#8217;t throw it away after the contest, but slowly progressed on that through last several months. <br />
 </p><a href="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png"><br />
 <img src="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png" alt="welcome"/><br />
 </a><br />

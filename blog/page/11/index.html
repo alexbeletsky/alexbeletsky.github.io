@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -115,13 +115,13 @@
     <div class="content">
       <div class='post'>
 <p>I get used to <code>DataAnnotations</code> for model validation very quickly. Indeed, it is great approach. You attribute you model with corresponding attributes, rest is done by framework. It is only <code>ModelState.IsValid</code>, all you have to do before starting working with model.<br />
-</p><p>During implementation of some feature for <a href="https://github.com/alexanderbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
+</p><p>During implementation of some feature for <a href="https://github.com/alexbeletsky/candidate">candidate</a> I thought to myself, that I need need exactly same validation for my model class, but out of MVC framework. Namely, for some model class, like <a href="https://github.com/alexbeletsky/candidate/blob/master/Candidate.Core/Configurations/Parts/Github.cs">Github.cs</a> I just want to know, is it &#8220;configured&#8221; or not. And configured == valid in my context. Instead of writing custom code with checking all required properties to have some values I wished to do the same as ASP.NET MVC does, through DataAnnotations. It turned out to be possible and really easy.<br />
 </p><h2>Basic start</h2><p>Assume you have such model:<br />
 </p><pre class="brush: csharp">public class SimpleModel
 {
  [Required]
  public string SomeProperty { get; set; }
- 
+
  [Range(0,50)]
  public int SomeAnotherProperty { get; set; }
 }
@@ -136,7 +136,7 @@
 {
  var validationResults = new List&lt;ValidationResult&gt;();
  Validator.TryValidateObject(validate, new ValidationContext(validate, null, null), validationResults);
- 
+
  return validationResults;
 }
     </pre><p>In case of invalid object it would return non-empy collection of <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.validationresult.aspx">ValidationResult</a>, that would contain all relevant information.<br />
@@ -323,19 +323,19 @@ public void should_be_able_to_test()
 </p><p>I was reading <a href="http://pragprog.com/book/tpp/the-pragmatic-programmer">Pragmatic Programmer</a> this year, with a great advice: &#8220;Learn new programming language each year&#8221;. I formulated Pragmatic Product Developer advice, just for my self: &#8220;Release new product each year&#8221;. Even if you release something at work, release something on your own is completely different feeling. It takes too much effort, it&#8217;s painful.. But shipment is like drug, you feel very happy as soon you ship.. You fill very bad as you don&#8217;t ship for a while.<br />
 </p><p>While ago I write small article there I <a href="http://www.beletsky.net/2011/09/what-im-going-to-do.html">mentioned</a> what&#8217;s my targets and what I working on. Let&#8217;s quickly go through it:<br />
 </p><ul><li><br />
-<strong>trackyt.net</strong> as I released that late 2010 I did provide a support up the the May of 2011. A lot of new features has been <a href="https://github.com/alexanderbeletsky/trackyt.net">commited</a> there, but still I slowed down the progress much. It has very low traffic, almost 0 active users. I was about to release version 2.0, absolutely different with all good things that I see in GTD. But I have to admit, I failed that. <br />
+<strong>trackyt.net</strong> as I released that late 2010 I did provide a support up the the May of 2011. A lot of new features has been <a href="https://github.com/alexbeletsky/trackyt.net">commited</a> there, but still I slowed down the progress much. It has very low traffic, almost 0 active users. I was about to release version 2.0, absolutely different with all good things that I see in GTD. But I have to admit, I failed that. <br />
 </li>
 <li><br />
-<strong>elmah.mvc.controller</strong> <a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">started</a> out as very simple <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller">helper</a> for ASP.NET MVC applications that want to use ELMAH, but with a great surprise to me it appeared so popular, that finally wrapped up in a micro product. Now, it has ~2,000 downloads on <a href="http://nuget.org/packages/Elmah.MVC">NuGet</a>, I&#8217;ve received several pull requests and had a talk about it on Kiev ALT.NET. Even if is so small, I treat that as success. <br />
+<strong>elmah.mvc.controller</strong> <a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">started</a> out as very simple <a href="https://github.com/alexbeletsky/elmah.mvc.controller">helper</a> for ASP.NET MVC applications that want to use ELMAH, but with a great surprise to me it appeared so popular, that finally wrapped up in a micro product. Now, it has ~2,000 downloads on <a href="http://nuget.org/packages/Elmah.MVC">NuGet</a>, I&#8217;ve received several pull requests and had a talk about it on Kiev ALT.NET. Even if is so small, I treat that as success. <br />
 </li>
 <li><br />
-<strong>github.commits.widget</strong> also a micro <a href="https://github.com/alexanderbeletsky/github.commits.widget">product</a> that gathered some attention. That was my attempt of working with github API in javascript and I spend maybe 3 hours to create that code, but I know several sites that using that widget. I had joy of creating that and happy that some people find it useful. <br />
+<strong>github.commits.widget</strong> also a micro <a href="https://github.com/alexbeletsky/github.commits.widget">product</a> that gathered some attention. That was my attempt of working with github API in javascript and I spend maybe 3 hours to create that code, but I know several sites that using that widget. I had joy of creating that and happy that some people find it useful. <br />
 </li>
 <li><br />
-<strong>githubbadges.com</strong> a little <a href="http://githubbadges.com/">application</a> that I wrote to participate <a href="http://10k.aneventapart.com/Entry/Details/512">10K competition</a>. Total application zipped content should not exceed 10K. I&#8217;ve haven&#8217;t won, I haven&#8217;t got any mentions.. But again it was fun small project. I used some my knowledge of github API and tried to do very tiny JS and CSS <a href="https://github.com/alexanderbeletsky/10k">code</a>.<br />
+<strong>githubbadges.com</strong> a little <a href="http://githubbadges.com/">application</a> that I wrote to participate <a href="http://10k.aneventapart.com/Entry/Details/512">10K competition</a>. Total application zipped content should not exceed 10K. I&#8217;ve haven&#8217;t won, I haven&#8217;t got any mentions.. But again it was fun small project. I used some my knowledge of github API and tried to do very tiny JS and CSS <a href="https://github.com/alexbeletsky/10k">code</a>.<br />
 </li>
 <li><br />
-<strong>candidate.net</strong> is something I started this summer of <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">hackthone</a>. Since then I completely rewrite it, start to use <a href="https://github.com/alexanderbeletsky/bounce">bounce</a> framework inside and had plans to release it October, but failed. I&#8217;m not throwing away this project and going to ship that soon. I have yet-another-huge-refactoring cycle now, but after that I hope that alpha version could be ready middle January.<br />
+<strong>candidate.net</strong> is something I started this summer of <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">hackthone</a>. Since then I completely rewrite it, start to use <a href="https://github.com/alexbeletsky/bounce">bounce</a> framework inside and had plans to release it October, but failed. I&#8217;m not throwing away this project and going to ship that soon. I have yet-another-huge-refactoring cycle now, but after that I hope that alpha version could be ready middle January.<br />
 </li>
 </ul><p>So, it looks like &#8220;I did something&#8221;.. but really nothing impressive. I try to be a little more focused, not more than 2 projects in parallel + very clear criteria&#8217;s of success for projects. But in general my criteria&#8217;s are still simple: actually ship it, learn something new, enjoy the ride. <br />
 </p><h2>Blog</h2><p>Thanks to google analytics it is very simple to have analysis. Just take a look at those figures: <br />
@@ -710,7 +710,7 @@ public void should_try_to_cover_it()
     <div class="content">
       <div class='post'>
 <p>I&#8217;ve received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
-</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
+</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
 </p><pre class="brush: xml">&lt;elmah&gt;
     &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
     &lt;errorLog type=&quot;Elmah.MemoryErrorLog, Elmah&quot;/&gt;
@@ -721,9 +721,9 @@ public void should_try_to_cover_it()
 </p><pre class="brush: xml">&lt;connectionStrings&gt;
     &lt;add name=&quot;elmah&quot; connectionString=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=elmah;Integrated Security=True&quot; providerName=&quot;System.Data.SqlClient&quot; /&gt;
 &lt;/connectionStrings&gt;
-</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
-</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
-</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
+</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
+</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
+</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
 </p><p>Short answer is, ELMAH.MVC is nothing more that boilerplate code. As soon as you can see it work and it works OK for you, adopt it for your custom needs. That&#8217;s it.<br />
 </p></div>
 

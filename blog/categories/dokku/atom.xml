@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dokku | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/dokku/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -429,7 +429,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 <p>```bash</p>
 
-<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x72;&#111;&#111;&#x74;&#64;&#x64;&#x6f;&#x6b;&#x6b;&#x75;&#x2e;&#x6d;&#101;">&#x72;&#111;&#x6f;&#x74;&#64;&#100;&#111;&#107;&#x6b;&#x75;&#x2e;&#x6d;&#101;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#114;&#x6f;&#x6f;&#116;&#64;&#100;&#x6f;&#x6b;&#107;&#117;&#x2e;&#x6d;&#x65;">&#x72;&#x6f;&#x6f;&#116;&#x40;&#100;&#111;&#107;&#107;&#117;&#x2e;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
 ```</p></blockquote>
 
 <p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
@@ -453,7 +453,7 @@ Docker version 0.6.1, build 5105263
 
 <h2>Deploy to Dokku</h2>
 
-<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexanderbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
+<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
 
 <p>So, what you need to setup is remote repository to push to:</p>
 
@@ -618,7 +618,7 @@ remote:        Using npm version: 1.2.30
 remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
 remote: &mdash;&mdash;&ndash;> Vendoring node into slug
 remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
-remote:        npm WARN package.json <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#108;&#x69;&#x6b;&#x65;&#97;&#115;&#116;&#x6f;&#x72;&#x65;&#x2d;&#x63;&#x6f;&#x6c;&#108;&#101;&#x63;&#116;&#111;&#114;&#x40;&#x30;&#x2e;&#x30;&#x2e;&#50;&#45;&#x32;&#49;">&#108;&#105;&#107;&#x65;&#97;&#x73;&#116;&#111;&#x72;&#x65;&#45;&#99;&#x6f;&#x6c;&#108;&#101;&#x63;&#116;&#x6f;&#x72;&#64;&#x30;&#46;&#x30;&#x2e;&#x32;&#x2d;&#x32;&#x31;</a> No repository field.
+remote:        npm WARN package.json <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#108;&#105;&#107;&#101;&#x61;&#115;&#116;&#111;&#x72;&#x65;&#x2d;&#99;&#111;&#108;&#108;&#x65;&#99;&#116;&#x6f;&#114;&#x40;&#48;&#x2e;&#48;&#x2e;&#50;&#x2d;&#50;&#x31;">&#108;&#x69;&#x6b;&#101;&#x61;&#x73;&#116;&#x6f;&#x72;&#101;&#x2d;&#99;&#x6f;&#x6c;&#108;&#101;&#99;&#x74;&#111;&#114;&#64;&#x30;&#x2e;&#x30;&#46;&#x32;&#45;&#50;&#49;</a> No repository field.
 remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
 remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
 

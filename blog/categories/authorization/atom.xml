@@ -4,7 +4,7 @@
   <title><![CDATA[Category: authorization | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/authorization/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -18,7 +18,7 @@
     <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
     <updated>2013-10-15T21:54:00+02:00</updated>
     <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
-    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
+    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
 
 <p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
 

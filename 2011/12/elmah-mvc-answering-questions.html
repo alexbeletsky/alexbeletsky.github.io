@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -106,7 +106,7 @@
     <div class="content">
       <div class='post'>
 <p>I&#8217;ve received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
-</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
+</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
 </p><pre class="brush: xml">&lt;elmah&gt;
     &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
     &lt;errorLog type=&quot;Elmah.MemoryErrorLog, Elmah&quot;/&gt;
@@ -117,9 +117,9 @@
 </p><pre class="brush: xml">&lt;connectionStrings&gt;
     &lt;add name=&quot;elmah&quot; connectionString=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=elmah;Integrated Security=True&quot; providerName=&quot;System.Data.SqlClient&quot; /&gt;
 &lt;/connectionStrings&gt;
-</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
-</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
-</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
+</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
+</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
+</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I&#8217;ve received <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
 </p><p>Short answer is, ELMAH.MVC is nothing more that boilerplate code. As soon as you can see it work and it works OK for you, adopt it for your custom needs. That&#8217;s it.<br />
 </p></div>
 

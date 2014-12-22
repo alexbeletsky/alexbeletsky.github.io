@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -353,7 +353,7 @@ As I said on a beginning DDD is something that every developer shound aware abou
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-Remember a site we started to create in previous articles. What we&#8217;ve got is simple web application, 
+Remember a site we started to create in previous articles. What we&#8217;ve got is simple web application,
     with a registration functionality. During registration you submit email, password and secret phrase. We going to use this secret phrase today to recover forgotten passwords. Functionality is bit artifictial but my goal is to demonstrate usage of ASP.NET Ajax framework, namely ScripManager object as very usefully component for ajaxifying your applications.
 <br />
 <br />
@@ -447,7 +447,7 @@ Nowadays it is even hard to imagine serious web application with out AJAX. It is
 <h2>Sources</h2>
 <br />
 <p>
-Sources are available on GitHub: <a href="http://github.com/alexanderbeletsky/Concept">http://github.com/alexanderbeletsky/Concept</a>
+Sources are available on GitHub: <a href="http://github.com/alexbeletsky/Concept">http://github.com/alexbeletsky/Concept</a>
 </p>
 
 <!-- AddThis Button BEGIN -->
@@ -573,7 +573,7 @@ This is a response to <a href="http://jamesshore.com/Blog/">James Shore</a> blog
 James is a famous blogger and author of great book that I&#8217;m reading online <a href="http://jamesshore.com/Agile-Book/">&#8220;The art of Agile development&#8221;</a>. I suggest you both familarize with blog and book.
 <br />
 <br />
-So, he is proposing to took an <a href="http://jamesshore.com/Blog/Architectural-Design-Challenge.html">&#8220;An Architectural Design Challenge&#8221;</a>. It is required to create a small application that should expose some major architectural aspects of software development. I&#8217;ve decied to take part of this challange also. Task has been posted awhile ago, unfortunately I&#8217;ve been busy with another stuff, but as a saying goes &#8220;better later than never&#8221;. 
+So, he is proposing to took an <a href="http://jamesshore.com/Blog/Architectural-Design-Challenge.html">&#8220;An Architectural Design Challenge&#8221;</a>. It is required to create a small application that should expose some major architectural aspects of software development. I&#8217;ve decied to take part of this challange also. Task has been posted awhile ago, unfortunately I&#8217;ve been busy with another stuff, but as a saying goes &#8220;better later than never&#8221;.
 <br />
 <br />
 Requirements are:
@@ -606,7 +606,7 @@ As always starting with new design I try to bring it down to 3 major piecies: Bu
 Well, what we need is function that is able to get some input stream, do transformation of the data extracted from stream and send data back to output stream. This ROT13 algorigtm is core function, without all other architectural stuff is senceless, so let&#8217;s start and implement it!
 <br />
 <br />
-ROT13 is primitive cipher, wikipedia contail a lot <a href="http://en.wikipedia.org/wiki/ROT13">info</a> about it. 
+ROT13 is primitive cipher, wikipedia contail a lot <a href="http://en.wikipedia.org/wiki/ROT13">info</a> about it.
 <br />
 <br />
 After a several interations of testing and refactoring and came up with such implementation:
@@ -624,10 +624,10 @@ Rot13 (preatty small, heh?):
 <br />
 <h2>Configuration</h2>
 <br />
-Now, what I need is to make application configurable. It is OK if we put the configuration to a special config file and have a class to work with configuration data. My preference is to have configurations as singletone&#8217;s (in the same time I realize some major drawbacks of singletone&#8217;s and try to void usage of it, but let&#8217;s keep most simple implementation in this solution). Implementation uses Linq to XML to handle XML data. Let&#8217;s not forget about one of requirements.. we have several types of configuration: Test, Production. We could decide on run-time what current configuration is active.  
+Now, what I need is to make application configurable. It is OK if we put the configuration to a special config file and have a class to work with configuration data. My preference is to have configurations as singletone&#8217;s (in the same time I realize some major drawbacks of singletone&#8217;s and try to void usage of it, but let&#8217;s keep most simple implementation in this solution). Implementation uses Linq to XML to handle XML data. Let&#8217;s not forget about one of requirements.. we have several types of configuration: Test, Production. We could decide on run-time what current configuration is active.
 <br />
 <br />
-Configuration file. 
+Configuration file.
 <br />
 <br />
 <blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;?</font><font color="#800000">xml</font> <font color="#ff0000">version</font><font color="#0000ff">="1.0"</font> <font color="#ff0000">encoding</font><font color="#0000ff">="utf-8"</font> ?<font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">configurations</font><font color="#0000ff">&#62;</font><br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">active</font> <font color="#ff0000">type</font><font color="#0000ff">="test"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;<br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">configuration</font> <font color="#ff0000">type</font><font color="#0000ff">="test"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">val</font><font color="#0000ff">="./testInput"</font><font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">output</font> <font color="#ff0000">val</font><font color="#0000ff">="./testOutput"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">configuration</font><font color="#0000ff">&#62;</font><br>&nbsp;<br>&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">configuration</font> <font color="#ff0000">type</font><font color="#0000ff">="production"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">val</font><font color="#0000ff">="./input"</font><font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">output</font> <font color="#ff0000">val</font><font color="#0000ff">="./output"</font><font color="#0000ff">/&#62;</font><br>&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">configuration</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">configurations</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
@@ -652,10 +652,10 @@ Corresponding implementation:
 <br />
 <h2>Context</h2>
 <br />
-Before implementation of Data/View classes let&#8217;s thing how those will be created and configured. One of my favorite desing pattern is <a href="http://en.wikipedia.org/wiki/Factory_method_pattern">Factory Method</a>. 
-So, both of them should be created by corresponding factories, but what about 
-configuration? For instance Data class have to know what is input and output 
-files? We have to have some kind of Context that would hold all reaquired 
+Before implementation of Data/View classes let&#8217;s thing how those will be created and configured. One of my favorite desing pattern is <a href="http://en.wikipedia.org/wiki/Factory_method_pattern">Factory Method</a>.
+So, both of them should be created by corresponding factories, but what about
+configuration? For instance Data class have to know what is input and output
+files? We have to have some kind of Context that would hold all reaquired
 information. Context itself is constructed from command line arguments of application.
 <br />
 <br />
@@ -749,7 +749,7 @@ Source code of <a href="https://docs.google.com/leaf?id=0Bz70dGvwjh5zMzRjNTQ0MmY
 I&#8217;ve inited github repository, so sources are available here:
 <br />
 <br />
-<a href="http://github.com/alexanderbeletsky/JamesShoreRot13">http://github.com/alexanderbeletsky/JamesShoreRot13</a></div>
+<a href="http://github.com/alexbeletsky/JamesShoreRot13">http://github.com/alexbeletsky/JamesShoreRot13</a></div>
 
       
       

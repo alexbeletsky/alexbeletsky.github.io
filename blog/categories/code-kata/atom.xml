@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code Kata | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/code-kata/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -35,7 +35,7 @@
     </a><br />
     <p>        Knowing the requirements I was able to create good test suite. <br />
     </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
-    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it's state and position. The <a href="https://github.com/alexanderbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it's state and position. The <a href="https://github.com/alexbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
     </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
         <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
     </a><br />
@@ -86,7 +86,7 @@ The main goal of Extension Methods is to provide ability of extension of any cla
 But the most important as for me - Extension Methods help to keep my <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">code clean</a>. Clean code criteria is something I concerned a lot, nowadays.
 </p>
 <p>
-I recently started to practice with <a href="http://en.wikipedia.org/wiki/Kata_(programming)">code katas</a>, that I found essential for any developers who cares about <a href="http://www.hanselman.com/blog/SharpenTheSawForDevelopers.aspx">keeping their saw sharp</a>. So, after several iterations I came up with extension methods implementation that I pretty happy about. I'm using Roy Osherove's <a href="http://www.osherove.com/tdd-kata-1/">StringCalculator</a> kata. It is about the implementation of simple method <code>Add</code> that:  
+I recently started to practice with <a href="http://en.wikipedia.org/wiki/Kata_(programming)">code katas</a>, that I found essential for any developers who cares about <a href="http://www.hanselman.com/blog/SharpenTheSawForDevelopers.aspx">keeping their saw sharp</a>. So, after several iterations I came up with extension methods implementation that I pretty happy about. I'm using Roy Osherove's <a href="http://www.osherove.com/tdd-kata-1/">StringCalculator</a> kata. It is about the implementation of simple method <code>Add</code> that:
 </p>
 <ul>
 <li>Takes numbers separated by delimiter, as string</li>
@@ -189,10 +189,10 @@ Method does exactly what it is suppose to do
 </ul>
 <h2>Conclusion</h2>
 <p>
-Well, don't get me wrong here. I'm not saying that now only Extension Methods is a way of solving the issues. Of cause not. But if you feel the smell of pipeline of chain of responsibility patters, extension methods are right choice. As always you should consider to do not "overplay" with some particular feature of language/framework. 
+Well, don't get me wrong here. I'm not saying that now only Extension Methods is a way of solving the issues. Of cause not. But if you feel the smell of pipeline of chain of responsibility patters, extension methods are right choice. As always you should consider to do not "overplay" with some particular feature of language/framework.
 </p>
 <p>
-You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexanderbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexanderbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
+You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
 </p></div>
 
 ]]></content>

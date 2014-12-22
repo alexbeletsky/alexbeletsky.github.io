@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -115,7 +115,7 @@
     <div class="content">
       <div class='post'>
 <p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don&#8217;t even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
-</p><p>    In my case, during <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
+</p><p>    In my case, during <a href="https://github.com/alexbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
 </p><a href="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png"><br />
     <img src="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png" alt="folder layout" /><br />
 </a><br />
@@ -212,17 +212,17 @@
 </p><h2>Deployment scenarios</h2><p>    The primary deployment scenario that implemented in Candidate is local one. It means, it&#8217;s able to build and test the site and deploy it to local IIS. I did so, since I use the same scenario for deployment of <a href="http://trackyt.net/">trackyt.net</a>, which is hosted on VPS and deployed by Jenkins running on the same server.<br />
 </p><p>    But many people are not using VPS, but rather sharing hosting there they are not even able to install any kind of other software. So, they are more interested in <i>remote</i> deployment, not <i>local</i> one. With the re-invention of <a href="http://www.windowsazure.com/en-us/">Azure</a>, you might consider scenarios of deployment existing web application to it seamlessly.<br />
 </p><p>    Local deployments was a good for prototype, but not good at all for product.<br />
-</p><h2>Technical stuff</h2><p>    I stick to framework named <a href="https://github.com/alexanderbeletsky/bounce">Bounce</a>. It&#8217;s very powerful product, that basically allows to write a deployment scripts in .NET languages. Then I originally saw it, I thought it&#8217;s great since it does everything I need, including git operations, msbuild and IIS sites deployment. Even more, Bounce is the one of the best .NET code I ever seen, so respect to <a href="https://github.com/refractalize">refractalize</a>.<br />
-</p><p>    But.. Bounce, is not that good for long perspective. It required to create a lot of <a href="https://github.com/alexanderbeletsky/candidate/tree/master/Candidate.Core/Configurations">configuration code</a>, hard to change logging options and further extension.<br />
+</p><h2>Technical stuff</h2><p>    I stick to framework named <a href="https://github.com/alexbeletsky/bounce">Bounce</a>. It&#8217;s very powerful product, that basically allows to write a deployment scripts in .NET languages. Then I originally saw it, I thought it&#8217;s great since it does everything I need, including git operations, msbuild and IIS sites deployment. Even more, Bounce is the one of the best .NET code I ever seen, so respect to <a href="https://github.com/refractalize">refractalize</a>.<br />
+</p><p>    But.. Bounce, is not that good for long perspective. It required to create a lot of <a href="https://github.com/alexbeletsky/candidate/tree/master/Candidate.Core/Configurations">configuration code</a>, hard to change logging options and further extension.<br />
 </p><p>    For a long running product I need more lightweight and robust approach.<br />
 </p><h2>Starting it over again</h2><p>    Considering all things above, I decided to re-start the project, almost from the scratch.<br />
 </p><p>    It would be based on 3 different technologies, that in my opinion are agile enough to allow me to build what I want. <br />
 </p><ul>    <li><strong>NancyFX</strong> - will be used as application host. Currently Nancy is 0.11 version, that has a lot of improvements comparing to 0.9 that I used. The main reason to choose that, is Nancy allows to create self-hosted application. It&#8217;s basically .exe application, that you can run and it starts the HTTP server. I plan to have all-in-one executable, that do not require any installations and will prepare all required infrastructure and first run. That would solve both installation and IIS limitations problem.<br />
     </li>
-    <li><strong>RavenDB</strong> - as application document storage. In previous version I didn&#8217;t use any kind of database at all, being happy with simple <a href="https://github.com/alexanderbeletsky/candidate/blob/master/Candidate.Core/Settings/SettingsManager.cs">SettingsManager</a> to store .NET objects into JSON files. The reason is that I didn&#8217;t have any dependencies on any software (as SQL Express). With Raven it is possible to use Embedded mode, so it does not require any service running, just the assemblies.<br />
+    <li><strong>RavenDB</strong> - as application document storage. In previous version I didn&#8217;t use any kind of database at all, being happy with simple <a href="https://github.com/alexbeletsky/candidate/blob/master/Candidate.Core/Settings/SettingsManager.cs">SettingsManager</a> to store .NET objects into JSON files. The reason is that I didn&#8217;t have any dependencies on any software (as SQL Express). With Raven it is possible to use Embedded mode, so it does not require any service running, just the assemblies.<br />
     </li>
     <li><strong>PowerShell</strong> - as deployment scripts. No more VCS, build, test and deploy code in C#. I plan to have a generic PowerShell scripts that would be easy to run and maintain. With a PowerShell I hope to extend the deployment scenarios to support Local, FTP, MS Deploy, Azure deployments.</li>
-</ul><p>    Unfortunately, I&#8217;m not yet proficient with any of these technologies. It makes me very exited to learn something new. I&#8217;ve already created a <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">branch</a> where some basic infrastructure is prepared. My goal would be create first prototype in 2 - 3 weeks.<br />
+</ul><p>    Unfortunately, I&#8217;m not yet proficient with any of these technologies. It makes me very exited to learn something new. I&#8217;ve already created a <a href="https://github.com/alexbeletsky/candidate/tree/nancy">branch</a> where some basic infrastructure is prepared. My goal would be create first prototype in 2 - 3 weeks.<br />
 </p><p>    And I want to appreciate everyone who provided feedback and useful technical suggestions. I hope it would turn in something good.<br />
 </p></div>
 
@@ -287,7 +287,7 @@
             return "I'm in Shinny controller";
         }
     }
-}    
+}
 </pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be &#8220;invisible&#8221; for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don&#8217;t initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
 </p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
     <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
@@ -340,7 +340,7 @@
 </a><br />
 <p>Even though, it looks like desired behavior.. It sucks.<br />
 </p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I&#8217;m thinking about it&#8217;s distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that&#8217;s it! I don&#8217;t suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
-</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexanderbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
 </p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I&#8217;ll give one more example, to proof it.<br />
 </p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
 </p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers
@@ -768,7 +768,7 @@ private string RemoveFooter(string content)
     </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it&#8217;s shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it&#8217;s already included into package.<br />
     </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it&#8217;s own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
     </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
-    </p>    <h3>Logging with customError=&#8221;On&#8221;</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h3>Logging with customError=&#8221;On&#8221;</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
     </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
     </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
             </p>        </div>    </div></div>
@@ -824,8 +824,8 @@ private string RemoveFooter(string content)
     </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it&#8217;s a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
     </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don&#8217;t know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it&#8217;s still nice step towards compatibility. <br />
     </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won&#8217;t appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
-    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
-    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
+    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
     </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
     </p></div>
 

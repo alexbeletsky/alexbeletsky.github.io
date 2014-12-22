@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -190,10 +190,10 @@ I define 2 types of environments: Staging and Production. Environment includes: 
 <p>Everything that is being developed are goes to staging environment immediately (and automatically). Production update is being run manually as soon as all testing on Staging are finished. Separation of environments is great idea. Even if we are trying hard to have potentially shippable software during each build, this is not true. It is usually a lot of problems in latest version that need to be fixed before production server update.
 </p>
 <p>
-So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>. 
+So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>.
 </p>
 <p>
-In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexanderbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexanderbeletsky/trackyt.net">this</a>.
+In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexbeletsky/trackyt.net">this</a>.
 </p>
 <h2>What I want to get?</h2>
 <p>
@@ -225,7 +225,7 @@ So, my configuration looks like this:
 <img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7BUnOiGI/AAAAAAAAHZk/XSxs5Y_zrR0/plugins.png" alt="plugins" />
 <h3>Configure system</h3>
 <p>
-Now go to &#8220;Manage Jenkins&#8221; -> &#8220;Configure System&#8221; and find &#8220;Git&#8221; section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same). 
+Now go to &#8220;Manage Jenkins&#8221; -> &#8220;Configure System&#8221; and find &#8220;Git&#8221; section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same).
 </p>
 <h3>Create new job</h3>
 <p>
@@ -257,14 +257,14 @@ As soon as configuration is done, you can test your build locally. Just start yo
 </p>
 <h2>Move it to production</h2>
 <p>
-As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server. 
+As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server.
 </p>
 <p>
-Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP&#8217;ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard. 
+Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP&#8217;ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard.
 </p>
 <h3>Little adjustments for production server</h3>
 <p>
-My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning. 
+My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning.
 </p>
 <h3>Using Github hook to automate build run</h3>
 <p>
@@ -363,7 +363,7 @@ There files are templates, from which script for particular <code>environment</c
 
   &lt;!-- base settings --&gt;
   &lt;property name=&quot;project.name&quot; value=&quot;trackyt.net&quot; overwrite=&quot;false&quot; /&gt;
-  &lt;property name=&quot;repository.path&quot; value=&quot;git://github.com/alexanderbeletsky/trackyt.net&quot; /&gt;
+  &lt;property name=&quot;repository.path&quot; value=&quot;git://github.com/alexbeletsky/trackyt.net&quot; /&gt;
   &lt;property name=&quot;folder.app.drop&quot; value=&quot;${project.name}&quot; overwrite=&quot;false&quot; /&gt;
   &lt;property name=&quot;folder.database&quot; value=&quot;db&quot; overwrite=&quot;false&quot; /&gt;
 
@@ -371,7 +371,7 @@ There files are templates, from which script for particular <code>environment</c
   &lt;property name=&quot;dirs.db&quot; value=&quot;..\${folder.database}&quot; /&gt;
   &lt;property name=&quot;file.version&quot; value=&quot;_BuildInfo.xml&quot; overwrite=&quot;false&quot; /&gt;
   &lt;property name=&quot;restore.from.path&quot; value=&quot;..\${database.name}.bak&quot; overwrite=&quot;false&quot; /&gt;
-  
+
 &lt;/project&gt;
 </pre>
 <p>
@@ -379,7 +379,7 @@ In template .bat file it is possible to refer, to some particular variable, so i
 </p>
 <h2>Web site deployment script</h2>
 <p>
-If you do ASP.net (MVC) website in 99.9% cases you will be happy with simple <code>XCOPY</code> deployment type. Basically it means, simple copy of website to defined IIS folder. 
+If you do ASP.net (MVC) website in 99.9% cases you will be happy with simple <code>XCOPY</code> deployment type. Basically it means, simple copy of website to defined IIS folder.
 </p>
 <p>
 But, as soon it is continuous production deploy it means that Web Site is already running. It would not be possible to re-write some files, since they could be used by IIS. So, we need to stop the site before update. I found very good possibility for that with <code>%windir%\system32\inetsrv\appcmd</code> command. After site is stopped, we just copy full content of Web folder, remove some redundant files and run site again. In batch code it would look like,
@@ -403,9 +403,9 @@ if %ERRORLEVEL% NEQ 0 goto errors
 
 echo remove redudant files
 del %web.deploy.folder%*Tests*.htm*
-del %web.deploy.folder%Web.Debug.config  
-del %web.deploy.folder%Web.Release.config 
-del %web.deploy.folder%*packages* 
+del %web.deploy.folder%Web.Debug.config
+del %web.deploy.folder%Web.Release.config
+del %web.deploy.folder%*packages*
 if %ERRORLEVEL% NEQ 0 goto errors
 
 echo starting web site
@@ -532,7 +532,7 @@ Notice, it receives the parameter <code>ENV</code>. It will contain type of envi
 </p>
 <h2>Testing it out</h2>
 <p>
-That&#8217;s basically it. Now, you should make sure everything works as expected. Run <code>build.bat/deploy.bat</code>, make sure build went with no errors, deploy.bat correctly does back up of database, updates database and update site content. 
+That&#8217;s basically it. Now, you should make sure everything works as expected. Run <code>build.bat/deploy.bat</code>, make sure build went with no errors, deploy.bat correctly does back up of database, updates database and update site content.
 </p>
 <p>
 As I said on top, it is very important that configuration is part of product, part of source code. If you follow this, it will be possible to deploy application but just getting sources from SCM. This is first step of setting up your Continuous Production server.
@@ -701,7 +701,7 @@ To do not waste a time in pauses between <a href="http://www.beletsky.net/search
 <p>
 Classical way of solving the issue is to add version info to content url and update it after each production update.
 </p>
-<pre class="brush: html">    
+<pre class="brush: html">
 &lt;link rel=&quot;stylesheet&quot; href=&quot;Content/public.css?v=123&quot; type=&quot;text/css&quot; media=&quot;all&quot; /&gt;
 &lt;script src=&quot;Scripts/script.js?v=123&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 </pre>
@@ -757,7 +757,7 @@ And don&#8217;t forget that each page that uses the extension method, should inc
 </pre>
 <h2>Example of usage</h2>
 <p>
-As always all code is on github, so extension itself is <a href="https://github.com/alexanderbeletsky/trackyt.net/blob/master/src/Web/Helpers/Extensions/UrlContentWithVersionExtension.cs">here</a>. And commit there I integrated changes is <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef38ebcd1230404b9e5c62877e256aff7e95ad64">here</a> (would be useful to review, before your actual changes).
+As always all code is on github, so extension itself is <a href="https://github.com/alexbeletsky/trackyt.net/blob/master/src/Web/Helpers/Extensions/UrlContentWithVersionExtension.cs">here</a>. And commit there I integrated changes is <a href="https://github.com/alexbeletsky/trackyt.net/commit/ef38ebcd1230404b9e5c62877e256aff7e95ad64">here</a> (would be useful to review, before your actual changes).
 </p></div>
 
       

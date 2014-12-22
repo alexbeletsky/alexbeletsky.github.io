@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -190,7 +190,7 @@
     </a><br />
     <p>        Knowing the requirements I was able to create good test suite. <br />
     </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
-    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it&#8217;s state and position. The <a href="https://github.com/alexanderbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it&#8217;s state and position. The <a href="https://github.com/alexbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
     </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
         <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
     </a><br />
@@ -437,7 +437,7 @@
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexanderbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
+<p>        It&#8217;s been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven&#8217;t managed to make huge progress on project so far, but I got something to show.<br />
     </p>    <h2>        Overall application architecture<br />
     </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
     </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
@@ -457,7 +457,7 @@
     </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: &#8220;I will never ever writing &#8216;scripts&#8217; in front-end, instead I&#8217;ll be doing browser powered applications&#8221;. Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones&#8217;s main entities you build front-end apps in similar way as it would be desktop applications.<br />
     </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I&#8217;m using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone&#8217;s views as kind of widgets (or modules).<br />
     </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don&#8217;t need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
-    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexanderbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
+    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
     </p></div>
 
       
@@ -588,7 +588,7 @@
 <p>    When I first time tried that, I could not believe how smooth it was. Can&#8217;t even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
 </p><h2>LiveReload + any IDE</h2><p>    &#8220;Any IDE&#8221; in my case means Visual Studio, where I spent some time if I&#8217;m not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
 </p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I&#8217;m not much that comfortable with Ruby, so I went Node.js way.<br />
-</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It&#8217;s written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexanderbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
+</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It&#8217;s written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
 </p><pre class="brush: plain">    @echo off
     node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
 </pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />
@@ -653,7 +653,7 @@
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I&#8217;ve spend yet another week playing with it. My original expectations were - I&#8217;ll be super-duper-fast with it, since it&#8217;s so comprehensive and powerful. One more time I have to admit - every technology has it&#8217;s learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
+<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexbeletsky/candidate/tree/nancy">pet project</a>, I&#8217;ve spend yet another week playing with it. My original expectations were - I&#8217;ll be super-duper-fast with it, since it&#8217;s so comprehensive and powerful. One more time I have to admit - every technology has it&#8217;s learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
 </p><p>    The good thing, it&#8217;s very interesting to fight new challenges, and it&#8217;s so cool that Nancy just &#8220;does not contain everything&#8221;, but actually allows to customize things, as you wish to.<br />
 </p><h2>Nancy&#8217;s default JSON formatter</h2><p>    Nancy is using <a href="https://github.com/grendello">Marek Habersack&#8217;s</a> version <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Json/JsonSerializer.cs">JsonSerializer</a>, which is a smart wrapper on <a href="http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx">JavaScriptSerializer</a>. It works, fine.. but the problem, it does not provide any facilities to change default formatting settings. That would mean, if you have a module with method like that,<br />
 </p><pre class="brush: csharp">public class SitesModule : NancyModule

@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -292,24 +292,24 @@ Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-
     <div class="content">
       <div class='post'>
 <p>
-I&#8217;ve been using Git about a year now, immediately after creation my <a href="https://github.com/alexanderbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
+I&#8217;ve been using Git about a year now, immediately after creation my <a href="https://github.com/alexbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
 </p>
 <p>
-You are probably aware about all good thing with Git. If you still don&#8217;t you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well. 
+You are probably aware about all good thing with Git. If you still don&#8217;t you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well.
 </p>
 <p>
 After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues &#8220;Are you ready to go with Git?&#8221; you would probably hear &#8220;No!&#8221;. It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
 </p>
 <p>
-Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I&#8217;m talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>. 
+Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I&#8217;m talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>.
 </p>
 <p>
-Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I&#8217;ll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.  
+Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I&#8217;ll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.
 </p>
 <h2>Setup you environment</h2>
 <ul>
 <li>
-Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a> 
+Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a>
 </li>
 <li>
 Setup local user information, example
@@ -330,7 +330,7 @@ If you are on Windows and doing only-Windows development, it is recommended to t
 <li>
 Run git clone command (it might take some time, depending on repository and history size)
 <pre>
-    git svn clone https://mysvnserver/repo 
+    git svn clone https://mysvnserver/repo
 </pre>
 </li>
 </ul>
@@ -356,7 +356,7 @@ You changed some file and ready to commit. In git it&#8217;s a 2 steps operation
 </pre>
 <h2>Commit changes back to SVN</h2>
 <p>
-You&#8217;ve fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world. 
+You&#8217;ve fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world.
 </p>
 <p>
 Checkout your master branch:
@@ -650,7 +650,7 @@ Next: <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuild
 <p>Here is quick description of application application I made on <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">Hackatone</a> this weekend. </p><p>Candidate.net is just working name for the project that I&#8217;m going to change as soon as I got better idea :). It supposed to be a kind of service that provides integration with your github repositories and provides a Continues Deployment cycle for that repositories. Namely, every code change that being pushed to github is immediately build, tested and deployed, so the time between code push and production is very short excludes any manual work. </p><p>I&#8217;ve spent ~16 hours for building up this application, sure I haven&#8217;t managed to make it as a service.. but - during the process I&#8217;ve changed my vision for project, so first I would like to create good continues build engine (like Team City or Jenkins) and base my future service on top of it (yeah, I already got some further plans :). </p><p>Technologies behind: </p><ul><li>ASP.NET MVC3</li>
 <li>jQuery + some small pluggins</li>
 <li>UppercuT build framework</li>
-</ul><p>A picture says 1000 words, so here my little screencast of Candidate.net in action. It demonstrates the ability of setting up new application and hooking github push requests to build new application instance. </p><iframe src="http://www.screenr.com/embed/X48s" width="560" height="345" frameborder="0"></iframe> <p>Source code is hosted on github <a href="https://github.com/alexanderbeletsky/candidate">https://github.com/alexanderbeletsky/candidate</a>. Don&#8217;t forget it is really early prototype, the code is in big mess now.. I&#8217;m going to improve it much soon, so please keep watching repository. </p><p>I had a lot of fun of building this and have a better vision of how the application should look like. Hope to share it soon. I would be happy to hear some feedback on this.. and of cause you are free to fork repo and make your improvement (especially in UI/UX :). </p></div>
+</ul><p>A picture says 1000 words, so here my little screencast of Candidate.net in action. It demonstrates the ability of setting up new application and hooking github push requests to build new application instance. </p><iframe src="http://www.screenr.com/embed/X48s" width="560" height="345" frameborder="0"></iframe> <p>Source code is hosted on github <a href="https://github.com/alexbeletsky/candidate">https://github.com/alexbeletsky/candidate</a>. Don&#8217;t forget it is really early prototype, the code is in big mess now.. I&#8217;m going to improve it much soon, so please keep watching repository. </p><p>I had a lot of fun of building this and have a better vision of how the application should look like. Hope to share it soon. I would be happy to hear some feedback on this.. and of cause you are free to fork repo and make your improvement (especially in UI/UX :). </p></div>
 
       
       

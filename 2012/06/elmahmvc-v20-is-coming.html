@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -111,8 +111,8 @@
     </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it&#8217;s a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
     </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don&#8217;t know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it&#8217;s still nice step towards compatibility. <br />
     </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won&#8217;t appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
-    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
-    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexanderbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
+    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
     </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
     </p></div>
 

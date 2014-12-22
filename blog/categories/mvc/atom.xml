@@ -4,7 +4,7 @@
   <title><![CDATA[Category: MVC | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/mvc/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -35,7 +35,7 @@
             return "I'm in Shinny controller";
         }
     }
-}    
+}
 </pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be "invisible" for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don't initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
 </p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
     <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
@@ -88,7 +88,7 @@
 </a><br />
 <p>Even though, it looks like desired behavior.. It sucks.<br />
 </p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I'm thinking about it's distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that's it! I don't suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
-</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexanderbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
 </p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I'll give one more example, to proof it.<br />
 </p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
 </p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers

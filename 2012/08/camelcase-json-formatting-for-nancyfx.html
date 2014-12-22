@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -105,7 +105,7 @@
   <div class="entry-content pure-u-4-5">
     <div class="content">
       <div class='post'>
-<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexanderbeletsky/candidate/tree/nancy">pet project</a>, I&#8217;ve spend yet another week playing with it. My original expectations were - I&#8217;ll be super-duper-fast with it, since it&#8217;s so comprehensive and powerful. One more time I have to admit - every technology has it&#8217;s learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
+<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexbeletsky/candidate/tree/nancy">pet project</a>, I&#8217;ve spend yet another week playing with it. My original expectations were - I&#8217;ll be super-duper-fast with it, since it&#8217;s so comprehensive and powerful. One more time I have to admit - every technology has it&#8217;s learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
 </p><p>    The good thing, it&#8217;s very interesting to fight new challenges, and it&#8217;s so cool that Nancy just &#8220;does not contain everything&#8221;, but actually allows to customize things, as you wish to.<br />
 </p><h2>Nancy&#8217;s default JSON formatter</h2><p>    Nancy is using <a href="https://github.com/grendello">Marek Habersack&#8217;s</a> version <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Json/JsonSerializer.cs">JsonSerializer</a>, which is a smart wrapper on <a href="http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx">JavaScriptSerializer</a>. It works, fine.. but the problem, it does not provide any facilities to change default formatting settings. That would mean, if you have a module with method like that,<br />
 </p><pre class="brush: csharp">public class SitesModule : NancyModule

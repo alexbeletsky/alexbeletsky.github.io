@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -106,10 +106,10 @@
     <div class="content">
       <div class='post'>
 <p>
-Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns. 
+Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns.
 </p>
 <p>
-My goal was to create a code, that would give an answer: does this particular text contain some words from dictionary or not? Using a regular expressions is an obvious choice then you do such type of operation. So, I was trying to understand what technology is demanded by job offer (Cpp, Java or .NET) and is TDD skill demanded. To archive that I created a set of &#8220;matchers&#8221; small classes each of its own area. Crawler just used those matchers to get actual data.  
+My goal was to create a code, that would give an answer: does this particular text contain some words from dictionary or not? Using a regular expressions is an obvious choice then you do such type of operation. So, I was trying to understand what technology is demanded by job offer (Cpp, Java or .NET) and is TDD skill demanded. To archive that I created a set of &#8220;matchers&#8221; small classes each of its own area. Crawler just used those matchers to get actual data.
 </p>
 <blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToTdd(<font color="#0000ff">string</font> description)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> TddMatcher().Match(description);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToJava(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> JavaMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToCpp(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> CppMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToDotNet(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> DotNetMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <p>
@@ -125,10 +125,10 @@ I wanted to design <em>MatchUtil.Match</em> to be universal, as much as possible
 </p>
 <blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> MatchUtil<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input, IList&#60;<font color="#0000ff">string</font>&#62; patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> lower = input.ToLower();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">foreach</font> (<font color="#0000ff">var</font> pattern <font color="#0000ff">in</font> patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> start = pattern.StartsWith(<font color="#A31515">"\\."</font>) ? <font color="#A31515">"(?!\\w)"</font> : <font color="#A31515">"\\b"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (Regex.IsMatch(lower, start + pattern + <font color="#A31515">"(?!\\w)"</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">true</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <p>
-So, <em>Regex.IsMatch</em> static method is used to perform match. 
+So, <em>Regex.IsMatch</em> static method is used to perform match.
 </p>
 <p>
-This is it. If you see some issues or improvements, please let me know. <a href="http://github.com/alexanderbeletsky/TddDemand">http://github.com/alexanderbeletsky/TddDemand</a>
+This is it. If you see some issues or improvements, please let me know. <a href="http://github.com/alexbeletsky/TddDemand">http://github.com/alexbeletsky/TddDemand</a>
 </p></div>
 
       <div class="post sharing">

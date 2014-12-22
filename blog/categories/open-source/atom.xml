@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Open source | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/open-source/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-03T09:53:07+01:00</updated>
+  <updated>2014-12-22T16:02:55+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -19,11 +19,11 @@
     <updated>2013-05-16T17:55:00+02:00</updated>
     <id>http://beletsky.net/2013/05/github-as-blogging-platform</id>
     <content type="html"><![CDATA[<div class='post'>
-    <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexanderbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    <p>        No, I'm not going to talk about creation some <a href="https://github.com/alexbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
     </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how's while I create some code. It's just hard to blog about. As you didn't do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
     <!-- more -->
-    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what's going on there. So, I put some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don't write much documentation, but during writing it I realized that it's a kind of blog post or tutorial I'm writing immediately after I created something.<br />
-    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It's so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it's the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexanderbeletsky/backbone-express-spa/issues">questions</a>. <br />
+    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what's going on there. So, I put some <a href="https://github.com/alexbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don't write much documentation, but during writing it I realized that it's a kind of blog post or tutorial I'm writing immediately after I created something.<br />
+    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It's so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it's the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexbeletsky/backbone-express-spa/issues">questions</a>. <br />
     </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
     </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
     </p></div>
@@ -40,16 +40,16 @@
     <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
 </p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
 <!-- more -->
-</p><p>That's how the <a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> born.<br />
+</p><p>That's how the <a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> born.<br />
 </p><h2>Backbone.js + Express.js SPA boilerplate</h2><p>The project is a <a href="http://expressjs.com/">Express.js</a> application using <a href="http://backbonejs.org/">Backbone.js</a> as front-end framework. The idea is you just simply clone it, remove non needed routes and application and build something on your own.<br />
-</p><p>I won't put to much details in a blog post, since <a href="https://github.com/alexanderbeletsky/backbone-express-spa">repo</a> neat readme section. Just several facts:<br />
+</p><p>I won't put to much details in a blog post, since <a href="https://github.com/alexbeletsky/backbone-express-spa">repo</a> neat readme section. Just several facts:<br />
 </p><ul><li><strong>Minimal and simple</strong> - pure Backbone code, no plugins. For some real needs plugins are required anyway and you are free to include whatever you want.</li>
 <li><strong>AMD modules with RequireJS</strong> - modularity is key factor for large-scale apps, <a href="http://requirejs.org/">RequireJS</a></li>
 <li><strong>Concept of Application</strong> - to group all view, models, collection related to one application unit in one place.</li>
 <li><strong>Handlebars template</strong> - using <a href="http://handlebarsjs.com/">Handlebars</a> as template engine.</li>
 </ul><h2>Further work</h2><p>It's not yet completely done. I want to create more meaningful app, show some layouts principles + prepare readme section of building application for production.<br />
 </p><p>I'm also thinking of putting some examples of unit tests both for Express.js and Backbone.js.<br />
-</p><h2>Conclusions</h2><p>Check the <a href="https://github.com/alexanderbeletsky/backbone-express-spa">backbone-express-spa</a> out. If you like it, please give some stars or shout in twitter. I would be really happy to see some pull requests for improving applications or infrastructure. So, if you want to join - you are welcome!<br />
+</p><h2>Conclusions</h2><p>Check the <a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> out. If you like it, please give some stars or shout in twitter. I would be really happy to see some pull requests for improving applications or infrastructure. So, if you want to join - you are welcome!<br />
 </p></div>
 
 ]]></content>
@@ -87,10 +87,10 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
 </p><pre class="brush: csharp">    // in 0.9
     public IEnumerable&lt;string&gt; AcceptLanguage { get; }
-    
+
     // in 0.10
     public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
-</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
 </p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
 </p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
 </p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
@@ -143,7 +143,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><pre class="brush: csharp">    // in 0.9
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
 
-    // in 0.10 
+    // in 0.10
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
     &ensp;
 </pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
@@ -165,7 +165,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 
 Sequence contains no elements
 
-Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.
 
 Exception Details: System.InvalidOperationException: Sequence contains no elements
 </pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:
@@ -258,7 +258,7 @@ Exception Details: System.InvalidOperationException: Sequence contains no elemen
   <li>Different deployment scenarios for .NET platform</li>
  </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I'm looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
  </p> <p>  I also try to target UI / UX issues as much as possible.<br />
- </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexanderbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
+ </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
  </p> <p>  Thanks for you help.<br />
  </p></div>
 

@@ -68,7 +68,7 @@
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
 	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
 	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
 	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
 </ul>
@@ -198,7 +198,7 @@ public void Authenticate_AuthenicationSuccess_ReturnApiToken()
 public void Authenticate_AuthenticationFailed_ExceptionThrown()
 {
     // arrange
-    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();            
+    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();
 
     // act
     var apiToken = adapter.Authenticate("nouser", "noemail");
@@ -283,7 +283,7 @@ public IList&lt;Task&gt; GetAllTasks(ApiToken token)
 
         if (!getAllTasksResponse.Success)
         {
-            throw new Exception("Can't get users tasks. " + getAllTasksResponse.Message); 
+            throw new Exception("Can't get users tasks. " + getAllTasksResponse.Message);
         }
 
         return getAllTasksResponse.Data.Tasks;
@@ -291,7 +291,7 @@ public IList&lt;Task&gt; GetAllTasks(ApiToken token)
 }
 </pre>
 <p>
-As reference I&#8217;ll give you implementation of <a href="https://github.com/alexanderbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
+As reference I&#8217;ll give you implementation of <a href="https://github.com/alexbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
 </p></div>
 
       <div class="post sharing">
