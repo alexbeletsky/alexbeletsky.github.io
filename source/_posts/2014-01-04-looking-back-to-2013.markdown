@@ -54,17 +54,17 @@ As for contributions I've participated such projects:
 
 * [Dokku](https://github.com/progrium/dokku) - Docker powered mini-Heroku in less than 100 lines of Bash.
 * [vektor](rockbot/vektor) - A robotics-focused linear algebra module.
-* [24PullRequest](https://github.com/alexanderbeletsky/24pullrequests) - Giving back little gifts of code for Christmas.
-* [grunt-hashres](https://github.com/alexanderbeletsky/grunt-hashres) - Grunt task for hashing js and css files.
-* [edge](https://github.com/alexanderbeletsky/edge) - Run .NET and node.js code in-process.
-* [flight](https://github.com/alexanderbeletsky/flight) - A lightweight, component-based JavaScript framework.
+* [24PullRequest](https://github.com/alexbeletsky/24pullrequests) - Giving back little gifts of code for Christmas.
+* [grunt-hashres](https://github.com/alexbeletsky/grunt-hashres) - Grunt task for hashing js and css files.
+* [edge](https://github.com/alexbeletsky/edge) - Run .NET and node.js code in-process.
+* [flight](https://github.com/alexbeletsky/flight) - A lightweight, component-based JavaScript framework.
 
 For side projects, of cause it's [Likeastore](https://likeastore.com) which started as side project, but became a platform of starting business with.
 
-* [dokku-bower-install](https://github.com/alexanderbeletsky/dokku-bower-install) - Plugin for Dokku that installs bower dependecies, if needed.
-* [backbone-express-spa](https://github.com/alexanderbeletsky/backbone-express-spa) - Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.
-* [jshint-run](https://github.com/alexanderbeletsky/jshint-run) - Tiny tool for running jshint, then you don't use grunt.
-* [toml-js](https://github.com/alexanderbeletsky/toml-js) - TOML parser implementation (node.js + browser).
+* [dokku-bower-install](https://github.com/alexbeletsky/dokku-bower-install) - Plugin for Dokku that installs bower dependecies, if needed.
+* [backbone-express-spa](https://github.com/alexbeletsky/backbone-express-spa) - Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.
+* [jshint-run](https://github.com/alexbeletsky/jshint-run) - Tiny tool for running jshint, then you don't use grunt.
+* [toml-js](https://github.com/alexbeletsky/toml-js) - TOML parser implementation (node.js + browser).
 
 ## Conclusions
 

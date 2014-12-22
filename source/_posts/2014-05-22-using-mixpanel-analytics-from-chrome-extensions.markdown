@@ -64,7 +64,7 @@ Since, I already used `jQuery` in my application, I ended-up with such module,
 })(window);
 ```
 
-Here, I'm using [this](https://gist.github.com/alexanderbeletsky/3f850467bc23d40ef51e) implementation of `base64` (copied from `mixpanel-2.2.js`). So, to track the `event` you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of `event` and `properties`.
+Here, I'm using [this](https://gist.github.com/alexbeletsky/3f850467bc23d40ef51e) implementation of `base64` (copied from `mixpanel-2.2.js`). So, to track the `event` you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of `event` and `properties`.
 
 ## Initialization
 

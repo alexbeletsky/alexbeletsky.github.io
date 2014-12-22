@@ -22,10 +22,10 @@ I define 2 types of environments: Staging and Production. Environment includes: 
 <p>Everything that is being developed are goes to staging environment immediately (and automatically). Production update is being run manually as soon as all testing on Staging are finished. Separation of environments is great idea. Even if we are trying hard to have potentially shippable software during each build, this is not true. It is usually a lot of problems in latest version that need to be fixed before production server update.
 </p>
 <p>
-So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>. 
+So, Staging is a result of build/deploy of <code>development</code>; Production is a result of build/deploy of <code>master</code>.
 </p>
 <p>
-In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexanderbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexanderbeletsky/trackyt.net">this</a>.
+In my case, everything you see <a href="http://stage.trackyt.net/">here</a> is a result of build of <a href="https://github.com/alexbeletsky/trackyt.net/tree/development">this</a>. Everything you see <a href="http://www.trackyt.net/">here</a> is a result of <a href="https://github.com/alexbeletsky/trackyt.net">this</a>.
 </p>
 <h2>What I want to get?</h2>
 <p>
@@ -57,7 +57,7 @@ So, my configuration looks like this:
 <img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Tco7BUnOiGI/AAAAAAAAHZk/XSxs5Y_zrR0/plugins.png" alt="plugins" />
 <h3>Configure system</h3>
 <p>
-Now go to "Manage Jenkins" -> "Configure System" and find "Git" section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same). 
+Now go to "Manage Jenkins" -> "Configure System" and find "Git" section there. You should provide with your user name and path to Git. I have git in my PATH variable (recommend you do the same).
 </p>
 <h3>Create new job</h3>
 <p>
@@ -89,14 +89,14 @@ As soon as configuration is done, you can test your build locally. Just start yo
 </p>
 <h2>Move it to production</h2>
 <p>
-As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server. 
+As it defined, our goal is to update staging and production with out any manual work. The simplest scenario then CI server resides on the same machine as production server.
 </p>
 <p>
-Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP'ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard. 
+Great thing about Jenkins is that it requires no installation. So, I packed all content of <code>~/User/Jenkins</code> folder and Git into one single package and FTP'ed to my production server. As you unpack, configure Git in PATH variable, setup up your private repository keys it is just simply ready to work. Now, test it remotely - staging and production should be able to update with one single click on Jenkins dashboard.
 </p>
 <h3>Little adjustments for production server</h3>
 <p>
-My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning. 
+My VPS has Windows auto-update enabled, so It is being rebooted from time to time. As it is being rebooted, you should start Jenkins manually. Fortunately it has really nice feature - Jenkins might be run as <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service">Windows Service</a>. This is extremely useful, I recommend to do it from very beginning.
 </p>
 <h3>Using Github hook to automate build run</h3>
 <p>

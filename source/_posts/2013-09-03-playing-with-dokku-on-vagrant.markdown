@@ -109,7 +109,7 @@ The instance is ready for deployment.
 
 ## Deploy to Dokku
 
-If you still there, you can just quit vagrant `ssh` session, and went to the folder with Node.js application. I'll be using really simple [app](https://github.com/alexanderbeletsky/node-simple), called `Node-simple` - express.js based, that serves one HTML file and shows `NODE_ENV` env. variable.
+If you still there, you can just quit vagrant `ssh` session, and went to the folder with Node.js application. I'll be using really simple [app](https://github.com/alexbeletsky/node-simple), called `Node-simple` - express.js based, that serves one HTML file and shows `NODE_ENV` env. variable.
 
 So, what you need to setup is remote repository to push to:
 

@@ -34,10 +34,10 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><p>Next compilation errors is inside the <code>Request.Headers.AcceptLanguage</code>. <br />
 </p><pre class="brush: csharp">    // in 0.9
     public IEnumerable&lt;string&gt; AcceptLanguage { get; }
-    
+
     // in 0.10
     public IEnumerable&lt;Tuple&lt;string, decimal&gt;&gt; AcceptLanguage { get; }
-</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexanderbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
+</pre><p>Both of these compilation errors are really easy to fix. See changes to <code>src/Ideastrike.Nancy/IdeastrikeBootstrapper.cs</code> in this <a href="https://github.com/alexbeletsky/Ideastrike/commit/a2bba73869292c076639d8b87a3d9d73cd97abf8">commit</a>.<br />
 </p><p>After that, the compilation will be fine. I had to restart my Visual Studio after, since NCrunch was failing to compile the application. <br />
 </p><h2>Fixing failing unit tests</h2><p>After VS is restarted and NCrunch able to pick up changes, I got 3 unit tests failures. All of them with the similar exception, like:<br />
 </p><pre class="brush: plain">    System.Exception: System.Exception : ConfigurableBootstrapper Exception
@@ -90,7 +90,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 </p><pre class="brush: csharp">    // in 0.9
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
 
-    // in 0.10 
+    // in 0.10
     @inherits Nancy.ViewEngines.Razor.NancyRazorViewBase&lt;dynamic&gt;
     &ensp;
 </pre><p>OK, that helped a little, but right after that error saying <code>System.Web.IHtmlString</code> type is not references:
@@ -112,7 +112,7 @@ Successfully uninstalled 'Nancy 0.9.0'.
 
 Sequence contains no elements
 
-Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.
 
 Exception Details: System.InvalidOperationException: Sequence contains no elements
 </pre><p>My dump analisys showed, that it works fine as soon as I removing partial views:

@@ -266,7 +266,7 @@ var logentriesLogger = (function (_super) {
 module.exports = logentriesLogger;
 ```
 
-Checkout this [gist](https://gist.github.com/alexanderbeletsky/5921464) where you can see all things put together.
+Checkout this [gist](https://gist.github.com/alexbeletsky/5921464) where you can see all things put together.
 
 So, now wherever `logger` is used, logs will both shown to screen (which is cool for development) and submitted to Logentries (which is cool for production).
 

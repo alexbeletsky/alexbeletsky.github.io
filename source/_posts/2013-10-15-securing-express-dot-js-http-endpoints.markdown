@@ -6,7 +6,7 @@ comments: true
 categories: nodejs expressjs security authorization
 ---
 
-Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API's. One of the latest I prefer is described [here](https://github.com/alexanderbeletsky/backbone-express-spa#authorization-cors).
+Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API's. One of the latest I prefer is described [here](https://github.com/alexbeletsky/backbone-express-spa#authorization-cors).
 
 Doesn't matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.
 

@@ -9,14 +9,14 @@ categories:
 ---
 
 <div class='post'>
-    <p>        Recently, I've been working on small project which I want to share here. It's called <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it's small plugin that extends Backbone.Model functionality a bit.<br />
+    <p>        Recently, I've been working on small project which I want to share here. It's called <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it's small plugin that extends Backbone.Model functionality a bit.<br />
     </p>    <p>        I needed to have a model with 'virtual' fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
     <!-- more -->
     </p>    <p>        The easiest solution would be simply introduce some model methods, say <code>model.getComputedField() / model.setComputedField()</code> and store the value inside the model object. But that turns out to be bad idea, for several reasons. First, we are breaking usual Backbone interface for getting and setting values - <code>model.get('computed') / model.set('computed', 100)</code>. Also, if model is binded to a view, we are responsible for raising events manually, in case of computed or depended field changing.<br />
-    </p>    <p>        So, after few iterations <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
-    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
+    </p>    <p>        So, after few iterations <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
+    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
     </p>    <p>        It's fairly important, that computed field could change. Based on it's value, dependent fields should be updated.<br />
-    </p>    <h2>Examples</h2>    <p>        Let's take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
+    </p>    <h2>Examples</h2>    <p>        Let's take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
     </p>    <h3>Calculating prices</h3>    <p>        The model represents the product, which contains net price and VAT rate.<br />
     </p>    <pre class="brush: js">var Produc = Backbone.Model.extend({
     initialize: function () {
@@ -87,5 +87,5 @@ var customer = invoice.get('customer');
     </p>    <pre class="brush: js">invoice.set({customer: anotherCustomer});
 var customerId = invoice.get('customerId');
     </pre>    <p>        If I'm changing the customer of invoice, the 'customerId' would be initialized with id of 'anotherCustomer'.<br />
-    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexanderbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
+    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
     </p></div>

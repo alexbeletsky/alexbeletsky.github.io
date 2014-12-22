@@ -10,13 +10,13 @@ categories:
 
 <div class='post'>
 <p>
-I've been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don't blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much). 
+I've been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don't blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much).
 </p>
 <p>
-Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexanderbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it's being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
+Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it's being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
 </p>
 <p>
-And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips: 
+And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips:
 </p>
 <ul>
 <li>Rename file from *.aspx to *.cshtml</li>
@@ -42,7 +42,7 @@ And you know, it was not so difficult and boring as I originally thought. Here a
 That's basically it.. Along the way I've changed all HTML to comply HTML5 standard and reformatted (with Ctrl K + Ctrl D) and now markup looks definitely better!
 </p>
 <p>
-One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in "None" item, instead on "Content".. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexanderbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
+One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in "None" item, instead on "Content".. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
 </p>
 <p>
 So, there are no any technical issues with moving from ASPX to Razor, just don't be to lazy and do it today :)
