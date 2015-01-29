@@ -63,7 +63,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user: alexanderbeletsky
+github_user: alexbeletsky
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
@@ -98,3 +98,4 @@ google_analytics_tracking_id: UA-16388698-1
 
 # Facebook Like
 facebook_like: true
+facebook_page: https://www.facebook.com/alexander.beletsky
