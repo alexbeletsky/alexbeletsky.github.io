@@ -3,8 +3,8 @@
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
-<html class="no-js" lang="en"><!--<![endif]-->
-<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
+<html prefix="og: http://ogp.me/ns#" class="no-js" lang="en"><!--<![endif]-->
+<head>
   <meta charset="utf-8">
   <title>Testing REST services with javascript</title>
   <meta name="author" content="Alexander Beletsky">
@@ -32,12 +32,14 @@
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
     <!-- Social media content metadata -->
 
+  <meta property="fb:app_id" content="100002746897199" />
   <meta property="og:title" content="Testing REST services with javascript" />
   <meta property="og:site_name" content="My profession is engineering" />
   <meta property="og:url" content="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   <meta property="og:description" content="Testing REST services with javascript Dec 30th, 2010 AJAX, JavaScript, REST, TDD, Tips, Trackyt.net In previous article we&#8217;ve reviewed general concept of REST. Now we will implement some basic &hellip;" />
   <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  <meta property="article:publisher" content="https://www.facebook.com/alexander.beletsky" />
   
 
 
@@ -258,7 +260,7 @@ As javascript could be treated as &#8220;pseudo language&#8221;, since it is eas
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  js.src = "//connect.facebook.net/en_US/all.js#appId=100002746897199&xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
