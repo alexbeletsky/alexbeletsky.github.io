@@ -4,7 +4,7 @@
   <title><![CDATA[Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-22T16:02:55+01:00</updated>
+  <updated>2015-01-30T16:49:05+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,283 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Configuring Front-End Applications]]></title>
+    <link href="http://beletsky.net/2015/01/configuring-front-end-applications.html"/>
+    <updated>2015-01-29T19:42:00+01:00</updated>
+    <id>http://beletsky.net/2015/01/configuring-front-end-applications</id>
+    <content type="html"><![CDATA[<p>Typically front-end applications have particular configuration, depending on environment. It could be access tokens, API URL&rsquo;s, applications settings etc. For quite long period of time I solved that problem by exposing <code>window.env</code> variable, populated either by server rendering or by plugins as <code>html-build</code> .. or just directly referencing <code>&lt;script src="config/my.env.js"&gt;</code>, where <code>my.env.js</code> needed to be updated before actual deployment.</p>
+
+<p>Spending much time on backend and working with Node.js/CommonJS I liked simplicity of <code>config</code> pattern and wanted to reuse that pattern on frontend. It&rsquo;s really straightforward and framework-agnostic approach.</p>
+
+<!--MORE-->
+
+
+<h2>Config pattern</h2>
+
+<p>Config pattern is something I <a href="https://github.com/likeastore/notifier/blob/master/config">frequently</a> <a href="https://github.com/likeastore/jobber/tree/master/config">use</a> for Node.js apps. It simply the folder with <code>index.js</code> file, containing such code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="nx">env</span> <span class="o">+</span> <span class="s1">&#39;.config.js&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The folder contains such files, <code>development.config.js</code>, <code>staging.config.js</code>, <code>production.config.js</code> etc.</p>
+
+<p>The config files, simply export the object with configuration,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">connection</span><span class="o">:</span> <span class="s1">&#39;mongodb://localhost:27017/notifierdb&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">accessToken</span><span class="o">:</span> <span class="s1">&#39;1234&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">hook</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5000/api/notify/&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="s1">&#39;fake-hook-token&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">logentries</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">transport</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// ...</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The module actually needed in configuration would <code>require</code> the <code>config</code> folder, for instance:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../config&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">fetchActions</span><span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">token</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">request</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">apiUrl</span> <span class="o">+</span> <span class="s1">&#39;/actions/&#39;</span> <span class="o">+</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span><span class="nx">token</span><span class="o">:</span> <span class="nx">token</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">fetchActions</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Browserify</h2>
+
+<p><a href="http://browserify.org/">Browserify</a> is a pre-processor (or call it transpiler) for javascript. It embraces CommonJS style of modularity and brings popular <code>npm</code> modules on client site. It&rsquo;s simply awesome project (many thx to <a href="https://twitter.com/substack">substack</a> for it) that makes a lot of sense to me.</p>
+
+<p>With Browserify you can write browser javascript in the same way you do on backend with Node.js. It implements <code>require()</code> call and bundles the application consists on different modules into one, executable in browser.</p>
+
+<p>Usually, <code>browserify</code> is not run manually, but rather by means of JS build tools as <code>grunt</code> or <code>gulp</code>.</p>
+
+<p>I&rsquo;m going to adopt Node.js <code>config</code> pattern for frontend with browserify.</p>
+
+<h2>Prepare the configuration</h2>
+
+<p>By analogy of node applications, let&rsquo;s create a <code>config</code> folder inside our <code>js</code> folder.</p>
+
+<p><img src="https://lh6.googleusercontent.com/-tO5KVRhVjM8/VMqJVRGXiFI/AAAAAAAAi4o/2aWT3zOkNhk/w2236-h1132-no/Screenshot%2B2015-01-29%2B20.21.58.png" alt="config structure" /></p>
+
+<p><code>index.js</code> file is exactly the same as mentioned above, config files contains application dependent settings.</p>
+
+<p>With example of Angular.js application, here is the <code>service</code> that used as data provider,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../config&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">drivers</span> <span class="p">(</span><span class="nx">$http</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fetch</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">apiUrl</span> <span class="o">+</span> <span class="s1">&#39;/api/drivers&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">drivers</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you just try that, it would work as charm.. but only for <code>development</code> environment.</p>
+
+<h2>Setting up NODE_ENV</h2>
+
+<p>The problem though, <code>browserify</code> have no idea what to put into <code>process.env.NODE_ENV</code> variable, since it is <code>undefined</code> &ndash; <code>development</code> configuration is always selected.</p>
+
+<p>Fortunately, <code>browserify</code> architecture supports, so called <code>transforms</code>, middleware components capable to customize browserify behaviour. One of handly transform function is <a href="https://github.com/hughsk/envify">envify</a> by <a href="https://github.com/hughsk">Hugh Kennedy</a>.</p>
+
+<p>What <code>envify</code> allows to do is basically replacement of <code>process.env.NODE_ENV</code> to particular value, eg.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;development only&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>with <code>NODE_ENV</code> set to &ldquo;production&rdquo;, will appear as</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s2">&quot;production&quot;</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;development only&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is exactly what we need, to make <code>config/index.js</code> work properly.</p>
+
+<p>Since I use <code>grunt</code>, I&rsquo;ll show how to integrate <code>envify</code> in the workflow (approach for <code>gulp</code> would be similar),</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">envify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;envify/custom&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">browserify</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">dev</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">browserifyOptions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;development&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>          <span class="p">},</span>
+</span><span class='line'>          <span class="nx">stage</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;staging&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">},</span>
+</span><span class='line'>          <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;production&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, once the <code>grunt build:dev</code> or <code>grunt build:prod</code> is run, it will populate correct <code>NODE_ENV</code> value and the rest of transpiled application would work as expected.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Health Monitoring of Services and Databases]]></title>
@@ -2947,144 +3224,6 @@
 
 
 <p>You have to use <code>uglify2</code> optimizer, that has an option <a href="https://github.com/mishoo/UglifyJS2#mangler-options">mangle</a> that have to set to <code>false</code>. In this case, <code>uglify2</code> will do full optimization and minification of javascript code, without ruing functions parameters names, with is vital for Angular.js.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
-    <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
-    <updated>2013-10-18T09:56:00+02:00</updated>
-    <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
-    <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
-
-<p>Let&rsquo;s go back, to the problem. I want to handle all errors in my application. Instead of <code>res.send()</code> or <code>res.json()</code>, I want to have a middleware that handles everything by itself. It can be flexible, so I can put any kind of logic there, like logging etc.</p>
-
-<p>It&rsquo;s very easy to archive with <em>patch the middleware</em> method.</p>
-
-<!-- More -->
-
-
-<p>Just like in previous case, <code>app.use()</code> won&rsquo;t work here. First, it would apply to every request. Second, error handling middleware have to placed last, <code>app.use()</code> won&rsquo;t guarantee that.</p>
-
-<h2>Follow the style</h2>
-
-<p>To get benefits of common error handling/logging code, you have to follow particular style. It&rsquo;s very simple, though.</p>
-
-<p>Your last endpoint (middleware) function have to always receive <code>next()</code> callback parameter, all logs have to pass as first argument to that function. You should not send errors directly as <code>res.send(500, 'Error')</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/users/:id&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">db</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">next</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;failed to query db&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">500</span><span class="p">});</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">next</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;user not found&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">404</span><span class="p">});</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Please note, that it receives first argument.. and the function is only called, the we call <code>next()</code> with first parameter.</p>
-
-<h2>Error handler middleware</h2>
-
-<p>Let&rsquo;s define the function. Since HTTP API&rsquo;s are JSON based, it would just return the JSON response and status.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">logErrors</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">unhandledError</span> <span class="o">=</span> <span class="nx">err</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">error</span> <span class="o">||</span> <span class="nx">err</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">status</span> <span class="o">||</span> <span class="mi">500</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">message</span><span class="o">:</span> <span class="nx">message</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">error</span><span class="p">},</span> <span class="nx">status</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Apply the patch</h2>
-
-<p>Again, right after all routes are already defined, let&rsquo;s call <code>applyErrorLogging()</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// ...</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/api&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/router&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">applyAuthentication</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;/api&#39;</span><span class="p">]);</span>
-</span><span class='line'><span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>                 <span class="c1">// apply error handling here</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And <code>applyErrorLogging()</code> function,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../middleware&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">applyErrorLogging</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">verb</span> <span class="k">in</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="nx">verb</span><span class="p">];</span>
-</span><span class='line'>      <span class="nx">routes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">patchRoute</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">patchRoute</span> <span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">route</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">logErrors</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">applyErrorLogging</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

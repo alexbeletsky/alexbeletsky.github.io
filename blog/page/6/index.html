@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Looking at TypeScript Oct 5th, 2012 JavaScript, Mind, TypeScript Four days ago my twitter has been nuked. The bomb has exploded after TypeScript &hellip;">
+  <meta name="description" content="Baby Steps to Backbone.js: Starting up Oct 25th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Many times then I speak to people regarding usage &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,8 +29,27 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Social media content metadata -->
+
+  <meta property="og:title" content="Alexander Beletsky's development blog" />
+  <meta property="og:site_name" content="My profession is engineering" />
+  <meta property="og:url" content="http://beletsky.net/blog/page/6/index.html/" />
+  <meta property="og:description" content="Baby Steps to Backbone.js: Starting up Oct 25th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Many times then I speak to people regarding usage of any kind of MV* frameworks on front-end I hear &hellip;" />
+  <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  
+
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:site" content="alexbeletsky" />
+  <meta property="twitter:url" content="http://beletsky.net/blog/page/6/index.html" />
+  <meta property="twitter:title" content="Alexander Beletsky's development blog" />
+  <meta property="twitter:description" content="Baby Steps to Backbone.js: Starting up Oct 25th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Many times then I speak to people regarding usage of any kind of MV* frameworks on front-end I hear &hellip;" />
+  <meta property="twitter:creator" content="alexbeletsky" />
+  
+
+  <!-- Google fonts -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -75,6 +94,172 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/10/baby-steps-to-backbonejs-starting-up.html">
+    
+      Baby Steps to Backbone.js: Starting up</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-25T21:40:00+02:00" pubdate data-updated="true">Oct 25<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>Many times then I speak to people regarding usage of any kind of MV* frameworks on front-end I hear common objection: &#8220;but we already have a lot of code written on jQuery/Dojo/Whatever, I think usage of additional framework would be impossible&#8221;. This is not actually true. Backbone is very lightweight and could fit into any existing application.<br />
+</p><p>Baby steps strategy is the most efficient way of trying the things. You start with something really small, enhance it over the time and expand for other application areas. Now, let&#8217;s imagine you got an existing application, you wish to start using Backbone.js to improve that. I would like to show you, that it&#8217;s absolutely possible.<br />
+</p><p>Suppose, you want to add a feedback form for your app. Let&#8217;s implement that with Backbone.js.<br />
+</p><h2>Applications, Models, Views</h2><p>There are no such thing as `Controller` in Backbone.js. But you have to have some kind of entry point, some place with `main()` function inside. I got used to call this place - Application. Basically, the application is a module, which is responsible for initialization of model, instantiation of view, rendering the view.<br />
+</p><p>The `Model` is object that holds the data. It could be fetched and persisted back to server.<br />
+</p><p>And finally view is object that produces markup, hooking up events and updates View from data in Model and otherwise.<br />
+</p><p>We are going to create all three things. It makes a lot of sense to breakdown the folder structure of to reflect logical meaning of each entity of Backbone application. So, we&#8217;ll create 3 folders for apps, models and views.<br />
+</p><a href="https://lh5.googleusercontent.com/-aFNqz_2e_i4/UImU8WZaMEI/AAAAAAAAKZ0/-v-Jb5EttRY/s620/image-1.png"><br />
+<img src="https://lh5.googleusercontent.com/-aFNqz_2e_i4/UImU8WZaMEI/AAAAAAAAKZ0/-v-Jb5EttRY/s620/image-1.png"/><br />
+</a><br />
+<h2>Setup Backbone.js</h2><p>On a target html page we should place 2 additional script tags.<br />
+</p><pre class="brush: html">&lt;script src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
+    </pre><p>Besides of that, let&#8217;s add one more div. The one that application will be using for rendering views.<br />
+</p><pre class="brush: html">&lt;div id=&quot;app&quot; class=&quot;container&quot;&gt;&lt;/div&gt;
+    </pre><h2>Application entry point</h2><p>Let&#8217;s create a new file in `apps` folder and call it `FeedbackFormApp.js`. It would be very simple.<br />
+</p><pre class="brush: js">$(function () {
+    var model = new Feedback();
+    var view = new FeedbackFormView ({model: model});
+    
+    $('#app').html(view.render().el);
+});
+    </pre><p>Then DOM is ready, we instantiate new model object and view and render the form into DOM element with id - app.<br />
+</p><h2>Feedback model</h2><p>Now, let&#8217;s define a model. Create a new file in models folder and call it `Feedback.js`.<br />
+</p><p>The model refects the data we are collecting/displaying to user and it&#8217;s typically stored on server (sometimes on localstorage). Feedback model will include 3 attributes: email of user, his web site and the feedback text. In terms of Backbone.js that would mean.<br />
+</p><pre class="brush: js">var Feedback = Backbone.Model.extend({
+
+    url: '/feedback',
+
+    defaults: {
+        'email': '',
+        'website': '',
+        'feedback': ''
+    }
+
+});
+    </pre><p>The <code>url</code> property of model object is used by Backbone for persisting object to server. The <code>default</code> are defaults values for model attributes.<br />
+</p><h2>Rendering the view</h2><p>The most interesting things in Backbone.js app is happening in Views. Add new file to `views` folder - FeedbackView.js.<br />
+</p><p>The skeleton of view would look like this:<br />
+</p><pre class="brush: js">var FeedbackFormView = Backbone.View.extend({
+   className: 'row',
+
+    render: function () {
+        return this;
+    }
+});
+    </pre><p>This view, does do nothing. So, let make it render the template. The template would be very simple form.<br />
+</p><p>There are different approaches, there to actually place the markup. It&#8217;s possible to place it in the same .html file where view starts and extract it by jQuery, it&#8217;s possible to place to separate file and load it asynchronously by $.get(). But, according to baby steps scenario - we&#8217;ll place it directly to .js file. So, inside the view we&#8217;ll add property called template.<br />
+</p><pre class="brush: js">template: '\
+ &lt;form&gt;\
+  &lt;legend&gt;Share the feedback&lt;/legend&gt;\
+  &lt;div class=&quot;control-group&quot;&gt;\
+   &lt;label&gt;Email&lt;/label&gt;\
+   &lt;input type=&quot;text&quot; id=&quot;email&quot; placeholder=&quot;Your email address...&quot;&gt;\
+  &lt;/div&gt;\
+  &lt;div class=&quot;control-group&quot;&gt;\
+   &lt;label&gt;Web site&lt;/label&gt;\
+   &lt;input type=&quot;text&quot; id=&quot;website&quot; placeholder=&quot;Your website...&quot;&gt;\
+  &lt;/div&gt;\
+  &lt;div class=&quot;control-group&quot;&gt;\
+  &lt;label&gt;Feedback&lt;/label&gt;\
+  &lt;textarea id=&quot;feedback&quot; class=&quot;input-xxlarge&quot; placeholder=&quot;Feedback text...&quot; rows=&quot;6&quot;&gt;&lt;/textarea&gt;\
+  &lt;/div&gt;\
+  &lt;button type=&quot;submit&quot; id=&quot;submit&quot; class=&quot;btn&quot;&gt;Submit&lt;/button&gt;\
+ &lt;/form&gt;\
+',
+    </pre><p>And render method, would be:<br />
+</p><pre class="brush: js">render: function () {
+    this.$el.html(this.template);
+
+    return this;
+}
+    </pre><h2>First test</h2><p>Basically, we are ready to see some results. Modify the target view by adding references to model and view.<br />
+</p><pre class="brush: html">&lt;script src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/scripts/src/views/FeedbackFormView.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/scripts/src/apps/FeedbackFormApp.js&quot;&gt;&lt;/script&gt;
+    </pre><p>Fire up the application and go to target page. You should be able to see something like this (for styles I use <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> here).<br />
+</p><a href="https://lh5.googleusercontent.com/-asgv034ZUyA/UImU8iURcEI/AAAAAAAAKZ4/9Yga2hCy9TQ/s620/image-2.png"><br />
+<img src="https://lh5.googleusercontent.com/-asgv034ZUyA/UImU8iURcEI/AAAAAAAAKZ4/9Yga2hCy9TQ/s620/image-2.png"/><br />
+</a><br />
+<p>If you see the form on screen, it means application started properly.<br />
+</p><h2>Submitting the form</h2><p>We enter the data into input fields and as soon as data is in-place we are ready to submit. It means we have to catch an event of `Submit` button click and store the model to server.<br />
+</p><p>To explain to Backbone.js that you interested in particular DOM event, you need to add another property to view. It is called <code>events</code>.<br />
+</p><pre class="brush: js">events: {
+    'click #submit': 'submitClicked'
+},
+    </pre><p>You can read it as - if click happed to element with id `submit`, call function submitClicked.<br />
+</p><pre class="brush: js">submitClicked: function (e) {
+    e.preventDefault();
+
+    var options = {
+        success: function () {
+            alert('Thanks for the feedback!');
+        },
+        error: function () {
+            alert('Opps, your feedback has not been submitted, please try again.');
+        }
+    };
+
+    var feedback = {
+        email: this.$('#email').val(),
+        website:  this.$('#website').val(),
+        feedback: this.$('#feedback').val()
+    };
+
+    this.model.save(feedback, options);
+}
+</pre><p>What it does, is first of all prevent the default behavior of event. So, the form would not be actually posted to server. Second, it prepares the options object&#8217;s with success and error handlers. After we initialize all attributes with actual values from corresponding inputs/textbox. And finally we call model.save().<br />
+</p><h2>Second test</h2><p>Fire up application again. Now, if have properly set-up server side to receive the HTTP post call to `/feedback` you actually post first feedback.<br />
+</p><a href="https://lh5.googleusercontent.com/-xoKGopfbwlw/UImU8rspz_I/AAAAAAAAKZ8/8D3bgfnRpgE/s620/image-3.png"><br />
+<img src="https://lh5.googleusercontent.com/-xoKGopfbwlw/UImU8rspz_I/AAAAAAAAKZ8/8D3bgfnRpgE/s620/image-3.png"/><br />
+</a><br />
+<p>From my server trace, I can see that new object is received.<br />
+</p><a href="https://lh6.googleusercontent.com/-FPoQZTARH0g/UImU9HR4aHI/AAAAAAAAKaA/fhPj64h6cr8/s621/image-4.png"><br />
+<img src="https://lh6.googleusercontent.com/-FPoQZTARH0g/UImU9HR4aHI/AAAAAAAAKaA/fhPj64h6cr8/s621/image-4.png"/><br />
+</a><br />
+<p>Now, it&#8217;s the server job to put to storage, allocate the id etc.<br />
+</p><h2>Conclusions</h2><p>In this first baby step, I just showed how it&#8217;s possible to adopt Backbone.js for existing apps. It does not make a lot of sense to re-write your existing code with Backbone.js, but new widgets/elements/applications could be created with Backbone, having a benefit of it&#8217;s structural approach.<br />
+</p><p>I&#8217;ll go on with baby steps, showing other features of Backbone.js.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -716,57 +901,6 @@
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2012/08/elmahmvc-201-update-is-out.html">
-    
-      ELMAH.MVC 2.0.1 Update is Out</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-16T19:01:00+02:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>    I&#8217;ve just pushed new version of <a href="http://nuget.org/packages/Elmah.MVC">ELMAH.MVC NuGet package</a> - 2.0.1. It covers some interesting parts, that I can&#8217;t wait to share.<br />
-</p><h2>VB.NET projects support</h2><p>    For quite a while, I&#8217;ve been asked to provide VB.NET support. Originally, ELMAH.MVC was shipped as singe .cs file, that would not possible to use in VB.NET project at all. VB.NET support were planned for 2.0, but unfortunately it did not happen. I&#8217;ve just tested 2.0.1 and it works great with VB.NET, so all VB.NET developers - you are welcome to use it.<br />
-</p><h2>Custom ELMAH route</h2><p>    Another demanded feature was to provide custom path to ELMAH controller. By default ELMAH is available under <code>/elmah</code>, which is nice, but sometimes you what to have a freedom to change it. It&#8217;s now possible, <code>web.config</code> has additional configuration section, <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;elmah&quot; /&gt;</code>. By setting up elmah.mvc.route parameter, you can tweek a default one, like <code>&lt;add key=&quot;elmah.mvc.route&quot; value=&quot;secure/admin/errors&quot; /&gt;</code> for instance.<br />
-</p><h2>Besides of that&#8230;</h2><p>    ELMAH.MVC does not depend on WebActivator any longer. I&#8217;ve removed <code>App_Start.cs</code> code and used <a href="http://haacked.com/archive/2010/05/16/three-hidden-extensibility-gems-in-asp-net-4.aspx">PreApplicationStartMethodAttribute</a> attribute. That allows to make a package more tiny + actually made it possible to avoid separate NuGet package for VB.NET projects.<br />
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -782,7 +916,7 @@
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2014 beletsky.net
+		Copyright © 2010 - 2015 beletsky.net
 	</p>
 </div>
 

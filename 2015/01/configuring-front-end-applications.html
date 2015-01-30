@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Configuring Front-End Applications</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="The straightforward and framework-agnostic approach for applications configuration.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2015/01/configuring-front-end-applications.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Social media content metadata -->
+
+  <meta property="og:title" content="Configuring Front-End Applications" />
+  <meta property="og:site_name" content="My profession is engineering" />
+  <meta property="og:url" content="http://beletsky.net/2015/01/configuring-front-end-applications.html/" />
+  <meta property="og:description" content="The straightforward and framework-agnostic approach for applications configuration." />
+  <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  
+  <meta property="og:image" content="https://lh5.googleusercontent.com/-Xw_YeiW-cKU/VMulmNJioWI/AAAAAAAAi48/aj98393M5YY/w2236-h1138-no/Alexander%2BBeletsky%2Bs%2Bdevelopment%2Bblog.png" />
+  
+
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:site" content="alexbeletsky" />
+  <meta property="twitter:url" content="http://beletsky.net/2015/01/configuring-front-end-applications.html" />
+  <meta property="twitter:title" content="Configuring Front-End Applications" />
+  <meta property="twitter:description" content="The straightforward and framework-agnostic approach for applications configuration." />
+  <meta property="twitter:creator" content="alexbeletsky" />
+  
+  <meta property="twitter:image:src" content="https://lh5.googleusercontent.com/-Xw_YeiW-cKU/VMulmNJioWI/AAAAAAAAi48/aj98393M5YY/w2236-h1138-no/Alexander%2BBeletsky%2Bs%2Bdevelopment%2Bblog.png" />
+  
+
+  <!-- Google fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Configuring Front-End Applications</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-29T19:42:00+01:00" pubdate data-updated="true">Jan 29<span>th</span>, 2015</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/browserify/'>browserify</a>, <a class='category' href='/blog/categories/frontend/'>frontend</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Typically front-end applications have particular configuration, depending on environment. It could be access tokens, API URL&rsquo;s, applications settings etc. For quite long period of time I solved that problem by exposing <code>window.env</code> variable, populated either by server rendering or by plugins as <code>html-build</code> .. or just directly referencing <code>&lt;script src="config/my.env.js"&gt;</code>, where <code>my.env.js</code> needed to be updated before actual deployment.</p>
+
+<p>Spending much time on backend and working with Node.js/CommonJS I liked simplicity of <code>config</code> pattern and wanted to reuse that pattern on frontend. It&rsquo;s really straightforward and framework-agnostic approach.</p>
+
+<!--MORE-->
+
+
+<h2>Config pattern</h2>
+
+<p>Config pattern is something I <a href="https://github.com/likeastore/notifier/blob/master/config">frequently</a> <a href="https://github.com/likeastore/jobber/tree/master/config">use</a> for Node.js apps. It simply the folder with <code>index.js</code> file, containing such code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="nx">env</span> <span class="o">+</span> <span class="s1">&#39;.config.js&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The folder contains such files, <code>development.config.js</code>, <code>staging.config.js</code>, <code>production.config.js</code> etc.</p>
+
+<p>The config files, simply export the object with configuration,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">connection</span><span class="o">:</span> <span class="s1">&#39;mongodb://localhost:27017/notifierdb&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">accessToken</span><span class="o">:</span> <span class="s1">&#39;1234&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">hook</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost:5000/api/notify/&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="s1">&#39;fake-hook-token&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">logentries</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">token</span><span class="o">:</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">transport</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// ...</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The module actually needed in configuration would <code>require</code> the <code>config</code> folder, for instance:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../config&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">fetchActions</span><span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">token</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">request</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="nx">apiUrl</span> <span class="o">+</span> <span class="s1">&#39;/actions/&#39;</span> <span class="o">+</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span><span class="nx">token</span><span class="o">:</span> <span class="nx">token</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">fetchActions</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Browserify</h2>
+
+<p><a href="http://browserify.org/">Browserify</a> is a pre-processor (or call it transpiler) for javascript. It embraces CommonJS style of modularity and brings popular <code>npm</code> modules on client site. It&rsquo;s simply awesome project (many thx to <a href="https://twitter.com/substack">substack</a> for it) that makes a lot of sense to me.</p>
+
+<p>With Browserify you can write browser javascript in the same way you do on backend with Node.js. It implements <code>require()</code> call and bundles the application consists on different modules into one, executable in browser.</p>
+
+<p>Usually, <code>browserify</code> is not run manually, but rather by means of JS build tools as <code>grunt</code> or <code>gulp</code>.</p>
+
+<p>I&rsquo;m going to adopt Node.js <code>config</code> pattern for frontend with browserify.</p>
+
+<h2>Prepare the configuration</h2>
+
+<p>By analogy of node applications, let&rsquo;s create a <code>config</code> folder inside our <code>js</code> folder.</p>
+
+<p><img src="https://lh6.googleusercontent.com/-tO5KVRhVjM8/VMqJVRGXiFI/AAAAAAAAi4o/2aWT3zOkNhk/w2236-h1132-no/Screenshot%2B2015-01-29%2B20.21.58.png" alt="config structure" /></p>
+
+<p><code>index.js</code> file is exactly the same as mentioned above, config files contains application dependent settings.</p>
+
+<p>With example of Angular.js application, here is the <code>service</code> that used as data provider,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../config&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">drivers</span> <span class="p">(</span><span class="nx">$http</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fetch</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">apiUrl</span> <span class="o">+</span> <span class="s1">&#39;/api/drivers&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">drivers</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you just try that, it would work as charm.. but only for <code>development</code> environment.</p>
+
+<h2>Setting up NODE_ENV</h2>
+
+<p>The problem though, <code>browserify</code> have no idea what to put into <code>process.env.NODE_ENV</code> variable, since it is <code>undefined</code> &ndash; <code>development</code> configuration is always selected.</p>
+
+<p>Fortunately, <code>browserify</code> architecture supports, so called <code>transforms</code>, middleware components capable to customize browserify behaviour. One of handly transform function is <a href="https://github.com/hughsk/envify">envify</a> by <a href="https://github.com/hughsk">Hugh Kennedy</a>.</p>
+
+<p>What <code>envify</code> allows to do is basically replacement of <code>process.env.NODE_ENV</code> to particular value, eg.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;development only&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>with <code>NODE_ENV</code> set to &ldquo;production&rdquo;, will appear as</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s2">&quot;production&quot;</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;development only&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is exactly what we need, to make <code>config/index.js</code> work properly.</p>
+
+<p>Since I use <code>grunt</code>, I&rsquo;ll show how to integrate <code>envify</code> in the workflow (approach for <code>gulp</code> would be similar),</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">envify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;envify/custom&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">browserify</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">dev</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">browserifyOptions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;development&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>          <span class="p">},</span>
+</span><span class='line'>          <span class="nx">stage</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;staging&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">},</span>
+</span><span class='line'>          <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="s1">&#39;source/build/app.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;source/js/app.js&#39;</span><span class="p">]</span>
+</span><span class='line'>              <span class="p">},</span>
+</span><span class='line'>              <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">transform</span><span class="o">:</span> <span class="p">[</span><span class="nx">envify</span><span class="p">({</span>
+</span><span class='line'>                      <span class="nx">NODE_ENV</span><span class="o">:</span> <span class="s1">&#39;production&#39;</span>
+</span><span class='line'>                  <span class="p">})]</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, once the <code>grunt build:dev</code> or <code>grunt build:prod</code> is run, it will populate correct <code>NODE_ENV</code> value and the rest of transpiled application would work as expected.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2015/01/configuring-front-end-applications.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2015/01/configuring-front-end-applications.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2015 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

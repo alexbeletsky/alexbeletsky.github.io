@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Git with SVN, what the benefits are? Jul 13th, 2011 Git, GitSVN My previous post about starting up of using Git inside on SVN organization appeared &hellip;">
+  <meta name="description" content="Switching from ASPX to Razor view engine Jul 14th, 2011 MVC, Tips I&#8217;ve been moving my application to MVC3 quite time ago. There was absolutely &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,8 +29,27 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Social media content metadata -->
+
+  <meta property="og:title" content="Alexander Beletsky's development blog" />
+  <meta property="og:site_name" content="My profession is engineering" />
+  <meta property="og:url" content="http://beletsky.net/blog/page/14/index.html/" />
+  <meta property="og:description" content="Switching from ASPX to Razor view engine Jul 14th, 2011 MVC, Tips I&#8217;ve been moving my application to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK &hellip;" />
+  <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  
+
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:site" content="alexbeletsky" />
+  <meta property="twitter:url" content="http://beletsky.net/blog/page/14/index.html" />
+  <meta property="twitter:title" content="Alexander Beletsky's development blog" />
+  <meta property="twitter:description" content="Switching from ASPX to Razor view engine Jul 14th, 2011 MVC, Tips I&#8217;ve been moving my application to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK &hellip;" />
+  <meta property="twitter:creator" content="alexbeletsky" />
+  
+
+  <!-- Google fonts -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -75,6 +94,90 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/switching-from-aspx-to-razor-view.html">
+    
+      Switching from ASPX to Razor view engine</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-14T15:22:00+02:00" pubdate data-updated="true">Jul 14<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don&#8217;t blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much).
+</p>
+<p>
+Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it&#8217;s being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
+</p>
+<p>
+And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips:
+</p>
+<ul>
+<li>Rename file from *.aspx to *.cshtml</li>
+<li>If you have master page like (Public.Master) change it to _PublicLayout.cshtml (Razor don&#8217;t use term Master, but rather Layout)</li>
+<li><code>&lt;%@ Control Language=&quot;C#&quot; Inherits=&quot;System.Web.Mvc.ViewUserControl&lt;Web.Models.LastArticleFromBlogModel&gt;&quot; %&gt;</code> became <code>@model Web.Models.LastArticleFromBlogModel</code></li>
+<li>
+<code>&lt;asp:ContentPlaceHolder ID=&quot;head&quot; runat=&quot;server&quot;/&gt;</code> became <code>@RenderSection("Head", required: false) in Layout pages</code>
+</li>
+<li><code>&lt;asp:ContentPlaceHolder ID=&quot;maincontent&quot; runat=&quot;server&quot;&gt;</code> became <code>@RenderBody() in Layout pages</code></li>
+<li><code>&lt;%@Import Namespace=&quot;Web.Helpers.Extensions&quot; %&gt;</code> became <code>@using Web.Helpers.Extensions</code></li>
+<li><code>&lt;%: </code> are changed to <code>@</code> and <code>%&gt;</code> changed to nothing (I simply used Find&Replace for that)</li>
+<li>At the top of content page
+<code><pre>@{
+ ViewBag.Title = "Admin | Admin Dashboard";
+ Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}</pre></code>
+</li>
+<li>For content pages, everything that is inside is Body (no special sections for that)</li>
+<li>If you need to override Head section, simply <code>@section Head { }</code></li>
+<li>Layout could be nested, in nested Layout page you should mention parent Layout, like above</li>
+</ul>
+<p>
+That&#8217;s basically it.. Along the way I&#8217;ve changed all HTML to comply HTML5 standard and reformatted (with Ctrl K + Ctrl D) and now markup looks definitely better!
+</p>
+<p>
+One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in &#8220;None&#8221; item, instead on &#8220;Content&#8221;.. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
+</p>
+<p>
+So, there are no any technical issues with moving from ASPX to Razor, just don&#8217;t be to lazy and do it today :)
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1044,155 +1147,6 @@ Please stay tuned.
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/05/inside-aspnet-mvc-part-1-packing-bags.html">
-    
-      Inside ASP.NET MVC: Packing bags for journey</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-25T21:57:00+02:00" pubdate data-updated="true">May 25<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC are very intuitive, you don&#8217;t have to go thought pages of documentation to do some basic stuff. I do not use MVC on my primary work yet (unfortunately) but my small <a href="http://trackyt.net">project</a> became very nice sandbox to play around and learn stuff. 
-</p>
-<p>
-I definitely learned something thought the year of hooked up with MVC. But feel I still miss a lot of details. Moreover, my hackers curiosity always force to look - &#8220;what is inside?&#8221;.
-</p>
-<p>
-Great stuff about ASP.NET MVC project is that is open source. It is been released as open source and remain open source project till version 3.0.. In fact, it is very easy to start learning framework from inside! This what I&#8217;m going to do. I would like to go depth and hope that journey would be interesting and valuable.
-</p>
-<p>
-Today I&#8217;ll to prepare everything I need for journey. I would be happy if you join me, so we would help each other along the way :).
-</p>
-<h2>Getting out source code</h2>
-<p>
-That&#8217;s easy. Just google for &#8220;MVC3 source code&#8221; and it would bring you directly to <a href="http://aspnet.codeplex.com/releases/view/58781">ASP.NET Codeplex</a> site.
-</p>
-<p>
-Download <code>mvc3-rtm-sources.zip</code>. Unpack the archive and you will see the solution file <code>WebRuntime.sln</code> and 2 folders: <code>mvc3</code> and <code>webpages</code>. Layout of both folders are similar:
-</p>
-<pre>
-    /--- bin
-    /--- src
-    /--- tests
-    /--- tools
-</pre>
-<p>
-Source code package is pretty much organized. Solution does not using NuGet, btw :)
-</p>
-<h2>Meet the solution</h2>
-<p>
-It&#8217;s time open up solution! Fire up Visual Studio and open <code>WebRuntime.sln</code>. Let the journey begins! 
-</p>
-<p>
-Nothing fancy there. Minimal number of solution folders, just <code>MVC</code> and <code>WebPages</code>. Each of folder contains a bunch of projects in it. In nearest future we would be much interested in one <code>System.Web.Mvc</code> - heart of MVC framework.
-</p>
-<!-- solution.png -->
-<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png">
-<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png" alt="solution" />
-</a>
-<h2>Build it</h2>
-<p>
-Don&#8217;t waste any time and just build the solution. As it usually happened to me, with OSS projects - you always have some issues during build. It is not the case for MVC. Build runs smoothly as possible. The output is being placed in <code>mvc3/bin/debug</code> folder. So, as soon as build finished check it out and see for content.
-</p>
-<!-- output.png -->
-<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png">
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png" alt="output" />
-</a>
-<h2>Run tests</h2>
-<p>
-All TDD lovers would be really pleased with a number of tests in solution. There is 5004 tests actually, solid number of tests. No surprise <code>MsTest</code> framework is used. Let&#8217;s just try to run them!
-</p>
-<p>
-In menu Test -> Run -> Tests in Current Context. Here we go.. It took a bit time to run all. I was a little disappointed to see that some tests are failing.
-</p>
-<p>
-I did an inspection of failures and found out that all of them are actually related to my Local Settings. I use &#8220;Ukrainian Locale&#8221; that means time format, decimal point symbol etc. are differs from &#8220;United States Local&#8221;. It&#8217;s a quite common issue of units, workaround could be a simply change your locale to the one that rest development team uses. The rests of tests run&#8217;s just fine!
-</p>
-<!-- tests.png -->
-<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png">
-<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png" alt="tests" />
-</a>
-<h2>Conclusions</h2>
-<p>
-So, my initial impression are: 
-</p>
-<ul>
-<li>Easy to build and start up</li>
-<li>Code looks really nice</li>
-<li>Code style a little differs from default C# especially in with &#8220;{&#8221;</li>
-<!-- code.png -->
-<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png">
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png" alt="code"/>
-</a>
-<li>Tests following AAA pattern really nicely</li>
-<!-- test.png -->
-<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png">
-<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png" alt="test" />
-</a>
-<li>Code contracts are not used, but code pretty defensive with check for <code>null</code> arguments etc.</li>
-<!-- exception.png -->
-<a href="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png">
-<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png" alt="exception" />
-</a>
-<li>All members are with &#8220;_&#8221; underscore - I like that :)</li>
-<li>Methods are small and clean</li>
-</ul>
-<p>
-What I don&#8217;t like to far:
-</p>
-<ul>
-<li>Solution is quite big - I would be happy to have separation between MVC part and WebPages (if it is possible)</li>
-<li>Tests are really slow. Suite run for 3-4 minutes (upd: I blame MsTest runner for that, with TD.NET all tests passed for 89 sec&#8217;s)</li>
-<li>Already found some comments that lie (one more point to try to avoid comments if possible)</li>
-</ul>
-<h2>
-What is next?
-</h2>
-<p>
-Next, I will setup a test project which allow us to fully get in deep of details and see how it work.
-</p>
-<p>
-Please stay tuned.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1208,7 +1162,7 @@ Please stay tuned.
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2014 beletsky.net
+		Copyright © 2010 - 2015 beletsky.net
 	</p>
 </div>
 

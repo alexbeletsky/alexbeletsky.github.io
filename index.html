@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content="Health Monitoring of Services and Databases Sep 19th, 2014 http, micro, monitoring, nodejs, service Once you are up and running your primary job is &hellip;">
+  <meta name="description" content="Configuring Front-End Applications Jan 29th, 2015 angularjs, browserify, frontend, javascript Typically front-end applications have particular &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,8 +29,27 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Social media content metadata -->
+
+  <meta property="og:title" content="Alexander Beletsky's development blog" />
+  <meta property="og:site_name" content="My profession is engineering" />
+  <meta property="og:url" content="http://beletsky.net/index.html/" />
+  <meta property="og:description" content="Configuring Front-End Applications Jan 29th, 2015 angularjs, browserify, frontend, javascript Typically front-end applications have particular configuration, depending on environment. It could be &hellip;" />
+  <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  
+
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:site" content="alexbeletsky" />
+  <meta property="twitter:url" content="http://beletsky.net/index.html" />
+  <meta property="twitter:title" content="Alexander Beletsky's development blog" />
+  <meta property="twitter:description" content="Configuring Front-End Applications Jan 29th, 2015 angularjs, browserify, frontend, javascript Typically front-end applications have particular configuration, depending on environment. It could be &hellip;" />
+  <meta property="twitter:creator" content="alexbeletsky" />
+  
+
+  <!-- Google fonts -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -75,6 +94,59 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2015/01/configuring-front-end-applications.html">
+    
+      Configuring Front-End Applications</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-29T19:42:00+01:00" pubdate data-updated="true">Jan 29<span>th</span>, 2015</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/browserify/'>browserify</a>, <a class='category' href='/blog/categories/frontend/'>frontend</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Typically front-end applications have particular configuration, depending on environment. It could be access tokens, API URL&rsquo;s, applications settings etc. For quite long period of time I solved that problem by exposing <code>window.env</code> variable, populated either by server rendering or by plugins as <code>html-build</code> .. or just directly referencing <code>&lt;script src="config/my.env.js"&gt;</code>, where <code>my.env.js</code> needed to be updated before actual deployment.</p>
+
+<p>Spending much time on backend and working with Node.js/CommonJS I liked simplicity of <code>config</code> pattern and wanted to reuse that pattern on frontend. It&rsquo;s really straightforward and framework-agnostic approach.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2015/01/configuring-front-end-applications.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -553,61 +625,6 @@
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2014/01/logs-driven-development.html">
-    
-      Logs Driven Development</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-25T13:12:00+01:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/logs/'>logs</a>, <a class='category' href='/blog/categories/practices/'>practices</a>, <a class='category' href='/blog/categories/tdd/'>tdd</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <p>One of the components I currently work on called <code>collector</code> and it has no tests. Collector is all about of building queue of tasks, executing them and store data to database after. Tasks are HTTP clients that requests API and process transform responses into generic forms.</p>
-
-<p>I&rsquo;ve started it with tests using <a href="https://github.com/pgte/nock">nock</a> component to mock HTTP requests, but quickly I found those tests both hard to write and no real benefit cause real responses that could broke it differs from ones I mock inside the tests.</p>
-
-<p>In the same time, I regularly change that component and after changes and deployments I pretty quickly see the regressions and non-expected behavior, cause all information I need is inside of application logs. I call that &ldquo;Logs Driven Development&rdquo;.</p>
-
-
-      
-      
-        <div class="show-more pure-u-1">
-          <a href="/2014/01/logs-driven-development.html">Continue reading &rarr;</a>
-        </div>
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -621,7 +638,7 @@
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2014 beletsky.net
+		Copyright © 2010 - 2015 beletsky.net
 	</p>
 </div>
 

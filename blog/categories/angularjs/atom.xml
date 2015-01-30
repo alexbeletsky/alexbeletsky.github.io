@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2014-12-22T16:02:55+01:00</updated>
+  <updated>2015-01-30T16:49:05+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -12,6 +12,198 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Configuring Front-End Applications]]></title>
+    <link href="http://beletsky.net/2015/01/configuring-front-end-applications.html"/>
+    <updated>2015-01-29T19:42:00+01:00</updated>
+    <id>http://beletsky.net/2015/01/configuring-front-end-applications</id>
+    <content type="html"><![CDATA[<p>Typically front-end applications have particular configuration, depending on environment. It could be access tokens, API URL&rsquo;s, applications settings etc. For quite long period of time I solved that problem by exposing <code>window.env</code> variable, populated either by server rendering or by plugins as <code>html-build</code> .. or just directly referencing <code>&lt;script src="config/my.env.js"&gt;</code>, where <code>my.env.js</code> needed to be updated before actual deployment.</p>
+
+<p>Spending much time on backend and working with Node.js/CommonJS I liked simplicity of <code>config</code> pattern and wanted to reuse that pattern on frontend. It&rsquo;s really straightforward and framework-agnostic approach.</p>
+
+<!--MORE-->
+
+
+<h2>Config pattern</h2>
+
+<p>Config pattern is something I <a href="https://github.com/likeastore/notifier/blob/master/config">frequently</a> <a href="https://github.com/likeastore/jobber/tree/master/config">use</a> for Node.js apps. It simply the folder with <code>index.js</code> file, containing such code:</p>
+
+<p>```js
+var env = process.env.NODE_ENV || &lsquo;development&rsquo;;</p>
+
+<p>module.exports = require(&lsquo;./&rsquo; + env + &lsquo;.config.js&rsquo;);
+```</p>
+
+<p>The folder contains such files, <code>development.config.js</code>, <code>staging.config.js</code>, <code>production.config.js</code> etc.</p>
+
+<p>The config files, simply export the object with configuration,</p>
+
+<p>```js
+var config = {</p>
+
+<pre><code>connection: 'mongodb://localhost:27017/notifierdb',
+accessToken: '1234',
+
+hook: {
+    url: 'http://localhost:5000/api/notify/',
+    token: 'fake-hook-token'
+},
+
+logentries: {
+    token: null
+},
+
+transport: {
+    // ...
+}
+
+// ...
+</code></pre>
+
+<p>};</p>
+
+<p>module.exports = config;
+```</p>
+
+<p>The module actually needed in configuration would <code>require</code> the <code>config</code> folder, for instance:</p>
+
+<p>```js
+var request = require(&lsquo;request&rsquo;);
+var config = require(&lsquo;../config&rsquo;);</p>
+
+<p>function fetchActions(user, callback) {</p>
+
+<pre><code>var apiUrl = config.api.url;
+var token = config.api.token;
+
+request({url: apiUrl + '/actions/' + user, headers: {token: token}, callback);
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = fetchActions;
+```</p>
+
+<h2>Browserify</h2>
+
+<p><a href="http://browserify.org/">Browserify</a> is a pre-processor (or call it transpiler) for javascript. It embraces CommonJS style of modularity and brings popular <code>npm</code> modules on client site. It&rsquo;s simply awesome project (many thx to <a href="https://twitter.com/substack">substack</a> for it) that makes a lot of sense to me.</p>
+
+<p>With Browserify you can write browser javascript in the same way you do on backend with Node.js. It implements <code>require()</code> call and bundles the application consists on different modules into one, executable in browser.</p>
+
+<p>Usually, <code>browserify</code> is not run manually, but rather by means of JS build tools as <code>grunt</code> or <code>gulp</code>.</p>
+
+<p>I&rsquo;m going to adopt Node.js <code>config</code> pattern for frontend with browserify.</p>
+
+<h2>Prepare the configuration</h2>
+
+<p>By analogy of node applications, let&rsquo;s create a <code>config</code> folder inside our <code>js</code> folder.</p>
+
+<p><img src="https://lh6.googleusercontent.com/-tO5KVRhVjM8/VMqJVRGXiFI/AAAAAAAAi4o/2aWT3zOkNhk/w2236-h1132-no/Screenshot%2B2015-01-29%2B20.21.58.png" alt="config structure" /></p>
+
+<p><code>index.js</code> file is exactly the same as mentioned above, config files contains application dependent settings.</p>
+
+<p>With example of Angular.js application, here is the <code>service</code> that used as data provider,</p>
+
+<p>```js
+var config = require(&lsquo;../config&rsquo;);</p>
+
+<p>function drivers ($http) {</p>
+
+<pre><code>var apiUrl = config.api.url;
+
+return {
+    fetch: function () {
+        var url = apiUrl + '/api/drivers';
+
+        return $http.get(url);
+    }
+};
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = drivers;
+```</p>
+
+<p>If you just try that, it would work as charm.. but only for <code>development</code> environment.</p>
+
+<h2>Setting up NODE_ENV</h2>
+
+<p>The problem though, <code>browserify</code> have no idea what to put into <code>process.env.NODE_ENV</code> variable, since it is <code>undefined</code> &ndash; <code>development</code> configuration is always selected.</p>
+
+<p>Fortunately, <code>browserify</code> architecture supports, so called <code>transforms</code>, middleware components capable to customize browserify behaviour. One of handly transform function is <a href="https://github.com/hughsk/envify">envify</a> by <a href="https://github.com/hughsk">Hugh Kennedy</a>.</p>
+
+<p>What <code>envify</code> allows to do is basically replacement of <code>process.env.NODE_ENV</code> to particular value, eg.</p>
+
+<p><code>js
+if (process.env.NODE_ENV === "development") {
+  console.log('development only')
+}
+</code></p>
+
+<p>with <code>NODE_ENV</code> set to &ldquo;production&rdquo;, will appear as</p>
+
+<p><code>js
+if ("production" === "development") {
+  console.log('development only')
+}
+</code></p>
+
+<p>This is exactly what we need, to make <code>config/index.js</code> work properly.</p>
+
+<p>Since I use <code>grunt</code>, I&rsquo;ll show how to integrate <code>envify</code> in the workflow (approach for <code>gulp</code> would be similar),</p>
+
+<p>```js
+var envify = require(&lsquo;envify/custom&rsquo;);</p>
+
+<p>module.exports = function (grunt) {</p>
+
+<pre><code>grunt.initConfig({
+    browserify: {
+        dev: {
+            files: {
+                'source/build/app.js': ['source/js/app.js']
+            },
+            options: {
+                browserifyOptions: {
+                    debug: true
+                },
+                transform: [envify({
+                    NODE_ENV: 'development'
+                })]
+            },
+        },
+        stage: {
+            files: {
+                'source/build/app.js': ['source/js/app.js']
+            },
+            options: {
+                transform: [envify({
+                    NODE_ENV: 'staging'
+                })]
+            }
+        },
+        prod: {
+            files: {
+                'source/build/app.js': ['source/js/app.js']
+            },
+            options: {
+                transform: [envify({
+                    NODE_ENV: 'production'
+                })]
+            }
+        }
+    },
+// ...
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now, once the <code>grunt build:dev</code> or <code>grunt build:prod</code> is run, it will populate correct <code>NODE_ENV</code> value and the rest of transpiled application would work as expected.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Authentication for Angular.js App]]></title>

@@ -9,7 +9,7 @@
   <meta name="author" content="Alexander Beletsky">
 
   
-  <meta name="description" content=".NET Saturday in Ciklum May 14th, 2011 Conference This Saturday it was really nice event organized and hosted by Ciklum. I had a big pleasure to be &hellip;">
+  <meta name="description" content="Inside ASP.NET MVC: Packing bags for journey May 25th, 2011 InsideMVC, MVC, asp.net I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,8 +29,27 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Social media content metadata -->
+
+  <meta property="og:title" content="Alexander Beletsky's development blog" />
+  <meta property="og:site_name" content="My profession is engineering" />
+  <meta property="og:url" content="http://beletsky.net/blog/page/15/index.html/" />
+  <meta property="og:description" content="Inside ASP.NET MVC: Packing bags for journey May 25th, 2011 InsideMVC, MVC, asp.net I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC &hellip;" />
+  <meta property="og:author" content="https://www.facebook.com/alexander.beletsky" />
+  
+
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:site" content="alexbeletsky" />
+  <meta property="twitter:url" content="http://beletsky.net/blog/page/15/index.html" />
+  <meta property="twitter:title" content="Alexander Beletsky's development blog" />
+  <meta property="twitter:description" content="Inside ASP.NET MVC: Packing bags for journey May 25th, 2011 InsideMVC, MVC, asp.net I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC &hellip;" />
+  <meta property="twitter:creator" content="alexbeletsky" />
+  
+
+  <!-- Google fonts -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -75,6 +94,155 @@
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
   
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/05/inside-aspnet-mvc-part-1-packing-bags.html">
+    
+      Inside ASP.NET MVC: Packing bags for journey</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-25T21:57:00+02:00" pubdate data-updated="true">May 25<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;m big fan of ASP.NET MVC framework. It is smart, clean and testable. A lot of stuff you can do with MVC are very intuitive, you don&#8217;t have to go thought pages of documentation to do some basic stuff. I do not use MVC on my primary work yet (unfortunately) but my small <a href="http://trackyt.net">project</a> became very nice sandbox to play around and learn stuff. 
+</p>
+<p>
+I definitely learned something thought the year of hooked up with MVC. But feel I still miss a lot of details. Moreover, my hackers curiosity always force to look - &#8220;what is inside?&#8221;.
+</p>
+<p>
+Great stuff about ASP.NET MVC project is that is open source. It is been released as open source and remain open source project till version 3.0.. In fact, it is very easy to start learning framework from inside! This what I&#8217;m going to do. I would like to go depth and hope that journey would be interesting and valuable.
+</p>
+<p>
+Today I&#8217;ll to prepare everything I need for journey. I would be happy if you join me, so we would help each other along the way :).
+</p>
+<h2>Getting out source code</h2>
+<p>
+That&#8217;s easy. Just google for &#8220;MVC3 source code&#8221; and it would bring you directly to <a href="http://aspnet.codeplex.com/releases/view/58781">ASP.NET Codeplex</a> site.
+</p>
+<p>
+Download <code>mvc3-rtm-sources.zip</code>. Unpack the archive and you will see the solution file <code>WebRuntime.sln</code> and 2 folders: <code>mvc3</code> and <code>webpages</code>. Layout of both folders are similar:
+</p>
+<pre>
+    /--- bin
+    /--- src
+    /--- tests
+    /--- tools
+</pre>
+<p>
+Source code package is pretty much organized. Solution does not using NuGet, btw :)
+</p>
+<h2>Meet the solution</h2>
+<p>
+It&#8217;s time open up solution! Fire up Visual Studio and open <code>WebRuntime.sln</code>. Let the journey begins! 
+</p>
+<p>
+Nothing fancy there. Minimal number of solution folders, just <code>MVC</code> and <code>WebPages</code>. Each of folder contains a bunch of projects in it. In nearest future we would be much interested in one <code>System.Web.Mvc</code> - heart of MVC framework.
+</p>
+<!-- solution.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1ccQNmpmI/AAAAAAAAHbI/9_D1bnR-u2U/solution.png" alt="solution" />
+</a>
+<h2>Build it</h2>
+<p>
+Don&#8217;t waste any time and just build the solution. As it usually happened to me, with OSS projects - you always have some issues during build. It is not the case for MVC. Build runs smoothly as possible. The output is being placed in <code>mvc3/bin/debug</code> folder. So, as soon as build finished check it out and see for content.
+</p>
+<!-- output.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFx0z8wI/AAAAAAAAHbQ/2GGnooqDpVA/output.png" alt="output" />
+</a>
+<h2>Run tests</h2>
+<p>
+All TDD lovers would be really pleased with a number of tests in solution. There is 5004 tests actually, solid number of tests. No surprise <code>MsTest</code> framework is used. Let&#8217;s just try to run them!
+</p>
+<p>
+In menu Test -> Run -> Tests in Current Context. Here we go.. It took a bit time to run all. I was a little disappointed to see that some tests are failing.
+</p>
+<p>
+I did an inspection of failures and found out that all of them are actually related to my Local Settings. I use &#8220;Ukrainian Locale&#8221; that means time format, decimal point symbol etc. are differs from &#8220;United States Local&#8221;. It&#8217;s a quite common issue of units, workaround could be a simply change your locale to the one that rest development team uses. The rests of tests run&#8217;s just fine!
+</p>
+<!-- tests.png -->
+<a href="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png">
+<img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/Td1dGBUDDoI/AAAAAAAAHbY/0Lqffzp4lLA/tests.png" alt="tests" />
+</a>
+<h2>Conclusions</h2>
+<p>
+So, my initial impression are: 
+</p>
+<ul>
+<li>Easy to build and start up</li>
+<li>Code looks really nice</li>
+<li>Code style a little differs from default C# especially in with &#8220;{&#8221;</li>
+<!-- code.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dFxvjw5I/AAAAAAAAHbU/MvOwune0ItA/code.png" alt="code"/>
+</a>
+<li>Tests following AAA pattern really nicely</li>
+<!-- test.png -->
+<a href="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png">
+<img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/Td1dGNxu8NI/AAAAAAAAHbc/yTr-v0_oCww/test.png" alt="test" />
+</a>
+<li>Code contracts are not used, but code pretty defensive with check for <code>null</code> arguments etc.</li>
+<!-- exception.png -->
+<a href="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png">
+<img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/Td1dF7ZxCuI/AAAAAAAAHbM/7IORamYJ-fA/exception.png" alt="exception" />
+</a>
+<li>All members are with &#8220;_&#8221; underscore - I like that :)</li>
+<li>Methods are small and clean</li>
+</ul>
+<p>
+What I don&#8217;t like to far:
+</p>
+<ul>
+<li>Solution is quite big - I would be happy to have separation between MVC part and WebPages (if it is possible)</li>
+<li>Tests are really slow. Suite run for 3-4 minutes (upd: I blame MsTest runner for that, with TD.NET all tests passed for 89 sec&#8217;s)</li>
+<li>Already found some comments that lie (one more point to try to avoid comments if possible)</li>
+</ul>
+<h2>
+What is next?
+</h2>
+<p>
+Next, I will setup a test project which allow us to fully get in deep of details and see how it work.
+</p>
+<p>
+Please stay tuned.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
   
   
     <article>
@@ -1216,101 +1384,6 @@ There is no silver bullet, but there is super glue that unite teams.. Agile is t
 
     </article>
   
-  
-    <article>
-        
-  <h1 class="title pure-u-1">
-    
-    <a href="/2011/04/functional-tests-must-not-be-done-first.html">
-    
-      Functional tests must not be done first</a>
-  </h1>
-
-  <div class="meta pure-u-1-5">
-    <div class="date icon-calendar">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-13T21:27:00+02:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time></div>
-    <div class="tags icon-tag-2">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/tdd/'>TDD</a>
-  
-</span>
-
-</div>
-  </div>
-
-  <div class="entry-content pure-u-4-5">
-    <div class="content">
-      <div class='post'>
-<p>
-First of all, by functional tests I understand tests of application features primarily from user (UI) perspective, with different set of frameworks - <a href="http://seleniumhq.org/">Seleminum</a>, <a href="http://watin.org/">Watin</a>, <a href="http://funcunit.com">FuncUnit</a> or whatever. 
-</p>
-<p>
-I&#8217;ve seen the cases that functional tests are being implemented either first or immediately after some particular feature is implemented. I think this is a just wrong practice. Even the UI testing could definitely provide value you should think twice before getting to deep with functional testing and apply as development process rule. Functional tests have several serious drawbacks:
-</p>
-<ul>
-<li>
-<strong>Fragility</strong>. Functional tests are extremely fragile. You could run test suite and got green results and re-run them in 5 seconds and got completely red sheet. And there could be thousands of reasons why it happened.
-</li>
-<li>
-<strong>Speed</strong>. They are simply slow. As much tests you have as slow they are. As much slow tests you have as long feedback cycle is. As long feedback cycle is as low value you are getting from tests.
-</li>
-<li>
-<strong>Bad isolation</strong>. Because of functional tests have integration nature, it is just not possible to run them in isolated environment. Tests became depended from each other, that in particular leads to fragility.
-</li>
-<li>
-<strong>Support</strong>. Implementation of UI test is not trivial thing. Even with so cool frameworks like <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> or <a href="http://seleniumhq.org/docs/03_webdriver.html">WebDrivers</a> that have strict and clear interface, it could be hard to test some UI feature of application. But support is much more harder - really small change in could turn many tests to red state. In fact, implementation of change that costs you 1 hour, could cost 1 day for correction of tests.
-</li>
-<li>
-<strong>Changes</strong>. We are trying to adopt agile into development world, one of the aspect that makes development really agile is reacting on change. Reacting on change have to be fast. Changes are integral part of development, even if developers hate changes. But as I said above, even small change could ruin UI tests and it is not fast to fix it. It means that cost of change is getting more and more expensive. 
-</li>
-</ul>
-<p>
-So, trying to implement UI tests in early development stages or cover all applications features with UI tests is a <strong>waste</strong>. Ratio between effort / value would be just go to zero with time.
-</p>
-<p>
-What I think as recommendation for UI testing: 
-</p>
-<ul>
-<li>
-Rely more on unit tests - all server side code must be covered with a <a href="http://www.beletsky.net/2010/10/test-driven-design-and-levels-of.html">different level of testing</a>. Units have to be isolated and fast.
-</li>
-<li>
-Keep view as thin as possible - in ideal you should not have logic in view at all, but modern web application heavily using client side (javascript) logic that affects view. Javascript code have to be unit tested with <a href="http://docs.jquery.com/Qunit">qUnit</a> or similar frameworks.
-</li>
-<li>
-Don&#8217;t start with UI tests - UI testing have to be done <strong>last</strong>. If the feature is just implemented it does not mean it has to be immediately tested. It has to pass PO approval, QA. Ideally it has to be released to beta group and confirmed that &#8220;this is exactly what we need&#8221;. After feature stabilized test could be added.
-</li>
-<li>
-Don&#8217;t try to test everything - since UI testing cost more, you should be more careful. It has sense to automate smoke test, critical parts of application or parts that have high regression. 
-</li>
-<li>
-Clean up tests regularly - peer tests regularly, if you have bunch of tests for some area that works OK for a long time you might consider to remove those tests, to speedup whole tests process.
-</li>
-</ul>
-<p>
-Keeping focus only of primary features of application and avoid of testing small stuff should be key for functional tests.
-</p></div>
-
-      
-      
-    </div>
-  </div>
-
-    </article>
-  
   <div class="pagination inner pure-u-1">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -1326,7 +1399,7 @@ Keeping focus only of primary features of application and avoid of testing small
 		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
 	</p>
 	<p>
-		Copyright © 2010 - 2014 beletsky.net
+		Copyright © 2010 - 2015 beletsky.net
 	</p>
 </div>
 
