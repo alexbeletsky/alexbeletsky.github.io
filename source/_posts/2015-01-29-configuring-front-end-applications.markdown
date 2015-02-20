@@ -22,9 +22,15 @@ Spending much time on backend and working with Node.js/CommonJS I liked simplici
 Config pattern is something I [frequently](https://github.com/likeastore/notifier/blob/master/config) [use](https://github.com/likeastore/jobber/tree/master/config) for Node.js apps. It simply the folder with `index.js` file, containing such code:
 
 ```js
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.APP_ENV || 'development';
 
-module.exports = require('./' + env + '.config.js');
+var config = {
+	development: require('./development.config'),
+	production: require('./production.config'),
+	staging: require('./staging.config')
+};
+
+module.exports = config[env];
 ```
 
 The folder contains such files, `development.config.js`, `staging.config.js`, `production.config.js` etc.
