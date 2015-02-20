@@ -145,9 +145,21 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">APP_ENV</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="nx">env</span> <span class="o">+</span> <span class="s1">&#39;.config.js&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">development</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./development.config&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">production</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./production.config&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">staging</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./staging.config&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span><span class="p">[</span><span class="nx">env</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

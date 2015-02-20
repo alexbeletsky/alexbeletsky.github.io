@@ -4,7 +4,7 @@
   <title><![CDATA[Category: frontend | Alexander Beletsky's development blog]]></title>
   <link href="http://beletsky.net/blog/categories/frontend/atom.xml" rel="self"/>
   <link href="http://beletsky.net/"/>
-  <updated>2015-01-30T18:02:16+01:00</updated>
+  <updated>2015-02-20T12:36:49+01:00</updated>
   <id>http://beletsky.net/</id>
   <author>
     <name><![CDATA[Alexander Beletsky]]></name>
@@ -30,9 +30,18 @@
 <p>Config pattern is something I <a href="https://github.com/likeastore/notifier/blob/master/config">frequently</a> <a href="https://github.com/likeastore/jobber/tree/master/config">use</a> for Node.js apps. It simply the folder with <code>index.js</code> file, containing such code:</p>
 
 <p>```js
-var env = process.env.NODE_ENV || &lsquo;development&rsquo;;</p>
+var env = process.env.APP_ENV || &lsquo;development&rsquo;;</p>
 
-<p>module.exports = require(&lsquo;./&rsquo; + env + &lsquo;.config.js&rsquo;);
+<p>var config = {</p>
+
+<pre><code>development: require('./development.config'),
+production: require('./production.config'),
+staging: require('./staging.config')
+</code></pre>
+
+<p>};</p>
+
+<p>module.exports = config[env];
 ```</p>
 
 <p>The folder contains such files, <code>development.config.js</code>, <code>staging.config.js</code>, <code>production.config.js</code> etc.</p>
