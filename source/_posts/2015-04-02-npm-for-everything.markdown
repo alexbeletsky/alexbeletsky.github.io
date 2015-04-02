@@ -6,9 +6,9 @@ comments: true
 categories: npm, javascript, frontend, backend
 
 facebook:
- image: https://lh4.googleusercontent.com/-rEuQyW63y2g/VR1IWITsjHI/AAAAAAAAlNI/zwtb2SFACuQ/w2232-h588-no/Screenshot%2B2015-04-02%2B15.45.07.png
+ image: https://lh3.googleusercontent.com/-dUeSHlXoO0g/VR1NxzODdII/AAAAAAAAlNc/YwW8j0F2EuA/w2234-h1160-no/Screenshot%2B2015-04-02%2B16.png
 twitter_card:
- image: https://lh4.googleusercontent.com/-rEuQyW63y2g/VR1IWITsjHI/AAAAAAAAlNI/zwtb2SFACuQ/w2232-h588-no/Screenshot%2B2015-04-02%2B15.45.07.png
+ image: https://lh3.googleusercontent.com/-dUeSHlXoO0g/VR1NxzODdII/AAAAAAAAlNc/YwW8j0F2EuA/w2234-h1160-no/Screenshot%2B2015-04-02%2B16.png
 ---
 
 JS ecosystem is famous for it's wide range of packages and tools. Besides the default package manager, which comes with Node.js - NPM (node package manager), there are Bower.js, Jam.js and many more.
