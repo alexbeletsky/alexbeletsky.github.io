@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "NPM for Everything"
+description: NPM as dependency manager, task runner both for front and back end.
 date: 2015-04-02 15:26
 comments: true
 categories: npm, javascript, frontend, backend
-
 facebook:
  image: https://lh3.googleusercontent.com/-dUeSHlXoO0g/VR1NxzODdII/AAAAAAAAlNc/YwW8j0F2EuA/w2234-h1160-no/Screenshot%2B2015-04-02%2B16.png
 twitter_card:
