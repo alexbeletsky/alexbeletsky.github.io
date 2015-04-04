@@ -227,4 +227,4 @@ $ npm run watch
 * Embrace CommonJS, use Browserify/Webpack/Whatever to use CommonJS (or ES6) on client.
 * For many cases, you really don't need Grunt or Gulp, all is easily doable with NPM scripts.
 
-As example, please [brick](https://github.com/alexbeletsky/brick), the project I currently use as boilerplate for new applications.
+As example, please refer to [brick](https://github.com/alexbeletsky/brick), the project I currently use as boilerplate for new applications.
