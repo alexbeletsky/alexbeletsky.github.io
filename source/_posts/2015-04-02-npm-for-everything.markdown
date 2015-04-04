@@ -226,3 +226,5 @@ $ npm run watch
 * Once you implement front end library, consider [UMD](https://github.com/umdjs/umd) so your modules are reusable in any environment.
 * Embrace CommonJS, use Browserify/Webpack/Whatever to use CommonJS (or ES6) on client.
 * For many cases, you really don't need Grunt or Gulp, all is easily doable with NPM scripts.
+
+As example, please [brick](https://github.com/alexbeletsky/brick), the project I currently use as boilerplate for new applications.
