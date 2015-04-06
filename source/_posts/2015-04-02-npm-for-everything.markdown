@@ -4,7 +4,7 @@ title: "NPM for Everything"
 description: NPM as dependency manager, task runner both for front and back end.
 date: 2015-04-02 15:26
 comments: true
-categories: npm, javascript, frontend, backend
+categories: npm javascript frontend backend
 facebook:
  image: https://lh3.googleusercontent.com/-dUeSHlXoO0g/VR1NxzODdII/AAAAAAAAlNc/YwW8j0F2EuA/w2234-h1160-no/Screenshot%2B2015-04-02%2B16.png
 twitter_card:
@@ -170,7 +170,7 @@ Now, let's minify both assets using one of the best concepts ever - Unix pipes.
 We need two packages additionally, `uglifyjs` and `cleancss`.
 
 ```bash
-$ npm install -g uglifyjs cleancss
+$ npm install -g uglifyjs clean-css
 ```
 And corresponding scripts,
 
@@ -219,6 +219,26 @@ or to *watch* it,
 
 ```bash
 $ npm run watch
+```
+
+## Using dev-dependencies
+
+Global packages are not cool, cause they might be missing on developers box there application is cloned. Moreover, dependency management becomes a bit more complex, if you need to work on different projects depending on different tools versions. As [@bcomnes](https://github.com/bcomnes) very correctly noticed, all tools as `browserify`, `uglify` etc. can be installed as local `dev-dependency`, which are fetched during `npm install` and will be available to call inside project folder as global commands,
+
+```bash
+$ npm install --save-dev browserify uglifyjs node-sass clean-css
+```
+
+So, the `package.json` got such update,
+
+```json
+"devDependencies": {
+  "browserify": "^9.0.7",
+  "clean-css": "^3.1.9",
+  "node-sass": "^2.1.1",
+  "uglifyjs": "^2.4.10"
+},
+
 ```
 
 # Takeaways
