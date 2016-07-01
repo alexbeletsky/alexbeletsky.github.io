@@ -3,7 +3,7 @@ layout: post
 title: "Higher Order Components: Theory and Practice"
 date: 2016-05-07 14:47
 comments: true
-categories:
+categories: react redux
 ---
 
 What I enjoy the most working with React.js is its [functional approach](http://engineering.blogfoster.com/the-functional-approach-to-ui/) for building UI's. Everything you see on a screen is essentially a component. Components are *composed* of other components, making complex interfaces possible.
@@ -11,6 +11,8 @@ What I enjoy the most working with React.js is its [functional approach](http://
 Higher-order components concept goes back to [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function), *functional programming* concept, describing the function that takes other function(s) and returns a function. In exactly the same way, higher-order component takes another component(s) and return a component.
 
 Where might it be useful? Let’s consider a few practical cases.
+
+<!-- MORE -->
 
 ## Authentication and Authorization
 

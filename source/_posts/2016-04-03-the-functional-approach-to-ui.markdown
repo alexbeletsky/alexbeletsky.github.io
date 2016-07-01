@@ -3,7 +3,7 @@ layout: post
 title: "The Functional Approach to UI"
 date: 2016-04-03 14:45
 comments: true
-categories: react, redux, javascript
+categories: react redux javascript
 ---
 
 A state is a representation of a system in a given time. Traditionally, we deal with *mutable* state storages, like SQL and NoSQL databases.

@@ -3,14 +3,17 @@ layout: post
 title: "Redux For Better in-App Analytics"
 date: 2016-07-01 14:50
 comments: true
-categories: react, redux, javascript, analytics
+categories: react redux javascript analytics
 ---
 
 Lean startup, the term coined by Eric Ries, affected the way we build new products and services. Essentially, it says that every business idea has to be turned to a series of testable *hypotheses*. Based on these hypotheses we **build** or introduce the changes to existing products. Those changes have to be **measurable**, so we collect the results of actions we did. Based on results we prove or disapprove particular hypothesis. During the cycle, we derive **learnings**, these learnings give a foundation for a next *Build-Measure-Learn* cycle.
 
+<!-- MORE -->
+
 For web-based products, measurements typically mean collecting of different user behavior metrics. Based on these metrics we can see, what users are *doing* in the application, their behavior has a direct influence on a product.
 
 Many projects I participated, had "Add Analytics" as a bottom-most task in development backlog. Ignoring the task, made it hard to implement later stages. You need something like `analytics.trackEvent('something happened', { data: 123 });` in many places, making code looks ugly and quite easy to miss some important details.
+
 
 ## Redux
 
