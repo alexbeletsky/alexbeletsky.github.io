@@ -67,10 +67,27 @@
 
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
-	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
-	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
-	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+  <li>
+    <a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a>
+  </li>
+  <li>
+    <a
+      class="github icon-github-circled"
+      href="https://github.com/alexbeletsky"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="stackoverflow icon-stackoverflow"
+      href="http://stackoverflow.com/users/386751/alexanderb"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="rss icon-rss"
+      href="http://feeds.feedburner.com/abeletskyblog"
+    ></a>
+  </li>
 </ul>
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
@@ -628,24 +645,73 @@ public class CssAppBundle : CssBundle
 
   <div class="entry-content pure-u-4-5">
     <div class="content">
-      <div class='post'>
-<p>This is a high level overview of new stuff that appeared within VS2011 release. So, let&#8217;s briefly look inside. Today will take a look on changes appeared to Web API.<br />
-</p><h2>Web API</h2><p>The biggest and most important change as for me is integration of Web API into ASP.NET. Web API is most known as WCF Web API - an attempt of .NET team build framework for creation of RESTfull services based on WCF infrastructure. There was several releases of WCF Web API made and general feedback from community was - &#8220;it&#8217;s good enough&#8221;. Since when, Microsoft did a strategic change, merged WCF Web API and ASP.NET teams together, so both products to be developed in sync. From now Web API is integral part of ASP.NET (and does not have any WCF prefix any more) and called ASP.NET Web API. It is not just re-branding, but it reflects changes both the programming model and processing architecture.<br />
-</p><h2>Simple Start</h2><p>If we create a new ASP.NET MVC4 application, we see the following change into <code>global.asax</code> file.<br />
-</p><pre class="brush: csharp">routes.MapHttpRoute(
+      <div class="post">
+  <p>
+    This is a high level overview of new stuff that appeared within VS2011
+    release. So, let&#8217;s briefly look inside. Today will take a look on changes
+    appeared to Web API.<br />
+  </p>
+  <h2>Web API</h2>
+  <p>
+    The biggest and most important change as for me is integration of Web API
+    into ASP.NET. Web API is most known as WCF Web API - an attempt of .NET team
+    build framework for creation of RESTfull services based on WCF
+    infrastructure. There was several releases of WCF Web API made and general
+    feedback from community was - &#8220;it&#8217;s good enough&#8221;. Since when, Microsoft did
+    a strategic change, merged WCF Web API and ASP.NET teams together, so both
+    products to be developed in sync. From now Web API is integral part of
+    ASP.NET (and does not have any WCF prefix any more) and called ASP.NET Web
+    API. It is not just re-branding, but it reflects changes both the
+    programming model and processing architecture.<br />
+  </p>
+  <h2>Simple Start</h2>
+  <p>
+    If we create a new ASP.NET MVC4 application, we see the following change
+    into <code>global.asax</code> file.<br />
+  </p>
+  <pre class="brush: csharp">
+routes.MapHttpRoute(
     name: "DefaultApi",
     routeTemplate: "api/{controller}/{id}",
     defaults: new { id = RouteParameter.Optional }
 );
-</pre><p><code>MapHttpRoute</code> is new extension method for <code>RouteCollection</code>. Similarly to ASP.NET MVC routing definition, it maps HTTP request with matching URL into corresponding API controller action. By default, the are all prefixed with &#8220;api&#8221; to do not &#8220;interfere&#8221; to ASP.NET MVC routing. It&#8217;s not a problem to change that prefix to anything you want, like &#8220;services&#8221;, &#8220;methods&#8221; etc.<br />
-</p><pre class="brush: plain">    /api/contacts/      <- Web API
+</pre
+  >
+  <p>
+    <code>MapHttpRoute</code> is new extension method for
+    <code>RouteCollection</code>. Similarly to ASP.NET MVC routing definition,
+    it maps HTTP request with matching URL into corresponding API controller
+    action. By default, the are all prefixed with &#8220;api&#8221; to do not &#8220;interfere&#8221; to
+    ASP.NET MVC routing. It&#8217;s not a problem to change that prefix to anything
+    you want, like &#8220;services&#8221;, &#8220;methods&#8221; etc.<br />
+  </p>
+  <pre class="brush: plain">
+    /api/contacts/      <- Web API
     /api/contacts/1     <- Web API
     /contacts/1         <- ASP.NET MVC
-</pre>
-<p>The API controllers are really similar to ASP.NET MVC controllers. Instead of inherit from <code>Controller</code> class, they inherited from <code>ApiController</code> class. Instead of returning <code>ActionResult</code> from action, in API controllers you return either <code>IEnumerable</code> or concrete instance, like <code>Product</code> (there are some more dedicated scenarios with returning types, we will see later).
-</p><p>By just looking into example from project template it is very easy to understand, what&#8217;s going on. There are some small details you should know before API controller usage.
-</p><h3>Action methods naming</h3><p>API controllers are &#8220;Convention over configuration&#8221; based. The actual HTTP verb that action handles could be specified in method name.
-</p><pre class="brush: csharp">public class ProductsController : ApiController
+</pre
+  >
+  <p>
+    The API controllers are really similar to ASP.NET MVC controllers. Instead
+    of inherit from <code>Controller</code> class, they inherited from
+    <code>ApiController</code> class. Instead of returning
+    <code>ActionResult</code> from action, in API controllers you return either
+    <code>IEnumerable</code> or concrete instance, like
+    <code>Product</code> (there are some more dedicated scenarios with returning
+    types, we will see later).
+  </p>
+  <p>
+    By just looking into example from project template it is very easy to
+    understand, what&#8217;s going on. There are some small details you should know
+    before API controller usage.
+  </p>
+  <h3>Action methods naming</h3>
+  <p>
+    API controllers are &#8220;Convention over configuration&#8221; based. The actual HTTP
+    verb that action handles could be specified in method name.
+  </p>
+  <pre class="brush: csharp">
+public class ProductsController : ApiController
 {
     // Handles GET
     public IEnumerable&lt;Product&gt; Get() { }
@@ -656,9 +722,21 @@ public class CssAppBundle : CssBundle
     // Handles DELETE
  public void Delete(int id) { }
 }
-</pre><p>This convention applies only to GET, POST, PUT, and DELETE methods. You might be more specific in methods names, like <code>GetProducts</code> or <code>DeleteProduct</code>, the important is the prefix (Get, Post, Put etc.) of method.
-</p><p>If you don&#8217;t want to rely of named based conventions, you can explicitly specify target HTTP verb by decorating methods with HttpGet, HttpPut, HttpPost, or HttpDelete attribute.
-</p><pre class="brush: csharp">public class ProductsController : ApiController
+</pre
+  >
+  <p>
+    This convention applies only to GET, POST, PUT, and DELETE methods. You
+    might be more specific in methods names, like <code>GetProducts</code> or
+    <code>DeleteProduct</code>, the important is the prefix (Get, Post, Put
+    etc.) of method.
+  </p>
+  <p>
+    If you don&#8217;t want to rely of named based conventions, you can explicitly
+    specify target HTTP verb by decorating methods with HttpGet, HttpPut,
+    HttpPost, or HttpDelete attribute.
+  </p>
+  <pre class="brush: csharp">
+public class ProductsController : ApiController
 {
     [HttpGet]
     public IEnumerable&lt;Product&gt; AllProducts() { }
@@ -669,27 +747,70 @@ public class CssAppBundle : CssBundle
     [HttpDelete]
  public void DeleteProduct(int id) { }
 }
-</pre><h3>One handler per one controller</h3><p>API Controller are different from ASP.NET MVC controller. The main difference is that API controller handles exactly one HTTP request belongs to particular entity.
-</p><p>If you try to create the code like:
-</p><pre class="brush: csharp">public class ProductsController : ApiController
+</pre
+  >
+  <h3>One handler per one controller</h3>
+  <p>
+    API Controller are different from ASP.NET MVC controller. The main
+    difference is that API controller handles exactly one HTTP request belongs
+    to particular entity.
+  </p>
+  <p>If you try to create the code like:</p>
+  <pre class="brush: csharp">
+public class ProductsController : ApiController
 {
     public IEnumerable&lt;Product&gt; Get() { }
     public IEnumerable&lt;Product&gt; GetAnother() { }
 }
-</pre><p>It would be build OK, but on a runtime if you try to access &#8216;/api/products&#8217;, you will get an exception:
-</p><pre class="brush: plain">"Multiple actions were found that match the request: 
+</pre
+  >
+  <p>
+    It would be build OK, but on a runtime if you try to access &#8216;/api/products&#8217;,
+    you will get an exception:
+  </p>
+  <pre class="brush: plain">
+"Multiple actions were found that match the request: 
 \u000d\u000aSystem.Collections.Generic.IEnumerable`1[MvcApplication7.Api.Controllers.Product] 
 Get() on type MvcApplication7.Api.Controllers.ProductsController\u000d\u000aSystem.Collections.Generic.IEnumerable`1[MvcApplication7.Api.Controllers.Product] 
 GetAnother() on type MvcApplication7.Api.Controllers.ProductsController"
-</pre><p>The less stuff is very similar to something we get used in ASP.NET MVC. And you might think - why do we need this Web API at all, I can do exactly the same stuff with good-n-old ASP.NET MVC controllers? Not exactly. Web API has several killer features that makes it favorite for data oriented API&#8217;s. Let&#8217;s go on.
-</p><h2>Content Negotiation</h2><p>Content Negotiation is the process for mutual agreement between client and server about the received/sent data formats. Good news here, Web API does a lot of job for you, leaving content negotiation internals behind the scene. Let&#8217;s take a brief look of how things happen.
-</p><p>When client sends HTTP request to server, besides the query string and payload it also provides different kind information. This information is being placed into HTTP header and provides server with specific details for better understanding each other. In particular, it contains <code>Accept</code> header field which specifies client preferences on response format. I&#8217;m going use Fiddler to check how Web API behaves on different conditions.
-</p><p>First, let&#8217;s do not specify the <code>Accept</code> field at all. So, the payload we going to send to server from our client (Fiddler) will be like:
-</p><pre class="brush: plain">    GET /api/products HTTP/1.1
+</pre
+  >
+  <p>
+    The less stuff is very similar to something we get used in ASP.NET MVC. And
+    you might think - why do we need this Web API at all, I can do exactly the
+    same stuff with good-n-old ASP.NET MVC controllers? Not exactly. Web API has
+    several killer features that makes it favorite for data oriented API&#8217;s.
+    Let&#8217;s go on.
+  </p>
+  <h2>Content Negotiation</h2>
+  <p>
+    Content Negotiation is the process for mutual agreement between client and
+    server about the received/sent data formats. Good news here, Web API does a
+    lot of job for you, leaving content negotiation internals behind the scene.
+    Let&#8217;s take a brief look of how things happen.
+  </p>
+  <p>
+    When client sends HTTP request to server, besides the query string and
+    payload it also provides different kind information. This information is
+    being placed into HTTP header and provides server with specific details for
+    better understanding each other. In particular, it contains
+    <code>Accept</code> header field which specifies client preferences on
+    response format. I&#8217;m going use Fiddler to check how Web API behaves on
+    different conditions.
+  </p>
+  <p>
+    First, let&#8217;s do not specify the <code>Accept</code> field at all. So, the
+    payload we going to send to server from our client (Fiddler) will be like:
+  </p>
+  <pre class="brush: plain">
+    GET /api/products HTTP/1.1
     User-Agent: Fiddler
     Host: localhost:5589
-</pre><p>For that request, we will receive the response like:
-</p><pre class="brush: plain">    HTTP/1.1 200 OK
+</pre
+  >
+  <p>For that request, we will receive the response like:</p>
+  <pre class="brush: plain">
+    HTTP/1.1 200 OK
     Cache-Control: no-cache
     Pragma: no-cache
     Content-Type: application/json; charset=utf-8
@@ -702,14 +823,23 @@ GetAnother() on type MvcApplication7.Api.Controllers.ProductsController"
     Content-Length: 88
 
     [{"Description":"iPad","Id":1,"Price":1000},{"Description":"iPhone","Id":2,"Price":500}]
-</pre><p>As you can see, the default Content-Type is &#8220;application/json; charset=utf-8&#8221;, there is a json string in HTTP response payload.
-</p><p>Let&#8217;s make our request a little more specific. 
-</p><pre class="brush: plain">    GET /api/products HTTP/1.1
+</pre
+  >
+  <p>
+    As you can see, the default Content-Type is &#8220;application/json;
+    charset=utf-8&#8221;, there is a json string in HTTP response payload.
+  </p>
+  <p>Let&#8217;s make our request a little more specific.</p>
+  <pre class="brush: plain">
+    GET /api/products HTTP/1.1
     User-Agent: Fiddler
     Host: localhost:5589
     Accept: text/xml
-</pre><p>The corresponsing response:
-</p><pre class="brush: plain">    HTTP/1.1 200 OK
+</pre
+  >
+  <p>The corresponsing response:</p>
+  <pre class="brush: plain">
+    HTTP/1.1 200 OK
     Cache-Control: no-cache
     Pragma: no-cache
     Content-Type: text/xml; charset=utf-8
@@ -722,34 +852,122 @@ GetAnother() on type MvcApplication7.Api.Controllers.ProductsController"
     Content-Length: 329
 
     &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;ArrayOfProduct xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&lt;Product&gt;&lt;Id&gt;1&lt;/Id&gt;&lt;Description&gt;iPad&lt;/Description&gt;&lt;Price&gt;1000&lt;/Price&gt;&lt;/Product&gt;&lt;Product&gt;&lt;Id&gt;2&lt;/Id&gt;&lt;Description&gt;iPhone&lt;/Description&gt;&lt;Price&gt;500&lt;/Price&gt;&lt;/Product&gt;&lt;/ArrayOfProduct&gt;
-</pre><p>As you can see, without any code changes we made it &#8220;adapt&#8221; for particular client needs. This is a very decent feature of Web API and available for use, just from the box. You even don&#8217;t need to care about it at all. Leave the content negotiation for the infrastructure.
-</p><h2>IQueryable&lt;T&gt; Support</h2><p>Next cool feature is IQueryable&lt;T&gt; support. If you need to, instead of returning &#8220;plain&#8221; IEnumerable objects from the API action, you might return IQueryable&lt;T&gt;. Why?
-</p><p>Remember the times we implemented paging & sorting with ASP.NET MVC application. It was possible of cause, but it required a lot of manual job. Actions had to be extended with additional parameters, code have to respect those parameters and return exact portion of data we require to. The same story with sorting. In Web API it much simpler.
-</p><p>Change the signature and return type to IQueryable.
-</p><pre class="brush: csharp">public IQueryable&lt;Product&gt; Get()
+</pre
+  >
+  <p>
+    As you can see, without any code changes we made it &#8220;adapt&#8221; for particular
+    client needs. This is a very decent feature of Web API and available for
+    use, just from the box. You even don&#8217;t need to care about it at all. Leave
+    the content negotiation for the infrastructure.
+  </p>
+  <h2>IQueryable&lt;T&gt; Support</h2>
+  <p>
+    Next cool feature is IQueryable&lt;T&gt; support. If you need to, instead of
+    returning &#8220;plain&#8221; IEnumerable objects from the API action, you might return
+    IQueryable&lt;T&gt;. Why?
+  </p>
+  <p>
+    Remember the times we implemented paging & sorting with ASP.NET MVC
+    application. It was possible of cause, but it required a lot of manual job.
+    Actions had to be extended with additional parameters, code have to respect
+    those parameters and return exact portion of data we require to. The same
+    story with sorting. In Web API it much simpler.
+  </p>
+  <p>Change the signature and return type to IQueryable.</p>
+  <pre class="brush: csharp">
+public IQueryable&lt;Product&gt; Get()
 {
     return _storage.AsQueryable();
 }
-</pre><p>Now, if Web API sees the method like that, it will allow to access with with Open Data Protocol (OData) query string parameters. OData provides support for following queries: $filter, $orderby, $skip, $top.
-</p><p>Now, if I do the request:
-</p><pre class="brush: plain">    http://localhost:5589/api/products?$top=3
-</pre><p>I will receive, 3 top products. Or something like,
-</p><pre class="brush: plain">    http://localhost:5589/api/products?$skip=2&$top=3
-</pre><p>I will skip 2 and take rest 3. In short, having IQueryable and 4 OData query parameters it&#8217;s much more easy to do the stuff required more time before.
-</p><h2>Hosting</h2><p>Hosting is a feature of Web API allow to run service inside the different hosts. What does it mean?
-</p><p>We are much get used to ASP.NET hosting as default. I saw no problem with that at all till working on one of my recent <a href="http://alexanderbeletsky.github.com/candidate/">projects</a>. The problem is for ASP.NET pipeline you need to have a web server (IIS), but web server always have some limitations (permissions and stuff). For simple things, that does not require any IIS benefits it is easier to host application just in .exe assembly. It&#8217;s now possible with Web API.
-</p><p>We have several hosting providers out of the box: self-hosting and web-hosting. Besides of that there are already some provided by community <a href="http://whereslou.com/2012/02/20/gate-adds-owin-support-for-the-new-asp-net-web-api-beta">Louis DeJardin created a host on top of OWIN</a> and <a href="https://github.com/pmhsfelix/WebApi.Explorations.ServiceBusRelayHost">Pedro Félix host for Azure</a>.
-</p><p>Also, there is a great article by Pedro Felix about <a href="http://pfelix.wordpress.com/2012/03/05/asp-net-web-api-in-memory-hosting/">in-memory</a> hosting. This is very useful type of hosting for unit testing of services. 
-</p><h2>IoC improvements</h2><p>Since Web API now is inside ASP.NET MVC, it uses the same strategy of resolving types by <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">IDependencyResolver</a>. That means that Web API classes are now supporting same IoC style as ASP.NET MVC controller classes. Being setup once you can put different dependencies inside API class constructor.
-</p><pre class="brush: csharp">public class ProductsController : ApiController
+</pre
+  >
+  <p>
+    Now, if Web API sees the method like that, it will allow to access with with
+    Open Data Protocol (OData) query string parameters. OData provides support
+    for following queries: $filter, $orderby, $skip, $top.
+  </p>
+  <p>Now, if I do the request:</p>
+  <pre class="brush: plain">
+    http://localhost:5589/api/products?$top=3
+</pre
+  >
+  <p>I will receive, 3 top products. Or something like,</p>
+  <pre class="brush: plain">
+    http://localhost:5589/api/products?$skip=2&$top=3
+</pre
+  >
+  <p>
+    I will skip 2 and take rest 3. In short, having IQueryable and 4 OData query
+    parameters it&#8217;s much more easy to do the stuff required more time before.
+  </p>
+  <h2>Hosting</h2>
+  <p>
+    Hosting is a feature of Web API allow to run service inside the different
+    hosts. What does it mean?
+  </p>
+  <p>
+    We are much get used to ASP.NET hosting as default. I saw no problem with
+    that at all till working on one of my recent
+    <a href="http://alexbeletsky.github.com/candidate/">projects</a>. The
+    problem is for ASP.NET pipeline you need to have a web server (IIS), but web
+    server always have some limitations (permissions and stuff). For simple
+    things, that does not require any IIS benefits it is easier to host
+    application just in .exe assembly. It&#8217;s now possible with Web API.
+  </p>
+  <p>
+    We have several hosting providers out of the box: self-hosting and
+    web-hosting. Besides of that there are already some provided by community
+    <a
+      href="http://whereslou.com/2012/02/20/gate-adds-owin-support-for-the-new-asp-net-web-api-beta"
+      >Louis DeJardin created a host on top of OWIN</a
+    >
+    and
+    <a
+      href="https://github.com/pmhsfelix/WebApi.Explorations.ServiceBusRelayHost"
+      >Pedro Félix host for Azure</a
+    >.
+  </p>
+  <p>
+    Also, there is a great article by Pedro Felix about
+    <a
+      href="http://pfelix.wordpress.com/2012/03/05/asp-net-web-api-in-memory-hosting/"
+      >in-memory</a
+    >
+    hosting. This is very useful type of hosting for unit testing of services.
+  </p>
+  <h2>IoC improvements</h2>
+  <p>
+    Since Web API now is inside ASP.NET MVC, it uses the same strategy of
+    resolving types by
+    <a
+      href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html"
+      >IDependencyResolver</a
+    >. That means that Web API classes are now supporting same IoC style as
+    ASP.NET MVC controller classes. Being setup once you can put different
+    dependencies inside API class constructor.
+  </p>
+  <pre class="brush: csharp">
+public class ProductsController : ApiController
 {
  public ProductsController(IServiceProvider service, IRepository&lt;Product&gt; productRepository)
  {
   // .. 
  }
 
-</pre><h2>Conclusions</h2><p>This is not everything, but very light overview of new stuff coming within ASP.NET MVC4. ASP.NET Web API is very nice addition to framework. There are already some <a href="http://ayende.com/blog/155137/thoughts-after-using-asp-net-web-api-beta-in-anger-for-a-week">good</a> feedback, so let&#8217;s hope it will be even more improved toward release.
-</p></div>
+</pre
+  >
+  <h2>Conclusions</h2>
+  <p>
+    This is not everything, but very light overview of new stuff coming within
+    ASP.NET MVC4. ASP.NET Web API is very nice addition to framework. There are
+    already some
+    <a
+      href="http://ayende.com/blog/155137/thoughts-after-using-asp-net-web-api-beta-in-anger-for-a-week"
+      >good</a
+    >
+    feedback, so let&#8217;s hope it will be even more improved toward release.
+  </p>
+</div>
 
       
       

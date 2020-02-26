@@ -67,10 +67,27 @@
 
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
-	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
-	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
-	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+  <li>
+    <a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a>
+  </li>
+  <li>
+    <a
+      class="github icon-github-circled"
+      href="https://github.com/alexbeletsky"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="stackoverflow icon-stackoverflow"
+      href="http://stackoverflow.com/users/386751/alexanderb"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="rss icon-rss"
+      href="http://feeds.feedburner.com/abeletskyblog"
+    ></a>
+  </li>
 </ul>
 </div>
 	<div id="content" class="inner pure-g-r"><article class="post">
@@ -104,41 +121,64 @@
 
   <div class="entry-content pure-u-4-5">
     <div class="content">
-      <div class='post'>
-<p>
-The most important factor about each open source project is how much community is active around this project. It is good to understand the factor. One of the indicators of activity is of cause commits to repository. You probably want to demonstrate how much active your project is by placing some information on a web site.
-</p>
-<p>
-Having this idea on my mind I created <code>github.commits.widget</code>, small javascript that could be easily integrated to your website and show something like this:
-</p>
-<div id="github-commits" style="border: 1px solid grey; padding: 5px; list-style: none"></div>
-<p>
-Note, it is not just html pasted.. but widget added to this blog post.
-</p>
-<p>
-The code is really simple for that:
-</p>
-<pre class="brush: html">
+      <div class="post">
+  <p>
+    The most important factor about each open source project is how much
+    community is active around this project. It is good to understand the
+    factor. One of the indicators of activity is of cause commits to repository.
+    You probably want to demonstrate how much active your project is by placing
+    some information on a web site.
+  </p>
+  <p>
+    Having this idea on my mind I created <code>github.commits.widget</code>,
+    small javascript that could be easily integrated to your website and show
+    something like this:
+  </p>
+  <div
+    id="github-commits"
+    style="border: 1px solid grey; padding: 5px; list-style: none"
+  ></div>
+  <p>
+    Note, it is not just html pasted.. but widget added to this blog post.
+  </p>
+  <p>
+    The code is really simple for that:
+  </p>
+  <pre class="brush: html">
 &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;github.commits.widget-min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
     $(function () {
         $('#github-commits').githubInfoWidget(
-      { user: 'alexanderbeletsky', repo: 'github.commits.widget', branch: 'master', last: 5 });
+      { user: 'alexbeletsky', repo: 'github.commits.widget', branch: 'master', last: 5 });
     });
 &lt;/script&gt;
-</pre>
-<p>
-To configure all you need to do: specify your github account, repository and branch to watch. For more documenation, please visit <a href="https://github.com/alexbeletsky/github.commits.widget">project page</a>. If you like it and want to use it on your website, you are very welcome to do it! Please just give a little feedback to either by <a href="https://github.com/alexbeletsky">github</a>, <a href="http://twitter.com/#!/alexbeletsky">twitter</a> or <a href="mailto:alexander.beletsky@gmail.com">mail</a>.
-</p>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-<script src="https://github.com/alexbeletsky/github.commits.widget/raw/master/js/github.commits.widget-min.js"></script>
-<script>
-    $(function () {
-        $('#github-commits').githubInfoWidget(
-  { user: 'alexanderbeletsky', repo: 'github.commits.widget', branch: 'master', last: 5 });
+</pre
+  >
+  <p>
+    To configure all you need to do: specify your github account, repository and
+    branch to watch. For more documenation, please visit
+    <a href="https://github.com/alexbeletsky/github.commits.widget"
+      >project page</a
+    >. If you like it and want to use it on your website, you are very welcome
+    to do it! Please just give a little feedback to either by
+    <a href="https://github.com/alexbeletsky">github</a>,
+    <a href="http://twitter.com/#!/alexbeletsky">twitter</a> or
+    <a href="mailto:alexander.beletsky@gmail.com">mail</a>.
+  </p>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+  <script src="https://github.com/alexbeletsky/github.commits.widget/raw/master/js/github.commits.widget-min.js"></script>
+  <script>
+    $(function() {
+      $('#github-commits').githubInfoWidget({
+        user: 'alexbeletsky',
+        repo: 'github.commits.widget',
+        branch: 'master',
+        last: 5,
+      });
     });
-</script></div>
+  </script>
+</div>
 
       <div class="post sharing">
   
@@ -153,8 +193,17 @@ To configure all you need to do: specify your github account, repository and bra
 </div>
 
       <p class="post byline author vcard">
-	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+  Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material,
+  please consider to follow my
+  <a href="http://twitter.com/alexbeletsky">twitter</a> account for
+  further updates. If you have comments or questions, do not hesitate to contact
+  my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on
+  <a
+    href="https://github.com/alexbeletsky/alexbeletsky.github.io/issues"
+    >github</a
+  >.
 </p>
+
     </div>
   </div>
 

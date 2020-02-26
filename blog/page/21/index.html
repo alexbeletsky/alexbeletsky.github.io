@@ -67,10 +67,27 @@
 
 </header>
 	<div class="social inner pure-menu-horizontal"><ul>
-	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
-	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
-	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
-	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+  <li>
+    <a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a>
+  </li>
+  <li>
+    <a
+      class="github icon-github-circled"
+      href="https://github.com/alexbeletsky"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="stackoverflow icon-stackoverflow"
+      href="http://stackoverflow.com/users/386751/alexanderb"
+    ></a>
+  </li>
+  <li>
+    <a
+      class="rss icon-rss"
+      href="http://feeds.feedburner.com/abeletskyblog"
+    ></a>
+  </li>
 </ul>
 </div>
 	<div id="content" class="inner pure-g-r"><div class="blog-index">
@@ -451,7 +468,7 @@ It utilized javascript GitHub API by: http://github.com/fitzgen/github-api
 <p>
 First draft example looks like this,
 </p>
-<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexanderbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
 <p>
 Code itself is also really simple: it opens the blob, reads its data as HTML, extracts the body and put body to target div. That&#8217;s it. All this done asynchronously, so as you open the blog you see progress image.. after data loaded it appears on screen.
 </p>
