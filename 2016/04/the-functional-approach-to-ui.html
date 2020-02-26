@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The Functional Approach to UI</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="The Functional Approach to UI Apr 3rd, 2016 javascript, react, redux A state is a representation of a system in a given time. Traditionally, we deal &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2016/04/the-functional-approach-to-ui.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">The Functional Approach to UI</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-03T14:45:00+02:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2016</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/redux/'>redux</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>A state is a representation of a system in a given time. Traditionally, we deal with <em>mutable</em> state storages, like SQL and NoSQL databases.</p>
+
+<p>Each update destroys previous value, there is no history what value had been stored a minute ago, an hour ago or 5 years ago.</p>
+
+<!-- MORE -->
+
+
+<h2>Events and Immutability</h2>
+
+<p>Are there any alternatives, that allow mitigating that drawback?</p>
+
+<p>One of the oldest professions in the world (not what you think) already have an answer for that. In <em>accounting</em> the only way to modify the balance is to introduce a credit or debit record.</p>
+
+<p>If an accountant makes a mistake of placing <em>$100 debit</em>, she simply can’t erase an entry. Instead, she introduces a contra-operation, new entry that says <em>$100 credit</em>, that should compensate balance and return it to the previous state.</p>
+
+<p>That principle makes a foundation for <em>Event Sourcing</em> architectural style. In Event Sourcing, there is an initial state and series of events, each event represents a <em>change</em> it introduces to the state. Every event is stored, and can not be deleted or modified, state is derived from events. Both are <strong>immutable</strong>.</p>
+
+<p>The state of a whole system can be described with such formula:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Snext = F(S, event);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To get the state of the system for given moment of time, we need to take an initial state and <em>replay</em> all events that happened before.</p>
+
+<h2>UI as Function of State</h2>
+
+<p>An imperative approach is dominant now, and front-end applications are not the exception. We are using MVC / MVVM on a client, fetching data from a server, imperatively modifying it and storing back.</p>
+
+<p>The state of UI is distributed all around, there is no central place, where it’s stored. It’s rather a mix of states in models, states in DOM with a bunch of side-effects.</p>
+
+<p>What if we imagine such central place and the whole UI of our application, as a function of it?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UI = F(S);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Means, UI is a function of a state.</p>
+
+<p><a href="https://facebook.github.io/react/">React</a> is a library that gives the ability to treat UI like that. React represents the UI as a hierarchy of components, each of the components is a <a href="https://facebook.github.io/react/docs/displaying-data.html#components-are-just-like-functions">function</a>, that takes some properties as input and returns a markup. The whole UI is a composition of such functions.</p>
+
+<p>But how to deal with the state to avoid the problems we already had with an imperative approach to UI?</p>
+
+<h2>Predictable State</h2>
+
+<p><a href="https://github.com/gaearon">Dan Abramov</a>, in his famous talk of <a href="https://www.youtube.com/watch?v=xsSnOQynTHs">Time Travel Debugging</a> came to the idea, of bringing event sourcing principles of state handling to the client, solving one of the most painful issues.</p>
+
+<p><a href="http://redux.js.org/">Redux</a> represents the state as,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Snext = R(S, action);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Combining it with UI part,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UI = F(S);
+</span><span class='line'>UI = F(R(state, action));</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>F</strong> &ndash; <code>React</code> component function, <strong>R</strong> &ndash; <code>Reducer</code>, a function that transforms the current state, based on <em>action</em> that happened in an application.</p>
+
+<p>In Redux architecture, we have a <em>store</em> that holds the application state and provides an interface for changing that state, by <em>dispatching</em> actions. An <em>Action</em> holds it’s type as well as payload, which reducer uses to produce next state.</p>
+
+<p>Like in Event Souring, actions are just plain objects, they can be logged, serialized, stored, and later replayed for debugging or testing purposes.</p>
+
+<h2>React with Redux</h2>
+
+<p>Even if Redux stresses it’s not designed to be used especially with React, React and Redux make a perfect couple.</p>
+
+<p>React allows you to treat the UI as a function of the state, Redux allows you to manage that state in a predictable way. <a href="https://github.com/reactjs/react-redux">React-Redux</a> binding <em>connects</em> React component to Redux state, and every time it changes, component gets new state and UI re-rendering triggers.</p>
+
+<p>In other words, with each change, the whole UI is re-rendered. Because of React re-rendering is based on virtual DOM diff algorithms, complete re-render doesn’t bring huge performance penalties, comparing to other frameworks.</p>
+
+<p>Unidirectional data flow makes it easy to understand what’s going on in complex interfaces. As I <a href="http://engineering.blogfoster.com/jumpstart-to-react-redux-development/">jumped in</a> with Redux with-out considerable experience with React itself, I would say once <em>state</em> part as a problem is solved, React part becomes a simple one.</p>
+
+<p><em>Originally published at <a href="http://engineering.blogfoster.com/the-functional-approach-to-ui/">blogfoster Engineering</a>.</em></p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2016/04/the-functional-approach-to-ui.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2016/04/the-functional-approach-to-ui.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

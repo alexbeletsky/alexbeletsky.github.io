@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NancyFX | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/nancyfx/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CamelCase JSON Formatting for NancyFX Application]]></title>
+    <link href="http://beletsky.net/2012/08/camelcase-json-formatting-for-nancyfx.html"/>
+    <updated>2012-08-18T13:17:00+02:00</updated>
+    <id>http://beletsky.net/2012/08/camelcase-json-formatting-for-nancyfx</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    As I have chosen <a href="https://github.com/NancyFx/Nancy">NancyFX</a> framework for my <a href="https://github.com/alexbeletsky/candidate/tree/nancy">pet project</a>, I've spend yet another week playing with it. My original expectations were - I'll be super-duper-fast with it, since it's so comprehensive and powerful. One more time I have to admit - every technology has it's learning curve, it could be smooth, but it is still curve. Time need to be invested to learn it.<br />
+</p><p>    The good thing, it's very interesting to fight new challenges, and it's so cool that Nancy just "does not contain everything", but actually allows to customize things, as you wish to.<br />
+</p><h2>Nancy's default JSON formatter</h2><p>    Nancy is using <a href="https://github.com/grendello">Marek Habersack's</a> version <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Json/JsonSerializer.cs">JsonSerializer</a>, which is a smart wrapper on <a href="http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx">JavaScriptSerializer</a>. It works, fine.. but the problem, it does not provide any facilities to change default formatting settings. That would mean, if you have a module with method like that,<br />
+</p><pre class="brush: csharp">public class SitesModule : NancyModule
+{
+    public SitesModule() : base("/api/sites")
+    {
+        Get["/"] = parameters => Response.AsJson(new[] {new { Name = "Site 1", DeployStatus = "Deployed" }});
+    }
+}
+</pre><p>    You will get valid JSON, but it would serialize all C# properties, as they are:<br />
+</p><pre class="brush: plain">    "[{"Name":"Site 1","DeployStatus":"Deployed "}]"
+</pre><p>    Don't know about you, but it makes me sick too work with uppercase object fields in JavaScript. Fortunately, such advanced JavaScript serialization libraries as <a href="http://james.newtonking.com/pages/json-net.aspx">JSON.NET</a> has formatting features. So, our goal is to create custom serialize (based on JSON.NET) and integrate it to Nancy's pipeline.<br />
+</p><h2>    JSON.NET based serialization<br />
+</h2><p>    In order to do that, we need to implement special interface (guess it's name?) - <code>ISerializer</code>. Without further explanation, I just copy and paste code here:<br />
+</p><pre class="brush: csharp">public class JsonNetSerializer : ISerializer
+{
+    private readonly JsonSerializer _serializer;
+
+    public JsonNetSerializer()
+    {
+        var settings = new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        };
+
+        _serializer = JsonSerializer.Create(settings);
+    }
+
+    public bool CanSerialize(string contentType)
+    {
+        return contentType == &quot;application/json&quot;;
+    }
+
+    public void Serialize&lt;TModel&gt;(string contentType, TModel model, Stream outputStream)
+    {
+        using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
+        {
+            _serializer.Serialize(writer, model);
+            writer.Flush();
+        }
+    }
+}
+</pre><h2>Changing the configuration</h2><p>    NancyFX bootstrapper has a special method, which have to be overridden in order to change internal configuration. There is a very convenient helper, that is useful for changing some particular bits of config.<br />
+</p><pre class="brush: csharp">protected override NancyInternalConfiguration InternalConfiguration
+{
+    get
+    {
+        return NancyInternalConfiguration.WithOverrides(c => c.Serializers.Insert(0, typeof(JsonNetSerializer)));
+    }
+}
+</pre><p>    Please note, I'm inserting that to position 0, just to make sure it's *before* default <code>JsonSerializer</code> type, since AsJson() response formatter is using <code>FirstOrDefault</code> strategy to find corresponding serialize class. Just build and re-start your app, and from now your JSON's would be looking really good:<br />
+</p><pre class="brush: plain">    "[{"name":"Site 1","deployStatus":"Deployed "}]"
+</pre><p>    Much more better now!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Customizing Folders Layout for NancyFX Application]]></title>
+    <link href="http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx.html"/>
+    <updated>2012-08-14T19:05:00+02:00</updated>
+    <id>http://beletsky.net/2012/08/customizing-folders-layout-for-nancyfx</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    <a href="https://github.com/NancyFx">NancyFX</a> applications are full of conventions. The default conventions are good enough, especially if you use ASP.NET hosting, where you probably don't even care. If you plan to do self-hosting application, you typically want to change some bits.<br />
+</p><p>    In my case, during <a href="https://github.com/alexbeletsky/candidate/tree/nancy">Candidate</a> application re-writing, I wanted to have some custom folder layout, that would be clean and not confuse application users with so many details. In fact, I wanted something that in deployed state looks like this:<br />
+</p><a href="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png"><br />
+    <img src="https://lh3.googleusercontent.com/-wQqqT_kUXpY/UCqEGGRQBRI/AAAAAAAAI_w/erBVjE9lhiw/s620/image-1.png" alt="folder layout" /><br />
+</a><br />
+<p>    'Bin' folder would contain the application itself, as well as all referenced assemblies. 'Client' folder would contain all client side code - HTML/CSS/Javascript. Initially I thought to make all of those as embedded resources, but firstly <a href="http://stackoverflow.com/questions/11888813/nancyfx-using-embedded-views">did not worked</a> on Nancy v.0.11.0, secondly having those files placed separately make it possible to easy application updates (patching).<br />
+</p><p>    Fortunately, it is easy to apply any folder layout you want. There are 2 types of recourses that Nancy is looking from outside, they are - views and static content. Both of them are resolved by default conventions and those conventions applied against the application root.<br />
+</p><h2>Changing the application root</h2><p>    In my case, executables are places in Bin folder, but resources are placed one level above. By default, the application root is <code>Environment.CurrentDirectory</code> and I need to changed that. In order to make this happen, you have to implement <code>IRootProvider</code> instance.<br />
+</p><pre class="brush: csharp">namespace Candidate.Nancy.Selfhosted.App
+{
+    public class PathProvider : IRootPathProvider
+    {
+        public string GetRootPath()
+        {
+            return Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\"));
+        }
+    }
+}
+</pre><p>    There is a little pitfall, that I got into. Please, make sure that root folder is <strong>absolute</strong> path (<code>Path.GetFullPath</code> - returns absolute path). If you didn't do that, some part of application could not work right. I've sent a <a href="https://github.com/NancyFx/Nancy/pull/706">pull request</a> for <code>StaticContentConventionBuilder</code> class, but more appropriate fix is actually having it rooted. <br />
+</p><p>    After, just place the type of path provider instance into Nancy bootstrapper class, as overridable property:<br />
+</p><pre class="brush: csharp">protected override Type RootPathProvider
+{
+    get
+    {
+        return typeof(PathProvider);
+    }
+}
+</pre><h2>Changing the default conventions</h2><p>    Now, we have to teach Nancy to look for view and static resources right.<br />
+</p><p>    The bootstapper contains corresponding virtual method, called <code>ConfigureConventions</code>. There I'll overrider the default ones, like that:<br />
+</p><pre class="brush: csharp">protected override void ConfigureConventions(NancyConventions nancyConventions)
+{
+    // static content
+    nancyConventions.StaticContentsConventions.Clear();
+    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("scripts",
+                                                                                                "Client/scripts"));
+    nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("content",
+                                                                                                "Client/content"));
+    // view location
+    nancyConventions.ViewLocationConventions.Clear();
+    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", viewName));
+    nancyConventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat("Client/views/", context.ModuleName, "/", viewName));
+}
+</pre><p>    For view location conventions you just need to provider the folder (relative to rootfolder), where the view are located. I used only 2 simple conventions: 1) view is just placed under /views folder 2) view is placed under /view/moduleName folder. <br />
+</p><p>    For static resources, it a little bit trickier. You have to return the *response* object, for corresponding request. Fortunately, <a href="https://github.com/NancyFx/Nancy/blob/master/src/Nancy/Conventions/StaticContentConventionBuilder.cs">StaticContentConventionBuilder</a> class, has some helper methods that make it simpler. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

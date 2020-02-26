@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Github as blogging platform</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Github as blogging platform May 16th, 2013 GitHub, Mind, Open source No, I&#8217;m not going to talk about creation some github-backed blogging &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2013/05/github-as-blogging-platform.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Github as blogging platform</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-16T17:55:00+02:00" pubdate data-updated="true">May 16<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how&#8217;s while I create some code. It&#8217;s just hard to blog about. As you didn&#8217;t do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    <!-- more -->
+    </p>    <p>        As I mentioned in my <a href="http://www.beletsky.net/2013/04/building-single-page-applications-with.html">previous</a> post I recently created some code that contains Backbone.js + Express.js boilerplate code that could be great start for building single page applications. I felt I need to document it somehow, so even myself will remember what&#8217;s going on there. So, I put some <a href="https://github.com/alexbeletsky/backbone-express-spa/blob/master/README.md">README</a> file there. Usually, I don&#8217;t write much documentation, but during writing it I realized that it&#8217;s a kind of blog post or tutorial I&#8217;m writing immediately after I created something.<br />
+    </p>    <p>        I liked the way how it went. First of all, Markdown is great for technical blogging. I still use HTML and feel a but ashamed by that fact. It&#8217;s so easy to format and place code examples inside with Markdown (and it looks minimalistic and great on github). Second, the content of resulted readme file, pleased me much.. I felt it&#8217;s the same as blogging, but a bit.. more interesting, or so? So, I twitted about and great surprise for me, repository got 200 stars and 20 forks, got <a href="http://javascriptweekly.com/archive/128.html">mention</a> on <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and raised some <a href="https://github.com/alexbeletsky/backbone-express-spa/issues">questions</a>. <br />
+    </p>    <p>        The same as blogging, but instead post you have repo with README + some valuable code. Instead comments, you got issues and pull requests.<br />
+    </p>    <p>        That was really motivating experience. I think I would like to repeat it from time to time.<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2013/05/github-as-blogging-platform.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2013/05/github-as-blogging-platform.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

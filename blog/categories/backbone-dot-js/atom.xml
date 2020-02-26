@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Backbone.js | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/backbone-dot-js/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Building Single Pages Applications]]></title>
+    <link href="http://beletsky.net/2013/04/building-single-pages-applications.html"/>
+    <updated>2013-04-29T19:26:00+02:00</updated>
+    <id>http://beletsky.net/2013/04/building-single-pages-applications</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
+    </p>
+    <h2>        What is SPA?<br />
+    </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We'll check out new concept of web applications, that are called - Single Page Applications.<br />
+    </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it's UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
+    <!-- more -->
+ <script async class="speakerdeck-embed" data-id="2e8c91508fbe0130b23722000a1c4609" data-ratio="1.77777777777778" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script><br />
+    </p>    <p>        GMail is canonical example of single page application. It was not the first single page application though, it became very popular and gathered a lot of users. That was probably the first time the masses of people realized new user experience - application that works in browser, behaves similar to application on desktop. So, SPA opened a of new opportunities and abilities for software developers to release and promote their applications in web, which is in common case a much easier task, comparing to desktop applications. And new approach need to be taken to create such applications.<br />
+    </p>    <h2>        API oriented architecture<br />
+    </h2>    <p>        Before we jump into SPA details, let's talk about the architecture that would allow to build apps in that way. Popularized by <a href="http://twitter.com/">Twitter</a> it's being adopted by many vendors and became kind of default. We are talking about 'API oriented' architecture.<br />
+    </p>    <p>        Basically, it's just a deviation of classical 'Server-client', where we have server that provides an open API.. and where client is browser, powered by JavaScript engine.<br />
+    </p>    <p>        It's quite typically that server and client are communicating through HTTP, using JSON as payload format and relying on REST principles. I'm saying <i>typically</i>, since it's not always the case. Some apps might takes XML and use RPC instead of REST, but that actually doesn't really matter.<br />
+    </p>    <p>        Client is browser, that runs JavaScript code. JavaScript code is requesting the data and updating the DOM. Few years ago, jQuery was the primary tool of making such applications. Nowadays, we see MV* JavaScript frameworks are gaining a lot of traction and simplifying front-end development. It's not only about simplification, but also bringing the architecture principles on front-end, something that we haven't seen earlier.<br />
+    </p>    <h2>How to build Single Page applications?</h2>    <p>        We have a bunch of technologies, server and client that would allow to do that. ASP.NET MVC, Web API, NancyFX, ServiceStack, Express.js, RoR.. etc, on server and Backbone.js, Knockout.js, Angular.js, Marrionette.js, Durandal.js etc. from client.<br />
+    </p>    <p>        It gives a lot of options, actually. All of them have their pro/cons. I've used to use ASP.NET MVC as platform to build open API's and was quite happy with that. Nowadays, I'm using Node.js / Express.js and it works really great, as well.<br />
+    </p>    <p>        The truth is, with SPA, the front-end technology plays a bit more significant role. Of course, server still performs important role for authorization, data access, business logic.. but in API oriented architecture is turns to be a kind of CRUD exposed through HTTP.<br />
+    </p>    <p>        As for front-end, my experience lies in Backbone.js. Preventing the questions, I would say - Backbone.js is not perfect (as there are nothing perfect in this world). Bare Backbone.js app would require a lot of manual coding, but it would also allows to see some important implementation details that could be good for general SPA understanding.<br />
+    </p>    <h2>Server architecture</h2>    <p>        Server is responsible for two principal things. First, it provides with API. Second, it server the master page (again, it's not always the case, master.html could be places in some static resource server).<br />
+    </p>    <p>        Master page, is the one that being rendered in browser should bring basic DOM structure + reference the JavaScript code to initialize and run application. That's it.<br />
+    </p>    <p>        As always, it's important to think about scalability. Doesn't matter what technology you pick up, it's able to scale and hanlde more incoming request with given response time is vital.<br />
+    </p>    <h2>Client architecture</h2>    <p>        Scalability is important here, as well. That's a different scalability, though.<br />
+    </p>    <p>        I liked the way <a href="https://twitter.com/derickbailey">Derick Bailey</a> stated in one of <a href="http://javascriptjabber.com/056-jsj-marionette-js-with-derick-bailey/">JavaScript Jabber</a> show:<br />
+    </p>    <blockquote>        ... scalability in this case is not the number of users running the code at any given time. It’s the number of features in the system, how those features interact, and how you can start up and shut down and do all these things with these different features so that your application can grow in size, grow in features, and grow in capabilities.<br />
+    </blockquote>    <p>        That's were there the JavaScript pattern, MV* frameworks are shine. And without simple modularity, it's very hard to build scalable JavaScript applications.<br />
+    </p>    <h2>Require.js and AMD</h2>    <p>        Modularity is important. Each module represents some small piece of application functionality. The problem that JavaScript (ES5, to be precise) doesn't have modules as part of language.<br />
+    </p>    <p>        Require.js helps to solve the problem. Instead of referencing hundreds of JavaScript files which expose itself to global namespace, Require.js relies on, so called, Asynchronous Module Definition. The special rules which you code have to follow, to be able to act as module and being loaded by request.<br />
+    </p>    <p>        Besides of that, Require.js comes with building/optimization tools, that helps to prepare application to production.<br />
+    </p>    <p>        So, the Master html has a reference to Require.js main file, which will be responsible for configuration and initialization of app. This typically includes setup of view state management (ViewManager) and routing (Backbone.Router).<br />
+    </p>    <h2>Routing</h2>    <p>        Router, handles in-browser URL change events and notifies about that changes. <br />
+    </p>    <p>        The URL change might appear of 2 things: user clicks some href or submits the form with re-direct. The SPA prevents those things. Instead, all <code>href</code> click are overloaded, so instead of performing GET request on given URL, JavaScript code would let router know that URL is changing. Router receives the message and using some route rules, call corresponding handler.<br />
+    </p>    <p>        The handler job is to load the application and execute it.<br />
+    </p>    <h2>Applications</h2>    <p>        Applications in terms of code, are simple objects with <code>run</code> (or <code>execute</code>) function.<br />
+    </p>    <p>        The responsibility of application is to fetch all required data and intitialize application Main View. The Main view is then passed to a ViewManager, which is responsible to render it and attach to DOM.<br />
+    </p>    <p>        Besides of that, application is also 'logical' group of different modules with one goal. Imagine GMail application again - Contacts, Mails, Tasks are different applications. Each application, could have sub applications (with their own data and views).<br />
+    </p>    <p>        The rule of thumb, one route one application.<br />
+    </p>    <h2>        View Manager<br />
+    </h2>    <p>        As it's been mentioned about, View Manager is important part of SPA architecture.<br />
+    </p>    <p>        It handles the aspects of switching one application (MainView) to another. So, the content of application div is cleared up and than updated with new one. In Backbone.js application, that is particularly important, since besides the DOM update View Manager is responsible to clear up unsubscribe all events that views might be subscribed to, to prevent, so called <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Zombie View</a> problem.<br />
+    </p>    <h2>Main View and Subviews</h2>    <p>        Not trivial application could contain some complex UI. All complex UI is being divided on many smaller components.<br />
+    </p>    <p>        MainView is responsible for whole application UI. It's typical job to instantiate and render all required subviews. It also stores the references for all subviews into some internal data structure, so it's been able to close all them, while main view is closed.<br />
+    </p>    <h2>TheMailer - demo application</h2>    <p>        Here is <a href="https://github.com/alexbeletsky/themailer">TheMailer</a> - very simple application that implements all the ideas above. I've created that very quickly and I could not call it completed. At the backend it runs ASP.NET MVC/WebAPI and using Require.js + Backbone.js at front end.<br />
+    </p>    <p>        It allows you to view and compose email, as well as some simple management of tasks and contacts. <br />
+    </p>    <p>        Under the debugger, it is clear how the application is initialized and starting up, how MainView creates Subviews and how Routing and ViewManager works.<br />
+    </p>    <h2>Conclusions</h2>    <p>        I would call it SPA bare bones. As I mentioned above, using pure Backbone.js is good, since Backbone.js contains all required components which any SPA need (most important it have Backbone.Router).<br />
+    </p>    <p>        But I would recommended to check further. If you plan stick to Backbone.js, <a href="http://marionettejs.com/">Backbone.Marionette</a> by <a href="https://twitter.com/derickbailey">Derick Beiley</a> could be really nice option. For Google technologies fans, <a href="http://angularjs.org/">Angular.JS</a> makes a lot of sense. For ones that liked <a href="http://caliburnmicro.codeplex.com/">Caliburn.Micro</a> during WPF programming, could play with new framework <a href="http://durandaljs.com/">Durandal.js</a> by <a href="https://twitter.com/eisenbergeffect">Rob Eisenberg</a>.<br />
+    </p>    <p>        SPA is a lot of fun and adventure, welcome in!<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Building Single Page Applications with Backbone.js and Express.js]]></title>
+    <link href="http://beletsky.net/2013/04/building-single-page-applications-with.html"/>
+    <updated>2013-04-24T05:11:00+02:00</updated>
+    <id>http://beletsky.net/2013/04/building-single-page-applications-with</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
+</p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
+<!-- more -->
+</p><p>That's how the <a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> born.<br />
+</p><h2>Backbone.js + Express.js SPA boilerplate</h2><p>The project is a <a href="http://expressjs.com/">Express.js</a> application using <a href="http://backbonejs.org/">Backbone.js</a> as front-end framework. The idea is you just simply clone it, remove non needed routes and application and build something on your own.<br />
+</p><p>I won't put to much details in a blog post, since <a href="https://github.com/alexbeletsky/backbone-express-spa">repo</a> neat readme section. Just several facts:<br />
+</p><ul><li><strong>Minimal and simple</strong> - pure Backbone code, no plugins. For some real needs plugins are required anyway and you are free to include whatever you want.</li>
+<li><strong>AMD modules with RequireJS</strong> - modularity is key factor for large-scale apps, <a href="http://requirejs.org/">RequireJS</a></li>
+<li><strong>Concept of Application</strong> - to group all view, models, collection related to one application unit in one place.</li>
+<li><strong>Handlebars template</strong> - using <a href="http://handlebarsjs.com/">Handlebars</a> as template engine.</li>
+</ul><h2>Further work</h2><p>It's not yet completely done. I want to create more meaningful app, show some layouts principles + prepare readme section of building application for production.<br />
+</p><p>I'm also thinking of putting some examples of unit tests both for Express.js and Backbone.js.<br />
+</p><h2>Conclusions</h2><p>Check the <a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> out. If you like it, please give some stars or shout in twitter. I would be really happy to see some pull requests for improving applications or infrastructure. So, if you want to join - you are welcome!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections. Part 2.]]></title>
+    <link href="http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring.html"/>
+    <updated>2013-04-10T19:53:00+02:00</updated>
+    <id>http://beletsky.net/2013/04/baby-steps-to-backbonejs-exploring</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let's take a look what type of event does Backbone.Collection have.<br />
+    <!-- more -->
+    </p>    <h2>Backbone.Collection events</h2>    <p>        Will have a test suite for that,<br />
+    </p>    <pre class="brush: js">describe('collection events', function () {
+    var listener;
+
+    beforeEach(function () {
+        collection = new FeedbackCollection();
+    });
+
+    beforeEach(function () {
+        listener = jasmine.createSpy();
+    });
+    </pre>    <p>        Here we are creating collection for testing and Jasmine spy, special function we going to use as event subscriber.<br />
+    </p>    <h3>Adding element to collection</h3>    <p>        As we saw <a href="http://www.beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html">previously</a> there are several ways of adding new elements to collection. By add and push methods. The important thing, does not matter what API method you use, Backbone.Collection would trigger 'add' event.<br />
+    </p>    <p>        By <code>add</code> method,<br />
+    </p>    <pre class="brush: js">describe('while adding elements', function () {
+    beforeEach(function () {
+        collection.on('add', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it ('should raise add event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        By <code>push</code> method,<br />
+    </p>    <pre class="brush: js">describe('while pusing elements', function () {
+    beforeEach(function () {
+        collection.on('add', listener);
+    });
+
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it ('should raise add event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        Each event handlers receives model itself and reference to collection.<br />
+    </p>    <h3>Removing elements from collection</h3>    <p>        Similarly, there 2 ways of removing items from collection, by remove and pop methods.<br />
+    </p>    <p>        By <code>remove</code> method,<br />
+    </p>    <pre class="brush: js">describe('while removing items', function () {
+    beforeEach(function () {
+        collection.on('remove', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        var model = collection.get('feedback-1');
+        collection.remove(model);
+    });
+
+    it ('should raise remove event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <p>        By <code>pop</code> method,<br />
+    </p>    <pre class="brush: js">describe('while poping items', function () {
+    beforeEach(function () {
+        collection.on('remove', listener);
+    });
+
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        collection.pop();
+    });
+
+    it ('should raise remove event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <h3>Resetting and sorting</h3>    <p>        Besides just adding and removing stuff from collection, it have few more method which reaction is triggering event. It's reset and sort. Reset is the bulk insert into collection, it works great when we fetch some data from server and want to push everything just by one operation. Sort, is rarely called manually, since if collection provides <code>comparator</code> function, it would sort itself, during add or reset operations. But sometimes sorting could be triggered from UI as user changes the sort column of table, for example.<br />
+    </p>    <p>        Resetting collection,<br />
+    </p>    <pre class="brush: js">describe('while reseting collection', function () {
+    beforeEach(function () {
+        collection.on('reset', listener);
+    });
+
+    beforeEach(function () {
+        collection.reset([
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
+    });
+
+    it('should raise reset event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+</pre>    <p>        Sorting collection,<br />
+    </p>    <pre class="brush: js">describe('while sorting collection', function () {
+    beforeEach(function () {
+        collection.on('sort', listener);
+    });
+
+    beforeEach(function () {
+        collection.reset([
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}]);
+        collection.sort();
+    });
+
+    it('should raise sort event', function () {
+        expect(listener).toHaveBeenCalled();
+    });
+});
+    </pre>    <h2>Why it matters?</h2>    <p>        Knowing the events of all Backbone.js entities is very important. You should always design you application based on events triggering/subscription, instead of direct function call. That would make your code much de-coupled and UI logic very flexible.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Baby steps to Backbone.js: Exploring collections]]></title>
+    <link href="http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring.html"/>
+    <updated>2013-03-27T16:51:00+01:00</updated>
+    <id>http://beletsky.net/2013/03/baby-steps-to-backbonejs-exploring</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        After initial introduction to Backbone's <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
+    <!-- more -->
+    </p>    <p>        In small application we are doing through that series we have collection of feedbacks. But before I show how to integrate collection into the app, I want to make sure you understand all collection properties right. We'll do that by TDD'ing the collection and exploring it's behavior.<br />
+    </p>    <h2>Collection construction</h2>    <p>        So, to create collection we need to extend <code>Backbone.Collection</code> object,<br />
+    </p>    <pre class="brush: js">var FeedbackCollection = Backbone.Collection.extend({
+    model: Feedback,
+    url: '/feedback'
+});
+    </pre>    <p>        Here we just specified the URL for collection persistence and the model, of which the collection would consists of. Let's prepare the test suite for collection stories,<br />
+    </p>    <pre class="brush: js">describe('FeedbackCollection.js spec', function () {
+    var collection;
+});
+    </pre>    <p>        And create our first specification,<br />
+    </p>    <pre class="brush: js">describe('when constructing', function () {
+    describe('just empty', function () {
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
+
+        it('should be created', function () {
+            expect(collection).toBeDefined();
+        });
+    });
+</pre>    <p>        Just to make sure, our definition is fine and we are able to instantiate new collection object.<br />
+    </p>    <p>        <code>FeedbackCollection</code> constructor have few optional arguments - <code>models</code>, <code>options</code>. Models, could be either arrays of objects, or array of Backbone.Models. In case of object, collection constructor would "turn" them to models (taking the type we specified on collection definition) and add those models to collection. <br />
+    </p>    <pre class="brush: js">describe('with objects', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        or,<br />
+    </p>    <pre class="brush: js">describe('with models', function () {
+    beforeEach(function () {
+        var models = [
+            new Feedback({email: 'a@a.com', website: 'a.com', feedback: 'hello'}),
+            new Feedback({email: 'b@b.com', website: 'b.com', feedback: 'good bye'})
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be lenght of 2', function () {
+        expect(collection.length).toBe(2);
+    });
+
+    it('should contain models inside', function () {
+        expect(collection.models).toBeDefined();
+    });
+});
+</pre>    <p>        Both things are equivalent. Moreover, typically it's only unit tests you need to initialize collections that way, so I usually prefer first option.<br />
+    </p>    <p>        The <code>options</code> parameter, could contain the type of model that collection contain. So, if collection does not specify <code>model</code> property, <code>Backbone.Model</code> will be created by default.<br />
+    </p>    <pre class="brush: js">describe('with options', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models);   // not specifying model
+    });
+
+    it('should be created', function () {
+        expect(collection).toBeDefined();
+    });
+
+    it('should have models of Backbone.Model type', function () {
+        expect(collection.models[0].constructor).toBe(Backbone.Model);
+    });
+</pre>    <p>        You can override that by passing <code>{model: MyModel}</code> options object,<br />
+    </p>    <pre class="brush: js">describe('while passing model option', function () {
+    beforeEach(function () {
+        var models = [
+            {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new Backbone.Collection(models, { model: Feedback });
+    });
+
+    it('should have models of Feedback type', function () {
+        expect(collection.models[0].constructor).toBe(Feedback);
+    });
+});
+</pre>    <p>        Despite of that possibility I really rare use that in practice. It's better to simply specify model type in collection definition, that makes code easy to understand.<br />
+    </p>    <h2>Accessing collection elements</h2>    <p>        After collection has been constructed, it's possible to access internal models. There are several ways of doing that.<br />
+    </p>    <p>        The simplest one is by index,<br />
+    </p>    <pre class="brush: js">describe('when accessing collection elements', function () {
+    var first, second, models;
+
+    describe('by index', function () {
+        beforeEach(function () {
+            models = [
+                {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+                {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+            ];
+            collection = new FeedbackCollection(models);
+        });
+
+        beforeEach(function () {
+            first = collection.at(0);
+            second = collection.at(1);
+        });
+
+        it('should get first model by index', function () {
+            expect(first.toJSON()).toEqual(models[0]);
+        });
+
+        it('should get second model by index', function () {
+            expect(second.toJSON()).toEqual(models[1]);
+        });
+    });
+</pre>    <p>        Even it possible, in real apps you probably don't know the index of model you need to get from collection, since they might come from server in unpredictable order. So, instead of index, getting by id is more appropriate way.<br />
+    </p>    <pre class="brush: js">describe('by id', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    beforeEach(function () {
+        first = collection.get('feedback-1');
+        second = collection.get('feedback-2');
+    });
+
+    it('should get first model by id', function () {
+        expect(first.toJSON()).toEqual(models[0]);
+    });
+
+    it('should get second model by id', function () {
+        expect(second.toJSON()).toEqual(models[1]);
+    });
+});
+</pre>    <p>        And finally, something that I being trapped many time while starting up with Backbone - indexers on collection, does not work.<br />
+    </p>    <pre class="brush: js">describe('indexer does not work', function () {
+    beforeEach(function () {
+        models = [
+            {id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'},
+            {id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+        ];
+        collection = new FeedbackCollection(models);
+    });
+
+    it('should be undefined', function () {
+        expect(collection[0]).not.toBeDefined();
+    });
+});
+</pre>    <h2>Adding and removing items</h2>    <p>        Next, we need to understand to how to add and remove items from collections.<br />
+    </p>    <p>        There are 2 ways of adding item into backbone collection: <code>add</code>, <code>push</code>. They are very similar, but there are difference between those. The add method takes a model or array of models and the options you can specify the position there the item should be interred to. Push method, would simply add new item to the end of collection.<br />
+    </p>    <pre class="brush: js">describe('by add method', function () {
+    beforeEach(function () {
+        collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with index specified', function () {
+        beforeEach(function () {
+            collection.add({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}, {at: 0});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-2 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-2');
+        });
+    });
+});
+</pre>    <p>        By push,<br />
+    </p>    <pre class="brush: js">describe('by push method', function () {
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+    });
+
+    it('should be added', function () {
+        expect(collection.get('feedback-1')).toBeDefined();
+    });
+
+    it('should be converted to model', function () {
+        expect(collection.get('feedback-1').constructor).toBe(Feedback);
+    });
+
+    describe('with next push', function () {
+        beforeEach(function () {
+            collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+        });
+
+        it('should have 2 items in collection', function () {
+            expect(collection.length).toBe(2);
+        });
+
+        it('should have feedback-1 item at index 0', function () {
+            expect(collection.at(0).id).toBe('feedback-1');
+        });
+    });
+});
+</pre>    <p>        Please note, that <code>push</code> recieves the same options as <code>add</code>, but it's just a short-cut for <code>add</code> method (take a look how it's <a href="https://github.com/documentcloud/backbone/blob/master/backbone.js#L747">implemented</a>, to make it completely clear)<br />
+    </p>    <p>        For removing the items, we also have 2 methods: <code>remove</code>, <code>pop</code>. They are opposite symmetrical to the <code>add</code>, <code>push</code>. Remove, removes specified model from collection, pop removes the last model in collection. This is shown by following specification,<br />
+    </p>    <pre class="brush: js">describe('when removing items', function () {
+    beforeEach(function () {
+        collection = new FeedbackCollection();
+    });
+
+    beforeEach(function () {
+        collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+        collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+    });
+
+    describe('by remove method', function () {
+        beforeEach(function () {
+            var model = collection.get('feedback-1');
+            collection.remove(model);
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-1')).not.toBeDefined();
+        });
+    });
+
+    describe('by pop method', function () {
+        beforeEach(function () {
+            collection.pop();
+        });
+
+        it('should be removed', function () {
+            expect(collection.get('feedback-2')).not.toBeDefined();
+        });
+    });
+});
+</pre>    <h2>Conclusions</h2>    <p>        We've just gone for a very basic features of Backbone.Collection type. Next time, we'll explore more about collections as events it produces, fetching and persisting data to server.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Introducing Backbone.ComputedFields]]></title>
+    <link href="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html"/>
+    <updated>2012-12-25T21:28:00+01:00</updated>
+    <id>http://beletsky.net/2012/12/introducing-backbonecomputedfields</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Recently, I've been working on small project which I want to share here. It's called <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it's small plugin that extends Backbone.Model functionality a bit.<br />
+    </p>    <p>        I needed to have a model with 'virtual' fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
+    <!-- more -->
+    </p>    <p>        The easiest solution would be simply introduce some model methods, say <code>model.getComputedField() / model.setComputedField()</code> and store the value inside the model object. But that turns out to be bad idea, for several reasons. First, we are breaking usual Backbone interface for getting and setting values - <code>model.get('computed') / model.set('computed', 100)</code>. Also, if model is binded to a view, we are responsible for raising events manually, in case of computed or depended field changing.<br />
+    </p>    <p>        So, after few iterations <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
+    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
+    </p>    <p>        It's fairly important, that computed field could change. Based on it's value, dependent fields should be updated.<br />
+    </p>    <h2>Examples</h2>    <p>        Let's take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
+    </p>    <h3>Calculating prices</h3>    <p>        The model represents the product, which contains net price and VAT rate.<br />
+    </p>    <pre class="brush: js">var Produc = Backbone.Model.extend({
+    initialize: function () {
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        grossPrice: {
+            depends: ['netPrice', 'vatRate'],
+            get: function (fields) {
+                return fields.netPrice * (1 + fields.vatRate / 100);
+            },
+            set: function (value, fields) {
+                fields.netPrice = value / (1 + fields.vatRate / 100);
+            }
+        }
+    }
+});
+</pre>    <p>        So, we have <code>grossPrice</code> as computed field. That field depends on 'netPrice' and 'vatRate' and being calculated by simple formulas.<br />
+    </p>    <pre class="brush: js">var product = new Product({ netPrice: 100, vatRate: 20 });
+var grossPrice = product.get('grossPrice');
+    </pre>    <p>        In this case, gross price would be 120.<br />
+    </p>    <pre class="brush: js">product.set({grossPrice: 300});
+var netPrice = product.get('netPrice');
+</pre>    <p>        After gross price is update, netPrice will be recalculated and netPrice will be 250.<br />
+    </p>    <h3>Concatenating fields</h3>    <p>        Let's have a model to represent the person with first name and last name.<br />
+    </p>    <pre class="brush: js">var Person = Backbone.Model.extend({
+    initialize: function () {
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        fullName: {
+            depends: ['firstName', 'lastName'],
+            get: function (fields) {
+                return fields.firstName + ' ' + fields.lastName;
+            }
+        }
+    }
+});
+</pre>    <p>        I'm skipping the setter cause we don't need to set full name here.<br />
+    </p>    <pre class="brush: js">var person = new Person({firstName: 'Alexander', lastName: 'Beletsky'});
+var fullName = person.get('fullName');
+</pre>    <p>        Full name 'Alexander Beletsky' is returned here.<br />
+    </p>    <h3>Referenced objects</h3>    <p>        Sometimes we have a models that only contains a reference to another model. All the time, we need to get referenced object we have to create some piece of code, which it typically copy-n-pasted thought the code base. Computed field could be a good idea to encapsulate that.<br />
+    </p>    <pre class="brush: js">var Invoice = Backbone.Model.extend({
+    initialize: function (attrs, options) {
+        this.customers = options.customers;
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        customer: {
+            depends: ['customerId'],
+            get: function (fields) {
+                return fields.customerId && this.customers.get(fields.customerId);
+            },
+            set: function(customer, fields) {
+                fields.customerId = customer.get('id');
+            }
+        }
+    }
+});
+</pre>    <p>        Here we have customer field, which is computed. <br />
+    </p>    <pre class="brush: js">var invoice = new Invoice({}, { customers: collectionOfCustomers });
+var customer = invoice.get('customer');
+</pre>    <p>        So, I'm able to get customer model even if invoice is just holding the invoice Id. <br />
+    </p>    <pre class="brush: js">invoice.set({customer: anotherCustomer});
+var customerId = invoice.get('customerId');
+    </pre>    <p>        If I'm changing the customer of invoice, the 'customerId' would be initialized with id of 'anotherCustomer'.<br />
+    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

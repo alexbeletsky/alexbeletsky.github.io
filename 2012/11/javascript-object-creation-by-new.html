@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript Object Creation by New Operator</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="JavaScript Object Creation by New Operator Nov 12th, 2012 JavaScript, Tips There are different approaches of how to create object in JavaScript. C# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/11/javascript-object-creation-by-new.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">JavaScript Object Creation by New Operator</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T14:50:00+01:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        There are different approaches of how to create object in JavaScript. C# and Java programmers are commonly starting with creation by new operator, since it very close to same practice they got used to.<br />
+    </p>    <pre class="brush: js">function Person (name) {
+    this.name = name;
+}
+
+var person = new Person('John Smith');
+console.log(person.name);
+    </pre>    <p>        If you try to run this code, you will see &#8216;John Smith&#8217; in console. Now, try to delete new operator.<br />
+    </p>    <p>        Instead of &#8216;John Smith&#8217; you will see undefined. Why?<br />
+    </p>    <p>        The difference is that without new operator it is just function call. During the call `this` points global namespace. If you running the code in browser, global namespace is bind to `window`.<br />
+    </p>    <p>        It&#8217;s important to understand how new operator works. Internally, operator new is converted to NEW(Person, &#8216;John Smith&#8217;);. It does several things.<br />
+    </p>    <ol>        <li>Creates new native object and initializes the __proto__ of object by function.prototype.</li>
+        <li>Calls function, applying newly created object as value for <code>this</code>.</li>
+        <li>Returns newly created object.</li>
+    </ol>    <p>        It can be expressed in this kind of pseudo-code:<br />
+    </p>    <pre class="brush: js">function NEW(f) {
+    var obj = { '__proto__': f.prototype };
+    f.apply(obj, arguments.slice(1));
+    return obj;
+}
+</pre>    <p>        (It&#8217;s a bit more complex actually, for details check this <a href="http://stackoverflow.com/questions/6750880/javascript-how-does-new-work-internally">great answer</a> on SO).<br />
+    </p>    <p>        It means that during function call with `new operator()`, <code>this</code> always points to a new object, created based on function prototype. You can initialize the properties of new object inside the function. It&#8217;s no longer a simple function, but it is constructing function, or more simply - constructor.<br />
+    </p>    <p>        To distinguish between constructors (that are always supposed to be called with `new`) and simple function, there is a convention to name a constructors with capital first letter (not person(), but Person()), just to give you some tips while you writing the code.<br />
+    </p>    <p>        Knowing NEW() details of work and following simple conventions for constructors will help you to understand language better and prevent many stupid errors.<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/11/javascript-object-creation-by-new.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/11/javascript-object-creation-by-new.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

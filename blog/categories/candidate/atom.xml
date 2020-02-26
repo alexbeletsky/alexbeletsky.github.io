@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Candidate | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/candidate/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[New Candidate Overview]]></title>
+    <link href="http://beletsky.net/2012/09/new-candidate-overview.html"/>
+    <updated>2012-09-05T20:56:00+02:00</updated>
+    <id>http://beletsky.net/2012/09/new-candidate-overview</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        It's been a almost a month how I started to re-implement my continues delivery application - <a href="https://github.com/alexbeletsky/candidate">Candidate</a>. In my <a href="http://www.beletsky.net/2012/08/re-thinking-candidate-application.html">previous</a> post I already mentioned some areas are going to improved, what technologies considered to be used. I haven't managed to make huge progress on project so far, but I got something to show.<br />
+    </p>    <h2>        Overall application architecture<br />
+    </h2>    <p>        I try to build it with classical API oriented architecture in mind. It means that server side code exposes some simple HTTP API, the rest of stuff happening on browser. Fortunately, I got really simple UI, but still UI plays really important role. So far, I spent 80% in Sublime for front-end and 20% of time in Visual Studio for back-end.<br />
+    </p>    <p>        Server side technology stack is NancyFX + RavenDB, client side build with Backbone.js + Require.js.<br />
+    </p>    <p>        The primary application change is that it's no longer IIS application, but just standalone app.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-tVV2Kf9ujEY/UEef4mai0fI/AAAAAAAAJBY/jhlWIM6dh8w/s678/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>    So, you just launch an .exe file, after application warm up, candidate is available at <a href="#">http://localhost:12543</a>.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-p9lFdi3LimI/UEef4vVEQDI/AAAAAAAAJBU/IzxoLO3EK1E/s800/image-2.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        To simplify a life a bit (and do not harm they eyes of users) I'm using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> CSS framework and happy with it.<br />
+    </p>    <h2>Server side</h2>    <p>        <a href="https://github.com/NancyFx/Nancy">NancyFX</a> is very lightweight framework, but it requires some skills. So far, I met <a href="http://www.beletsky.net/search/label/NancyFX">several</a> interesting challenges, that has been successfully solved. But, Nancy does it job and does it pretty well.<br />
+    </p>    <p>        <a href="http://ravendb.net/">RavenDB</a> initial impressions are really positive. I'm currently doing very basic functionality (as inserting, querying and deletion of documents). But, indeed working with document oriented database feels much simple and native for C# developer. Forget about any SQL, schemas, ORM's - store and restore POCO's, that all you need to know. RavenDB API is very clear and intuitive. <br />
+    </p>    <p>        I used embedded version of RavenDB, which suites me best - since I want to minimize an effort for application installation.<br />
+    </p>    <p>        As I said above, server side exposes HTTP API which receives and responds with JSON based payload. There would be some interfaces for starting/stopping the deployment tasks.. but the rest is happening in client.<br />
+    </p>    <h2>Client side</h2>    <p>        Since I met <a href="http://backbonejs.org/">Backbone.js</a> framework I thought to myself: "I will never ever writing 'scripts' in front-end, instead I'll be doing browser powered applications". Backbone.js introduces structure in front-end. Front-end development with Backbone.js is no longer <code>$.ajax</code> calls and updates of DOM inside the <code>success:</code> handlers. With Backbones's main entities you build front-end apps in similar way as it would be desktop applications.<br />
+    </p>    <p>        Being much inspired with Addy Osmani <a href="http://addyosmani.com/writing-modular-js/">Writing Modular Javascript</a> blog post and speeches, I trying to apply some of these practices. In particular I'm using <a href="http://requirejs.org/">RequireJS</a> for AMD and Backbone's views as kind of widgets (or modules).<br />
+    </p>    <p>        The front end is being build in SPA (Single Page Application) style, which is kind of new to me. Backbone.Router is great component though and I don't need anything more, at least for now. I wish to keep UI as much responsive and fast.<br />
+    </p>    <p>        As always, you are welcome to review <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/App">server side</a> or <a href="https://github.com/alexbeletsky/candidate/tree/master/src/Candidate.Nancy.Selfhosted/Client">client side</a> code, let me know your opinion or ask questions.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Re-thinking Candidate application]]></title>
+    <link href="http://beletsky.net/2012/08/re-thinking-candidate-application.html"/>
+    <updated>2012-08-07T09:05:00+02:00</updated>
+    <id>http://beletsky.net/2012/08/re-thinking-candidate-application</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>   I've released 0.0.1 version of <a href="http://alexanderbeletsky.github.com/candidate/">Candidate</a> pretty long time ago. I was actually quite happy how the things went, before I collected some initial feedback. Even, if I can see the application useful, almost all responders had a different opinion. Let's briefly see the major concerns.<br />
+</p><h2>IIS hosting</h2><p>    Original idea of Candidate was that it works as usual ASP.NET application, hosted under IIS. That worked really bad, though. Candidate is performing a some operations that requires extended permissions (for git, msbuild, file system operations etc.). That means that IIS web site has to be configured to run under under your personal account (or any other administrative account, with set-up SSH keys, access to msbuild etc). <br />
+</p><p>    All of that created a bit of overhead. First of all, Candidate has to be installed and configured on IIS. Even, it is possible to create kind of installer to automate this job, it does not sound good. In other hand, some people might have very strict policies on their machines, so it is not even possible to change any kind of IIS settings under it.<br />
+</p><p>    So, it turned out to be bad idea for this particular application.<br />
+</p><h2>Deployment scenarios</h2><p>    The primary deployment scenario that implemented in Candidate is local one. It means, it's able to build and test the site and deploy it to local IIS. I did so, since I use the same scenario for deployment of <a href="http://trackyt.net/">trackyt.net</a>, which is hosted on VPS and deployed by Jenkins running on the same server.<br />
+</p><p>    But many people are not using VPS, but rather sharing hosting there they are not even able to install any kind of other software. So, they are more interested in <i>remote</i> deployment, not <i>local</i> one. With the re-invention of <a href="http://www.windowsazure.com/en-us/">Azure</a>, you might consider scenarios of deployment existing web application to it seamlessly.<br />
+</p><p>    Local deployments was a good for prototype, but not good at all for product.<br />
+</p><h2>Technical stuff</h2><p>    I stick to framework named <a href="https://github.com/alexbeletsky/bounce">Bounce</a>. It's very powerful product, that basically allows to write a deployment scripts in .NET languages. Then I originally saw it, I thought it's great since it does everything I need, including git operations, msbuild and IIS sites deployment. Even more, Bounce is the one of the best .NET code I ever seen, so respect to <a href="https://github.com/refractalize">refractalize</a>.<br />
+</p><p>    But.. Bounce, is not that good for long perspective. It required to create a lot of <a href="https://github.com/alexbeletsky/candidate/tree/master/Candidate.Core/Configurations">configuration code</a>, hard to change logging options and further extension.<br />
+</p><p>    For a long running product I need more lightweight and robust approach.<br />
+</p><h2>Starting it over again</h2><p>    Considering all things above, I decided to re-start the project, almost from the scratch.<br />
+</p><p>    It would be based on 3 different technologies, that in my opinion are agile enough to allow me to build what I want. <br />
+</p><ul>    <li><strong>NancyFX</strong> - will be used as application host. Currently Nancy is 0.11 version, that has a lot of improvements comparing to 0.9 that I used. The main reason to choose that, is Nancy allows to create self-hosted application. It's basically .exe application, that you can run and it starts the HTTP server. I plan to have all-in-one executable, that do not require any installations and will prepare all required infrastructure and first run. That would solve both installation and IIS limitations problem.<br />
+    </li>
+    <li><strong>RavenDB</strong> - as application document storage. In previous version I didn't use any kind of database at all, being happy with simple <a href="https://github.com/alexbeletsky/candidate/blob/master/Candidate.Core/Settings/SettingsManager.cs">SettingsManager</a> to store .NET objects into JSON files. The reason is that I didn't have any dependencies on any software (as SQL Express). With Raven it is possible to use Embedded mode, so it does not require any service running, just the assemblies.<br />
+    </li>
+    <li><strong>PowerShell</strong> - as deployment scripts. No more VCS, build, test and deploy code in C#. I plan to have a generic PowerShell scripts that would be easy to run and maintain. With a PowerShell I hope to extend the deployment scenarios to support Local, FTP, MS Deploy, Azure deployments.</li>
+</ul><p>    Unfortunately, I'm not yet proficient with any of these technologies. It makes me very exited to learn something new. I've already created a <a href="https://github.com/alexbeletsky/candidate/tree/nancy">branch</a> where some basic infrastructure is prepared. My goal would be create first prototype in 2 - 3 weeks.<br />
+</p><p>    And I want to appreciate everyone who provided feedback and useful technical suggestions. I hope it would turn in something good.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Candidate v.0.0.1rc - Released]]></title>
+    <link href="http://beletsky.net/2012/02/candidate-v001rc-released.html"/>
+    <updated>2012-02-14T06:37:00+01:00</updated>
+    <id>http://beletsky.net/2012/02/candidate-v001rc-released</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
+ </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />
+ </p> <a href="http://alexanderbeletsky.github.com/candidate/"><br />
+  <img src="https://lh5.googleusercontent.com/-WIUMqyz3naI/TznyBp-dQbI/AAAAAAAAH4A/exqlfJUQr8o/s1024/screenshot-1.jpg" alt="candidate web site" style="width: 620px;" /><br />
+ </a><br />
+ <h2>  What's the goal?<br />
+ </h2> <p>  Thinking about nearest "competitors" in this area I would re-call <a href="http://www.paulstovell.com/octopus/intro">Octopus</a> by <a href="https://twitter.com/#!/paulstovell">Paul Stovell</a>. Octopus uses Build Server / Tentacle (Agent) architecture principal, while Candidate is simple Agent architecture - you host it the same machine as your environment is (stage, production) providing both integration and deployment functionality.<br />
+ </p> <p>  My goal is stabilize and improve Candidate through this year, so it fulfill different requirements including performance and scalability. I switched all my projects to use Candidate now, so it would give me some initial feedback.<br />
+ </p> <p>  Nevertheless, Candidate may turn out to be a powerful deployment application I'm still thinking about "Deployement as Service" product like <a href="https://appharbor.com/">AppHabor</a> and <a href="http://www.heroku.com/">Heroku</a> or <a href="http://travis-ci.org/">Travis-CI</a> as it was <a href=
+  "http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">original</a> idea.<br />
+ </p> <h2>  What's next?<br />
+ </h2> <p>  Following the principle "Build product X to learn technology Y" I'm going to proceed with Candidate to shape following areas that I wish to improve now:<br />
+ </p> <ul>  <li>Processes, threads, synchronization in .NET</li>
+  <li>Async, Tasks library</li>
+  <li>Robust applications architecture</li>
+  <li>Different deployment scenarios for .NET platform</li>
+ </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I'm looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
+ </p> <p>  I also try to target UI / UX issues as much as possible.<br />
+ </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
+ </p> <p>  Thanks for you help.<br />
+ </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pre-announce of Release Candidate]]></title>
+    <link href="http://beletsky.net/2012/01/pre-announce-of-release-candidate.html"/>
+    <updated>2012-01-13T09:01:00+01:00</updated>
+    <id>http://beletsky.net/2012/01/pre-announce-of-release-candidate</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>For those, who already forgot what the candidate is I'll do a small reminder :). This is an <a href="https://github.com/alexbeletsky/candidate">application</a> for Continues Deployment for .NET projects. I started the project at <a href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">Hackatone</a> that took place in summer 2011, in Kyiv. I liked the results I got there, so I didn't throw it away after the contest, but slowly progressed on that through last several months. <br />
+</p><a href="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png"><br />
+<img src="https://lh6.googleusercontent.com/-LDlYwfKzvKQ/Tw_ji4BzopI/AAAAAAAAH3A/-SwXb_g_oYo/s621/image-1.png" alt="welcome"/><br />
+</a><br />
+<p>The goal of application is very simple. Provide you with easy to setup and use tool Continues Deployment. I'm still very confused now with all those terms - Continuous Deployment/Delivery/Production/Release.. but in general it is nothing more as next step of Continues Integration. Rebuild and retest the application and deploy it in case of successful results.<br />
+</p><a href="https://lh4.googleusercontent.com/-FfsyUPLA5ek/Tw_jirfuETI/AAAAAAAAH24/PX-apdvN2Rw/s1024/image-2.png"><br />
+<img src="https://lh4.googleusercontent.com/-FfsyUPLA5ek/Tw_jirfuETI/AAAAAAAAH24/PX-apdvN2Rw/s1024/image-2.png" style="width: 620px" alt="welcome"/><br />
+</a><br />
+<p>I'm building that in mind of my own needs, how I see it might work for my projects. My own projects are really simple ones, so the candidate is really simple now. Of cause, I would like to be as general as possible, to cover common needs. I'm pretty much sure it would be rewritten hundred of times to reach the level of mass adoption and I'm looking forward to that.<br />
+</p><a href="https://lh3.googleusercontent.com/-1pTIk_M6Z0s/Tw_jilnpwhI/AAAAAAAAH28/Zog53hBf1kY/s1019/image-3.png"><br />
+<img src="https://lh3.googleusercontent.com/-1pTIk_M6Z0s/Tw_jilnpwhI/AAAAAAAAH28/Zog53hBf1kY/s1019/image-3.png" style="width: 620px" alt="config"/><br />
+</a><br />
+<p>Yesterday, I reached very important milestone of candidate.net. It is now feature completed. I would like to stop on current functionality and show it to you. It would take some time to prepare website and instructions, but please stay tuned for official release of project!<br />
+</p><a href="https://lh6.googleusercontent.com/-2QDjpa8ic7c/Tw_jie0ltoI/AAAAAAAAH20/k6g2qmCxGj0/s982/image-4.png"><br />
+<img src="https://lh6.googleusercontent.com/-2QDjpa8ic7c/Tw_jie0ltoI/AAAAAAAAH20/k6g2qmCxGj0/s982/image-4.png" style="width: 620px" alt="config"/><br />
+</a><br />
+<p>By the way, I'm still looking for new name! It turns out that finding the good name, could be even harder than finding process running <a href="http://stackoverflow.com/questions/7666423/iis-7-5-with-process-idenity-set-to-user-has-wrong-userprofile">bugs</a>. I would be really happy if you do such early contribution proposing some nice name. Please do not hesitate and share your ideas just in comments.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Candidate, Application I Made on Hackatone]]></title>
+    <link href="http://beletsky.net/2011/06/candidatenet-application-i-made-on.html"/>
+    <updated>2011-06-13T18:26:00+02:00</updated>
+    <id>http://beletsky.net/2011/06/candidatenet-application-i-made-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Here is quick description of application application I made on <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">Hackatone</a> this weekend. </p><p>Candidate.net is just working name for the project that I'm going to change as soon as I got better idea :). It supposed to be a kind of service that provides integration with your github repositories and provides a Continues Deployment cycle for that repositories. Namely, every code change that being pushed to github is immediately build, tested and deployed, so the time between code push and production is very short excludes any manual work. </p><p>I've spent ~16 hours for building up this application, sure I haven't managed to make it as a service.. but - during the process I've changed my vision for project, so first I would like to create good continues build engine (like Team City or Jenkins) and base my future service on top of it (yeah, I already got some further plans :). </p><p>Technologies behind: </p><ul><li>ASP.NET MVC3</li>
+<li>jQuery + some small pluggins</li>
+<li>UppercuT build framework</li>
+</ul><p>A picture says 1000 words, so here my little screencast of Candidate.net in action. It demonstrates the ability of setting up new application and hooking github push requests to build new application instance. </p><iframe src="http://www.screenr.com/embed/X48s" width="560" height="345" frameborder="0"></iframe> <p>Source code is hosted on github <a href="https://github.com/alexbeletsky/candidate">https://github.com/alexbeletsky/candidate</a>. Don't forget it is really early prototype, the code is in big mess now.. I'm going to improve it much soon, so please keep watching repository. </p><p>I had a lot of fun of building this and have a better vision of how the application should look like. Hope to share it soon. I would be happy to hear some feedback on this.. and of cause you are free to fork repo and make your improvement (especially in UI/UX :). </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

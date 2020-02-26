@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Functional tests must not be done first</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Functional tests must not be done first Apr 13th, 2011 TDD First of all, by functional tests I understand tests of application features primarily &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Functional tests must not be done first</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T21:27:00+02:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+First of all, by functional tests I understand tests of application features primarily from user (UI) perspective, with different set of frameworks - <a href="http://seleniumhq.org/">Seleminum</a>, <a href="http://watin.org/">Watin</a>, <a href="http://funcunit.com">FuncUnit</a> or whatever. 
+</p>
+<p>
+I&#8217;ve seen the cases that functional tests are being implemented either first or immediately after some particular feature is implemented. I think this is a just wrong practice. Even the UI testing could definitely provide value you should think twice before getting to deep with functional testing and apply as development process rule. Functional tests have several serious drawbacks:
+</p>
+<ul>
+<li>
+<strong>Fragility</strong>. Functional tests are extremely fragile. You could run test suite and got green results and re-run them in 5 seconds and got completely red sheet. And there could be thousands of reasons why it happened.
+</li>
+<li>
+<strong>Speed</strong>. They are simply slow. As much tests you have as slow they are. As much slow tests you have as long feedback cycle is. As long feedback cycle is as low value you are getting from tests.
+</li>
+<li>
+<strong>Bad isolation</strong>. Because of functional tests have integration nature, it is just not possible to run them in isolated environment. Tests became depended from each other, that in particular leads to fragility.
+</li>
+<li>
+<strong>Support</strong>. Implementation of UI test is not trivial thing. Even with so cool frameworks like <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> or <a href="http://seleniumhq.org/docs/03_webdriver.html">WebDrivers</a> that have strict and clear interface, it could be hard to test some UI feature of application. But support is much more harder - really small change in could turn many tests to red state. In fact, implementation of change that costs you 1 hour, could cost 1 day for correction of tests.
+</li>
+<li>
+<strong>Changes</strong>. We are trying to adopt agile into development world, one of the aspect that makes development really agile is reacting on change. Reacting on change have to be fast. Changes are integral part of development, even if developers hate changes. But as I said above, even small change could ruin UI tests and it is not fast to fix it. It means that cost of change is getting more and more expensive. 
+</li>
+</ul>
+<p>
+So, trying to implement UI tests in early development stages or cover all applications features with UI tests is a <strong>waste</strong>. Ratio between effort / value would be just go to zero with time.
+</p>
+<p>
+What I think as recommendation for UI testing: 
+</p>
+<ul>
+<li>
+Rely more on unit tests - all server side code must be covered with a <a href="http://www.beletsky.net/2010/10/test-driven-design-and-levels-of.html">different level of testing</a>. Units have to be isolated and fast.
+</li>
+<li>
+Keep view as thin as possible - in ideal you should not have logic in view at all, but modern web application heavily using client side (javascript) logic that affects view. Javascript code have to be unit tested with <a href="http://docs.jquery.com/Qunit">qUnit</a> or similar frameworks.
+</li>
+<li>
+Don&#8217;t start with UI tests - UI testing have to be done <strong>last</strong>. If the feature is just implemented it does not mean it has to be immediately tested. It has to pass PO approval, QA. Ideally it has to be released to beta group and confirmed that &#8220;this is exactly what we need&#8221;. After feature stabilized test could be added.
+</li>
+<li>
+Don&#8217;t try to test everything - since UI testing cost more, you should be more careful. It has sense to automate smoke test, critical parts of application or parts that have high regression. 
+</li>
+<li>
+Clean up tests regularly - peer tests regularly, if you have bunch of tests for some area that works OK for a long time you might consider to remove those tests, to speedup whole tests process.
+</li>
+</ul>
+<p>
+Keeping focus only of primary features of application and avoid of testing small stuff should be key for functional tests.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/04/functional-tests-must-not-be-done-first.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/04/functional-tests-must-not-be-done-first.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

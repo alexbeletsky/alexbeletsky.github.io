@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Foundstyles | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/foundstyles/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
+    <link href="http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles.html"/>
+    <updated>2012-03-07T13:54:00+01:00</updated>
+    <id>http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
+</p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>Unfortunately Foundation does not support LESS from the package, so I need to move colors and layout into corresponding .LESS files, so after it's just possible to have a basic <a href="https://github.com/alexbeletsky/foundstyles/tree/master/default">template</a> which is possible to customize with own colors.  <br />
+</p><p>As for now, I've created only 3 templates: <a href="http://foundstyles.com/bladesofsteel/">Blades Of Steel</a>, <a href="http://foundstyles.com/evergreen/">Evergreen Tree</a> and <a href="http://foundstyles.com/coffeenmilk/">Coffee and Milk</a>.<br />
+</p><a href="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>I had a lot of joy making those styles. Making web designs and playing with colors is my next hobby, I think. Through, those styles are really simple ones, I'm going to add more eventually. Since the project is just hosted on <a href="https://github.com/alexbeletsky/foundstyles">github</a> you are able to push you own styles. If you feel inspired, I would be really happy for submissions.<br />
+</p><p>Nearest plans are apply some fixes for IE (both site and styles) and just go ahead and produce some more. Hope it could be useful for you guys.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

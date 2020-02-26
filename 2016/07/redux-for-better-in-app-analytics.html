@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Redux For Better in-App Analytics</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Redux For Better in-App Analytics Jul 1st, 2016 analytics, javascript, react, redux Lean startup, the term coined by Eric Ries, affected the way we &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2016/07/redux-for-better-in-app-analytics.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Redux For Better in-App Analytics</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-07-01T14:50:00+02:00" pubdate data-updated="true">Jul 1<span>st</span>, 2016</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/analytics/'>analytics</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/redux/'>redux</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Lean startup, the term coined by Eric Ries, affected the way we build new products and services. Essentially, it says that every business idea has to be turned to a series of testable <em>hypotheses</em>. Based on these hypotheses we <strong>build</strong> or introduce the changes to existing products. Those changes have to be <strong>measurable</strong>, so we collect the results of actions we did. Based on results we prove or disapprove particular hypothesis. During the cycle, we derive <strong>learnings</strong>, these learnings give a foundation for a next <em>Build-Measure-Learn</em> cycle.</p>
+
+<!-- MORE -->
+
+
+<p>For web-based products, measurements typically mean collecting of different user behavior metrics. Based on these metrics we can see, what users are <em>doing</em> in the application, their behavior has a direct influence on a product.</p>
+
+<p>Many projects I participated, had &ldquo;Add Analytics&rdquo; as a bottom-most task in development backlog. Ignoring the task, made it hard to implement later stages. You need something like <code>analytics.trackEvent('something happened', { data: 123 });</code> in many places, making code looks ugly and quite easy to miss some important details.</p>
+
+<h2>Redux</h2>
+
+<p>In my <a href="http://engineering.blogfoster.com/the-functional-approach-to-ui/">previous</a> article, I already mentioned the Redux similarities to <a href="http://martinfowler.com/eaaDev/EventSourcing.html">Event Sourcing</a> architecture paradigm. One of the most interesting side-effects of Event Sourcing is <code>Audit Log</code>.</p>
+
+<p>Audit Log gives you an ability to look back and see what happened. As the original idea of Redux, it allows you travel back in time.</p>
+
+<p>If you follow Redux rules, everything that happens in your application is represented as an <code>action</code>. In terms of analytics, it means you <em>already</em> have all events defined, you don&rsquo;t need to find the place where to inject <code>analytics.trackEvent()</code> code.</p>
+
+<p>Take a look into this code,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="p">{</span> <span class="nx">createConstants</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../utils&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">constants</span> <span class="o">=</span> <span class="nx">createConstants</span><span class="p">(</span>
+</span><span class='line'>  <span class="c1">// account actions</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_FORM_RESET&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_FORM_CHANGE&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_FORM_ERRORS&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_FORM_ERRORS_CLEAN&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_ACCESS_TOKEN_FETCHING&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_ACCESS_TOKEN_FETCHED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_ACCESS_TOKEN_FETCH_FAILED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_EMAIL_CONFIRMED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ACCOUNT_EMAIL_CONFIRMATION_FAILED&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// create website actions</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_BLOG_URL_CHANGED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_BLOG_TITLE_CHANGED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_BLOG_TITLE_RESOLVE_FAILED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_STATE_LOADING&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_STATE_LOADED&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_WIZARD_STEP_NEXT&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;CREATE_WEBSITE_WIZARD_STEP_PREV&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Those are constants for action types. Our goal is to turn those action types, into meaningful analytics events.</p>
+
+<h2>Analytics Server</h2>
+
+<p>At blogfoster, we are using custom analytics solution. Essentially it&rsquo;s an HTTP API, which receives an event and stores and distributes it for further processing. It makes it easy from integration perspective both for the web and mobile clients.</p>
+
+<p>Even the back-end is quite complex there, the interface is rather simple,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">HTTP</span> <span class="nx">POST</span> <span class="o">/</span><span class="nx">v1</span><span class="o">/</span><span class="nx">event</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nx">eventType</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">payload</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Middleware</h2>
+
+<p>If you have worked with <a href="http://expressjs.com/">Express.js</a> or <a href="http://koajs.com/">Koa.js</a> frameworks, then you should already be familiar with a <em>middleware</em> concept. Middlewares are functions that could be injected into response-request pipeline and designed to produce different side-effects (e.g. request modification, logging, redirections, performance measurements, etc.)</p>
+
+<p>Redux introduces the concept of middleware as well, which makes library not only flexible but applicable for <em>real-world</em> applications. We know that Redux is essentially all about synchronous workflow, but the nature of web applications is asynchronous (events, client/server communications) and this is where middleware shines.</p>
+
+<p>The API of Redux middleware is pretty elegant; it&rsquo;s not hard to implement own functions. If we inject the function, that can analyze the action and send data to analytics server, we will reach our goal, without touching any application logic.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="p">{</span> <span class="nx">client</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../analytics&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">handleAction</span> <span class="o">=</span> <span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">action</span><span class="p">.</span><span class="nx">meta</span> <span class="o">||</span> <span class="o">!</span><span class="nx">action</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">analytics</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">const</span> <span class="p">{</span> <span class="nx">eventType</span><span class="p">,</span> <span class="nx">eventPayload</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">analytics</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">client</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">track</span><span class="p">(</span><span class="nx">eventType</span><span class="p">,</span> <span class="nx">eventPayload</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="kd">function</span> <span class="nx">createAnalytics</span><span class="p">(</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">store</span> <span class="o">=&gt;</span> <span class="nx">next</span> <span class="o">=&gt;</span> <span class="nx">action</span> <span class="o">=&gt;</span> <span class="nx">handleAction</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, the <code>handleAction()</code> function checks, if there is <code>meta</code> data related to <code>analytics</code> exists in action, it will pass it to <code>client</code> that would when to make HTTP request to analytics server.</p>
+
+<h2>Configuring store</h2>
+
+<p>We need to apply middleware function now, it&rsquo;s done via <code>applyMiddleware()</code> Redux helper,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="p">{</span> <span class="nx">createStore</span><span class="p">,</span> <span class="nx">applyMiddleware</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;redux&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="kr">import</span> <span class="p">{</span> <span class="nx">createAnalytics</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../middleware&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">middlewares</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>  <span class="nx">thunk</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">createLogger</span><span class="p">(),</span>
+</span><span class='line'>  <span class="nx">createAnalytics</span><span class="p">({</span> <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;ANALYTICS_HOST&#39;</span><span class="p">,</span> <span class="nx">token</span><span class="o">:</span> <span class="s1">&#39;ANALYTICS_TOKEN&#39;</span> <span class="p">})</span>
+</span><span class='line'><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">enchancer</span> <span class="o">=</span> <span class="nx">applyMiddleware</span><span class="p">(...</span><span class="nx">middlewares</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">configureStore</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">,</span> <span class="nx">initialState</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">createStore</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">,</span> <span class="nx">initialState</span><span class="p">,</span> <span class="nx">enchancer</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Augmenting Actions</h2>
+
+<p>I came up with a small utility function, to minimize modification of existing action creators as much as possible,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">constants</span> <span class="nx">from</span> <span class="s1">&#39;../../constants&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="kd">function</span> <span class="nx">loadedDashboardState</span><span class="p">(</span><span class="nx">website</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">news</span><span class="p">,</span> <span class="nx">revenues</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">trackable</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">type</span><span class="o">:</span> <span class="nx">constants</span><span class="p">.</span><span class="nx">DASHBOARD_STATE_LOADED</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">payload</span><span class="o">:</span> <span class="p">{</span> <span class="nx">website</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">news</span><span class="p">,</span> <span class="nx">revenues</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>      <span class="s1">&#39;Dashboard opened&#39;</span><span class="p">,</span>      <span class="c1">// &lt;- event name</span>
+</span><span class='line'>      <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">website</span><span class="p">.</span><span class="nx">name</span> <span class="p">}</span>   <span class="c1">// &lt;- additional event data</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="kd">function</span> <span class="nx">loadingDashboardStateFailed</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">trackable</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">type</span><span class="o">:</span> <span class="nx">constants</span><span class="p">.</span><span class="nx">DASHBOARD_STATE_LOADING_FAILED</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">payload</span><span class="o">:</span> <span class="p">{</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>      <span class="s1">&#39;Dashboard loading failed&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="p">{</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">text</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Where <code>trackable()</code>,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">export</span> <span class="kd">function</span> <span class="nx">trackable</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">properties</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">analytics</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">eventType</span><span class="o">:</span> <span class="nx">event</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">eventPayload</span><span class="o">:</span> <span class="nx">properties</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">action</span><span class="p">,</span> <span class="nx">meta</span><span class="o">:</span> <span class="p">{</span> <span class="nx">analytics</span> <span class="p">}</span> <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it. Now go through all action creators and wrap actions you need to log into <code>trackable()</code> function, so they became trackable, and middleware would send them to the analitycs server.</p>
+
+<h2>Recap</h2>
+
+<p>Even if you don&rsquo;t think about analytics from the very beginning, Redux architecture allows you to plug it in whenever you want (or need it). Based on <code>Audit Log</code> you can watch and turn actions into corresponding analytics events. Middleware functions would allow to hook all actions and turn them into analytical events.</p>
+
+<p><strong>PS</strong>. During my writing time, developers from <a href="https://github.com/rangle">Rangle.io</a> participated <em>React-Europe</em> conference and gave a nice talk about the topic above. So, I would recommend you to <a href="https://www.youtube.com/watch?v=MBTgiMLujek">check it out</a> for further details.</p>
+
+<p><em>Originally published at <a href="http://engineering.blogfoster.com/redux-for-better-in-app-analytics/">blogfoster Engineering</a>.</em></p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2016/07/redux-for-better-in-app-analytics.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2016/07/redux-for-better-in-app-analytics.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GitSVN | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/gitsvn/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A year with Git]]></title>
+    <link href="http://beletsky.net/2012/05/year-with-git.html"/>
+    <updated>2012-05-20T12:43:00+02:00</updated>
+    <id>http://beletsky.net/2012/05/year-with-git</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    It's almost a year ago, I've posted the article <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">How to start using Git in SVN-based organization</a>. It has been viewed more than 3,000 times on my blog and more than 9,000 times on <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">re-post</a> by DZONE.<br />
+</p><p>    Time has passed and some of you might be interesting, what happed next? A lot, actually.<br />
+</p><p>    I think we followed "Baby steps to.." strategy of Git adoption. Our baby steps to Git, were small, accurate and quite long. But at the end of the day, I'm happy to say - we are pure Git organization now. Moreover, some of our projects are hosted as public and private repositories under the <a href="https://github.com/organizations/e-conomic">e-conomic</a> organization github account.<br />
+</p><h2>Retrospective</h2><p>    So, let's make a kind of retrospective seeing what things were happening.<br />
+</p><ol>    <li><strong>Git-SVN mode</strong>. As described in original article, the best way to try Git inside the organization is go to Git-SVN mode. It will allow to use SVN as primary repo, but allow Git features like local branching, cool merging, stashes and other stuff described <a href="http://www.beletsky.net/2011/07/git-with-svn-what-benefits-are.html">here</a>.<br />
+    </li>
+    <li><strong>People awareness</strong>. Started by just few developers the information about the Git had spread along mates in our department. Some were very enthusiastic about that, some not. But anyway, it got attention of our many people including our CTO. The greatest thing is that initiative has not been cancelled, instead we start to think of some kind of plan that might bring us into pure Git world. <br />
+    </li>
+    <li><strong>Planning</strong>. Our plan including different evaluations, choosing between Git or HG, local or cloud hosting, Centralized or De-centralized mode etc. During this planning sessions we also identified some infrastructure dependencies that blocked switch to Git. We have so called "Language System" the application helping our copyrighters and translators to change the content of app. It's been creating assuming that SVN used, doing checkouts and commits where. Another thing is that our deployment procedure happened to be SVN dependent. Obviously, it have to be changed to work with Git. But the most priority had "Education" task. Everybody should be able to work with Git. <br />
+    </li>
+    <li><strong>Execution</strong>. Planning is easy, execution is hard. We did initial education as a series of meetings were the basics are described. Fortunately, almost as teams contained the git-aware person who were initial knowledge keeper. Some important details being moved to company's Wiki. The problems we start to have local infrastructure setup. Being Windows organization we tried to setup primary repository and server on Windows box. Keeping that short, I just say - don't do that. It's not trivial at all, to configure Git server there, setup the accounts and permissions and make it work with TeamCity. We tried different scenarios of Git hosting on IIS, including <a href="https://github.com/jakubgarfield/Bonobo-Git-Server">Bonobo-Git-Server</a> or <a href="https://github.com/JeremySkinner/git-dot-aspx">Git-Dot</a> but all had it's own limitations, blocking us of full-feature Git usage.<br />
+    </li>
+    <li><strong>Trying github</strong>. In parallel, one team that was starting out new project and was quite independent tried to host sources in cloud. Github is obvious choice here. I think, that was a great experience and this project is still hosted on github. We tried, so called <a href="https://github.com/blog/674-introducing-organizations">"organization"</a> mode. It ideally fits small software development shops. Easy start, easy go.<br />
+    </li>
+    <li><strong>Linux local server</strong>. Failed to run it properly on Windows we had to switch to Linux box. It's being deployed as virtual box, that is more than enough for Git server. That solved a lot of infrastructural issues, including authentications & permissions as well as CI problems. As I can see the effort to setup it was not so big (if compare to effort spend to make the same on Windows, it would be closer to 0). Setup once, it just start to work.  <br />
+    </li>
+    <li><strong>Mirroring repositories</strong>. The setup of local central server was the first great milestone. Even if all the developers might start to use it instead of SVN, the infrastructural problems that I mentioned in #3 were not yet solved. So, we did a partial decision. The developers are switching to Git repository, but the deployments and language works are still done on SVN repository. So it's not so frequent operations, it's possible to synchronize the Git and SVN between each other. It means, all new code started to appear in Git, but once a week (or often) all changes set are being pushed to SVN. This is of course an overhead and required some manual work.. But it was only one way for us.<br />
+    </li>
+    <li><strong>Fixing the dependencies</strong>. It took some time while everybody got comfortable with Git. Our Wiki has extended with some policies of working with Git. We mainly follow <a href="http://nvie.com/posts/a-successful-git-branching-model/">"A successful Git branching model"</a> keeping the feature in local branches, having remote branches for code review etc. After our deployment dependency has been fixed, we were able to push the code to production very fast. I think it's almost a year passed to now clearly understand benefit of Git not just theoretically, but practically. And that was amazing experience, as so for me.<br />
+    </li>
+    <li><strong>Pure git world</strong>. After the last dependency has been fixed, we happily entered the "Pure Git Environment" world. The SVN server has been stopped. All developers, DevOps and copyrighters are Git users now.<br />
+    </li>
+</ol><h2>It took a while...</h2><p>Yeah, it took awhile but we never had this migration as top priority item in our backlog. The process were long and smooth, allowing us to do our primary job of bringing value to product, but the same time improving the internal infrastructure.  <br />
+</p><p>Not being hurry is also good option, sometimes. The whole transition took a lot of efforts of different person along the way. I say thank you, guys - for making this happening.<br />
+</p><h2>What's next?</h2><p>The things are stabilized now. We are on one solid solution, working very nice. As I said, we have both local and github environments. If I pretend to be a medium and see the future, I would say we go to "pure Github" environment from here. Sure, now this transaction having it's own dependencies. But let's see what's happen during next year. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Branching Workflow in Git-SVN Mode]]></title>
+    <link href="http://beletsky.net/2011/09/branching-workflow-in-git-svn-mode.html"/>
+    <updated>2011-09-06T16:42:00+02:00</updated>
+    <id>http://beletsky.net/2011/09/branching-workflow-in-git-svn-mode</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>As you might already know branches are primary power of Git. You should create branch for every task you working on. Even if it is something small you easily starting to get a good habit of creating branches, since they keep you much in isolation. So, how to deal with branches in Git-SVN mode? It is really easy and conforms to common git practices. </p><p>So, as you cloned the SVN repo you have master branch (or several masters, if you did more <a href="http://www.beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html">switches</a>). Suppose you need to start to work on ticket ND-177. </p><ol><li>Create new branch for ND-177 (I call new branch like, original_branch-branch_name)</li>
+<pre>git checkout -b master-nd-177   
+</pre><li>Do your work here, performing as many commits as you need</li>
+<pre>get commit -a -m "some intermediate commit.."
+</pre><li>Now, as you are ready to be merged you to SVN, you checkout and rebase master (to get latest SVN changes from it)</li>
+<pre>git checkout master
+    git svn rebase
+</pre><li>You can simply merge 2 branches, but with simple merge you will get all commits history that you probably don't need in SVN at all. You squash to compress number of commits into one nice looking commit object</li>
+<pre>git merge --squash master-nd-177
+</pre><li>It would merge up all changes from master-nd-177 into master. All you need to do is commit</li>
+<pre>git commit -m "ND-177 completed"
+</pre><li>And dcommit changes to SVN server</li>
+<pre>git svn dcommit
+</pre></ol><p>That's six basic steps makes really straightforward workflow for everyday usage. </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Analog of SVN branch switch for Git]]></title>
+    <link href="http://beletsky.net/2011/08/analog-of-svn-branch-switch-for-git.html"/>
+    <updated>2011-08-01T10:16:00+02:00</updated>
+    <id>http://beletsky.net/2011/08/analog-of-svn-branch-switch-for-git</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Working with Git in SVN based organization is <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">possible</a> and make a lot of benefits. Sources checked out once are now at you local repository, so all you do is commits, rebases and dcommits back to SVN. But sometimes you need to be able to switch to another SVN branch. You need something equivalent to "SVN switch" command inside Git environment.
+</p>
+<p>
+I’m been trying to switch to new branch, but I found no related information about that. I ended up this solution, I would like to share.
+</p>
+<ol>
+<li>Manually add new configuration into <code>~/.gitconfig</code>, for new SVN location</li>
+<pre>
+    [svn-remote "svn25"]
+        url = https://svn.server/branches/branch25
+        fetch = :refs/remotes/git-svn-25
+</pre>
+<li>Fetch changes from svn25</li>
+<pre>
+    git svn fetch svn25
+</pre>
+<li>Checkout that branch</li>
+<pre>
+    git checkout git-svn-25
+</pre>
+<li>Create new “master” branch</li>
+<pre>
+    git checkout -b master-25
+</pre>
+<li>
+Now, master-25 is your “master” for <code>branch25</code> SVN branch.
+</li>
+</ol>
+<p>
+You can merge you previous changes.. and continue to work with <code>master-25</code> as you worked with usual master.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git with SVN, what the benefits are?]]></title>
+    <link href="http://beletsky.net/2011/07/git-with-svn-what-benefits-are.html"/>
+    <updated>2011-07-13T07:50:00+02:00</updated>
+    <id>http://beletsky.net/2011/07/git-with-svn-what-benefits-are</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+My previous <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">post</a> about starting up of using Git inside on SVN organization appeared to be really attractive, I received many questions through <a href="http://twitter.com/#!/alexbeletsky">twitter</a> and <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">dzone</a>. All of them are really interesting and I going to do a separate posting on that, but primary question is "Why, oh why?".  
+</p>
+<p>
+So, what actual benefits I see by using approach of git-svn?
+</p>
+<p>
+First, let's see the root, what kind of VCS Git is? It is distributed one. The distribution basically means that each developer host the repository on it's own machine. Not a working copy as in SVN case, but real repository with all corresponding functionality - commits, reverts, branches, merges etc. You are not longer depend on server, even if sever is not available you still able to continue your job. 
+</p>
+<p>
+Since you have your local repository, you can do whatever you want without interfering the rest of the world. In SVN all operations like commit or branch creation or tag - they are global one. As soon as you created branch for instance, everybody will notice that; if you committed something, everybody will notice that. In many organizations SVN has policies, like you have access only for some branches.. you can't create branches, only by request to admin etc. But, what I basically do on my job - I want to try out something (new idea or apply some refactoring) without disturbing a lot of people, I want that quickly. It perfectly works with Git, I create the branch just by one command, work inside (means do what ever number of commits I want) and if I think I'm ready, merge it back to master and push changes to SVN.
+</p>
+<p>
+Remember you last merge operation with SVN? If you haven't seen 'Tree conflict' type of conflict, you are not SVN user. I've seen them a lot and many people suffer much of it! This type of conflict happens because SVN keeping and tracking information about folder in which file is placed. Git does not do that, it is basically content tracking system - Git cares about content of the file, not file it self. Since the information about content (blob) and filesystem information (tree) is separated each of other, you will never get a 'Tree conflict' in Git.
+</p>
+<p>
+By the fact that branches and merges are very easy in Git you are getting one really cool bonus. Have you ever been in situation then in a middle of your flow, then tens files are already changed, but you still struggling with task, your boss is contacting you saying - 'Hey, we have critical bug, required to be fixed now'? Such things make you a little uncomfortable, you already got some changes, but they are not 'commitable'.. you could not throw it away, because some value is already there, but you need to get SVN update and start to fix bug. With git, you can switch from one task to another with out any problems. You just commit your results (even if they are not compliable or tests are red, who cares - it's yours repository) create another branch for bugfix and start to work.  
+</p>
+<p>
+To summarize that a little I would say that my personal benefits of starting using Git are: 
+</p>
+<ul>
+<li><strong>Isolation</strong> - do whatever I want, whenever I want</li>
+<li><strong>Merges</strong> - forget about 'Tree conflicts'</li>
+<li><strong>Task switching</strong> - no more, "please wait till I commit this, so I can start to work on that"</li>
+<li><strong>Fun</strong> - it is interesting to me to learn new system and to change a mind how VCS can work</li>
+</ul></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to start using Git in SVN-based organization]]></title>
+    <link href="http://beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html"/>
+    <updated>2011-06-29T21:04:00+02:00</updated>
+    <id>http://beletsky.net/2011/06/how-to-start-using-git-in-svn-based</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+I've been using Git about a year now, immediately after creation my <a href="https://github.com/alexbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
+</p>
+<p>
+You are probably aware about all good thing with Git. If you still don't you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well.
+</p>
+<p>
+After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues "Are you ready to go with Git?" you would probably hear "No!". It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
+</p>
+<p>
+Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I'm talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>.
+</p>
+<p>
+Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I'll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.
+</p>
+<h2>Setup you environment</h2>
+<ul>
+<li>
+Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a>
+</li>
+<li>
+Setup local user information, example
+<pre>
+    git config --global user.name “alexander.beletsky”
+    git config --global user.email “alexander.beletsky@gmail.com”
+</pre>
+</li>
+<li>
+If you are on Windows and doing only-Windows development, it is recommended to turn off <code>autocrlf</code>
+<pre>
+    git config core.autocrlf false
+</pre>
+</li>
+</ul>
+<h2>Checking out code from SVN repository</h2>
+<ul>
+<li>
+Run git clone command (it might take some time, depending on repository and history size)
+<pre>
+    git svn clone https://mysvnserver/repo
+</pre>
+</li>
+</ul>
+<p>
+As clone finished, you will see that new folder <code>repo</code> created with the content of your SVN repository. Now, this folder is actually Git repository + you local sources copy. Try to run <code>git log</code> inside the repository and you will see that all your history are there!
+</p>
+<h2>Let's do some work</h2>
+<p>
+Now, suppose you start to work on some bugfix. By default, git repository contains one branch called <code>master</code>. Good style is do not do direct commits into master at all, just keep it as synchronization point between SVN repository and your local repository. So, to do actual job you to create branch.
+</p>
+<pre>
+    git checkout -b bugfix-id-1453
+</pre>
+<p>
+This command will create new branch called <code>bugfix-id-1453</code> and immediately switch to it. If you haven't noticed how that happened - please welcome to git's high performance world.
+</p>
+<p>
+You changed some file and ready to commit. In git it's a 2 steps operation. First, you need to put content to stage.. second, you store the content in new commit object.
+</p>
+<pre>
+    git add .
+    git commit -m "issue has been fixed"
+</pre>
+<h2>Commit changes back to SVN</h2>
+<p>
+You've fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world.
+</p>
+<p>
+Checkout your master branch:
+</p>
+<pre>
+    git checkout master
+</pre>
+<p>
+Get the latest changes from SVN:
+</p>
+<pre>
+    git svn rebase
+</pre>
+<p>
+Now SVN server and local master branch are identical. We have to merge our fix into master:
+</p>
+<pre>
+    git merge bugfix-id-1453
+</pre>
+<p>
+Now master contains previous SVN state + new fix. We have to synchronize local repository and SVN server:
+</p>
+<pre>
+    git svn dcommit
+</pre>
+<h2>Conclusions</h2>
+<p>
+Git-svn is perfect tool to start using git without radical changes in organization. It gives everybody change to try it out, how much it really fits your needs. I'm having a big pleasure now of working with Git. I'm not saying it's ideal smooth process, sure I met some difficulties. But for me those difficulties are nothing comparing the benefits I'm getting with it.
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

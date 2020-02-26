@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: REST | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/rest/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Implementation of REST web service adapter on .NET]]></title>
+    <link href="http://beletsky.net/2011/02/implementation-of-rest-web-service.html"/>
+    <updated>2011-02-24T13:58:00+01:00</updated>
+    <id>http://beletsky.net/2011/02/implementation-of-rest-web-service</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+The REST web services are quite common thing nowadays. Sure, web application just expose API through HTTP protocol, basically allowing any application to be integrated with. Simple? Yes, this is the power of REST, just simple. But vendor should consume the API somehow. The environment could really be different: .NET, Java, Python, PHP etc., and it it not so convenient to work with HTTP directly from your custom application. Instead of that you expect on "native" API that you work with like the rest of application: having a model, methods that returns of change model state. You expect on having <code>Adapter</code> - the entity which would adapt REST HTTP methods into your platform/language methods. I'm going to give example of creation such adapter for .NET code.
+</p>
+<p>
+Doesn't matter what language you write it the steps of adapting is quite common, here they are:
+</p>
+<h2>Learn the API</h2>
+<p>
+Let's have <a href="http://www.trackyt.net/Home/ApiV11">Trackyt.net API</a> as an example. First thing you need to do is to learn API. REST API differs much from site to site, depending of developers tools and choice. All you need to understand the exact methods you need, their signature and data they operate with. Let's take <code>Authenticate</code> method: so we see, it takes 2 arguments, email and password and in response it returns JSON object, containing operation result and API token. That means:
+</p>
+<pre class="brush: plain">
+URL: http://trackyt.net/api/v1.1/authenticate
+</pre>
+<p>
+Will be transformed in such C# method, like <code>Authenticate</code> that receives email and password as arguments and return ApiToken as results. Note, <code>ApiToken</code> is first model class we identified.
+</p>
+<p>
+And call like this:
+</p>
+<pre class="brush: plain">
+http://trackyt.net/api/v1.1/af005f695d300d0dfebbd574a4b1c0fa/tasks/all
+</pre>
+<p>
+Is actually transformed in something like <code>GetAllTasks</code> that recieves ApiToken object and returns <code>IList&lt;Task&gt;</code>. <code>Task</code> is yet another model class we have to deal with.
+</p>
+<p>
+This is a kind of analysis stage of implementation, you just need to understand interface and model.
+</p>
+<h2>Define interface and model</h2>
+<p>
+After you done you are ready to define interface:
+</p>
+<pre class="brush: csharp">
+public interface ITrackytApiAdapter
+{
+    ApiToken Authenticate(string email, string password);
+
+    IList&lt;Task&gt; GetAllTasks(ApiToken token);
+    Task AddTask(ApiToken token, string description);
+    int DeleteTask(ApiToken apiToken, int taskId);
+    Task StartTask(ApiToken apiToken, int taskId);
+    Task StopTask(ApiToken apiToken, int taskId);
+    void StartAll(ApiToken apiToken);
+    void StopAll(ApiToken apiToken);
+}
+</pre>
+<p>
+You see that all methods, defined in <a href="http://www.trackyt.net/Home/ApiV11">documentation</a> are reflected as interface methods, all data accepted/returned by methods are defined as <a href="http://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO</a>.
+</p>
+<pre class="brush: csharp">
+public class ApiToken
+{
+    public ApiToken(string token)
+    {
+        Value = token;
+    }
+
+    public String Value { get; private set; }
+}
+
+public class Task
+{
+    public int Id { set; get; }
+    public string Description { set; get; }
+    public DateTime CreatedDate { set; get; }
+    public DateTime? StartedDate { set; get; }
+    public int Status { set; get; }
+}
+</pre>
+<h2>Integration testing</h2>
+<p>
+Is it possible to code without tests? I don't think so. So, what we are going to do - one by one, tests all adapter methods. That's should not be "super-duper-complex" test (at least during initial implementation), but rather smoke test ones. Do the call and see that results back. Here is just a several examples of tests for <code>Authentication</code> and <code>GetAllTasks</code>.
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Authenticate_AuthenicationSuccess_ReturnApiToken()
+{
+    // arrange
+    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();
+
+    // act
+    var apiToken = adapter.Authenticate(_email, _password);
+
+    // assert
+    Assert.That(apiToken, Is.Not.Null);
+    Assert.That(apiToken.Value, Is.Not.Null);
+}
+
+[Test]
+[ExpectedException(typeof(NotAuthenticatedException))]
+public void Authenticate_AuthenticationFailed_ExceptionThrown()
+{
+    // arrange
+    var adapter = TrackytApiAdapterFactory.CreateV11Adapter();
+
+    // act
+    var apiToken = adapter.Authenticate("nouser", "noemail");
+}
+</pre>
+<h2>Implementation</h2>
+<p>
+There are 2 very suitable components you might use for any REST API adapters:
+</p>
+<ul>
+<li>
+<a href="http://james.newtonking.com/pages/json-net.aspx">James Newton JSON.net</a> library - the best framework to handle JSON's in .NET (imho). I enjoy how easy to serialize and deserialize of data with JSON.net.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/system.net.webclient(v=vs.80).aspx">WebClient</a> object - that is part of .NET framework and encapsulate all basic HTTP functions.
+</li>
+</ul>
+<p>
+Here we go. Our task is to send HTTP request to server, check it for correctness and transform server reply to .NET objects. To do that is great to model all responses into POCO (as we did with model classes <code>ApiToken</code> and <code>Task</code>). The difference is that <code>Responses</code> are actually internal classes, part of implementation and adapter users should know nothing about them. For instance let's see <code>AuthenticationResponse</code>
+</p>
+<pre class="brush: csharp">
+class AuthenticationResponse : BaseResponse
+{
+    internal class ResponseData
+    {
+        [JsonProperty("apiToken")]
+        public string ApiToken { set; get; }
+    }
+
+    [JsonProperty("data")]
+    public ResponseData Data { set; get; }
+}
+</pre>
+<p>
+The base response is some common part of data that every response suppose to contain. In my case:
+</p>
+<pre class="brush: csharp">
+class BaseResponse
+{
+    [JsonProperty("success")]
+    internal bool Success { set; get; }
+
+    [JsonProperty("message")]
+    public string Message { set; get; }
+}
+</pre>
+<p>
+We should deserialize responses with JSON.net and send requests with WebClient. Let's just see simple code example:
+</p>
+<pre class="brush: csharp">
+public ApiToken Authenticate(string email, string password)
+{
+    using (var client = new WebClient())
+    {
+        var authenticationJson = JsonConvert.SerializeObject(new { Email = email, Password = password });
+        client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+        var responseString = client.UploadString(ApiUrl + "authenticate", authenticationJson);
+        var response = JsonConvert.DeserializeObject&lt;AuthenticationResponse&gt;(responseString);
+        if (!response.Success)
+        {
+            throw new NotAuthenticatedException();
+        }
+
+        return new ApiToken(response.Data.ApiToken);
+    }
+}
+</pre>
+<p>
+It simply creates new WebClient instance, <code>UploadString</code> method perform's POST by default and places string object as POST payload. Then we receive response as string and try to deserialize to target response type. In case it could not serialize that, exception will be thrown. Next, it check result of operation and return required data back to client.
+</p>
+<p>
+The implementation of the rest of methods is mostly the same, differing by type of HTTP request (GET, POST, DELETE, PUT) and request/response objects. Let's see <code>GetAllTasks</code> method that does GET request and returns all users tasks:
+</p>
+<pre class="brush: csharp">
+public IList&lt;Task&gt; GetAllTasks(ApiToken token)
+{
+    using (var client = new WebClient())
+    {
+        client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+        var responseString = client.DownloadString(ApiUrl + token.Value + "/tasks/all");
+        var getAllTasksResponse = JsonConvert.DeserializeObject&lt;GetAllTasksResponse&gt;(responseString);
+
+        if (!getAllTasksResponse.Success)
+        {
+            throw new Exception("Can't get users tasks. " + getAllTasksResponse.Message);
+        }
+
+        return getAllTasksResponse.Data.Tasks;
+    }
+}
+</pre>
+<p>
+As reference I'll give you implementation of <a href="https://github.com/alexbeletsky/trackyt.api.csharp">trackyt.api.csharp</a> by me and <a href="https://github.com/erikzaadi/GithubSharp">GithubSharp</a> API by <a href="http://erikzaadi.com/">Erik Zaadi</a>.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Implementation of REST service with ASP.NET MVC]]></title>
+    <link href="http://beletsky.net/2011/01/implementation-of-rest-service-with.html"/>
+    <updated>2011-01-06T23:39:00+01:00</updated>
+    <id>http://beletsky.net/2011/01/implementation-of-rest-service-with</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I'll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into "API epoch", customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he's just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let's implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I've created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexbeletsky/rest.mvc.example">github</a> (please don't be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
+public partial class RestExampleDataContext : System.Data.Linq.DataContext
+{
+    // implementation...
+
+</pre><pre class="brush: csharp;">[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogPosts")]
+public partial class BlogPost : INotifyPropertyChanging, INotifyPropertyChanged
+{
+    // implementation
+</pre><p>I've added simple data to database that will be used by tests: </p><pre class="brush: sql">insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-1', 'My post 1', 'This is first post', CAST('2011-01-01' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 2', 'This is second post', CAST('2011-01-02' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 3', 'This is third post', CAST('2011-01-03' as datetime), 'alexander.beletsky');
+</pre><h2>API Interface</h2><p>The interface we are going to implement, looks like this: </p><pre class="brush: plain">http://localhost/api/v1/posts/get/{posturl}
+http://localhost/api/v1/posts/all/{username}
+http://localhost/api/v1/posts/post/{username}
+http://localhost/api/v1/posts/delete/{username}/{posturl}
+</pre><p>For all of these interface methods, I'm adding integration javascript <a href="https://github.com/alexbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don't have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) "API". It is really similar with Area, by it's structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: "It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action". So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let's take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
+
+namespace Web.API.v1
+{
+    public class ApiV1Registration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get { return "ApiV1"; }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            context.MapRoute(
+                "ApiV1_posts",
+                "api/v1/posts/{action}/{userName}/{postUrl}",
+                new { controller = "APIV1", postUrl = UrlParameter.Optional });
+        }
+    }
+}
+</pre><h2>API Controller</h2><p>After routing is defined, it is time to add actual hander - controller class. Initially it would be empty, with out any action. Just initialization of <code>context</code> object. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    public class ApiV1Controller : Controller
+    {
+        private RestExampleDataContext _context = new RestExampleDataContext();
+
+        // actions..
+    }
+}
+</pre><h2>API Actions implementation</h2><p>We've complete infrastructure to start implementation. Solution, Project, Interface, Tests, Routing, Controller.. now it is time for Actions. </p><h3>Get all posts method</h3><p><pre>http://localhost/api/v1/posts/all/{username}
+</pre></p><p>It receives <code>username</code> as parameter and expected to return all blog posts belong to this user. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult All(string userName)
+{
+    var posts = _context.BlogPosts.Where(p => p.CreatedBy == userName);
+
+    return Json(
+        new { success = true, data = new { posts = posts.ToList() } }, JsonRequestBehavior.AllowGet
+    );
+}
+</pre><p>Signature of action method said: respond to <code>HttpGet</code> verb, get all records with corresponding userName and return as Json.  </p><p><code>Json</code> method of Controller class is really cool feature of MVC2 framework. It receives anonymous type object and serialize it Json. So, the <code>new { success = true, data = new { posts = posts.ToList() } }</code> object will be serialized into: </p><pre class="brush: csharp">{"success":true,"data":{"posts":[{"Id":1,"Url":"my-post-1","Title":"My post 1","Body":"This is first post","CreatedDate":"\/Date(1293832800000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":2,"Url":"my-post-2","Title":"My post 2","Body":"This is second post","CreatedDate":"\/Date(1293919200000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":3,"Url":"my-post-2","Title":"My post 3","Body":"This is third post","CreatedDate":"\/Date(1294005600000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}}]}}
+</pre><p>Nice and clean. </p><p>Take a note to <code>JsonRequestBehavior.AllowGet</code>. This is a special flag, you have to pass to <code>Json</code> method, if it is being called from GET handler method. This is done to prevent <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx">Json Hijacking</a> type of attack. So, actually if your API call returns user sensitive data, you should consider POST instead of GET.  </p><p>Let's re-run test suite and see that first test is green now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s1600/api-tests-firstpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s400/api-tests-firstpass.png" border="0" alt=""id="Img3" /></a> <h3>Create new post method</h3><pre>http://localhost/api/v1/posts/all/{username}
+</pre><p>It receives <code>username</code> as parameter and blog post content in POST body as payload. Code is: </p><pre class="brush: csharp">[HttpPost]
+public JsonResult Post(string userName, PostDescriptorModel post)
+{
+    var blogPost = new BlogPost {
+        CreatedBy = userName,
+        CreatedDate = DateTime.Now,
+        Title = post.Title,
+        Body = post.Body,
+        Url = CreatePostUrl(post.Title)
+    };
+
+    _context.BlogPosts.InsertOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, url = blogPost.Url });
+}
+
+private string CreatePostUrl(string title)
+{
+    var titleWithoutPunctuation = new string(title.Where(c => !char.IsPunctuation(c)).ToArray());
+    return titleWithoutPunctuation.ToLower().Trim().Replace(" ", "-");
+}
+</pre><p>where <code>PostDescriptorModel</code> is </p><pre class="brush: csharp">namespace Web.API.v1.Models
+{
+    public class PostDescriptorModel
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+}
+</pre><p>If you try to run this example just like that, you will see that <code>PostDescriptorModel</code> instance will be null. MVC2 could not handle Json payload. But if you google a little you find article by Phil Haack, where he addresses exactly the same issue - <a href="http://haacked.com/archive/2010/04/15/sending-json-to-an-asp-net-mvc-action-method-argument.aspx">Sending JSON to an ASP.NET MVC Action Method Argument</a>. Support of Json as action method is implemented in MVC Futures 2 library (library that contains useful extensions, that are not yet part of framework but will be there with big chances). Download it by this <a href="http://aspnet.codeplex.com/releases/view/41742#DownloadId=110348">link</a> add reference to project and in Global.asax.cs add <code>JsonValueProviderFactory</code>: </p><pre class="brush: csharp">protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+
+    RegisterRoutes(RouteTable.Routes);
+
+    ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
+    // ...
+</pre><p><strong>Important:</strong> </p><ul><li>In case you are using MVC3 framework, you do not need to include MVC Futures assembly, since <code>JsonValueProviderFactory</code> is already included into MVC3.</li>
+</ul><p>If I try to re-run the tests, I'll see that "create new post" test is still red. That's because "get post" API method is still not implemented. </p><h3>Get post by url method</h3><pre>http://localhost/api/v1/posts/get/{posturl}
+</pre><p>It receives <code>post</code> as post url and return blog post object in response. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Get(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    return Json(
+        new { success = true, data = blogPost }, JsonRequestBehavior.AllowGet);
+}
+</pre><p>Last red test is "delete post test", so let's implement delete API call. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s1600/api-tests-secondpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s400/api-tests-secondpass.png" border="0" alt=""id="Img4" /></a> <h3>Delete post by url method</h3><p><pre>http://localhost/api/v1/posts/delete/{posturl}
+</pre></p><p>It receives <code>post</code> as post url and return status in response. Code is: </p><pre class="brush: csharp">[HttpDelete]
+public JsonResult Delete(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    _context.BlogPosts.DeleteOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, data = (string)null });
+}
+</pre><p>Now all tests are green. Fantastic! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s1600/api-tests-allpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s400/api-tests-allpass.png" border="0" alt=""id="Img5" /></a> <h2>Handle Json Errors</h2><p>What happens if exception thrown with-in API method? Let's create a test and see: </p><pre class="brush: js">test("fail method test", function () {
+
+    var method = 'posts/fail';
+    var data = null;
+    var type = 'GET';
+    var params = ['alexander.beletsky'];
+
+    var call = createCallUrl(this.url, method, params);
+
+    api_test(call, type, data, function (result) {
+        ok(result.success == false, method + " expected to be failed");
+        same(result.message, "The method or operation is not implemented.");
+    });
+});
+</pre><p>And add implementation of failed method: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>If I run the test, I'll see such result: </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s1600/api-tests-exception.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s400/api-tests-exception.png" border="0" alt=""id="Img6" /></a> <p>This is not very greceful. It is expected that Json response would contain <code>false</code> in <code>success</code> attribute and <code>message</code> would contain actual exception message. </p><p>Of cause, it is possible to wrap all methods in <code>try / catch</code> code block and return corresponding Json in <code>catch</code> block, but this violates DRY (don't repeat yourself) principle and makes code ugly. It is much more better to use MVC2 method attributes for that. </p><p>So, we define new attribute that would handle error and in case of exception thrown with-in Action method, this exception will be wrapped in Json object and returned as a response. </p><pre class="brush: csharp">namespace Web.Infrastructure
+{
+    public class HandleJsonError : ActionFilterAttribute
+    {
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
+            {
+                filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                filterContext.Result = new JsonResult()
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        success = false,
+                        message = filterContext.Exception.Message,
+                    }
+                };
+                filterContext.ExceptionHandled = true;
+            }
+        }
+    }
+}
+</pre><p>Add this attribute to method definition: </p><pre class="brush: csharp">[HttpGet]
+[HandleJsonError]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>And I'm happy to see that all tests are passing now! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s1600/api-tests-allpassed.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s400/api-tests-allpassed.png" border="0" alt=""id="Img7" /></a> <p>Since we need similar behavior for all API calls it is better to add this attribute to class, instead of method. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    [HandleJsonError]
+    public class ApiV1Controller : Controller
+    {
+        // code..
+</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexbeletsky/rest.mvc.example">https://github.com/alexbeletsky/rest.mvc.example</a>.  </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testing REST services with javascript]]></title>
+    <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
+    <updated>2010-12-30T07:28:00+01:00</updated>
+    <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
+</p>
+<p>
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn't do any tests, basically because I didn't know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests.
+</p>
+<h2>Simple framework</h2>
+<p>
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Internal If/else statement could be extended with some specific result codes you might expect. If API call has been finished successfully, result JSON object will be parsed and submitted to a test callback.
+</p>
+<p>
+Also, I found useful to create a small helper function that would construct API call signature, based on URL, method and parameters:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Setup the environment</h2>
+<p>
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application).
+</p>
+<p>
+Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;module(<font color="#A31515">"v11 api tests"</font>, {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// setup method will authenticate to v.1.1. API by calling 'authenticate'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// it will store apiToken, so rest of tests could reuse that</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;setup: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.url = <font color="#A31515">'api/v1.1/'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.apiToken = <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// authenticate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'authenticate'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { email: <font color="#A31515">'tracky@tracky.net'</font>, password: <font color="#A31515">'111111'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(<font color="#0000ff">this</font>.url + method, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me.apiToken = result.data.apiToken;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(me.apiToken.length == 32, <font color="#A31515">"invalid api token"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Module holds <code>API URL</code> and <code>token</code>, so they are reusable through the rest of tests. If setup failed to authenticate, all tests would be failed because they could not use any call without <code>token</code>.
+</p>
+<h2>Testing methods</h2>
+<p>
+I have a number of REST style methods in my API:
+</p>
+<p>
+<code>
+http://trackyt.net/api/v1.1/token/tasks/all <br />
+http://trackyt.net/api/v1.1/token/tasks/add <br />
+http://trackyt.net/api/v1.1/token/tasks/delete/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/start/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/stop/112 <br />
+</code>
+</p>
+<p>
+and so on..
+</p>
+<p>
+I'll give some examples of tests, so you will be able to follow main idea:
+</p>
+<p>
+Get all task call test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Get all task call receives deterministic response test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks returns all required fields"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> task = result.data.tasks[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.id !== undefined, <font color="#A31515">"Id field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.description !== undefined, <font color="#A31515">"Description field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.status !== undefined, <font color="#A31515">"Status field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.createdDate !== undefined, <font color="#A31515">"CreatedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.startedDate !== undefined, <font color="#A31515">"StartedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.stoppedDate !== undefined, <font color="#A31515">"StoppedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Add new task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"task add method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/add'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { description: <font color="#A31515">'new task 1'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.task.id &#62; 0, <font color="#A31515">"id for first item is wrong"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Delete task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Rest of tests are available on <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas.
+</p>
+<h2>Running tests</h2>
+<p>
+As any kind of qUnit tests they could be easily run in browser.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
+<p>
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>.
+</p>
+<h2>Debugging the tests</h2>
+<p>
+Sure, you need to be able to run tests under debugger to see what might went wrong. For debuging test code, there is nothing better than <a href="http://getfirebug.com/">FireBug</a>. Just place the breakpoint on a line you need, press F5 to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s1600/firebugdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 129px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s400/firebugdebug.png" border="0" alt=""id="Img1" /></a>
+<p>
+ If you need to debug actual API implementation code (which in my case is C#/ASP.net MVC application), I start the web site under debugger (F5 in VS2010), place breakpoint in corresponding method and press F5 in browser to to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s1600/vsdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 154px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s400/vsdebug.png" border="0" alt=""id="Img2" /></a>
+<h2>Conclusions</h2>
+<p>
+I liked the idea of those integration tests by means of javascript. I was happy to get final results: the interface is more strict and more corresponds to REST principles. It is much more faster to write tests with javascript instead of C# or Java. Just compare <a href="https://gist.github.com/b0a261d6c88fafe5afeb">this</a> and <a href="https://gist.github.com/759517">this</a> and feel the difference. Write less, get more.
+</p>
+<p>
+As javascript could be treated as "pseudo language", since it is easy to read it - API test suite could be used as a developers documentation. If you need to do a call, check the corresponding test, everything there.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Let's take a REST]]></title>
+    <link href="http://beletsky.net/2010/12/lets-take-rest.html"/>
+    <updated>2010-12-23T06:28:00+01:00</updated>
+    <id>http://beletsky.net/2010/12/lets-take-rest</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
+</p>
+<h2>What is REST?</h2>
+<p>
+It is rather style or pattern of development resource-oriented web applications. Beauty of REST is that its really easy to understand and basically you are using REST everyday but may not noticing that. REST works on top of HTTP protocol, but is is not protocol itself. It seems to me that it actually appears with HTTP/1.1 but only with <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> work it became well understood, defined and attractive.
+</p>
+<p>
+REST popularized by such applications as twitter, flickr, bloglines, technorati etc. And of cause, by <a href="http://rubyonrails.org/">Ruby On Rails</a> framework.
+</p>
+<h2>Unique ID</h2>
+<p>
+Unique ID is key concept in REST. Everything in Web is resource, every resource must be addressed, each address is unique.
+</p>
+<p>
+Here are examples of ID. Of cause in a world of HTTP ID's are URI's (Unified Recourse Identifiers):
+</p>
+<p>
+<code>
+http://mysite.com/blog/page/1<br />
+http://mysite.com/blop/post/my-first-post
+</code>
+</p>
+<h2>What is representation and state transfer?</h2>
+<p>
+Let's see the first URI, it point for first page on some blog. As a client I ask for resource, <strong>representation</strong> of resource is returned back to client. By receiving the representation client <strong>transfers</strong> (changes) to particular <strong>state</strong>. As I ask for next resource, next representation of resource is back. The new representation changes the client application into yet another state. Between previous and next state, client stays is <strong>rest</strong> mode. Thus, the client application transfers state with each resource representation. That forms concept of - Representational State Transfer.
+</p>
+<p>
+It doesn't depend what exact representation is, it could be: HTML, XML, JSON, RSS etc. 
+</p>
+<h2>Recourses and actions</h2>
+<p>
+You can do a different actions to resources. REST achitecture maps CRUD (Create, Read, Update, Delete) to the set of operations supported by the web service using HTTP methods (e.g., POST, GET, PUT or DELETE). 
+</p>
+<table>
+        <tr>
+            <th>URI</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/page/1</td>
+            <td>GET</td>
+            <td>
+            Gets the representation of resouce. Get request does not change the state of server.
+            Typically you do not submit any data in GET request. 
+            You can read the URL like, "get page 1 from blog located at http://mysite.com"
+            </td>
+
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry</td>
+            <td>POST</td>
+            <td>
+            Posts the changed state of resouce. With post you can change the state of server.
+            Post contains data in POST body. It is up to web server how to treat and use this data.
+            You can read URI like, "post an entry to entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/changename/211</td>
+            <td>PUT</td>
+            <td>
+            Updates some existing resouces. PUT is similar to POST, since it changes web server state and contains data in body. You can do different change actions that would update resource. Typically recourse identified by ID, like 211.
+            You can read URI like, "update an entry with Id 211, by changing its name, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>        
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/211</td>
+            <td>DELETE</td>
+            <td>
+            Deletes some existing resouces. DELETE changes web server state but typically contains no data in body.
+            You can read URI like, "delete an entry with Id 211, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+</table>
+<h2>Logical and Physical URL's</h2>
+<p>
+If you do a lot of classic ASP.net programming you probably get used that URL reflects physical structure of application. For instance, <code>http://mysite.com/index.aspx</code> corresponds to <code>c:\inetpub\wwwroot\mysite\index.aspx</code>. In REST style URL stand not for physical, but logical URL. It means, <code>http://mysite.com/blog/post/1</code> doesn't have to have <code>c:\inetpub\wwwroot\mysite\blog\post\1</code> file with static content. 
+</p>
+<p>
+Clean and logical URL's one of the attractive points of REST. It moves away from ugly URL's like <code>http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?s=books&ie=UTF8&qid=1293077887&sr=1-1</code>.
+</p>
+<p>
+From implementation point of view: to allow REST style URL for ASP.net applications you should either create your own <a href="http://intertwingly.net/wiki/pie/RestAspNetExample">HttpHandler</a> or use already created start-kits and frameworks, like <a href="http://aspnet.codeplex.com/releases/view/24644">WCF REST starter kit</a>, <a href="http://trac.caffeine-it.com/openrasta/">OpenRasta</a>.
+</p>
+<h2>REST vs. SOAP</h2>
+<p>
+Sure, REST is not first who approaches issue of using recourses in Web, it rather trendier new kind in a block. We know bunch of web technologies, SOAP, WSDL, ATOM, WS-*, WCF, ODATA and many many more.. So, what are the difference?  
+</p>
+<p>
+Major difference is that all above are <strong>protocols</strong>, but REST is <strong>style</strong>. This has pros and cons. Protocol's are more strict and heavyweight, with a number of rules, formats etc. SOAP is using XML as data exchange format, REST could work any format depending on client needs. SOAP is using its own security model, REST relies on HTTP and web server security. SOAP requires tools, REST learning curve is small and less less reliance on tools. SOAP designed to handle distributed computing environments, REST assumes a point-to-point communication model. 
+</p>
+<p>
+But my opinion is simplicity always win against complexity. Key popularity of REST is because is simple, easy understand by developers and as a result - implemented in applications. My believe that SOAP and other heavyweight protocols will slightly die more and applications will be using REST. 
+</p>
+<h2>ASP.net MVC and REST</h2>
+<p>
+Developers of ASP.net MVC framework designed it to be REST compatible. In the level of framework, there is an URL routing system (<code>System.Web.Routing</code>) that allows you easily follow REST design principles. It gives you total control over your URL schema and its mapping to your controllers and actions, with no need to conform to any predefined pattern.
+</p>
+<p>
+So, basically ASP.net MVC web applications development is: create a controller class (<code>LoginController</code> for instance), implement number of actions (<code>Index</code>, <code>CheckCredentials</code>) and map those actions to particular URL. For instance <code>http://mysite.com/login</code> mapped to <code>LoginController.Index</code> method, that handles GET request from server and return View, containing Login form. <code>http://mysite.com/login/check</code> mapped to <code>LoginController.CheckCredentials</code> method, that handles POST and checks users credentials.
+</p>
+<p>
+It is much more easier to create web applications API's with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

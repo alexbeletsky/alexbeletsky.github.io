@@ -1,0 +1,975 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="ASP.NET MVC Routes and Namespaces Jul 25th, 2012 MVC, asp.net While I was working on ELMAH.MVC v.2.0.0 I noticed a something that contradicts the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/8/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/07/aspnet-mvc-routes-and-namespaces.html">
+    
+      ASP.NET MVC Routes and Namespaces</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T15:42:00+02:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    While I was working on <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC v.2.0.0</a> I noticed a something that contradicts the way I understand how the controller resolving mechanism works. Before, I always thought that namespaces matters, but in practice I saw it otherwise.<br />
+</p><h2>Controller in separate class assembly</h2><p>    The good way of distribution re-usable software is class assembly. Suppose, I have 2 projects - one ASP.NET MVC web application (<code>MvcApplication2</code>), and another one is class assembly (<code>Awesome.Mvc.Lib</code>). Web application references the class library.<br />
+</p><a href="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-Y6YKPiPmC5U/UA_1XCcp2jI/AAAAAAAAI-0/lybgi7ALYoc/s620/image-1.png" /><br />
+</a><br />
+<p>    I want to have some particular controller to be exposed from <code>Awesome.Mvc.Lib</code>. Namely, I want to have a controller inside the class library, that would be accessible from <code>MvcApplication2</code>. I&#8217;ll add some <code>ShinnyController.cs</code> inside.<br />
+</p><pre class="brush: csharp">namespace Awesome.Mvc.Lib
+{
+    public class ShinnyController : Controller
+    {
+        [HttpGet]
+        public string Index()
+        {
+            return "I'm in Shinny controller";
+        }
+    }
+}
+</pre><p>    Originally, my thought was, <code>ShinnyController</code> will always be &#8220;invisible&#8221; for <code>MvcApplication2</code>, since it placed into another namespace. Meaning, if I don&#8217;t initialize a route pointing to <code>ShinnyController</code>, the routing mechanisms would never match it. But, if I run the application and go <code>http://localhost:26810/shinny</code> I will see:<br />
+</p><a href="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png"><br />
+    <img src="https://lh3.googleusercontent.com/-rK7AMYLTMEw/UA_1XPcDdYI/AAAAAAAAI-w/SLICb6ZxIh0/s620/image-2.png" /><br />
+</a><br />
+<p>    This is totally unexpected to me! It turns out that default route is matching the controller/action from <code>Awesome.Mvc.Lib</code> class library.<br />
+</p><pre class="brush: csharp">routes.MapRoute(
+    "Default", // Route name
+    "{controller}/{action}/{id}", // URL with parameters
+    new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+);
+</pre><p>    What I&#8217;m expecting though is that <code>ShinnyController.cs</code> have to be &#8220;explicitly&#8221; routed, and ideally placed into its own sub-URL, like <code>http://localhost:26810/awesome/shinny</code>.<br />
+</p><h2>What about namespaces fallback?</h2><p>    I&#8217;ve asked this question on <a href="http://stackoverflow.com/questions/11077554/controller-in-separate-assembly-and-routing">stackoverflow</a>. Even if I had good answer, it did not make it happy. So, to get the behavior I want, I need to do the following: <br />
+</p><ol>    <li>Change the default routing to explicitly mention the namespace and set fallback to false:</li>
+<pre class="brush: csharp">public class MvcApplication : System.Web.HttpApplication
+{
+    public static void RegisterRoutes(RouteCollection routes)
+    {
+        routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+        var route = routes.MapRoute(
+            "Default", // Route name
+            "{controller}/{action}/{id}", // URL with parameters
+            new { controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+            new[] { "MvcApplication2" }
+        );
+
+        route.DataTokens["UseNamespaceFallback"] = false;
+
+    }
+</pre>    <li>Create an Area in <code>Awesome.Mvc.Lib</code> and configure routing to it:</li>
+<pre class="brush: csharp">public class AwesomeAreaRegistration : AreaRegistration
+{
+    public override void RegisterArea(AreaRegistrationContext context)
+    {
+        context.MapRoute("Awesome_default", "Awesome/{controller}/{action}", new { action = "Index" });
+    }
+
+    public override string AreaName
+    {
+        get { return "Awesome"; }
+    }
+}
+</pre></ol><p>After I did so, I can reach the <code>http://localhost:26810/awesome/shinny</code>:<br />
+</p><a href="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-rnnOpRSIxE4/UA_1XFPhrPI/AAAAAAAAI-s/htheaCJ-EIE/s620/image-3.png" /><br />
+</a><br />
+<p>And in the same time, <code>http://localhost:26810/shinny</code> is getting to be rejected:<br />
+</p><a href="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png"><br />
+    <img src="https://lh4.googleusercontent.com/-VP6ZPs8hAS8/UA_1Xye5KYI/AAAAAAAAI-4/rjY9e6_aCfs/s620/image-4.png" /><br />
+</a><br />
+<p>Even though, it looks like desired behavior.. It sucks.<br />
+</p><h2>Why it sucks?</h2><p>    By placing the controllers into separate assembly, I&#8217;m thinking about it&#8217;s distribution by simple bin-deployment or by Nuget. Both ways assumes, simple copy of assembly into particular location, adding references and that&#8217;s it! I don&#8217;t suppose to change default routing that comes in ASP.NET MVC applications templates.<br />
+</p><p>    I want to have the control of routes *inside* the class library, not outside of it (in web application). But, the default behavior of ASP.NET MVC routing is completely different. Moreover, in some cases I want users of library to be able to <a href="https://github.com/alexbeletsky/elmah.mvc/issues/14">control</a> the routing. <br />
+</p><p>    In my opinion the default behavior with <code>UseNamespaceFallback = true</code> is wrong. I&#8217;ll give one more example, to proof it.<br />
+</p><p>    I removed namespace fallback code from default route, after added new Area, called Api. Inside this Area I place one controller, called <code>SimpleController</code>.<br />
+</p><pre class="brush: csharp">namespace MvcApplication2.Areas.Api.Controllers
+{
+    public class SimpleController : Controller
+    {
+        public string Index()
+        {
+            return "I'm simple controller from API area";
+        }
+
+    }
+}
+</pre><p>The controller is reachable, as expected:<br />
+</p><a href="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png"><br />
+    <img src="https://lh4.googleusercontent.com/-2NcIgQ4VJHM/UA_1YBawaqI/AAAAAAAAI_I/1qbj9KT-4HA/s620/image-5.png" /><br />
+</a><br />
+<p>But now, I try to access <code>/simple</code>:<br />
+</p><a href="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png"><br />
+    <img src="https://lh3.googleusercontent.com/-un47RILi9do/UA_1YYLqlWI/AAAAAAAAI_A/Jv4J5u5uFGg/s630/image-6.png" /><br />
+</a><br />
+<p>Hey WTF? The whole idea of Areas is just ruined. What I&#8217;m doing wrong?<br />
+</p><p>I&#8217;m feeling very frustrated about this issue. Even though I <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">understand</a> why it happens, it smells like a bug for me? It works exactly the same for ASP.NET MVC 2, 3, 4. I&#8217;m asking you guys, to help to clarify the problem. What is your opinion on that? Are you agree on such default behavior?<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/07/three-month-without-net-code.html">
+    
+      Three month without .NET code</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T12:29:00+02:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/node-dot-js/'>Node.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    It&#8217;s not farewell letter in style of &#8220;Goodbye .NET&#8221;. But, I just realized that I haven&#8217;t created any .NET code in about three month. That is pretty much. Mostly all the stuff I currently do, both at work and for fun projects, I do in JavaScript.<br />
+</p><p>    I love .NET and love C# language. C# is probably one of the best language I ever programmed with. I think that .NET is my comfort zone. Web technologies as ASP.NET MVC, Web API, NancyFX are great. But, as I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">said</a> long time ago server side development is not enough to create cool web apps.<br />
+</p><h2>Front-end development</h2><p>    For modern web application, the front-end part became as equally important as back-end. In <a href="http://www.e-conomic.com/">e-conomic</a> we are doing large scale JavaScript applications. According to <a href="http://addyosmani.com/">Addy Osmani&#8217;s</a> definition, the large scale JavaScript applications are:<br />
+</p><blockquote>non-trivial applications requiring significant developer effort to maintain, where most heavy lifting of data manipulation and display falls to the browser.<br />
+</blockquote><p>    This is exactly definition of application we released just few days ago, <a href="https://www.debitoor.de/">debitoor.de</a>. And if you are doing front-end, the JavaScript is your friend. Actually, you don&#8217;t even have a choice.. It&#8217;s either JavaScript or some another language that could be compiled down to JavaScript as <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="https://github.com/clojure/clojurescript/">ClojureScript</a> or <a href="http://www.dartlang.org/">Dart</a> languages. The importance of JavaScript, it&#8217;s common adoption, growing of community knowledge base made Scott Hanselman call JavaScript <a href="http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx">assembly language for web</a>. <br />
+</p><p>    We&#8217;ve chosen <a href="http://backbonejs.org/">Backbone</a> as front end development framework. With a backbone JavaScript code became to have structure. Having a proper code structure is vital for any project. I&#8217;ve started to learn Backbone and even I still thinking it&#8217;s too minimalistic and non-complete, I believe that was a huge step forward.<br />
+</p><p>    Having implemented and stabilized HTTP API for application, almost all new features implementation was at front end. That means, new features for product were actually born in JavaScript code.<br />
+</p><h2>Back-end development</h2><p>    As might know from my earlier <a href="http://www.beletsky.net/2011/12/why-new-technologies-move-your-product.html">post</a> we&#8217;ve chosen ASP.NET MVC to build our HTTP API on. That worked well at the beginning, but later decision were taken to move out the API to Node.js platform. So, another team started to work on new API project, basically implementing existing API interfaces from ASP.NET MVC in Node.js.<br />
+</p><p>    Being wisely architected, our front-end did not have major ASP.NET MVC dependencies. We did not use any specific features (like Razor) or anything else just in sake of minification of efforts during switching back-end platform. And I would say it worked really well.<br />
+</p><p>    Node.js based API built on <a href="http://expressjs.com/">Express.js</a> framework, that suites nice for such kind of work. There is a great blog post about <a href="http://nodeguide.com/convincing_the_boss.html">convincing</a> you boss to use <a href="http://nodejs.org/">Node.js</a>. Node.js + <a href="http://www.mongodb.org/">MondoDB</a> is very suitable for JSON API applications, for several reasons. First of all is performance, Node.js is known for it&#8217;s async I/O operations that is so perfect for web. Second is simplicity (relational simplicity, of course). Serving JSON objects inside JavaScript, storing/restoring them as MongoDB documents makes the platform and approaches very solid.<br />
+</p><p>    So, the new stuff from HTTP API also got born of JavaScript code. Check out nice post of <a href="https://plus.google.com/107092994415731288478/posts">Allan Ebdrup</a> (one of the Node.js inspiration guys inside e-conomic) about our experience with <a href="http://techtalk.e-conomic.com/developing-with-node-js-and-mongodb-part-i/">Node.js and MongoDB</a>.<br />
+</p><h2>How does it feel like?</h2><p>    So, I&#8217;ve started to work almost all the time for front-end having Sublime Text 2 + Chrome Developers Tools as IDE. It was a really unusual at the beginning, after many years in Visual Studio. <br />
+</p><p>    I feel myself more productive with JavaScript now. I write the code with JavaScript construction and sometimes thinking myself &#8220;how would I do in C#?&#8221; and it feels like in C# it would be much harder. I like dynamic nature of language.<br />
+</p><p>    Besides the coding I have pleasure of new infrastructure. Setting up .NET solution, containing ~80 projects, long build process, setup of MS SQL and re-staring of IIS.. All of that made a lot of idle time, read wasted time. I&#8217;m in idle, during waiting till build is finished.. or waiting 30 sec while IIS update AppDomain if I rebuild and press F5. It easily can take up to 2 hours per working day just wasted. <br />
+</p><p>    Node.js + MongoBD environment is extremely easy to setup, amazingly fast to work with. I&#8217;m restaring the application in 1 sec, just by stopping node process and running it again. With a tools like <a href="https://github.com/remy/nodemon/">nodemon</a>, you don&#8217;t even need to do that. Just save the code and after a sec, press F5 in browser to test it. All of that are increases general developers happiness.<br />
+</p><p>    JavaScript is difficult language and Node.js is new platform that requires respect and time to learn. Node.js is probably one of the best <a href="http://nodejs.org/api/">documented</a> projects I ever worked with. Besides, it&#8217;s open source. It means you can learn from sources. I haven&#8217;t dig inside Node.js code itself, but I did look inside the Express.js then I had an issue and I found the answer as I see how particular method works.<br />
+</p><p>    Even though, Backbone.js code and Node.js code are completely different stuff, having the same language both front-end and back-end is great thing. In particular it minimizes the language context-switching then you do coding. It&#8217;s possible to apply similar patterns and practices both ends.<br />
+</p><h2>Conclusions</h2><p>    Being a JavaScript developer works good for me so far. I opened just entire new world and would like to explore it more. I hope JavaScript would be my comfort zone some day.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/starting-up-nodejs-development-on.html">
+    
+      Starting Up Node.js Development on Windows</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-27T19:40:00+02:00" pubdate data-updated="true">Jun 27<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nodejs/'>NodeJs</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
+</p><p>    If you are .NET developer addicted to Visual Studio, you might feel a little frustration about joining new camp. Primarily, because of lacking proper development environment. This is not quite true. You can setup very solid development environment for Node.js on Windows box.<br />
+</p><h2>Installing node.js</h2><p>    Node.js is nothing more as node.exe file. It&#8217;s very easy to install with latest installer available on <a href="http://nodejs.org">nodejs.org</a> web site. <br />
+</p><p>    Installing the software is always a little mess. You have to download, un-package, run.. go different wizards - it&#8217;s boring! Do you remember how you life changed after NuGet release? What if say, you can do exactly the same thing, but instead of installing .NET packages, you can install software. This is possible by brilliant project called <a href="http://chocolatey.org/">Chocolatey</a>.<br />
+</p><p>    After <a href="http://chocolatey.org/">Chocolatey</a> is setup, you can easily install any <a href="http://chocolatey.org/packages">package</a> you like, including one for <a href="http://chocolatey.org/packages/nodejs">node.js</a>. <br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            c:&gt; cinst nodejs<br />
+        </p>    </div></div><p>    Nice and easy.<br />
+</p><h2>Trying things out</h2><p>    As Chocolatey installed node, it should be available in your PATH. So, fire up new cmd window and put &#8216;node&#8217; in command line. node.exe acts as javascript interpreter, so you can directly put some code in console. Here is simple example of Fibonacci number&#8217;s calculation in node.<br />
+</p><a href="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png"><br />
+    <img src="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png" alt="node.js command line"/><br />
+</a><br />
+<p>    Instead of typing the code into interpreter console, you can save it to local file &#8216;fib.js&#8217; and run it with node.<br />
+</p><a href="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png"><br />
+    <img src="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png" alt="node.js command line 2"/><br />
+</a><br />
+<h2>Setting up development environment</h2><p>    Basically all you need with node.js is command line and text editor. Any text editor you like. You just code in you favorite one and then switch to command line to start up application, like &#8216;node app.js&#8217;. <br />
+</p><p>    You can go further this minimalistic setup, thought. I&#8217;ll show the best options I&#8217;ve tried so far.<br />
+</p><h3>Sublime Text 2</h3><p>    <a href="http://www.sublimetext.com/2">Sublime Text 2</a> is a superior development-oriented text editor. Even with plain installation it&#8217;s very useful. Available on many platforms, including Windows makes it really &#8216;must-have&#8217; tool for any developer. <br />
+</p><p>    You can turn Sublime Text 2 into quite powerful node.js IDE with plug called <a href="https://github.com/tanepiper/SublimeText-Nodejs">SublimeText-NodeJs</a>.<br />
+</p><p>    It provides with basic code completion functionality.<br />
+</p><a href="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    But it also gives you ability to simply run node.js scripts inside the editor and see resulted output.<br />
+</p><a href="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png"><br />
+    <img src="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    Just inside the editor you able to access &#8216;npm&#8217; and &#8216;node&#8217; command line, so it&#8217;s pretty possible to work with project without leaving text Sublime at all. Reality is a little different, thought.<br />
+</p><p>    You can handle pretty big projects inside Sublime. It is able to open folders, providing great file navigation options. Pressing &#8216;Ctrl+P&#8217; will bring navigation console. Start typing the file name and relevant suggestion will appear.<br />
+</p><a href="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png"><br />
+    <img src="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    As well, you can easily navigate inside javascript file, by functions or object properties. Press &#8216;Ctrl+P&#8217; after put &#8216;@&#8217; sign and type function name.<br />
+</p><a href="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<h3>JetBrains Web Storm</h3><p>    JetBrains produces great <a href="http://www.jetbrains.com/products.html">products</a> including <a href="http://www.jetbrains.com/webstorm/index.html">Web Storm</a>. Web Storm is full feature IDE from a world-class vendor. Being HTML/CSS/JS editor, it could be easily adopted for Node.js development. <br />
+</p><a href="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    With a WebStorm you just create a new project, place javascript files inside and configure IDE to run Node.js configuration. You have ready to use presets, including one for node.<br />
+</p><a href="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    As you start to work with any Node.js internal modules (as http, fs etc.) WebStorm would propose to download sources and index them to be able to produce IntelliSence-like suggestions. I was really happy to see how fast and precise it works.<br />
+</p><a href="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png"><br />
+    <img src="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    Besides of that, you are getting all JetBrains IDE&#8217;s goodness - Refactoring, Integration with VCS, Code Formatting, Navigation etc. But the most sweet feature as for me is - Debugging. Just place the break point in the line you want to halt and press &#8216;Debug&#8217; button.<br />
+</p><a href="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png"><br />
+    <img src="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<p>   App would run and debugger will stop on breakpoint, showing current Frames, Local or Watched variables. <br />
+</p><a href="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png"><br />
+    <img src="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<h3>Microsoft Web Matrix 2</h3><p>    New kid in the block of Node.js development on Windows is <a href="http://jbeckwith.com/2012/06/07/node-js-meet-webmatrix-2/">Web Matrix 2</a>, currently beta version.<br />
+</p><a href="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png"><br />
+    <img src="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix 2 is a lightweight IDE suitable for ASP.NET, PHP, HTML development. It&#8217;s easy to install it by Web Installer. As soon as it&#8217;s installed, you can pretty nice templates for Node.js applications.<br />
+</p><a href="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png"><br />
+    <img src="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix works differently. As Sublime and WebStorm depend on &#8216;node.exe&#8217; and work directly with it, Web Matrix uses another component, called <a href="https://github.com/tjanczuk/iisnode/">iisnode</a>. IISNode is a host of node.js on IIS web server. This approach of course brings a lot of <a href="https://github.com/tjanczuk/iisnode/wiki">benefits</a>, but in the same way it might give you some limitations of IIS itself. Web Matrix comes with IIS Express web server, which is perfect for web development. One very obvious benefit of using &#8216;iisnode&#8217; is that you no longer need to restart &#8216;node.exe&#8217; process manually, as you changing sources.<br />
+</p><p>    But let&#8217;s go back to IDE itself. As for IntelliSence it much more worse that WebStorm and even Sublime, I would say. It works really strange, for instance knowing nothing about embedded node components. <br />
+</p><a href="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png"><br />
+    <img src="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    No internal debugger, no refactoring tools. The code editor is more than good enough. Almost the same user experience as Visual Studio. <br />
+</p><p>    Besides of the code editor, you create databases and different report for sites.<br />
+</p><a href="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png"><br />
+    <img src="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    Even with plugins, Sublime Text 2 still more text editor than IDE. Definitely, more than good enough text editor, but still. I personally using it. First of all, because I like.. second, because I would like to be closer to &#8216;node.exe&#8217; at least at the period I&#8217;m learning the platform. Available as unlimited trial for now, makes it really attractive.<br />
+</p><p>    WebStorm, no doubt is the most valuable player now. It works great, even If I heard some rumors that it sucks a little on Linux. This should be the choice for professional development. It costs money.<br />
+</p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It&#8217;s much more closer to Microsoft technologies, like IIS, Azure etc.<br />
+</p><p>    So, what to pick up you might ask?<br />
+</p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/using-approval-testing-for-elmahmvc.html">
+    
+      Using Approval Testing for ELMAH.MVC project</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-16T14:23:00+02:00" pubdate data-updated="true">Jun 16<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/approvals/'>Approvals</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    During the ELMAH.MVC 2.0 preparation I had a bit challenging task. As I <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">mentioned</a>, I was about to adopt some code from <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandox</a> project. The 2.0 release included some new features, but what was important to me is make sure I keep previous ELMAH.MVC functionality.<br />
+</p><p>    In case you are following my blog, you probably read about <a href="http://www.beletsky.net/search/label/Approvals">Approval.Test</a> framework, which I personally like and recommend to my fellow developers. I did some posts, there I tried to show some Approvals benefits. Today, I&#8217;ll show some real-life use case.<br />
+</p><h2>Installing by NuGet</h2><p>    Last time I played with Approvals, the binaries were only available at SourseForge project page. It is not convenient at all. I was happy to see the tweet from <a href="http://twitter.com/#!/llewellynfalco">Llewellyn Falco</a>, he mentioned that ApprovalTests are now available on <a href="http://nuget.org/packages/ApprovalTests">NuGet</a>. So, installation now as easy as:<br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            PM&gt; Install-Package ApprovalTests<br />
+        </p>    </div></div><h2>Thinking of test</h2><p>I had to have some kind of assurance, that I will not break existing ELMAH pages after I switch to new ELMAH controller. Basically, I need to have some &#8216;Master Database&#8217; that would contain all logged errors and I need to grab all possible output that is being generated by ELMAH error log page handler. <br />
+</p><p>This is what perfectly match the &#8216;Locking Down&#8217; testing strategy. In locking down testing, you try to get all possible system output, and approve it. In my case, I wanted to approve that all HTTP calls to ELMAH pages, like &#8216;/elmah&#8217;, &#8216;/elmah/stylesheet&#8217;, &#8216;/elmah/rss&#8217; and so on, still work as they worked before, meaning producing the same output as they produced before.  <br />
+</p><h2>Test implementation</h2><p>For my &#8216;do&#8217; step of the the test, I need to collect all possible applications output. I already know all URL&#8217;s, so I just fired up the site with ELMAH.MVC 1.3.2 version installed. I configured the site to use XML files for storing the tests, so I can easily copy them before each test run. That made a kind of &#8216;Master Database&#8217; for me.<br />
+</p><p>For the verification, all I need to have is <code>ApprovalTests.Approvals.Verify()</code>.<br />
+</p><pre class="brush: csharp">[UseReporter(typeof(DiffReporter))]
+public class ElmahMvcTests
+{
+ private const string ElmahMvcAppUrl = &quot;http://localhost:49800/elmah&quot;;
+
+ [Test]
+ public void lock_elmah_mvc_pages()
+ {
+  // do
+  var content = new StringBuilder();            
+  var pages = new[] 
+      {
+       ElmahMvcAppUrl,
+       ElmahMvcAppUrl + &quot;/&quot;,
+       ElmahMvcAppUrl + &quot;/stylesheet&quot;,
+       ElmahMvcAppUrl + &quot;/rss&quot;,
+       ElmahMvcAppUrl + &quot;/digestrss&quot;,
+       ElmahMvcAppUrl + &quot;/detail?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
+       ElmahMvcAppUrl + &quot;/json?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;,
+       ElmahMvcAppUrl + &quot;/xml?id=5dd2a560-c6fd-4847-a6cc-e3e253db5764&quot;
+      };
+
+  foreach (var page in pages)
+  {
+   content.Append(GetContent(page));
+  }
+
+  // verify
+  ApprovalTests.Approvals.Verify(content.ToString());
+ }
+</pre><p>The <code>GetContent()</code> is responsible for getting page content. It could be as simple as <code>ApprovalTests.Asp.AspApprovals.GetUrlContents(url)</code>, but you might get in the trap, as I did so.<br />
+</p><h2>Dealing dynamic data</h2><p>The trap is called &#8216;Dynamic Data&#8217;. Dynamic data is every dynamic part of you output. In my case, the dynamic part was a server time generated by ELMAH and putting into page footer. Of cause, even if I run the test and approve the results, on a next test run I still have red test, since I have differences in a seconds of timestamps in footer. It&#8217;s annoying, but nothing  you can do about it.<br />
+</p><p>My solution was simple. Since I actually don&#8217;t care about those timestamps at all, I can simple cut it away from output. The rest of the document, including structure and content would remain the same, so testing quality will not be lower. <br />
+</p><p>So, the <code>GetContent()</code> method will look as follows,<br />
+</p><pre class="brush: csharp">private string GetContent(string url)
+{
+ return RemoveFooter(ApprovalTests.Asp.AspApprovals.GetUrlContents(url));
+}
+
+private string RemoveFooter(string content)
+{
+ var pattern = &quot;&lt;p id=\&quot;Footer\&quot;&gt;(.*)&lt;/p&gt;&quot;;
+ return new Regex(pattern).Replace(content, string.Empty);
+}
+</pre><h2>Approving the results</h2><p>After I had stable test output, I safely approved that test. Approving in terms of ApprovalTest framework, is simple copy of Accepted file into Approved file.<br />
+</p><p>Now the system got into &#8216;Locked&#8217; state and I&#8217;m safe to do the changes. This is something as Llewellyn mentioned 100% test coverage with one test. Indeed, having only one test and spent 10 minutes to create it I covered huge piece of functionality.<br />
+</p><h2>Keep that safe</h2><p>After I applied all my changes, I re-run approval test to see how it works. I was happy to see, that I&#8217;m still generating the same output as it was before. It means, the system still functions as it&#8217;s expected. All routes works, generated content does not have differences inside. Cool!<br />
+</p><p>As I <a href="http://www.beletsky.net/2011/12/approval-tests-locking-down-legacy-code.html">said</a> earlier, you don&#8217;t need to keep the test for all time. In my case, as I completed my refactoring and saw that code still works (and of cause, manually tested the application), it&#8217;s OK just to delete approval test. No longer needed.<br />
+</p><p><a href="http://approvaltests.sourceforge.net/">Approval.Tests</a> are really shines for a scenarios like that. <br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/cs101-course-accomplished.html">
+    
+      CS101 Course Accomplished!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-14T09:14:00+02:00" pubdate data-updated="true">Jun 14<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        Yesterday, I have finally received results for my Final Exams of CS101 Udacity course. I did it! <br />
+    </p>    <p>        I have successfully accomplished that course, received the certificate with &#8220;High Distinction&#8221;. To be honest, I thought it would be &#8220;Highest Distinction&#8221;, since I was pretty sure about correctness of all my solutions posted. But reality is different, you can never be sure. Next time, I&#8217;ll probably put more attention to verification of my code. Nevertheless, here is my certificate.<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-2wAuJhZyw98/T9mOrLPBgJI/AAAAAAAAI1I/yFPb5J7BW3c/s720/cert.png"><br />
+        <img src="https://lh3.googleusercontent.com/-2wAuJhZyw98/T9mOrLPBgJI/AAAAAAAAI1I/yFPb5J7BW3c/s720/cert.png" alt="certificate" style="width: 620px"/><br />
+    </a><br />
+    <p>        I&#8217;m really happy that I managed to make this happen. It&#8217;s probably nothing to proud for, but I feel much motivate for further Udacity courses. As I said in previous post, I enrolled for next ones on statistics and algorithms. Hope I will be able to go through them, with at least same results I got for CS101.<br />
+    </p>    <p>        Once again, thanks to <a href="http://www.udacity.com/">Udacity</a> for such great opportunities.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/elmahmvc-v200-release-candidate.html">
+    
+      ELMAH.MVC v.2.0.0 - Release Candidate</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T17:42:00+02:00" pubdate data-updated="true">Jun 13<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        I&#8217;ve just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I&#8217;m about to spent sometime with testing and collecting feedback before it&#8217;s availability.<br />
+    </p>    <p>        I think ELMAH.MVC is getting it&#8217;s shape. Hopefully it will be as easy to use as indented.<br />
+    </p>    <h2>Changes highlights</h2>    <p>        Quickly recap the major and breaking changes of ELMAH.MVC 2.0.<br />
+    </p>    <h3>Deployed as class library</h3>    <p>        First noticeable change is that ELMAH.MVC is no longer deployed as several source files, having new Area and Elmah controller inside. The the sake of compatibility and reach functionality it is now deployed as <code>Elmah.Mvc.dll</code>. It&#8217;s using David&#8217;s Ebbo <a href="https://nuget.org/packages/WebActivator">WebActivator</a> project to bootstrap itself, registering routes and global filters.<br />
+    </p>    <h3>New URL to access ELMAH dashboard</h3>    <p>        In 2.0 ELMAH is accessed by <code>/elmah</code> route (not <code>/admin/elmah</code> as it was in previous versions). There are several reasons for that. First one is because of new &#8216;Admin&#8217; area is not created anymore, second is the really strange behavior is ASP.NET MVC default routing rules. <br />
+    </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it&#8217;s shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it&#8217;s already included into package.<br />
+    </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it&#8217;s own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
+    </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
+    </p>    <h3>Logging with customError=&#8221;On&#8221;</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
+    </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
+            </p>        </div>    </div></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/elmahmvc-v20-is-coming.html">
+    
+      ELMAH.MVC v2.0 is coming</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-09T16:36:00+02:00" pubdate data-updated="true">Jun 9<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is rather popular package in NuGet gallery. Being submitted about year ago it currently has about ~14K downloads. I received a lot of nice feedback and to be honest feel quite happy that people are using it. Being extremely simple it requires almost no effort to support. <br />
+    </p>    <p>        Anyways, several month ago I received an email from <a href="https://nuget.org/profiles/james%20driscoll">James Driscoll</a> one of the major contributors to ELMAH project. James says that he is working on similar problem, namely easy to pickup ELMAH error handling within ASP.NET MVC applications. He saw my package, but in the same time he has his own prototype in <a href="http://code.google.com/p/elmah-sandbox/">ELMAH.Sandbox</a> project, hosted on google-code. Instead of creating yet another NuGet package he proposed to join our efforts and release next version of ELMAH.MVC. That was the beginning of ELMAH.MVC v2.0. <br />
+    </p>    <h2>What will be changed?</h2>    <p>        <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> is really simple one, actually delivered as 2 C# code files. It creates new ASP.NET MVC area and register route to ElmahController, which is just an adapter to ELMAH LogFactory. It worked very smooth, but with more functionality this approach no longer work.<br />
+    </p>    <h3>Pack ELMAH.MVC into separate class library</h3>    <p>        The idea is to bother user as less as possible. Ideally he just drops the DLL into Bin folder and it start to work. In real world it&#8217;s a bit more complex, but anyway. Elmah.MVC will be packed and delivered as class library.<br />
+    </p>    <h3>Support in VB.NET projects</h3>    <p>        Since it will be just a class library, VB.NET developers finally could use Elmah.MVC without any manual code conversion. I don&#8217;t know how many ASP.NET MVC3 applications are developed in VB.NET, but I think it&#8217;s still nice step towards compatibility. <br />
+    </p>    <h3>HandleError attribute</h3>    <p>        A lot of people, including myself are using <code>HandleErrorAttribute</code> on controllers to redirect user for nice looking error page if something goes wrong. This mean you handle the error by yourself, so it won&#8217;t appear on ELMAH log. That is very big disadvantage of current Elmah.MVC. This will be fixed as new global filter added, that will care that everything will be properly logged.<br />
+    </p>    <h3>Several small fixes</h3>    <p>        So far, I&#8217;ve collected some <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues?sort=created&state=open">issues</a> that just was in line and waited to be fixed. It&#8217;s a good time to get rid of those.<br />
+    </p>    <h2>What&#8217;s the plan?</h2>    <p>        Good for me, James did all heavylifting. I will backport some good code into new project. I&#8217;ve created new <a href="https://github.com/alexbeletsky/elmah.mvc.controller/tree/v.2.0.0">branch</a> and already started to work. Unfortunately, I could see some breaking changes there. At the end of this week, I&#8217;ll have new package ready to test. You can track the progress on github by watching v.2.0 <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/milestones">milestone</a>.<br />
+    </p>    <p>        I will need your help guys to test that thing out. If everything goes fine, I&#8217;ll update NuGet package as soon as possible.<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/cs101-building-search-engine-week-7-and.html">
+    
+      CS101 Building a Search Engine: Week 7 and Final Exams</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-08T21:06:00+02:00" pubdate data-updated="true">Jun 8<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cs101/'>CS101</a>, <a class='category' href='/blog/categories/searchengine/'>SearchEngine</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>As I said in my <a href="http://www.beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html">previous</a> post, last several units of CS101 were a little tought. Not so difficult, but it made me a little worry what&#8217;s it gonna be in final exams. Being posted right in time, I had to conclude Unit 7 before I start with exams. That time, I had some doubts if I&#8217;m able to meet course deadline.<br />
+</p><p>Fortunatelly, Unit 7 was non-technical one. I went throught it rather quickly. Some scenes for this unit were taken in <a href="http://www.computerhistory.org/">Compute History Museum</a>. This place is just amazing, I wish I had a chance to visit it someday. We&#8217;ve been passed throught a pre-historical computers (like Babbage machine), first hard drives and other interesting stuff. Besides of that we guested Mozilla company talking to it&#8217;s president and developers about open source projects, infuence of open source and some thoughts on how to be involved in open source community.<br />
+</p><p>The final exam appeared to be not so difficult. I submitted it in time, even earlier than expected. I was also quite surpised, to see that deadline is a little prolonged up to 4th of June. Anyway, the solutions are submitted and now it would take up to 2 weeks waiting for results. I really looking forward and hoping to get my certificate.<br />
+</p><p>Conluding this series of posts I have to say - Udacity courses are awesome! I really appreciate <a href="http://www.cs.virginia.edu/~evans/">David Evans</a> and <a href="http://robots.stanford.edu/">Sebastian Thrun</a> for making all that happen. My big credit goes to David who had lead CS101 and was just a perfect professor, clearly describe all the material and showing nice examples. I would like to say &#8216;Thank you&#8217; for everyone envolved.<br />
+</p><p>I think CS101 was great &#8216;warm-up&#8217; course. I would not stop on that, but I already enrolled for next ones. This time I&#8217;ve choosen more fundametal -  <a href="http://www.udacity.com/overview/Course/st101/CourseRev/1">ST101 - Introduction to Statistics</a> and <a href="http://www.udacity.com/overview/Course/cs215/CourseRev/1">CS215 - Algorithms, Crunching Social Networks</a>. Both courses are starting June 25. Not sure, would it be possible to make them on parallel, so I might hold one if it would be to difficult. Besides of that I&#8217;m currenty looking throught <a href="http://www.udacity.com/overview/Course/cs253/CourseRev/apr2012">CS253 - Web Application Engineering</a> with <a href="http://en.wikipedia.org/wiki/Steve_Huffman">Steve Huffman</a> (the creator of <a href="http://www.reddit.com/">reddit.com</a>) just as a free course, to play a little more with Python and Google App Engine.<br />
+</p><p>I highly recomend you to pickup some course today. And once again, thanks a lot to <a href="http://www.udacity.com">Udacity</a> for that priceless opportunity to learn!<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/is-tdd-required-skill-two-years-later.html">
+    
+      Is TDD Required Skill? - Two Years Later</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-05T20:00:00+02:00" pubdate data-updated="true">Jun 5<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            Two years ago I&#8217;ve concluded an interesting research. I was thinking how much employers care about hiring developers with TDD skills while looking for suitable candidates. As output of this research I&#8217;ve created a <a href="https://github.com/alexbeletsky/TddDemand">simple crawler</a>, that is able to crawl vacancy web sites and perform the simple analysis does this vacancy description require TDD skill or not. As well, I&#8217;ve created some <a href="http://www.beletsky.net/2010/09/is-tdd-skill-actually-required-by.html">blog posts</a>, where I did share results + some technical issues I met during building this crawler. <br />
+        </p>        <p>            At the weekend, I&#8217;ve decided to repeat this experiment. The code of crawler worked perfectly, except some correction I had to apply to conform the markup changes of sites that happed through these two years. Leaving the technical part of this blog post, I want to share the results with you.    <br />
+        </p>        <h2>What was at 2010?</h2>        <p>            Let&#8217;s recap what it was at 2010. I&#8217;ve crawled 978 records from <a href="http://rabota.ua">rabota.ua</a> site and 150 of 978 (about 15%) contained TDD requirement. For <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> the results was a little better, ~23% (49 of 212) contained some mention on TDD. <br />
+        </p>        <p>            The quote from 2 year ago report:<br />
+        </p>        <blockquote>            .. such demand on TDD could be reasonable for countries like Ukraine, where major market is for maintenance of existing code base (typically legacy code, no tests). But we see similar figures for USA, country where a lot of brand new product born.<br />
+        </blockquote>        <p>            I believe the awareness of TDD and general software quality got higher along the way. But let&#8217;s see the figures of 2012.<br />
+        </p>        <h2>What we have in 2012?</h2>        <p>            This time I got a litle more data. 1067 records of <a href="http://rabota.ua">rabota.ua</a> and 560 records of <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a>. But what about demand? <br />
+        </p>        <p>            All right, it&#8217;s only 77 vacancies of 1067 is requiring TDD, which is 7.22% in <a href="http://rabota.ua">rabota.ua</a>. <a href="http://careers.stackoverflow.com/">careers.stackoverflow.com</a> has 127 vacancies requiring TDD which is 22.68%.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png"><img src="https://lh3.googleusercontent.com/-rCsIO8n52dA/T85IV89lIHI/AAAAAAAAI0w/bxk4W_s9qyQ/s581/chart-1.png" style="width: 620px"/></a><br />
+        <p>            The technologies breakdown is follows. Java leads as a technology with the highest demand on TDD. During this post creation I thought that my results does include JavaScript, which gain much popularity recently. It&#8217;s interesting to see what&#8217;s there.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png"><img src="https://lh3.googleusercontent.com/-UyPYP1GoBtE/T85IVyrtlJI/AAAAAAAAI04/-9EpSPtx1hs/s906/chart-2.png" style="width: 620px"/></a><br />
+        <h2>Conclusions</h2>        <p>            Ukrainian market demand lowered almost twice. USA market demand is stable, with a little change which is almost the noise.<br />
+        </p>        <ul>            <li>Ukraine: 2010 -> 15.34%, 2012 -> 7.22% ( -8.12% )</li>
+            <li>USA: 2010 -> 23.11%, 2012 -> 22.68% ( -0.43% )</li>
+        </ul>        <p>            I can see very low demand on TDD in C/C++ field. Almost equal demand between Java and .NET with a slight win of Java. <br />
+        </p>        <p>            I personally wanted to see different figures. Anyway, it was interesting to see actual results and restored some code that worked 2 years ago. Probably this analysis required to be done more frequently to have a kind of valuable statistics.  <br />
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/06/7-weeks-with-python.html">
+    
+      7 Weeks With Python</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-02T19:15:00+02:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/python/'>Python</a>, <a class='category' href='/blog/categories/udacity/'>Udacity</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            During my <a href="http://www.beletsky.net/search/label/CS101">CS101</a> class I first time meet Python. That&#8217;s not completely true, since I played a bit Python before, but I had a chance to see Python in action only during this course. In short, that was really pleasant meet up and I hope it will grown up to prolonged and mutual relationships. I will share some &#8216;likes&#8217; and &#8216;dislikes&#8217; about Python, which I would think you find interesting.<br />
+        </p>        <h2>What I liked in Python&#8230;</h2>        <p>            Python is very well known language with great reputation and community around it. Big companies, including Google, using python to build enterprise level applications. Hackers love Python cause it combines both simplicity and power. You can do any kind of application development including desktop and web applications. All the time is being compared to Ruby, which is for me ends up to something like <a href="http://grokcode.com/746/dear-python-why-are-you-so-ugly/">this</a> only.<br />
+        </p>        <h3>No IDE development</h3>        <p>            You don&#8217;t need any kind of fancy IDE to start up with Python. Sure, IDE is something that makes development more efficient, so if you going to do a lot of programming with Python including debugging you should probably pick one. But for now, I&#8217;m totally happy with Sublime Text 2 as IDE.  <br />
+        </p>        <a href="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png"><img src="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png" alt="Sublime Text 2 for Python" style="width: 620px"/></a><br />
+        <h3>Easy to learn</h3>        <p>            If you know some OO language like C++ or Java, it will be quick jump to Python. Python is object-oriented language but with support of different paradigms as procedural and even functional programming. The basic concepts of variables, conditions and control flow are the same as you get used to. Of course, you spend sometime to know the fundaments - like, how to compare things, how to calculate length of string or list, how to put element into dictionary. Sometimes, I still refer to documentation, but in general all that things are easy to remember with practice.<br />
+        </p>        <h3>Interpretation and dynamic typing</h3>        <p>            Python is interpretator. You never mention the type of object as you declare it or use it. You might apply different operations on object, it would be evaluated on runtime. There are different opinions (holy wars) on Static vs. Dynamic, but as for me with Dynamic languages the overall development velocity is higher. First of all, you don&#8217;t spend any time for compilation, which in case of big solutions could be really high. Second, as you are only to able to check results as code executed (even if you just misspell variable name you will know about it only if this code section is evaluated), you are more focused on unit tests and TDD to catch up obvious issues, which in general makes development faster.  <br />
+        </p>        <h3>Built in types</h3>        <p>            Python has complete built-in types system. For numbers you can use different types, as <code>int</code>, <code>float</code>, <code>long</code>, <code>complex</code>. The type is evaluated on runtime,<br />
+        </p>        <pre class="brush: python">            i = 0               # integer
+            j = 1.0             # float
+            x = complex(1, -1)  # complex
+        </pre>        <p>            Strings are everything inside the &#8221; quotes,<br />
+        </p>        <pre class="brush: python">            str = "I'm string"
+        </pre>        <p>            Btw, during the course I got conclusion that list is the most flexible data structure. Everything you need, you can build upon lists. Lists are nicely handled with Python,<br />
+        </p>        <pre class="brush: python">            l = [ 1, 2, 'three', [4, 5], [[6, 7], 8]   
+        </pre>        <p>            Lists are non-optimal for searches, so if you do a lot of searches you might consider using dictionary,<br />
+        </p>        <pre class="brush: python">            d = { 'one': 1, 'two': 2, 'three': [3] }
+        </pre>        <p>            Each type has it&#8217;s own set of methods. Strings including common operations as concatenation, trimming, substring found etc. For list and dictionaries there are bunch of useful stuff as getting iterators, pushing and poping of elements.<br />
+        </p>        <h3>Syntax and Code styles</h3>        <p>            Syntax and Code styles are commonly another topic of holy war. Fortunately, Python leaves very few room for that. First of all - no semicolons. Second, Python uses indentation as part of language syntax. So, poorly indented code would simply won&#8217;t work.  <br />
+        </p>        <pre class="brush: python">            def my_method_name(arg1, arg2):
+                return arg1 < arg2              # right
+                
+            def my_method_name(arg1, arg2):
+            return arg1 < arg                   # won't work!
+            
+            def my_method(arg1, arg2):
+                if arg1 < arg2:
+                    return arg1 + arg2          # right
+            
+                if arg1 == arg2:
+                print arg2                      # won't work!
+        </pre>
+        <p>            Basically, everything that is after &#8220;:&#8221; have to be indented. This is for <code>if</code>, <code>while</code>, <code>for</code> etc. Using tab instead of curvy braces (or any other symbol or term) is really nice idea, allowing to keep code in the same format and &#8216;forcing&#8217; one and solid code guidelines along the projects and teams.
+        </p>        <h2>What I disliked in Python&#8230;</h2>        <p>            There are no perfect things, moreover perfect languages. Developers have their own habits and opinions on different things. In Python I see several things that makes me little uncomfortable about.
+        </p>        <h2>Naming consistency</h2>        <p>            It sounds like Python adopts C code styles for naming of methods and variables, like <code>longes_cycle</code> or <code>def make_it_work()</code>. But in reality a lot of methods are violating those rules. For instance some methods of dictionary type: <code>fromkeys()</code>, <code>iteritems()</code>, <code>setdefault()</code>. In the same time dict contains the method: <code>has_key()</code>.
+        </p>        <p>            That&#8217;s very annoying. Especially if you don&#8217;t have any IDE with names suggesting, it makes it really hard to remember.
+        </p>        <h2>Booleans and None</h2>        <p>            Almost the same as in topic above. Having the C-style (with a lower first symbol) language designers decided to have a special cases. 
+        </p>        <pre class="brush: python">            a = True        # why not true ?
+            b = False       # why not false ?
+            x = None        # none ?
+        </pre>        <p>            So, in code which is in general lower case, those True/False/None looking really strange.
+        </p>        <pre class="brush: python">            def proc3(input_list):
+                if len(input_list) == 0:
+                    return None
+
+                for i in range(0, len(input_list)):
+                    for j in range(0, len(input_list)):
+                        if input_list[i] == input_list[j] and i != j:
+                            return False
+                return True
+        </pre>        <h3>OO but not OO</h3>        <p>            Being OO language, Python still relies on some procedural concepts. The good example is calculation of string length. I would expect, that string corresponding method <code>len()</code> or something, but instead we are having &#8216;global&#8217; function that does that. 
+        </p>        <pre class="brush: python">            s = "I'm string"
+            print len(s)        # why not s.len() ?
+        </pre>        <p>            <code>len()</code> is overloaded for other types, it would work for list and dictionaries as well,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            d = { 1: 1, 2: 2, 3: 3 }
+            
+            print len(l)
+            print len(d)
+        </pre>        <p>            In the same manner, if you what to get reverse iterator for collection, I would assume there corresponding method that returns that iterator. Bad guess,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            for e in reverse(l):    # why l.reverse()
+                print e
+        </pre>        <h3>__init__() method</h3>        <p>            Trying out classes in Python first you need to understand is how to construct an object. Python has constructor, that look like that, 
+        </p>        <pre class="brush: python">            class MyClass:
+                def __init__(self, a, b):
+                    self.a = a
+                    self.b = b
+        </pre>        <p>            I could understand it would be <code>init</code> or <code>_init</code> or <code>constructor</code>, but I will probably never understand <code>__init__</code> with 2 underscores before and after. It&#8217;s ugly.
+        </p>        <h2>Conclusions</h2>        <p>            I&#8217;m about to enroll to next Udactity courses, so my Python journey continues. I hope to get more in language and standard library.
+        </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/9/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/7/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

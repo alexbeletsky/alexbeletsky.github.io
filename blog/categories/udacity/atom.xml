@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Udacity | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/udacity/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CS101 Course Accomplished!]]></title>
+    <link href="http://beletsky.net/2012/06/cs101-course-accomplished.html"/>
+    <updated>2012-06-14T09:14:00+02:00</updated>
+    <id>http://beletsky.net/2012/06/cs101-course-accomplished</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        Yesterday, I have finally received results for my Final Exams of CS101 Udacity course. I did it! <br />
+    </p>    <p>        I have successfully accomplished that course, received the certificate with "High Distinction". To be honest, I thought it would be "Highest Distinction", since I was pretty sure about correctness of all my solutions posted. But reality is different, you can never be sure. Next time, I'll probably put more attention to verification of my code. Nevertheless, here is my certificate.<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-2wAuJhZyw98/T9mOrLPBgJI/AAAAAAAAI1I/yFPb5J7BW3c/s720/cert.png"><br />
+        <img src="https://lh3.googleusercontent.com/-2wAuJhZyw98/T9mOrLPBgJI/AAAAAAAAI1I/yFPb5J7BW3c/s720/cert.png" alt="certificate" style="width: 620px"/><br />
+    </a><br />
+    <p>        I'm really happy that I managed to make this happen. It's probably nothing to proud for, but I feel much motivate for further Udacity courses. As I said in previous post, I enrolled for next ones on statistics and algorithms. Hope I will be able to go through them, with at least same results I got for CS101.<br />
+    </p>    <p>        Once again, thanks to <a href="http://www.udacity.com/">Udacity</a> for such great opportunities.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CS101 Building a Search Engine: Week 7 and Final Exams]]></title>
+    <link href="http://beletsky.net/2012/06/cs101-building-search-engine-week-7-and.html"/>
+    <updated>2012-06-08T21:06:00+02:00</updated>
+    <id>http://beletsky.net/2012/06/cs101-building-search-engine-week-7-and</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>As I said in my <a href="http://www.beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html">previous</a> post, last several units of CS101 were a little tought. Not so difficult, but it made me a little worry what's it gonna be in final exams. Being posted right in time, I had to conclude Unit 7 before I start with exams. That time, I had some doubts if I'm able to meet course deadline.<br />
+</p><p>Fortunatelly, Unit 7 was non-technical one. I went throught it rather quickly. Some scenes for this unit were taken in <a href="http://www.computerhistory.org/">Compute History Museum</a>. This place is just amazing, I wish I had a chance to visit it someday. We've been passed throught a pre-historical computers (like Babbage machine), first hard drives and other interesting stuff. Besides of that we guested Mozilla company talking to it's president and developers about open source projects, infuence of open source and some thoughts on how to be involved in open source community.<br />
+</p><p>The final exam appeared to be not so difficult. I submitted it in time, even earlier than expected. I was also quite surpised, to see that deadline is a little prolonged up to 4th of June. Anyway, the solutions are submitted and now it would take up to 2 weeks waiting for results. I really looking forward and hoping to get my certificate.<br />
+</p><p>Conluding this series of posts I have to say - Udacity courses are awesome! I really appreciate <a href="http://www.cs.virginia.edu/~evans/">David Evans</a> and <a href="http://robots.stanford.edu/">Sebastian Thrun</a> for making all that happen. My big credit goes to David who had lead CS101 and was just a perfect professor, clearly describe all the material and showing nice examples. I would like to say 'Thank you' for everyone envolved.<br />
+</p><p>I think CS101 was great 'warm-up' course. I would not stop on that, but I already enrolled for next ones. This time I've choosen more fundametal -  <a href="http://www.udacity.com/overview/Course/st101/CourseRev/1">ST101 - Introduction to Statistics</a> and <a href="http://www.udacity.com/overview/Course/cs215/CourseRev/1">CS215 - Algorithms, Crunching Social Networks</a>. Both courses are starting June 25. Not sure, would it be possible to make them on parallel, so I might hold one if it would be to difficult. Besides of that I'm currenty looking throught <a href="http://www.udacity.com/overview/Course/cs253/CourseRev/apr2012">CS253 - Web Application Engineering</a> with <a href="http://en.wikipedia.org/wiki/Steve_Huffman">Steve Huffman</a> (the creator of <a href="http://www.reddit.com/">reddit.com</a>) just as a free course, to play a little more with Python and Google App Engine.<br />
+</p><p>I highly recomend you to pickup some course today. And once again, thanks a lot to <a href="http://www.udacity.com">Udacity</a> for that priceless opportunity to learn!<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[7 Weeks With Python]]></title>
+    <link href="http://beletsky.net/2012/06/7-weeks-with-python.html"/>
+    <updated>2012-06-02T19:15:00+02:00</updated>
+    <id>http://beletsky.net/2012/06/7-weeks-with-python</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>            During my <a href="http://www.beletsky.net/search/label/CS101">CS101</a> class I first time meet Python. That's not completely true, since I played a bit Python before, but I had a chance to see Python in action only during this course. In short, that was really pleasant meet up and I hope it will grown up to prolonged and mutual relationships. I will share some 'likes' and 'dislikes' about Python, which I would think you find interesting.<br />
+        </p>        <h2>What I liked in Python...</h2>        <p>            Python is very well known language with great reputation and community around it. Big companies, including Google, using python to build enterprise level applications. Hackers love Python cause it combines both simplicity and power. You can do any kind of application development including desktop and web applications. All the time is being compared to Ruby, which is for me ends up to something like <a href="http://grokcode.com/746/dear-python-why-are-you-so-ugly/">this</a> only.<br />
+        </p>        <h3>No IDE development</h3>        <p>            You don't need any kind of fancy IDE to start up with Python. Sure, IDE is something that makes development more efficient, so if you going to do a lot of programming with Python including debugging you should probably pick one. But for now, I'm totally happy with Sublime Text 2 as IDE.  <br />
+        </p>        <a href="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png"><img src="https://lh6.googleusercontent.com/-rjt33byD0RU/T8pJrIcP5fI/AAAAAAAAI0k/SDaO2hXb2JI/s800/image-1.png" alt="Sublime Text 2 for Python" style="width: 620px"/></a><br />
+        <h3>Easy to learn</h3>        <p>            If you know some OO language like C++ or Java, it will be quick jump to Python. Python is object-oriented language but with support of different paradigms as procedural and even functional programming. The basic concepts of variables, conditions and control flow are the same as you get used to. Of course, you spend sometime to know the fundaments - like, how to compare things, how to calculate length of string or list, how to put element into dictionary. Sometimes, I still refer to documentation, but in general all that things are easy to remember with practice.<br />
+        </p>        <h3>Interpretation and dynamic typing</h3>        <p>            Python is interpretator. You never mention the type of object as you declare it or use it. You might apply different operations on object, it would be evaluated on runtime. There are different opinions (holy wars) on Static vs. Dynamic, but as for me with Dynamic languages the overall development velocity is higher. First of all, you don't spend any time for compilation, which in case of big solutions could be really high. Second, as you are only to able to check results as code executed (even if you just misspell variable name you will know about it only if this code section is evaluated), you are more focused on unit tests and TDD to catch up obvious issues, which in general makes development faster.  <br />
+        </p>        <h3>Built in types</h3>        <p>            Python has complete built-in types system. For numbers you can use different types, as <code>int</code>, <code>float</code>, <code>long</code>, <code>complex</code>. The type is evaluated on runtime,<br />
+        </p>        <pre class="brush: python">            i = 0               # integer
+            j = 1.0             # float
+            x = complex(1, -1)  # complex
+        </pre>        <p>            Strings are everything inside the '' quotes,<br />
+        </p>        <pre class="brush: python">            str = "I'm string"
+        </pre>        <p>            Btw, during the course I got conclusion that list is the most flexible data structure. Everything you need, you can build upon lists. Lists are nicely handled with Python,<br />
+        </p>        <pre class="brush: python">            l = [ 1, 2, 'three', [4, 5], [[6, 7], 8]   
+        </pre>        <p>            Lists are non-optimal for searches, so if you do a lot of searches you might consider using dictionary,<br />
+        </p>        <pre class="brush: python">            d = { 'one': 1, 'two': 2, 'three': [3] }
+        </pre>        <p>            Each type has it's own set of methods. Strings including common operations as concatenation, trimming, substring found etc. For list and dictionaries there are bunch of useful stuff as getting iterators, pushing and poping of elements.<br />
+        </p>        <h3>Syntax and Code styles</h3>        <p>            Syntax and Code styles are commonly another topic of holy war. Fortunately, Python leaves very few room for that. First of all - no semicolons. Second, Python uses indentation as part of language syntax. So, poorly indented code would simply won't work.  <br />
+        </p>        <pre class="brush: python">            def my_method_name(arg1, arg2):
+                return arg1 < arg2              # right
+                
+            def my_method_name(arg1, arg2):
+            return arg1 < arg                   # won't work!
+            
+            def my_method(arg1, arg2):
+                if arg1 < arg2:
+                    return arg1 + arg2          # right
+            
+                if arg1 == arg2:
+                print arg2                      # won't work!
+        </pre>
+        <p>            Basically, everything that is after ":" have to be indented. This is for <code>if</code>, <code>while</code>, <code>for</code> etc. Using tab instead of curvy braces (or any other symbol or term) is really nice idea, allowing to keep code in the same format and 'forcing' one and solid code guidelines along the projects and teams.
+        </p>        <h2>What I disliked in Python...</h2>        <p>            There are no perfect things, moreover perfect languages. Developers have their own habits and opinions on different things. In Python I see several things that makes me little uncomfortable about.
+        </p>        <h2>Naming consistency</h2>        <p>            It sounds like Python adopts C code styles for naming of methods and variables, like <code>longes_cycle</code> or <code>def make_it_work()</code>. But in reality a lot of methods are violating those rules. For instance some methods of dictionary type: <code>fromkeys()</code>, <code>iteritems()</code>, <code>setdefault()</code>. In the same time dict contains the method: <code>has_key()</code>.
+        </p>        <p>            That's very annoying. Especially if you don't have any IDE with names suggesting, it makes it really hard to remember.
+        </p>        <h2>Booleans and None</h2>        <p>            Almost the same as in topic above. Having the C-style (with a lower first symbol) language designers decided to have a special cases. 
+        </p>        <pre class="brush: python">            a = True        # why not true ?
+            b = False       # why not false ?
+            x = None        # none ?
+        </pre>        <p>            So, in code which is in general lower case, those True/False/None looking really strange.
+        </p>        <pre class="brush: python">            def proc3(input_list):
+                if len(input_list) == 0:
+                    return None
+
+                for i in range(0, len(input_list)):
+                    for j in range(0, len(input_list)):
+                        if input_list[i] == input_list[j] and i != j:
+                            return False
+                return True
+        </pre>        <h3>OO but not OO</h3>        <p>            Being OO language, Python still relies on some procedural concepts. The good example is calculation of string length. I would expect, that string corresponding method <code>len()</code> or something, but instead we are having 'global' function that does that. 
+        </p>        <pre class="brush: python">            s = "I'm string"
+            print len(s)        # why not s.len() ?
+        </pre>        <p>            <code>len()</code> is overloaded for other types, it would work for list and dictionaries as well,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            d = { 1: 1, 2: 2, 3: 3 }
+            
+            print len(l)
+            print len(d)
+        </pre>        <p>            In the same manner, if you what to get reverse iterator for collection, I would assume there corresponding method that returns that iterator. Bad guess,
+        </p>        <pre class="brush: python">            l = [1, 2, 3]
+            for e in reverse(l):    # why l.reverse()
+                print e
+        </pre>        <h3>__init__() method</h3>        <p>            Trying out classes in Python first you need to understand is how to construct an object. Python has constructor, that look like that, 
+        </p>        <pre class="brush: python">            class MyClass:
+                def __init__(self, a, b):
+                    self.a = a
+                    self.b = b
+        </pre>        <p>            I could understand it would be <code>init</code> or <code>_init</code> or <code>constructor</code>, but I will probably never understand <code>__init__</code> with 2 underscores before and after. It's ugly.
+        </p>        <h2>Conclusions</h2>        <p>            I'm about to enroll to next Udactity courses, so my Python journey continues. I hope to get more in language and standard library.
+        </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CS101 Building a Search Engine: Week 5 and 6]]></title>
+    <link href="http://beletsky.net/2012/05/cs101-building-search-engine-week-5-and.html"/>
+    <updated>2012-05-31T16:28:00+02:00</updated>
+    <id>http://beletsky.net/2012/05/cs101-building-search-engine-week-5-and</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        <small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
+        </small><br />
+    </p>    <p>        With a quite delay I've concluded units 5 and 6. I'm in a big rush now, since the exam week is already started, but I've not yet completed Unit 7. Fortunately, Unit 7 is not technical one, but rather common computer science education, that helps to shape all knowledge received through seven weeks together.     <br />
+    </p>    <p>        I would say that those 2 units is something where I start to feel some complexity. In Unit 5 we focused on making things faster, basically by introduction more advanced data structures for the same job. We went from a list based index implementation to self-implemented hash table and then utilized the Python dictionary type. Again, abstracting out of many simple things is what good developer should always do, but I was surprised how many things I forgot about main properties of hash functions and hash tables. We were also did a very basic algorithms analysis stuff. <br />
+    </p>    <p>        Unit 6 is a real computer science. Besides of the playing with recursive algorithms we did more advanced things as graph theory. All of that was a fundamentals for implementing Pang Ranking mechanism. We used famous Google's (Larry Page's) algorithm that everybody heard of <a href="http://en.wikipedia.org/wiki/PageRank">PageRank</a>. This is where my brains start to heat. Will be honest with you, I still missing it's some parts, so it will take some time get the clear picture about it.  <br />
+    </p>    <p>        So, the crawler starts to have real search engine features. Not only extracting links and indexing the keywords, that's definitely not enough for search engine. But building the links graph and computing page ranks, that then used in lookup functions to provide the best choice on search keyword. It's very simplified but working model of something that Google have (probably something that Google <a href="http://infolab.stanford.edu/~backrub/google.html">might have</a> back in 1998).  <br />
+    </p>    <p>        Python. I like language more and more and start to feel some confidence. In the same time there are several things that I dislike. Not so serious, almost cosmetic.. but something that a little bugs me a little.<br />
+    </p>    <p>        Anyway, I have only few days now to submit my exam works. I already glanced on exam tasks and they don't appear to much complex, so I have good chances to be in time with it. Wish me a good luck! I'll update you as soon as I got any results! <br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CS101 Building a Search Engine: Week 4]]></title>
+    <link href="http://beletsky.net/2012/05/cs101-building-search-engine-week-4.html"/>
+    <updated>2012-05-20T13:50:00+02:00</updated>
+    <id>http://beletsky.net/2012/05/cs101-building-search-engine-week-4</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p><small><strong>Disclaimer:</strong> this blog post expresses some impressions and details of Udacity CS101 "Building a Search Engine" online course. If you are either currently participating it or plan to do so in nearest future, this blog post could be a spoiler. Even though, I'm trying to make it generic as possible and do not spoil important things.<br />
+</small><br />
+</p><p>I've got completed Unit 4 of course during this week. It's getting more and more interesting and the crawler we building there getting more complicated. <br />
+</p><p>This week we got through the basic data structures, mainly based on lists. The most interesting thing was an index data structure, thought. We've built the simple page indexer. Now the result of crawling is not simply the list of crawled links, but instead is index that keeps track of content (as word) and the URL where the word is mention. If some of you don't know what the index is, the simplest explanation is get just to open any technical book. At the end of the book you will see "Index" section. By looking for information you have to option. Either go from one page to another, finding keyword appearance.. or go to index and see exact pages, where this keyword is mentioned. Indices are essential for quick search of data.<br />
+</p><p>The index that my crawler produce, crawling the <a href="http://www.udacity.com/cs101x/index.html">test page</a> is:<br />
+</p><pre class="brush: python">[['This', ['http://www.udacity.com/cs101x/index.html']], 
+   ['is', ['http://www.udacity.com/cs101x/index.html']], 
+   ['a', ['http://www.udacity.com/cs101x/index.html']], 
+   ['test', ['http://www.udacity.com/cs101x/index.html']], 
+   ['page', ['http://www.udacity.com/cs101x/index.html']], 
+   ['for', ['http://www.udacity.com/cs101x/index.html']], 
+   ['learning', ['http://www.udacity.com/cs101x/index.html']], 
+   ['to', ['http://www.udacity.com/cs101x/index.html', 'http://www.udacity.com/cs101x/crawling.html']], 
+   ['crawl!', ['http://www.udacity.com/cs101x/index.html']]
+   # ...
+    </pre><p>I went a little above the given task and improved the crawler with "clean-up html tags" functionality. So, I get the body part of document, strip out all HTML tags and then index the content. The latest version of crawler is in this <a href="https://gist.github.com/2757731">gist</a>.<br />
+</p><p>We also looked on some Internet fundamentals as: bandwidth, latency, traceroutes and protocols. <br />
+</p><p>I haven't yet started any project on python except the crawler one. With implementing the of more complex applications I start to feel the lack of IDE with debugger. I currently use Sublime Text 2 + print statement as my IDE and debugger tool. It might be time to look for something better.<br />
+</p><p>Everything is going fine so far, except the fact I'm being late for one week. The final exam is going to be posted at 27th of May and it will take one week to have a change to pass it. So, I've got a goal to complete 2 units through this week. The half of course is done! <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

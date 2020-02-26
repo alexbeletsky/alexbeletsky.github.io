@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TypeScript | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/typescript/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Looking at TypeScript]]></title>
+    <link href="http://beletsky.net/2012/10/typescript-language.html"/>
+    <updated>2012-10-05T20:24:00+02:00</updated>
+    <id>http://beletsky.net/2012/10/typescript-language</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Four days ago my twitter has been nuked. The bomb has exploded after <a href="http://www.typescriptlang.org/">TypeScript</a> site link has reach to top of <a href="http://news.ycombinator.com/item?id=4597716">Hacker News</a> and people watched the <a href="http://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript">video of Anders Hejlsberg</a> who generally described the language features and showed some example. Everybody were talking about TypeScript.<br />
+</p><p>For ones who missed the video (I can't believe you did) I shortly describe - TypeScript in new open source project, by Microsoft. It's leader <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a> is very famous developer (my bad, I always forget his name), creator of C# and one of the persons who most influenced .NET platform. TypeScript compiled down to JavaScript, but it introduce the types checking during compilation, so it could be called 'static typed language'.<br />
+</p><p>First of all, TypeScript is definitely <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">not the first language</a>, that complies to JavaScript. It's not the first one that augments JavaScript with new statements like class, interface or module. So, what's so interesting on it?<br />
+</p><p>I've been using static type languages for about 10 years. I've very much got used to compiler error messages and truly believed that it helps to build applications. Meaning, the complier is first guard towards the 'good' code. To the code that could be called reliable, error free. <br />
+</p><p>But situation much changed after I start programming JavaScript. <br />
+</p><p>I feel myself quite productive with using of using JavaScript. Of cause, there are some best practice & patters are collected nowadays, we have better tools, faster engines and JavaScript has been so much adopted by community. But JavaScript is indeed, so powerful language. I really like the dynamic typing, that bit more forces to unit testing, making code changes more easy in the same time creating some very beautiful code structures.<br />
+</p><p>I know that some people are saying, "we don't need any static typing for JavaScript; please don't change the language". Such developers could be called "purists". And they are absolutely right - if you feel confidence in something you do, you should not change the way you do it. <br />
+</p><p>In another hand, I came to conclusion that it's not dynamic types that makes me productive with JavaScript, but rather the experience I gathered with programming lately. It's always only experience, that allows you to work faster, better quality and had fun of your job.<br />
+<p>And it's absolutely not about Static vs. Dynamic languages.<br />
+</p><p>Static types are not useless, though. I think, in average it reduces the chances of bug introduction into the code. That's at least what I've seen so far. And that's why "purists" are running JSLint. Basically, Static Types should provide better application quality. This is of cause not completely true, since we know great software written in Python and poor systems written in C++.<br />
+</p><p>It' about the engineers who build that software.<br />
+</p><p>In my opinion the TypeScript will grow. It would have it's own army of fans, like CoffeeScript have or Ruby have. The code that TypeScript outputs is nice and clean, that make easy of debugging it. TypeScript is designed to be closer to ECMAScript6 (Harmony), so in near future the pure JavaScript would start to look like TypeScript.<br />
+</p><p>TypeScript is interesting project and open minded guys will like one. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Likeastore | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/likeastore/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
+    <link href="http://beletsky.net/2013/03/likeastore-application-built-on.html"/>
+    <updated>2013-03-31T17:52:00+02:00</updated>
+    <id>http://beletsky.net/2013/03/likeastore-application-built-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        It's my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can't guess which projects will be popular or not.. and the second, that it's hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - "Likeastore"<br />
+    <!-- more -->
+    </p>    <h2>Idea behind</h2>    <p>        All of us having at least those 3 accounts: facebook, twitter and github. And all of those are continuous stream of information. If you have an interesting network, it probably produces interesting content so you do much of likes/favorites/stars (stories, tweets, or interesting gihub repos). The problem, it's very difficult to keep this information ordered - you typically remember you heard something interesting, but could not remember the source of it.<br />
+    </p>    <p>        "Likeastore" is aimed to fix this problem. Integrating wish different services it's keeping your "likes" information in good order, with nice search and smart categorizing.<br />
+    </p>    <img src="https://lh5.googleusercontent.com/-AaH9Nrnr54o/UVhZihO3yjI/AAAAAAAAR1Y/FhtHcOksuik/s988/login.png" style="width: 620px" alt="likeastore login screen"/><br />
+    <h2>What we did?</h2>    <p>        We basically allow "Likeastore" to connect all those application by their open API and collect the information from it. We transform the information into something generic and grouping it together. So, the users are having all information up-to-date in nice and clear dashboard.<br />
+    </p>    <p>        Originally we had ambition to have a kinda real-time. In the way, I favorited the tweet and "Likeastore" almost immediately got the information. We had to drop it. The reason is API's of popular applications are very quoted. You simply cannot do more request that in quota, otherwise you just banned.<br />
+    </p>    <p>        So, nethertheless of similar projects, we don't want to make next social network of bookmarks. Instead, we want to build easy to use and powerful information keeper. Something, that help you to have things in order.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-cHk7Pdbyus8/UVhZisS6e5I/AAAAAAAAR1g/-3uXVV28rL0/s988/setup.png" style="width: 620px" alt="likeastore setup screen"/><br />
+    <h2>How we did it?</h2>    <p>        In fact, we've build a "thrown-out" prototype. The <a href="https://github.com/organizations/likeastore">code</a> is a shitty inside, so we bit far of nearest production. But, we've created an interesting application. We split on 2 + 1, two backend (me and <a href="https://github.com/voronianski">@voronianski</a>) and one front-end guy (<a href="https://github.com/mamant">@mamant</a>). Sat closely and worked shoulder-to-shoulder for next 22 hours. <br />
+    </p>    <p>        From the very beginning I had very clear vision of stuff we need to do. I could imagine architecture and UI principles. And as soon I shared that the teammates accepted that really fine and provided high quality feedback and collaboration. That helped us to have a strong team in my perspective.<br />
+    </p>    <p>        All of us are JS developers, so no doubt we've taken a JavaScript stack as default. Node.js, powered by Express.js at the backend and Backbone.js front end. Sometimes it's tricky, but in fact - it's powerful combination. <br />
+    </p>    <h2>A bit of tech info</h2>    <p>        We are having 2 main architectural units: core and connectors. Core, is Express.js application having both serving static content and providing API. The API itself, consists on public and private parts. Public part is aimed our web client (or potentiall apps), where the private is used to communicated connectors.<br />
+    </p>    <p>        Connectors are just very simple HTTP services, which perform the handshake with core and then post back all data they have collected through API's. That means, we have 3 connectors now - twitter, github and facebook. Facebook, became a quite difficult to integrated with, so we currently dropped it.<br />
+    </p>    <p>        We are having <a href="http://couchdb.apache.org/">CouchDB</a> as our storage. We took it, because <a href="https://github.com/voronianski">@voronianski</a> had some good experience with. That appeared to be a very lucky decision. CouchDB is very interesting NoSQL solution. It's storage model has few interesting features. One of them is "merge-update". Means, you can post exactly same set of information many times, but CouchDB would not create new entities. It would merge identical documents into one. That simplied connectors very much, since they no longer need to track only new information, but could post back just a transformed bulk of information from API's.<br />
+    </p>    <p>        Initially, we all agreed - our UI will never be default Bootstrap theme. It's overused and impress no more as toilet door. That's where <a href="https://github.com/mamant">@mamant</a> apply his best skills. He carefully worked all our screens making a it look nice and original. <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-XSXpDhEuX9Y/UVhZjLe7w6I/AAAAAAAAR1k/HI6xIJQnUXc/s988/dashboard.png" style="width: 620px" alt="likeastore dashboard screen"/><br />
+    <h2>Presentation and feedback</h2>    <p>        Without few features we did demo-able version in time. We have concluded few major fixes, just before the deadline. <br />
+    </p>    <p>        I did a presentation of app in short way, without anything unimportant (at least I wish to think so) and we had received great feedback. People liked the idea, so we've collected 32 voices that brought us 2nd place.<br />
+    </p>    <p>        That gives a much of inspiration for further work! All of us are very enthusiastic to make the stuff done. It's a lot of work, actually.<br />
+    </p>    <p>        I just want to say thank you to all organizers of this event, it was nicely handled. And to the team, for making it fun and interesting.<br />
+    </p>    <p>        Stay tuned for release of "Likeastore", check out <a href="https://github.com/likeastore">sources</a> in a meanwhile.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

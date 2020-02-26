@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Clean Code | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/clean-code/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[The Game of Life]]></title>
+    <link href="http://beletsky.net/2012/09/the-game-of-life.html"/>
+    <updated>2012-09-27T10:52:00+02:00</updated>
+    <id>http://beletsky.net/2012/09/the-game-of-life</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Last weekend the good friends of mine were organizing great event, <a href="http://coderetreat.org/">CodeRetreat</a> in Odessa. I supposed to be there, but due to bad luck I missed that. Nevertheless, I was very interested in CodeRetreat idea, so I followed up the materials and learned a bit about it. <br />
+    </p>    <p>        CodeRetreat is about the software craftsmanship. You focus on <a href="http://c2.com/cgi/wiki?XpSimplicityRules">4 principles of Simple Design</a>, work in pairs through the series of time boxed sessions, each time starting from scratch (yes, all code produced on previous sessions is destroyed with no mercy). All of that aim one simple goal, became a better developer. For the implementation they selected famous <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Game of Life</a>. The cellular automata, with simple rules but given very interesting results and foundation for numerous researches.<br />
+    </p>    <p>        To do not stay with my misery of missing event, I decided to "play" game of life at home. Trying to follow the rules of sessions, I started to write some JavaScript code. It's even hard to tell, how much fun I had during this implementation.<br />
+    </p>    <h2>Tests, code, tests</h2>    <p>        TDD is very recommended way of development in CodeRetreats. I love TDD and fortunately the game of life is very TDD friendly. It's all about the logic. Logic seems to be very simple and easy describe with tests. For my JavaScript testing I used to use <a href="http://pivotal.github.com/jasmine/">Jasmine</a> testing framework. Jasmine is BDD tests style, which was a little difficult to me at very beginning, but not I tend to write all my tests with BDD style.<br />
+    </p>    <p>        I've spent first two sessions for idea elaboration. At the end third session, I got something working. As I said, the process of writing that code was so fun to me, that I even decided to <a href="https://gist.github.com/3763692">gist</a> the code I created so far. <br />
+    </p>    <a href="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-bBm_BGTuy1I/UGQSj4MCYCI/AAAAAAAAJfk/m1aRicC5pYY/s622/image-2.png" /><br />
+    </a><br />
+    <p>        My big disappointment after was that code is actually not working.<br />
+    </p>    <h2>Understanding the problem</h2>    <p>        Even if I had good tests suite, that showed my code works as expected the game was broken. And the issue is that I didn't understand the domain good enough. It took me 4 sessions (about 4 hours) to finally understand the game.<br />
+    </p>    <p>        I proved it once again for myself, there are no perfect code; the code you created at first time is probably broken (unless you understand the domain perfectly, but it's rarely happen in reality). It's OK to completely remove the code you created before and start from the beginning. And with each iteration you moving faster and faster.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png"><br />
+        <img src="https://lh4.googleusercontent.com/-HYIZR9Ssup4/UGQSj97MsoI/AAAAAAAAJfg/WZSrfAQcyd8/s622/image-3.png" /><br />
+    </a><br />
+    <p>        Knowing the requirements I was able to create good test suite. <br />
+    </p>    <h2>Algorithms and data structures</h2>    <p>        During the implementation, you have to recall some basics algorithms and data structures. My initial implementation was based on usage of 2-dimensional arrays. It seems to be very natural fit, since the game is happening on orthogonal grid of square cells. But during the implementation of cell replication logic I suffered that design.<br />
+    </p>    <p>        Index arithmetic is very tricky and error-prone stuff. So, after several tries I switched from array into the list of cells, each cell holds it's state and position. The <a href="https://github.com/alexbeletsky/gameoflife/blob/master/public/js/grid.js#L24">tick</a> method of became very elegant, containing 2-pass procedure - one to calculate next state of each state, second is to switch to new state.<br />
+    </p>    <a href="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png"><br />
+        <img src="https://lh5.googleusercontent.com/-JvlS1nI_Ay8/UGQSkXu3r-I/AAAAAAAAJfo/slOlEKrDXvo/s622/image-4.png" /><br />
+    </a><br />
+    <p>        Again, I was so happy with code. It looked very readable as for me, without nested cycles and if-else statements.<br />
+    </p>    <h2>Visualisation</h2>    <p>        You can really understand if something works or not, only if you see it in action. I had to have some UI to see, how game is actually working. <br />
+    </p>    <p>        I've created very simple HTML based UI. The number of div's which change it's state, depending on cell state (alive or dead).<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png"><br />
+        <img src="https://lh4.googleusercontent.com/-ERo-PofMktc/UGQSjwS4NBI/AAAAAAAAJfc/bOOBADibPGk/s622/image-1.png" style="width: 620px" /><br />
+    </a><br />
+    <p>        The visualization of results is very important part. It's only then I tried to run the game on 64x64 square, I realized that performance of my implementation is so terribly poor. It runs very slowly on Chrome, it makes IE10 die.<br />
+    </p>    <p>        It means that, all beautiful code, tests, specs and so on - is almost useless, than it comes to performance. My 2-pass algorithm, with a simple implementation is not "production" ready, if we talk about some real software. Unit tests are usually done on smaller sets of data. Visualisation and trying the things on larger set of data opens up the reality.<br />
+    </p>    <h2>Conclusions</h2>    <p>        As I already said, it's so much fun. It makes you feel like "back to roots", forget about your enterprise stuff and do some real work. Besides it's great TDD exercise. It's probably to big to be called code kata, but it is still great for sharping an axe. Focusing on simple design is important. But making things "visible" and running them in real mode is vital. <br />
+    </p>    <p>        The most important conclusion for me is: I'm still newbie developer, with so many areas to improve.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
+    <link href="http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal.html"/>
+    <updated>2012-02-02T10:36:00+01:00</updated>
+    <id>http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />
+</p><h2>NCrunch<br />
+</h2><p><a href="http://www.ncrunch.net/">NCrunch</a> is just amazing extension for Visual Studio created by <a href="https://twitter.com/#!/remcomulder">@remcomulder</a>. It automatically detects all your tests and re-running those as soon as source code changes happen. Forget about manual test re-running, it's just waste of time. You even do not need to press Ctrl + S, just continue coding as you usually do. <br />
+</p><p>Initially I had big doubts about such kind of tools, but NCrunch changed my mind. It supports major unit test frameworks NUnit, XUnit, MSpec etc. Besides of that it allows to collect code coverage metrics (and show it just in VS editor), run tests under debugger, supports multi-core systems etc.<br />
+</p><p>In short, NCruch is something that makes your TDD very smooth, allowing to focusing on important things and forgot about some routine.<br />
+</p><a href="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg" alt="ncrunch" /><br />
+</a><br />
+<h2>NSubstitute<br />
+</h2><p>I stick to <a href="http://code.google.com/p/moq/">Moq</a> for quite awhile and saw no reason to switch it.. Till I saw <a href="http://nsubstitute.github.com/">NSubsitute</a>. I hardly could imagine someone who staring "yet another mocking framework project", it looks like absolute non-sense.. But <a href="https://github.com/nsubstitute">those</a> guys proves me wrong.<br />
+</p><p>Well, what's so new there? First of all it have very clean API. No more <code>new Mock()</code> or <code>MockGenerator.GenerateMock()</code>, creation of test doubles are nothing more as <code>Substitute.For&lt;IEntityToMock&gt;()</code>. Mocking properties, multiple return values, events etc. in very easy fashion. Check out their <a href="http://nsubstitute.github.com/help/getting-started/">getting started</a> materials for further info. <br />
+</p><p>Best feature as for me, that by using extension methods they got rid of lambdas for setting up mocks. It makes test code more readable and clean. See this small <a href="https://gist.github.com/1722396">gist</a> there I placed just some Moq and NSubstitue tests together.<br />
+</p><p>I would not say that Rhino or Moq is now much worse that NSubstitute.. No, I would just say NSubstitute is a little better. Even same functionality, with less amount of code is already big argument for me.<br />
+</p><pre class="brush: csharp">[Test]
+public void should_send_an_email_if_users_signs_up_nsub()
+{ 
+ // arrange
+ var emailService = Substitute.For&lt;IEMailService&gt;();
+ var controller = new LoginController(emailService);
+
+ // act
+ controller.SignUp(new SignUpModel { Email = &quot;a@a.com&quot;, Password = &quot;xxx&quot; });
+
+ // assert
+ emailService.Received().SendEmail(Arg.Any&lt;EmailMessage&gt;(), &quot;current&quot;);
+}
+</pre><h2>FluentAssertions<br />
+</h2><p>Again, for years I followed classic NUnit's <code>Assert.That()</code> method. I also played a bit with <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a>, but FluentAssertions by <a href="https://twitter.com/#!/ddoomen">@ddoomen</a> is going to change that.<br />
+</p><p>FluentAssertions are based on extension methods and allows you to get rid of Assert.That call and just wrote your assertion directly to object. Here some example: <br />
+</p><pre class="brush: csharp">{
+    // NUnit.Assert style..
+    Assert.That(result, Is.EqualTo(3));
+
+    // FluentAssert style..
+    result.Should().Be(3);
+}
+</pre><p>This is very simple example. The power of FluentAssertions arise then you need to have either multiple assertions or assertions on complex objects. Multiple assertion could be combined by <code>And</code>, like:<br />
+</p><pre class="brush: csharp">{
+    "somestring".Should().Contain("some").And.HaveLength(10);
+}
+</pre><p>It also provides great support for working with Collections, DateTimes, Guids, Exceptions, XML etc. Project is hosted on codeplex, here is <a href="http://fluentassertions.codeplex.com/documentation">documentation</a>. Easy start, easy go.<br />
+</p><h2>Conclusions</h2><p>Now, I'm sharpening my axe on those tools and have very nice impressions so far. Special thanks goes to <a href="https://twitter.com/#!/skalinets">@skalinets</a> who introduced me with those tools.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convention based IoC configuration]]></title>
+    <link href="http://beletsky.net/2012/01/convention-based-ioc-configuration.html"/>
+    <updated>2012-01-24T15:54:00+01:00</updated>
+    <id>http://beletsky.net/2012/01/convention-based-ioc-configuration</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>What's your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it's my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I'll still be using Ninject, through.<br />
+</p><h2>What's are conventions?<br />
+</h2><p><a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over configuration</a> is very popular trend nowadays. Many frameworks trying to adopt it, including ASP.NET MVC. In short, that means you are relying on some front-know conventions, like names of files, folder or classes and system does something meaningful, based on those conventions. Like, all controllers in ASP.NET MVC should have "Controller" postfix, so the framework is able to find and <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">instantiate</a> it. <br />
+</p><p>Conventions make a developer's life a little easier, you are no longer spending efforts on configuration, instead following some simple rules. <br />
+</p><h2>What we have for IoC?<br />
+</h2><p>My <a href="http://en.wikipedia.org/wiki/Shuhari">"Shu"</a> level of IoC containers learning was configuration based. This is something you learn at very beginning. So, in case of Ninject, sooner of later you have huge file with dependencies configuration: <br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Bind&lt;ISettingsManager&gt;().To&lt;SettingsManager&gt;();
+ kernel.Bind&lt;IDirectoryProvider&gt;().To&lt;DirectoryProvider&gt;().InSingletonScope();
+ kernel.Bind&lt;ISetupFactory&gt;().To&lt;SetupFactory&gt;();
+ kernel.Bind&lt;ITargetsObjectBuilder&gt;().To&lt;DefaultTargetsObjectBuilder&gt;();
+ kernel.Bind&lt;ITargetsBuilder&gt;().To&lt;TargetsBuilder&gt;();
+ kernel.Bind&lt;IBounceFactory&gt;().To&lt;BounceFactory&gt;();
+ kernel.Bind&lt;ITargetsRetriever&gt;().To&lt;TargetsRetriever&gt;();
+ kernel.Bind&lt;IConfigObjectBuilder&gt;().To&lt;ConfigObjectBuilder&gt;();
+ kernel.Bind&lt;ILoggerFactory&gt;().To&lt;LoggerFactory&gt;();
+ kernel.Bind&lt;IHashService&gt;().To&lt;HashService&gt;();
+ kernel.Bind&lt;IAuthentication&gt;().To&lt;Authentication&gt;();
+ kernel.Bind&lt;IConfigurationsFactory&gt;().To&lt;ConfigurationsFactory&gt;();
+ 
+ // More, more, more...
+}
+</pre><p>As more your application grows, as more services, repositories, factories you have. As long <code>RegisterServices</code> method becomes longer, as more you forgot to correct correct it after some new dependency added, so you see YSOD during application run.<br />
+</p><p>But please, put your attention to interface and class names. What we have here - <code>ISettingsManager</code> and <code>SettingsManager</code>; <code>IDirectoryProvider</code> and <code>DirectoryProvider</code>.. <code>ILoggerFactory</code> and <code>LoggerFactory</code>. Do you see pattern here? Exactly, it is ["I" + entity name] for interfaces and [entity name] for implementation.<br />
+</p><p>Here we go for <a href="http://en.wikipedia.org/wiki/Shuhari">"Ha"</a> level of IoC and apply convention based configuration.<br />
+</p><h2>Convention over configuration</h2><p>Let's take an advance of the fact above and shrink our configuration code. First of all, you need to get great extension for Ninject, called <a href="http://nuget.org/packages/ninject.extensions.conventions/2.2.0.5">ninject.extensions.conventions</a>.<br />
+</p><p>After the package is installed, the simples Ninject start-up code ever would be:<br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromCallingAssembly();
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><p>What it does? It has an abstraction called "scanner". You instruct scanner what to do. In this example, I said - take calling assembly and bind all interfaces to implementation class having Default conventions. The default conventions are ones that I shown above. <br />
+</p><p>That's it, all those lines of code are simply gone away, since we rely on conventions and Ninject is aware how to deal with those conventions. If you added new dependency and followed convention, nothing you should do manually any more.<br />
+</p><h2>I have some questions!?</h2><p>Ok, typically you have something little more complex. I'll try to predict some questions you might have.<br />
+</p><h3>I have a lot of assemblies in my application, but want only particular ones to be scanned?</h3><p>You can easily use only assemblies that matches particular patterns, like:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><h3>Is it only default conventions I can use?</h3><p>No, you can specify your own rules. Scanner has <code>BindWith</code> method, that receives <code>IBindingGenerator</code> type. You can implement your own binding generator for custom conventions.<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><h3>What if I have several cases of convention violations?</h3><p>You are still able to bind in exactly same way as before:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+
+    // classes that violates conventions
+    kernel.Bind&lt;IMyInterface&gt;().To&lt;MyImpl&gt;();
+}
+</pre><h3>What is I have dependencies in different assemblies?</h3><p>Best thing is to go with Ninject modules. First, correct the scanner:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+                        scanner.AutoLoadModules();
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><p>Now, each assembly should include module instance:<br />
+</p><pre class="brush: csharp">namespace Candidate.Core
+{
+    public class CoreModule : NinjectModule
+    {
+        public override void Load()
+        {
+            // place convention-violation classes here
+   // Bind&amp;lt;IMyInterface&amp;gt;().To&amp;lt;MyImpl&amp;gt;();
+        }
+    }
+}
+</pre><p>Another one good feature of Convention based IoC is - "Config and forget". Once done, use always and forget about manual binding once and for all.<br />
+</p><p>I've heard about this on <a href="http://www.beletsky.net/2011/12/xp-days-ukraine-2011.html">XP Days 2011</a> conference, by <a href="https://twitter.com/#!/ploeh">Mark Seemann</a>. I think it's nice approach.. I adopt it and going to use in my projects.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clean tests with SharpTestsEx]]></title>
+    <link href="http://beletsky.net/2011/03/clean-tests-with-sharptestsex.html"/>
+    <updated>2011-03-12T09:25:00+01:00</updated>
+    <id>http://beletsky.net/2011/03/clean-tests-with-sharptestsex</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+I was recently been adding NUnit to one of mine project's and noticed one interesting framework in <a href="http://nuget.codeplex.com/">Nuget</a> channel. It is <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a> by <a href="http://twitter.com/#!/fabiomaulo">Fabio Maulo</a> and its primary goal is to make your assertions shorter, cleaner and easy to read.
+</p>
+To start with, it is just enough to install it through Nuget (or manually) and add using statement in your test class file.
+<p>
+<pre class="brush: csharp">
+using SharpTestsEx;
+</pre>
+<p>
+SharpTestsEx would add number of <code>Should()</code> extension methods. Suppose you have such case:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    Assert.That(result, Is.Equal("&lt;div&gt;&lt;/div&gt;"), "expected and actual results are different");
+}
+</pre>
+<p>
+With SharpTestsEx I'm changing assert part of test to,
+</p>
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange
+    var compiler = new Compiler();
+
+    // act
+    var result = compiler.Compile("div");
+
+    // assert
+    result.Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+Note, it is much shorter and mostly plain English sentence: <i>result should be equal to something</i>.. The assertion message for this test is really clean and sufficient, so you mostly won't needed and custom messages.
+</p>
+<p>
+If I go further and implement extension method for this <code>Compile</code> method:
+</p>
+<pre class="brush: csharp">
+static class CompilerTestExtension
+{
+    public static string Compile(this string expression)
+    {
+        var c = new Compiler();
+        return с.Compile(expression);
+    }
+}
+</pre>
+<p>
+My tests case would be just one line of code:
+<pre class="brush: csharp">
+[Test]
+public void Compile_Div_EmptyDivElement()
+{
+    // arrange / act / assert
+    "div".Compile().Should().Be.EqualTo("&lt;div&gt;&lt;/div&gt;");
+}
+</pre>
+<p>
+This is very short and clean notation of test case, even not technical person could read this. You can do more complicated assertions, combining them by <code>And</code> / <code>Not</code> conditions. There are also bunch of useful extensions for strings, sequences.
+</p>
+</p>
+Additional information on project <a href="http://sharptestex.codeplex.com/">site</a> as well as author <a href="http://fabiomaulo.blogspot.com/search/label/SharpTestEx">blog</a>.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Extension methods and clean code]]></title>
+    <link href="http://beletsky.net/2011/02/extension-methods-and-clean-code.html"/>
+    <updated>2011-02-10T09:52:00+01:00</updated>
+    <id>http://beletsky.net/2011/02/extension-methods-and-clean-code</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+<a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension methods</a> is one of my favorite features of C# language. It appeared from version 3.0 and became very popular.
+</p>
+<p>
+The main goal of Extension Methods is to provide ability of extension of any class, without creating any derived classes, modifying original type or do "whatever" hacks. It is allowed to extend any type with any functionality in a very seamless fashion. What also great about Extension Methods is they allow to beautifully emulate behavior usually called pipelining (in <a href="http://lorgonblog.wordpress.com/2008/03/30/pipelining-in-f/">F#</a> or <a href="http://www.gnu.org/software/bash/manual/html_node/Pipelines.html">Bash</a>) and implement <a href="http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern">Chain of responsibility</a> pattern.
+</p>
+<p>
+But the most important as for me - Extension Methods help to keep my <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">code clean</a>. Clean code criteria is something I concerned a lot, nowadays.
+</p>
+<p>
+I recently started to practice with <a href="http://en.wikipedia.org/wiki/Kata_(programming)">code katas</a>, that I found essential for any developers who cares about <a href="http://www.hanselman.com/blog/SharpenTheSawForDevelopers.aspx">keeping their saw sharp</a>. So, after several iterations I came up with extension methods implementation that I pretty happy about. I'm using Roy Osherove's <a href="http://www.osherove.com/tdd-kata-1/">StringCalculator</a> kata. It is about the implementation of simple method <code>Add</code> that:
+</p>
+<ul>
+<li>Takes numbers separated by delimiter, as string</li>
+<li>Determines if custom delimiter is set</li>
+<li>Split up original string to array of number tokens</li>
+<li>Validates the input (no negatives allowed) and returns the sum of numbers, ignoring numbers greater than 1000</li>
+</ul>
+<p>
+I would like to show to you both implementation and try to evaluate them from "clean code" point of view.
+</p>
+<p>
+Original one (this is of cause a little "unwinded" version, I had a different structure with smaller methods.. But idea still the same).
+</p>
+<pre class="brush: csharp;">
+public int Add(string numbers)
+{
+    var delimiters = new[] { ",", "\n" };
+
+    if (IsCustomDelimeterProvided(numbers))
+    {
+        delimiters = GetDelimitersFromNumbers(numbers);
+    }
+
+    var processed = numbers;
+    if (IsCustomDelimeterProvided(numbers))
+    {
+        processed = processed.Substring(processed.IndexOf('\n') + 1);
+    }
+
+    if (IsContainDelimeters(processed, delimiters))
+    {
+        var splittedNumbers = numbers.Split(delimiters, StringSplitOptions.None);
+        var validation = new NumbersValidation();
+
+        foreach (var number in splittedNumbers)
+        {
+            validation.Check(number);
+        }
+
+        validation.Validate();
+
+        return splittedNumbers.Sum(p => GetIntegerWithCondition(p, IgnoreNumbersMoreThatThousand()));
+    }
+
+    return Convert.ToInt32(processed);
+}
+</pre>
+<p>
+Do you think is this code clean? I don't think so.. Of cause, it might be not so difficult to understand it, but:
+</p>
+<ul>
+<li>Method is just too long</li>
+<li>A lot of <code>if</code> statements make it difficult to see instruction flow</li>
+<li>It messes up "infrastructure" code (splits, validation) with primary functionality (sum of numbers)</li>
+</ul>
+<p>
+Let's try to read it: <i>I got the numbers and I check if custom delimiter is set on the beginning of numbers string, if so I try to extract the custom delimiters from original string. After I pre-process the string to remove custom delimiter prefix, so do not break the rest of function. If numbers string contains the delimiters, I split it up, perform the validation by helper object (which will throw exception is something wrong). Run Sum algorithm that would: covert string to integer and ignore one if it is greater that 1000.. Otherwise, it just tries to convert to integer and return</i>.
+</p>
+<p>
+A lot of words, a lot of ifs isn't it? Thats not good.
+</p>
+<p>
+Now, my last implementation with using of Extension Methods:
+</p>
+<pre class="brush: csharp;">
+public int Add(string numbers)
+{
+    var defaultDelimiters = new string[] { ",", "\n" };
+    var delimiters = numbers.CustomDelimiters().Concat(defaultDelimiters).ToArray();
+
+    return numbers.Replace(" ", "").Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
+        .RemoveSpecialSymbols().ToIntegersArray().ValidateIntegersArray().IgnoreIntegersGreatThanThousand().Sum();
+}
+</pre>
+<p>
+Do you feel the power? I definitely do!
+</p>
+<p>
+I believe that this code is very clean. It basically does not require any comments, because it looks like "plain English" explanation of what's the functionality is all about! Anyway, let's try to read: <i>I extract custom delimiters from numbers string and concatenate them with default delimiters. I replace all space with empty symbol (note: this step is not in original requirement, but I put it to keep code robust), then I split them with delimiters ignoring empty lines. After I remove all special symbols in numbers string and convert the result to array of integers. I validate this array (no negatives) and ignore any numbers great than thousand. At the end I sum up everything and return the result</i>.
+</p>
+<p>
+What is good about this code:
+</p>
+<ul>
+<li>
+Method is very short
+</li>
+<li>
+All details are hidden
+</li>
+<li>
+Control flow is very straightforward
+</li>
+<li>
+All dependent methods has meaningful names
+</li>
+<li>
+Method does exactly what it is suppose to do
+</li>
+</ul>
+<h2>Conclusion</h2>
+<p>
+Well, don't get me wrong here. I'm not saying that now only Extension Methods is a way of solving the issues. Of cause not. But if you feel the smell of pipeline of chain of responsibility patters, extension methods are right choice. As always you should consider to do not "overplay" with some particular feature of language/framework.
+</p>
+<p>
+You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

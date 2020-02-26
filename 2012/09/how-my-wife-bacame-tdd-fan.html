@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How My Wife Became a TDD Fan</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="How My Wife Became a TDD Fan Sep 10th, 2012 Mind My wife, Sasha is not (yet) IT person. Living with developer for 5 years, she knows only few &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/09/how-my-wife-bacame-tdd-fan.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">How My Wife Became a TDD Fan</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-10T15:36:00+02:00" pubdate data-updated="true">Sep 10<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>My wife, Sasha is not (yet) IT person. Living with developer for 5 years, she knows only few details of developers job (like, they do code and sitting late nights to make it work). My bad, I never spent much time to explain what really my job is.<br />
+</p><p>Recently she joined the training courses on software testing, to find the job in IT area in perspective.<br />
+</p><p>After her second lesson she got back home and we had a talk about what she is actually studying there. It appeared they started with a software development processes, understanding how the software is actually created. So, they described waterfall (even if  nobody using it any more) and some agile frameworks (scrum of cause), and left with a homework, to read what else practices exists.<br />
+</p><blockquote>- So, did you find anything interesting?<br />
+- I read about few, but I think I found the most interesting one..<br />
+- What&#8217;s that?<br />
+- Its called Extreme Programming..<br />
+- Hm, I never heard about it. Tell me more (trolls face on).<br />
+- Alright, so it&#8217;s a different practices as Code review, Pair programming, Collective code ownership.. But you know, what&#8217;s the greatest one?<br />
+- No, what&#8217;s that?<br />
+- Its called Test Driven Development, or TDD.<br />
+- What&#8217;s the point of this TDD? (troll face is still on).<br />
+- Can you imagine that you create the test before you create any application code, make sure it doesn&#8217;t work and after you fix it, so you always sure that application works fine! That&#8217;s sound so interesting and so valuable, I can&#8217;t wait to try it!<br />
+</blockquote><p>I had to put my troll face off, after that. I could not believe what I&#8217;m hearing. That was simply amazing!<br />
+</p><blockquote>- Do you know, I&#8217;m a big TDD fan and the training courses I do from time to time are &#8220;TDD in .NET&#8221;, so we teach people of using TDD practices in real projects.<br />
+- Fantastic, I never thought your job is so interesting!<br />
+</blockquote><p>The big disappointment to her was that testers are not doing TDD (she though it&#8217;s actually the testers job). Nethertheless, I got one interesting thought.<br />
+</p><p>During the trainings on TDD we try hard to explain people the value of TDD and usually there some guys who just deny the idea, seeing absolutely no value in it. That actually show some human feature called &#8220;open mindness&#8221;. <br />
+</p><p>As less you know, as easy to you to get new ideas.. As much you know, as less agile your brain could be, as hard you can adopt anything new.With more experience you got, it&#8217;s harder and harder to adopt new things. This is only the matter of discipline and hard working to stay update and actually try things out. It&#8217;s also a big patience till some tool or technique became beneficial to you.<br />
+</p><p>The point of my story is. Developer have to be open minded person during whole career. Something you did yesterday, may became obsolete tomorrow. There are many things outside your comfort zone you might missing, staying in comfort zone for long time.<br />
+</p><p>Back to Sasha, I always knew she is very bright lady. Now I hope she became bright engineer, good luck to you, honey.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/09/how-my-wife-bacame-tdd-fan.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/09/how-my-wife-bacame-tdd-fan.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

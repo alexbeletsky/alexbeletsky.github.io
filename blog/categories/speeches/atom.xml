@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Speeches | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/speeches/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MS SWIT 2012]]></title>
+    <link href="http://beletsky.net/2012/03/ms-swit-2012.html"/>
+    <updated>2012-03-27T08:26:00+02:00</updated>
+    <id>http://beletsky.net/2012/03/ms-swit-2012</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The 22-23 of March this year I had a chance to participate biggest event organized by Microsoft Ukraine - <a href="http://www.msswit.in.ua/eng/">MS SWIT 2012</a>. <br />
+</p><a href="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png"><br />
+<img src="https://lh3.googleusercontent.com/-cRLz5_WgVdQ/T3FcfX8ELjI/AAAAAAAAIOk/uSY2Pa50ryc/s1024/image-1.png" alt="ms swit 2012" style="width: 620px"/><br />
+</a><br />
+<p>It's been almost two years ago I visited MS SWIT 2010. If the primary topic of last conference was cloud technologies - Azure, SQL etc. This time I would say the buzz was around Windows 8, Market Place and Metro-style applications. Of cause, there was still a lot of attention to Azure as well.<br />
+</p><p>I really much enjoyed the Keynote of first day by <a href="http://www.linkedin.com/pub/wolfgang-ebermann/4/825/278">Wolfgang Ebermann</a>. Indeed, Microsoft opens pretty much interesting opportunities for developers on Windows 8 and Windows Phone markets. Not long time ago Ukraine officially is a part of MarketPlace, so no time to wait - go and create you first Metro style app. And with new Microsoft policies regarding adoption of open standards like HTLM5, EcmaScript - it looks really attractive to me.<br />
+</p><p>Big attention was also about new recent releases like: Share Point, SQL Server Denali, Windows Server 8 etc. I would not say this is exactly interesting to me, since I more focus on web technologies, but it's always good to be aware what's going on around. First day of conference got a lot  people moving around, so if you wanted to listen for some interesting speech you have to be in time to get free sit. Second day was not so overcrowded as for me, so the people who didn't come have to be sorry, cause Second day was much more interesting. <br />
+</p><p>My talk was about new stuff in ASP.NET MVC4, with more focus to mobile web applications. That was the biggest audience I ever speak to. There was almost no free sits.. I don't know for sure it contained 150-200 people.. Huge!<br />
+</p><p>Being much inspired by Steve Sanderson <a href="http://channel9.msdn.com/Events/TechDays/TechDays-2012-Belgium/199">talk</a> on TechDays 2012, I decided to make something similar. I came up with idea of simple mobile web application, namely it is a web client to <a href="http://asp.net">http://asp.net</a> portal and develop it just during the speech. I had several issue's there, first one I did a little more longer introduction and then some issues with internet that made me a little nervous and I lose tempo a bit. That forced me to skip the last part of talk regarding Offline mode for apps. Anyway, I hope I was able to show new sweet available stuff like CSS3 Media Queries, Display Modes and jQuery Mobile framework. <br />
+</p><script src="http://speakerdeck.com/embed/4f6c7d411388a6002101e8f1.js"></script><br />
+<p>Thanks a lot for everyone who listened to me and came up with questions. I appreciate your attention and hope my talk was useful for you.<br />
+</p><a href="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png"><br />
+<img src="https://lh3.googleusercontent.com/-bLh_7pAn2gY/T3FcfXZctCI/AAAAAAAAIOc/76pxYKZvujQ/s733/image-2.png" alt="asp.net portal mobile" style="width: 620px"/><br />
+</a><br />
+<p>Regarding the app, I polished it a bit and going to release closer to the end of next week. The sources are hosted on <a href="https://github.com/alexbeletsky/aspnet.mobile">https://github.com/alexbeletsky/aspnet.mobile</a>, feel free to clone and send a pull request.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

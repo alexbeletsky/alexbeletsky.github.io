@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: CSS | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[New in ASP.NET MVC4: Bundling and Minification]]></title>
+    <link href="http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and.html"/>
+    <updated>2012-04-02T08:44:00+02:00</updated>
+    <id>http://beletsky.net/2012/04/new-in-aspnet-mvc4-bundling-and</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Next new feature that appeared in MVC 4 beta is bundling and minification. Idea is simple: modern web application contains of many static resources, especially css and javascript files. To load the page browser have to load each resource. Each resource is being requested by HTTP request. Browser have to make as many request as page refers, wait till all are completed and only after that render the page.<br />
+</p><p>The problem is, each HTTP request takes time. One of the most critical Yahoo web applications performance recommendation says - <a href="http://developer.yahoo.com/performance/rules.html">Minimize HTTP request</a>. As few HTTP requests you need to load application as better.<br />
+</p><h2>System.Web.Optimization<br />
+</h2><p>Bundling and minification is located in it's own namespace <code>System.Web.Optimization</code> and resides in assembly named <code>Microsoft.Web.Optimization</code>, which is installed by default with new ASP.NET MVC4 application template as NuGet package. Since it's still in beta, namespaces and class names are probably be changing, but let's look on that we have now.<br />
+</p><h2>What is bundle?<br />
+</h2><p>Bundle is simply logical group of files that could be referenced by unique name and being loaded with one HTTP request. Suppose, we have a Layout.cshtml that might look something like that:<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/jquery.mobile-1.0b3.min.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/reset.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/foundation.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Fonts.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Layout.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;~/Content/Site.Mobile.css&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery-1.6.4.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/jquery.mobile-1.0b3.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/App/CacheInit.js&quot;&gt;&lt;/script&gt;        
+</pre><p>You can see, that's a lot of css and javascript that will be loaded for page. With bundling we can rewrite it with very simple code<br />
+</p><pre class="brush: html">&lt;meta charset=&quot;utf-8&quot; /&gt;
+
+&lt;title&gt;@ViewBag.Title&lt;/title&gt; 
+        
+&lt;link rel=&quot;stylesheet&quot; href=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Content/css&quot;)&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;
+</pre><p>In this case <code>"~/Content/css"</code> and <code>"~/Scripts/js"</code> are no longer virtual paths, but bundle names. <br />
+</p><p>The the browser would load this page, rendered HTML would look like:<br />
+</p><pre class="brush: html">&lt;link href=&quot;/Content/css?v=q_sftc19r22licIM8-Ar58FwviyWry1JuYbA-iATm4M1&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+&lt;script src=&quot;/Scripts/js?v=_8kyYWxz-Je_VE0p3_w5nbcjAhq0Qj4vZiNxvYU_oBg1&quot;&gt;&lt;/script&gt;
+</pre><p>Note, it would reference the bundle with version. The version is a kind of hash taken on all files in bundle content. This enables browser caching, if content of bundle is not change browser will take it from cache, which is much faster. In case of changes, new version token is generated, so browser would be forced to reload bundle.<br />
+</p><a href="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-XZFZlvPjPoE/T3lKUgcghZI/AAAAAAAAIS4/_8RlXLXOx24/s619/image-1.png" alt="chrome development tools" /><br />
+</a><br />
+<h2>Bundle registration<br />
+</h2><p>In <code>global.asax</code> file you will see new line:<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.RegisterTemplateBundles();
+</pre><p>It's only one small line of code that enables bundling and minification framework.<br />
+</p><h2>RegisterTemplateBundles() vs. EnableDefaultBundles()<br />
+</h2><p>It looks fine so far, so I tried to add new javascript file into Scripts folder. Unfortunately, my application did not work. I think this is first very contra-intuitive fact of bundling framework. Googling a bit I found quick solution, change RegisterTemplateBundles() to EnableDefaultBundles().. I tried that and it really works.<br />
+</p><p>Since the <code>System.Web.Optimization</code> has not been opened sourced yet (in case you haven't heard - ASP.NET web stack is <a href="http://weblogs.asp.net/scottgu/archive/2012/03/27/asp-net-mvc-web-api-razor-and-open-source.aspx">open source</a>, even with accepting pull request) I had to go to <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> to understand why is that.<br />
+</p><p>So, RegisterTemplateBundles() is looks like that,<br />
+</p><pre class="brush: csharp">public void RegisterTemplateBundles()
+{
+    bool flag;
+    bool flag2;
+    bool flag3;
+    bool flag4;
+    bool flag5;
+    bool flag6;
+    bool flag7;
+    Bundle bundle1 = new Bundle("~/Scripts/js", new JsMinify());
+    bool flag8 = false.AddDirectory("~/Scripts", "jquery-*", flag, flag8);
+    bool flag9 = false.AddDirectory("~/Scripts", "jquery.mobile*", flag2, flag9);
+    bool flag10 = false.AddDirectory("~/Scripts", "jquery-ui*", flag3, flag10);
+    bool flag11 = false.AddDirectory("~/Scripts", "jquery.unobtrusive*", flag4, flag11);
+    bool flag12 = false.AddDirectory("~/Scripts", "jquery.validate*", flag5, flag12);
+    bool flag13 = false.AddFile("~/Scripts/MicrosoftAjax.js", flag13);
+    bool flag14 = false.AddFile("~/Scripts/MicrosoftMvc.js", flag14);
+    bool flag15 = false.AddDirectory("~/Scripts", "modernizr*", flag6, flag15);
+    bool flag16 = false.AddFile("~/Scripts/AjaxLogin.js", flag16);
+    this.Add(bundle1);
+    Bundle bundle2 = new Bundle("~/Content/css", new CssMinify());
+    bool flag17 = false.AddFile("~/Content/site.css", flag17);
+    bool flag18 = false.AddDirectory("~/Content/", "jquery.mobile*", flag7, flag18);
+    this.Add(bundle2);
+    Bundle bundle3 = new Bundle("~/Content/themes/base/css", new CssMinify());
+    bool flag19 = false.AddFile("~/Content/themes/base/jquery.ui.core.css", flag19);
+    bool flag20 = false.AddFile("~/Content/themes/base/jquery.ui.resizable.css", flag20);
+    bool flag21 = false.AddFile("~/Content/themes/base/jquery.ui.selectable.css", flag21);
+    bool flag22 = false.AddFile("~/Content/themes/base/jquery.ui.accordion.css", flag22);
+    bool flag23 = false.AddFile("~/Content/themes/base/jquery.ui.autocomplete.css", flag23);
+    bool flag24 = false.AddFile("~/Content/themes/base/jquery.ui.button.css", flag24);
+    bool flag25 = false.AddFile("~/Content/themes/base/jquery.ui.dialog.css", flag25);
+    bool flag26 = false.AddFile("~/Content/themes/base/jquery.ui.slider.css", flag26);
+    bool flag27 = false.AddFile("~/Content/themes/base/jquery.ui.tabs.css", flag27);
+    bool flag28 = false.AddFile("~/Content/themes/base/jquery.ui.datepicker.css", flag28);
+    bool flag29 = false.AddFile("~/Content/themes/base/jquery.ui.progressbar.css", flag29);
+    bool flag30 = false.AddFile("~/Content/themes/base/jquery.ui.theme.css", flag30);
+    this.Add(bundle3);
+}
+</pre><p>As you can see it adds all recourses that came just in template, including jQuery Mobile and jQuery UI. <br />
+</p><p>In the same time, EnableDefaultBundles()<br />
+</p><pre class="brush: csharp">public void EnableDefaultBundles()
+{
+    this.Add(new DynamicFolderBundle("js", JsMinify.Instance, "*.js"));
+    this.Add(new DynamicFolderBundle("css", CssMinify.Instance, "*.css"));
+}
+</pre><p>So, what it does - it matches all javascript and css files in project, minify them and create to bundles out of it.<br />
+</p><p>As you can see <code>EnableDefaultBundles()</code> is also uses Minification policy for bundle content.<br />
+</p><h2>How add my own custom bundle?<br />
+</h2><p>As simple as create new <code>Bundle</code> object, put files inside and then add it to Bundles collection.<br />
+</p><pre class="brush: csharp">var bundle = new Bundle("~/Scripts/libs", new JsMinify());
+bundle.AddFile("~/Scripts/knockout-2.0.0.js");
+BundleTable.Bundles.Add(bundle);
+</pre><p>But there two issues here. First of all, you don't always want to minify. Second, adding bundles with many files will make global.aspx.cs looks messy. I really liked approached proposed by Scott K. Allen in his <a href="http://odetocode.com/Blogs/scott/archive/2012/03/20/yet-another-bundling-approach-for-mvc-4.aspx">Yet Another Bundling Approach for MVC 4</a> blog post. He does it in more object-oriented way including smart code to decide, should the bundle be minified or not. All you need is just take code he created and after you are able to make bundles like that.<br />
+</p><pre class="brush: csharp">public class JsLibsBundle : JsBundle
+{
+    public JsLibsBundle() : base("~/js/libs")
+    {
+        AddFiles(
+            "~/Scripts/jquery-1.6.4-vsdoc.js",
+            "~/Scripts/jquery-1.6.4.js",
+            "~/Scripts/jquery.mobile-1.0b3.js",
+            "~/Scripts/knockout-2.0.0.js",
+            "~/Scripts/modernizr-2.0.6-development-only.js",
+            "~/Scripts/underscore.js"
+        );
+    }
+}
+
+public class CssAppBundle : CssBundle
+{
+    public CssAppBundle() : base("~/css/mobile")
+    {
+        AddFiles(
+            "~/Content/jquery.mobile-1.0b3.css",
+            "~/Content/Site.Mobile.css"
+        );
+    }
+}
+</pre><p>And put them to registered those classes in global.asax.cs<br />
+</p><pre class="brush: csharp">    BundleTable.Bundles.Add(new JsLibsBundle());
+    BundleTable.Bundles.Add(new CssAppBundle());
+</pre><h2>Ok, how all that stuff works?<br />
+</h2><p>Now let's do a really brief look under the hood. Again, <a href="http://www.telerik.com/products/decompiler.aspx">JustDecompile</a> is our friend here. <br />
+</p><p>It was interesting to me to find out new cool way of registration modules in ASP.NET. No longer entry points in web.config or other magic. You can have a special class <code>PreApplicationStartCode</code> that would be called then assembly is loaded, but before application is stated.<br />
+</p><pre class="brush: csharp">public static class PreApplicationStartCode
+{
+    private static bool _startWasCalled;
+
+    public static void Start();
+}
+</pre><p>Here <code>System.Web.Optimization</code> register it's own module, called <code>BundleModule</code>.<br />
+</p><pre class="brush: csharp">public static void Start()
+{
+    if (PreApplicationStartCode._startWasCalled)
+    {
+        return;
+    }
+    PreApplicationStartCode._startWasCalled = 1;
+    DynamicModuleUtility.RegisterModule(typeof(BundleModule));
+}
+</pre><p>Then the module is intialized, it subscribes for event called <a href="http://msdn.microsoft.com/en-us/library/system.web.httpapplication.postresolverequestcache(v=vs.90).aspx">HttpApplication.PostResolveRequestCache</a> and inside the callback it would register the <code>BundleHandler</code>.<br />
+</p><pre class="brush: csharp">private void OnApplicationPostResolveRequestCache(object sender, EventArgs e)
+{
+    HttpApplication httpApplication = (HttpApplication)sender;
+    if (BundleTable.Bundles.Count > 0)
+    {
+        BundleHandler.RemapHandlerForBundleRequests(httpApplication);
+    }
+}
+</pre><p>The handler is now responsible for dirty job. Through the <code>RequestBundle</code> class it finally comes to <code>ProcessRequest</code> method.<br />
+</p><pre class="brush: csharp">internal void ProcessRequest(BundleContext context)
+{
+    context.EnableInstrumentation = Bundle.GetInstrumentationMode(context.HttpContext);
+    BundleResponse bundleResponse = this.GetBundleResponse(context);
+    Bundle.SetHeaders(bundleResponse, context);
+    context.HttpContext.Response.Write(bundleResponse.Content);
+}
+</pre><p>So, the <code>GetBundleResponse</code> is there magic is happens. <br />
+</p><pre class="brush: csharp">private BundleResponse GetBundleResponse(BundleContext context)
+{
+    BundleResponse bundleResponse = Bundle.CacheLookup(context);
+    if (bundleResponse == null || context.EnableInstrumentation)
+    {
+        bundleResponse = this.GenerateBundleResponse(context);
+        if (!context.EnableInstrumentation)
+        {
+            Bundle.UpdateCache(context, bundleResponse);
+        }
+    }
+    return bundleResponse;
+}
+</pre><p>What's important here is that it uses cache. So, it makes bundling rather efficient. In case if there are no cached result, it will run the <code>GenerateBundleResponse</code> to generate actual response:<br />
+</p><pre class="brush: csharp">public virtual BundleResponse GenerateBundleResponse(BundleContext context)
+{
+    if (context == null)
+    {
+        throw new ArgumentNullException("context");
+    }
+    IEnumerable&lt;FileInfo&gt; fileInfos = this.EnumerateFiles(context);
+    fileInfos = context.BundleCollection.IgnoreList.FilterIgnoredFiles(fileInfos);
+    fileInfos = this.Orderer.OrderFiles(context, fileInfos);
+    fileInfos = this.ReplaceFileExtensions(context, fileInfos);
+    string str = this.Builder.BuildBundleContent(this, context, fileInfos);
+    BundleResponse bundleResponse = new BundleResponse(str, fileInfos);
+    this.Transform.Process(context, bundleResponse);
+    return bundleResponse;
+}
+</pre><p>Yet another interesting finding here is <code>this.Orderer</code>. Sometime ago I did smalltalk on <a href="http://kievalt.net">Kiev ALT.NET</a> meeting about new stuff in VS2011 and being asked a question, how is possible to order the files. I didn't know answer then. It is actually possible to setup the order of files inside bundle, in case you have cross-file dependencies:<br />
+</p><pre class="brush: csharp">public interface IBundleOrderer
+{
+ IEnumerable&lt;FileInfo&gt; OrderFiles(BundleContext context, IEnumerable&lt;FileInfo&gt; files);
+}
+</pre><p>That's it, the generated response than just being written to <code>context.HttpContext.Response</code>.<br />
+</p><h2>Conclusions</h2><p>Bundling and minification is something that I personally wanted so much, to appear in new MVC framework. Now it's there, it works.. but I would not say I'm 100% happy. There are several things that makes it a little difficult to use, as for me. I did want to place it in this post, but appeared to big.. So, I'll probably do a separate one on this matter. <br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
+    <link href="http://beletsky.net/2012/02/foundation-framework-for-web-sites.html"/>
+    <updated>2012-02-21T10:15:00+01:00</updated>
+    <id>http://beletsky.net/2012/02/foundation-framework-for-web-sites</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
+</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
+</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
+</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I'm changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
+</p><p>Great thing is that you see how it's done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id's, applying the styles by element Id. The code was awful and styles applied on #id's were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
+</p><p>With OOCSS you rely on classed. Here some example,<br />
+</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
+ &lt;div class=&quot;row smaller-fonts&quot;&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>Look, no #id's - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
+</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It's really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it's content based on screen size.<br />
+</p><p>Here is a quote of Foundation documentation.<br />
+</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don't give a specific structural style to should be within a container, row and column.<br />
+</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost "plain" English in HTML.<br />
+</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;eight columns&quot;&gt;
+      Eight columns
+    &lt;/div&gt;
+    &lt;div class=&quot;four columns&quot;&gt;
+      Four columns     
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
+</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can't get good site appearance if buttons and forms are ugly. I usually spend a lot of time on "beautifying" those, but still unhappy with results at the end of the day. With Foundation it's easier. You got nice styles from the box. <br />
+</p><p>Forms:<br />
+</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
+</a><br />
+<p>Buttons:<br />
+</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
+</a><br />
+<p>Recently, I've <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
+</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That's different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
+</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
+</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
+</a><br />
+<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it's place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
+</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I'm about to create bunch of "ready-to-use" Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

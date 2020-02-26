@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Reading | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/reading/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How do I seek for knowledge?]]></title>
+    <link href="http://beletsky.net/2011/04/how-do-i-seek-for-knowledge.html"/>
+    <updated>2011-04-08T17:30:00+02:00</updated>
+    <id>http://beletsky.net/2011/04/how-do-i-seek-for-knowledge</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Developers job is nothing more than other engineers specialties except one big difference. Technologies we are using are changing very fast and to feel confidence in daily work you have to be up-to-date with latest changes in development world. That's why I usually ask people "How do you seek for knowledge?", "How you sure you up-to-date?". And today I gonna share my primary sources of information.
+</p>
+<h2>Blogs</h2>
+<p>
+I've started actively follow blogs several years ago. Followed any blog I met with useful information (usually by googling for some problem and found the answer). I did know nothing about authors, but after much reading I feel like I know them personally and many of them are actually very famous developers :). Through years I filtered out a lot, so now I look closer to:
+</p>
+<ul>
+<li>
+<a href="http://weblogs.asp.net/scottgu/default.aspx">http://weblogs.asp.net/scottgu/default.aspx</a> - Scott Guthrie is a VP of Microsoft, so all major .NET announcements going from there. Scott does share a lot of examples of "how-to-use" some new technology or given very useful links for other resources. Primary source of information for any .NET developer.
+</li>
+<li>
+<a href="http://www.hanselman.com/blog/">http://www.hanselman.com/blog/</a> - Scott Hanselman probably one of the most famous .NET guys from Microsoft. He is guru of technology, sharing a lot of interesting stuff in his blog.  
+</li>
+<li>
+<a href="http://haacked.com/">http://haacked.com/</a> - Phil Haack is Program Manager in Microsoft, in particular responsible for ASP.net MVC framework (that I love really much). He is also managing the project that changed .NET world much - <a hfef="http://nuget.codeplex.com/">NuGet</a> and currently he describes a lot from this area in his blog. I also like Phil's posts on <a href="http://haacked.com/tags/TDD/default.aspx">TDD</a> and <a href="http://haacked.com/tags/Open%20Source/default.aspx">Open Source</a> projects.
+</li>
+<li>
+<a href="http://wekeroad.com/">http://wekeroad.com/</a> - Rob Conery is very famous with his latest start-up project <a href="http://tekpub.com/">Tekpub</a> and a bunch of other open sources projects. He has one of the most interesting blogs I ever follow. I share many ideas Rob has on development and practices.
+</li>
+<li>
+<a href="http://blog.stevensanderson.com/">http://blog.stevensanderson.com/</a> - Steve Sanderson, is author of the briliant <a href="http://www.amazon.com/dp/1430228865?tag=stesansblo-20&camp=213381&creative=390973&linkCode=as4&creativeASIN=1430228865&adid=0N6ZY1MKSBV6N16NZNM9&">MVC2 book</a> that I highly recommend to read. He is author of <a href="http://knockoutjs.com/">Knockout.js</a> javascript MVVP framework and his recent posts aimed to it. 
+</li>
+<li>
+<a href="http://odetocode.com/Blogs/scott/default.aspx">http://odetocode.com/Blogs/scott/default.aspx</a> - K. Scott Allen blogging for many years from now, so his blog is full of useful info. 
+</li>
+<li>
+<a href="http://hackingon.net/">http://hackingon.net/</a> - Liam McCleanan is primary .NET developer with a lof of using of Javascript, so he shares knowledge in both areas.
+</li>
+<li>
+<a href="http://osherove.com/">http://osherove.com/</a> - Roy Osherove blogs a lot about TDD and Agile software development, he is famous with his book about TDD <a href="http://www.manning.com/osherove/">Art of Unit Testing</a> and his <a href="http://osherove.com/tdd-kata-1/">TDD String Calculator</a> kata.
+</li>
+</ul>
+<p>
+That's a small percentage of all my reading, but I think that is major ones.
+</p>
+<p>
+I use Google Reader to track my RSS subscriptions, seems best choice as for me. I try to check reader at least 2 times per week, but in reality it could be even rare.  
+</p>
+<h2>Videos / Screencasts</h2>
+<p>
+With better internet channels video became even more better source of knowledge. Learning from videos is much more productive than reading blogs and books, as for me. There are a lot of free videos that could help you to start up with new technology. Advanced videos are typically paid, but price are affordable and price / value ratio is very low. 
+</p>
+<ul>
+<li>
+<a href="http://www.asp.net/">http://www.asp.net/</a> - This actually main source of information of ASP.net developers, tons of videos, blog posts, articles. I reviewed mostly all of ASP.net WebForms then I was learning it.. and some of ASP.net MVC as well. All videos are free that make this recourse priceless :).
+</li>
+<li>
+<a href="http://tekpub.com/">http://tekpub.com/</a> - Tekpub is great for .NET/Ruby developers. There are free and paid videos. I had a chance to watch both and they are superb.
+</li>
+</ul>
+<h2>Social networks</h2>
+<p>
+If you think that social networks are only for schoolgirls or people who had nothing to do.. you are right :). But there some social network that really help professional growth.
+</p>
+<ul>
+<li>
+<a href="http://stackoverflow.com/">http://stackoverflow.com/</a> - StackOverflow is best of the best of the best QnA site for developers. It allows you to create <a href="http://stackoverflow.com/users/386751/alexanderb">account</a> ask questions and help other people with answering questions. It has huge popularity because of rating system, as much correct answers you do, as much rating you have.. such simple and good idea that force other people to provide a quality answers :). I like StackOverflow very much and post my questions that I lost hope of getting answer by trying and googling. In 95% I got very precise answers. 
+</li>
+<li>
+<a href="http://github.com/">http://github.com</a> - Best place for hosting open sources projects. Besides hosting the code, it is a true social network. You can use github for <a href="http://www.beletsky.net/2010/07/github-social-coding.html">social coding</a>. Recently I recieved my first pull request, believe me it is good feeling :). As bonus you can get such looking good <a href="http://resume.github.com/?alexanderbeletsky">CV</a>.
+</li>
+<li>
+<a href="http://twitter.com/">http://twitter.com/</a> - I tried to avoid twitter as much as I can, but twitter won :).. Now I really feel power of it. If you follow right people, being polite but not tweeting to much you are on right way. This is probably my main source of information now, RSS slowly moving behind the scene and twitter became main information distribution system. (btw, if you read this line follow me <a href="http://twitter.com/#!/alexbeletsky">@alexbeletsky</a> :).
+</li>
+</ul>
+<h2>Podcasts</h2>
+<p>
+I recently opened podcasts power for myself. I spend at least several hours walking dog or driving car with no value :). Podcasts help you to feel that gap. Stuff that I like the most:
+</p>
+<ul>
+<li>
+<a href="http://pragprog.com/podcasts">http://pragprog.com/podcasts</a> - Progmatic Podcasts. <a href="http://pragprog.com">http://pragprog.com</a> is itself very useful recourse.. podcasts are free and extremely interesting. Highly recommended. 
+</li>
+<li>
+<a href="http://www.dotnetrocks.com/">http://www.dotnetrocks.com/</a> - .NET Rocks, is greatest .NET technology stack podcast. 
+</li>
+<li>
+<a href="http://herdingcode.com/">http://herdingcode.com/</a> - Herding Code, very different topics, very great guests. Best for geeks.
+</li>
+<li>
+<a href="http://thisdeveloperslife.com/">http://thisdeveloperslife.com/</a> - This Developers Life is run by Rob Conery and Scott Hanselman is less technical, more philosophical podcast that's nice to listen just to relax and understand what developers from other side of planet think.
+</li>
+</ul>
+<p>
+Picking a little bit from every source of information make you more comfortable in our fast changing world :).. If you know some great resources that you like, please share as comments.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Interesting from my Reader this week]]></title>
+    <link href="http://beletsky.net/2010/07/interesting-from-my-reader-this-week_09.html"/>
+    <updated>2010-07-09T16:58:00+02:00</updated>
+    <id>http://beletsky.net/2010/07/interesting-from-my-reader-this-week_09</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+My weekly update is what is going on in my Reader:
+</p>
+<ul>
+<li>
+<a href="http://weblogs.asp.net/scottgu/archive/2010/07/06/introducing-webmatrix.aspx">Introducing WebMatrix</a>. Next and very loud announcement by ScottGu. WebMatrix is something that .NET platform lacks for years. Now it brings the gaps between complexity of ASP.net application and current needs for rapid web development. It could be analog of <a href="http://instantrails.rubyforge.org/wiki/wiki.pl">Instant Rails</a> for Ruby on Rails developers. So, Web Matrix is a tiny package including simple IDE, IIS Express, SQL compact edition and number of templates. It believe it will be used by bloggers and small size web site holders.
+</li>
+<li>
+<a href="http://www.joelonsoftware.com/items/2010/07/07.html">Web Applications Stack Exchange now in beta</a>. Joel Spolsky did announce of Wep Applications product. Next product after a very popular <a href="http://stackoverflow.com/">StackOverflow</a>. Like a StackOverflow it is done like QnA site, but maybe for more broader audience.
+</li>
+<li>
+<a href="http://5whys.com/blog/scrum-vs-kanban-attitudes.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+5whys+(5+Whys)">Scrum vs. Kanban attitudes</a>. Roy Osherove gives a link about comparing Scrum vs. Kanban. I'm quite new with Kanban and I didn't want to spend to much time to understand what it's all about, so I found this comparison interesting.
+</li>
+<li>
+<a href="http://blog.objectmentor.com/articles/2010/07/05/software-calculus-the-missing-abstraction">Software Calculus - The Missing Abstraction</a>. A little bit geek philosophy from Object Mentor. 
+</li>
+<li>
+<a href="http://www.codeproject.com/KB/aspnet/ASP_NET_MVC_WITH_EF.aspx">Architecture Guide: ASP.NET MVC Framework + N-tier + Entity Framework and Many More</a>. Good and comprehensive tutorial on ASP.NET MVC with Entity framework.
+</li>
+<li>
+<a href="http://odetocode.com/Blogs/scott/archive/2010/07/04/what-a-difference-8-years-makes-in-code.aspx">What a Difference 8 Years Makes (In Code)</a>. Just a nice to look of how code is changing with time and technologies, by K. Scott Allen.
+</li>
+</ul>
+<!-- AddThis Button BEGIN -->
+<div><a expr:addthis:title='data:post.title' expr:addthis:url='data:post.url' class='addthis_button'><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c30246f249329c8"></script></div>
+<!-- AddThis Button END --></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Interesting from my Reader this week]]></title>
+    <link href="http://beletsky.net/2010/07/interesting-from-my-reader-this-week.html"/>
+    <updated>2010-07-02T10:37:00+02:00</updated>
+    <id>http://beletsky.net/2010/07/interesting-from-my-reader-this-week</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+This week I liked such things came up from my reader.
+</p>
+<ul>
+<li>
+<a href="http://odetocode.com/Blogs/scott/archive/2010/06/28/enforcing-a-base-controller.aspx">Enforcing a Base Controller</a>. K. Scott Allen using very interesting technique for assert that some particular class is derived from expected class using reflection. That could be reused not only for case of Controllers (as Scott use) but any other classes.
+</li>
+<li>
+<a href="http://weblogs.asp.net/scottgu/archive/2010/06/30/new-embedded-database-support-with-asp-net.aspx">New Embedded Database Support with ASP.NET</a>. Announcement by Scott Gu of new DBMS by Microsoft that is positionized as brand-new, lightweight, no-install-require database system. It really looks interesting, so please welcome - SQL Server Compact Edition 4.
+</li>
+<li>
+<a href="http://weblogs.asp.net/scottgu/archive/2010/06/28/introducing-iis-express.aspx">Introducing IIS Express</a>. One more big annoucement by Scott Gu. IIS Express is new web server aimed to make life of ASP.net developers easy and fun. It should combine easy-of-use features of ASP.net development server and power of IIS server. Sure it is integrated with VS 2010.
+</li>
+<li>
+<a href="http://tutorialzine.com/2010/06/microtut-how-css-position-works/">MicroTut: How CSS Positioning Works</a>. As usually a vey good tutorial by Martin Angelov. Explains something that you always forget and very nice to fresh up memory from time to time.  
+</li>
+<li>
+<a href="http://www.hanselman.com/blog/TheWeeklySourceCode52YouKeepUsingThatLINQIDunnaThinkItMeansWhatYouThinkItMeans.aspx?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+ScottHanselman+(Scott+Hanselman+-+ComputerZen.com)">The Weekly Source Code 52 - You keep using that LINQ, I dunna think it means what you think it means</a>. Very nice article by Scott Henselman about a pitfalls you will never 
+    know during coding with Linq (or any other ORM with generation of SQL). I 
+    remember a talk with my collegue from Denmark, Christian, then I was asking 
+    about his thoughts about &quot;Is is good to start to use Linq for our project?" he said, "It is good till you keep eye on a actuall SQL that is being generated by framework". Now I undrestand what he meant.
+</li>
+</ul>
+<p>
+Happy reading!
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

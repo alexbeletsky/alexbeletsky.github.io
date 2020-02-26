@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: conference | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/conference/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
+    <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <updated>2013-09-16T21:21:00+02:00</updated>
+    <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
+    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
+
+<p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
+
+<!-- More -->
+
+
+
+
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>Background</h2>
+
+<p>So, some background on me. My name is Alexander and I live in Kiev and work for Danish company, named E-conomic. There we do, we interesting product called Debitoor and a lot of cool stuff happens there.. But besides of that full-time job, with a friend of mine, I&rsquo;m doing a small project called Likeastore.</p>
+
+<p>And this is exactly, side-project are something <strong>there you learn some new things and you try these things</strong>. So, it&rsquo;s started out as hackathon project, it&rsquo;s Node.js, MongoDB, Angular.js &ndash; so highly JS related thing (even if my talk is not so JS oriented). On a hackathon we got really exited on the way it went, soon we realized that we want to push things out. So, we wanted to release, and conquer the world with the cool idea we had.</p>
+
+<p>Probably the most important lesson I&rsquo;ve learned in whole my career &ndash; the way you ship the code, matters!</p>
+
+<p>It matters a lot, but the key fact &ndash; as faster you can ship the code from machine A to machine B, as faster you running business as happy team you have. So, if you shipping once a 2-weeks, you are fine, if you shipping 1-week are are great, if you shipping 1-per-hour you are superb (if you don&rsquo;t believe me, take a look on github guys, how happy they are all the time).</p>
+
+<p>And long time I realized that deployment of code, should be as easy as:</p>
+
+<p><code>
+git push origin master
+git push heroku master
+af deploy
+jitsu deploy
+</code></p>
+
+<p>Whatever, important is &ndash; one click (command, shell script) you are done.</p>
+
+<p>So, we were seeking for good deployment and hosting options. And I love Node.js in particular for it&rsquo;s &ldquo;deployment-friendly&rdquo; environment.</p>
+
+<p>Code deployment in general is very known developers problem. It solved many time and with cloud computing it <strong>evolutionized in something that&rsquo;s know as PaaS (platform as service)</strong>. And PaaS is something that brings a lot of value for any project, since you abstract out the exact infrastructure, and what you do is write code push it out, the rest is solved by PaaS.</p>
+
+<p>Of cause, we started to look for PaaS that fits us best.</p>
+
+<p>Started with AppFog, jumped to Nodejitsu, but met few constrains that forced us to gave up. Namely, that we had to have SSL connection, since we dealing with users private data, but Nodejitsu is proposing SSL for 120 USD that, simply too much of the project you begin with and don&rsquo;t have great budget behind.</p>
+
+<p>I was really unhappy that time, since I realized a lot of overhead work that comes to you, then you drop PaaS.</p>
+
+<p>This is where constraints coming from, and sometimes they are very unpleasant, but in general constraints are good. With perfect timing, I&rsquo;ve seen Dokku project.</p>
+
+<p>Even if I said Dokku is small project, it&rsquo;s standing on shoulders of giants, and those giants are Docker &amp; Builtpacks &amp; Gitrecieve (there is a few more, but those are most important ones).</p>
+
+<p>During this talk, I&rsquo;ll highlight both Docker and Dokku internals, but my primary goal is to rather share the <strong>experience of using Dokku that helped to making the things done</strong>.</p>
+
+<h2>Dokku</h2>
+
+<p>Dokku is created by bright hacker &ndash; Jeff Lindsay. And what Jeff did is he saw the opportunity of mixing all the pieces together in one tasty cocktail.</p>
+
+<p>Dokku relying on Docker for running containers (as isolated application instance), it uses Gitrecive to implement git interface for server, and it&rsquo;s relying on Buildpacks, for preparing environment for container.</p>
+
+<p>Now, it&rsquo;s time to show you how it works in reality:</p>
+
+<p><code>
+demo with node-sample
+</code></p>
+
+<h2>Gitrecieve</h2>
+
+<p>Gitrecieve is a component which is able to recieve you git push command, create repository on fly and trigger recieve script. Recieve script could be anything you want.</p>
+
+<h2>Buildpacks</h2>
+
+<p>Buildpacks are open source components released by Heroku. How many of you guys ever used Heroku? All right, so the output you see, while pushing code to Heroku is exactly the <strong>result of work by Buildpack</strong>.</p>
+
+<p>Buildpack is responsible for few things: it detects the environment of you app (like if I can see <code>package.json</code>, that would probably mean Node.js app), downloads all required runtime components and run build script. Once it run, we have created infrastructure where application is ready to start up.</p>
+
+<p>So, Heroku created a lot of buildpacks, for Ruby, Python, Java, etc., and all that goodness is reused by Dokku.</p>
+
+<h2>Docker</h2>
+
+<p>How many of guys seen the videos, or read the materials about Docker? I hope many of you, because it&rsquo;s kind on noisy now.</p>
+
+<p>So, Docker in essence, is the engine of <strong>portable containers</strong>. Portable? Containers? You are probably very interesting what actually goes, behind these words.</p>
+
+<p>Docker is open-source project by dotCloud. And the dotCloud is actually specializing on shipping the code. Company&rsquo;s co-founder Salmon Hykes, gives are very nice metaphor on containers: imaging a shipping of goods like, 100 years ago &ndash; where were ships and barrels and bags and boxes, etc. Because of that variety you had a different options for shipping. In middle 1950, the idea of container born. Container defines size and dimensions, but in essence &ndash; you can put what ever you like there, close the door and that&rsquo;s it. It&rsquo;s guaranteed that you container is shipped, because all equipment fits it.</p>
+
+<p>So, in dotCloud they&rsquo;ve developed a fairly complex infrastructure, that would allow to run their business. After 5 years of hacking that, they reached <strong>great level of expertise</strong>, as well they realized the need to take out the core system, rewrite it completely and open source it. That was then Docker project born and if Salmon would ever listen to my talk, I would like to give tons of Kudos for him, for that job.</p>
+
+<p>Docker itself is hack above the Linux kernel technology called LXC. And LXC is the of running isolated processes. LXC is a Linux process, that have it&rsquo;s own file system, networking interfaces, processes etc.</p>
+
+<p>Sure, you might think &ndash; it smells like virtual machines, why containers are better?</p>
+
+<p>Image container is immutable entity. Once the command run, it&rsquo;s changed.. but as soon as change is not committed the image remain the same. That mean, you can re-use some existing image as many time as you want, all the time starting up, so called clean environment. The clean environment is something we like of using VM.</p>
+
+<p>Startup time of container is <strong>many times faster, then booting up new VM image</strong>. And this is it&rsquo;s primary benefit.</p>
+
+<p>Besides of that, Docker comes with so called Index. Index is a public repository of ready to use images. Different operations systems and different pre-installed software is there.</p>
+
+<h2>Nginx</h2>
+
+<p>All HTTP / HTTPS orchestration is done by Nginx.</p>
+
+<h2>Deploying the applications with Dokku</h2>
+
+<p>So, we&rsquo;ve came to the most interesting part, how Dokku is <strong>helpful for the product development</strong>. Theoretically, Dokku can work on any Linux machine with LXC support, to run docker, dokku itself is written on shell script, which make it really portable. Practically it works on Ubuntu 13 64b.</p>
+
+<p>You build you own small PaaS on any IaaS as you want. One&rsquo;s which is able to fire up Ubuntu machine and give you ssh access to it. For a few reasons, I&rsquo;ve picked up Digital Ocean, since they indeed provide really nice service and competitive prices.</p>
+
+<p>Once the machine is started, you push have to install Dokku there. After it&rsquo;s installed, you upload you SSH key there, so you are able to do git push.</p>
+
+<p>You are able to configure environment variables, as well as configure SSL connection.</p>
+
+<p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
+]]></content>
+  </entry>
+  
+</feed>

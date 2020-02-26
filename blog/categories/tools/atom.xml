@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tools | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/tools/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Developing Web Applications Faster]]></title>
+    <link href="http://beletsky.net/2012/08/developing-web-applications-faster.html"/>
+    <updated>2012-08-20T11:20:00+02:00</updated>
+    <id>http://beletsky.net/2012/08/developing-web-applications-faster</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    If you haven't seen Bret Victor's <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
+</p><p>    As a developers, we do code. Applying Victor's principle, ideally we should have this code immediately running and showing it's results of execution. Some experimental IDE's like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> is trying to adopt this principle now. <br />
+</p><p>    If you develop web applications, you spend much time working with HTML/CSS/JS, which being executed by browser. The typical workflow, is to open your text editor, correct some mark-up or javascript code, then switch to browser, press F5 and see the results. It doesn't sound like a big job, but believe me, it's getting annoying and boring in very short time.<br />
+</p><h2>LiveReload comes to help</h2><p>    Ideal workflow is something like, you apply changes to JS, press Ctrl + S in your text editor and browser get's immediately reloaded, showing the results of execution. That's sounds really cool and fortunately there is great solution for that. It's called <a href="https://github.com/mockko/livereload">LiveReload</a> from <a href="https://github.com/andreyvit">Andrey Tarantsov</a>.<br />
+</p><p>    It can be installed as either a <code>&lt;script type=&quot;javascript&quot; scr=&quot;/libs/livereload.js&quot;&gt;&lt;/script&gt;</code> tag in your app, or as a browser plug-in. I prefer the plug-in way, since it could work with any app and requires no code modifications. There plugins for <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&ved=0CFYQFjAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fjnihajbhpnppcggbcgedagnkighmdlei&ei=Ld8xUOzuD8bhtQaThIGYAw&usg=AFQjCNGfX_zDQVCEb-jaq2-TSiR7TqxQWw&sig2=039AdwBtqrpgzbt-irnUcQ">Chrome</a>, <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&sqi=2&ved=0CEMQFjAA&url=https%3A%2F%2Faddons.mozilla.org%2Fen-us%2Ffirefox%2Faddon%2Flivereload%2F&ei=f98xUMPVM4rTtAbVioHgAg&usg=AFQjCNGsE_l-orw8MwyGW9mcQ2-y8H2F5Q&sig2=lYx9rMgyuI2384_1y2MZ8w">FireFox</a> and <a href="http://download.livereload.com/2.0.8/LiveReload-2.0.8.safariextz">Safari</a>.<br />
+</p><p>    How does it work? Take a look on a diagram.<br />
+</p><a href="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png" style="width: 620px"/><br />
+</a><br />
+<p>    The LiveReload plug-in (or livereload.js script) expect's that there is Web Socket Server, where it connects to and start to listen for changes. Web Socket Server is responsible for tracking changes and if changes occurred, it send the package of data with information about the changes, back to the web socket. LiveReload receives the data and reloads the browser.<br />
+</p><p>    As you installed plug-in and pressed "LR" button, it's gonna light green if connection to server is successful, otherwise it will pop-up the message, that server is not available.<br />
+</p><a href="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png" style="width: 620px"/><br />
+</a><br />
+<p>    So, to make LiveReload work properly we have to provide an Web Socket Server, that conforms to LiveReload interface. <br />
+</p><h2>LiveReload + Sublime Text 2</h2><p>    There is a great plug-in for Sublime Text 2, from <a href="https://github.com/dz0ny">Janez Troha</a> called, <a href="https://github.com/dz0ny/LiveReload-sublimetext2">LiveReload-sublimetext2</a>. It's get easily installed through standard ST2 package installer (package name is "LiveReload"). Basically, it instantiate Web Socket Server inside the sublime, listening to editors event's and push data to socket.<br />
+</p><p>    As soon as it's installed, and browser connected to it, you can now modify any HTML/JS/CSS file. As file get changed and saved, you will see LiveReload-sublimetext2 will immediately send the command and browser got refreshed.<br />
+</p><a href="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png"><br />
+    <img src="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png" style="width: 620px"/><br />
+</a><br />
+<p>    When I first time tried that, I could not believe how smooth it was. Can't even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
+</p><h2>LiveReload + any IDE</h2><p>    "Any IDE" in my case means Visual Studio, where I spent some time if I'm not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
+</p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I'm not much that comfortable with Ruby, so I went Node.js way.<br />
+</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It's written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
+</p><pre class="brush: plain">    @echo off
+    node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
+</pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />
+</p><a href="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png" style="width: 620px"/><br />
+</a><br />
+<p>    Not everything so perfect with that approach, though. There are 2 reasons, why I did not finally like that:<br />
+</p><ol>    <li>It is slow. Internally node-livereload uses <code>fs.watchFile</code>, which is quite slow (at least on Windows). That mean's if you save the file, it takes 1-1.5 seconds for browser to refresh.<br />
+    </li>
+    <li>Does not catch up new files. You have to restart server, to make it watch newly created files.<br />
+    </li>
+</ol><h2>Mixing things up</h2><p>    There reasons above prevent me to go on with <a href="https://github.com/josh/node-livereload">node-livereload</a>. So, even if I work on .NET-based application, I do C# in Visual Studio, but HTML/CSS/JS in Sublime, having the all it's benefits. So, I basically have 2 things opened side-by-side.<br />
+</p><a href="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png" style="width: 620px"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    I felt much productivity boost with LiveReload. I have Sublime opened on one monitor and Chrome + WebKit Tools on another. As soon I change something, I see the results immediately, catching up errors in console as early as possible. It works so great then you TDD'ing your JavaScript code, as you write tests and implementation and it's been re-run with each save (like a continues testing with AutoTest, NCrunch etc.).<br />
+</p><p>    That works very fine to me, I don't want to press F5 anymore. Do you?<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Starting Up Node.js Development on Windows]]></title>
+    <link href="http://beletsky.net/2012/06/starting-up-nodejs-development-on.html"/>
+    <updated>2012-06-27T19:40:00+02:00</updated>
+    <id>http://beletsky.net/2012/06/starting-up-nodejs-development-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>    <a href="http://nodejs.org">Node.js</a> is very interesting platform, it allows to unleash your internal hacker and gives a chance to join one of the fast growing developers communities in the world. For a quite long time, node.js was available only for Linux and Mac, but due to latest Microsoft contribution to project Windows is supported in a very fine way. <br />
+</p><p>    If you are .NET developer addicted to Visual Studio, you might feel a little frustration about joining new camp. Primarily, because of lacking proper development environment. This is not quite true. You can setup very solid development environment for Node.js on Windows box.<br />
+</p><h2>Installing node.js</h2><p>    Node.js is nothing more as node.exe file. It's very easy to install with latest installer available on <a href="http://nodejs.org">nodejs.org</a> web site. <br />
+</p><p>    Installing the software is always a little mess. You have to download, un-package, run.. go different wizards - it's boring! Do you remember how you life changed after NuGet release? What if say, you can do exactly the same thing, but instead of installing .NET packages, you can install software. This is possible by brilliant project called <a href="http://chocolatey.org/">Chocolatey</a>.<br />
+</p><p>    After <a href="http://chocolatey.org/">Chocolatey</a> is setup, you can easily install any <a href="http://chocolatey.org/packages">package</a> you like, including one for <a href="http://chocolatey.org/packages/nodejs">node.js</a>. <br />
+</p><div class="commandWrapper">    <div class="commandPrompt">        <p class="command">            c:&gt; cinst nodejs<br />
+        </p>    </div></div><p>    Nice and easy.<br />
+</p><h2>Trying things out</h2><p>    As Chocolatey installed node, it should be available in your PATH. So, fire up new cmd window and put 'node' in command line. node.exe acts as javascript interpreter, so you can directly put some code in console. Here is simple example of Fibonacci number's calculation in node.<br />
+</p><a href="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png"><br />
+    <img src="https://lh6.googleusercontent.com/-TX6OnYUgftI/T-tClY9J-xI/AAAAAAAAI8w/U2Adv19Qxrg/s620/image-1.png" alt="node.js command line"/><br />
+</a><br />
+<p>    Instead of typing the code into interpreter console, you can save it to local file 'fib.js' and run it with node.<br />
+</p><a href="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png"><br />
+    <img src="https://lh6.googleusercontent.com/-2WiMpn9eMYQ/T-tCn9_zpKI/AAAAAAAAI9Y/6_YR4jv6TwY/s620/image-4.png" alt="node.js command line 2"/><br />
+</a><br />
+<h2>Setting up development environment</h2><p>    Basically all you need with node.js is command line and text editor. Any text editor you like. You just code in you favorite one and then switch to command line to start up application, like 'node app.js'. <br />
+</p><p>    You can go further this minimalistic setup, thought. I'll show the best options I've tried so far.<br />
+</p><h3>Sublime Text 2</h3><p>    <a href="http://www.sublimetext.com/2">Sublime Text 2</a> is a superior development-oriented text editor. Even with plain installation it's very useful. Available on many platforms, including Windows makes it really 'must-have' tool for any developer. <br />
+</p><p>    You can turn Sublime Text 2 into quite powerful node.js IDE with plug called <a href="https://github.com/tanepiper/SublimeText-Nodejs">SublimeText-NodeJs</a>.<br />
+</p><p>    It provides with basic code completion functionality.<br />
+</p><a href="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-xv1QViHaYoE/T-tCnCgxT5I/AAAAAAAAI9U/Uu6amUMy3Ug/s620/image-2.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    But it also gives you ability to simply run node.js scripts inside the editor and see resulted output.<br />
+</p><a href="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png"><br />
+    <img src="https://lh4.googleusercontent.com/-uBqAxXiC3TQ/T-tCnrcqNrI/AAAAAAAAI-A/rCiUkc-0alE/s620/image-3.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    Just inside the editor you able to access 'npm' and 'node' command line, so it's pretty possible to work with project without leaving text Sublime at all. Reality is a little different, thought.<br />
+</p><p>    You can handle pretty big projects inside Sublime. It is able to open folders, providing great file navigation options. Pressing 'Ctrl+P' will bring navigation console. Start typing the file name and relevant suggestion will appear.<br />
+</p><a href="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png"><br />
+    <img src="https://lh5.googleusercontent.com/-sIx-fVyrbwU/T-tCljs_sDI/AAAAAAAAI8o/OG37Ffi1NZc/s620/image-10.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<p>    As well, you can easily navigate inside javascript file, by functions or object properties. Press 'Ctrl+P' after put '@' sign and type function name.<br />
+</p><a href="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Cl3yRIgE-Z4/T-tCln2RSPI/AAAAAAAAI8s/H_wJyT2UT98/s620/image-11.png" alt="SublimeText-NodeJs"/><br />
+</a><br />
+<h3>JetBrains Web Storm</h3><p>    JetBrains produces great <a href="http://www.jetbrains.com/products.html">products</a> including <a href="http://www.jetbrains.com/webstorm/index.html">Web Storm</a>. Web Storm is full feature IDE from a world-class vendor. Being HTML/CSS/JS editor, it could be easily adopted for Node.js development. <br />
+</p><a href="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Pq8nrucZcDE/T-tCoXguo4I/AAAAAAAAI9g/weSYGlr_eyM/s672/image-5.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    With a WebStorm you just create a new project, place javascript files inside and configure IDE to run Node.js configuration. You have ready to use presets, including one for node.<br />
+</p><a href="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/-W8QI5OeJsV4/T-tCo3YFcsI/AAAAAAAAI9k/N4pZ-ap7OqQ/s593/image-6.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    As you start to work with any Node.js internal modules (as http, fs etc.) WebStorm would propose to download sources and index them to be able to produce IntelliSence-like suggestions. I was really happy to see how fast and precise it works.<br />
+</p><a href="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png"><br />
+    <img src="https://lh3.googleusercontent.com/-BqNtzPcZvfo/T-tCpGQ_mDI/AAAAAAAAI98/4YHVKXNoGhU/s620/image-7.png" alt="JetBrains WebStorm - nodejs"/><br />
+</a><br />
+<p>    Besides of that, you are getting all JetBrains IDE's goodness - Refactoring, Integration with VCS, Code Formatting, Navigation etc. But the most sweet feature as for me is - Debugging. Just place the break point in the line you want to halt and press 'Debug' button.<br />
+</p><a href="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png"><br />
+    <img src="https://lh4.googleusercontent.com/-B9d8BSj-Kxo/T-tCpbGr1OI/AAAAAAAAI9w/REsN99AitW4/s620/image-8.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<p>   App would run and debugger will stop on breakpoint, showing current Frames, Local or Watched variables. <br />
+</p><a href="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png"><br />
+    <img src="https://lh3.googleusercontent.com/-WXe-6Ilj878/T-tCqCSXxbI/AAAAAAAAI-E/PEYBnGsG4tc/s616/image-9.png" alt="JetBrains WebStorm - nodejs, debugging"/><br />
+</a><br />
+<h3>Microsoft Web Matrix 2</h3><p>    New kid in the block of Node.js development on Windows is <a href="http://jbeckwith.com/2012/06/07/node-js-meet-webmatrix-2/">Web Matrix 2</a>, currently beta version.<br />
+</p><a href="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png"><br />
+    <img src="https://lh3.googleusercontent.com/-TxBwDPCVKG0/T-tCnc6CWuI/AAAAAAAAI9M/J25ji38H6Oc/s459/image-12.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix 2 is a lightweight IDE suitable for ASP.NET, PHP, HTML development. It's easy to install it by Web Installer. As soon as it's installed, you can pretty nice templates for Node.js applications.<br />
+</p><a href="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png"><br />
+    <img src="https://lh3.googleusercontent.com/-SfnOi1g-EvM/T-tCmSfyxgI/AAAAAAAAI80/JPU2X9Ha8pg/s620/image-13.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    Web Matrix works differently. As Sublime and WebStorm depend on 'node.exe' and work directly with it, Web Matrix uses another component, called <a href="https://github.com/tjanczuk/iisnode/">iisnode</a>. IISNode is a host of node.js on IIS web server. This approach of course brings a lot of <a href="https://github.com/tjanczuk/iisnode/wiki">benefits</a>, but in the same way it might give you some limitations of IIS itself. Web Matrix comes with IIS Express web server, which is perfect for web development. One very obvious benefit of using 'iisnode' is that you no longer need to restart 'node.exe' process manually, as you changing sources.<br />
+</p><p>    But let's go back to IDE itself. As for IntelliSence it much more worse that WebStorm and even Sublime, I would say. It works really strange, for instance knowing nothing about embedded node components. <br />
+</p><a href="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png"><br />
+    <img src="https://lh6.googleusercontent.com/-9aS29_vTk6E/T-tCmYx52yI/AAAAAAAAI84/lcBTtZsTsUE/s620/image-14.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<p>    No internal debugger, no refactoring tools. The code editor is more than good enough. Almost the same user experience as Visual Studio. <br />
+</p><p>    Besides of the code editor, you create databases and different report for sites.<br />
+</p><a href="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png"><br />
+    <img src="https://lh5.googleusercontent.com/-l9o5GopQEK4/T-tCm576eiI/AAAAAAAAI9I/gtwKVbpJMKo/s620/image-15.png" alt="Welcome to Web Matrix 2"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    Even with plugins, Sublime Text 2 still more text editor than IDE. Definitely, more than good enough text editor, but still. I personally using it. First of all, because I like.. second, because I would like to be closer to 'node.exe' at least at the period I'm learning the platform. Available as unlimited trial for now, makes it really attractive.<br />
+</p><p>    WebStorm, no doubt is the most valuable player now. It works great, even If I heard some rumors that it sucks a little on Linux. This should be the choice for professional development. It costs money.<br />
+</p><p>    Web Matrix 2 is in beta, but even now it looks pretty solid. It goes free and I suppose it will remain for free. It's much more closer to Microsoft technologies, like IIS, Azure etc.<br />
+</p><p>    So, what to pick up you might ask?<br />
+</p><p>    If you are just starting and learning and really want to keep similar experience to VS, pick up Web Matrix. Otherwise, it have to be Sublime Text 2. Both perfect fit for home projects. In case if you do professional development on Node.js, obvious choice is Web Storm.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VS2011 Beta is Ready for Review]]></title>
+    <link href="http://beletsky.net/2012/03/vs2011-beta-is-ready-for-review.html"/>
+    <updated>2012-03-15T10:15:00+01:00</updated>
+    <id>http://beletsky.net/2012/03/vs2011-beta-is-ready-for-review</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>29 February (leap day and huge failure of Azure Cloud) is the day then VS2011 Beta community preview has been released. As a lot of geeks around the globe I've downloaded installation image and tried it on my computer. With VS2011 Beta we also received .NET 4.5 framework and (drums here) - ASP.NET MVC4 Beta, that I really wanted to try since first CTP is out. I would not say I spent too much time with both products, but I already have some initial opinion on that.<br />
+</p><h2>VS2011 installation..</h2><p>Well, I had some not really good experience with beta versions of VS2010 and compatibility between two visual studios on the same machine. Situation is different with VS2011. Installation very pretty smooth, I just run it on background while was working through RDP on another machine and it installed without any interaction. Whole process took about 40 minutes.<br />
+</p><p>VS2010 and VS2011 beta could happily leave together without any interference. Moreover, you can freely work with your existing VS2010 solutions. Solutions for .NET 4, 3.5 and 2.0 are still supported in the same good way. <br />
+</p><h3>.. and first launch</h3><p>VS2011 "cold" start up is a faster (about 40 seconds against 90 seconds, on my machine). The only one reason I see is VS2011 is not yet overloaded with different plugins I use in VS2010. <br />
+</p><p>First very noticeable change is of cause the design. There were many blog posts with preview of VS2011 design before the beta release. And you know, I really liked what I saw on images. I changed my opinion on first launch. Probably it's just the matter of taste or habits, but new VS design looks awful to me (especially in Dark Theme - 80's monochrome display back!). It's totally grey, with no colors in icons at all. Fonts are in METRO style (all uppercase) looks very unusual. Solution explorer contains grey icons, it's a little difficult to distinguish between project types and file types inside. So, fellow developer - get ready to order new glasses since you decide to switch to VS2011.  <br />
+</p><a href="https://lh6.googleusercontent.com/-kD1OpPYEcJY/T2GxpBjYlQI/AAAAAAAAIB0/IApm8gGFf6k/s620/image-3.png"><br />
+<img src="https://lh6.googleusercontent.com/-kD1OpPYEcJY/T2GxpBjYlQI/AAAAAAAAIB0/IApm8gGFf6k/s620/image-3.png" style="width: 620px" alt="vs2011 solution" /><br />
+</a><br />
+<p>Nevertheless, I was happy to open my exiting solution, press Ctrl + Shift + B and it successfully built. The good thing is .sln file has not been transformed (except the <code>Format Version 11.00</code> has been changed to <code>Format Version 12.00</code>) so it's still can be opened both VS2010 and VS2011. <br />
+</p><p>It also has been imported all my VS2010 settings. It is really nice, since you don't need to spent much time setting up favorite color scheme and key bindings.<br />
+</p><p>I haven't seen any noticeable performance changes. Sometimes VS2011 works a little slower as for me (please note, this is only subjective feelings, does not pretend to be absolute truth). Looks like VS2011 has much larger memory footprint.<br />
+</p><a href="https://lh5.googleusercontent.com/-GvxigiUfINs/T2GxpL273FI/AAAAAAAAIBw/FjTLSQN6KUQ/s800/image-1.png"><br />
+<img src="https://lh5.googleusercontent.com/-GvxigiUfINs/T2GxpL273FI/AAAAAAAAIBw/FjTLSQN6KUQ/s800/image-1.png" style="width: 620px" alt="vs2011 memory usage" /><br />
+</a><br />
+<p>And for some mystical reason it spawns second <code>devenv.exe</code> process in a while, even if I have only one VS instance running.<br />
+</p><a href="https://lh6.googleusercontent.com/-GMrPaWLfxxQ/T2GxpGYIY5I/AAAAAAAAIBs/wu29YT2sHfg/s854/image-2.png"><br />
+<img src="https://lh6.googleusercontent.com/-GMrPaWLfxxQ/T2GxpGYIY5I/AAAAAAAAIBs/wu29YT2sHfg/s854/image-2.png" style="width: 620px" alt="vs2011 spawns process" /><br />
+</a><br />
+<h3>Code editing</h3><p>Code editor is almost the same. No new refactoring tools, no support of 3rd parties Unit Test systems (NUnit, XUnit etc.) from the box.  Still Visual Studio requires to have ReSharper for more productive coding. My dream of using clean VS with minimum plugins installed seems not gonna come true with VS2011.  <br />
+</p><p>Some few nice moments I noticed for HTML/Razor/CSS editors. First of all, it updates closing HTML tag if you changed opening one (and vice versa). For CSS, it has much more better InteliSence + nice feature of picking colors.   <br />
+</p><p>I haven't noticed any significant changes to JS editor. Except the fact, that there are no 'Update JScript Intellisense' menu command, so I suppose that now it's done automatically. Still, it's very primitive and does not work all the time. For instance, I haven't managed to get any InteliSense during working with Knockout.js library, maybe I'm just doing something wrong.<br />
+</p><h3>I want my plugings</h3><p>So, VS2011 is generally OK, so I would prefer to use it. Hope a lot of new fixes and some feature still will be included in RC.<br />
+</p><p>What I personally lack is 2 plugins. ReSharper and NCrunch. Fortunately both appeared very fast. Remco Mulder released <a href="http://www.ncrunch.net/download.htm">NCrunch 1.38b</a> and JetBrains are came with <a href="http://blogs.jetbrains.com/dotnet/2012/03/resharper-70-eap-visual-studio-11-beta-edition-is-nowopen/">ReSharper 7 EAP</a> which is free for download and evaluation. Both plugins works really fine. Having good refactoring tools as ReSharper gives and having the power of Continuous Tests with NCrunch, makes the VS2011 ready to use IDE. <br />
+</p><h2>Conclusions</h2><p>The beta looks very promising.. and in general it works fine! Except the design, nothing really new to IDE as for me. Probably I spent to few time to feel the power, so I'll be updating if I see some cool or bad features. The most sweet things with new VS is surely updated .NET framework and MVC. I'm now trying to play with new stuff and much as I can, already checked some new nice stuff of MVC4 framework.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Foundation Framework for Web Sites Production]]></title>
+    <link href="http://beletsky.net/2012/02/foundation-framework-for-web-sites.html"/>
+    <updated>2012-02-21T10:15:00+01:00</updated>
+    <id>http://beletsky.net/2012/02/foundation-framework-for-web-sites</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>The <a href="http://foundation.zurb.com/">Foundation</a> framework is something I discovered by accident browsing through some github project pages. I really liked how one of the sites looked on my iPad. I was also pleased to see how HTML crafted, using clear names for classes and HTML5 semantics. As it turned out, that site was using Foundation Framework by <a href="http://www.zurb.com/">Zurb</a> - design agency in San Francisco Bay area.<br />
+</p><p>I checked out the <a href="http://foundation.zurb.com/docs/">documentation</a> and Foundation appears to be pretty solid framework for web applications prototyping and production. It contained everything needed: <a href="http://foundation.zurb.com/docs/grid.php">Grid Layouts</a>, <a href="http://foundation.zurb.com/docs/buttons.php">Buttons</a>, <a href="http://foundation.zurb.com/docs/forms.php">Forms</a> and <a href="http://foundation.zurb.com/docs/ui.php">UI</a>. And of cause, all of that is open source hosted on github.<br />
+</p><p>During my preparation of project page for <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> I decided to try it out. I was really happy of the experience. <br />
+</p><h2>Object Oriented CSS</h2><p>Have you heard of <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>? Initially I thought that idea is almost non-sense, but I'm changing my opinion now. I think Foundation fully conforms to OOCSS style of development - each behavior or UI you want to apply to HTML element is done by applying of corresponding class. <br />
+</p><p>Great thing is that you see how it's done in framework and do same in your code as well. I remember the times I started to do HTML/CSS and I higly used #id's, applying the styles by element Id. The code was awful and styles applied on #id's were not re-usable at all, so if I needed the same margin/padding or text color I have to copy the section of CSS and move it into next <code>#some-id { ... }</code>.<br />
+</p><p>With OOCSS you rely on classed. Here some example,<br />
+</p><pre class="brush: html">&lt;div class=&quot;container darker-grey light-border small-padding&quot;&gt;
+ &lt;div class=&quot;row smaller-fonts&quot;&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;four columns&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>Look, no #id's - classes only. With classes I control: position, colors, borders and margin/paddings. This is really cool, since all of that classes are easy reusable in any part of page.<br />
+</p><h2>Grid system</h2><p>Grid systems is really cool concept and allows to develop much faster. Instead of writing own CSS that would position elements, you stick to Grid System. The classical grid system is probably <a href="http://960.gs/">960.gs</a>. It's really great and blown my mind as I first time tried it, but currently it little outdated: 960px wide is small for modern monitor and it is not adaptive. Modern web design demands site looks great both on PC and Mobile devices, adapt it's content based on screen size.<br />
+</p><p>Here is a quote of Foundation documentation.<br />
+</p><blockquote>The grid is built around three key elements: containers, rows, and columns. Containers create base padding for the page; rows create a max-width and contain the columns; and columns create the final structure. Everything on your page that you don't give a specific structural style to should be within a container, row and column.<br />
+</blockquote><p>You develop the layout based on planned number of row and columns that compose the row. Again, code is done in OOCSS way with clean classes names, so you write almost "plain" English in HTML.<br />
+</p><pre class="brush: html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;eight columns&quot;&gt;
+      Eight columns
+    &lt;/div&gt;
+    &lt;div class=&quot;four columns&quot;&gt;
+      Four columns     
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre><p>After design is ready, you just open it on iPad and.. Surprise, it looks great there! Text and columns are adaptively fits the screen size. <br />
+</p><h2>Buttons and Forms</h2><p>Buttons and Forms are same important as Colors and Fonts in your web site. You can't get good site appearance if buttons and forms are ugly. I usually spend a lot of time on "beautifying" those, but still unhappy with results at the end of the day. With Foundation it's easier. You got nice styles from the box. <br />
+</p><p>Forms:<br />
+</p><a href="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg"><br />
+<img src="https://lh5.googleusercontent.com/-r0XbF8NN5Zo/T0NfEXYwg6I/AAAAAAAAH4Q/4yZ8y3OqCMM/s620/image-1.jpg" alt="foundation forms" /><br />
+</a><br />
+<p>Buttons:<br />
+</p><a href="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg"><br />
+<img src="https://lh6.googleusercontent.com/-TNxDQv_m1Oc/T0NfGrGMXDI/AAAAAAAAH4Y/HYjq_XxDbGs/s620/image-2.jpg" alt="foundation buttons" /><br />
+</a><br />
+<p>Recently, I've <a href="https://github.com/zurb/foundation/pull/313">submitted</a> green button style, so I hope it will be available soon.<br />
+</p><h2>UI stuff</h2><p>Besides those primary things you got nice bonus. That's different UI elements commonly used through different web sites. It includes: Alerts, Labels, Warnings, Tooltips, Tabs etc. <br />
+</p><p>For <a href="http://alexanderbeletsky.github.com/candidate/">candidate</a> site I successfully used Pagination UI element. <br />
+</p><a href="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-_5240sOGkko/T0NfHuydwUI/AAAAAAAAH4g/jE3ft2nAAeM/s620/image-3.jpg" alt="foundation ui" /><br />
+</a><br />
+<h2>Conclusions</h2><p>Currently <a href="http://twitter.github.com/bootstrap">Bootstrap</a> from Twitter is obvious leader in that niche. But I really think Foundation will get it's place. Easy to use, great documentation <a href="https://github.com/zurb/foundation">repository</a> is very active, so we might expected further great features in Foundation.<br />
+</p><p>And by the way.. To payback Foundation, I got idea for small product: inspired by <a href="http://bootswatch.com/">Bootswatch</a> I'm about to create bunch of "ready-to-use" Foundation themes, that you just download and start to use immediately. It will work great for people who are about to create one page product presentation or simple blog. Hope it will go fine and I release it soon.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[New Tools in My TDD Arsenal]]></title>
+    <link href="http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal.html"/>
+    <updated>2012-02-02T10:36:00+01:00</updated>
+    <id>http://beletsky.net/2012/02/new-tools-in-my-tdd-arsenal</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Recently my TDD arsenal has been enhanced with 3 new cool tools, which I'm about to share with you. More precisely it one tool and two frameworks. Let's go for it.<br />
+</p><h2>NCrunch<br />
+</h2><p><a href="http://www.ncrunch.net/">NCrunch</a> is just amazing extension for Visual Studio created by <a href="https://twitter.com/#!/remcomulder">@remcomulder</a>. It automatically detects all your tests and re-running those as soon as source code changes happen. Forget about manual test re-running, it's just waste of time. You even do not need to press Ctrl + S, just continue coding as you usually do. <br />
+</p><p>Initially I had big doubts about such kind of tools, but NCrunch changed my mind. It supports major unit test frameworks NUnit, XUnit, MSpec etc. Besides of that it allows to collect code coverage metrics (and show it just in VS editor), run tests under debugger, supports multi-core systems etc.<br />
+</p><p>In short, NCruch is something that makes your TDD very smooth, allowing to focusing on important things and forgot about some routine.<br />
+</p><a href="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg"><br />
+<img src="https://lh3.googleusercontent.com/-SG_xDY5wvDo/TypXmx-VFGI/AAAAAAAAH3o/S46jODLRr5Q/s620/image-1.jpg" alt="ncrunch" /><br />
+</a><br />
+<h2>NSubstitute<br />
+</h2><p>I stick to <a href="http://code.google.com/p/moq/">Moq</a> for quite awhile and saw no reason to switch it.. Till I saw <a href="http://nsubstitute.github.com/">NSubsitute</a>. I hardly could imagine someone who staring "yet another mocking framework project", it looks like absolute non-sense.. But <a href="https://github.com/nsubstitute">those</a> guys proves me wrong.<br />
+</p><p>Well, what's so new there? First of all it have very clean API. No more <code>new Mock()</code> or <code>MockGenerator.GenerateMock()</code>, creation of test doubles are nothing more as <code>Substitute.For&lt;IEntityToMock&gt;()</code>. Mocking properties, multiple return values, events etc. in very easy fashion. Check out their <a href="http://nsubstitute.github.com/help/getting-started/">getting started</a> materials for further info. <br />
+</p><p>Best feature as for me, that by using extension methods they got rid of lambdas for setting up mocks. It makes test code more readable and clean. See this small <a href="https://gist.github.com/1722396">gist</a> there I placed just some Moq and NSubstitue tests together.<br />
+</p><p>I would not say that Rhino or Moq is now much worse that NSubstitute.. No, I would just say NSubstitute is a little better. Even same functionality, with less amount of code is already big argument for me.<br />
+</p><pre class="brush: csharp">[Test]
+public void should_send_an_email_if_users_signs_up_nsub()
+{ 
+ // arrange
+ var emailService = Substitute.For&lt;IEMailService&gt;();
+ var controller = new LoginController(emailService);
+
+ // act
+ controller.SignUp(new SignUpModel { Email = &quot;a@a.com&quot;, Password = &quot;xxx&quot; });
+
+ // assert
+ emailService.Received().SendEmail(Arg.Any&lt;EmailMessage&gt;(), &quot;current&quot;);
+}
+</pre><h2>FluentAssertions<br />
+</h2><p>Again, for years I followed classic NUnit's <code>Assert.That()</code> method. I also played a bit with <a href="http://sharptestex.codeplex.com/">SharpTestsEx</a>, but FluentAssertions by <a href="https://twitter.com/#!/ddoomen">@ddoomen</a> is going to change that.<br />
+</p><p>FluentAssertions are based on extension methods and allows you to get rid of Assert.That call and just wrote your assertion directly to object. Here some example: <br />
+</p><pre class="brush: csharp">{
+    // NUnit.Assert style..
+    Assert.That(result, Is.EqualTo(3));
+
+    // FluentAssert style..
+    result.Should().Be(3);
+}
+</pre><p>This is very simple example. The power of FluentAssertions arise then you need to have either multiple assertions or assertions on complex objects. Multiple assertion could be combined by <code>And</code>, like:<br />
+</p><pre class="brush: csharp">{
+    "somestring".Should().Contain("some").And.HaveLength(10);
+}
+</pre><p>It also provides great support for working with Collections, DateTimes, Guids, Exceptions, XML etc. Project is hosted on codeplex, here is <a href="http://fluentassertions.codeplex.com/documentation">documentation</a>. Easy start, easy go.<br />
+</p><h2>Conclusions</h2><p>Now, I'm sharpening my axe on those tools and have very nice impressions so far. Special thanks goes to <a href="https://twitter.com/#!/skalinets">@skalinets</a> who introduced me with those tools.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

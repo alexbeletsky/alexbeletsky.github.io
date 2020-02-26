@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inside ASP.NET MVC: IResolver and it's implementations</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Inside ASP.NET MVC: IResolver and it's implementations Aug 27th, 2011 InsideMVC, MVC, asp.net One of the major changes between MVC2 and MVC3 was &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Inside ASP.NET MVC: IResolver and it's implementations</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T15:06:00+02:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through &#8216;new&#8217; operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    internal interface IResolver&lt;T&gt; {
+        T Current { get; }
+    }
+}
+</pre><p>We can just ask the instance of type we would like to resolve. Please also note, that <code>IResolver</code> is internal class, so it is not exposed and you will never use it in application directly.<br />
+</p><p>All major entities of MVC framework (ControllerFactory, Filters, ViewEngines etc.) from now resolved by <code>IResolver</code> implementation class. That improves extensibility of framework very much and introduces new strategy of creation objects.<br />
+</p><h2>Implementations of IResolver interface</h2><p>There are two classes that implements <code>IResolver</code> - <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code>. Primary responsibility of those are delegation call to <code>IDependencyResolver</code> methods <code>GetService</code> and <code>GetServices</code>, respectively.<br />
+</p><p>If they just recalling method of <code>IDependecyResolver</code> class, what&#8217;s are the purpose of those two classes?<br />
+</p><p>There are 2 purposes I can see:<br />
+</p><ol><li>To provide default type instance in case of type is not resolved by <code>IDependencyResolver</code>.</li>
+<li>To create instance only once.</li>
+</ol><h2>How it works?<br />
+</h2><p>Now, let&#8217;s take a look how it actually works. It is really simple and small, so I&#8217;m able to put most of code here. <br />
+</p><p>Construction:<br />
+</p><pre class="brush:csharp">public SingleServiceResolver(Func&lt;TService&gt; currentValueThunk, TService defaultValue, string callerMethodName) {
+ if (currentValueThunk == null) {
+  throw new ArgumentNullException(&quot;currentValueThunk&quot;);
+ }
+ if (defaultValue == null) {
+  throw new ArgumentNullException(&quot;defaultValue&quot;);
+ }
+
+ _resolverThunk = () =&gt; DependencyResolver.Current;
+ _currentValueThunk = currentValueThunk;
+ _defaultValue = defaultValue;
+ _callerMethodName = callerMethodName;
+}
+</pre><p>You can see, it receives default factory method, default type instance and the name of caller method (used as additional information in exception).<br />
+</p><p>Here, how <code>ControllerBuilder</code> creates the <code>SingleServiceResolver</code>, for instance:<br />
+</p><pre class="brush:csharp">internal ControllerBuilder(IResolver&lt;IControllerFactory&gt; serviceResolver) {
+ _serviceResolver = serviceResolver ?? new SingleServiceResolver&lt;IControllerFactory&gt;(
+  () =&gt; _factoryThunk(),
+   new DefaultControllerFactory { ControllerBuilder = this },
+  &quot;ControllerBuilder.GetControllerFactory&quot;
+ );
+}
+</pre><p>Since it implements only one property, current <code>Current</code>:<br />
+</p><pre class="brush:csharp">public TService Current {
+ get {
+  if (_resolverThunk != null) {
+   lock (_currentValueThunk) {
+    if (_resolverThunk != null) {
+     _currentValueFromResolver = _resolverThunk().GetService&lt;TService&gt;();
+     _resolverThunk = null;
+
+     if (_currentValueFromResolver != null &amp;&amp; _currentValueThunk() != null) {
+      throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, MvcResources.SingleServiceResolver_CannotRegisterTwoInstances, typeof(TService).Name.ToString(), _callerMethodName));
+     }
+    }
+   }
+  }
+  return _currentValueFromResolver ?? _currentValueThunk() ?? _defaultValue;
+ }
+}
+</pre><p>First, we check the existence of <code>_resolverThunk</code> it would always exist (having value of <code>() => DependencyResolver.Current</code>) for first call of the method. Then, we locking on <code>_currentValueThunk</code> protecting for multiple threads access the same method, same time. Then, we try to resolve given type by asking <code>_resolverThunk()</code> to <code>GetService&lt;TService&gt;()</code>.<br />
+</p><p>After that we have an if-statement that I didn&#8217;t get from the very beginning. Fortunately, MVC project has bunch of good unit tests. As I found the test it turns clear to me. The test called <code>CurrentThrowsIfCurrentSetThroughServiceAndSetter</code> and it&#8217;s Assert part: <br />
+</p><pre class="brush:csharp">[TestMethod]
+public void CurrentThrowsIfCurrentSetThroughServiceAndSetter() {
+ // Arrange
+ TestProvider providerFromCurrentValueThunk = new TestProvider();
+ TestProvider providerFromServiceLocation = new TestProvider();
+ TestProvider providerFromDefaultValue = new TestProvider();
+ Mock&lt;IDependencyResolver&gt; resolver = new Mock&lt;IDependencyResolver&gt;();
+
+ resolver.Setup(r =&gt; r.GetService(typeof(TestProvider)))
+   .Returns(providerFromServiceLocation);
+
+ SingleServiceResolver&lt;TestProvider&gt; singleResolver = new SingleServiceResolver&lt;TestProvider&gt;(() =&gt; providerFromCurrentValueThunk, providerFromDefaultValue, resolver.Object, &quot;TestProvider.Current&quot;);
+
+ //Act &amp; assert
+ ExceptionHelper.ExpectException&lt;InvalidOperationException&gt;(
+  () =&gt; singleResolver.Current,
+  &quot;An instance of TestProvider was found in the resolver as well as a custom registered provider in TestProvider.Current. Please set only one or the other.&quot;
+ );
+}
+</pre><p>This is really <strong>important</strong> and says: you should not create same type instance both with <code>IDependencyResolver</code> and factory method! In case of <code>ControllerFactory</code>: you should never provide your implementation of <code>IControllerFactory</code> and in the same time resolve <code>IControllerFactory</code> instance by <code>IDependencyResolver</code>. Same rule for all other types. You should decide how you would like to override default behavior. In MVC3 usage of <code>IDependencyResolver</code> is a preferable.<br />
+</p><p>The code below is wrong:<br />
+</p><pre class="brush:csharp">DependencyResolver.SetResolver(new DummyDependencyResolver());
+ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+</pre><p>So, after that <code>_resolverThunk</code> is reset and we no longer ask <code>IDependencyResolver</code>, just returning the resolved value.<br />
+</p><p><code>MultiServiceResolver</code> is even a little simpler. <br />
+</p><pre class="brush:csharp">public IEnumerable&lt;TService&gt; Current {
+ get {
+  if (_itemsFromService == null) {
+   lock (_itemsThunk) {
+    if (_itemsFromService == null) {
+     _itemsFromService = _resolverThunk().GetServices&lt;TService&gt;();
+    }
+   }
+  }
+  return _itemsFromService.Concat(_itemsThunk());
+ }
+}
+</pre><p>The same, singleton strategy of resolving types and then just concatenating resolved by <code>IDependencyResolver</code> with ones retuned by default factory method. It looks strange, but it is legal here to have types resolved both by <code>IDependencyResolver</code> and factory.<br />
+</p><h2>Conclusions<br />
+</h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never &#8216;mix&#8217; both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
+</p><h2>What&#8217;s next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
+</p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

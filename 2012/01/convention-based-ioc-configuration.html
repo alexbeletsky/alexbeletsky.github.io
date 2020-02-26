@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Convention based IoC configuration</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Convention based IoC configuration Jan 24th, 2012 Clean Code, Tips, Tools What&#8217;s your favorite IoC container framework? For quite long time I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/01/convention-based-ioc-configuration.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Convention based IoC configuration</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-24T15:54:00+01:00" pubdate data-updated="true">Jan 24<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>What&#8217;s your favorite IoC container framework? For quite long time I stick to <a href="">Ninject</a>. First time I read about it in Steve Sanders ASP.NET MVC2 book and it&#8217;s my favorite container since then. But this blog post does not aim particular IoC framework, rather approach you can use. For code examples I&#8217;ll still be using Ninject, through.<br />
+</p><h2>What&#8217;s are conventions?<br />
+</h2><p><a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over configuration</a> is very popular trend nowadays. Many frameworks trying to adopt it, including ASP.NET MVC. In short, that means you are relying on some front-know conventions, like names of files, folder or classes and system does something meaningful, based on those conventions. Like, all controllers in ASP.NET MVC should have &#8220;Controller&#8221; postfix, so the framework is able to find and <a href="http://www.beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">instantiate</a> it. <br />
+</p><p>Conventions make a developer&#8217;s life a little easier, you are no longer spending efforts on configuration, instead following some simple rules. <br />
+</p><h2>What we have for IoC?<br />
+</h2><p>My <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Shu&#8221;</a> level of IoC containers learning was configuration based. This is something you learn at very beginning. So, in case of Ninject, sooner of later you have huge file with dependencies configuration: <br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Bind&lt;ISettingsManager&gt;().To&lt;SettingsManager&gt;();
+ kernel.Bind&lt;IDirectoryProvider&gt;().To&lt;DirectoryProvider&gt;().InSingletonScope();
+ kernel.Bind&lt;ISetupFactory&gt;().To&lt;SetupFactory&gt;();
+ kernel.Bind&lt;ITargetsObjectBuilder&gt;().To&lt;DefaultTargetsObjectBuilder&gt;();
+ kernel.Bind&lt;ITargetsBuilder&gt;().To&lt;TargetsBuilder&gt;();
+ kernel.Bind&lt;IBounceFactory&gt;().To&lt;BounceFactory&gt;();
+ kernel.Bind&lt;ITargetsRetriever&gt;().To&lt;TargetsRetriever&gt;();
+ kernel.Bind&lt;IConfigObjectBuilder&gt;().To&lt;ConfigObjectBuilder&gt;();
+ kernel.Bind&lt;ILoggerFactory&gt;().To&lt;LoggerFactory&gt;();
+ kernel.Bind&lt;IHashService&gt;().To&lt;HashService&gt;();
+ kernel.Bind&lt;IAuthentication&gt;().To&lt;Authentication&gt;();
+ kernel.Bind&lt;IConfigurationsFactory&gt;().To&lt;ConfigurationsFactory&gt;();
+ 
+ // More, more, more...
+}
+</pre><p>As more your application grows, as more services, repositories, factories you have. As long <code>RegisterServices</code> method becomes longer, as more you forgot to correct correct it after some new dependency added, so you see YSOD during application run.<br />
+</p><p>But please, put your attention to interface and class names. What we have here - <code>ISettingsManager</code> and <code>SettingsManager</code>; <code>IDirectoryProvider</code> and <code>DirectoryProvider</code>.. <code>ILoggerFactory</code> and <code>LoggerFactory</code>. Do you see pattern here? Exactly, it is [&#8220;I&#8221; + entity name] for interfaces and [entity name] for implementation.<br />
+</p><p>Here we go for <a href="http://en.wikipedia.org/wiki/Shuhari">&#8220;Ha&#8221;</a> level of IoC and apply convention based configuration.<br />
+</p><h2>Convention over configuration</h2><p>Let&#8217;s take an advance of the fact above and shrink our configuration code. First of all, you need to get great extension for Ninject, called <a href="http://nuget.org/packages/ninject.extensions.conventions/2.2.0.5">ninject.extensions.conventions</a>.<br />
+</p><p>After the package is installed, the simples Ninject start-up code ever would be:<br />
+</p><pre class="brush: csharp">/// &lt;summary&gt;
+/// Load your modules or register your services here!
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;kernel&quot;&gt;The kernel.&lt;/param&gt;
+private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromCallingAssembly();
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><p>What it does? It has an abstraction called &#8220;scanner&#8221;. You instruct scanner what to do. In this example, I said - take calling assembly and bind all interfaces to implementation class having Default conventions. The default conventions are ones that I shown above. <br />
+</p><p>That&#8217;s it, all those lines of code are simply gone away, since we rely on conventions and Ninject is aware how to deal with those conventions. If you added new dependency and followed convention, nothing you should do manually any more.<br />
+</p><h2>I have some questions!?</h2><p>Ok, typically you have something little more complex. I&#8217;ll try to predict some questions you might have.<br />
+</p><h3>I have a lot of assemblies in my application, but want only particular ones to be scanned?</h3><p>You can easily use only assemblies that matches particular patterns, like:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWithDefaultConventions();
+     }
+  );
+}
+</pre><h3>Is it only default conventions I can use?</h3><p>No, you can specify your own rules. Scanner has <code>BindWith</code> method, that receives <code>IBindingGenerator</code> type. You can implement your own binding generator for custom conventions.<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><h3>What if I have several cases of convention violations?</h3><p>You are still able to bind in exactly same way as before:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+
+    // classes that violates conventions
+    kernel.Bind&lt;IMyInterface&gt;().To&lt;MyImpl&gt;();
+}
+</pre><h3>What is I have dependencies in different assemblies?</h3><p>Best thing is to go with Ninject modules. First, correct the scanner:<br />
+</p><pre class="brush: csharp">private static void RegisterServices(IKernel kernel)
+{
+ kernel.Scan(scanner =&gt;
+     {
+      scanner.FromAssembliesMatching("Candidate.*");
+                        scanner.AutoLoadModules();
+      scanner.BindWith&lt;MyCustomConventionsGenerator&gt;();
+     }
+  );
+}
+</pre><p>Now, each assembly should include module instance:<br />
+</p><pre class="brush: csharp">namespace Candidate.Core
+{
+    public class CoreModule : NinjectModule
+    {
+        public override void Load()
+        {
+            // place convention-violation classes here
+   // Bind&amp;lt;IMyInterface&amp;gt;().To&amp;lt;MyImpl&amp;gt;();
+        }
+    }
+}
+</pre><p>Another one good feature of Convention based IoC is - &#8220;Config and forget&#8221;. Once done, use always and forget about manual binding once and for all.<br />
+</p><p>I&#8217;ve heard about this on <a href="http://www.beletsky.net/2011/12/xp-days-ukraine-2011.html">XP Days 2011</a> conference, by <a href="https://twitter.com/#!/ploeh">Mark Seemann</a>. I think it&#8217;s nice approach.. I adopt it and going to use in my projects.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/01/convention-based-ioc-configuration.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/01/convention-based-ioc-configuration.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

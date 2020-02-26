@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC Oct 13th, 2011 InsideMVC, MVC, asp.net All types inside ASP.NET MVC3 framework are &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-13T20:55:00+02:00" pubdate data-updated="true">Oct 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    using System.Collections.Generic;
+
+    public interface IDependencyResolver {
+        object GetService(Type serviceType);
+        IEnumerable&lt;object&gt; GetServices(Type serviceType);
+    }
+}
+</pre><p>If take a look into the code you will definitely smell the <a href="http://msdn.microsoft.com/en-us/library/ff648968.aspx">Service Locator</a> pattern. Indeed, <code>IDependencyResolver</code> is pure service locator.<br />
+</p><h2>DependencyResolver as IDependencyResolver holder</h2><p><code>IDependencyResolver</code> instance is being accessed through the <code>DependencyResolver</code> class. <br />
+</p><pre class="brush:csharp">public class DependencyResolver {
+ // Static accessors
+
+ private static DependencyResolver _instance = new DependencyResolver();
+
+ public static IDependencyResolver Current {
+  get {
+   return _instance.InnerCurrent;
+  }
+ }
+</pre><p>It is a singleton class, current instance is being accessed through <code>Current</code> property. The default implementation is <code>DefaultDependencyResolver</code>. <br />
+</p><pre class="brush:csharp">// Instance implementation (for testing purposes)
+
+private IDependencyResolver _current = new DefaultDependencyResolver();
+
+</pre><p>Even if the comment says (for testing purposes) that class is used in real code. Let&#8217;s take a look on that.<br />
+</p><pre class="brush:csharp">private class DefaultDependencyResolver : IDependencyResolver {
+ [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;This method might throw exceptions whose type we cannot strongly link against; namely, ActivationException from common service locator&quot;)]
+ public object GetService(Type serviceType) {
+  try {
+   return Activator.CreateInstance(serviceType);
+  }
+  catch {
+   return null;
+  }
+ }
+
+ public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+  return Enumerable.Empty&lt;object&gt;();
+ }
+}
+</pre><p>As you might see, it is extremely simple. It just tries to resolve the type by <code>Activator</code> class. If the type could be resolved it just returns it&#8217;s instance, otherwise just return null. The <code>GetServices</code> method just returns empty enumerable. <br />
+</p><h2>Substituting default DependencyResolver</h2><p>As I said above, the main design goal of <code>DependencyResolver</code> is to provide flexibility. By flexibility I mean just easy way to substitute any type with own implementation. Say you want to change the <code>ControllerFactory</code> or <code>ModelBinder</code> or what ever you like. Everything is possible just by overriding <code>IDependencyResolver</code>.<br />
+</p><p>I&#8217;ve seen one common misconception about MVC3, that it is contains IoC container inside it. It is not true, but it expose the interface which really much suites interfaces of famous IoC containers. To do not have a strict rules and force developers to use one type of IoC, ASP.NET MVC developers created a facility by which you can integrate yours IoC of choice. Let&#8217;s have a look how to do that. <br />
+</p><p><code>DependencyResolver</code> contains the number of setters to substitute the instance.<br />
+</p><pre class="brush:csharp">public static void SetResolver(IDependencyResolver resolver) {
+ _instance.InnerSetResolver(resolver);
+}
+
+public static void SetResolver(object commonServiceLocator) {
+ _instance.InnerSetResolver(commonServiceLocator);
+}
+
+[SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1006:DoNotNestGenericTypesInMemberSignatures&quot;, Justification = &quot;This is an appropriate nesting of generic types.&quot;)]
+public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type, IEnumerable&lt;object&gt;&gt; getServices) {
+ _instance.InnerSetResolver(getService, getServices);
+}
+</pre><p>As example of implementation here my very dummy dependency resolver.<br />
+</p><pre class="brush:csharp">namespace MvcForDebug2.Infrastructure {
+    public class DummyDependencyResolver : IDependencyResolver {
+        public object GetService(Type serviceType) {
+            if (serviceType.Equals(typeof(IControllerFactory))) {
+                return new DummyControllerFactory();
+            }
+
+            return null;
+        }
+
+        public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+            return null;
+        }
+    }
+}
+</pre><p>Finally, in global.asx.cs you need to set it up.<br />
+</p><pre class="brush:csharp">protected void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+
+ RegisterGlobalFilters(GlobalFilters.Filters);
+ RegisterRoutes(RouteTable.Routes);
+
+ DependencyResolver.SetResolver(new DummyDependencyResolver());
+ //ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+}
+</pre><h2>Conclusions</h2><p><code>IDependencyResolver</code> is a powerful feature of ASP.NET MVC3. It is used to create all internal MVC types, so by overriding it you can override default behavior of many framework aspects. Typically you should not have any complex code in <code>GetService</code> and <code>GetServices</code> methods, but instead just delegation of call to IoC container.<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

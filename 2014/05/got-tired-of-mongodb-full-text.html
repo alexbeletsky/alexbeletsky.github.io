@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Got Tired of MongoDB Full Text Index</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Got Tired of MongoDB Full Text Index May 15th, 2014 data, elasticsearch, migration, mongodb We use MongoDB as our primary data source in Likeastore &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Got Tired of MongoDB Full Text Index</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T11:29:00+02:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/elasticsearch/'>elasticsearch</a>, <a class='category' href='/blog/categories/migration/'>migration</a>, <a class='category' href='/blog/categories/mongodb/'>mongodb</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
+
+<p>I knew about search oriented storages as <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://sphinxsearch.com/">Sphinx</a>, <a href="http://lucene.apache.org/solr/">Solr</a>, etc. but the migration process always seemed a bit scary to me. After a bit of elaboration I decided to go with Elastic and the migration was quite fun and not so difficult as I initially expected.</p>
+
+<!-- MORE -->
+
+
+<h2>What&rsquo;s wrong with MongoDB?</h2>
+
+<p>We are using MongoDB 2.4 and full text search is experimental feature there. By default, it&rsquo;s turned off on production instances of MongoHQ. Anyway, it&rsquo;s very easy to turn it on and run <code>text</code> commands against it. But we met it&rsquo;s bottleneck when indexed collection start to grow (>3M documents).</p>
+
+<p>We are doing a lot of <code>inserts</code> and if you have full text index, each <code>insert</code> triggers index re-calculation. Few weeks ago I&rsquo;ve noticed huge performance issues of our DB. After first glance of monitoring information it&rsquo;s was pretty clear that <code>Locked</code> index is >110% and a lot requests got timed-out. Application became low responsive.</p>
+
+<p>It could be potentially solved by moving on more powerful server (more CPU and RAM) or by sharding database into few instances. Both costs money. Costs are something that I would like to avoid, if possible. It was time to move to specialized solution.</p>
+
+<p>This is the reason to deploy ElasticSearch &ndash; put less strain on MongoDB and to use as an asynchronous index.</p>
+
+<h2>Migration plan</h2>
+
+<p>Before starting out, I&rsquo;ve consulted with my guru <a href="http://www.vinaysahni.com/">Vinay Sahni</a> and his experience of ElasticSeach in <a href="http://www.supportfu.com/">SupportFu</a>. The general feedback on ElasticSeach was really nice. They don&rsquo;t use any <a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">rivers</a> instead use <code>after_save</code> hook of their ORM, so each time new document is created it&rsquo;s pushed to ElasticSearch index.</p>
+
+<p>I decided to go similar way, so my migration plan was:</p>
+
+<ol>
+<li>Export all existing documents to ElasticSearch.</li>
+<li>Correct the code and after each new insert send update to ElasticSearch.</li>
+</ol>
+
+
+<p>In my situation it&rsquo;s a bit simpler, by the fact, I have only one collection to index and major part of DB operations are <code>inserts</code> not <code>updates</code>, otherwise I believe using of <code>river</code> has more sense (and a more effort to setup).</p>
+
+<h2>Deploy instance on Digital Ocean</h2>
+
+<p>I&rsquo;ve spin-up <a href="https://www.digitalocean.com/?refcode=de56d081b272">Digital Ocean</a> droplet and used that great <a href="https://www.digitalocean.com/community/articles/how-to-install-elasticsearch-on-an-ubuntu-vps">instructions</a> for installation (btw, I recommend to install from Debian package, since it&rsquo;s easier to run elastic as <code>init.d</code> service).</p>
+
+<p>Just in 10 minutes you have working ElasticSeach cluster, ready to rock.</p>
+
+<h2>Migrate MongoDB data to ElasticSearch index</h2>
+
+<p>Then I needed to move about 12GB of data from my production MongoDB instance to Elastic. To accomplish that, I&rsquo;ve created really simple tool &ndash; <a href="https://github.com/likeastore/elaster">elaster</a>. Elaster streams MongoDB collection into ElasticSearch index, based on <a href="https://github.com/likeastore/elaster/blob/master/config/index.js">configuration</a> you provide.</p>
+
+<p>I&rsquo;ve installed <code>nodejs</code> on ElasticSeach server, cloned elaster there and run,</p>
+
+<p><img src="https://pbs.twimg.com/media/Bmpa3QGCcAAOHSZ.png:large" alt="elaster" /></p>
+
+<p>Both elaster and application code use <a href="https://www.npmjs.org/package/elasticsearch">elasticsearch</a> npm package.</p>
+
+<p>The whole process took ~2 hours.</p>
+
+<h2>Update the application code</h2>
+
+<p>Right after documents are inserted to MongoDB and initialized with <code>_id</code>, they are ready to be saved to index. I use bulk operation for that,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">index</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">state</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">items</span> <span class="o">||</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">items</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">commands</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>  <span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">commands</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;_index&#39;</span><span class="o">:</span> <span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="o">:</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;_id&#39;</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_id</span><span class="p">.</span><span class="nx">toString</span><span class="p">()}});</span>
+</span><span class='line'>      <span class="nx">commands</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">elastic</span><span class="p">.</span><span class="nx">bulk</span><span class="p">({</span><span class="nx">body</span><span class="o">:</span> <span class="nx">commands</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Simple search query</h2>
+
+<p>ElasticSearch comes with very nice <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html">Query DSL</a>. I&rsquo;m very new to the technology, so I&rsquo;ve managed to create really simple query, which already gives quite nice results.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">fullTextItemSearch</span> <span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">paging</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span> <span class="nx">data</span><span class="o">:</span> <span class="p">[],</span> <span class="nx">nextPage</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">page</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">elastic</span><span class="p">.</span><span class="nx">search</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">index</span><span class="o">:</span> <span class="s1">&#39;items&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">from</span><span class="o">:</span> <span class="p">(</span><span class="nx">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">size</span><span class="o">:</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">body</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">filtered</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="s1">&#39;query_string&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                          <span class="nx">query</span><span class="o">:</span> <span class="nx">query</span>
+</span><span class='line'>                      <span class="p">},</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nx">filter</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="nx">term</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                          <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span>
+</span><span class='line'>                      <span class="p">}</span>
+</span><span class='line'>                  <span class="p">}</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">hits</span><span class="p">.</span><span class="nx">hits</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">hit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">_source</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span> <span class="nx">items</span><span class="p">,</span> <span class="nx">nextPage</span><span class="o">:</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">paging</span><span class="p">.</span><span class="nx">pageSize</span><span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It just uses <code>query_string</code> and <code>filter</code> term, to filter out results for given user. The interface of Search API remained the same, just instead of querying MongoDB, now we query ElasticSearch.</p>
+
+<h2>Summary</h2>
+
+<p>The main conclusion is &ndash; ElasticSearch is kind of technology that works out of the box. It&rsquo;s very complex inside, but have great interface that hides all the complexity. First and good enough results can be archived very quickly.</p>
+
+<p>In the same time, the technology requires time and effort to understand it and to use it right. I have absolutely no experience with full text search, so it&rsquo;s really journey for me.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

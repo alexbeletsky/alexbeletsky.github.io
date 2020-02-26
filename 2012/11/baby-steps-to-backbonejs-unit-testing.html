@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Baby steps to Backbone.js: Unit testing of models</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Baby steps to Backbone.js: Unit testing of models Nov 22nd, 2012 BabyStepsBackbone, Backbone.js, JavaScript, TDD Unit testing is important part of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Baby steps to Backbone.js: Unit testing of models</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-22T10:54:00+01:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>            Unit testing is important part of development process. If you care about the application state and code quality, sooner or later you start to automate the tests. My experience shows, sooner is better option. There are several approaches to unit testing, `test-first` and `test-after`. There are many holy wars appears on that topic. I would say, both options works - but `test-first` or test driven development, works better for me. <br />
+        </p>        <p>            By the end of the day, it&#8217;s only important that tests exists and helping to catch regression bugs. Still, developing by `test-first` helps to see the problem before ahead and in general provides better code quality (that would conclude the holy war). <br />
+        </p>        <p>            Today we going to write some tests, that would cover our existing model class <code>Feedback.js</code>. Since the code is already written, we will go `test-after` approach. Fortunately, the code is quite simple, so it would not make a problem to unit test that. But before, let&#8217;s setup our testing infrastructure.<br />
+        </p>        <h2>Folders and files</h2>        <p>            We&#8217;ll have a new folder called `spec`. Inside the spec folder, I&#8217;ll have `models` and `views` folders that would contain tests for models and views.<br />
+        </p>        <a href="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"><br />
+            <img src="https://lh3.googleusercontent.com/-Ey7odJOnLXM/UK3wux_CNDI/AAAAAAAAMIY/B0lXl2K_cDM/s620/image-1.png"/><br />
+        </a><br />
+        <h2>Tests runner</h2>        <p>            I&#8217;ll be using <a href="http://pivotal.github.com/jasmine/">Jasmine</a> test framework. It&#8217;s very easy to setup it, what we need is <code>jasmine.js</code> and <code>jasmine.css</code> to be placed on proper folders and setup a test page. Test page is a simple html file, which will be entry point for our testing. If you download jasmine <a href="https://github.com/pivotal/jasmine/downloads">standalone bundle</a> you will see <code>SpecRunner.html</code> inside. It could be easily tailored for custom needs.<br />
+        </p>        <p>            In the head part of <code>tests.html</code> we need to reference all required .css and .js files.<br />
+        </p>        <pre class="brush: html">&lt;title&gt;Feedback form specs&lt;/title&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;content/jasmine.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jquery-1.7.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/underscore.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/backbone.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/jasmine-html.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/libs/mock-ajax.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Sources --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/src/models/Feedback.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Specs --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/scripts/spec/models/Feedback.spec.js&quot;&gt;&lt;/script&gt;
+    </pre>        <h2>Jasmine tests in essence</h2>        <p>            Testing with Jasmine is fun and easy. Jasmine is BDD-style framework, so if you practiced TDD with another frameworks, the style might confuse initially. Let&#8217;s review the Jasmine test skeleton.<br />
+        </p>        <pre class="brush: js">describe('Jasmine spec', function () {
+    var value;
+
+    beforeEach(function () {
+        value = 1;
+    });
+
+    it ('should fail', function () {
+        expect(value).toBe(0);
+    });
+
+    describe('when value is changed', function () {
+        beforeEach(function () {
+            value = 0;
+        });
+
+        it ('should pass', function () {
+            expect(value).toBe(0);
+        })
+    });
+});
+</pre>        <p>            In this example, <code>value</code> is our SUT (System under test). <code>beforeEach()</code> function is `context-establish` function, where SUT is initialized (in TDD it&#8217;s both arrange/act). <code>it</code> function is assert part. Here, we set our expectations about which state should SUT be in to. Notice, that <code>beforeEach</code> are nested into <code>describe</code>, so you tweek SUT depending on case.<br />
+        </p>        <h2>Writing some tests</h2>        <p>            The only one functionality that <code>Feedback.js</code> model contains currently is validation. Let&#8217;s test that.<br />
+        </p>        <pre class="brush: js">describe('Feedback.js spec', function () {
+    var model;
+
+    beforeEach(function () {
+        model = new Feedback();
+    });
+
+    describe('when model is validating', function () {
+        var errors;
+    });
+});
+</pre>        <p>            This is something to start with. It does not do any asserts, so now we&#8217;ll add some real cases. First case, is than both `email` and `feedback` attributes are absent.<br />
+        </p>        <pre class="brush: js">describe('when email and feedback fields are absent', function () {
+    beforeEach(function () {
+        errors = model.validate({});
+    });
+
+    it ('should have 2 errors', function () {
+        expect(errors.length).toBe(2);
+    });
+
+    it ('should have email fields as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[1].name).toBe('feedback');
+    });
+});
+</pre>        <p>            It&#8217;s is possible that user put email, but forgot about feedback.<br />
+        </p>        <pre class="brush: js">describe('when email is set, but feedback is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ email: 'a@a.com'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have feedback field as invalid', function () {
+        expect(errors[0].name).toBe('feedback');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <p>            Moving on, user might put feedback but forgot about email.<br />
+        </p>        <pre class="brush: js">describe('when feedback is set, but email is absent', function () {
+    beforeEach(function () {
+        errors = model.validate({ feedback: 'TDD is awesome'});
+    });
+
+    it ('should have 1 error', function () {
+        expect(errors.length).toBe(1);
+    });
+
+    it ('should have email field as invalid', function () {
+        expect(errors[0].name).toBe('email');
+    });
+
+    it ('should have error message', function () {
+        expect(errors[0].message).toBeDefined();
+    });
+});
+</pre>        <h2>Tests report</h2>        <p>            If you now try to run <code>test.html</code> in browser, you will something like that.<br />
+        </p>        <a href="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"><br />
+            <img src="https://lh4.googleusercontent.com/-K9NtZKm7pso/UK3wvG3mDxI/AAAAAAAAMIc/kQL0Ai1XX_A/s620/image-2.png"/><br />
+        </a><br />
+        <h2>Conclusions</h2>        <p>            Testing of Backbone.Model&#8217;s is pretty simple thing. It&#8217;s nothing more than testing some business logic, that might reside inside. Testing of views is a bit trickier thing, but we will see how to do that next time.<br />
+        </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

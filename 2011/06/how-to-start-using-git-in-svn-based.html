@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to start using Git in SVN-based organization</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="How to start using Git in SVN-based organization Jun 29th, 2011 Git, GitHub, GitSVN I&#8217;ve been using Git about a year now, immediately after &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">How to start using Git in SVN-based organization</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T21:04:00+02:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been using Git about a year now, immediately after creation my <a href="https://github.com/alexbeletsky">github</a> account. I got really nice impression of using this tool, but still - on my primary job at <a href="http://www.e-conomic.com/">e-conomic</a> we are using SVN as primary VCS tool.
+</p>
+<p>
+You are probably aware about all good thing with Git. If you still don&#8217;t you might check out these great <a href="http://stackoverflow.com/questions/871/why-is-git-better-than-subversion">answers</a> on Stackoverflow. In short - Git adds benefits, but it adds complexity as well.
+</p>
+<p>
+After a bit evaluation I found that those benefits are worth to stop using SVN and switch to Git. But, if you ask your colleagues &#8220;Are you ready to go with Git?&#8221; you would probably hear &#8220;No!&#8221;. It is clear why, people are getting used to current tools.. infrastructure are build around them. And switching from one VCS to another seemed as destruction of building fundament for many developers.
+</p>
+<p>
+Fortunately, Git has a killer feature that other DVCS does not have! And this feature will help you to smoothly start with Git even if your company is still using SVN as standard. Yes, I&#8217;m talking about <a href="http://www.kernel.org/pub/software/scm/git/docs/git-svn.html">git-svn</a>.
+</p>
+<p>
+Believe me, it is amazing! I always have a little distrust for such kind of integration tool, but so far it works as charm. So, I&#8217;ll give you a small instructions that will make you possible to get to your office tomorrow and start use Git as your own VCS.
+</p>
+<h2>Setup you environment</h2>
+<ul>
+<li>
+Download and install <a href="http://code.google.com/p/msysgit/downloads/detail?name=Git-1.7.4-preview20110204.exe&can=2&q=">msysgit</a>
+</li>
+<li>
+Setup local user information, example
+<pre>
+    git config --global user.name “alexander.beletsky”
+    git config --global user.email “alexander.beletsky@gmail.com”
+</pre>
+</li>
+<li>
+If you are on Windows and doing only-Windows development, it is recommended to turn off <code>autocrlf</code>
+<pre>
+    git config core.autocrlf false
+</pre>
+</li>
+</ul>
+<h2>Checking out code from SVN repository</h2>
+<ul>
+<li>
+Run git clone command (it might take some time, depending on repository and history size)
+<pre>
+    git svn clone https://mysvnserver/repo
+</pre>
+</li>
+</ul>
+<p>
+As clone finished, you will see that new folder <code>repo</code> created with the content of your SVN repository. Now, this folder is actually Git repository + you local sources copy. Try to run <code>git log</code> inside the repository and you will see that all your history are there!
+</p>
+<h2>Let&#8217;s do some work</h2>
+<p>
+Now, suppose you start to work on some bugfix. By default, git repository contains one branch called <code>master</code>. Good style is do not do direct commits into master at all, just keep it as synchronization point between SVN repository and your local repository. So, to do actual job you to create branch.
+</p>
+<pre>
+    git checkout -b bugfix-id-1453
+</pre>
+<p>
+This command will create new branch called <code>bugfix-id-1453</code> and immediately switch to it. If you haven&#8217;t noticed how that happened - please welcome to git&#8217;s high performance world.
+</p>
+<p>
+You changed some file and ready to commit. In git it&#8217;s a 2 steps operation. First, you need to put content to stage.. second, you store the content in new commit object.
+</p>
+<pre>
+    git add .
+    git commit -m "issue has been fixed"
+</pre>
+<h2>Commit changes back to SVN</h2>
+<p>
+You&#8217;ve fixed a bug and now fixed is placed in <code>bugfix-id-1453</code>. But you should give it back to rest of the world.
+</p>
+<p>
+Checkout your master branch:
+</p>
+<pre>
+    git checkout master
+</pre>
+<p>
+Get the latest changes from SVN:
+</p>
+<pre>
+    git svn rebase
+</pre>
+<p>
+Now SVN server and local master branch are identical. We have to merge our fix into master:
+</p>
+<pre>
+    git merge bugfix-id-1453
+</pre>
+<p>
+Now master contains previous SVN state + new fix. We have to synchronize local repository and SVN server:
+</p>
+<pre>
+    git svn dcommit
+</pre>
+<h2>Conclusions</h2>
+<p>
+Git-svn is perfect tool to start using git without radical changes in organization. It gives everybody change to try it out, how much it really fits your needs. I&#8217;m having a big pleasure now of working with Git. I&#8217;m not saying it&#8217;s ideal smooth process, sure I met some difficulties. But for me those difficulties are nothing comparing the benefits I&#8217;m getting with it.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

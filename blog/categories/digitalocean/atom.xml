@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: digitalocean | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/digitalocean/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
+    <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
+    <updated>2014-07-18T12:34:00+02:00</updated>
+    <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
+    <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+<!-- MORE -->
+
+
+<p>It appeared, if ES is left on default configuration with port opened outside, it will be easy target for bad guys, both of Java and ES vulnerability. Basically, I had to restore server from scratch, but this time I&rsquo;m not goint to be naive, server have to be properly secured.</p>
+
+<p>I&rsquo;ll describe my setup that involves: Node.js, Dokku / Docker, SSL.</p>
+
+<h2>Clean DigitalOcean image</h2>
+
+<p>I had to reinstall my machine from scratch, so instead of creating plain Ubuntu 14 server, but I decided to go dokku/docker path. Something that I tried <a href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html">before</a> and very happy with the <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">results</a>. <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> offers pre-packed image with dokku/docker already on board. As usually it takes just a few seconds to spin up machine on DO.</p>
+
+<p>The plan was the following: deploy ElasticSearch instance inside Docker container, disable dynamic script features of Elastic, deploy Node.js based proxy server with custom authentication by Dokku and link those containers, so only Node.js proxy will have access to Elastic. Finally, all traffic between will by crypted by SSL.</p>
+
+<p>The benefits are obvious, no more <code>:9200</code> is outside the machine, one potential vulnerability with dynamic script feature is disabled, only authenticated client could access Elastic server.</p>
+
+<h2>Deployment of ElasticSearch in Docker</h2>
+
+<p>First we need to have Docker image of ElasticSearch. There few ES plugging for Dokku, I decided to install one by myself, since I thought it is easier to configure. There is a great instruction from Docker <a href="https://registry.hub.docker.com/u/dockerfile/elasticsearch/">here</a>.</p>
+
+<p><code>bash
+$ docker pull docker pull dockerfile/elasticsearch
+</code></p>
+
+<p>Once the image is there, we need to prepare volume there Elastic stores data and configuration.</p>
+
+<p><code>bash
+$ cd /
+$ mkdir elastic
+</code></p>
+
+<p>Elastic folder should contain <code>elasticsearch.yml</code> file, with all required configurations. My case is very simple, I have a cluster of one machine, so default configuration applies to me. One thing, that I mentioned above &ndash; I need to disable dynamic scripting features.</p>
+
+<p><code>bash
+$ nano elasticsearch.yml
+</code></p>
+
+<p>The content of the file is just one string,</p>
+
+<p><code>plain
+script.disable_dynamic: true
+</code></p>
+
+<p>Once it&rsquo;s done, we are ready to launch the server inside Docker container. Since, it could be done few times (during configuration and debugging), I&rsquo;ve created a small shell script,</p>
+
+<p><code>bash
+docker run --name elastic -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -v /elastic:/data dockerfile/elasticsearch /elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml
+</code></p>
+
+<p>Please note the important thing, <code>-p 127.0.0.1:9200:9200</code> &ndash; here we are binding <code>:9200</code> to be only accessible on <code>localhost</code>. I&rsquo;ve spend some hours to close <code>:9200</code> by <code>iptables</code> without any success, but that thing works as expected. Thanks a lot to <a href="https://twitter.com/darkproger">@darkproger</a> and <a href="https://twitter.com/kkdoo">@kkdoo</a> for great help.</p>
+
+<p><code>-v /elastic:/data</code> will map the containers volume <code>/data</code> to local one <code>/elastic</code>.</p>
+
+<h2>Front-end Node.js server</h2>
+
+<p>Now, we need to deploy front-end proxy server. It would proxy all traffic from <code>http://localhost:9200</code> into outside world, securely. I&rsquo;ve created small project, based on <a href="https://github.com/nodejitsu/node-http-proxy">http-proxy</a> called <a href="https://github.com/likeastore/elastic-proxy">elastic-proxy</a>. It&rsquo;s very simple one and can be easily re-used.</p>
+
+<p><code>bash
+$ git clone https://github.com/likeastore/elastic-proxy
+$ cd elastic-proxy
+</code></p>
+
+<p>The server itself,</p>
+
+<p>```js
+var http = require(&lsquo;http&rsquo;);
+var httpProxy = require(&lsquo;http-proxy&rsquo;);
+var url = require(&lsquo;url&rsquo;);</p>
+
+<p>var config = require(&lsquo;./config&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var port = process.env.PORT || 3010;
+var proxy = httpProxy.createProxyServer();</p>
+
+<p>var parseAccessToken = function (req) {</p>
+
+<pre><code>var request = url.parse(req.url, true).query;
+var referer = url.parse(req.headers.referer || '', true).query;
+
+return request.access_token || referer.access_token;
+</code></pre>
+
+<p>};</p>
+
+<p>var server = http.createServer(function (req, res) {</p>
+
+<pre><code>var accessToken = parseAccessToken(req);
+
+logger.info('request: ' + req.url + ' accessToken: ' + accessToken + ' referer: ' + req.headers.referer);
+
+if (!accessToken || accessToken !== config.accessToken) {
+    res.statusCode = 401;
+    return res.end('Missing access_token query parameter');
+}
+
+proxy.web(req, res, {target: config.target, rejectUnauthorized: false});
+</code></pre>
+
+<p>});</p>
+
+<p>server.listen(port, function () {</p>
+
+<pre><code>logger.info('Likeastore Elastic-Proxy started at: ' + port);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>It proxies all the requests and only by-pass ones, who provide <code>access_token</code> as query parameter. The <code>access_token</code> value is <a href="https://github.com/likeastore/elastic-proxy/blob/master/config/production.config.js">configured</a> on server, by applications environment variable <code>PROXY_ACCESS_TOKEN</code>.</p>
+
+<p>As you already <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-dokku-one-click-digitalocean-image-to-deploy-a-python-flask-app">prepared</a> Dokku all you need to do is to push application to your server.</p>
+
+<p><code>bash
+$ git push master production
+</code></p>
+
+<p>After the deployment, you should go to server to configure applications environment,</p>
+
+<p><code>bash
+$ dokku config proxy set PROXY_ACCESS_TOKEN="your_secret_value"
+</code></p>
+
+<p>I wanted to have SSL and it&rsquo;s very easy to configure with Dokku. Just place your <code>server.crt</code> and <code>server.key</code> to <code>/home/dokku/proxy/tls</code> folder.</p>
+
+<p>Proxy have to be <a href="https://github.com/scottatron/dokku-rebuild">redeployed</a> afterward, to apply configuration changes. Try proxy by hitting it&rsquo;s URL, in my case <a href="https://search.likeastore.com">https://search.likeastore.com</a>. If everything is good, it will reply,</p>
+
+<p><code>plain
+Missing access_token query parameter
+</code></p>
+
+<h2>Link containers</h2>
+
+<p>We need to link both containers, so Node.js application is able to access ElasticSeach container. I really liked <a href="https://github.com/rlaneve/dokku-link">dokku-link</a> plugin, that does exactly that&rsquo;s required in very easy way. So, will install it</p>
+
+<p><code>bash
+$ cd /var/lib/dokku/plugins
+$ git clone https://github.com/rlaneve/dokku-link
+</code></p>
+
+<p>Now, we need to link containers,</p>
+
+<p><code>bash
+$ dokku link proxy elastic
+</code></p>
+
+<p>And application have to be redeployed again. If everything is good, you will be able to access the server by <code>https://proxy.yourserver.com?access_token=your_secret_value</code> and see the response from ElasticSearch,</p>
+
+<p>```js
+{</p>
+
+<pre><code>status: 200,
+name: "Tundra",
+version: {
+    number: "1.2.1",
+    build_hash: "6c95b759f9e7ef0f8e17f77d850da43ce8a4b364",
+    build_timestamp: "2014-06-03T15:02:52Z",
+    build_snapshot: false,
+    lucene_version: "4.8"
+},
+tagline: "You Know, for Search"
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Reconfigure the client</h2>
+
+<p>Depending on a client you use, you need to apply a little tweak to configuration. Basically, we need to use <code>access_token</code> for all our request. For Node.js applications,</p>
+
+<p>```js
+var client = elasticsearch.Client({</p>
+
+<pre><code>host: {
+    protocol: 'https',
+    host: 'search.likeastore.com',
+    port: 443,
+    query: {
+        access_token: process.env.ELASTIC_ACCESS_TOKEN
+    }
+},
+requestTimeout: 5000
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Again, <code>ELASTIC_ACCESS_TOKEN</code> is env variable to hold <code>your_secret_value</code> token.</p>
+
+<p>Now, restart the application, make sure everything is running and exhale.</p>
+
+<p><strong>PS</strong>. I would like to say thank to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> for support and a little credit I received as downtime compensation. Thats awesome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Digital Ocean + Dokku = 10$ Heroku]]></title>
+    <link href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html"/>
+    <updated>2013-08-28T22:00:00+02:00</updated>
+    <id>http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku</id>
+    <content type="html"><![CDATA[<p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
+
+<p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
+
+<!-- More -->
+
+
+<h2>Heroku</h2>
+
+<p>Heroku is good service. Afraid to be mistaken, but that&rsquo;s probably Heroku who popularized &ldquo;git-powered&rdquo; deployments much, ones there deployment script looks like:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push heroku master
+```</p></blockquote>
+
+<p>The rest is all about the service &ndash; prepare runtime, deploy code, start web application etc. Besides of that Heroku open-sourced a lot of good stuff, including so called <a href="https://devcenter.heroku.com/articles/buildpacks">buildpacks</a>, some ready to use scripts that are able to setup the dyno with all required runtime to be able to start application there.</p>
+
+<p>I never seriously used Heroku, though. What I dislike, is pricing. Also, the other people I asked about their satisfaction of using Heroku, was not satisfying much (arguable). We needed more lightweight, easy to change setup.</p>
+
+<h2>Digital Ocean</h2>
+
+<p><a href="https://www.digitalocean.com/?refcode=de56d081b272">Digital Ocean</a> is very fast growing cloud-computing service. It&rsquo;s not PaaS (platform as a service) like Heroku, it&rsquo;s rather IaaS (infrastructure as a service). They are notable for few major things:</p>
+
+<ul>
+<li><strong>Pricing</strong> &ndash; really (mean, really!) competitive pricing, 1GB RAM, 30GB SSD machine for 10$.</li>
+<li><strong>Easy of use</strong> &ndash; the flow from registration for first droplet creation is smooth and clear.</li>
+<li><strong>Regions</strong> &ndash; machines can be fired up for both US and EU, ideal for us.</li>
+</ul>
+
+
+<p>But again, Digital Ocean is nothing more as great infrastructure. Herding the server is all up to you. I personally was really afraid of that perspective of setting up nginx, configuring firewalls, load-balancing etc., that prevented me to look to Digital Ocean closely. Getting used to deployment procedures with Nodejitsu and Heroku, it&rsquo;s real pain to deploy app by FTP again and do everything manually.</p>
+
+<p>But lucky chance I noticed <a href="https://github.com/progrium/dokku">Dokku</a> project and that was something really great, explain why later.</p>
+
+<h2>Dokku &amp; Docker</h2>
+
+<p>So, <a href="https://github.com/progrium/dokku">Dokku</a> is simply amazing hack (or more correctly, combination of diffrent hacks) by <a href="https://github.com/progrium">Jeff Lindsay</a>. Some initial facts:</p>
+
+<ul>
+<li>Written in Shell script and currently nearly 100 lines of code</li>
+<li>Based on Docker</li>
+<li>Provides Heroku-like deployment experience</li>
+<li>Community-driven</li>
+</ul>
+
+
+<p>Dokku, can be installed to Ubuntu 13 machine and turn that machine into Heroku-like server. I mean, you can push the code there and Dokku, will fire-up new <em>docker process</em>, deploy code there, start the application, configure nginx and setup environment variables and SSL.</p>
+
+<p>Btw, the time I just looked to Dokku, they missed exactly support of ENV variables and SSL. It was not acceptable for me, without those 2 features. Constraints again, but that gave me ability to contribute the projects and eventually I submitted both features.</p>
+
+<p>Dokku, is very interesting project. First of all, because it based on trendy <a href="http://www.docker.io/">Docker</a>. Docker is &ldquo;Virtual-Machine-Based-Deployment&rdquo; alternative. Deployment on virtual boxes are de-facto standard now and docker is about to change that. Guys from <a href="https://www.dotcloud.com/">dotCloud</a> open-sourced solution that allows to run isolated processes (containers) &ndash; that are like lightweight virtual machines. You can deploy docker on Ubuntu server and then use that as host any kind of applications or databases.</p>
+
+<p>Docker could turn Ubuntu Server to PaaS and Dokku makes great &ldquo;interface&rdquo; for that.</p>
+
+<p>Each Dokku piece is very interesting indeed and I hope to blog more about. And Dokku is using Heroku buildbacks, which makes you feel you deal with Heroku, not with your own setup.</p>
+
+<h2>Putting Things Together</h2>
+
+<p>Digital Ocean and Dokku make a perfect match. As I said above, Digital Ocean is something you can really start quick with. So, what we did is just started up 10$ Ubuntu 13 server and installed Dokku there. In total it took 7 minutes or so. I would not bother you with instructions, cause you find a lot in <a href="https://medium.com/code-adventures/438bce155dcb">internet</a>.. but also, assuming that DO + Dokku is a kind of Apple product, that does not require instructions.</p>
+
+<p>First impression was simply amazing. You have everything under control and fill great with &ldquo;git-powered&rdquo; deployments. So, after successful try that machine became our staging server and I also fired-up another one for production one.</p>
+
+<p>Now, then we developing features and what to show each other or test, you just need to do following:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push deploy-staging feature:master
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 445 bytes | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+remote: &mdash;&mdash;&ndash;> Building collector &hellip;
+remote:        Node.js app detected
+remote: &mdash;&mdash;&ndash;> Resolving engine versions
+remote:        Using Node.js version: 0.10.15
+remote:        Using npm version: 1.2.30
+remote: &mdash;&mdash;&ndash;> Fetching Node.js binaries
+remote: &mdash;&mdash;&ndash;> Vendoring node into slug
+remote: &mdash;&mdash;&ndash;> Installing dependencies with npm
+remote:        npm WARN package.json <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#108;&#105;&#107;&#x65;&#97;&#x73;&#x74;&#111;&#x72;&#101;&#45;&#x63;&#x6f;&#x6c;&#108;&#101;&#99;&#116;&#x6f;&#114;&#x40;&#48;&#x2e;&#x30;&#x2e;&#50;&#x2d;&#50;&#49;">&#x6c;&#x69;&#107;&#x65;&#x61;&#115;&#x74;&#111;&#x72;&#x65;&#45;&#99;&#111;&#x6c;&#x6c;&#x65;&#x63;&#116;&#111;&#114;&#x40;&#48;&#x2e;&#48;&#46;&#50;&#x2d;&#50;&#49;</a> No repository field.
+remote:        npm http GET <a href="https://registry.npmjs.org/mongojs">https://registry.npmjs.org/mongojs</a>
+remote:        npm http GET <a href="https://registry.npmjs.org/underscore">https://registry.npmjs.org/underscore</a></p></blockquote>
+
+<p>&hellip;</p>
+
+<p>remote: =====> Application deployed:
+remote:        <a href="http://stage-collector.likeastore.com">http://stage-collector.likeastore.com</a>
+```</p>
+
+<p>The time we are ready to release:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git push deploy-production master
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+&hellip;</p></blockquote>
+
+<p>remote: =====> Application deployed:
+remote:        <a href="http://collector.likeastore.com">http://collector.likeastore.com</a>
+```</p>
+
+<p>It&rsquo;s fast and it&rsquo;s pretty reliable.</p>
+
+<p>For conclusion, I would say that using both Digial Ocean and Dokku was a clear win for <a href="https://likeastore.com/">Likeastore</a> being released.</p>
+]]></content>
+  </entry>
+  
+</feed>

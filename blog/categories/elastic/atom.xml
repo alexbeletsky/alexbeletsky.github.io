@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: elastic | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/elastic/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
+    <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
+    <updated>2014-07-18T12:34:00+02:00</updated>
+    <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
+    <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+<!-- MORE -->
+
+
+<p>It appeared, if ES is left on default configuration with port opened outside, it will be easy target for bad guys, both of Java and ES vulnerability. Basically, I had to restore server from scratch, but this time I&rsquo;m not goint to be naive, server have to be properly secured.</p>
+
+<p>I&rsquo;ll describe my setup that involves: Node.js, Dokku / Docker, SSL.</p>
+
+<h2>Clean DigitalOcean image</h2>
+
+<p>I had to reinstall my machine from scratch, so instead of creating plain Ubuntu 14 server, but I decided to go dokku/docker path. Something that I tried <a href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html">before</a> and very happy with the <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">results</a>. <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> offers pre-packed image with dokku/docker already on board. As usually it takes just a few seconds to spin up machine on DO.</p>
+
+<p>The plan was the following: deploy ElasticSearch instance inside Docker container, disable dynamic script features of Elastic, deploy Node.js based proxy server with custom authentication by Dokku and link those containers, so only Node.js proxy will have access to Elastic. Finally, all traffic between will by crypted by SSL.</p>
+
+<p>The benefits are obvious, no more <code>:9200</code> is outside the machine, one potential vulnerability with dynamic script feature is disabled, only authenticated client could access Elastic server.</p>
+
+<h2>Deployment of ElasticSearch in Docker</h2>
+
+<p>First we need to have Docker image of ElasticSearch. There few ES plugging for Dokku, I decided to install one by myself, since I thought it is easier to configure. There is a great instruction from Docker <a href="https://registry.hub.docker.com/u/dockerfile/elasticsearch/">here</a>.</p>
+
+<p><code>bash
+$ docker pull docker pull dockerfile/elasticsearch
+</code></p>
+
+<p>Once the image is there, we need to prepare volume there Elastic stores data and configuration.</p>
+
+<p><code>bash
+$ cd /
+$ mkdir elastic
+</code></p>
+
+<p>Elastic folder should contain <code>elasticsearch.yml</code> file, with all required configurations. My case is very simple, I have a cluster of one machine, so default configuration applies to me. One thing, that I mentioned above &ndash; I need to disable dynamic scripting features.</p>
+
+<p><code>bash
+$ nano elasticsearch.yml
+</code></p>
+
+<p>The content of the file is just one string,</p>
+
+<p><code>plain
+script.disable_dynamic: true
+</code></p>
+
+<p>Once it&rsquo;s done, we are ready to launch the server inside Docker container. Since, it could be done few times (during configuration and debugging), I&rsquo;ve created a small shell script,</p>
+
+<p><code>bash
+docker run --name elastic -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -v /elastic:/data dockerfile/elasticsearch /elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml
+</code></p>
+
+<p>Please note the important thing, <code>-p 127.0.0.1:9200:9200</code> &ndash; here we are binding <code>:9200</code> to be only accessible on <code>localhost</code>. I&rsquo;ve spend some hours to close <code>:9200</code> by <code>iptables</code> without any success, but that thing works as expected. Thanks a lot to <a href="https://twitter.com/darkproger">@darkproger</a> and <a href="https://twitter.com/kkdoo">@kkdoo</a> for great help.</p>
+
+<p><code>-v /elastic:/data</code> will map the containers volume <code>/data</code> to local one <code>/elastic</code>.</p>
+
+<h2>Front-end Node.js server</h2>
+
+<p>Now, we need to deploy front-end proxy server. It would proxy all traffic from <code>http://localhost:9200</code> into outside world, securely. I&rsquo;ve created small project, based on <a href="https://github.com/nodejitsu/node-http-proxy">http-proxy</a> called <a href="https://github.com/likeastore/elastic-proxy">elastic-proxy</a>. It&rsquo;s very simple one and can be easily re-used.</p>
+
+<p><code>bash
+$ git clone https://github.com/likeastore/elastic-proxy
+$ cd elastic-proxy
+</code></p>
+
+<p>The server itself,</p>
+
+<p>```js
+var http = require(&lsquo;http&rsquo;);
+var httpProxy = require(&lsquo;http-proxy&rsquo;);
+var url = require(&lsquo;url&rsquo;);</p>
+
+<p>var config = require(&lsquo;./config&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var port = process.env.PORT || 3010;
+var proxy = httpProxy.createProxyServer();</p>
+
+<p>var parseAccessToken = function (req) {</p>
+
+<pre><code>var request = url.parse(req.url, true).query;
+var referer = url.parse(req.headers.referer || '', true).query;
+
+return request.access_token || referer.access_token;
+</code></pre>
+
+<p>};</p>
+
+<p>var server = http.createServer(function (req, res) {</p>
+
+<pre><code>var accessToken = parseAccessToken(req);
+
+logger.info('request: ' + req.url + ' accessToken: ' + accessToken + ' referer: ' + req.headers.referer);
+
+if (!accessToken || accessToken !== config.accessToken) {
+    res.statusCode = 401;
+    return res.end('Missing access_token query parameter');
+}
+
+proxy.web(req, res, {target: config.target, rejectUnauthorized: false});
+</code></pre>
+
+<p>});</p>
+
+<p>server.listen(port, function () {</p>
+
+<pre><code>logger.info('Likeastore Elastic-Proxy started at: ' + port);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>It proxies all the requests and only by-pass ones, who provide <code>access_token</code> as query parameter. The <code>access_token</code> value is <a href="https://github.com/likeastore/elastic-proxy/blob/master/config/production.config.js">configured</a> on server, by applications environment variable <code>PROXY_ACCESS_TOKEN</code>.</p>
+
+<p>As you already <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-dokku-one-click-digitalocean-image-to-deploy-a-python-flask-app">prepared</a> Dokku all you need to do is to push application to your server.</p>
+
+<p><code>bash
+$ git push master production
+</code></p>
+
+<p>After the deployment, you should go to server to configure applications environment,</p>
+
+<p><code>bash
+$ dokku config proxy set PROXY_ACCESS_TOKEN="your_secret_value"
+</code></p>
+
+<p>I wanted to have SSL and it&rsquo;s very easy to configure with Dokku. Just place your <code>server.crt</code> and <code>server.key</code> to <code>/home/dokku/proxy/tls</code> folder.</p>
+
+<p>Proxy have to be <a href="https://github.com/scottatron/dokku-rebuild">redeployed</a> afterward, to apply configuration changes. Try proxy by hitting it&rsquo;s URL, in my case <a href="https://search.likeastore.com">https://search.likeastore.com</a>. If everything is good, it will reply,</p>
+
+<p><code>plain
+Missing access_token query parameter
+</code></p>
+
+<h2>Link containers</h2>
+
+<p>We need to link both containers, so Node.js application is able to access ElasticSeach container. I really liked <a href="https://github.com/rlaneve/dokku-link">dokku-link</a> plugin, that does exactly that&rsquo;s required in very easy way. So, will install it</p>
+
+<p><code>bash
+$ cd /var/lib/dokku/plugins
+$ git clone https://github.com/rlaneve/dokku-link
+</code></p>
+
+<p>Now, we need to link containers,</p>
+
+<p><code>bash
+$ dokku link proxy elastic
+</code></p>
+
+<p>And application have to be redeployed again. If everything is good, you will be able to access the server by <code>https://proxy.yourserver.com?access_token=your_secret_value</code> and see the response from ElasticSearch,</p>
+
+<p>```js
+{</p>
+
+<pre><code>status: 200,
+name: "Tundra",
+version: {
+    number: "1.2.1",
+    build_hash: "6c95b759f9e7ef0f8e17f77d850da43ce8a4b364",
+    build_timestamp: "2014-06-03T15:02:52Z",
+    build_snapshot: false,
+    lucene_version: "4.8"
+},
+tagline: "You Know, for Search"
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Reconfigure the client</h2>
+
+<p>Depending on a client you use, you need to apply a little tweak to configuration. Basically, we need to use <code>access_token</code> for all our request. For Node.js applications,</p>
+
+<p>```js
+var client = elasticsearch.Client({</p>
+
+<pre><code>host: {
+    protocol: 'https',
+    host: 'search.likeastore.com',
+    port: 443,
+    query: {
+        access_token: process.env.ELASTIC_ACCESS_TOKEN
+    }
+},
+requestTimeout: 5000
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Again, <code>ELASTIC_ACCESS_TOKEN</code> is env variable to hold <code>your_secret_value</code> token.</p>
+
+<p>Now, restart the application, make sure everything is running and exhale.</p>
+
+<p><strong>PS</strong>. I would like to say thank to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> for support and a little credit I received as downtime compensation. Thats awesome.</p>
+]]></content>
+  </entry>
+  
+</feed>

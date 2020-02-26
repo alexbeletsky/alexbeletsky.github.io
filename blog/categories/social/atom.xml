@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Social | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/social/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
+    <link href="http://beletsky.net/2013/03/likeastore-application-built-on.html"/>
+    <updated>2013-03-31T17:52:00+02:00</updated>
+    <id>http://beletsky.net/2013/03/likeastore-application-built-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        It's my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can't guess which projects will be popular or not.. and the second, that it's hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - "Likeastore"<br />
+    <!-- more -->
+    </p>    <h2>Idea behind</h2>    <p>        All of us having at least those 3 accounts: facebook, twitter and github. And all of those are continuous stream of information. If you have an interesting network, it probably produces interesting content so you do much of likes/favorites/stars (stories, tweets, or interesting gihub repos). The problem, it's very difficult to keep this information ordered - you typically remember you heard something interesting, but could not remember the source of it.<br />
+    </p>    <p>        "Likeastore" is aimed to fix this problem. Integrating wish different services it's keeping your "likes" information in good order, with nice search and smart categorizing.<br />
+    </p>    <img src="https://lh5.googleusercontent.com/-AaH9Nrnr54o/UVhZihO3yjI/AAAAAAAAR1Y/FhtHcOksuik/s988/login.png" style="width: 620px" alt="likeastore login screen"/><br />
+    <h2>What we did?</h2>    <p>        We basically allow "Likeastore" to connect all those application by their open API and collect the information from it. We transform the information into something generic and grouping it together. So, the users are having all information up-to-date in nice and clear dashboard.<br />
+    </p>    <p>        Originally we had ambition to have a kinda real-time. In the way, I favorited the tweet and "Likeastore" almost immediately got the information. We had to drop it. The reason is API's of popular applications are very quoted. You simply cannot do more request that in quota, otherwise you just banned.<br />
+    </p>    <p>        So, nethertheless of similar projects, we don't want to make next social network of bookmarks. Instead, we want to build easy to use and powerful information keeper. Something, that help you to have things in order.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-cHk7Pdbyus8/UVhZisS6e5I/AAAAAAAAR1g/-3uXVV28rL0/s988/setup.png" style="width: 620px" alt="likeastore setup screen"/><br />
+    <h2>How we did it?</h2>    <p>        In fact, we've build a "thrown-out" prototype. The <a href="https://github.com/organizations/likeastore">code</a> is a shitty inside, so we bit far of nearest production. But, we've created an interesting application. We split on 2 + 1, two backend (me and <a href="https://github.com/voronianski">@voronianski</a>) and one front-end guy (<a href="https://github.com/mamant">@mamant</a>). Sat closely and worked shoulder-to-shoulder for next 22 hours. <br />
+    </p>    <p>        From the very beginning I had very clear vision of stuff we need to do. I could imagine architecture and UI principles. And as soon I shared that the teammates accepted that really fine and provided high quality feedback and collaboration. That helped us to have a strong team in my perspective.<br />
+    </p>    <p>        All of us are JS developers, so no doubt we've taken a JavaScript stack as default. Node.js, powered by Express.js at the backend and Backbone.js front end. Sometimes it's tricky, but in fact - it's powerful combination. <br />
+    </p>    <h2>A bit of tech info</h2>    <p>        We are having 2 main architectural units: core and connectors. Core, is Express.js application having both serving static content and providing API. The API itself, consists on public and private parts. Public part is aimed our web client (or potentiall apps), where the private is used to communicated connectors.<br />
+    </p>    <p>        Connectors are just very simple HTTP services, which perform the handshake with core and then post back all data they have collected through API's. That means, we have 3 connectors now - twitter, github and facebook. Facebook, became a quite difficult to integrated with, so we currently dropped it.<br />
+    </p>    <p>        We are having <a href="http://couchdb.apache.org/">CouchDB</a> as our storage. We took it, because <a href="https://github.com/voronianski">@voronianski</a> had some good experience with. That appeared to be a very lucky decision. CouchDB is very interesting NoSQL solution. It's storage model has few interesting features. One of them is "merge-update". Means, you can post exactly same set of information many times, but CouchDB would not create new entities. It would merge identical documents into one. That simplied connectors very much, since they no longer need to track only new information, but could post back just a transformed bulk of information from API's.<br />
+    </p>    <p>        Initially, we all agreed - our UI will never be default Bootstrap theme. It's overused and impress no more as toilet door. That's where <a href="https://github.com/mamant">@mamant</a> apply his best skills. He carefully worked all our screens making a it look nice and original. <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-XSXpDhEuX9Y/UVhZjLe7w6I/AAAAAAAAR1k/HI6xIJQnUXc/s988/dashboard.png" style="width: 620px" alt="likeastore dashboard screen"/><br />
+    <h2>Presentation and feedback</h2>    <p>        Without few features we did demo-able version in time. We have concluded few major fixes, just before the deadline. <br />
+    </p>    <p>        I did a presentation of app in short way, without anything unimportant (at least I wish to think so) and we had received great feedback. People liked the idea, so we've collected 32 voices that brought us 2nd place.<br />
+    </p>    <p>        That gives a much of inspiration for further work! All of us are very enthusiastic to make the stuff done. It's a lot of work, actually.<br />
+    </p>    <p>        I just want to say thank you to all organizers of this event, it was nicely handled. And to the team, for making it fun and interesting.<br />
+    </p>    <p>        Stay tuned for release of "Likeastore", check out <a href="https://github.com/likeastore">sources</a> in a meanwhile.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How do I seek for knowledge?]]></title>
+    <link href="http://beletsky.net/2011/04/how-do-i-seek-for-knowledge.html"/>
+    <updated>2011-04-08T17:30:00+02:00</updated>
+    <id>http://beletsky.net/2011/04/how-do-i-seek-for-knowledge</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Developers job is nothing more than other engineers specialties except one big difference. Technologies we are using are changing very fast and to feel confidence in daily work you have to be up-to-date with latest changes in development world. That's why I usually ask people "How do you seek for knowledge?", "How you sure you up-to-date?". And today I gonna share my primary sources of information.
+</p>
+<h2>Blogs</h2>
+<p>
+I've started actively follow blogs several years ago. Followed any blog I met with useful information (usually by googling for some problem and found the answer). I did know nothing about authors, but after much reading I feel like I know them personally and many of them are actually very famous developers :). Through years I filtered out a lot, so now I look closer to:
+</p>
+<ul>
+<li>
+<a href="http://weblogs.asp.net/scottgu/default.aspx">http://weblogs.asp.net/scottgu/default.aspx</a> - Scott Guthrie is a VP of Microsoft, so all major .NET announcements going from there. Scott does share a lot of examples of "how-to-use" some new technology or given very useful links for other resources. Primary source of information for any .NET developer.
+</li>
+<li>
+<a href="http://www.hanselman.com/blog/">http://www.hanselman.com/blog/</a> - Scott Hanselman probably one of the most famous .NET guys from Microsoft. He is guru of technology, sharing a lot of interesting stuff in his blog.  
+</li>
+<li>
+<a href="http://haacked.com/">http://haacked.com/</a> - Phil Haack is Program Manager in Microsoft, in particular responsible for ASP.net MVC framework (that I love really much). He is also managing the project that changed .NET world much - <a hfef="http://nuget.codeplex.com/">NuGet</a> and currently he describes a lot from this area in his blog. I also like Phil's posts on <a href="http://haacked.com/tags/TDD/default.aspx">TDD</a> and <a href="http://haacked.com/tags/Open%20Source/default.aspx">Open Source</a> projects.
+</li>
+<li>
+<a href="http://wekeroad.com/">http://wekeroad.com/</a> - Rob Conery is very famous with his latest start-up project <a href="http://tekpub.com/">Tekpub</a> and a bunch of other open sources projects. He has one of the most interesting blogs I ever follow. I share many ideas Rob has on development and practices.
+</li>
+<li>
+<a href="http://blog.stevensanderson.com/">http://blog.stevensanderson.com/</a> - Steve Sanderson, is author of the briliant <a href="http://www.amazon.com/dp/1430228865?tag=stesansblo-20&camp=213381&creative=390973&linkCode=as4&creativeASIN=1430228865&adid=0N6ZY1MKSBV6N16NZNM9&">MVC2 book</a> that I highly recommend to read. He is author of <a href="http://knockoutjs.com/">Knockout.js</a> javascript MVVP framework and his recent posts aimed to it. 
+</li>
+<li>
+<a href="http://odetocode.com/Blogs/scott/default.aspx">http://odetocode.com/Blogs/scott/default.aspx</a> - K. Scott Allen blogging for many years from now, so his blog is full of useful info. 
+</li>
+<li>
+<a href="http://hackingon.net/">http://hackingon.net/</a> - Liam McCleanan is primary .NET developer with a lof of using of Javascript, so he shares knowledge in both areas.
+</li>
+<li>
+<a href="http://osherove.com/">http://osherove.com/</a> - Roy Osherove blogs a lot about TDD and Agile software development, he is famous with his book about TDD <a href="http://www.manning.com/osherove/">Art of Unit Testing</a> and his <a href="http://osherove.com/tdd-kata-1/">TDD String Calculator</a> kata.
+</li>
+</ul>
+<p>
+That's a small percentage of all my reading, but I think that is major ones.
+</p>
+<p>
+I use Google Reader to track my RSS subscriptions, seems best choice as for me. I try to check reader at least 2 times per week, but in reality it could be even rare.  
+</p>
+<h2>Videos / Screencasts</h2>
+<p>
+With better internet channels video became even more better source of knowledge. Learning from videos is much more productive than reading blogs and books, as for me. There are a lot of free videos that could help you to start up with new technology. Advanced videos are typically paid, but price are affordable and price / value ratio is very low. 
+</p>
+<ul>
+<li>
+<a href="http://www.asp.net/">http://www.asp.net/</a> - This actually main source of information of ASP.net developers, tons of videos, blog posts, articles. I reviewed mostly all of ASP.net WebForms then I was learning it.. and some of ASP.net MVC as well. All videos are free that make this recourse priceless :).
+</li>
+<li>
+<a href="http://tekpub.com/">http://tekpub.com/</a> - Tekpub is great for .NET/Ruby developers. There are free and paid videos. I had a chance to watch both and they are superb.
+</li>
+</ul>
+<h2>Social networks</h2>
+<p>
+If you think that social networks are only for schoolgirls or people who had nothing to do.. you are right :). But there some social network that really help professional growth.
+</p>
+<ul>
+<li>
+<a href="http://stackoverflow.com/">http://stackoverflow.com/</a> - StackOverflow is best of the best of the best QnA site for developers. It allows you to create <a href="http://stackoverflow.com/users/386751/alexanderb">account</a> ask questions and help other people with answering questions. It has huge popularity because of rating system, as much correct answers you do, as much rating you have.. such simple and good idea that force other people to provide a quality answers :). I like StackOverflow very much and post my questions that I lost hope of getting answer by trying and googling. In 95% I got very precise answers. 
+</li>
+<li>
+<a href="http://github.com/">http://github.com</a> - Best place for hosting open sources projects. Besides hosting the code, it is a true social network. You can use github for <a href="http://www.beletsky.net/2010/07/github-social-coding.html">social coding</a>. Recently I recieved my first pull request, believe me it is good feeling :). As bonus you can get such looking good <a href="http://resume.github.com/?alexanderbeletsky">CV</a>.
+</li>
+<li>
+<a href="http://twitter.com/">http://twitter.com/</a> - I tried to avoid twitter as much as I can, but twitter won :).. Now I really feel power of it. If you follow right people, being polite but not tweeting to much you are on right way. This is probably my main source of information now, RSS slowly moving behind the scene and twitter became main information distribution system. (btw, if you read this line follow me <a href="http://twitter.com/#!/alexbeletsky">@alexbeletsky</a> :).
+</li>
+</ul>
+<h2>Podcasts</h2>
+<p>
+I recently opened podcasts power for myself. I spend at least several hours walking dog or driving car with no value :). Podcasts help you to feel that gap. Stuff that I like the most:
+</p>
+<ul>
+<li>
+<a href="http://pragprog.com/podcasts">http://pragprog.com/podcasts</a> - Progmatic Podcasts. <a href="http://pragprog.com">http://pragprog.com</a> is itself very useful recourse.. podcasts are free and extremely interesting. Highly recommended. 
+</li>
+<li>
+<a href="http://www.dotnetrocks.com/">http://www.dotnetrocks.com/</a> - .NET Rocks, is greatest .NET technology stack podcast. 
+</li>
+<li>
+<a href="http://herdingcode.com/">http://herdingcode.com/</a> - Herding Code, very different topics, very great guests. Best for geeks.
+</li>
+<li>
+<a href="http://thisdeveloperslife.com/">http://thisdeveloperslife.com/</a> - This Developers Life is run by Rob Conery and Scott Hanselman is less technical, more philosophical podcast that's nice to listen just to relax and understand what developers from other side of planet think.
+</li>
+</ul>
+<p>
+Picking a little bit from every source of information make you more comfortable in our fast changing world :).. If you know some great resources that you like, please share as comments.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My little experience with GitHub collaboration]]></title>
+    <link href="http://beletsky.net/2010/07/my-little-experience-with-github.html"/>
+    <updated>2010-07-19T18:00:00+02:00</updated>
+    <id>http://beletsky.net/2010/07/my-little-experience-with-github</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Recently I've started my tiny project. For this project I required access to GitHub by it's open API. Implementation were done in javascript, so I started to look for existing javascript frameworks that works with API. On GitHub API help page there is a link for such kind of framework, implemented by <a href="http://github.com/fitzgen">fitzgen</a>. I've opened repository and checked out a small javascript file called <a href="http://github.com/fitzgen/github-api/blob/master/github.js">github.js</a>. It was implemented very nice, accessing API via JSONP (something that I would avoid to implemented by myself, since I'm not very experienced in that). That was a good news!
+</p>
+<p>
+But bad news was that current implementation lacks something that I require. Namely, Object API that is suppose to provide access to repository objects was missing. So, I've considered it as my change to do first fork!
+</p>
+<p>
+Forking is very native to development with Git - as you would like to contribute to some project, you do fork, this will actually create a copy repository (or branch) you work with.. and if you commit something to your fork, you can give a notification to author. Author is the one who decides, is your changes worth to be included to master branch or not. Fairly simple. I've decided to implement Object part of API by my own, fortunately all infrastructure code was already done, so what I had to do is to learn specification and implement appropriate calls.
+</p>
+<p>
+After I forked github-api repository Nick started to watch it.. so it was also like motivation factor to me. I did my first part of implementation and was ready to commit. Since my not great experience with javascript I was not really sure about my code and had a little worries about a feedback I could receive from author. But, no changes to step back! I've done commit and pull request to author. I was expecting for feedback and received it very soon! Despite of my worries Nick were quite happy on such contribution, moreover he did a very great review and provided my with results. So, after a some corrections we did a successful merge to master branch. I really liked that! Moreover, he helped me to clarify my opened questions regarding javascript and JSONP.     
+</p>
+<p>
+That was really nice experience of collaboration within GitHub. I liked how it happens and I enjoyed that open source style of work.  
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GitHub Social coding]]></title>
+    <link href="http://beletsky.net/2010/07/github-social-coding.html"/>
+    <updated>2010-07-12T18:44:00+02:00</updated>
+    <id>http://beletsky.net/2010/07/github-social-coding</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Programming has changed a lot thought last years, for sure. Solving a problem is no longer now, like sitting with a bunch of books or opened MSDN help and Visual Studio, trying a different approaches. It has began with specialized forums where developers shared the problems they met and expecting other developers to help them out. It worked. Maybe because of developers like to help someone by means of computer stuff, even if they could not talk to the person sitting next table. After, developers started to create personal blogs where written a problems and solutions they met every day. Google search helped a lot to get information from blogs.. and to make this information be helpful. So now, a term "solving a problem" turns to "googling a problem" and it is very likely that someone with blog, or someone in forum or group has already solved something similar. I hardly could image development now without google.. really.      
+</p>
+<p>
+Web 2.0 bring a new type of communication and collaboration people in internet - social networks. Social networks might be a kind of evolution from forums and groups, but participants of social network has more personality in it (with a rich profile, photos and bio, ratings and so on) and a community around yourself (friends, colleagues, groups etc). If you friend of someone, you are tracking someone's activities.. as current status, shared links, new audio or video clips and so on. Social network is so popular now, so I can bet that there no person who uses internet more than several month, who do not have an account in any social network. 
+</p>
+<p>
+Have you ever hear a term "social coding"? If you try to google it you definitely be pointed to <a href="http://github.com">http://github.com</a>. GitHub is a social network, for developers. What developers need from social network? They need the same profiles as in common social network, with information, link to blogs etc, but developer is someone who supposed to produce a code and GitHub makes it possible to submit your code, so other people could see it and comment. GitHub is based on Git source control system. It has a lot of differences with more widely used Subversion and I would say Git is more complex and mature than Subversion. You have to spent some effort to switch your mind from Subversion to Git, but it not really hard to do.
+</p>
+<p>
+Within your account you are creating a Repositories. You can have as many open repositories as you like, and you can submit any code you want. Repositories are main artifacts of network. In a Repository it is not only the source files you can store, but also it provides you with issue tracking system, binary storage for builds, wiki pages. That mean that GitHub could be also treated like a open source project management/development site like a <a href="http://code.google.com/intl/uk-UA/">Code</a> from Google or <a href="http://www.codeplex.com/">Codeplex</a> from Microsoft or old good <a href="http://sourceforge.net/">Sourceforge</a>.
+</p>
+<p>
+Like any other networks it gives you ability to follow and be followed by other participants. Following means you are start to track all persons actions in GitHub, like creation of new repositories, commits, forks, code commentaries. You can also watch some particular Repository of someone, so you will track all changes that happens in repository. If you find something interesting and want to participate you can do a fork of repository (analog of branch in svn) commit to you fork and do a pull request to author, so he can review what you did and merge changed to master branch. Of all that is done nicely in GitHub, with a intuitive dashboard and tools. 
+</p>
+<p>
+GitHub is implemented in Ruby on Rails in very popular in Ruby community. It currently hosts <a href="http://github.com/rails">Rails</a>, and lot of other Ruby project. Also, you will find <a href="http://github.com/mirrors/linux-2.6">Linux-2.6 kernel</a> sources of <a href="http://github.com/git/git">git</a> itself.. and <a href="http://github.com/jquery/jquery">jQuery</a> and <a href="http://github.com/repositories">many many more</a>.
+</p> 
+<p>
+GitHub really bring something new into open source development world.
+</p>
+<p>
+How I use GitHub? Ok, first of all - my blog articles are there. I have a special repository to store html, so I commit drafts and as soon as I'm ready I put html to my blogspot. All code examples and projects I show in my blog is also in GitHub, so if you would like to check the code you are just following the link I give in post and do that. I'm educating myself in ASP.net/C#/MVC/JavaScript and so on, so now I also put my tests project there.. so they are accessible in any machine with Git. I follow several persons to see what they are doing. My network is tiny yet.. but let's see how it goes! 
+</p>
+<p>
+If you liked idea's of GitHub, please create your account and let's join.
+</p>
+<p>
+See you on network! 
+</p>
+<!-- AddThis Button BEGIN -->
+<div><a expr:addthis:title='data:post.title' expr:addthis:url='data:post.url' class='addthis_button'><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c30246f249329c8"></script></div>
+<!-- AddThis Button END --></div>
+
+]]></content>
+  </entry>
+  
+</feed>

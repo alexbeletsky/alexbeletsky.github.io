@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing REST services with javascript</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Testing REST services with javascript Dec 30th, 2010 AJAX, JavaScript, REST, TDD, Tips, Trackyt.net In previous article we&#8217;ve reviewed general &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Testing REST services with javascript</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-30T07:28:00+01:00" pubdate data-updated="true">Dec 30<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we&#8217;ve reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I&#8217;m talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
+</p>
+<p>
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn&#8217;t do any tests, basically because I didn&#8217;t know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests.
+</p>
+<h2>Simple framework</h2>
+<p>
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Internal If/else statement could be extended with some specific result codes you might expect. If API call has been finished successfully, result JSON object will be parsed and submitted to a test callback.
+</p>
+<p>
+Also, I found useful to create a small helper function that would construct API call signature, based on URL, method and parameters:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Setup the environment</h2>
+<p>
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application).
+</p>
+<p>
+Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;module(<font color="#A31515">"v11 api tests"</font>, {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// setup method will authenticate to v.1.1. API by calling 'authenticate'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// it will store apiToken, so rest of tests could reuse that</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;setup: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.url = <font color="#A31515">'api/v1.1/'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.apiToken = <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// authenticate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'authenticate'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { email: <font color="#A31515">'tracky@tracky.net'</font>, password: <font color="#A31515">'111111'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(<font color="#0000ff">this</font>.url + method, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me.apiToken = result.data.apiToken;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(me.apiToken.length == 32, <font color="#A31515">"invalid api token"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Module holds <code>API URL</code> and <code>token</code>, so they are reusable through the rest of tests. If setup failed to authenticate, all tests would be failed because they could not use any call without <code>token</code>.
+</p>
+<h2>Testing methods</h2>
+<p>
+I have a number of REST style methods in my API:
+</p>
+<p>
+<code>
+http://trackyt.net/api/v1.1/token/tasks/all <br />
+http://trackyt.net/api/v1.1/token/tasks/add <br />
+http://trackyt.net/api/v1.1/token/tasks/delete/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/start/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/stop/112 <br />
+</code>
+</p>
+<p>
+and so on..
+</p>
+<p>
+I&#8217;ll give some examples of tests, so you will be able to follow main idea:
+</p>
+<p>
+Get all task call test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Get all task call receives deterministic response test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks returns all required fields"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> task = result.data.tasks[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.id !== undefined, <font color="#A31515">"Id field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.description !== undefined, <font color="#A31515">"Description field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.status !== undefined, <font color="#A31515">"Status field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.createdDate !== undefined, <font color="#A31515">"CreatedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.startedDate !== undefined, <font color="#A31515">"StartedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.stoppedDate !== undefined, <font color="#A31515">"StoppedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Add new task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"task add method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/add'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { description: <font color="#A31515">'new task 1'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.task.id &#62; 0, <font color="#A31515">"id for first item is wrong"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Delete task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Rest of tests are available on <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas.
+</p>
+<h2>Running tests</h2>
+<p>
+As any kind of qUnit tests they could be easily run in browser.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
+<p>
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>.
+</p>
+<h2>Debugging the tests</h2>
+<p>
+Sure, you need to be able to run tests under debugger to see what might went wrong. For debuging test code, there is nothing better than <a href="http://getfirebug.com/">FireBug</a>. Just place the breakpoint on a line you need, press F5 to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s1600/firebugdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 129px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s400/firebugdebug.png" border="0" alt=""id="Img1" /></a>
+<p>
+ If you need to debug actual API implementation code (which in my case is C#/ASP.net MVC application), I start the web site under debugger (F5 in VS2010), place breakpoint in corresponding method and press F5 in browser to to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s1600/vsdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 154px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s400/vsdebug.png" border="0" alt=""id="Img2" /></a>
+<h2>Conclusions</h2>
+<p>
+I liked the idea of those integration tests by means of javascript. I was happy to get final results: the interface is more strict and more corresponds to REST principles. It is much more faster to write tests with javascript instead of C# or Java. Just compare <a href="https://gist.github.com/b0a261d6c88fafe5afeb">this</a> and <a href="https://gist.github.com/759517">this</a> and feel the difference. Write less, get more.
+</p>
+<p>
+As javascript could be treated as &#8220;pseudo language&#8221;, since it is easy to read it - API test suite could be used as a developers documentation. If you need to do a call, check the corresponding test, everything there.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Hackatone | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/hackatone/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Likeastore, Application Built on Hackathone]]></title>
+    <link href="http://beletsky.net/2013/03/likeastore-application-built-on.html"/>
+    <updated>2013-03-31T17:52:00+02:00</updated>
+    <id>http://beletsky.net/2013/03/likeastore-application-built-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        It's my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can't guess which projects will be popular or not.. and the second, that it's hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - "Likeastore"<br />
+    <!-- more -->
+    </p>    <h2>Idea behind</h2>    <p>        All of us having at least those 3 accounts: facebook, twitter and github. And all of those are continuous stream of information. If you have an interesting network, it probably produces interesting content so you do much of likes/favorites/stars (stories, tweets, or interesting gihub repos). The problem, it's very difficult to keep this information ordered - you typically remember you heard something interesting, but could not remember the source of it.<br />
+    </p>    <p>        "Likeastore" is aimed to fix this problem. Integrating wish different services it's keeping your "likes" information in good order, with nice search and smart categorizing.<br />
+    </p>    <img src="https://lh5.googleusercontent.com/-AaH9Nrnr54o/UVhZihO3yjI/AAAAAAAAR1Y/FhtHcOksuik/s988/login.png" style="width: 620px" alt="likeastore login screen"/><br />
+    <h2>What we did?</h2>    <p>        We basically allow "Likeastore" to connect all those application by their open API and collect the information from it. We transform the information into something generic and grouping it together. So, the users are having all information up-to-date in nice and clear dashboard.<br />
+    </p>    <p>        Originally we had ambition to have a kinda real-time. In the way, I favorited the tweet and "Likeastore" almost immediately got the information. We had to drop it. The reason is API's of popular applications are very quoted. You simply cannot do more request that in quota, otherwise you just banned.<br />
+    </p>    <p>        So, nethertheless of similar projects, we don't want to make next social network of bookmarks. Instead, we want to build easy to use and powerful information keeper. Something, that help you to have things in order.<br />
+    </p>    <img src="https://lh4.googleusercontent.com/-cHk7Pdbyus8/UVhZisS6e5I/AAAAAAAAR1g/-3uXVV28rL0/s988/setup.png" style="width: 620px" alt="likeastore setup screen"/><br />
+    <h2>How we did it?</h2>    <p>        In fact, we've build a "thrown-out" prototype. The <a href="https://github.com/organizations/likeastore">code</a> is a shitty inside, so we bit far of nearest production. But, we've created an interesting application. We split on 2 + 1, two backend (me and <a href="https://github.com/voronianski">@voronianski</a>) and one front-end guy (<a href="https://github.com/mamant">@mamant</a>). Sat closely and worked shoulder-to-shoulder for next 22 hours. <br />
+    </p>    <p>        From the very beginning I had very clear vision of stuff we need to do. I could imagine architecture and UI principles. And as soon I shared that the teammates accepted that really fine and provided high quality feedback and collaboration. That helped us to have a strong team in my perspective.<br />
+    </p>    <p>        All of us are JS developers, so no doubt we've taken a JavaScript stack as default. Node.js, powered by Express.js at the backend and Backbone.js front end. Sometimes it's tricky, but in fact - it's powerful combination. <br />
+    </p>    <h2>A bit of tech info</h2>    <p>        We are having 2 main architectural units: core and connectors. Core, is Express.js application having both serving static content and providing API. The API itself, consists on public and private parts. Public part is aimed our web client (or potentiall apps), where the private is used to communicated connectors.<br />
+    </p>    <p>        Connectors are just very simple HTTP services, which perform the handshake with core and then post back all data they have collected through API's. That means, we have 3 connectors now - twitter, github and facebook. Facebook, became a quite difficult to integrated with, so we currently dropped it.<br />
+    </p>    <p>        We are having <a href="http://couchdb.apache.org/">CouchDB</a> as our storage. We took it, because <a href="https://github.com/voronianski">@voronianski</a> had some good experience with. That appeared to be a very lucky decision. CouchDB is very interesting NoSQL solution. It's storage model has few interesting features. One of them is "merge-update". Means, you can post exactly same set of information many times, but CouchDB would not create new entities. It would merge identical documents into one. That simplied connectors very much, since they no longer need to track only new information, but could post back just a transformed bulk of information from API's.<br />
+    </p>    <p>        Initially, we all agreed - our UI will never be default Bootstrap theme. It's overused and impress no more as toilet door. That's where <a href="https://github.com/mamant">@mamant</a> apply his best skills. He carefully worked all our screens making a it look nice and original. <br />
+    </p>    <img src="https://lh3.googleusercontent.com/-XSXpDhEuX9Y/UVhZjLe7w6I/AAAAAAAAR1k/HI6xIJQnUXc/s988/dashboard.png" style="width: 620px" alt="likeastore dashboard screen"/><br />
+    <h2>Presentation and feedback</h2>    <p>        Without few features we did demo-able version in time. We have concluded few major fixes, just before the deadline. <br />
+    </p>    <p>        I did a presentation of app in short way, without anything unimportant (at least I wish to think so) and we had received great feedback. People liked the idea, so we've collected 32 voices that brought us 2nd place.<br />
+    </p>    <p>        That gives a much of inspiration for further work! All of us are very enthusiastic to make the stuff done. It's a lot of work, actually.<br />
+    </p>    <p>        I just want to say thank you to all organizers of this event, it was nicely handled. And to the team, for making it fun and interesting.<br />
+    </p>    <p>        Stay tuned for release of "Likeastore", check out <a href="https://github.com/likeastore">sources</a> in a meanwhile.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Candidate, Application I Made on Hackatone]]></title>
+    <link href="http://beletsky.net/2011/06/candidatenet-application-i-made-on.html"/>
+    <updated>2011-06-13T18:26:00+02:00</updated>
+    <id>http://beletsky.net/2011/06/candidatenet-application-i-made-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Here is quick description of application application I made on <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">Hackatone</a> this weekend. </p><p>Candidate.net is just working name for the project that I'm going to change as soon as I got better idea :). It supposed to be a kind of service that provides integration with your github repositories and provides a Continues Deployment cycle for that repositories. Namely, every code change that being pushed to github is immediately build, tested and deployed, so the time between code push and production is very short excludes any manual work. </p><p>I've spent ~16 hours for building up this application, sure I haven't managed to make it as a service.. but - during the process I've changed my vision for project, so first I would like to create good continues build engine (like Team City or Jenkins) and base my future service on top of it (yeah, I already got some further plans :). </p><p>Technologies behind: </p><ul><li>ASP.NET MVC3</li>
+<li>jQuery + some small pluggins</li>
+<li>UppercuT build framework</li>
+</ul><p>A picture says 1000 words, so here my little screencast of Candidate.net in action. It demonstrates the ability of setting up new application and hooking github push requests to build new application instance. </p><iframe src="http://www.screenr.com/embed/X48s" width="560" height="345" frameborder="0"></iframe> <p>Source code is hosted on github <a href="https://github.com/alexbeletsky/candidate">https://github.com/alexbeletsky/candidate</a>. Don't forget it is really early prototype, the code is in big mess now.. I'm going to improve it much soon, so please keep watching repository. </p><p>I had a lot of fun of building this and have a better vision of how the application should look like. Hope to share it soon. I would be happy to hear some feedback on this.. and of cause you are free to fork repo and make your improvement (especially in UI/UX :). </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hackatone in Kiev 11-12 June]]></title>
+    <link href="http://beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html"/>
+    <updated>2011-06-13T13:44:00+02:00</updated>
+    <id>http://beletsky.net/2011/06/hackatone-in-kiev-11-12-june</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+This weekend I've been visiting very interesting event - <a href="http://www.developers.org.ua/calendar/615/">Hackatone</a> that took place in <a href="http://www.ciklum.net/">Ciklum</a> office. Hackatone is whole night hacking session there every team or person could came up with any idea, implement it and present to crowd. Many times I heard about similar events either in podcasts or blogs that I read.. but never tried that myself. Thank's for <a href=""http://www.developers.org.ua/">DOU</a> enthusiasts I got opportunity to try that. Here is my report of that event. There would be some mix of English and Russian language, hope that would not make you confuse :)
+</p>
+<p>
+The event began with common meeting there people were sharing ideas of applications they are going to build. During my pretty long journey with in <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">Continues Production</a> I already got my idea - I wanted to build Deployment-as-Service product that easily integrated with github and utilizes power of UppercuT for building .NET web applications. There was very few .NET developers there, already having their own ideas to build.. so I went alone. 
+</p>
+<p>
+If you have been to Ciklum office, you probably know what SkyPoint is.. It is 20-th floor in office that resides on one Kiev's hills, so you might imagine this exceptional view from there. I grabbed a chair started to work. 
+</p>
+<p>
+Due to experience I got with .NET deployments and Jenkins I had pretty much well understanding what the workflow should be. I've created ASP.NET MVC3 in my Visual Studio and stared to develop. The scope of work I planned to do was pretty much big and I a little nervous about my ability to finish everything. I tried to work as fast as I can.. Full hour, that 10 minutes break and full hour again. Maybe because of that creative atmosphere around or straight orientation on final result but I think I really got a <a href="http://en.wikipedia.org/wiki/Flow_(psychology)">Flow</a>..
+</p>
+<p>
+So, after ~3 hour of work I've created my github repository for new project - Candidate.net:
+</p>
+<a href="http://twitter.com/#!/alexbeletsky/status/79592735673303040">
+<img src="https://lh5.googleusercontent.com/-EB45A9ltPj4/TfX3yjW1xBI/AAAAAAAAHeQ/6flibleXfdk/tweet-github.png" alt="tweet" />
+</a>
+<p>
+Keeping that rhythm I continued to work mostly till 3.00 AM.. About 60% of work were done. I felt a little tired and decided to stop for today and had a good sleep to continue tomorrow. My plans were ruined as soon as I stepped to 19th there people gathered together.. So, in 5 minutes I got several shots of cognac and was sitting on a floor with guitar in my hands :). I had a real fun and relax there. Haven't noticed at all how 2 hours are gone and sun started to rise.. We had a really nice moment of meeting new day on staying on office balcony. 
+</p>
+<a href="http://twitter.com/#!/alexbeletsky/status/79730442869293056">
+<img src="https://lh5.googleusercontent.com/-YoDuw9t7AxU/TfX3yt71IQI/AAAAAAAAHeI/GZ-utUiR0IQ/tweet-morning.png" alt="tweet" />
+</a>
+<p>
+I have to continue the implementation, so I went back to SkyPoint and run my Visual Studio again. Of cause I could not get such rhythm as I got yesterday, the process were much slower. I had to refuse of several more ideas I wanted to build, ignore the rules of Clean Code, SOLID and DRY. Did some ugly tricks, just to make application work. I had issues with testing and deployment since WiFi connection were quite slow. But, long story short - I implemented very basic workflow and realized that would be it for presentation.
+</p>
+<a href="http://twitter.com/#!/alexbeletsky/status/79814256295550976">
+<img src="https://lh5.googleusercontent.com/--LWi6MlSOjo/TfX3ysS1-WI/AAAAAAAAHeM/XdE5KC4fx5w/tweet-done.png" alt="tweet" />
+</a>
+<p>
+I found a sofa and finally got a change to have a sleep. Don't know why but I managed to sleep only for one hour, just woke up and could not sleep again. So, I had a shower (yes, there are showers in Ciklum office), coffee.. and very nice breakfast. I had some time before presentation began, so I re-tested my application several times more and was happy about results. 
+</p>
+<p>
+At 15.00 PM presentations began! I showed Candidate.net ability to initialize new application, build and deploy it in minutes.. How you can deliver with just a push a code to github, the rest of job done by Candidate. I don't think I really impress people there, because of .NET crowd were to small.. but I tried to do best. After the presentation I've been contacted by several guys who interested with such concept.
+</p>
+<p>
+Most of the presented projects were either old-school games implemented with new technologies or mobile applications. One guys did a nice linux kernel exploration and share his ideas. 
+</p>
+<p>
+After there was a manual voting for each project to decide on 3 best, I didn't win :). Winners got their congratulations and presents for sponsors. I quit really quickly since I was a little late for my friend wedding that was that day :) 
+</p>
+<p>
+That was really nice experience for me. I appreciate <a href="http://www.ciklum.net/">Ciklum</a>, <a href=""http://www.developers.org.ua/">DOU</a> and everyone involved, who make that possible. Thank you guys :)
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

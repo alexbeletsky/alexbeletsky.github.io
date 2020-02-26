@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: docker | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/docker/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Secure Deployment of ElasticSearch]]></title>
+    <link href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html"/>
+    <updated>2014-07-18T12:34:00+02:00</updated>
+    <id>http://beletsky.net/2014/07/secure-deployment-of-elasticsearch</id>
+    <content type="html"><![CDATA[<p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+<!-- MORE -->
+
+
+<p>It appeared, if ES is left on default configuration with port opened outside, it will be easy target for bad guys, both of Java and ES vulnerability. Basically, I had to restore server from scratch, but this time I&rsquo;m not goint to be naive, server have to be properly secured.</p>
+
+<p>I&rsquo;ll describe my setup that involves: Node.js, Dokku / Docker, SSL.</p>
+
+<h2>Clean DigitalOcean image</h2>
+
+<p>I had to reinstall my machine from scratch, so instead of creating plain Ubuntu 14 server, but I decided to go dokku/docker path. Something that I tried <a href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html">before</a> and very happy with the <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">results</a>. <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> offers pre-packed image with dokku/docker already on board. As usually it takes just a few seconds to spin up machine on DO.</p>
+
+<p>The plan was the following: deploy ElasticSearch instance inside Docker container, disable dynamic script features of Elastic, deploy Node.js based proxy server with custom authentication by Dokku and link those containers, so only Node.js proxy will have access to Elastic. Finally, all traffic between will by crypted by SSL.</p>
+
+<p>The benefits are obvious, no more <code>:9200</code> is outside the machine, one potential vulnerability with dynamic script feature is disabled, only authenticated client could access Elastic server.</p>
+
+<h2>Deployment of ElasticSearch in Docker</h2>
+
+<p>First we need to have Docker image of ElasticSearch. There few ES plugging for Dokku, I decided to install one by myself, since I thought it is easier to configure. There is a great instruction from Docker <a href="https://registry.hub.docker.com/u/dockerfile/elasticsearch/">here</a>.</p>
+
+<p><code>bash
+$ docker pull docker pull dockerfile/elasticsearch
+</code></p>
+
+<p>Once the image is there, we need to prepare volume there Elastic stores data and configuration.</p>
+
+<p><code>bash
+$ cd /
+$ mkdir elastic
+</code></p>
+
+<p>Elastic folder should contain <code>elasticsearch.yml</code> file, with all required configurations. My case is very simple, I have a cluster of one machine, so default configuration applies to me. One thing, that I mentioned above &ndash; I need to disable dynamic scripting features.</p>
+
+<p><code>bash
+$ nano elasticsearch.yml
+</code></p>
+
+<p>The content of the file is just one string,</p>
+
+<p><code>plain
+script.disable_dynamic: true
+</code></p>
+
+<p>Once it&rsquo;s done, we are ready to launch the server inside Docker container. Since, it could be done few times (during configuration and debugging), I&rsquo;ve created a small shell script,</p>
+
+<p><code>bash
+docker run --name elastic -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -v /elastic:/data dockerfile/elasticsearch /elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml
+</code></p>
+
+<p>Please note the important thing, <code>-p 127.0.0.1:9200:9200</code> &ndash; here we are binding <code>:9200</code> to be only accessible on <code>localhost</code>. I&rsquo;ve spend some hours to close <code>:9200</code> by <code>iptables</code> without any success, but that thing works as expected. Thanks a lot to <a href="https://twitter.com/darkproger">@darkproger</a> and <a href="https://twitter.com/kkdoo">@kkdoo</a> for great help.</p>
+
+<p><code>-v /elastic:/data</code> will map the containers volume <code>/data</code> to local one <code>/elastic</code>.</p>
+
+<h2>Front-end Node.js server</h2>
+
+<p>Now, we need to deploy front-end proxy server. It would proxy all traffic from <code>http://localhost:9200</code> into outside world, securely. I&rsquo;ve created small project, based on <a href="https://github.com/nodejitsu/node-http-proxy">http-proxy</a> called <a href="https://github.com/likeastore/elastic-proxy">elastic-proxy</a>. It&rsquo;s very simple one and can be easily re-used.</p>
+
+<p><code>bash
+$ git clone https://github.com/likeastore/elastic-proxy
+$ cd elastic-proxy
+</code></p>
+
+<p>The server itself,</p>
+
+<p>```js
+var http = require(&lsquo;http&rsquo;);
+var httpProxy = require(&lsquo;http-proxy&rsquo;);
+var url = require(&lsquo;url&rsquo;);</p>
+
+<p>var config = require(&lsquo;./config&rsquo;);
+var logger = require(&lsquo;./source/utils/logger&rsquo;);</p>
+
+<p>var port = process.env.PORT || 3010;
+var proxy = httpProxy.createProxyServer();</p>
+
+<p>var parseAccessToken = function (req) {</p>
+
+<pre><code>var request = url.parse(req.url, true).query;
+var referer = url.parse(req.headers.referer || '', true).query;
+
+return request.access_token || referer.access_token;
+</code></pre>
+
+<p>};</p>
+
+<p>var server = http.createServer(function (req, res) {</p>
+
+<pre><code>var accessToken = parseAccessToken(req);
+
+logger.info('request: ' + req.url + ' accessToken: ' + accessToken + ' referer: ' + req.headers.referer);
+
+if (!accessToken || accessToken !== config.accessToken) {
+    res.statusCode = 401;
+    return res.end('Missing access_token query parameter');
+}
+
+proxy.web(req, res, {target: config.target, rejectUnauthorized: false});
+</code></pre>
+
+<p>});</p>
+
+<p>server.listen(port, function () {</p>
+
+<pre><code>logger.info('Likeastore Elastic-Proxy started at: ' + port);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>It proxies all the requests and only by-pass ones, who provide <code>access_token</code> as query parameter. The <code>access_token</code> value is <a href="https://github.com/likeastore/elastic-proxy/blob/master/config/production.config.js">configured</a> on server, by applications environment variable <code>PROXY_ACCESS_TOKEN</code>.</p>
+
+<p>As you already <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-dokku-one-click-digitalocean-image-to-deploy-a-python-flask-app">prepared</a> Dokku all you need to do is to push application to your server.</p>
+
+<p><code>bash
+$ git push master production
+</code></p>
+
+<p>After the deployment, you should go to server to configure applications environment,</p>
+
+<p><code>bash
+$ dokku config proxy set PROXY_ACCESS_TOKEN="your_secret_value"
+</code></p>
+
+<p>I wanted to have SSL and it&rsquo;s very easy to configure with Dokku. Just place your <code>server.crt</code> and <code>server.key</code> to <code>/home/dokku/proxy/tls</code> folder.</p>
+
+<p>Proxy have to be <a href="https://github.com/scottatron/dokku-rebuild">redeployed</a> afterward, to apply configuration changes. Try proxy by hitting it&rsquo;s URL, in my case <a href="https://search.likeastore.com">https://search.likeastore.com</a>. If everything is good, it will reply,</p>
+
+<p><code>plain
+Missing access_token query parameter
+</code></p>
+
+<h2>Link containers</h2>
+
+<p>We need to link both containers, so Node.js application is able to access ElasticSeach container. I really liked <a href="https://github.com/rlaneve/dokku-link">dokku-link</a> plugin, that does exactly that&rsquo;s required in very easy way. So, will install it</p>
+
+<p><code>bash
+$ cd /var/lib/dokku/plugins
+$ git clone https://github.com/rlaneve/dokku-link
+</code></p>
+
+<p>Now, we need to link containers,</p>
+
+<p><code>bash
+$ dokku link proxy elastic
+</code></p>
+
+<p>And application have to be redeployed again. If everything is good, you will be able to access the server by <code>https://proxy.yourserver.com?access_token=your_secret_value</code> and see the response from ElasticSearch,</p>
+
+<p>```js
+{</p>
+
+<pre><code>status: 200,
+name: "Tundra",
+version: {
+    number: "1.2.1",
+    build_hash: "6c95b759f9e7ef0f8e17f77d850da43ce8a4b364",
+    build_timestamp: "2014-06-03T15:02:52Z",
+    build_snapshot: false,
+    lucene_version: "4.8"
+},
+tagline: "You Know, for Search"
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Reconfigure the client</h2>
+
+<p>Depending on a client you use, you need to apply a little tweak to configuration. Basically, we need to use <code>access_token</code> for all our request. For Node.js applications,</p>
+
+<p>```js
+var client = elasticsearch.Client({</p>
+
+<pre><code>host: {
+    protocol: 'https',
+    host: 'search.likeastore.com',
+    port: 443,
+    query: {
+        access_token: process.env.ELASTIC_ACCESS_TOKEN
+    }
+},
+requestTimeout: 5000
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Again, <code>ELASTIC_ACCESS_TOKEN</code> is env variable to hold <code>your_secret_value</code> token.</p>
+
+<p>Now, restart the application, make sure everything is running and exhale.</p>
+
+<p><strong>PS</strong>. I would like to say thank to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> for support and a little credit I received as downtime compensation. Thats awesome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Run Several Processes in Docker Container]]></title>
+    <link href="http://beletsky.net/2013/12/run-several-processes-in-docker-container.html"/>
+    <updated>2013-12-27T14:15:00+01:00</updated>
+    <id>http://beletsky.net/2013/12/run-several-processes-in-docker-container</id>
+    <content type="html"><![CDATA[<p>What I like the most about <a href="">Docker</a> project is new opportunity to deploy and distribute software. Many times I&rsquo;ve been to situation when I wanted to play with some software and get exited about, but after I read installation manual my excitement totally gone. Non trivial applications, requires quite a lot dependencies: runtimes, libraries, databases.</p>
+
+<p>With docker, the installation instruction got reduced to something like:</p>
+
+<p><code>
+$ docker pull vendor/package
+$ docker run vendor/package
+</code></p>
+
+<p>Simply like that, forget about missing Java Runtime on your server. It suits perfectly for TCP/HTTP applications.</p>
+
+<!-- More -->
+
+
+<p>Being messing around <a href="https://github.com/seismolabs/seismo">Seismo</a> project I realized, I want to go exactly same way. Since it has few dependencies now, MongoDB and NodeJS &ndash; it should be easier to anyone to try it, even if they do not use that setup. I was happy to see, that GitHub currently offers great support for Docker. Namely, if you have repo with <code>Dockerfile</code> inside, each time you push the code, docker image got rebuild and pushed to public <a href="https://index.docker.io/">index</a>.</p>
+
+<p>I&rsquo;ve created <code>Dockerfile</code> that would build up image, ready to have Seismo run inside.</p>
+
+<p>```plain
+FROM    ubuntu:latest</p>
+
+<h1>Git</h1>
+
+<p>RUN apt-get install -y git</p>
+
+<h1>MongoDB</h1>
+
+<p>RUN apt-key adv &mdash;keyserver hkp://keyserver.ubuntu.com:80 &mdash;recv 7F0CEB10
+RUN echo &lsquo;deb <a href="http://downloads-distro.mongodb.org/repo/ubuntu-upstart">http://downloads-distro.mongodb.org/repo/ubuntu-upstart</a> dist 10gen&rsquo; | tee /etc/apt/sources.list.d/10gen.list
+RUN dpkg-divert &mdash;local &mdash;rename &mdash;add /sbin/initctl
+RUN ln -s /bin/true /sbin/initctl
+RUN apt-get update
+RUN apt-get install mongodb-10gen
+RUN mkdir -p /data/db</p>
+
+<h1>NodeJS</h1>
+
+<p>RUN apt-get update &mdash;fix-missing &amp;&amp; apt-get upgrade -y
+RUN apt-get install -y wget curl build-essential patch git-core openssl libssl-dev unzip ca-certificates
+RUN curl <a href="http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz">http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz</a> | tar xzvf &ndash; &mdash;strip-components=1 -C &ldquo;/usr&rdquo;
+RUN apt-get clean &amp;&amp; rm -rf /var/cache/apt/archives/<em> /var/lib/apt/lists/</em></p>
+
+<h1>Seismo</h1>
+
+<p>RUN git clone <a href="https://github.com/seismolabs/seismo.git">https://github.com/seismolabs/seismo.git</a> /seismo
+RUN cd /seismo; npm install
+ENV PORT 8080
+EXPOSE 8080</p>
+
+<p>WORKDIR /seismo
+ENTRYPOINT [&ldquo;./bin/run.sh&rdquo;]
+```</p>
+
+<p>It&rsquo;s based on latest Ubuntu server, installs Git, MongoDB and NodeJS runtime and clones Seismo itself inside image.</p>
+
+<p>But, I&rsquo;ve met a problem to start few processes inside the container. Since I need both MongoDB for storage and NodeJS for API server, it&rsquo;s required both be running inside one container. If shell script just starts one, <code>mongod</code> for example, <code>node app.js</code> is not executed.</p>
+
+<p>I was a little worried, thinking it&rsquo;s not possible to run more that one process inside container.</p>
+
+<p>But solution was found. I&rsquo;ve created another shell script that starts <code>mongod</code> as background process and starts <code>node</code> after.</p>
+
+<p>```bash</p>
+
+<h1>!/bin/bash</h1>
+
+<p>mongod &amp; node ./source/server.js
+```</p>
+
+<p>That worked as charm.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PaaS in Your Pocket with Dokku]]></title>
+    <link href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html"/>
+    <updated>2013-09-16T21:21:00+02:00</updated>
+    <id>http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku</id>
+    <content type="html"><![CDATA[<p>This is transcript of talk I gave on <a href="http://rejectjs.org/speakers.html#alexbeletsky">RejectJS</a> conf in Berlin, September 2013. Video is already available <a href="http://www.youtube.com/watch?v=EaoRDrdqm-E">here</a>.</p>
+
+<p>What I&rsquo;m going to talk about is Dokku &ndash; pocket-size, very cool and interesting project, that would make you (hopefully) re-think of the code shipping.</p>
+
+<!-- More -->
+
+
+
+
+<script async class="speakerdeck-embed" data-id="d912a0f0fdbc0130260d1ebd49b9b82c" data-ratio="1.33333333333333" src="http://beletsky.net//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>Background</h2>
+
+<p>So, some background on me. My name is Alexander and I live in Kiev and work for Danish company, named E-conomic. There we do, we interesting product called Debitoor and a lot of cool stuff happens there.. But besides of that full-time job, with a friend of mine, I&rsquo;m doing a small project called Likeastore.</p>
+
+<p>And this is exactly, side-project are something <strong>there you learn some new things and you try these things</strong>. So, it&rsquo;s started out as hackathon project, it&rsquo;s Node.js, MongoDB, Angular.js &ndash; so highly JS related thing (even if my talk is not so JS oriented). On a hackathon we got really exited on the way it went, soon we realized that we want to push things out. So, we wanted to release, and conquer the world with the cool idea we had.</p>
+
+<p>Probably the most important lesson I&rsquo;ve learned in whole my career &ndash; the way you ship the code, matters!</p>
+
+<p>It matters a lot, but the key fact &ndash; as faster you can ship the code from machine A to machine B, as faster you running business as happy team you have. So, if you shipping once a 2-weeks, you are fine, if you shipping 1-week are are great, if you shipping 1-per-hour you are superb (if you don&rsquo;t believe me, take a look on github guys, how happy they are all the time).</p>
+
+<p>And long time I realized that deployment of code, should be as easy as:</p>
+
+<p><code>
+git push origin master
+git push heroku master
+af deploy
+jitsu deploy
+</code></p>
+
+<p>Whatever, important is &ndash; one click (command, shell script) you are done.</p>
+
+<p>So, we were seeking for good deployment and hosting options. And I love Node.js in particular for it&rsquo;s &ldquo;deployment-friendly&rdquo; environment.</p>
+
+<p>Code deployment in general is very known developers problem. It solved many time and with cloud computing it <strong>evolutionized in something that&rsquo;s know as PaaS (platform as service)</strong>. And PaaS is something that brings a lot of value for any project, since you abstract out the exact infrastructure, and what you do is write code push it out, the rest is solved by PaaS.</p>
+
+<p>Of cause, we started to look for PaaS that fits us best.</p>
+
+<p>Started with AppFog, jumped to Nodejitsu, but met few constrains that forced us to gave up. Namely, that we had to have SSL connection, since we dealing with users private data, but Nodejitsu is proposing SSL for 120 USD that, simply too much of the project you begin with and don&rsquo;t have great budget behind.</p>
+
+<p>I was really unhappy that time, since I realized a lot of overhead work that comes to you, then you drop PaaS.</p>
+
+<p>This is where constraints coming from, and sometimes they are very unpleasant, but in general constraints are good. With perfect timing, I&rsquo;ve seen Dokku project.</p>
+
+<p>Even if I said Dokku is small project, it&rsquo;s standing on shoulders of giants, and those giants are Docker &amp; Builtpacks &amp; Gitrecieve (there is a few more, but those are most important ones).</p>
+
+<p>During this talk, I&rsquo;ll highlight both Docker and Dokku internals, but my primary goal is to rather share the <strong>experience of using Dokku that helped to making the things done</strong>.</p>
+
+<h2>Dokku</h2>
+
+<p>Dokku is created by bright hacker &ndash; Jeff Lindsay. And what Jeff did is he saw the opportunity of mixing all the pieces together in one tasty cocktail.</p>
+
+<p>Dokku relying on Docker for running containers (as isolated application instance), it uses Gitrecive to implement git interface for server, and it&rsquo;s relying on Buildpacks, for preparing environment for container.</p>
+
+<p>Now, it&rsquo;s time to show you how it works in reality:</p>
+
+<p><code>
+demo with node-sample
+</code></p>
+
+<h2>Gitrecieve</h2>
+
+<p>Gitrecieve is a component which is able to recieve you git push command, create repository on fly and trigger recieve script. Recieve script could be anything you want.</p>
+
+<h2>Buildpacks</h2>
+
+<p>Buildpacks are open source components released by Heroku. How many of you guys ever used Heroku? All right, so the output you see, while pushing code to Heroku is exactly the <strong>result of work by Buildpack</strong>.</p>
+
+<p>Buildpack is responsible for few things: it detects the environment of you app (like if I can see <code>package.json</code>, that would probably mean Node.js app), downloads all required runtime components and run build script. Once it run, we have created infrastructure where application is ready to start up.</p>
+
+<p>So, Heroku created a lot of buildpacks, for Ruby, Python, Java, etc., and all that goodness is reused by Dokku.</p>
+
+<h2>Docker</h2>
+
+<p>How many of guys seen the videos, or read the materials about Docker? I hope many of you, because it&rsquo;s kind on noisy now.</p>
+
+<p>So, Docker in essence, is the engine of <strong>portable containers</strong>. Portable? Containers? You are probably very interesting what actually goes, behind these words.</p>
+
+<p>Docker is open-source project by dotCloud. And the dotCloud is actually specializing on shipping the code. Company&rsquo;s co-founder Salmon Hykes, gives are very nice metaphor on containers: imaging a shipping of goods like, 100 years ago &ndash; where were ships and barrels and bags and boxes, etc. Because of that variety you had a different options for shipping. In middle 1950, the idea of container born. Container defines size and dimensions, but in essence &ndash; you can put what ever you like there, close the door and that&rsquo;s it. It&rsquo;s guaranteed that you container is shipped, because all equipment fits it.</p>
+
+<p>So, in dotCloud they&rsquo;ve developed a fairly complex infrastructure, that would allow to run their business. After 5 years of hacking that, they reached <strong>great level of expertise</strong>, as well they realized the need to take out the core system, rewrite it completely and open source it. That was then Docker project born and if Salmon would ever listen to my talk, I would like to give tons of Kudos for him, for that job.</p>
+
+<p>Docker itself is hack above the Linux kernel technology called LXC. And LXC is the of running isolated processes. LXC is a Linux process, that have it&rsquo;s own file system, networking interfaces, processes etc.</p>
+
+<p>Sure, you might think &ndash; it smells like virtual machines, why containers are better?</p>
+
+<p>Image container is immutable entity. Once the command run, it&rsquo;s changed.. but as soon as change is not committed the image remain the same. That mean, you can re-use some existing image as many time as you want, all the time starting up, so called clean environment. The clean environment is something we like of using VM.</p>
+
+<p>Startup time of container is <strong>many times faster, then booting up new VM image</strong>. And this is it&rsquo;s primary benefit.</p>
+
+<p>Besides of that, Docker comes with so called Index. Index is a public repository of ready to use images. Different operations systems and different pre-installed software is there.</p>
+
+<h2>Nginx</h2>
+
+<p>All HTTP / HTTPS orchestration is done by Nginx.</p>
+
+<h2>Deploying the applications with Dokku</h2>
+
+<p>So, we&rsquo;ve came to the most interesting part, how Dokku is <strong>helpful for the product development</strong>. Theoretically, Dokku can work on any Linux machine with LXC support, to run docker, dokku itself is written on shell script, which make it really portable. Practically it works on Ubuntu 13 64b.</p>
+
+<p>You build you own small PaaS on any IaaS as you want. One&rsquo;s which is able to fire up Ubuntu machine and give you ssh access to it. For a few reasons, I&rsquo;ve picked up Digital Ocean, since they indeed provide really nice service and competitive prices.</p>
+
+<p>Once the machine is started, you push have to install Dokku there. After it&rsquo;s installed, you upload you SSH key there, so you are able to do git push.</p>
+
+<p>You are able to configure environment variables, as well as configure SSL connection.</p>
+
+<p>That&rsquo;s a <strong>perfect fit</strong>, especially for small projects.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Playing with Dokku on Vagrant]]></title>
+    <link href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html"/>
+    <updated>2013-09-03T19:57:00+02:00</updated>
+    <id>http://beletsky.net/2013/09/playing-with-dokku-on-vagrant</id>
+    <content type="html"><![CDATA[<p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
+
+<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
+
+<!-- More -->
+
+
+<h2>Prepearing Environment</h2>
+
+<p>You box should contain few things: git (github account), VirtualBox and Vagrant. If you don&rsquo;t have Vagrant installed, please do now. It makes a lot of sense to keep such kind software on machine.</p>
+
+<p>Here you can find <a href="http://docs.vagrantup.com/v2/getting-started/index.html">some instructionn</a> of how to do that.</p>
+
+<h3>Cloning Dokku</h3>
+
+<p>You should clone Dokku repo locally. In your development folder, run</p>
+
+<p>```bash</p>
+
+<blockquote><p>git clone git@github.com:progrium/dokku.git
+cd dokku
+```</p></blockquote>
+
+<p>Dokku repository already contains Vagrant file, with all required configuration.</p>
+
+<h3>Local Networking</h3>
+
+<p>Just in sake of convenience, will map <code>10.0.0.2</code> ip address (the one that Vagrant machine is assigned with), to <code>dokku.me</code> DNS name, so it&rsquo;s just handy for testing.</p>
+
+<p><code>bash
+› sudo nano /private/etc/hosts
+</code></p>
+
+<p>and put last 2 lines, as it shown in my example:</p>
+
+<p>```plain</p>
+
+<h1>#</h1>
+
+<h1>Host Database</h1>
+
+<p>#</p>
+
+<h1>localhost is used to configure the loopback interface</h1>
+
+<h1>when the system is booting.  Do not change this entry.</h1>
+
+<h1>#</h1>
+
+<p>127.0.0.1       localhost
+255.255.255.255 broadcasthost
+::1             localhost
+fe80::1%lo0     localhost
+10.0.0.2        dokku.me
+10.0.0.2        node-simple.dokku.me
+```</p>
+
+<h3>Fire Up Virtual Machine</h3>
+
+<p>In <code>dokku</code> folder, you should run</p>
+
+<p>```bash</p>
+
+<blockquote><p>vagrant up
+```</p></blockquote>
+
+<p>It will start to prepare new virtual environment for you,</p>
+
+<p><code>bash
+ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Setting the name of the VM...
+[default] Clearing any previously set forwarded ports...
+[default] Creating shared folders metadata...
+[default] Clearing any previously set network interfaces...
+[default] Preparing network interfaces based on configuration...
+[default] Forwarding ports...
+[default] -- 22 =&gt; 2222 (adapter 1)
+[default] -- 80 =&gt; 8080 (adapter 1)
+[default] Running any VM customizations...
+[default] Booting VM...
+[default] Waiting for VM to boot. This can take a few minutes.
+</code></p>
+
+<p>I have a problem with this step few times, so if you machine could not be booted, try to run <code>vagrant reload</code>, it should help.</p>
+
+<p>It would took about up to 20 minutes, to fire up virtual machine, install git there, install Docker + Dokku. As soon as it&rsquo;s done, it&rsquo;s possible to access machine by <code>ssh</code>.</p>
+
+<p>Last thing you need to do, is to upload your <code>ssh</code> key to Dokku server, so you will be to <code>git push</code> code there.</p>
+
+<p>```bash</p>
+
+<blockquote><p>cat ~/.ssh/id_rsa.pub | ssh <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#114;&#111;&#111;&#116;&#64;&#x64;&#111;&#107;&#x6b;&#x75;&#46;&#x6d;&#101;">&#x72;&#x6f;&#111;&#x74;&#x40;&#100;&#x6f;&#107;&#107;&#117;&#x2e;&#109;&#x65;</a> &ldquo;sudo gitreceive upload-key alexanderbeletsky&rdquo;
+```</p></blockquote>
+
+<p>You can use default vagrant root password, which is <code>vagrant</code>.</p>
+
+<p>Now, just to check that everything is fine simply access you machine by <code>ssh</code>,</p>
+
+<p>```bash</p>
+
+<blockquote><p>vagrant ssh
+```</p></blockquote>
+
+<p>So, just try that everything is running fine by checking version of Docker:</p>
+
+<p>```bash</p>
+
+<blockquote><p>docker -v
+Docker version 0.6.1, build 5105263
+```</p></blockquote>
+
+<p>The instance is ready for deployment.</p>
+
+<h2>Deploy to Dokku</h2>
+
+<p>If you still there, you can just quit vagrant <code>ssh</code> session, and went to the folder with Node.js application. I&rsquo;ll be using really simple <a href="https://github.com/alexbeletsky/node-simple">app</a>, called <code>Node-simple</code> &ndash; express.js based, that serves one HTML file and shows <code>NODE_ENV</code> env. variable.</p>
+
+<p>So, what you need to setup is remote repository to push to:</p>
+
+<p>```bash</p>
+
+<blockquote><p>git remote add local-deploy git@dokku.me:node-simple
+```</p></blockquote>
+
+<p>That&rsquo;s all. You ready for first deploy, just push code to machine with Dokku:</p>
+
+<p>```bash
+git push local-deploy master
+› git push local-deploy master &mdash;force
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 289 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+&mdash;&mdash;&ndash;> Building node-simple &hellip;</p>
+
+<pre><code>   Node.js app detected
+</code></pre>
+
+<p>&mdash;&mdash;&ndash;> Resolving engine versions</p>
+
+<pre><code>   Using Node.js version: 0.8.25
+   Using npm version: 1.2.30
+</code></pre>
+
+<p>&mdash;&mdash;&ndash;> Fetching Node.js binaries
+&mdash;&mdash;&ndash;> Vendoring node into slug
+&mdash;&mdash;&ndash;> Installing dependencies with npm</p>
+
+<pre><code>   npm WARN package.json application-name@0.0.5 No repository field.
+   npm WARN package.json application-name@0.0.5 No readme data.
+   npm WARN package.json send@0.1.0 No repository field.
+   ...
+</code></pre>
+
+<p>=====> Application deployed:</p>
+
+<pre><code>   http://node-simple.dokku.me
+</code></pre>
+
+<p>To git@dokku.me:node-simple
+   dd05aae..ac5b6da  master &ndash;> master
+```</p>
+
+<h2>Setting up Environment</h2>
+
+<p>Every application requires environment. It&rsquo;s common practice to set at least <code>NODE_ENV</code> variable for Node.js applications. To do that, you need to create <code>ENV</code> file inside the <code>/home/git/node-simple</code> folder.</p>
+
+<p><code>bash
+› ssh root@dokku.me "echo export NODE_ENV="development" &gt; /home/git/node-simple/ENV"
+</code></p>
+
+<p>Now, let&rsquo;s re-deploy the application, change the version in <code>package.json</code> and push code again.</p>
+
+<p><code>bash
+› git push local-deploy master
+</code></p>
+
+<p>Now, application is ready to be accessed.</p>
+
+<h2>Accessing the Application</h2>
+
+<p>Open Chrome and hit <code>http://node-simple.dokku.me</code>, so you will see such response:</p>
+
+<p><img src="/images/blog/node-simple-run.png"></p>
+
+<p>You can play a bit further, by just changing some Node.js code of end-points and re-deploy. Each time, new docker instance is started and served on <code>http://node-simple.dokku.me</code>. The experience of deployment is really like something you have with Heroku.</p>
+
+<p>Just looking on logs while new application is deployed, would give pretty much idea of what&rsquo;s going on there.</p>
+
+<p>So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.</p>
+]]></content>
+  </entry>
+  
+</feed>

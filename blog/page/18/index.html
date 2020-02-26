@@ -1,0 +1,1447 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Extension methods and clean code Feb 10th, 2011 Clean Code, Code Kata, Tips Extension methods is one of my favorite features of C# language. It &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/18/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/extension-methods-and-clean-code.html">
+    
+      Extension methods and clean code</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-10T09:52:00+01:00" pubdate data-updated="true">Feb 10<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clean-code/'>Clean Code</a>, <a class='category' href='/blog/categories/code-kata/'>Code Kata</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+<a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension methods</a> is one of my favorite features of C# language. It appeared from version 3.0 and became very popular.
+</p>
+<p>
+The main goal of Extension Methods is to provide ability of extension of any class, without creating any derived classes, modifying original type or do &#8220;whatever&#8221; hacks. It is allowed to extend any type with any functionality in a very seamless fashion. What also great about Extension Methods is they allow to beautifully emulate behavior usually called pipelining (in <a href="http://lorgonblog.wordpress.com/2008/03/30/pipelining-in-f/">F#</a> or <a href="http://www.gnu.org/software/bash/manual/html_node/Pipelines.html">Bash</a>) and implement <a href="http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern">Chain of responsibility</a> pattern.
+</p>
+<p>
+But the most important as for me - Extension Methods help to keep my <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">code clean</a>. Clean code criteria is something I concerned a lot, nowadays.
+</p>
+<p>
+I recently started to practice with <a href="http://en.wikipedia.org/wiki/Kata_(programming)">code katas</a>, that I found essential for any developers who cares about <a href="http://www.hanselman.com/blog/SharpenTheSawForDevelopers.aspx">keeping their saw sharp</a>. So, after several iterations I came up with extension methods implementation that I pretty happy about. I&#8217;m using Roy Osherove&#8217;s <a href="http://www.osherove.com/tdd-kata-1/">StringCalculator</a> kata. It is about the implementation of simple method <code>Add</code> that:
+</p>
+<ul>
+<li>Takes numbers separated by delimiter, as string</li>
+<li>Determines if custom delimiter is set</li>
+<li>Split up original string to array of number tokens</li>
+<li>Validates the input (no negatives allowed) and returns the sum of numbers, ignoring numbers greater than 1000</li>
+</ul>
+<p>
+I would like to show to you both implementation and try to evaluate them from &#8220;clean code&#8221; point of view.
+</p>
+<p>
+Original one (this is of cause a little &#8220;unwinded&#8221; version, I had a different structure with smaller methods.. But idea still the same).
+</p>
+<pre class="brush: csharp;">
+public int Add(string numbers)
+{
+    var delimiters = new[] { ",", "\n" };
+
+    if (IsCustomDelimeterProvided(numbers))
+    {
+        delimiters = GetDelimitersFromNumbers(numbers);
+    }
+
+    var processed = numbers;
+    if (IsCustomDelimeterProvided(numbers))
+    {
+        processed = processed.Substring(processed.IndexOf('\n') + 1);
+    }
+
+    if (IsContainDelimeters(processed, delimiters))
+    {
+        var splittedNumbers = numbers.Split(delimiters, StringSplitOptions.None);
+        var validation = new NumbersValidation();
+
+        foreach (var number in splittedNumbers)
+        {
+            validation.Check(number);
+        }
+
+        validation.Validate();
+
+        return splittedNumbers.Sum(p => GetIntegerWithCondition(p, IgnoreNumbersMoreThatThousand()));
+    }
+
+    return Convert.ToInt32(processed);
+}
+</pre>
+<p>
+Do you think is this code clean? I don&#8217;t think so.. Of cause, it might be not so difficult to understand it, but:
+</p>
+<ul>
+<li>Method is just too long</li>
+<li>A lot of <code>if</code> statements make it difficult to see instruction flow</li>
+<li>It messes up &#8220;infrastructure&#8221; code (splits, validation) with primary functionality (sum of numbers)</li>
+</ul>
+<p>
+Let&#8217;s try to read it: <i>I got the numbers and I check if custom delimiter is set on the beginning of numbers string, if so I try to extract the custom delimiters from original string. After I pre-process the string to remove custom delimiter prefix, so do not break the rest of function. If numbers string contains the delimiters, I split it up, perform the validation by helper object (which will throw exception is something wrong). Run Sum algorithm that would: covert string to integer and ignore one if it is greater that 1000.. Otherwise, it just tries to convert to integer and return</i>.
+</p>
+<p>
+A lot of words, a lot of ifs isn&#8217;t it? Thats not good.
+</p>
+<p>
+Now, my last implementation with using of Extension Methods:
+</p>
+<pre class="brush: csharp;">
+public int Add(string numbers)
+{
+    var defaultDelimiters = new string[] { ",", "\n" };
+    var delimiters = numbers.CustomDelimiters().Concat(defaultDelimiters).ToArray();
+
+    return numbers.Replace(" ", "").Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
+        .RemoveSpecialSymbols().ToIntegersArray().ValidateIntegersArray().IgnoreIntegersGreatThanThousand().Sum();
+}
+</pre>
+<p>
+Do you feel the power? I definitely do!
+</p>
+<p>
+I believe that this code is very clean. It basically does not require any comments, because it looks like &#8220;plain English&#8221; explanation of what&#8217;s the functionality is all about! Anyway, let&#8217;s try to read: <i>I extract custom delimiters from numbers string and concatenate them with default delimiters. I replace all space with empty symbol (note: this step is not in original requirement, but I put it to keep code robust), then I split them with delimiters ignoring empty lines. After I remove all special symbols in numbers string and convert the result to array of integers. I validate this array (no negatives) and ignore any numbers great than thousand. At the end I sum up everything and return the result</i>.
+</p>
+<p>
+What is good about this code:
+</p>
+<ul>
+<li>
+Method is very short
+</li>
+<li>
+All details are hidden
+</li>
+<li>
+Control flow is very straightforward
+</li>
+<li>
+All dependent methods has meaningful names
+</li>
+<li>
+Method does exactly what it is suppose to do
+</li>
+</ul>
+<h2>Conclusion</h2>
+<p>
+Well, don&#8217;t get me wrong here. I&#8217;m not saying that now only Extension Methods is a way of solving the issues. Of cause not. But if you feel the smell of pipeline of chain of responsibility patters, extension methods are right choice. As always you should consider to do not &#8220;overplay&#8221; with some particular feature of language/framework.
+</p>
+<p>
+You can use links I gave above to read about technical details in MSDN. Check out full <a href="https://github.com/alexbeletsky/code.katas/blob/879a5765f4b8b408cc9f7b67ebdf767032433bd0/csharp/StringCalculator/StringCalculator.cs">implementation</a> and <a href="https://github.com/alexbeletsky/code.katas/blob/6fbb9907b334a364d43a868349de08971d147b10/csharp/StringCalculator/Tests/StringCalculatorTests.cs">tests</a> as my example of usage.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/how-to-export-sql-data-script-for-sql.html">
+    
+      How to export SQL data script for SQL Express 2008 R2</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-06T14:33:00+01:00" pubdate data-updated="true">Feb 6<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dal/'>DAL</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Before deployment of new version of my application I wanted to make sure that everything is alright, by doing development test on my machine. I backed up production database and copied it my local environment. Task was easy, restore database from backup and run all unit/integration tests, run the smoke test of application manually. But as I started to restore database I got such error from my SQL Express Management Studio: 
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s1600/sqlerror.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 149px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TU6j0MChEeI/AAAAAAAAHQ8/Z0nt-jek6uY/s400/sqlerror.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5570569906084188642" /></a>
+<pre>
+<code>
+TITLE: Microsoft SQL Server Management Studio
+------------------------------
+
+Restore failed for Server 'LOCAL\SQLEXPRESS'.  (Microsoft.SqlServer.SmoExtended)
+
+------------------------------
+ADDITIONAL INFORMATION:
+
+System.Data.SqlClient.SqlError: The database was backed up on a server running version 10.50.1600. That version is incompatible with this server, which is running version 10.00.2531. Either restore the database on a server that supports the backup, or use a backup that is compatible with this server. (Microsoft.SqlServer.Smo)
+</code>
+</pre>
+<p>
+Basically it meant that my production and local environment are different. On production I have SQL Express 2008 R2, locally I have SQL Express 2008. It was a surprise to me, cause my <a href="http://www.microsoft.com/web/downloads/platform.aspx">WebPI</a> shows me that I&#8217;m upgraded up to R2.
+</p>
+<p>
+Anyway, I had no time to upgrade my local environment and I did very simple workaround that might work for you as you don&#8217;t have very big database to handle.
+</p>
+<p>
+There is a feature of SQL Express (and Server) that allows you to export your database as SQL script and you can run this script on local SQL instance and got exactly same version.
+</p>
+<p>
+It is easy taks, but by doing that initially I successfully exported schema only, but not data itself. So, script generated didn&#8217;t contain and INSERT statement. As it turns out you have to change some default options, to export both schema and data. Follow the instructions: 
+</p>
+<ol>
+<li>
+Expand your database list and right click on target database.
+</li>
+<li>
+Select &#8220;Tasks&#8221; -> &#8220;Generate Scripts&#8221; context menu item. Generate scripts wizard will open.
+</li>
+<li>
+Press &#8220;Next&#8221; on welcome screen and select your database from databases list.<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s1600/selectdb.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TU6j9Bwb8bI/AAAAAAAAHRE/kd418y58iTk/s400/selectdb.png" border="0" alt=""id="Img1" /></a>
+</li>
+<li>
+Make sure you checked option &#8220;Script all object in selected database&#8221; if you want to script all db. In case you need only some particular table you might consider to select it later. Click &#8220;Next&#8221;.
+</li>
+<li>
+On Script option step, make sure to select &#8220;Script Data&#8221; option (this is exactly what I missed and didn&#8217;t understand why data is not present in final script).
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s1600/scriptdata.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 362px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TU6kLZ4hqcI/AAAAAAAAHRM/W7rv43-R3uc/s400/scriptdata.png" border="0" alt=""id="Img2" /></a>
+</li>
+<li>
+Proceed to the end of wizard to complete it.
+</li>
+</ol>
+<p>
+At the end you will got SQL script with schema and data that you can run on SQL Express 2008 and got exactly the same database as on R2. 
+</p>
+<p>
+This helped me quickly to workaround &#8220;version incompatibility&#8221; issue, hope it might help you as well.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/02/val-gardena-dolomites-trip-2011.html">
+    
+      Val Gardena (Dolomites) trip 2011</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T22:16:00+01:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+It is over. It was one of my best vacations ever. We had a chance to see a lot of beautiful spots, especially in Venice and Gratz and had great snowboarding times on Val Gardena area slopes.
+</p>
+<p>
+As I said in previous post, this time we did plan our trip more carefully. Without long night driving and staying in hotels for night to have a rest. We went out of the Kiev early morning (about 3.00) and went to west Ukraine border to small town - <a href="http://maps.google.com/maps?f=q&source=s_q&hl=uk&geocode=&q=%D0%90%D1%81%D1%82%D0%B5%D0%B9,+%D0%97%D0%B0%D0%BA%D0%B0%D1%80%D0%BF%D0%B0%D1%82%D1%81%D1%8C%D0%BA%D0%B0+%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C,+%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0&aq=0&sll=48.176847,22.602997&sspn=0.127748,0.338173&ie=UTF8&hq=&hnear=%D0%90%D1%81%D1%82%D0%B5%D0%B9,+%D0%91%D0%B5%D1%80%D0%B5%D0%B3%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9,+%D0%97%D0%B0%D0%BA%D0%B0%D1%80%D0%BF%D0%B0%D1%82%D1%81%D1%8C%D0%BA%D0%B0+%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C,+%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0&t=h&z=13">Astey</a> where we crossed the border to Hungary. This time we are 2 cars team. Connected with radio stations, we feel like a professional rally riders for a long test drive trip :). 
+</p>
+<p>
+Dmytro (the manager of our trip) booked very nice hotel <a href="http://www.booking.com/hotel/hu/all-4u-apartments.uk.html?sid=6a30321ac73f772117c92f6e17305422;checkin=2011-01-20;checkout=2011-01-21;show_room=RD18522902#">All-4 U</a> in center Budapest. Living in center has pros and cons, of cause.. It is good that you could walk to main city POI&#8217;s, but it was very (very!) hard to find hotel and find a parking place for car. Center of Budapest is in heavy maintenance now, so our GPS were guide us through streets that are closed for traffic now. We finally found hotel but it was located in very small street, with no free parking places so we did several circles, to finally hit the entrance and underground parking.
+</p>
+<p>
+So, at the morning we had a quick breakfast and went to Venice, Italy. Nothing more as so good as driving by Euro highways. It is easy and safe and fast. Our path to Italy were made through Slovenia. Slovenia is very beautiful country and we very much enjoyed the ride. Near the 20.00 we came to hotel <a href="http://www.booking.com/hotel/it/altieri.en-gb.html?aid=333518;label=altieri-u8H8xFVdXczhwVr*sP9_VQS5125397262;sid=6a30321ac73f772117c92f6e17305422;checkin=2011-01-21;checkout=2011-01-22">Alteri</a> 
+    near Venice. We had a quick shower and preparation, got a bus tickets and went 
+    to city. Since we were really hungry, first place to visit was some restaurant 
+    to get some food. The owner of hotel recommended us some place and we went 
+    there. It was a quite small place. Food and vine were just perfect, very tasty. I was a little nervous about the price, but as I glanced to menu I was happy to see that prices are not overhigh. It is even lower that some expensive restaurants in center of Kiev.. but could you compare Kiev and Venice, with number of tourists, attractions? No way..  
+</p>
+<p>
+Venice is town on water. No transport, no cars, nothing. Only walking and using gondolas to go by chanells. Since we came on night, not a lot of tourists were in town that time. Some times it really created illusion that we are alone there! So quite, so small streets with small bridges.. so magical! If you are not familiar much with Venice you really think it is like maze. We lost several times but it was really fun. Andrey, the guy who held the map and was showing directions, was doing a great job to save us, but is was like that: &#8220;Now, let&#8217;s turn right, pass the bridge.. turn left and right again and bla-bla&#8221;, but after 10 minutes we were on same place we started with :). Fanstastic.      
+</p>
+<p>Venice streets</p>
+<a href="http://picasaweb.google.com/lh/photo/c0Zh370ngwAGIjUON0Txwg?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUhZwp0SiWI/AAAAAAAAHQk/lkYOCaEjrIY/s640/IMG_4849.JPG" height="407" width="620" /></a>
+<p>Main channel</p>
+<a href="http://picasaweb.google.com/lh/photo/SiF0cbZD5QsP3pGVpdM9nw?feat=embedwebsite"><img src="http://lh6.ggpht.com/_stL4bIIuRUs/TUhZ9DSR1uI/AAAAAAAAHQk/UZr3EYIBwTQ/s640/IMG_4870.JPG" height="407" width="620" /></a>
+<p>Beautiful bridge</p>
+<a href="http://picasaweb.google.com/lh/photo/KLze0mOE5QNe5B3OUN9rWg?feat=embedwebsite"><img src="http://lh4.ggpht.com/_stL4bIIuRUs/TUha7Dx3VtI/AAAAAAAAHQk/36LvZ719KyQ/s640/IMG_4916.JPG" height="407" width="620" /></a>
+<p>
+Next morning we had just a several hours to have a walk, so we were hurry to Venice again. At morning it looks really different. You can see much more details of cause (like, how all those building are really old.. or color of water in channels), but now it is overcrowded with tourists and souvenirs dealers. So the magic just gone :). But still a lot of shops and churches are opened, so you might have a chance to visit those.  
+</p>
+<p>Sashka near one of the channels</p>
+<a href="http://picasaweb.google.com/lh/photo/H3fxgsnzkoSbX0dDKjCYUQ?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUhbxRCPBjI/AAAAAAAAHQk/oaEjNmCDc7M/s640/IMG_4952.JPG" height="407" width="620" /></a>
+<p>Together on San Marko</p>
+<a href="http://picasaweb.google.com/lh/photo/qFNY_mxAHLW2ZFp6Zi_Ufg?feat=embedwebsite"><img src="http://lh4.ggpht.com/_stL4bIIuRUs/TUhcahWloAI/AAAAAAAAHQk/D5SwdL-x--g/s640/IMG_5001.JPG" height="407" width="620" /></a>
+<p>Gondolas</p>
+<a href="http://picasaweb.google.com/lh/photo/tm3yLmzlnGIjAZO5GrCCuA?feat=embedwebsite"><img src="http://lh3.ggpht.com/_stL4bIIuRUs/TUhcnsWEbQI/AAAAAAAAHQk/m9JGU816aaY/s640/IMG_5024.JPG" height="407" width="620" /></a>
+<p>
+The weather were fine, but wind were quite cold. Late January is probably not the best time to visit Venice, but anyway I had a lot of pleasure to be in this legend place. 
+</p>
+<p>
+We packed our bags and went to target point of our journey, <a href="http://maps.google.com/maps?f=q&source=s_q&hl=uk&geocode=&q=Cristina+Val+Gardena+Telemark&aq=&sll=46.558182,11.728249&sspn=0.016466,0.042272&ie=UTF8&hq=Cristina+Val+Gardena+Telemark&hnear=&ll=46.560601,11.710997&spn=0.008233,0.021136&t=h&z=16">St. Christina</a>. We were driving by highway, with a very sunny weather behind the car glass, seeing a lot of vineyards. Outside view was so warm that it was to difficult to imagine that somewhere is cold and snow covered peaks of mountains.  
+</p>
+<p>
+We came to St. Christina at evening, it was -4C and we climb to 1650m over sea level. It was dark already so we could not see mountains, but the air was so fresh and so nice that it could be only in Alps. We were exited about next 6 days! Val Gardena is huge and you might have everyday snowboarding in different places. So, it was a good idea to take good rest before exploring the mountains. 
+</p>
+<p>
+Val Gardena meet our expectations for sure! I&#8217;ve never seen so much exceptional view as from Seceda or Marmolada tops! Really-really beautiful landscapes. The killer feature of Val Gardena area is <a href="http://www.dolomitesworld.com/sellaronda/">Sellaronda</a>. Sellaronda is a circuit around Sella mountains massif.. Big number of slopes and lifts that makes it possible to feel all beauty of Dolomites. You can do the circuit in 2 directions, green one and orange one. They are mostly equal.. orange just contains a bit more red and black (more complex) slopes. Green one can be used by everyone, even if you are not so confident in skies or snowboard. It took about 3-4 hours to complete the circle. 
+</p>
+<p>Sella</p>
+<a href="http://picasaweb.google.com/lh/photo/jFsHluluW9_aYoT-CsV6-g?feat=embedwebsite"><img src="http://lh4.ggpht.com/_stL4bIIuRUs/TUhdnxagAsI/AAAAAAAAHQk/7-AG3Wkda3s/s640/IMG_5080.JPG" height="407" width="620" /></a>
+<p>Great sunny day</p>
+<a href="http://picasaweb.google.com/lh/photo/2l21P611fO4HbVRSCL0JJA?feat=embedwebsite"><img src="http://lh4.ggpht.com/_stL4bIIuRUs/TUhdrHi7LfI/AAAAAAAAHQk/47VdcT9OLbg/s640/IMG_5088.JPG" height="407" width="620" /></a>
+<p>Sashka</p>
+<a href="http://picasaweb.google.com/lh/photo/bInMwxmC7-pEHb0C6oRdAQ?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUhd9KrMl2I/AAAAAAAAHQk/KnBhUurOflc/s640/IMG_5112.JPG" height="407" width="620" /></a>
+<p>Me going down the slope</p>
+<a href="http://picasaweb.google.com/lh/photo/BFynrx9OzoT6tOSD5ACBkQ?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUheCK8gt0I/AAAAAAAAHQk/2gpXhfxdS7k/s640/IMG_5123.JPG" height="407" width="620" /></a>
+<p>
+The biggest disadvantage of Val Gardena - it is overcroweded. Despite of huge area, you typically will be in long waiting lines for lifts on a popular slopes (especially ones that are on green or orange route). Besides of that just before our period of stay it was a quite warm weather there, without out big snowfalls, made slopes very hard and icy. 
+</p>
+<p>
+<a href="http://en.wikipedia.org/wiki/Marmolada">Marmolada</a> is highest point of resort. According to wikipedia it is even seen from Venice on clear day. We dedicated one day for trip to Marmolada. It took almost 6 hours to me and Sasha to make possible to get on top and back to St. Christina. Even it took a lot of time to get where and spent a time in long waiting lines, as soon as you take a view from top you immediately forget about all bad things!
+</p>
+<a href="http://picasaweb.google.com/lh/photo/qr-i-zQfjiht6mCBAVnodA?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUhesMt4fEI/AAAAAAAAHQk/eN2jphz5690/s640/IMG_5167.JPG" height="407" width="620" /></a>
+<p>Exceptional view</p>
+<a href="http://picasaweb.google.com/lh/photo/_kzqXIW74_SkDuRRBu813g?feat=embedwebsite"><img src="http://lh6.ggpht.com/_stL4bIIuRUs/TUhezdPIECI/AAAAAAAAHQk/FVPakaSDCDI/s640/IMG_5181.JPG" height="407" width="620" /></a>
+<p>Europenean Rocky Mountains :)</p>
+<a href="http://picasaweb.google.com/lh/photo/pG_X8q_bjoMNrb3R1nSgtQ?feat=embedwebsite"><img src="http://lh5.ggpht.com/_stL4bIIuRUs/TUhe2Cn8svI/AAAAAAAAHQk/hzHIhGlfR8M/s640/IMG_5184.JPG" height="407" width="620" /></a>
+<p>
+And I really-really much enjoyed the run from Marmolada back to valley. That was fantastic.
+</p>
+<p>
+We&#8217;ve spend one evening in Ortizei looking for a fun public places, but have found nothing.. except one small bar where ski-instructors were getting drunk after hard work days :). Despite of Ischgl <a href="http://en.wikipedia.org/wiki/Apr%C3%A8s-ski">Apre-ski</a> is not so popular in Italy, so after skiing we usually went home, preparing food and did our small parties.
+</p>
+<p>
+6 days of snowboarding went very fast. Originally I planned to read some books and small coding stuff, but in evenings I was so tired that after a good dinner, usually with grappa or other alcohol, all I could do is only crawl into bedroom direction :). Our snowboarding times getting over, but way back-home with visits of Gratz and Lviv was waiting for us. Moreover, I&#8217;ve lost my camera in Budapest hotel, so we had to be there to take it back :).
+</p>
+<p>
+<a href="http://maps.google.com/maps?f=q&source=s_q&hl=uk&geocode=&q=%D0%93%D1%80%D0%B0%D1%86,+%D0%90%D0%B2%D1%81%D1%82%D1%80%D1%96%D1%8F&aq=0&sll=46.538082,11.769791&sspn=0.065889,0.169086&ie=UTF8&hq=&hnear=%D0%93%D1%80%D0%B0%D1%86,+Graz,+%D0%A8%D1%82%D0%B8%D1%80%D1%96%D1%8F,+%D0%90%D0%B2%D1%81%D1%82%D1%80%D1%96%D1%8F&t=h&z=12">Gratz</a> is quite big city in Austia. Since we had not a lot of time, we visited only two Gratz&#8217;s spots, as <a href="http://en.wikipedia.org/wiki/Grazer_Schlo%C3%9Fberg">Grazer Schloßberg</a> and <a href="http://en.wikipedia.org/wiki/Kunsthaus_Graz">Kunsthaus</a>. Schloßberg is a castle on mountain, you can get there either by foot or take a lift. From the mountain you might have very nice Gratz views.
+</p>
+<p>Way to Schloßberg</p>
+<a href="https://picasaweb.google.com/lh/photo/G2Fs5gOaXYTR3uPsuDEu-A?feat=embedwebsite"><img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/TUhfv-0JhNI/AAAAAAAAHQk/Bsrz84JOvqg/s640/IMG_5227.JPG" height="407" width="620" /></a>
+<p>View from mountain</p>
+<a href="https://picasaweb.google.com/lh/photo/TIeMJQDN7h1JjZmEhgeO2A?feat=embedwebsite"><img src="https://lh5.googleusercontent.com/_stL4bIIuRUs/TUhf1IOw6dI/AAAAAAAAHQk/1HR_vt2hmQo/s640/IMG_5239.JPG" height="407" width="620" /></a>
+<p>Kusthaus</p>
+<a href="https://picasaweb.google.com/lh/photo/8Mv3_pNMn1LuElrcB22qDA?feat=embedwebsite"><img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/TUhf-nMB6GI/AAAAAAAAHQk/4_bA0VY8iVE/s640/IMG_5243.JPG" height="407" width="620" /></a>
+<p>
+Kusthaus is a museum of the modern art. Unfortunately, main space of museum were closed the time we visited it.. and the stuff I saw didn&#8217;t impressed me much. We paid for tickets, entered the hall see several small rooms with devices pretended to be robots and after museum worker said: &#8220;That&#8217;s basically it, goodbye&#8221;. Not fair. 
+</p>
+<p>
+We&#8217;ve spend some time to find a place to eat.. Some restaurants were closed already that time, some was so luxury with man&#8217;s wearing smoking and lady&#8217;s in long evening dresses, that we could not conform to their companies :). I started to lose hope and recalling do we still have those crackers in hotel, but finally we found something. Austrian dishes differs from Italian ones. I liked Italian more, but anyway it was good and tasty.    
+</p>
+<p>
+So, next morning we were moving directly back to Ukraine, with one small stop at Budapest to get camera back :). We did a route fast and easy and soon was on Ukrainian customs. Faces of custom workers immediately return you to &#8220;Ukrainian Reality&#8221;. Fortunately they were to lazy to check our car, because we a little violate the law of amount of alcohol you allowed to bring in. After the customs you are completely back to earth with the roads you have to drive. Leaving Ukraine is easy stuff, but getting back is very depressing :). Roads are awful, full of wholes and without any road markings and lightings makes it really hard to drive. Situation is complicated with a big number of trucks moving from a border of Ukraine, with a low speed.. so you all the time have to practice in overtaking. In night, with limited far view it is difficult, scary and dangerous. First car crew was helping us a lot by moving forward and giving a directions and recommendations of safe overtaking. 
+</p>
+<p>
+I hardly could imagine how people from Europe will be driving to Ukraine to see <a href="http://en.wikipedia.org/wiki/UEFA_Euro_2012">Euro 2012</a>. 
+</p>
+<p>
+In spite of everything we came to <a href="http://en.wikipedia.org/wiki/Lviv">Lviv</a>, one of the most beautiful places in Ukraine. Similar to Budapest, the center of Lviv is not very car-friendly. Small streets, block pavement, trams makes the problems. But now we are home, feeling that most problems are in past :). While we approached Lviv, we&#8217;ve booked appartments to live and table in one of the best places in Lviv called <a href="http://www.kumpel.biz/">Kumpel&#8217;</a>. They produce great beer (I like dark especially) and very nice dishes. After ~600km of road having a big glass of cold and tasty beer is great fun, believe me :). 
+</p>
+<p>Walking Lviv streets</p>
+<a href="https://picasaweb.google.com/lh/photo/2s6-ql7ZUM8mRv7vXs1QDw?feat=embedwebsite"><img src="https://lh4.googleusercontent.com/_stL4bIIuRUs/TUhg9RcWt1I/AAAAAAAAHQk/U3DwTL1PAgY/s640/IMG_5289.JPG" height="407" width="620" /></a>
+<p>Chimera on house</p>
+<a href="https://picasaweb.google.com/lh/photo/h8DPMq0glCMYKGz59FfeUw?feat=embedwebsite"><img src="https://lh3.googleusercontent.com/_stL4bIIuRUs/TUhhD0_rfqI/AAAAAAAAHQk/_i9KmuXM-uM/s640/IMG_5292.JPG" height="407" width="620" /></a>
+<p>Ukrainian delicious &#8220;Salo&#8221; with dark bread and garlic - great taste</p>
+<a href="https://picasaweb.google.com/lh/photo/IMZDv8MKHa068ludshFMAw?feat=embedwebsite"><img src="https://lh6.googleusercontent.com/_stL4bIIuRUs/TUhhPR4EKUI/AAAAAAAAHQk/t0BCqA66ijE/s640/IMG_5299.JPG" height="407" width="620" /></a>
+<p>
+We got to Kiev, mostly with no serious at 15.00 next day. I was mostly sleep all day with a little driving before Kiev.
+</p>
+<p>
+&#8220;East or west the home is best&#8221;, as saying goes.. We finally entered own city. Had a good bye by radio station with guys, saying &#8220;see you next year&#8221;, we landed near my house to unpack the bags and snowboards.
+</p>
+<p>
+That was a great trip for sure! We did 3,908 kilometers in total. We had no injuries, no car damages. Visited greatest places and had snowboarding that I&#8217;ll be seeing in my night dreams in summer. You can find some more picture <a href="https://picasaweb.google.com/alexander.beletsky/21Jan2011ValGardenaTrip#">here</a>. Now, it is time to work again.. to learn new things, to blog and self-improve. Thanks a lot if you read till this point :). 
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/01/last-workday-before-vacation.html">
+    
+      Last workday before vacation</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-19T11:47:00+01:00" pubdate data-updated="true">Jan 19<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Today is my last day before vacation and I&#8217;m very exited about that!
+</p>
+<p>
+Last year my wife and my friends did a great quest from Kiev to <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Ischgl,+Austria&sll=45.434336,12.338784&sspn=0.268866,0.676346&ie=UTF8&hq=&hnear=Ischgl,+Landeck+District,+Tyrol,+Austria&t=h&z=15">Ischgl, Austria</a>. It was my first experience of driving for such big distance (total drive were ~4500 kilometers). We were too optimistic to do all road at once, without any stay on night.. we did it through, but it was too difficult :).. So, when we finally hit Ischgl, we were so tired and exhausted that even beauty of snow Alps were not please us. Fortunately that feeling gone after we got good diner and sleep (I remember I slept for 15 hours then). Nevertheless of hard road the snowboarding in Austria is just fantastic! We had a lot joy of long runs, beautiful slopes, great weather and fresh air! Some photos you ca find in my <a href="http://picasaweb.google.com/alexander.beletsky/15Feb2010IschglSnowTrip#">Picasa</a>.
+</p>
+<p>
+This year we are smarter, experienced and want for more! At September we started to plan next adventure, this time to Italian Alps (Dolomites). We will stay in <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Santa+Cristina+Val+Gardena,++Italy&sll=46.553785,11.762066&sspn=0.06587,0.169086&ie=UTF8&hq=&hnear=Santa+Cristina+Gherd%C3%ABina+Province+of+Bolzano-Bozen,+Trentino-Alto+Adige%2FS%C3%BCdtirol,+Italy&ll=46.558388,11.719494&spn=0.065865,0.169086&t=h&z=13">Santa Cristina, Italy</a>.. that gives us ability to joy of the best snow resorts of <a href="http://www.val-gardena.net/Default_en.asp">Val Gardena</a> area. This is not only place we are going to visit. We have a night stay in <a href="http://maps.google.com.ua/maps?q=Budapest,+Hungary&um=1&ie=UTF-8&sa=N&hl=en&tab=wl">Budapest, Hungary</a> (last time we had only quick change to look at it, but I would say this is one of the most beautiful cities I ever seen) and <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Venice,+Italy&sll=45.434336,12.338784&sspn=0.268866,0.676346&ie=UTF8&hq=&hnear=Venice,+Veneto,+Italy&t=h&z=11&iwloc=A">Venice, Italy</a>. At the way home we also planning to vist <a href="http://maps.google.com.ua/maps?f=q&source=s_q&hl=en&geocode=&q=Retz+Austria&sll=47.44295,14.040527&sspn=3.960226,10.821533&ie=UTF8&hq=&hnear=Retz,+Hollabrunn,+Lower+Austria,+Austria&ll=48.75981,15.954895&spn=0.126289,0.338173&t=h&z=12">Retz, Austria</a>. This time we are going to join both fun of snowboarding and excitement of Europe traveling. Venice is the place I dream to visit and I&#8217;m very happy that my dream will come true, soon :).
+</p>
+<p>
+This year I&#8217;m leaving to vacation with very good mood. I&#8217;ve just rolled-out next version of <a href="http://trackyt.net">trackyt.net</a>, so it is upgraded up to 1.0.3 :), closed a lot of <a href="https://github.com/alexbeletsky/Trackyourtasks.net/issues/closed">issues</a> so far. But mostly because of very good progress we currently do with my fine team in <a href="http://www.e-conomic.com/">E-conomic</a>. I&#8217;m pretty happy to know that during my absence everything would remain with same control and with good performance.
+</p>
+<p>
+So, that&#8217;s my time to re-charge a batteries a little :). See you in several weeks, guys!
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/01/implementation-of-rest-service-with.html">
+    
+      Implementation of REST service with ASP.NET MVC</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-06T23:39:00+01:00" pubdate data-updated="true">Jan 6<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Now, after we are clear what the REST is all <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">about</a> and how to <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">verify</a> REST methods, it is time to implement our own service. I&#8217;ll create it just from scratch only reusing some data structures from my other projects and test framework. </p><h2>Project vision and goal</h2><p>Assume we are managing blogging service, with a bunch of customers. Customers are pretty happy with service, since they could post new blog posts, collect comments, build social networks etc. But since we already stepped into &#8220;API epoch&#8221;, customers started to want more.. Namely, they want API to be able to work with data from their own applications. Vendors demand API to create new cool editors for our blog service. CEO wants us to create API, because he&#8217;s just found out that applications without API are <a href="http://blog.devpulse.com/post/1069053518/applications-without-api-are-doomed">doomed</a>. Business goal is clear, so let&#8217;s implement it. We are going to create REST style API, based on JSON as data exchange format. API would allow users to get all posts, create new and delete some existing post. </p><h2>Set it up</h2><p>I&#8217;ve created just empty ASP.net MVC2 application in my Visual Studio and added it to <a href="https://github.com/alexbeletsky/rest.mvc.example">github</a> (please don&#8217;t be confused by bunch of other folders you see in solution, they are part of <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a> and <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> framework that I use for all my projects). This application is a host of new REST service. We are going to use functionality of MVC2 framework to implement it. </p><h2>Initial project content</h2><p>In Model folder of application I added <code>Linq to SQL Classes</code> item and grab <code>BlogPosts</code> table from <code>restexample</code> database to designer, so new <code>RestExampleDataContext</code> class is created and <code>BlogPost</code> entry would be part of it. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s1600/blogpost-model.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 246px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYecFF5mKI/AAAAAAAAHFU/Nc9IbItC_u8/s400/blogpost-model.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5559164257787549858" /></a>  <pre class="brush: csharp;">[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="restexample")]
+public partial class RestExampleDataContext : System.Data.Linq.DataContext
+{
+    // implementation...
+
+</pre><pre class="brush: csharp;">[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogPosts")]
+public partial class BlogPost : INotifyPropertyChanging, INotifyPropertyChanged
+{
+    // implementation
+</pre><p>I&#8217;ve added simple data to database that will be used by tests: </p><pre class="brush: sql">insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-1', 'My post 1', 'This is first post', CAST('2011-01-01' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 2', 'This is second post', CAST('2011-01-02' as datetime), 'alexander.beletsky');
+insert into BlogPosts (Url, Title, Body, CreatedDate, CreatedBy)
+values ('my-post-2', 'My post 3', 'This is third post', CAST('2011-01-03' as datetime), 'alexander.beletsky');
+</pre><h2>API Interface</h2><p>The interface we are going to implement, looks like this: </p><pre class="brush: plain">http://localhost/api/v1/posts/get/{posturl}
+http://localhost/api/v1/posts/all/{username}
+http://localhost/api/v1/posts/post/{username}
+http://localhost/api/v1/posts/delete/{username}/{posturl}
+</pre><p>For all of these interface methods, I&#8217;m adding integration javascript <a href="https://github.com/alexbeletsky/rest.mvc.example/blob/master/src/Web/Scripts/Tests/api/tests.api.js">tests</a> in the same way I described <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">here</a>. Since we don&#8217;t have implementation all are failed now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s1600/api-tests-initial.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TSYesObUDqI/AAAAAAAAHFc/Pb4UzsUBHbk/s400/api-tests-initial.png" border="0" alt=""id="Img1" /></a> <p>Please take a look on those tests before proceeding to implementation part, it would make some things more clear. </p><h2>API folder structure</h2><p>It is a question of choice but I just prefer to put all API related code to separate folder, called (who might guess?) &#8220;API&#8221;. It is really similar with Area, by it&#8217;s structure. It has <code>Controllers</code>, <code>Models</code> and <code>Registration</code> class. It does not have any <code>Views</code>, since API does not expose any UI. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s1600/api-folder.png"><img style="cursor:pointer; cursor:hand;width: 331px; height: 268px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfDDRmplI/AAAAAAAAHFk/UKMxUqd5uAg/s400/api-folder.png" border="0" alt=""id="Img2" /></a> <h2>Routing</h2><p>If I were asked to describe what the ASP.net MVC2 application is about I would answer: &#8220;It is mapping between HTTP request, with particular URL, to corresponding method of handler class. This handler is called controller, method is called action&#8221;. So, the primary goal of MVC application is to define such mapping. In terms of MVC such mapping is called routing. It is all about the routing.  </p><p>Let&#8217;s take a look on our interface one more time and we came up with such routing definition for API.  </p><pre class="brush: csharp">using System.Web.Mvc;
+
+namespace Web.API.v1
+{
+    public class ApiV1Registration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get { return "ApiV1"; }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            context.MapRoute(
+                "ApiV1_posts",
+                "api/v1/posts/{action}/{userName}/{postUrl}",
+                new { controller = "APIV1", postUrl = UrlParameter.Optional });
+        }
+    }
+}
+</pre><h2>API Controller</h2><p>After routing is defined, it is time to add actual hander - controller class. Initially it would be empty, with out any action. Just initialization of <code>context</code> object. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    public class ApiV1Controller : Controller
+    {
+        private RestExampleDataContext _context = new RestExampleDataContext();
+
+        // actions..
+    }
+}
+</pre><h2>API Actions implementation</h2><p>We&#8217;ve complete infrastructure to start implementation. Solution, Project, Interface, Tests, Routing, Controller.. now it is time for Actions. </p><h3>Get all posts method</h3><p><pre>http://localhost/api/v1/posts/all/{username}
+</pre></p><p>It receives <code>username</code> as parameter and expected to return all blog posts belong to this user. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult All(string userName)
+{
+    var posts = _context.BlogPosts.Where(p => p.CreatedBy == userName);
+
+    return Json(
+        new { success = true, data = new { posts = posts.ToList() } }, JsonRequestBehavior.AllowGet
+    );
+}
+</pre><p>Signature of action method said: respond to <code>HttpGet</code> verb, get all records with corresponding userName and return as Json.  </p><p><code>Json</code> method of Controller class is really cool feature of MVC2 framework. It receives anonymous type object and serialize it Json. So, the <code>new { success = true, data = new { posts = posts.ToList() } }</code> object will be serialized into: </p><pre class="brush: csharp">{"success":true,"data":{"posts":[{"Id":1,"Url":"my-post-1","Title":"My post 1","Body":"This is first post","CreatedDate":"\/Date(1293832800000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":2,"Url":"my-post-2","Title":"My post 2","Body":"This is second post","CreatedDate":"\/Date(1293919200000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}},{"Id":3,"Url":"my-post-2","Title":"My post 3","Body":"This is third post","CreatedDate":"\/Date(1294005600000)\/","CreatedBy":"alexander.beletsky","Timestamp":{"Length":8}}]}}
+</pre><p>Nice and clean. </p><p>Take a note to <code>JsonRequestBehavior.AllowGet</code>. This is a special flag, you have to pass to <code>Json</code> method, if it is being called from GET handler method. This is done to prevent <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx">Json Hijacking</a> type of attack. So, actually if your API call returns user sensitive data, you should consider POST instead of GET.  </p><p>Let&#8217;s re-run test suite and see that first test is green now. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s1600/api-tests-firstpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfXLeuhmI/AAAAAAAAHFs/IH0dZSk3X9A/s400/api-tests-firstpass.png" border="0" alt=""id="Img3" /></a> <h3>Create new post method</h3><pre>http://localhost/api/v1/posts/all/{username}
+</pre><p>It receives <code>username</code> as parameter and blog post content in POST body as payload. Code is: </p><pre class="brush: csharp">[HttpPost]
+public JsonResult Post(string userName, PostDescriptorModel post)
+{
+    var blogPost = new BlogPost {
+        CreatedBy = userName,
+        CreatedDate = DateTime.Now,
+        Title = post.Title,
+        Body = post.Body,
+        Url = CreatePostUrl(post.Title)
+    };
+
+    _context.BlogPosts.InsertOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, url = blogPost.Url });
+}
+
+private string CreatePostUrl(string title)
+{
+    var titleWithoutPunctuation = new string(title.Where(c => !char.IsPunctuation(c)).ToArray());
+    return titleWithoutPunctuation.ToLower().Trim().Replace(" ", "-");
+}
+</pre><p>where <code>PostDescriptorModel</code> is </p><pre class="brush: csharp">namespace Web.API.v1.Models
+{
+    public class PostDescriptorModel
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+}
+</pre><p>If you try to run this example just like that, you will see that <code>PostDescriptorModel</code> instance will be null. MVC2 could not handle Json payload. But if you google a little you find article by Phil Haack, where he addresses exactly the same issue - <a href="http://haacked.com/archive/2010/04/15/sending-json-to-an-asp-net-mvc-action-method-argument.aspx">Sending JSON to an ASP.NET MVC Action Method Argument</a>. Support of Json as action method is implemented in MVC Futures 2 library (library that contains useful extensions, that are not yet part of framework but will be there with big chances). Download it by this <a href="http://aspnet.codeplex.com/releases/view/41742#DownloadId=110348">link</a> add reference to project and in Global.asax.cs add <code>JsonValueProviderFactory</code>: </p><pre class="brush: csharp">protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+
+    RegisterRoutes(RouteTable.Routes);
+
+    ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
+    // ...
+</pre><p><strong>Important:</strong> </p><ul><li>In case you are using MVC3 framework, you do not need to include MVC Futures assembly, since <code>JsonValueProviderFactory</code> is already included into MVC3.</li>
+</ul><p>If I try to re-run the tests, I&#8217;ll see that &#8220;create new post&#8221; test is still red. That&#8217;s because &#8220;get post&#8221; API method is still not implemented. </p><h3>Get post by url method</h3><pre>http://localhost/api/v1/posts/get/{posturl}
+</pre><p>It receives <code>post</code> as post url and return blog post object in response. Code is: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Get(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    return Json(
+        new { success = true, data = blogPost }, JsonRequestBehavior.AllowGet);
+}
+</pre><p>Last red test is &#8220;delete post test&#8221;, so let&#8217;s implement delete API call. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s1600/api-tests-secondpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TSYfrWASkDI/AAAAAAAAHF0/QgJ68LePMUU/s400/api-tests-secondpass.png" border="0" alt=""id="Img4" /></a> <h3>Delete post by url method</h3><p><pre>http://localhost/api/v1/posts/delete/{posturl}
+</pre></p><p>It receives <code>post</code> as post url and return status in response. Code is: </p><pre class="brush: csharp">[HttpDelete]
+public JsonResult Delete(string userName, string postUrl)
+{
+    var blogPost = _context.BlogPosts.Where(p => p.CreatedBy == userName && p.Url == postUrl).SingleOrDefault();
+
+    _context.BlogPosts.DeleteOnSubmit(blogPost);
+    _context.SubmitChanges();
+
+    return Json(
+        new { success = true, data = (string)null });
+}
+</pre><p>Now all tests are green. Fantastic! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s1600/api-tests-allpass.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYfzxv7ueI/AAAAAAAAHF8/geiqvbnxbcU/s400/api-tests-allpass.png" border="0" alt=""id="Img5" /></a> <h2>Handle Json Errors</h2><p>What happens if exception thrown with-in API method? Let&#8217;s create a test and see: </p><pre class="brush: js">test("fail method test", function () {
+
+    var method = 'posts/fail';
+    var data = null;
+    var type = 'GET';
+    var params = ['alexander.beletsky'];
+
+    var call = createCallUrl(this.url, method, params);
+
+    api_test(call, type, data, function (result) {
+        ok(result.success == false, method + " expected to be failed");
+        same(result.message, "The method or operation is not implemented.");
+    });
+});
+</pre><p>And add implementation of failed method: </p><pre class="brush: csharp">[HttpGet]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>If I run the test, I&#8217;ll see such result: </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s1600/api-tests-exception.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TSYgMgCcVwI/AAAAAAAAHGE/RcPpQUSlRn4/s400/api-tests-exception.png" border="0" alt=""id="Img6" /></a> <p>This is not very greceful. It is expected that Json response would contain <code>false</code> in <code>success</code> attribute and <code>message</code> would contain actual exception message. </p><p>Of cause, it is possible to wrap all methods in <code>try / catch</code> code block and return corresponding Json in <code>catch</code> block, but this violates DRY (don&#8217;t repeat yourself) principle and makes code ugly. It is much more better to use MVC2 method attributes for that. </p><p>So, we define new attribute that would handle error and in case of exception thrown with-in Action method, this exception will be wrapped in Json object and returned as a response. </p><pre class="brush: csharp">namespace Web.Infrastructure
+{
+    public class HandleJsonError : ActionFilterAttribute
+    {
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
+            {
+                filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                filterContext.Result = new JsonResult()
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        success = false,
+                        message = filterContext.Exception.Message,
+                    }
+                };
+                filterContext.ExceptionHandled = true;
+            }
+        }
+    }
+}
+</pre><p>Add this attribute to method definition: </p><pre class="brush: csharp">[HttpGet]
+[HandleJsonError]
+public JsonResult Fail()
+{
+    throw new NotImplementedException();
+}
+</pre><p>And I&#8217;m happy to see that all tests are passing now! </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s1600/api-tests-allpassed.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TSYgcv4TQQI/AAAAAAAAHGM/2QAUQc7jWBQ/s400/api-tests-allpassed.png" border="0" alt=""id="Img7" /></a> <p>Since we need similar behavior for all API calls it is better to add this attribute to class, instead of method. </p><pre class="brush: csharp">namespace Web.API.v1.Controllers
+{
+    [HandleJsonError]
+    public class ApiV1Controller : Controller
+    {
+        // code..
+</pre><h2>Examples and code for reuse</h2><p>All code is re-usable and available on my github repository - <a href="https://github.com/alexbeletsky/rest.mvc.example">https://github.com/alexbeletsky/rest.mvc.example</a>.  </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/12/testing-rest-services-with-javascript.html">
+    
+      Testing REST services with javascript</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-30T07:28:00+01:00" pubdate data-updated="true">Dec 30<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we&#8217;ve reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I&#8217;m talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
+</p>
+<p>
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn&#8217;t do any tests, basically because I didn&#8217;t know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests.
+</p>
+<h2>Simple framework</h2>
+<p>
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Internal If/else statement could be extended with some specific result codes you might expect. If API call has been finished successfully, result JSON object will be parsed and submitted to a test callback.
+</p>
+<p>
+Also, I found useful to create a small helper function that would construct API call signature, based on URL, method and parameters:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Setup the environment</h2>
+<p>
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application).
+</p>
+<p>
+Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;module(<font color="#A31515">"v11 api tests"</font>, {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// setup method will authenticate to v.1.1. API by calling 'authenticate'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// it will store apiToken, so rest of tests could reuse that</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;setup: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.url = <font color="#A31515">'api/v1.1/'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.apiToken = <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// authenticate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'authenticate'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { email: <font color="#A31515">'tracky@tracky.net'</font>, password: <font color="#A31515">'111111'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(<font color="#0000ff">this</font>.url + method, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me.apiToken = result.data.apiToken;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(me.apiToken.length == 32, <font color="#A31515">"invalid api token"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Module holds <code>API URL</code> and <code>token</code>, so they are reusable through the rest of tests. If setup failed to authenticate, all tests would be failed because they could not use any call without <code>token</code>.
+</p>
+<h2>Testing methods</h2>
+<p>
+I have a number of REST style methods in my API:
+</p>
+<p>
+<code>
+http://trackyt.net/api/v1.1/token/tasks/all <br />
+http://trackyt.net/api/v1.1/token/tasks/add <br />
+http://trackyt.net/api/v1.1/token/tasks/delete/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/start/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/stop/112 <br />
+</code>
+</p>
+<p>
+and so on..
+</p>
+<p>
+I&#8217;ll give some examples of tests, so you will be able to follow main idea:
+</p>
+<p>
+Get all task call test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Get all task call receives deterministic response test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks returns all required fields"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> task = result.data.tasks[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.id !== undefined, <font color="#A31515">"Id field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.description !== undefined, <font color="#A31515">"Description field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.status !== undefined, <font color="#A31515">"Status field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.createdDate !== undefined, <font color="#A31515">"CreatedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.startedDate !== undefined, <font color="#A31515">"StartedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.stoppedDate !== undefined, <font color="#A31515">"StoppedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Add new task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"task add method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/add'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { description: <font color="#A31515">'new task 1'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.task.id &#62; 0, <font color="#A31515">"id for first item is wrong"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Delete task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Rest of tests are available on <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas.
+</p>
+<h2>Running tests</h2>
+<p>
+As any kind of qUnit tests they could be easily run in browser.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
+<p>
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>.
+</p>
+<h2>Debugging the tests</h2>
+<p>
+Sure, you need to be able to run tests under debugger to see what might went wrong. For debuging test code, there is nothing better than <a href="http://getfirebug.com/">FireBug</a>. Just place the breakpoint on a line you need, press F5 to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s1600/firebugdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 129px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s400/firebugdebug.png" border="0" alt=""id="Img1" /></a>
+<p>
+ If you need to debug actual API implementation code (which in my case is C#/ASP.net MVC application), I start the web site under debugger (F5 in VS2010), place breakpoint in corresponding method and press F5 in browser to to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s1600/vsdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 154px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s400/vsdebug.png" border="0" alt=""id="Img2" /></a>
+<h2>Conclusions</h2>
+<p>
+I liked the idea of those integration tests by means of javascript. I was happy to get final results: the interface is more strict and more corresponds to REST principles. It is much more faster to write tests with javascript instead of C# or Java. Just compare <a href="https://gist.github.com/b0a261d6c88fafe5afeb">this</a> and <a href="https://gist.github.com/759517">this</a> and feel the difference. Write less, get more.
+</p>
+<p>
+As javascript could be treated as &#8220;pseudo language&#8221;, since it is easy to read it - API test suite could be used as a developers documentation. If you need to do a call, check the corresponding test, everything there.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/12/lets-take-rest.html">
+    
+      Let&#8217;s take a REST</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-23T06:28:00+01:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/rest/'>REST</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
+</p>
+<h2>What is REST?</h2>
+<p>
+It is rather style or pattern of development resource-oriented web applications. Beauty of REST is that its really easy to understand and basically you are using REST everyday but may not noticing that. REST works on top of HTTP protocol, but is is not protocol itself. It seems to me that it actually appears with HTTP/1.1 but only with <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> work it became well understood, defined and attractive.
+</p>
+<p>
+REST popularized by such applications as twitter, flickr, bloglines, technorati etc. And of cause, by <a href="http://rubyonrails.org/">Ruby On Rails</a> framework.
+</p>
+<h2>Unique ID</h2>
+<p>
+Unique ID is key concept in REST. Everything in Web is resource, every resource must be addressed, each address is unique.
+</p>
+<p>
+Here are examples of ID. Of cause in a world of HTTP ID&#8217;s are URI&#8217;s (Unified Recourse Identifiers):
+</p>
+<p>
+<code>
+http://mysite.com/blog/page/1<br />
+http://mysite.com/blop/post/my-first-post
+</code>
+</p>
+<h2>What is representation and state transfer?</h2>
+<p>
+Let&#8217;s see the first URI, it point for first page on some blog. As a client I ask for resource, <strong>representation</strong> of resource is returned back to client. By receiving the representation client <strong>transfers</strong> (changes) to particular <strong>state</strong>. As I ask for next resource, next representation of resource is back. The new representation changes the client application into yet another state. Between previous and next state, client stays is <strong>rest</strong> mode. Thus, the client application transfers state with each resource representation. That forms concept of - Representational State Transfer.
+</p>
+<p>
+It doesn&#8217;t depend what exact representation is, it could be: HTML, XML, JSON, RSS etc. 
+</p>
+<h2>Recourses and actions</h2>
+<p>
+You can do a different actions to resources. REST achitecture maps CRUD (Create, Read, Update, Delete) to the set of operations supported by the web service using HTTP methods (e.g., POST, GET, PUT or DELETE). 
+</p>
+<table>
+        <tr>
+            <th>URI</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/page/1</td>
+            <td>GET</td>
+            <td>
+            Gets the representation of resouce. Get request does not change the state of server.
+            Typically you do not submit any data in GET request. 
+            You can read the URL like, &#8220;get page 1 from blog located at http://mysite.com&#8221;
+            </td>
+
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry</td>
+            <td>POST</td>
+            <td>
+            Posts the changed state of resouce. With post you can change the state of server.
+            Post contains data in POST body. It is up to web server how to treat and use this data.
+            You can read URI like, &#8220;post an entry to entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/changename/211</td>
+            <td>PUT</td>
+            <td>
+            Updates some existing resouces. PUT is similar to POST, since it changes web server state and contains data in body. You can do different change actions that would update resource. Typically recourse identified by ID, like 211.
+            You can read URI like, &#8220;update an entry with Id 211, by changing its name, in entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>        
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/211</td>
+            <td>DELETE</td>
+            <td>
+            Deletes some existing resouces. DELETE changes web server state but typically contains no data in body.
+            You can read URI like, &#8220;delete an entry with Id 211, in entries collection in blog located at http://mysite.com&#8221;
+            </td>
+        </tr>
+</table>
+<h2>Logical and Physical URL&#8217;s</h2>
+<p>
+If you do a lot of classic ASP.net programming you probably get used that URL reflects physical structure of application. For instance, <code>http://mysite.com/index.aspx</code> corresponds to <code>c:\inetpub\wwwroot\mysite\index.aspx</code>. In REST style URL stand not for physical, but logical URL. It means, <code>http://mysite.com/blog/post/1</code> doesn&#8217;t have to have <code>c:\inetpub\wwwroot\mysite\blog\post\1</code> file with static content. 
+</p>
+<p>
+Clean and logical URL&#8217;s one of the attractive points of REST. It moves away from ugly URL&#8217;s like <code>http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?s=books&ie=UTF8&qid=1293077887&sr=1-1</code>.
+</p>
+<p>
+From implementation point of view: to allow REST style URL for ASP.net applications you should either create your own <a href="http://intertwingly.net/wiki/pie/RestAspNetExample">HttpHandler</a> or use already created start-kits and frameworks, like <a href="http://aspnet.codeplex.com/releases/view/24644">WCF REST starter kit</a>, <a href="http://trac.caffeine-it.com/openrasta/">OpenRasta</a>.
+</p>
+<h2>REST vs. SOAP</h2>
+<p>
+Sure, REST is not first who approaches issue of using recourses in Web, it rather trendier new kind in a block. We know bunch of web technologies, SOAP, WSDL, ATOM, WS-*, WCF, ODATA and many many more.. So, what are the difference?  
+</p>
+<p>
+Major difference is that all above are <strong>protocols</strong>, but REST is <strong>style</strong>. This has pros and cons. Protocol&#8217;s are more strict and heavyweight, with a number of rules, formats etc. SOAP is using XML as data exchange format, REST could work any format depending on client needs. SOAP is using its own security model, REST relies on HTTP and web server security. SOAP requires tools, REST learning curve is small and less less reliance on tools. SOAP designed to handle distributed computing environments, REST assumes a point-to-point communication model. 
+</p>
+<p>
+But my opinion is simplicity always win against complexity. Key popularity of REST is because is simple, easy understand by developers and as a result - implemented in applications. My believe that SOAP and other heavyweight protocols will slightly die more and applications will be using REST. 
+</p>
+<h2>ASP.net MVC and REST</h2>
+<p>
+Developers of ASP.net MVC framework designed it to be REST compatible. In the level of framework, there is an URL routing system (<code>System.Web.Routing</code>) that allows you easily follow REST design principles. It gives you total control over your URL schema and its mapping to your controllers and actions, with no need to conform to any predefined pattern.
+</p>
+<p>
+So, basically ASP.net MVC web applications development is: create a controller class (<code>LoginController</code> for instance), implement number of actions (<code>Index</code>, <code>CheckCredentials</code>) and map those actions to particular URL. For instance <code>http://mysite.com/login</code> mapped to <code>LoginController.Index</code> method, that handles GET request from server and return View, containing Login form. <code>http://mysite.com/login/check</code> mapped to <code>LoginController.CheckCredentials</code> method, that handles POST and checks users credentials.
+</p>
+<p>
+It is much more easier to create web applications API&#8217;s with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/12/functional-testing-by-javascript-with.html">
+    
+      Functional testing by javascript with FuncUnit</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-15T06:57:00+01:00" pubdate data-updated="true">Dec 15<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/video/'>Video</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Functional tests are something that is better to use as early as possible, to get any valuable results. Obvious choice for ASP.net applications are <a href="http://seleniumtoolkit.codeplex.com/">Seleminum for .NET</a>, <a href="http://watin.sourceforge.net/">WatiN</a> or <a href="http://specflow.org">SpecFlow</a>. But all of them are supposed to use C# as programming language and run their tests by special runners. Thought the experience I saw how cool is to write tests with full dynamic languages, like javascript and be able to run tests directly from browser, so I can debug some broken functionality. As I saw <a href="http://funcunit.com">FuncUnit</a> project and it really attracted my attention! Here I describe some initial experince of testing ASP.net MVC application with FuncUnit.
+</p>
+<h2>What it is all about?</h2>
+<p>
+<a href="http://funcunit.com">FuncUnit</a> is very compact and elegant functional testing framework. It combines the power of jQuery, qUnit, Selemium, Synthetic. Later it was a part of <a href="http://javascriptmvc.com/">javascriptMVC</a> framework, but now it is available as separate framework. Major features are:
+</p>
+<ul>
+<li>It is only javascript</li>
+<li>Could run tests in browser mode and command line by means of Selemium</li>
+<li>Simple API</li>
+<li>Easy to debug</li>
+<li>Automate your existing qUnit tests</li>
+<li>Run file mode and server page mode</li>
+</ul>
+<p>
+Yes, it simple.. just from the reading of documentation and downloading the package you are ready to start you testing. I&#8217;ve managed to cover mostly all functionality of my small <a href="http://trackyt.net">application</a> in 3 hours or so.
+</p>
+<h2>Integration</h2>
+<p>
+Download FuncUnit package <a href="http://github.com/downloads/jupiterjs/funcunit/funcunit-beta-5.zip">here</a>.
+    It contains all required javascript files, as well as selemium jar&#39;s, so as you
+    have Java runtime installed on your machine you immediately able to run tests
+    from command line. FuncUnit does not say what particular framework should be
+    behind of your application, it would work with any.</p>
+<p>
+It requires that tests page are on the same level as tested page. At the beginning it was confusing me, because in ASP.net MVC we don&#8217;t have pages at all, only controllers and corresponding actions; my existing qUnit tests were placed to <code>Scripts/Tests/index.html</code> runner and I expected to have same layout. But it have to be changed a little for FuncUnit. So, filemode testing is not really applicable for ASP.net MVC, you should go with server pages mode.
+</p>
+<p>
+I placed both FuncUnit and qUnit test pages at the root of application. Test code itself is referenced from <code>Scripts/Tests/acceptance</code> and <code>Scripts/Tests/acceptance</code>.
+</p>
+<!-- layout.png -->
+<p>
+Content of FuncUnit placed to <code>Scripts/Test/framework</code>, so I got something like:
+</p>
+<!-- scripts.png -->
+<h2>Test page</h2>
+<p>
+It is very similar (even identical) to qUnit page. Just reference framework and tests scripts.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">html</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">title</font><font color="#0000ff">&#62;</font>Trackyt.net Functional Test<font color="#0000ff">&#60;/</font><font color="#800000">title</font><font color="#0000ff">&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">link</font> <font color="#ff0000">rel</font><font color="#0000ff">="stylesheet"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/css"</font> <font color="#ff0000">href</font><font color="#0000ff">="http://v3.javascriptmvc.com/funcunit/dist/qunit.css"</font> <font color="#0000ff">/&#62;</font> <br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">='text/javascript'</font> <font color="#ff0000">src</font><font color="#0000ff">='Scripts/Tests/framework/funcunit/funcunit.js'</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;!-- Tests --&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.home.js'</font>&#62;&#60;/script&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.signup.js'</font>&#62;&#60;/script&#62;<br>&nbsp;&nbsp;&nbsp;&nbsp;&#60;script type=<font color="#A31515">'text/javascript'</font> src=<font color="#A31515">'Scripts/Tests/acceptance/tests.bugs.js'</font>&#62;<font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h1</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-header"</font><font color="#0000ff">&#62;</font>FuncUnit Test Suite<font color="#0000ff">&#60;/</font><font color="#800000">h1</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h2</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-banner"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-testrunner-toolbar"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">h2</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-userAgent"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">h2</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">ol</font> <font color="#ff0000">id</font><font color="#0000ff">="qunit-tests"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">ol</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">html</font><font color="#0000ff">&#62;</font></font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Test code</h2>
+<p>
+As I said its fun and easy to write tests with FuncUnit. You have everything that should be in functional testing framework: open pages, read values and put values to controls, wait for events.. clicking and dragging mouse. Tests code/layout is the same as you get used with qUnit. Each test basically does:
+</p>
+<ul>
+<li>
+Open test page, by <code>S.open("page_url_from_root")</code> (ex. S.open(&#8220;Admin/Login&#8221;), will run http://localhost/app/admin/login)
+</li>
+<li>
+Wait for some html elements appear in browser, with <code>S.wait()</code>;
+</li>
+<li>
+Type some values to control <code>S('#myControlId').type('bla-bla')</code> and read values <code>S('#anotherControlId').val();</code>
+</li>
+<li>
+Assert for results with <code>ok, same, equal</code> methods;
+</li>
+</ul>
+<p>
+I&#8217;ll do several example from my code.
+</p>
+<p>
+Simple one, I check that user is not able to login with empty password:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// I as user could not login with empty password</font><br>test(<font color="#A31515">"password is empty"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// arrange</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(<font color="#A31515">'a@a.com'</font>);<br><br>&nbsp;&nbsp;<font color="#008000">// act</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click();<br><br>&nbsp;&nbsp;<font color="#008000">// assert</font><br>&nbsp;&nbsp;S(<font color="#A31515">'#PasswordValidationMessage'</font>).visible(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> message = S(<font color="#A31515">'#PasswordValidationMessage li:nth-child(1)'</font>).html();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;ok(message == <font color="#A31515">"Password is empty"</font>, <font color="#A31515">"I as user could not login with empty password"</font>);<br>&nbsp;&nbsp;});<br>});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Or that I&#8217;m not able to register with already registered email:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// I as user could not register with same email twice</font><br>test(<font color="#A31515">"register twice"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// arrange</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> email = <font color="#A31515">"test"</font> + <font color="#0000ff">new</font> Date().getSeconds() + <font color="#0000ff">new</font> Date().getMilliseconds() + <font color="#A31515">"@trackyt.net"</font>;<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// wait till registration is done</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S.wait();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// act</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// go back to register page and try to register with same credentials</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S.open(<font color="#A31515">"Registration"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// assert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#PasswordValidationMessage'</font>).visible(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> message = S(<font color="#A31515">'.validation-summary-errors li:nth-child(1)'</font>).html();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;same(message, <font color="#A31515">"Sorry, user with such email already exist. Please register with different email."</font>, <font color="#A31515">"I as user could not register with same email twice"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br>});<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+To more complex, bug reproducing issues:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#008000">// https://github.com/alexbeletsky/Trackyourtasks.net/issues/#issue/20</font><br>test(<font color="#A31515">"tasks are disappeared"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;<font color="#008000">// go to sign up page</font><br>&nbsp;&nbsp;S.open(<font color="#A31515">"Registration"</font>);<br><br>&nbsp;&nbsp;<font color="#008000">// create new account</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> email = <font color="#A31515">"test_bugs"</font> + <font color="#0000ff">new</font> Date().getSeconds() + <font color="#0000ff">new</font> Date().getMilliseconds() + <font color="#A31515">"@trackyt.net"</font>;<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#ConfirmPassword'</font>).type(email);<br><br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#tasks'</font>).exists(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// create several tasks</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#task-description'</font>).click().type(<font color="#A31515">"fix issue 20"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#add-task'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(500);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#task-description'</font>).click().type(<font color="#A31515">"fix issue 20 2"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#add-task'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(500);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// and log off of dashboard</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#sign-out'</font>).click();<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;<font color="#008000">// now sign in with same account</font><br>&nbsp;&nbsp;S.open(<font color="#A31515">"Login"</font>);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Email'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#Password'</font>).type(email);<br>&nbsp;&nbsp;S(<font color="#A31515">'#submit-button'</font>).click(<font color="#0000ff">function</font> () {<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// wait till tasks are ready</font><br>&nbsp;&nbsp;&nbsp;&nbsp;S(<font color="#A31515">'#tasks'</font>).exists(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.wait(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = S(<font color="#A31515">'.task'</font>).size();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// tasks created before must exist</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks == 2, <font color="#A31515">"tasks created before must exist"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});<br>});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+I found that those tests are also a kind of documentation! I could document user stories with such tests and maybe even use tools to generate documentation just from tests code.
+</p>
+<h2>Running tests from browser</h2>
+<p>
+While development it is more preferable to run tests directly from browser. To do that I just select FunctionalTests.html file in Solution Explorer and press Ctrl+Shift+W that mean &#8220;View in browser&#8221;. Please note, that FuncUnit tests are run in pop-up window, so you have to enable pop ups in your browser. Browser will open <code>http://localhost/virtualdir/FunctionalTests.html</code> and tests will run. For more convenience I also put a bookmark for test page in browser, so I could always re-run all tests by one click.
+</p>
+<!-- firefox.png -->
+<h2>Running tests from command-line</h2>
+<p>
+Major feature of FuncUnit is of cause it&#8217;s ability to run from command-line, so you can easily integrate to your continuous integration system. There a script <code>envjs.bat</code> that would easily to start the tests under Selenium and provide with results as command line output (you can also run qUnit tests from command line with <code>envjs.bat</code>).
+</p>
+<p>
+From the root of web application, I start:
+</p>
+<p>
+<code>.\Scripts\Tests\framework\funcunit\envjs.bat  http://localhost/tracky/FunctionalTests.html</code>
+</p>
+<p>
+BTW, there is a small issue in envjs.bat that stops me to successfully run it initially, it does not take into accounts that it could be run as <code>envjs.bat</code>, but simpy as <code>envjs</code>. Please see my version of this file <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/a687d63f4130be277dcd06f30549e98974e37cb2/src/Acceptance.Tests/envjs.bat">here</a>.
+</p>
+<h2>Deployment</h2>
+<p>
+Sure you don&#8217;t want to make those tests public on your site. There are 2 options: change Web.config to disable users to access <code>FunctionalTets.html</code>, <code>UnitTests.html</code> or just delete those 2 before deployment to production. Since I do simple <code>xcopy</code> deployment, option 2 works for me.
+</p>
+<h2>Demonstration</h2>
+<p>
+To make picture full, I prepared small screencast that would demonstrate how I used the framework. I like it, it fits my requirements (at least for now). I hope you also like it and find this information useful! And also, you should check the <a href="https://github.com/alexbeletsky/Trackyourtasks.net/tree/master/src/Web/Scripts/Tests">repository</a> for test code examples.
+</p>
+<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' /><param name='flashvars' value='i=144436' /><param name='allowFullScreen' value='true' /><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=144436' allowFullScreen='true' width='560' height='345' pluginspage='http://www.macromedia.com/go/getflashplayer'></embed></object></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/12/run-and-debug-your-tests-with-shortcuts.html">
+    
+      Run and debug your tests with shortcuts</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-08T11:46:00+01:00" pubdate data-updated="true">Dec 8<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+While I&#8217;m working in Visual Studio, I try to use my mouse as less as possible. You should be really comfortable to do 99% of activities just by keyboard. It saves a time.
+</p>
+<p>
+I re-run tests hundred times per day, so clicking by a mouse is a bad option. Doesn&#8217;t matter you use <a href="http://testdriven.net">Testdriven.net</a> or <a href="http://www.jetbrains.com/resharper/">Resharper</a>, you have ability to use shortcuts for quick run.
+</p>
+<h2>Testdriven.net</h2>
+<p>
+Tools -> Options -> Keyboard -> Testdriven.NET.RunTests and assign it to &#8220;Ctrl + R, Ctrl + T&#8221; (run tests)
+</p>
+<p>
+Tools -> Options -> Keyboard -> Testdriven.NET.Debugger and assign it to &#8220;Ctrl + R, Ctrl + D&#8221; (run debugger)
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TP9iM31SeuI/AAAAAAAAG_0/WU7k2RL15b8/s1600/testdriven1.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TP9iM31SeuI/AAAAAAAAG_0/WU7k2RL15b8/s400/testdriven1.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5548261239229151970" /></a>
+<h2>Resharper</h2>
+<p>
+Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextRun and assign it to &#8220;Ctrl + R, Ctrl + T&#8221; (run tests)
+</p>
+<p>
+Tools -> Options -> Keyboard -> Resharper.Resharper_UnitTest_ContextDebug and assign it to &#8220;Ctrl + R, Ctrl + D&#8221; (run debugger)
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s1600/resharper.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TP9iULNrfeI/AAAAAAAAG_8/RdMDN5k6uuA/s400/resharper.png" border="0" alt=""id="Img1" /></a></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2010/11/you-stucked-stop-and-ask-for-help.html">
+    
+      You stucked? Stop and ask for help!</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-26T12:24:00+01:00" pubdate data-updated="true">Nov 26<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been working on one task for last several days. In a product I work there is feature that looks like Excel - template editor. User is able to put a data to sheets and do some simple calculation with formulas (SUM, MUL etc.). This functionality has been created far ago and worked fine. But recently we&#8217;ve changed our engine and now we support not only &#8220;plain&#8221; data structure, but expanded one - when user is able to say - &#8220;this column or row is expanded with such data&#8221;. Data size is dynamic and could be predicted while template edition and SUM function have to take into account that data is expanded.
+</p>
+<p>
+So, I&#8217;ve created a number of test cases that cover new functionality and implemented simple mechanism that process formula like SUM(A1:B2) and adjust start and finish indexes according to size of expansion. At the beginning that <code>AdjustIndexes</code> function were small and easy to read, it just perform simple calculation based on current row/current column, original indexes places and some information from expanded data. 
+</p>
+<p>
+But after a demo we&#8217;ve found some bugs: if several expansions present in template - it fails. If not expanded data comes after expanded it fails and some more..
+</p>
+<p>
+I&#8217;ve extended tests cases with all found issues and start to attack problem. I start to adjust <code>AdjustIndexes</code> to work with new cases. And after a while I&#8217;ve completed it, but this function started to look scary - a lot of nested if-else cases, calculation of indexes, += operations etc. OK, I thought.. it could be refactored later, so I did a checkin. My happiness was not long, because while developers tests I just found another bug. OK, usual stuff - test and fix. Let&#8217;s go.
+</p>
+<p>
+Meanwhile I&#8217;ve already spent about 6 hours on that. At stand-up I said - &#8220;it seems to be alright, only one case is failing now, I&#8217;m finishing up and commit&#8221;. But I was wrong. As I changed the function to work with new case, new case became green but existing ones became red.. I fell stress that task originally estimated for 1 day is now 1.5 and supposed to be about 2 days. I wanted to do quickly, so started to play a game - &#8220;Change something, re-run the tests if GREEN - you win!&#8221; (such approach actually works some time as soon as you got good test cases and double check the results). Already created function became more scary and what is worse - it does not satisfied all tests. I lost the control of it and only one I understand - &#8220;I do not now understand this function works now.. It does something wrong and I have to go with another idea to solve the problem&#8221;.
+</p>
+<p>
+It was about 10 hours spend on that. I started to lose the game, but just didn&#8217;t want to give up. I need another idea, I need another approach.. I need additional data structures that would help to map original table indexes to expanded ones, I need to change the engine to fill those mapping, I need to change <code>AdjustIndexes</code> function to take mapping into account. I felt a little tired and stressed but proceed with coding like crazy. 
+</p>
+<p>
+14 hours passes, late evening, and I was finishing up my <code>Mapping</code> mechanism, while I was contacted by my teammate Carsten - &#8220;How is it going with SUM?&#8221;. I&#8217;ve explained my issues, my approach and my status, but basically it was like - &#8220;It is not yet done&#8221;. But he said that it seems like I&#8217;m doing something wrong and proposed another algorithm of doing this adjustment, with no other additional data structures. I probably was to tired to understand everything there, so he just said &#8220;Wait for 30 minutes, I&#8217;ll do some code and show to?&#8221;.  I&#8217;ve been shocked, something I worked for 14 already he want to do in 0.5 hour? OK.  
+</p>
+<p>
+He sent his first solution. Hopefully it was only one function to change I could easily integrated and re-run all test cases I had so far. Most of them were failed at first try. We started a pair session and after several run/fix/test sessions it started to work! All tests are green! It works in application.. Function is quite small and easy to read.
+</p>
+<p>
+Yeahh.. that was such great work (respect to Carsten) and so such shame on me. 15 hours.. vs 40 minutes.. 30 lines of code vs. 300.. one point of integration vs. many. I&#8217;ve been defeated.
+</p>
+<p>
+When I finished it up and went a street to walk with dog, I&#8217;ve tried to find at lest something positive in all this situation. And you know what? I can up with one another feature to <a href="http://trackyt.net">trackyt.net</a>. 
+</p>
+<p>
+If you have a task in progress and you spend 12 (8, 6 or even 4) hours, task is became red and interacts with user:
+</p>
+<ul>
+<li>Take a rest, re-think</li>
+<li>Ask for help</li>
+</ul>
+<p>
+That would prevent my situation somehow. It will try to say to you &#8220;Man, you probably stucked with that, ask some one to take a look&#8221;.. This seems to be obvious, but if you are in hurry you are not just doing that hoping to handle everything by yourself. This is not good. I was happy about such idea and lesson learned, so back to home with good mood already :).
+</p>
+<p>
+Have you been to such situation, do you think it&#8217;s valuable if you have some stopwatch and notifier that would push you shoulder and say &#8220;Stop now ask for help!&#8221; ?
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/19/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/17/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

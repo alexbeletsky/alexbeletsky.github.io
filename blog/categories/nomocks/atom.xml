@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nomocks | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/nomocks/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testable API's with Node.js]]></title>
+    <link href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html"/>
+    <updated>2014-03-04T15:36:00+01:00</updated>
+    <id>http://beletsky.net/2014/03/testable-apis-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>API is heart of modern web application. It&rsquo;s all about to make it easy to consume, scale and make sure it works as expected. Currently I follow &ldquo;all open API methods must have tests&rdquo; (AOAMMHT) principle. I used to work with .NET technologies, where testing of API&rsquo;s was about calling methods of corresponding controller object, which typically was unit testing &ndash; mocking up all controller dependencies, setting up expects of returned values.</p>
+
+<p>I&rsquo;ve changed my mind on testing with Node.js/Express.js development. For API&rsquo;s I prefer &ldquo;end-to-end&rdquo; testing: setting up user account, authentication, HTTP calls to server, real calls to DB and serving JSON payload back. API&rsquo;s have to be tested from consumer point of few to be able to give some meaningful results.</p>
+
+<!-- MORE -->
+
+
+<h2>Tools and Frameworks</h2>
+
+<p>Pretty standard setup: <a href="http://visionmedia.github.io/mocha/">mocha</a>, <a href="http://chaijs.com/">chai</a>, <a href="https://github.com/mikeal/request">request</a>.</p>
+
+<p>Mocha is time proven tool for testing Node.js applications, Chai is good enough expectation framework and Request as one best HTTP clients I even worked with.</p>
+
+<h2>Prepare application for testing</h2>
+
+<p>Dependencies above is installed via <code>npm install</code> and should be saved to <code>package.json</code> file (with <code>--save</code> option). Your project structure should have <code>test</code> folder inside, which mocha is using as default to look tests inside. Few files should be added there, current structure I have that works.</p>
+
+<p>```plain
+/test</p>
+
+<pre><code>/specs
+    auth.spec.js
+    ...
+common.js
+mocha.opts
+utils.js
+runMocha.js
+</code></pre>
+
+<p>```</p>
+
+<p><code>/api</code> folder is the one that would contain specifications for you API, <code>mocha.opts</code> &ndash; contains global mocha configuration, <code>common.js</code> is common require file, that all tests are using, <code>utils.js</code> &ndash; test helper that would contain everything you need during testing, <code>runMocha.js</code> utility that would be tests entry point.</p>
+
+<h3>mocha.opts</h3>
+
+<p><code>plain
+--require ./test/common.js
+--reporter spec
+--ui bdd
+--recursive
+--colors
+--timeout 60000
+--slow 300
+</code></p>
+
+<p>Mocha options allow to require some additional javascript file, as well as setting up global Mocha settings as what reporter to use, timeouts etc.</p>
+
+<h3>common.js</h3>
+
+<p><code>js
+global.chai = require('chai');
+global.expect = global.chai.expect;
+</code></p>
+
+<p>To do not require <code>chai</code> in each spec files, it&rsquo;s possible to require it once and place to global scope.</p>
+
+<h3>runMocha.js</h3>
+
+<p>```js
+process.env.NODE_ENV = process.env.NODE_ENV || &lsquo;test&rsquo;;
+process.env.TEST_ENV = process.env.TEST_ENV || &lsquo;test&rsquo;;</p>
+
+<p>var exit = process.exit;
+process.exit = function (code) {</p>
+
+<pre><code>setTimeout(function () {
+    exit();
+}, 200);
+</code></pre>
+
+<p>};</p>
+
+<p>require(&lsquo;../source/server&rsquo;);
+require(&lsquo;../node_modules/mocha/bin/_mocha&rsquo;);
+```</p>
+
+<p>The secret sauce is last 2 lines. Since <code>require</code> is synchronous we first &ldquo;call&rdquo; API server to get up and after that &ldquo;call&rdquo; mocha engine to start testing. So, inside each tests we can do real HTTP calls to real HTTP servers. No mocks.</p>
+
+<h3>package.json</h3>
+
+<p>```js
+// &hellip;
+&ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"test": "node test/runMocha",
+</code></pre>
+
+<p>  },
+// &hellip;
+```</p>
+
+<p>Package file should contain script to call API tests with simple <code>npm test</code> command.</p>
+
+<h2>Test driven API</h2>
+
+<p>Mocha is using BDD (behaviour driven development) approach to testing. Comparing to classical TDD, BDD encourage to write specifications in plain English, which works good especially when you just starting with particular feature.</p>
+
+<p>What I typically do is just writing down specification of API, without any thinking of how to implement it. Give you example of something that I worked with recently.</p>
+
+<p>```js
+var request = require(&lsquo;request&rsquo;);
+var testUtils = require(&lsquo;../utils&rsquo;);</p>
+
+<p>describe(&lsquo;collections.spec.js&rsquo;, function () {</p>
+
+<pre><code>describe('when non authorized', function () {
+    it ('should not be authorized', function () {
+    });
+});
+
+describe('when authorized', function () {
+    describe('when new collection created', function () {
+        describe('public', function () {
+            it('should respond with 201 (created)', function () {
+            });
+
+            it('should create new collection', function () {
+            });
+
+            it('should have user', function () {
+            });
+
+            it('should collection be public', function () {
+            });
+
+            describe('and title is missing', function () {
+                it('should respond with 412 (bad request)', function () {
+                });
+            });
+
+            describe('with description', function () {
+                it('should respond with 201 (created)', function () {
+                });
+
+                it('should create new collection', function () {
+                });
+            });
+        });
+    });
+
+    // etc..
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>This is kind of skeleton I to have before start anything else.</p>
+
+<h3>Unauthorized access</h3>
+
+<p>If your API or part of it requires authorization, I prefer to test it.</p>
+
+<p>```js</p>
+
+<pre><code>var token, user, url, headers, response, results;
+
+beforeEach(function () {
+    url = testUtils.getRootUrl() + '/api/collections';
+});
+
+describe('when non authorized', function () {
+    beforeEach(function (done) {
+        request.get({url: url, json: true}, function (err, resp, body) {
+            response = resp;
+            done(err);
+        });
+    });
+
+    it ('should not be authorized', function () {
+        expect(response.statusCode).to.equal(401);
+    });
+});
+</code></pre>
+
+<p>```</p>
+
+<p><code>testUtils.getRootUrl()</code> returns qualified URL for API, depending on test environment. During development, it&rsquo;s just <code>http://localhost:3000</code> where your <code>server.js</code> started.</p>
+
+<h3>Authorized access</h3>
+
+<p>Authorized access typically requires some kind of <code>access_token</code> sent either by headers or query string. Doesn&rsquo;t matter how, but <code>utils.js</code> must have method that would create new user and obtain access token from API. The actual implementation of such method would depend on your API auth mechanism.</p>
+
+<p>All tests that required authorization access, should have such <code>beforeEach()</code>,</p>
+
+<p>```js
+beforeEach(function (done) {</p>
+
+<pre><code>testUtils.createTestUserAndLoginToApi(function (err, createdUser, accessToken) {
+    token = accessToken;
+    user = createdUser;
+    headers = {'X-Access-Token': accessToken};
+    done(err);
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>After <code>access_token</code> is acquired, it can be used as part of any authorized calls.</p>
+
+<h3>Behavior tests</h3>
+
+<p>Now, everything is ready to test the behavior of API. Nothing fancy here, just act as clients do. Send HTTP requests, receive responses and check HTTP statuses. I&rsquo;ll just post some code, so it would give you direction.</p>
+
+<p>```js
+describe(&lsquo;when new collection created&rsquo;, function () {</p>
+
+<pre><code>describe('public', function () {
+    beforeEach(function () {
+        collection = {title: 'This is test collection', public: true};
+    });
+
+    beforeEach(function (done) {
+        request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+            response = resp;
+            results = body;
+            done(err);
+        });
+    });
+
+    it('should respond with 201 (created)', function () {
+        expect(response.statusCode).to.equal(201);
+    });
+
+    it('should create new collection', function () {
+        expect(results.title).to.be.ok;
+        expect(results._id).to.be.ok;
+    });
+
+    it('should have user', function () {
+        expect(results.user).to.equal(user.email);
+    });
+
+    it('should collection be public', function () {
+        expect(results.public).to.equal(true);
+    });
+
+    describe('and title is missing', function () {
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: {}, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 412 (bad request)', function () {
+            expect(response.statusCode).to.equal(412);
+        });
+    });
+
+    describe('with description', function () {
+        beforeEach(function () {
+            collection = {title: 'This is test collection', description: 'description'};
+        });
+
+        beforeEach(function (done) {
+            request.post({url: url, headers: headers, body: collection, json: true}, function (err, resp, body) {
+                response = resp;
+                results = body;
+                done(err);
+            });
+        });
+
+        it('should respond with 201 (created)', function () {
+            expect(response.statusCode).to.equal(201);
+        });
+
+        it('should create new collection', function () {
+            expect(results.description).to.equal('description');
+        });
+    });
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<h2>Conclusions</h2>
+
+<p>I think dynamic languages as JavaScript is great for testing API&rsquo;s. Having no types eliminates &ldquo;model-per-response&rdquo; classes, <code>request.js</code> is great for making HTTP calls and <code>mocha</code> makes specifications output looks nice. So, nevertheless of back-end technology you can try to use the approach and see how it works for you.</p>
+
+<p>The setup of tests and starting up of API services are so lightweight in Node.js that makes test-first API development nice and pleasant thing.</p>
+]]></content>
+  </entry>
+  
+</feed>

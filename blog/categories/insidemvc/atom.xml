@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: InsideMVC | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/insidemvc/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Inside ASP.NET MVC: Instantiation of Controller]]></title>
+    <link href="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html"/>
+    <updated>2011-12-05T20:05:00+01:00</updated>
+    <id>http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Controller are being created by <code>ControllerFactory</code>, by default <code>IControllerFactory</code> type is being resolved to <code>DefaultControllerFactory</code>. Today's post is dedicated to some details of how actually <code>DefaultControllerFactory</code> works and creates instance of required controller. Let's go from the beginning!<br />
+</p><h2>Request for controller instance</h2><p>Initially, we are at <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">MvcHandler</a>'s <code>ProcessRequestInit</code> method, where we extract controllers name from RouteData and request controller factory to create corresponding controller.<br />
+</p><pre class="brush: csharp">private void ProcessRequestInit(HttpContextBase httpContext, out IController controller, out IControllerFactory factory) {
+ // If request validation has already been enabled, make it lazy. This allows attributes like [HttpPost] (which looks
+ // at Request.Form) to work correctly without triggering full validation.
+ bool? isRequestValidationEnabled = ValidationUtility.IsValidationEnabled(HttpContext.Current);
+ if (isRequestValidationEnabled == true) {
+  ValidationUtility.EnableDynamicValidation(HttpContext.Current);
+ }
+
+ AddVersionHeader(httpContext);
+ RemoveOptionalRoutingParameters();
+
+ // Get the controller type
+ string controllerName = RequestContext.RouteData.GetRequiredString(&quot;controller&quot;);
+
+ // Instantiate the controller and call Execute
+ factory = ControllerBuilder.GetControllerFactory();
+ controller = factory.CreateController(RequestContext, controllerName);
+ if (controller == null) {
+  throw new InvalidOperationException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.ControllerBuilder_FactoryReturnedNull,
+    factory.GetType(),
+    controllerName));
+ }
+}
+</pre><h2>DefaultControllerBuilder internals<br />
+</h2><p><code>CreateController</code> is rather elegant method, basically it does some arguments check's, resolve the controller type by it's name and then call to <code>GetControllerIntance</code> to instantiate that type.<br />
+</p><pre class="brush: csharp">public virtual IController CreateController(RequestContext requestContext, string controllerName) {
+ if (requestContext == null) {
+  throw new ArgumentNullException(&quot;requestContext&quot;);
+ }
+ if (String.IsNullOrEmpty(controllerName)) {
+  throw new ArgumentException(MvcResources.Common_NullOrEmpty, &quot;controllerName&quot;);
+ }
+ Type controllerType = GetControllerType(requestContext, controllerName);
+ IController controller = GetControllerInstance(requestContext, controllerType);
+ return controller;
+}
+</pre><h2>Getting the controller type</h2><p><code>GetControllerType</code> is delegating it's call to internal <code>GetControllerTypeWithinNamespaces</code>. It receives Route, Controller's name and Namespaces.  <br />
+</p><pre class="brush: csharp">private Type GetControllerTypeWithinNamespaces(RouteBase route, string controllerName, HashSet&lt;string&gt; namespaces) {
+ // Once the master list of controllers has been created we can quickly index into it
+ ControllerTypeCache.EnsureInitialized(BuildManager);
+
+ ICollection&lt;Type&gt; matchingTypes = ControllerTypeCache.GetControllerTypes(controllerName, namespaces);
+ switch (matchingTypes.Count) {
+  case 0:
+   // no matching types
+   return null;
+
+  case 1:
+   // single matching type
+   return matchingTypes.First();
+
+  default:
+   // multiple matching types
+   throw CreateAmbiguousControllerException(route, controllerName, matchingTypes);
+ }
+}
+</pre><p>The namespaces parameter are quite important. If you remember, you can explicitly mention the namespace during the route definition, with overloaded MapRoute method:<br />
+</p><pre class="brush: csharp">public static Route MapRoute(this RouteCollection routes, string name, string url, string[] namespaces) {
+ return MapRoute(routes, name, url, null /* defaults */, null /* constraints */, namespaces);
+}
+</pre><p>Namespaces parameter then being stored to Route.DataTokens["Namespaces"]. Namespaces parameter matters, then you have controllers with same names. This is in particular makes sense then you have different areas.<br />
+</p><h2>Caching Controller Types</h2><p>The interesting thing is that framework not re-reads types for each request, that would be just to expesive, but instead it uses a cache which is initialized at the very first request and used at the life time of application. The call <code>ControllerTypeCache.EnsureInitialized(BuildManager);</code> makes sure that cache is in actual state. How does MVC caching the types?<br />
+</p><p>Very simple and straight forward solution - in .XML file.<br />
+</p><pre class="brush:csharp">public static List&lt;Type&gt; GetFilteredTypesFromAssemblies(string cacheName, Predicate&lt;Type&gt; predicate, IBuildManager buildManager) {
+ TypeCacheSerializer serializer = new TypeCacheSerializer();
+
+ // first, try reading from the cache on disk
+ List&lt;Type&gt; matchingTypes = ReadTypesFromCache(cacheName, predicate, buildManager, serializer);
+ if (matchingTypes != null) {
+  return matchingTypes;
+ }
+
+ // if reading from the cache failed, enumerate over every assembly looking for a matching type
+ matchingTypes = FilterTypesInAssemblies(buildManager, predicate).ToList();
+
+ // finally, save the cache back to disk
+ SaveTypesToCache(cacheName, matchingTypes, buildManager, serializer);
+
+ return matchingTypes;
+}
+</pre><p>It try's read cache from file, if there are not matching types there it would try to read assemblies and then store it to cache. You might be interested where this file is actually located, so take a look:<br />
+</p><a href="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg" alt="cache file name" /><br />
+</a><br />
+<p>And for the most curious guys, here is the content:<br />
+</p><pre class="brush: xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!--This file is automatically generated. Please do not modify the contents of this file.--&gt;
+&lt;typeCache lastModified=&quot;14.10.2011 19:33:03&quot; mvcVersionId=&quot;aa5414f4-4d8e-4f2a-a98b-7334bf15d104&quot;&gt;
+  &lt;assembly name=&quot;MvcForDebug2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;&gt;
+    &lt;module versionId=&quot;1ad99820-dc17-4be0-9f56-6dd2bdcd7950&quot;&gt;
+      &lt;type&gt;MvcForDebug2.Controllers.HomeController&lt;/type&gt;
+    &lt;/module&gt;
+  &lt;/assembly&gt;
+&lt;/typeCache&gt;
+</pre><p><code>FilterTypesInAssemblies</code> method tries to get all controllers it can. What it does, it goes throught all referenced assemblies and using special predicate class matching the types. <br />
+</p><pre class="brush:csharp">private static IEnumerable&lt;Type&gt; FilterTypesInAssemblies(IBuildManager buildManager, Predicate&lt;Type&gt; predicate) {
+ // Go through all assemblies referenced by the application and search for types matching a predicate
+ IEnumerable&lt;Type&gt; typesSoFar = Type.EmptyTypes;
+
+ ICollection assemblies = buildManager.GetReferencedAssemblies();
+ foreach (Assembly assembly in assemblies) {
+  Type[] typesInAsm;
+  try {
+   typesInAsm = assembly.GetTypes();
+  }
+  catch (ReflectionTypeLoadException ex) {
+   typesInAsm = ex.Types;
+  }
+  typesSoFar = typesSoFar.Concat(typesInAsm);
+ }
+ return typesSoFar.Where(type =&gt; TypeIsPublicClass(type) &amp;&amp; predicate(type));
+}
+</pre><p>So, the last interesting thing here is the predicate that actually used:<br />
+</p><pre class="brush:csharp">internal static bool IsControllerType(Type t) {
+ return
+  t != null &amp;&amp;
+  t.IsPublic &amp;&amp;
+  t.Name.EndsWith(&quot;Controller&quot;, StringComparison.OrdinalIgnoreCase) &amp;&amp;
+  !t.IsAbstract &amp;&amp;
+  typeof(IController).IsAssignableFrom(t);
+}
+</pre><p>You can see, it tries to match any public, ends with "Controller" not abstract and implementing <code>IController</code> interface. That's why important do not forget to call all your controller with "Controller" suffix (yes, I did that mistake several times in the beginning of my MVC journey).<br />
+</p><p>Note, that if you have 2 controllers with same names in different namespaces, but did not provide namespace constraint you will have several <code>matchingTypes</code>, so the <code>CreateAmbiguousControllerException</code> will be thrown. I believe each of us seen that kind of exception at least once.<br />
+</p><h2>Instantiating the Type</h2><p>As we go a little back and check the code of <code>CreateController</code>: now, we've got the type (or null if type has not been resolved). Next thing is to instantiate it. Nothing really fancy here:<br />
+</p><pre class="brush:csharp">protected internal virtual IController GetControllerInstance(RequestContext requestContext, Type controllerType) {
+ if (controllerType == null) {
+  throw new HttpException(404,
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_NoControllerFound,
+    requestContext.HttpContext.Request.Path));
+ }
+ if (!typeof(IController).IsAssignableFrom(controllerType)) {
+  throw new ArgumentException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_TypeDoesNotSubclassControllerBase,
+    controllerType),
+   &quot;controllerType&quot;);
+ }
+ return ControllerActivator.Create(requestContext, controllerType);
+}
+</pre><p>If everything is all right with controller type it ask ControllerActivator to create the instance. In default case, ControllerActivator is <code>DefaultControllerActivator</code>:<br />
+</p><pre class="brush:csharp">public IController Create(RequestContext requestContext, Type controllerType) {
+ try {
+  return (IController)(_resolverThunk().GetService(controllerType) ?? Activator.CreateInstance(controllerType));
+ }
+ catch (Exception ex) {
+  throw new InvalidOperationException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_ErrorCreatingController,
+    controllerType),
+   ex);
+ }
+}
+</pre><p>As for the rest of MVC entities it would use <code>IDependencyResolver</code> to resolve that type. <code>IDependecyResolved</code> is detailed <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">here</a>, but as you remember by default at the very end it calls <code>Activator.CreateInstance(type)</code> method.<br />
+</p><h2>Conclusions</h2><p>New controller is instantiated on each HTTP request. The instantiation is in-directed, means first we retrieve Type, after creating Instance. The type is being searched dynamically by getting out reflection information from assemblies. To optimize the performance of ASP.NET MVC application, the internal cache of types is used. The cache is stored in file in "Temporary ASP.NET Files\root\cdd53039\36a27802\UserCache\MVC-ControllerTypeCache.xml" folder. Namespaces of controllers are matters, in case of two or more controllers has the same name but different namespaces the exception would be thrown. In case of controller type could not be resolved, the HTTP 404 response is generated. Otherwise, the controller instance would be created by <code>IControllerActivator</code> instance.<br />
+</p><p>Previous post: <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a><br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC]]></title>
+    <link href="http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html"/>
+    <updated>2011-10-13T20:55:00+02:00</updated>
+    <id>http://beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>All types inside ASP.NET MVC3 framework are being resolved by <code>IDependencyResolver</code>. The design goal of this interface is to provide flexibility and decrease coupling between components. <br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    using System.Collections.Generic;
+
+    public interface IDependencyResolver {
+        object GetService(Type serviceType);
+        IEnumerable&lt;object&gt; GetServices(Type serviceType);
+    }
+}
+</pre><p>If take a look into the code you will definitely smell the <a href="http://msdn.microsoft.com/en-us/library/ff648968.aspx">Service Locator</a> pattern. Indeed, <code>IDependencyResolver</code> is pure service locator.<br />
+</p><h2>DependencyResolver as IDependencyResolver holder</h2><p><code>IDependencyResolver</code> instance is being accessed through the <code>DependencyResolver</code> class. <br />
+</p><pre class="brush:csharp">public class DependencyResolver {
+ // Static accessors
+
+ private static DependencyResolver _instance = new DependencyResolver();
+
+ public static IDependencyResolver Current {
+  get {
+   return _instance.InnerCurrent;
+  }
+ }
+</pre><p>It is a singleton class, current instance is being accessed through <code>Current</code> property. The default implementation is <code>DefaultDependencyResolver</code>. <br />
+</p><pre class="brush:csharp">// Instance implementation (for testing purposes)
+
+private IDependencyResolver _current = new DefaultDependencyResolver();
+
+</pre><p>Even if the comment says (for testing purposes) that class is used in real code. Let's take a look on that.<br />
+</p><pre class="brush:csharp">private class DefaultDependencyResolver : IDependencyResolver {
+ [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;This method might throw exceptions whose type we cannot strongly link against; namely, ActivationException from common service locator&quot;)]
+ public object GetService(Type serviceType) {
+  try {
+   return Activator.CreateInstance(serviceType);
+  }
+  catch {
+   return null;
+  }
+ }
+
+ public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+  return Enumerable.Empty&lt;object&gt;();
+ }
+}
+</pre><p>As you might see, it is extremely simple. It just tries to resolve the type by <code>Activator</code> class. If the type could be resolved it just returns it's instance, otherwise just return null. The <code>GetServices</code> method just returns empty enumerable. <br />
+</p><h2>Substituting default DependencyResolver</h2><p>As I said above, the main design goal of <code>DependencyResolver</code> is to provide flexibility. By flexibility I mean just easy way to substitute any type with own implementation. Say you want to change the <code>ControllerFactory</code> or <code>ModelBinder</code> or what ever you like. Everything is possible just by overriding <code>IDependencyResolver</code>.<br />
+</p><p>I've seen one common misconception about MVC3, that it is contains IoC container inside it. It is not true, but it expose the interface which really much suites interfaces of famous IoC containers. To do not have a strict rules and force developers to use one type of IoC, ASP.NET MVC developers created a facility by which you can integrate yours IoC of choice. Let's have a look how to do that. <br />
+</p><p><code>DependencyResolver</code> contains the number of setters to substitute the instance.<br />
+</p><pre class="brush:csharp">public static void SetResolver(IDependencyResolver resolver) {
+ _instance.InnerSetResolver(resolver);
+}
+
+public static void SetResolver(object commonServiceLocator) {
+ _instance.InnerSetResolver(commonServiceLocator);
+}
+
+[SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1006:DoNotNestGenericTypesInMemberSignatures&quot;, Justification = &quot;This is an appropriate nesting of generic types.&quot;)]
+public static void SetResolver(Func&lt;Type, object&gt; getService, Func&lt;Type, IEnumerable&lt;object&gt;&gt; getServices) {
+ _instance.InnerSetResolver(getService, getServices);
+}
+</pre><p>As example of implementation here my very dummy dependency resolver.<br />
+</p><pre class="brush:csharp">namespace MvcForDebug2.Infrastructure {
+    public class DummyDependencyResolver : IDependencyResolver {
+        public object GetService(Type serviceType) {
+            if (serviceType.Equals(typeof(IControllerFactory))) {
+                return new DummyControllerFactory();
+            }
+
+            return null;
+        }
+
+        public IEnumerable&lt;object&gt; GetServices(Type serviceType) {
+            return null;
+        }
+    }
+}
+</pre><p>Finally, in global.asx.cs you need to set it up.<br />
+</p><pre class="brush:csharp">protected void Application_Start()
+{
+ AreaRegistration.RegisterAllAreas();
+
+ RegisterGlobalFilters(GlobalFilters.Filters);
+ RegisterRoutes(RouteTable.Routes);
+
+ DependencyResolver.SetResolver(new DummyDependencyResolver());
+ //ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+}
+</pre><h2>Conclusions</h2><p><code>IDependencyResolver</code> is a powerful feature of ASP.NET MVC3. It is used to create all internal MVC types, so by overriding it you can override default behavior of many framework aspects. Typically you should not have any complex code in <code>GetService</code> and <code>GetServices</code> methods, but instead just delegation of call to IoC container.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inside ASP.NET MVC: IResolver and it's implementations]]></title>
+    <link href="http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its.html"/>
+    <updated>2011-08-27T15:06:00+02:00</updated>
+    <id>http://beletsky.net/2011/08/inside-aspnet-mvc-iresolver-and-its</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through 'new' operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    internal interface IResolver&lt;T&gt; {
+        T Current { get; }
+    }
+}
+</pre><p>We can just ask the instance of type we would like to resolve. Please also note, that <code>IResolver</code> is internal class, so it is not exposed and you will never use it in application directly.<br />
+</p><p>All major entities of MVC framework (ControllerFactory, Filters, ViewEngines etc.) from now resolved by <code>IResolver</code> implementation class. That improves extensibility of framework very much and introduces new strategy of creation objects.<br />
+</p><h2>Implementations of IResolver interface</h2><p>There are two classes that implements <code>IResolver</code> - <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code>. Primary responsibility of those are delegation call to <code>IDependencyResolver</code> methods <code>GetService</code> and <code>GetServices</code>, respectively.<br />
+</p><p>If they just recalling method of <code>IDependecyResolver</code> class, what's are the purpose of those two classes?<br />
+</p><p>There are 2 purposes I can see:<br />
+</p><ol><li>To provide default type instance in case of type is not resolved by <code>IDependencyResolver</code>.</li>
+<li>To create instance only once.</li>
+</ol><h2>How it works?<br />
+</h2><p>Now, let's take a look how it actually works. It is really simple and small, so I'm able to put most of code here. <br />
+</p><p>Construction:<br />
+</p><pre class="brush:csharp">public SingleServiceResolver(Func&lt;TService&gt; currentValueThunk, TService defaultValue, string callerMethodName) {
+ if (currentValueThunk == null) {
+  throw new ArgumentNullException(&quot;currentValueThunk&quot;);
+ }
+ if (defaultValue == null) {
+  throw new ArgumentNullException(&quot;defaultValue&quot;);
+ }
+
+ _resolverThunk = () =&gt; DependencyResolver.Current;
+ _currentValueThunk = currentValueThunk;
+ _defaultValue = defaultValue;
+ _callerMethodName = callerMethodName;
+}
+</pre><p>You can see, it receives default factory method, default type instance and the name of caller method (used as additional information in exception).<br />
+</p><p>Here, how <code>ControllerBuilder</code> creates the <code>SingleServiceResolver</code>, for instance:<br />
+</p><pre class="brush:csharp">internal ControllerBuilder(IResolver&lt;IControllerFactory&gt; serviceResolver) {
+ _serviceResolver = serviceResolver ?? new SingleServiceResolver&lt;IControllerFactory&gt;(
+  () =&gt; _factoryThunk(),
+   new DefaultControllerFactory { ControllerBuilder = this },
+  &quot;ControllerBuilder.GetControllerFactory&quot;
+ );
+}
+</pre><p>Since it implements only one property, current <code>Current</code>:<br />
+</p><pre class="brush:csharp">public TService Current {
+ get {
+  if (_resolverThunk != null) {
+   lock (_currentValueThunk) {
+    if (_resolverThunk != null) {
+     _currentValueFromResolver = _resolverThunk().GetService&lt;TService&gt;();
+     _resolverThunk = null;
+
+     if (_currentValueFromResolver != null &amp;&amp; _currentValueThunk() != null) {
+      throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, MvcResources.SingleServiceResolver_CannotRegisterTwoInstances, typeof(TService).Name.ToString(), _callerMethodName));
+     }
+    }
+   }
+  }
+  return _currentValueFromResolver ?? _currentValueThunk() ?? _defaultValue;
+ }
+}
+</pre><p>First, we check the existence of <code>_resolverThunk</code> it would always exist (having value of <code>() => DependencyResolver.Current</code>) for first call of the method. Then, we locking on <code>_currentValueThunk</code> protecting for multiple threads access the same method, same time. Then, we try to resolve given type by asking <code>_resolverThunk()</code> to <code>GetService&lt;TService&gt;()</code>.<br />
+</p><p>After that we have an if-statement that I didn't get from the very beginning. Fortunately, MVC project has bunch of good unit tests. As I found the test it turns clear to me. The test called <code>CurrentThrowsIfCurrentSetThroughServiceAndSetter</code> and it's Assert part: <br />
+</p><pre class="brush:csharp">[TestMethod]
+public void CurrentThrowsIfCurrentSetThroughServiceAndSetter() {
+ // Arrange
+ TestProvider providerFromCurrentValueThunk = new TestProvider();
+ TestProvider providerFromServiceLocation = new TestProvider();
+ TestProvider providerFromDefaultValue = new TestProvider();
+ Mock&lt;IDependencyResolver&gt; resolver = new Mock&lt;IDependencyResolver&gt;();
+
+ resolver.Setup(r =&gt; r.GetService(typeof(TestProvider)))
+   .Returns(providerFromServiceLocation);
+
+ SingleServiceResolver&lt;TestProvider&gt; singleResolver = new SingleServiceResolver&lt;TestProvider&gt;(() =&gt; providerFromCurrentValueThunk, providerFromDefaultValue, resolver.Object, &quot;TestProvider.Current&quot;);
+
+ //Act &amp; assert
+ ExceptionHelper.ExpectException&lt;InvalidOperationException&gt;(
+  () =&gt; singleResolver.Current,
+  &quot;An instance of TestProvider was found in the resolver as well as a custom registered provider in TestProvider.Current. Please set only one or the other.&quot;
+ );
+}
+</pre><p>This is really <strong>important</strong> and says: you should not create same type instance both with <code>IDependencyResolver</code> and factory method! In case of <code>ControllerFactory</code>: you should never provide your implementation of <code>IControllerFactory</code> and in the same time resolve <code>IControllerFactory</code> instance by <code>IDependencyResolver</code>. Same rule for all other types. You should decide how you would like to override default behavior. In MVC3 usage of <code>IDependencyResolver</code> is a preferable.<br />
+</p><p>The code below is wrong:<br />
+</p><pre class="brush:csharp">DependencyResolver.SetResolver(new DummyDependencyResolver());
+ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+</pre><p>So, after that <code>_resolverThunk</code> is reset and we no longer ask <code>IDependencyResolver</code>, just returning the resolved value.<br />
+</p><p><code>MultiServiceResolver</code> is even a little simpler. <br />
+</p><pre class="brush:csharp">public IEnumerable&lt;TService&gt; Current {
+ get {
+  if (_itemsFromService == null) {
+   lock (_itemsThunk) {
+    if (_itemsFromService == null) {
+     _itemsFromService = _resolverThunk().GetServices&lt;TService&gt;();
+    }
+   }
+  }
+  return _itemsFromService.Concat(_itemsThunk());
+ }
+}
+</pre><p>The same, singleton strategy of resolving types and then just concatenating resolved by <code>IDependencyResolver</code> with ones retuned by default factory method. It looks strange, but it is legal here to have types resolved both by <code>IDependencyResolver</code> and factory.<br />
+</p><h2>Conclusions<br />
+</h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never 'mix' both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
+</p><h2>What's next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
+</p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inside ASP.NET MVC: ControllerBuilder class]]></title>
+    <link href="http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html"/>
+    <updated>2011-07-09T11:28:00+02:00</updated>
+    <id>http://beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Integral part of <code>MvcHanlder</code> is <code>ControllerBuilder</code>. <code>ControllerBuilder</code> is a singleton that is responsible to produce <code>IControllerFactory</code> instance. 
+</p>
+<a href="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png">
+<img src="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png" alt="controller builder" />
+</a>
+<h2>Construction</h2>
+<p>
+<code>ControllerBuilder</code> have 2 constructors, the default one and one with parameter. One of the major changes between MVC2 and MVC3 was the improvements of <a href="http://bradwilson.typepad.com/blog/2010/07/service-location-pt1-introduction.html">Dependency Injection</a>. MVC is using <a href="http://en.wikipedia.org/wiki/Service_locator_pattern">Service Locator</a> pattern for resolving dependencies.Default constructor calls constructor with parameter, passing <code>null</code> as argument, saying that <code>SingleServiceResolver</code> object have to be used as default service resolver.
+</p>
+<p>
+Please note, even if MVC is using Service Locator to locate different entities (like Controllers, Views, Filters) and so on, it does not include any kind on IoC frameworks itself. 
+</p>
+<h2>Controller factory get/set</h2>
+<p>
+<code>MvcHanlder</code> uses <code>GetControllerFactory</code> method to get controller factory.
+</p>
+<a href="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png">
+<img src="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png" alt="controller builder" />
+</a>
+<p>
+Method itself is fairly simple, it just ask service resolver to get current instance of controller factory. 
+</p>
+<p>
+Setter method allows you to change default controller factory with custom one. This an extremely useful then you want to change the way of Controller creation. The most useful case is delegate the controller creation to some DI container (Ninject, Unity, StructureMap) to allowing your application to get benefits of using IoC principles.
+</p>
+<p>
+Basically, IControllerFactory is a strategy of controller creation. Depending of implementation it might use different techniques, later on we will see how <code>DefaultControllerFactory</code> works.
+</p>
+<p>As and additional option, it is possible to supply custom controller factory just from the specific type</p>
+<a href="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png">
+<img src="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png" alt="controller builder" />
+</a>
+<h2>Substitute default controller factory</h2>
+<p>
+As you see, we have to options of substitution default factory: 
+</p>
+<ol>
+<li>Call SetControllerFactory method and pass custom object into.</li>
+<li>Implementing new IDependencyResolver.</li>
+</ol>
+<p>
+Here is an example of how that could be done (please note, it is just demostartion.. you typically should not use both approaches in the same type).
+</p>
+<a href="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png">
+<img src="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png" alt="controller builder" />
+</a>
+<h2>Conclusions</h2>
+<p>
+<code>ControllerBuilder</code> is simple class that delegates responsibility to <code>IResolver</code> which is responsible to resolve <code>IControllerFactory</code> instance. <code>IControllerFactory</code> is a strategy of controllers creation. <code>ControllerBuilder</code> is designed in a way of chaning this strategy easily, either by using custom <code>IControllerFactory</code> or by custom <code>IDependencyResolver</code>.
+</p>
+<h2>What is next?</h2>
+<p>
+Next we are going to look closer into <code>SingleServiceResolver</code> and see how it actually acts for resolving types.
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">Inside ASP.NET MVC: All begins here - MvcHanlder</a>
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inside ASP.NET MVC: All begins here - MvcHanlder]]></title>
+    <link href="http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html"/>
+    <updated>2011-06-18T17:46:00+02:00</updated>
+    <id>http://beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+<a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">Last time</a> we explored a way of HTTP request from the IIS up to <code>MvcHanlder</code>. Then <code>UrlRouting</code> module match URL we registered in <code>Application_Start()</code>, it gets corresponding <code>IRouteHandler</code> class and calls for <code>GetHttpHandler</code> method. In ASP.NET MVC URL <code>IRouteHandler</code> interface is implemented by <code>MvcRouteHandler</code> class which return <code>MvcHanlder</code> instance. The actual MVC story begins exactly in <code>MvcHanlder</code> internals.
+</p>
+<h2>Generic overview</h2>
+<p>
+We know that HttpHandlers are special objects that handles requests and produce a response. <code>MvcHanlder</code> produce nothing by itself. Instead, it uses <code>ControllerBuilder</code> object for creating <code>Controller</code> and call controller <code>Execute</code> method. It is <code>Execute</code> method responsibility to find corresponding action, call action and wrap action return result it HTTP response.
+</p>
+<a href="https://lh5.googleusercontent.com/-oJHL461Fj-w/TfzI2KJsFaI/AAAAAAAAHe0/MDVtQS77gGw/handler.declaration.1.png">
+<img src="https://lh5.googleusercontent.com/-oJHL461Fj-w/TfzI2KJsFaI/AAAAAAAAHe0/MDVtQS77gGw/handler.declaration.1.png" alt="mvc handler declaration" />
+</a>
+<p>
+As you can see, it implements 3 interfaces: <code>IHttpHandler</code>, <code>IHttpAsyncHandler</code> and <code>IRequiresSessionState</code>. The handler could operate in 2 modes: sync and async, depending on caller. ASP.NET frameworks <code>ProcessRequestInternal</code> method try to utilize asynchronous mode of work first.
+</p>
+<p>
+The constructor of <code>MvcHanlder</code> receives <code>RequestContext</code> class, that is part of System.Web.Routing and contains information about <code>HttpContext</code>.  
+</p>
+<h2>Synchronous and Asynchronous modes</h2>
+<p>
+Of course, the details of operation in synchronous and asynchronous modes are differ from each other, but main algorithm of work is exactly the same.. Let's first see how it operates in sync mode.
+</p>
+<h2>Process the request</h2>
+<p>
+Due to <code>IHttpHandler</code> interface, <code>MvcHanlder</code> expected to support one property and one method:
+</p>
+<a href="https://lh4.googleusercontent.com/-GCULpCDs5Uk/TfzI1RGGfpI/AAAAAAAAHeo/XZ3FTPT_jMI/handler.declaration.2.png">
+<img src="https://lh4.googleusercontent.com/-GCULpCDs5Uk/TfzI1RGGfpI/AAAAAAAAHeo/XZ3FTPT_jMI/handler.declaration.2.png" alt="mvc handler declaration" />
+</a>
+<p>
+<code>IsReusable</code> is always false, meaning that for each request the runtime would create new instance of handler. <code>ProcessRequest</code> receives <code>HttpContext</code> and basically delegates call to internal <code>ProcessRequest</code> method.
+</p>
+<a href="https://lh3.googleusercontent.com/-D3MUti1Eh7g/TfzI3RIRXXI/AAAAAAAAHe8/ADmoHG1wnQo/handler.declaration.3.png">
+<img src="https://lh3.googleusercontent.com/-D3MUti1Eh7g/TfzI3RIRXXI/AAAAAAAAHe8/ADmoHG1wnQo/handler.declaration.3.png" alt="mvc handler declaration" />
+</a>
+<p>
+Notice to the first line.. <code>HttpContext</code> is being wrapped with <code>HttpContextWrapper</code> and casted to <code>HttpContexBase</code>. Rest of code never (mostly) using <code>HttpContext</code> directly, but through <code>HttpContexBase</code>. The <code>HttpContexBase</code> have been introduced to improve testability of ASP.NET applications, since <code>HttpContext</code> is unable to be mocked.
+</p>
+<h2>ControllerBuilder, ControllerFactory, Controller</h2>
+<p>
+Let's see inside the <code>ProcessRequest</code> method to see how exactly the controller is being constructed and called.
+</p>
+<a href="https://lh5.googleusercontent.com/-hGQmALFmXyw/TfzI1BGwhQI/AAAAAAAAHek/Ts_T-BAo85U/handler.declaration.4.png">
+<img src="https://lh5.googleusercontent.com/-hGQmALFmXyw/TfzI1BGwhQI/AAAAAAAAHek/Ts_T-BAo85U/handler.declaration.4.png" alt="mvc handler declaration" />
+</a>
+<p>
+The call is wrapped with a little security handler, that would do perform the check for Trust settings, before calling internal action. Inside the action <code>IController</code> and <code>IControllerFactory</code> are being declared and initialized in <code>ProcessRequestInit</code> method.
+</p>
+<a href="https://lh4.googleusercontent.com/-8WV5t8II9XU/TfzI1qyxG8I/AAAAAAAAHes/PB4NiaWZJts/handler.declaration.5.png">
+<img src="https://lh4.googleusercontent.com/-8WV5t8II9XU/TfzI1qyxG8I/AAAAAAAAHes/PB4NiaWZJts/handler.declaration.5.png" alt="mvc handler declaration" />
+</a>
+<p>
+First, it puts MVC version information into HTTP response header, removes optional parameters from routes (one we mark with <code>UrlParameter.Optional</code>) and gets the name of controller from <code>RequestContext</code>. Remember, in global.asax we define URL pattern like "{controller}/{action}/{index}", so in case of such URL <code>products/search/122</code> the <code>GetRequiredString</code> will return "products".
+</p>
+<p>
+<code>ControllerBuilder</code> is a singleton and factory method that creates <code>IControllerFactory</code> instance. 
+</p>
+<p>
+<code>ControllerFactory</code> is responsible for creation of controller by given name. 
+</p>
+<p>
+The <code>ProcessRequestInit</code> gets the factory from <code>ControllerBuilder</code>, ask factory to create controller by the name from URL and returns results back to <code>ProcessRequest</code>.
+</p>
+<p>
+Here we also could see good example of comments that lies.. "// Instantiate the controller and call Execute" - maybe sometime ago that was true, but not its false since Execute is not called here. 
+</p>
+<h2>Execution</h2>
+<p>
+As soon as controller factory and controller are successfully created, <code>ProcessRequest</code> calls for controller <code>Execute</code> method. Now, it is controller responsibility to produce the output and we will see how it does that in next "Inside MVC" posts. Execution is wrapped inside <code>try / finally</code> block and finalize code will release the controller by calling <code>ReleaseContoller</code> method of factory.
+</p>
+<h2>Meanwhile in Asynchronous...</h2>
+<p>
+In async world the things are bit more complex. There are no one single method, but 2 instead. <code>BeginProcessRequest</code> and <code>EndProcessRequest</code>.
+</p>
+<p>
+The request initialization and creation of factory and controller is exactly the same. The difference in execution, for async controller 2 delegates are being created, 
+</p>
+<a href="https://lh3.googleusercontent.com/--qjZrorgG88/TfzI1xDv_dI/AAAAAAAAHew/RvZm0UMDQ8k/handler.declaration.7.png">
+<img src="https://lh3.googleusercontent.com/--qjZrorgG88/TfzI1xDv_dI/AAAAAAAAHew/RvZm0UMDQ8k/handler.declaration.7.png" alt="mvc handler declaration" />
+</a>
+<p>
+In fact, that than the request execution begins, <code>beginDelegate</code> is called that would call <code>BeginExecute</code> of the controller. At the end of request <code>endDelegate</code> called that would call <code>EndExecute</code> of controller.
+</p>
+<h2>What about tests?</h2>
+<p>
+That was a great surprise to me that <code>MvcHandler</code> is well unit tested. All aspects of its work are covered with corresponding tests.. I've heard a lot of developers complains like, "oh, it is so low-level code.. could not test it". But MVC team, proof it is wrong. <code>HttpContexBase</code> could be easy mocked, so no excuse of not writing unit tests for modules/handlers. As I said in into, test code is really clean, following AAA principle's, so I got a lot of pleasure of looking inside.
+</p>
+<p>
+BTW, they are using <a href="http://code.google.com/p/moq/wiki/QuickStart">Moq</a> framework for mocking, that I personally like as well :).
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-route-to-mvchanlder.html">Inside ASP.NET MVC: Route to MvcHandler</a>
+Next: <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a>
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

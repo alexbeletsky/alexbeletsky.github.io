@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Developing Web Applications Faster</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Developing Web Applications Faster Aug 20th, 2012 HTML, JavaScript, Tips, Tools If you haven&#8217;t seen Bret Victor&#8217;s talk, please find 54 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/08/developing-web-applications-faster.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Developing Web Applications Faster</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T11:20:00+02:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/html/'>HTML</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>    If you haven&#8217;t seen Bret Victor&#8217;s <a href="http://vimeo.com/36579366">talk</a>, please find 54 minutes and do it. This video is giving many interesting ideas, inspiring people to create new things. The main idea of his talk (at least as I understood it), is whatever you do, you have to see the result of your work as soon as possible. This short feedback cycle is important, cause it leads to better ideas and good productivity.<br />
+</p><p>    As a developers, we do code. Applying Victor&#8217;s principle, ideally we should have this code immediately running and showing it&#8217;s results of execution. Some experimental IDE&#8217;s like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> is trying to adopt this principle now. <br />
+</p><p>    If you develop web applications, you spend much time working with HTML/CSS/JS, which being executed by browser. The typical workflow, is to open your text editor, correct some mark-up or javascript code, then switch to browser, press F5 and see the results. It doesn&#8217;t sound like a big job, but believe me, it&#8217;s getting annoying and boring in very short time.<br />
+</p><h2>LiveReload comes to help</h2><p>    Ideal workflow is something like, you apply changes to JS, press Ctrl + S in your text editor and browser get&#8217;s immediately reloaded, showing the results of execution. That&#8217;s sounds really cool and fortunately there is great solution for that. It&#8217;s called <a href="https://github.com/mockko/livereload">LiveReload</a> from <a href="https://github.com/andreyvit">Andrey Tarantsov</a>.<br />
+</p><p>    It can be installed as either a <code>&lt;script type=&quot;javascript&quot; scr=&quot;/libs/livereload.js&quot;&gt;&lt;/script&gt;</code> tag in your app, or as a browser plug-in. I prefer the plug-in way, since it could work with any app and requires no code modifications. There plugins for <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&ved=0CFYQFjAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fjnihajbhpnppcggbcgedagnkighmdlei&ei=Ld8xUOzuD8bhtQaThIGYAw&usg=AFQjCNGfX_zDQVCEb-jaq2-TSiR7TqxQWw&sig2=039AdwBtqrpgzbt-irnUcQ">Chrome</a>, <a href="https://www.google.com.ua/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&sqi=2&ved=0CEMQFjAA&url=https%3A%2F%2Faddons.mozilla.org%2Fen-us%2Ffirefox%2Faddon%2Flivereload%2F&ei=f98xUMPVM4rTtAbVioHgAg&usg=AFQjCNGsE_l-orw8MwyGW9mcQ2-y8H2F5Q&sig2=lYx9rMgyuI2384_1y2MZ8w">FireFox</a> and <a href="http://download.livereload.com/2.0.8/LiveReload-2.0.8.safariextz">Safari</a>.<br />
+</p><p>    How does it work? Take a look on a diagram.<br />
+</p><a href="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png"><br />
+    <img src="https://lh4.googleusercontent.com/-F9itf6E8NAA/UDIAFm3zrsI/AAAAAAAAJAE/3LEaKfedmls/s776/image-1.png" style="width: 620px"/><br />
+</a><br />
+<p>    The LiveReload plug-in (or livereload.js script) expect&#8217;s that there is Web Socket Server, where it connects to and start to listen for changes. Web Socket Server is responsible for tracking changes and if changes occurred, it send the package of data with information about the changes, back to the web socket. LiveReload receives the data and reloads the browser.<br />
+</p><p>    As you installed plug-in and pressed &#8220;LR&#8221; button, it&#8217;s gonna light green if connection to server is successful, otherwise it will pop-up the message, that server is not available.<br />
+</p><a href="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png"><br />
+    <img src="https://lh5.googleusercontent.com/-R7b4Vtvid0g/UDIAFn5cdxI/AAAAAAAAJAA/MUpTAS2pizU/s535/image-3.png" style="width: 620px"/><br />
+</a><br />
+<p>    So, to make LiveReload work properly we have to provide an Web Socket Server, that conforms to LiveReload interface. <br />
+</p><h2>LiveReload + Sublime Text 2</h2><p>    There is a great plug-in for Sublime Text 2, from <a href="https://github.com/dz0ny">Janez Troha</a> called, <a href="https://github.com/dz0ny/LiveReload-sublimetext2">LiveReload-sublimetext2</a>. It&#8217;s get easily installed through standard ST2 package installer (package name is &#8220;LiveReload&#8221;). Basically, it instantiate Web Socket Server inside the sublime, listening to editors event&#8217;s and push data to socket.<br />
+</p><p>    As soon as it&#8217;s installed, and browser connected to it, you can now modify any HTML/JS/CSS file. As file get changed and saved, you will see LiveReload-sublimetext2 will immediately send the command and browser got refreshed.<br />
+</p><a href="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png"><br />
+    <img src="https://lh3.googleusercontent.com/-N21_9n_1At0/UDIAGA6k7II/AAAAAAAAJAM/7pWtPo9sKm4/s620/image-4.png" style="width: 620px"/><br />
+</a><br />
+<p>    When I first time tried that, I could not believe how smooth it was. Can&#8217;t even believe how I lived with-out it before. Nothing to add here, just nice and easy.<br />
+</p><h2>LiveReload + any IDE</h2><p>    &#8220;Any IDE&#8221; in my case means Visual Studio, where I spent some time if I&#8217;m not Sublime. Unfortunately, there are no dedicated plugin for VS (as seems there are no for JIdea and Eclipse, so good opportunity for developers). Even so, you have a chance to get benefits of LiveReload. All you need to have is <a href="http://nodejs.org/">Node.js</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> installed on your machine.<br />
+</p><p>    Originally, LiveReload comes with Ruby-based <a href="https://github.com/mockko/livereload/tree/master/server">server</a>, that you can install and used from gems. I&#8217;m not much that comfortable with Ruby, so I went Node.js way.<br />
+</p><p>    There is Node-base LiveReload web socket <a href="https://github.com/josh/node-livereload">server</a> from <a href="https://github.com/josh">Joshua Peek</a>. It&#8217;s written in coffee-script and actually really easy to adopt. Here is an <a href="https://github.com/alexbeletsky/candidate/tree/master/tools/livereload">example</a>, how I used that for my project. With a simple .cmd, I start up livereload, specifying which folder to observe.<br />
+</p><pre class="brush: plain">    @echo off
+    node ./tools/livereload/server.js ./src/Candidate.Nancy.Selfhosted/Client/
+</pre><p>    It will start up the server, wait till browser connects and watch all files in folder for changes.<br />
+</p><a href="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png"><br />
+    <img src="https://lh3.googleusercontent.com/-Clurp7tbGjA/UDIAGXCTBGI/AAAAAAAAJAQ/ghdC6eHVSQc/s620/image-5.png" style="width: 620px"/><br />
+</a><br />
+<p>    Not everything so perfect with that approach, though. There are 2 reasons, why I did not finally like that:<br />
+</p><ol>    <li>It is slow. Internally node-livereload uses <code>fs.watchFile</code>, which is quite slow (at least on Windows). That mean&#8217;s if you save the file, it takes 1-1.5 seconds for browser to refresh.<br />
+    </li>
+    <li>Does not catch up new files. You have to restart server, to make it watch newly created files.<br />
+    </li>
+</ol><h2>Mixing things up</h2><p>    There reasons above prevent me to go on with <a href="https://github.com/josh/node-livereload">node-livereload</a>. So, even if I work on .NET-based application, I do C# in Visual Studio, but HTML/CSS/JS in Sublime, having the all it&#8217;s benefits. So, I basically have 2 things opened side-by-side.<br />
+</p><a href="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png"><br />
+    <img src="https://lh4.googleusercontent.com/--1QZU1dRym0/UDIAGZjoJQI/AAAAAAAAJAY/Nkb7uhE66wA/s570/image-6.png" style="width: 620px"/><br />
+</a><br />
+<h2>Conclusions</h2><p>    I felt much productivity boost with LiveReload. I have Sublime opened on one monitor and Chrome + WebKit Tools on another. As soon I change something, I see the results immediately, catching up errors in console as early as possible. It works so great then you TDD&#8217;ing your JavaScript code, as you write tests and implementation and it&#8217;s been re-run with each save (like a continues testing with AutoTest, NCrunch etc.).<br />
+</p><p>    That works very fine to me, I don&#8217;t want to press F5 anymore. Do you?<br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/08/developing-web-applications-faster.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/08/developing-web-applications-faster.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

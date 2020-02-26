@@ -1,0 +1,1025 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Latest version of ELMAH MVC controller Aug 27th, 2011 ELMAH.MVC, MVC, Tips, Tools, asp.net Integrating ELMAH to ASP.NET MVC in right way is blog &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/14/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/latest-version-of-elmah-mvc-controller.html">
+    
+      Latest version of ELMAH MVC controller</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T18:36:00+02:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p><a href="http://www.beletsky.net/2011/03/integrating-elmah-to-aspnet-mvc-in.html">Integrating ELMAH to ASP.NET MVC in right way</a> is blog post I created sometime ago. It appears really popular, because a lot of people had the same issue as me and found solution I created really applicable. It was really cool to receive all that feedback! By the way, <a href="https://github.com/alexbeletsky/elmah.mvc.controller">elmah.mvc.controller</a> is my first github repository I got pull request! </p><p>Especially, I would like to thank to <a href="https://github.com/seba-i">Seba Illingworth</a> and <a href="http://twitter.com/#!/blowdart">Barry Dorrans</a> who found really nasty issues and helped to fix those. </p><p>The controller&#8217;s code has been moved to github long time ago, but what I see many people just copy-past code from article into their solutions. The code I gave in previous post has been changed drastically, but instead of re-writting original post I decided to create new one. </p><h2>Latest version of ELMAH MVC controller</h2><p>So, after all modifications it looks like: </p><pre class="brush: csharp">namespace ElmahMvc.Areas.Admin.Controllers {
+    class ElmahResult : ActionResult {
+        private string _resouceType;
+
+        public ElmahResult(string resouceType) {
+            _resouceType = resouceType;
+        }
+
+        public override void ExecuteResult(ControllerContext context) {
+            var factory = new Elmah.ErrorLogPageFactory();
+
+            if (!string.IsNullOrEmpty(_resouceType)) {
+                var pathInfo = "/" + _resouceType;
+                context.HttpContext.RewritePath(FilePath(context), pathInfo, context.HttpContext.Request.QueryString.ToString());
+            }
+
+            var currentApplication = (HttpApplication)context.HttpContext.GetService(typeof(HttpApplication));
+            var currentContext = currentApplication.Context;
+
+            var httpHandler = factory.GetHandler(currentContext, null, null, null);
+            if (httpHandler is IHttpAsyncHandler) {
+                var asyncHttpHandler = (IHttpAsyncHandler)httpHandler;
+                asyncHttpHandler.BeginProcessRequest(currentContext, (r) => { }, null);
+            }
+            else {
+                httpHandler.ProcessRequest(currentContext);
+            }
+        }
+
+        private string FilePath(ControllerContext context) {
+            return _resouceType != "stylesheet" ? context.HttpContext.Request.Path.Replace(String.Format("/{0}", _resouceType), string.Empty) : context.HttpContext.Request.Path;
+        }
+    }
+
+    public class ElmahController : Controller {
+        public ActionResult Index(string type) {
+            return new ElmahResult(type);
+        }
+    }
+}
+
+</pre><h2>How to use it in my application?</h2><p>Easy. Install ELMAH by NuGet, in package console </p><pre class="brush:plain"> Install-Package elmah
+</pre><p>It is optional (but preferable) to create new Area called Admin. Inside AreaRegistration.cs your should place routing for ELMAH controller: </p><pre class="brush: csharp">context.MapRoute(
+        "Admin_elmah",
+        "Admin/elmah/{type}",
+        new { action = "Index", controller = "Elmah", type = UrlParameter.Optional }
+    );
+</pre><p>Create ElmahController.cs (just from code above) and place to yours Areas/Admin/Controller folder, add file to project. Don&#8217;t forget to change the namespace according to your project. </p><p>Configure ELMAH logging options (Memory, XML, SQL), use Web.Config of this <a href="https://github.com/alexbeletsky/elmah.mvc.controller">project</a> as example. Run application, and see that: </p><pre class="brush:plain"> /admin/elmah
+</pre><p>works.  </p><p>Optional (but very preferable) is to secure your controller with Authorize attribute: </p><pre class="brush: csharp"> [Authorize(Users = "Admin")]
+ public class ElmahController : Controller
+ {
+</pre><p>That&#8217;s it. </p><h2>Known issues</h2><p>One current known issue - if I&#8217;m using <code>SqlErrorLog</code> as error log class and press &#8220;Download log&#8221; button on ELMAH dashboard, you&#8217;ve got empty result. Unfortunately, it does not work now, since <a href="http://code.google.com/p/elmah/issues/detail?id=230">issue</a> in ELMAH core that I hope will be fixed in nearest release. </p><h2>NuGet package for it? </h2><p>I didn&#8217;t expect such popularity of that class, but now I seriosly think putting this on NuGet. I&#8217;ll try to package that as soon as possible. </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/inside-aspnet-mvc-iresolver-and-its.html">
+    
+      Inside ASP.NET MVC: IResolver and it&#8217;s implementations</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-27T15:06:00+02:00" pubdate data-updated="true">Aug 27<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>One of the major changes between MVC2 and MVC3 was introduction of Dependency Injection principles on a level of framework. If you compare, for instance <code>ControllerBuilder.cs</code> from MVC2 and <code>ControllerBuilder.cs</code> from MVC3 you will clearly see the difference. In MVC3 we are no longer create entities directly (through &#8216;new&#8217; operator), but instead we delegate that to <code>IResolver</code> interface. <code>IResolver</code> interface itself is extremely simple:<br />
+</p><pre class="brush:csharp">namespace System.Web.Mvc {
+    internal interface IResolver&lt;T&gt; {
+        T Current { get; }
+    }
+}
+</pre><p>We can just ask the instance of type we would like to resolve. Please also note, that <code>IResolver</code> is internal class, so it is not exposed and you will never use it in application directly.<br />
+</p><p>All major entities of MVC framework (ControllerFactory, Filters, ViewEngines etc.) from now resolved by <code>IResolver</code> implementation class. That improves extensibility of framework very much and introduces new strategy of creation objects.<br />
+</p><h2>Implementations of IResolver interface</h2><p>There are two classes that implements <code>IResolver</code> - <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code>. Primary responsibility of those are delegation call to <code>IDependencyResolver</code> methods <code>GetService</code> and <code>GetServices</code>, respectively.<br />
+</p><p>If they just recalling method of <code>IDependecyResolver</code> class, what&#8217;s are the purpose of those two classes?<br />
+</p><p>There are 2 purposes I can see:<br />
+</p><ol><li>To provide default type instance in case of type is not resolved by <code>IDependencyResolver</code>.</li>
+<li>To create instance only once.</li>
+</ol><h2>How it works?<br />
+</h2><p>Now, let&#8217;s take a look how it actually works. It is really simple and small, so I&#8217;m able to put most of code here. <br />
+</p><p>Construction:<br />
+</p><pre class="brush:csharp">public SingleServiceResolver(Func&lt;TService&gt; currentValueThunk, TService defaultValue, string callerMethodName) {
+ if (currentValueThunk == null) {
+  throw new ArgumentNullException(&quot;currentValueThunk&quot;);
+ }
+ if (defaultValue == null) {
+  throw new ArgumentNullException(&quot;defaultValue&quot;);
+ }
+
+ _resolverThunk = () =&gt; DependencyResolver.Current;
+ _currentValueThunk = currentValueThunk;
+ _defaultValue = defaultValue;
+ _callerMethodName = callerMethodName;
+}
+</pre><p>You can see, it receives default factory method, default type instance and the name of caller method (used as additional information in exception).<br />
+</p><p>Here, how <code>ControllerBuilder</code> creates the <code>SingleServiceResolver</code>, for instance:<br />
+</p><pre class="brush:csharp">internal ControllerBuilder(IResolver&lt;IControllerFactory&gt; serviceResolver) {
+ _serviceResolver = serviceResolver ?? new SingleServiceResolver&lt;IControllerFactory&gt;(
+  () =&gt; _factoryThunk(),
+   new DefaultControllerFactory { ControllerBuilder = this },
+  &quot;ControllerBuilder.GetControllerFactory&quot;
+ );
+}
+</pre><p>Since it implements only one property, current <code>Current</code>:<br />
+</p><pre class="brush:csharp">public TService Current {
+ get {
+  if (_resolverThunk != null) {
+   lock (_currentValueThunk) {
+    if (_resolverThunk != null) {
+     _currentValueFromResolver = _resolverThunk().GetService&lt;TService&gt;();
+     _resolverThunk = null;
+
+     if (_currentValueFromResolver != null &amp;&amp; _currentValueThunk() != null) {
+      throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, MvcResources.SingleServiceResolver_CannotRegisterTwoInstances, typeof(TService).Name.ToString(), _callerMethodName));
+     }
+    }
+   }
+  }
+  return _currentValueFromResolver ?? _currentValueThunk() ?? _defaultValue;
+ }
+}
+</pre><p>First, we check the existence of <code>_resolverThunk</code> it would always exist (having value of <code>() => DependencyResolver.Current</code>) for first call of the method. Then, we locking on <code>_currentValueThunk</code> protecting for multiple threads access the same method, same time. Then, we try to resolve given type by asking <code>_resolverThunk()</code> to <code>GetService&lt;TService&gt;()</code>.<br />
+</p><p>After that we have an if-statement that I didn&#8217;t get from the very beginning. Fortunately, MVC project has bunch of good unit tests. As I found the test it turns clear to me. The test called <code>CurrentThrowsIfCurrentSetThroughServiceAndSetter</code> and it&#8217;s Assert part: <br />
+</p><pre class="brush:csharp">[TestMethod]
+public void CurrentThrowsIfCurrentSetThroughServiceAndSetter() {
+ // Arrange
+ TestProvider providerFromCurrentValueThunk = new TestProvider();
+ TestProvider providerFromServiceLocation = new TestProvider();
+ TestProvider providerFromDefaultValue = new TestProvider();
+ Mock&lt;IDependencyResolver&gt; resolver = new Mock&lt;IDependencyResolver&gt;();
+
+ resolver.Setup(r =&gt; r.GetService(typeof(TestProvider)))
+   .Returns(providerFromServiceLocation);
+
+ SingleServiceResolver&lt;TestProvider&gt; singleResolver = new SingleServiceResolver&lt;TestProvider&gt;(() =&gt; providerFromCurrentValueThunk, providerFromDefaultValue, resolver.Object, &quot;TestProvider.Current&quot;);
+
+ //Act &amp; assert
+ ExceptionHelper.ExpectException&lt;InvalidOperationException&gt;(
+  () =&gt; singleResolver.Current,
+  &quot;An instance of TestProvider was found in the resolver as well as a custom registered provider in TestProvider.Current. Please set only one or the other.&quot;
+ );
+}
+</pre><p>This is really <strong>important</strong> and says: you should not create same type instance both with <code>IDependencyResolver</code> and factory method! In case of <code>ControllerFactory</code>: you should never provide your implementation of <code>IControllerFactory</code> and in the same time resolve <code>IControllerFactory</code> instance by <code>IDependencyResolver</code>. Same rule for all other types. You should decide how you would like to override default behavior. In MVC3 usage of <code>IDependencyResolver</code> is a preferable.<br />
+</p><p>The code below is wrong:<br />
+</p><pre class="brush:csharp">DependencyResolver.SetResolver(new DummyDependencyResolver());
+ControllerBuilder.Current.SetControllerFactory(new DummyControllerFactory());
+</pre><p>So, after that <code>_resolverThunk</code> is reset and we no longer ask <code>IDependencyResolver</code>, just returning the resolved value.<br />
+</p><p><code>MultiServiceResolver</code> is even a little simpler. <br />
+</p><pre class="brush:csharp">public IEnumerable&lt;TService&gt; Current {
+ get {
+  if (_itemsFromService == null) {
+   lock (_itemsThunk) {
+    if (_itemsFromService == null) {
+     _itemsFromService = _resolverThunk().GetServices&lt;TService&gt;();
+    }
+   }
+  }
+  return _itemsFromService.Concat(_itemsThunk());
+ }
+}
+</pre><p>The same, singleton strategy of resolving types and then just concatenating resolved by <code>IDependencyResolver</code> with ones retuned by default factory method. It looks strange, but it is legal here to have types resolved both by <code>IDependencyResolver</code> and factory.<br />
+</p><h2>Conclusions<br />
+</h2><p><code>IResolver</code>, <code>SingleServiceResolver</code> and <code>MultiServiceResolver</code> are all internal parts of framework. We are not directly using any of them. They used as kind of bridge between previous (MVC2) object creation strategy and new (MVC3) one. New strategy is using Service Locator (<code>IDependencyResolver</code>). It is important that we should never &#8216;mix&#8217; both in the same application. Preferable way is <code>IDependencyResolver</code>.<br />
+</p><h2>What&#8217;s next?</h2><p>We are going to continues our journey of resolving types and meet <code>IDependencyResolver</code> closer.<br />
+</p><p>Previous <a href="http://www.beletsky.net/2011/07/inside-aspnet-mvc-controllerbuilder.html">Inside ASP.NET MVC: ControllerBuilder class</a><br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/my-application-for-10kappart.html">
+    
+      My application for 10KAppart competition</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-24T09:37:00+02:00" pubdate data-updated="true">Aug 24<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/design/'>Design</a>, <a class='category' href='/blog/categories/github/'>GitHub</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Recently, I&#8217;ve met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
+</p>
+<p>
+I&#8217;ve spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge.
+</p>
+<p>
+I did it a style of weekend project, started up Friday evening, I&#8217;ve spend 3 hours to complete github API adapter and application logic. As always, hard part was - design.
+</p>
+<p>
+Even I a bit improved my design skill through this year.. still it is big challenge. I choose light blue color for main color and dark blue as auxiliary. I went with <a href="http://www.google.com/webfonts#ChoosePlace:select">Google Web Fonts</a> that I used before and was happy with results. Playing out with colors and gradients, I came up with such front page:
+</p>
+<a href="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg">
+<img src="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg" alt="code" />
+</a>
+<p>
+With much help of <a href="http://twitter.com/#!/Porosyaka">Sasha</a> we have designed badges part of application. I still not 100% happy, but at least it was quite fast.
+</p>
+<a href="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg">
+<img src="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg" alt="code" />
+<p>
+</a>
+After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart.
+</p>
+<p>
+I&#8217;ve been waiting about 4 days, to receive an answer. Meanwhile, I&#8217;ve seen that new application are being posted.. but not mine. Finally, they responded to me saying &#8220;Sorry, but Google Web Fonts are not allowed&#8221;. That was actually my bad, but I haven&#8217;t thought that are treated as 3rd party. Anyway, I had to switch to <a href="http://typekit.com/">TypeKit</a> very fast. I didn&#8217;t get same results as with Web Fonts, but I had no time for finding perfect match and reapplied again.
+</p>
+<p>
+It finally available here - <a href="http://10k.aneventapart.com/Entry/Details/512">http://10k.aneventapart.com/Entry/Details/512</a>
+</p>
+<p>
+I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/it-jam-2011-in-odessa_23.html">
+    
+      IT Jam 2011 in Odessa</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-23T16:45:00+02:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/itjam/'>ITJam</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>IT Jam is a conference for developers in Ukraine. Highly popularized through the last years now it became the most popular IT events in Ukraine. The slogan of conference is &#8220;Meet & Mix&#8221; saying it&#8217;s primary goal is to create good conditions for networking and experience sharing. </p><p>I&#8217;ve never been visiting IT Jam before. But this time, I not only visited but have a speech there. Moreover, the <a href="http://www.e-conomic.co.uk/">company</a> I work to was sponsoring .NET section.. and I got a honor to be a representative there. I&#8217;ve started to prepare on a very short notice, just 5 days before conference.. all of these facts let me a little nervous. </p><p>We decieded to go by car, with my great colleagues <a href="http://twitter.com/#!/korneliuk">@korneliuk</a> and <a href="http://twitter.com/#!/VladAlieks">@VladAlieks</a>. Having a good company is a key for any trip. I haven&#8217;t noticed how fast we came to Odessa. We stopped in Odessa&#8217;s <a href="http://skalodrom.od.ua/">Alpine club</a> where I used to spent great summer days during my rollerblading <a href="http://www.youtube.com/watch?v=TzrXoYSzT4Q&feature=channel_video_title">career</a>. We&#8217;ve got there late evening, so had a time only to install our tent, say hello to the sea and fall asleep.  </p><p>Next morning we have a breakfast and moved to the place. IT Jam took biggest area in Odessa, <a href="http://lifeglobe.net/blogs/details?id=313">Odessa&#8217;s See Terminal</a>. That was really cool, since there you definitely could feel the spirit of Odessa - sea breeze, sun, ships. <a href="http://www.linkedin.com/pub/marina-vyshegorodskikh/0/571/70b">Marina Vyshegorodskikh</a> and <a href="http://twitter.com/#!/Emfimbria">Alexandra Chudner</a> who opened the event, energized the crowd for the rest of the day. </p><p>I&#8217;ve spent most my time mostly in .NET section. IT Jam format of speeches are supposed to be short. That was something that I didn&#8217;t expect at the begining, so after the schedule been published I realized - it is just impossible to fit everything I want to say in such short period of time. Anyway, I had no option and have to start my speech.  </p><a href=""><br />
+<img src="https://lh4.googleusercontent.com/-EJAqkayO9xo/TpZxh5beACI/AAAAAAAAHlE/EMWhdFsyfx0/s800/288852_188885197848166_100001800609058_414130_6492032_o.jpg" style="width: 620px" alt="Alexander Beletsky on IT Jam" /><br />
+</a><br />
+<br />
+<p><a href="http://www.linkedin.com/pub/olga-didich-dio-ciklum-net/8/689/600">Olga Didich</a> did a great job helping out all speakers and timekeeping. So, I just step by on scene and started up. As always it&#8217;s quite hard to describe and show the code for such big crowd, but I tried the best. Of cause, I haven&#8217;t managed to accomplish all my speech.. but I was really happy that people were contacting me a lot of questions, just after it. We were sitting together with one guy after and I was showing the rest of my presentation just for him :). </p><p>As &#8220;Meet & Mix&#8221; format supposed, I had really nice talks with other developers. Ones, that I worked many years ago.. or ones we&#8217;ve met just recently.. or one&#8217;s we following each other in tweeter but had no chance to meet offline :). So, <a href="http://twitter.com/#!/dimapasko">@dimapasko</a>, <a href="http://twitter.com/#!/ChuniMuni">@ChuniMuni</a>, <a href="http://twitter.com/#!/xpinjection">@xpinjection</a>, <a href="http://twitter.com/#!/chaliy">@chaliy</a>, <a href="http://twitter.com/#!/antonvidishchev">@antonvidishchev</a>, <a href="http://www.linkedin.com/pub/dmitriy-davydov/4/8a2/b59">Dmitry Davydov</a> - guys, it very nice to see you there.. Thanks for your company and great beer-n-talks we had together. </p><p>At the evening I&#8217;ve met my old friends from Odessa and all our company moved back to Alpine club, to have a swim, drink and guitar playing on beach for all night. That was just amazing conclusion of that day. </p><p>I want to say big thanks, for everyone who involved in organization. Keep doing great job and improve from year to year. And for my friends who were always nearby, supported me and didn&#8217;t allow to be bored. </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/08/analog-of-svn-branch-switch-for-git.html">
+    
+      Analog of SVN branch switch for Git</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-01T10:16:00+02:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Working with Git in SVN based organization is <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">possible</a> and make a lot of benefits. Sources checked out once are now at you local repository, so all you do is commits, rebases and dcommits back to SVN. But sometimes you need to be able to switch to another SVN branch. You need something equivalent to &#8220;SVN switch&#8221; command inside Git environment.
+</p>
+<p>
+I’m been trying to switch to new branch, but I found no related information about that. I ended up this solution, I would like to share.
+</p>
+<ol>
+<li>Manually add new configuration into <code>~/.gitconfig</code>, for new SVN location</li>
+<pre>
+    [svn-remote "svn25"]
+        url = https://svn.server/branches/branch25
+        fetch = :refs/remotes/git-svn-25
+</pre>
+<li>Fetch changes from svn25</li>
+<pre>
+    git svn fetch svn25
+</pre>
+<li>Checkout that branch</li>
+<pre>
+    git checkout git-svn-25
+</pre>
+<li>Create new “master” branch</li>
+<pre>
+    git checkout -b master-25
+</pre>
+<li>
+Now, master-25 is your “master” for <code>branch25</code> SVN branch.
+</li>
+</ol>
+<p>
+You can merge you previous changes.. and continue to work with <code>master-25</code> as you worked with usual master.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/how-to-be-better-developer-or-3.html">
+    
+      How to be better developer or 3 accounts rule</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-22T15:46:00+02:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Oh no, not again! - you might think. Yet another Mr.SmartyPants are going to share his own vision of how to improve in development.
+</p>
+<p>I&#8217;ll say very obvious thing - if you are going to be great in something, you have to do that a lot. Like, if you going to be a great snowboarder you have to ride a lot; If you going to be great mathematician you have to solve a lot of problems; If you going to be great developer you simply have to do a lot programming :). 
+</p>
+<p>
+The road from &#8220;good to great&#8221; is long and difficult, you could not be great in one year.. or ten, or even whole life. But what you definitely can do, be a better. Only realizing that you are better than yesterday (month, year ago) is a great benefit, believe me.  
+</p>
+<p>
+But just the fact of knowing &#8220;I need to do something a lot&#8221; would hardly could help you to progress. What you need to have is <strong>indicators</strong>. Simple criteria&#8217;s that make you understand what your progress is. Are doing great or you suck?
+</p>
+<p>
+Three account&#8217;s that I created almost year ago, help me to get those indicators.
+</p>
+<ul>
+<li>
+<strong>github.com</strong> - producing of code, that what we do. you have to have github to store all code you produce, doesn&#8217;t matter it is a product or tool or just a <a href="https://gist.github.com/">gist</a> you created to help someone - it have to be stored. with a github you should be able to see how much you coding are changing through the time. you should review you last year code and think &#8220;Oh, God I suck a lot!&#8221;.
+</li>
+<li>
+<strong>blogger.com</strong> - besides of code writing, you have to share your technical thoughts. the blog, is a great motivator for seeking and sharing knowledge. as well as coding, blogging requires much skills. I see some relation between producing good code and good post. blog would also help you to look back, to remind you problems you was thinking of.. and how much you were right on that? is your opinion changed on some topics or not?
+</li>
+<li>
+<strong>stackoverflow.com</strong> - if you can&#8217;t explain something to another, you don&#8217;t understand it. giving an answers is extremely difficult, especially in such competitive environment as stackoverflow. the time I created account there I was not able to give any answer in meaningful time. I just had not enough skills for that. stackoverflow is great indicator, since it contains a reputation system.
+</li>
+</ul>
+<p>
+Well, do you think it is useful? It works for me and I&#8217;m going to proceed. 
+</p>
+<p>
+PS. That&#8217;s my 100 post for this blog.. and that&#8217;s my Friday before week vacation.
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/little-bit-on-javascript-magic-inside-c.html">
+    
+      A little bit on Javascript magic inside C# code</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-15T16:28:00+02:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/csharp/'>CSharp</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+C# and Javascript are both my favorite languages. I believe that those two are best languages in a world (perhaps I haven&#8217;t started to learn Ruby). With a quite long practice in Javascript, you start to feel real power of dynamic language. Even more, you are so much get used for particular code constructions that you try to do the same things in C#.
+</p>
+<p>
+This is something you might do in javascript a lot. Consider that code,
+</p>
+<a href="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png">
+<img src="https://lh5.googleusercontent.com/-SXBYeXIMuWE/TiBNuueuVYI/AAAAAAAAHiA/vNR2Z8ttvPA/code-0.png" alt="code" />
+</a>
+<p>
+Method <code>createConfig</code> takes options object, dynamically construct <code>config</code> object and returns it back to client. Maybe it is the best example, but shows - I dynamically able to construct an object, just putting new properties into it.
+</p>
+<p>
+Now, let&#8217;s try to do that same with C#. Believe me or not, but I can do exactly (OK, mostly exactly) code with C#.
+</p>
+<a href="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png">
+<img src="https://lh3.googleusercontent.com/-WbEQBh89yfI/TiBNuo2MoAI/AAAAAAAAHiE/SeXq-aI6LvY/code-1.png" alt="code" />
+</a>
+<p>
+We can play &#8220;Find a difference&#8221; game here. Anyway, what I can say: <strong>&#8220;anonymous types + dynamic + ExtendoObject&#8221;</strong>, is a magic spell that turn you C# code into Javascript.
+</p>
+<ul>
+<li>
+With <a href="http://msdn.microsoft.com/en-us/library/bb397696.aspx">Anonymous Types</a> you easy get a notion of JavaScript dynamic object, just use <code>new { MyProp = 1 }</code> JavaScript analog <code>{ MyProp: 1 }</code>.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/dd264741.aspx">Dynamic</a> would tell to compiler - &#8220;Do not check my type now, let Runtime do that&#8221;. So, with dynamic objects you can do <code>obj.MyProp</code>, compiler would allow this code, existence of property would be checked on runtime, if absent - exception will be thrown.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/system.dynamic.expandoobject.aspx">ExpandoObject</a> is a super-power of .NET, allows you to construct object at runtime. You can see, that I just assign new property, that property would be dynamically added to <code>config</code> object.
+</li>
+</ul>
+<p>
+Life would not be so interesting if every thing is so easy. My first implementation failed to work, in line <code>if (option.Ip || option.Proto)</code> then I called <code>createConfig</code> with object that actually contains no such properties. As I said above, dynamic simply throws an exception if property is missing. I could wrap code in some <code> try / catch</code> cases, but it would be to ugly and magic would gone. We have to extend our magic formula with one component - Reflection. So, let&#8217;s pronounce spell again, <strong>&#8220;anonymous types + dynamic + ExtendoObject + Reflection&#8221;</strong> and check out final secret piece of code.
+</p>
+<p>
+<code>DynamicProxy</code> is simple wrapper around the dynamic, it overloads [] operator and check availability of property using Reflection.
+</p>
+<a href="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png">
+<img src="https://lh5.googleusercontent.com/-wfeh6lG_zto/TiBNusNGmeI/AAAAAAAAHh8/ca_7jCdHEsk/code-2.png" alt="code" />
+</a>
+<p>
+That&#8217;s it. I&#8217;ve made C# code look like and behave like JavaScript, utilizing power of .NET platform. As always, you can find a source code on github - <a href="https://github.com/alexbeletsky/csharp-js">csharp-js</a>.
+</p>
+<h2>Disclaimer</h2>
+<p>
+You should not probably doing such tricks a lot. C# is still static language (even with dynamic features in it). It is better to rely on types, wherever it is possible to.. The code above is created to solve my particular problem and I had a lot of fun detecting this C# and JavaScript analogy. But now I still thinking to re-write that to statically typed less-beauty, less-magic solution :).
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/switching-from-aspx-to-razor-view.html">
+    
+      Switching from ASPX to Razor view engine</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-14T15:22:00+02:00" pubdate data-updated="true">Jul 14<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+I&#8217;ve been moving my <a href="http://trackyt.net">application</a> to MVC3 quite time ago. There was absolutely no issues of migration, everything that worked OK in MVC2 worked fine with MVC3. One of major feature that MVC3 brings with is Razor. Razor is view engine which combines HTML and code in very elegant fashion. Just from first sight to Razor you begin to understand how much ASPX sucks (I don&#8217;t blame ASPX since it has been designed for WebForms, actually.. and it just does not fit MVC much).
+</p>
+<p>
+Of cause, till that time I had a lot of already made markup with ASPX. I have register <a href="https://github.com/alexbeletsky/trackyt.net/issues/80">task</a> to switch all my views to Razor. But for a long time it&#8217;s being un-touched, I just been either doing some other things or too lazy for that kind of job. Yes, it is not very exiting to change *.aspx to *.cshtml.. Finally I put all my will on that, thinking better late than never.
+</p>
+<p>
+And you know, it was not so difficult and boring as I originally thought. Here are some obvious tips:
+</p>
+<ul>
+<li>Rename file from *.aspx to *.cshtml</li>
+<li>If you have master page like (Public.Master) change it to _PublicLayout.cshtml (Razor don&#8217;t use term Master, but rather Layout)</li>
+<li><code>&lt;%@ Control Language=&quot;C#&quot; Inherits=&quot;System.Web.Mvc.ViewUserControl&lt;Web.Models.LastArticleFromBlogModel&gt;&quot; %&gt;</code> became <code>@model Web.Models.LastArticleFromBlogModel</code></li>
+<li>
+<code>&lt;asp:ContentPlaceHolder ID=&quot;head&quot; runat=&quot;server&quot;/&gt;</code> became <code>@RenderSection("Head", required: false) in Layout pages</code>
+</li>
+<li><code>&lt;asp:ContentPlaceHolder ID=&quot;maincontent&quot; runat=&quot;server&quot;&gt;</code> became <code>@RenderBody() in Layout pages</code></li>
+<li><code>&lt;%@Import Namespace=&quot;Web.Helpers.Extensions&quot; %&gt;</code> became <code>@using Web.Helpers.Extensions</code></li>
+<li><code>&lt;%: </code> are changed to <code>@</code> and <code>%&gt;</code> changed to nothing (I simply used Find&Replace for that)</li>
+<li>At the top of content page
+<code><pre>@{
+ ViewBag.Title = "Admin | Admin Dashboard";
+ Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}</pre></code>
+</li>
+<li>For content pages, everything that is inside is Body (no special sections for that)</li>
+<li>If you need to override Head section, simply <code>@section Head { }</code></li>
+<li>Layout could be nested, in nested Layout page you should mention parent Layout, like above</li>
+</ul>
+<p>
+That&#8217;s basically it.. Along the way I&#8217;ve changed all HTML to comply HTML5 standard and reformatted (with Ctrl K + Ctrl D) and now markup looks definitely better!
+</p>
+<p>
+One really strange issue I should mention. As soon as I finished and pushed code to github my friend <a href="http://trackyt.net:8080/">Jenkins</a> immediately picked up changed and deployed them. But I as went to check it, I got 404 Error just from very beginning. After investigation I found the reason - as I was just renaming files *.aspx to *.cshtml, in *.csproj (project file) all of them are became in &#8220;None&#8221; item, instead on &#8220;Content&#8221;.. and site publishing just ignored that items. I have to manually change it back, as soon as I <a href="https://github.com/alexbeletsky/trackyt.net/commit/ef3868077e6307747724c464075475512037738e">committed</a>, it started to work like charm.
+</p>
+<p>
+So, there are no any technical issues with moving from ASPX to Razor, just don&#8217;t be to lazy and do it today :)
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/git-with-svn-what-benefits-are.html">
+    
+      Git with SVN, what the benefits are?</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-13T07:50:00+02:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/gitsvn/'>GitSVN</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+My previous <a href="http://www.beletsky.net/2011/06/how-to-start-using-git-in-svn-based.html">post</a> about starting up of using Git inside on SVN organization appeared to be really attractive, I received many questions through <a href="http://twitter.com/#!/alexbeletsky">twitter</a> and <a href="http://java.dzone.com/articles/how-start-using-git-svn-based">dzone</a>. All of them are really interesting and I going to do a separate posting on that, but primary question is &#8220;Why, oh why?&#8221;.  
+</p>
+<p>
+So, what actual benefits I see by using approach of git-svn?
+</p>
+<p>
+First, let&#8217;s see the root, what kind of VCS Git is? It is distributed one. The distribution basically means that each developer host the repository on it&#8217;s own machine. Not a working copy as in SVN case, but real repository with all corresponding functionality - commits, reverts, branches, merges etc. You are not longer depend on server, even if sever is not available you still able to continue your job. 
+</p>
+<p>
+Since you have your local repository, you can do whatever you want without interfering the rest of the world. In SVN all operations like commit or branch creation or tag - they are global one. As soon as you created branch for instance, everybody will notice that; if you committed something, everybody will notice that. In many organizations SVN has policies, like you have access only for some branches.. you can&#8217;t create branches, only by request to admin etc. But, what I basically do on my job - I want to try out something (new idea or apply some refactoring) without disturbing a lot of people, I want that quickly. It perfectly works with Git, I create the branch just by one command, work inside (means do what ever number of commits I want) and if I think I&#8217;m ready, merge it back to master and push changes to SVN.
+</p>
+<p>
+Remember you last merge operation with SVN? If you haven&#8217;t seen &#8216;Tree conflict&#8217; type of conflict, you are not SVN user. I&#8217;ve seen them a lot and many people suffer much of it! This type of conflict happens because SVN keeping and tracking information about folder in which file is placed. Git does not do that, it is basically content tracking system - Git cares about content of the file, not file it self. Since the information about content (blob) and filesystem information (tree) is separated each of other, you will never get a &#8216;Tree conflict&#8217; in Git.
+</p>
+<p>
+By the fact that branches and merges are very easy in Git you are getting one really cool bonus. Have you ever been in situation then in a middle of your flow, then tens files are already changed, but you still struggling with task, your boss is contacting you saying - &#8216;Hey, we have critical bug, required to be fixed now&#8217;? Such things make you a little uncomfortable, you already got some changes, but they are not &#8216;commitable&#8217;.. you could not throw it away, because some value is already there, but you need to get SVN update and start to fix bug. With git, you can switch from one task to another with out any problems. You just commit your results (even if they are not compliable or tests are red, who cares - it&#8217;s yours repository) create another branch for bugfix and start to work.  
+</p>
+<p>
+To summarize that a little I would say that my personal benefits of starting using Git are: 
+</p>
+<ul>
+<li><strong>Isolation</strong> - do whatever I want, whenever I want</li>
+<li><strong>Merges</strong> - forget about &#8216;Tree conflicts&#8217;</li>
+<li><strong>Task switching</strong> - no more, &#8220;please wait till I commit this, so I can start to work on that&#8221;</li>
+<li><strong>Fun</strong> - it is interesting to me to learn new system and to change a mind how VCS can work</li>
+</ul></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2011/07/inside-aspnet-mvc-controllerbuilder.html">
+    
+      Inside ASP.NET MVC: ControllerBuilder class</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-09T11:28:00+02:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Integral part of <code>MvcHanlder</code> is <code>ControllerBuilder</code>. <code>ControllerBuilder</code> is a singleton that is responsible to produce <code>IControllerFactory</code> instance. 
+</p>
+<a href="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png">
+<img src="https://lh6.googleusercontent.com/-DCwP650y9-U/ThgeFaCgXPI/AAAAAAAAHgU/A0dkfOHBGqo/controllerbuilder-0.png" alt="controller builder" />
+</a>
+<h2>Construction</h2>
+<p>
+<code>ControllerBuilder</code> have 2 constructors, the default one and one with parameter. One of the major changes between MVC2 and MVC3 was the improvements of <a href="http://bradwilson.typepad.com/blog/2010/07/service-location-pt1-introduction.html">Dependency Injection</a>. MVC is using <a href="http://en.wikipedia.org/wiki/Service_locator_pattern">Service Locator</a> pattern for resolving dependencies.Default constructor calls constructor with parameter, passing <code>null</code> as argument, saying that <code>SingleServiceResolver</code> object have to be used as default service resolver.
+</p>
+<p>
+Please note, even if MVC is using Service Locator to locate different entities (like Controllers, Views, Filters) and so on, it does not include any kind on IoC frameworks itself. 
+</p>
+<h2>Controller factory get/set</h2>
+<p>
+<code>MvcHanlder</code> uses <code>GetControllerFactory</code> method to get controller factory.
+</p>
+<a href="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png">
+<img src="https://lh5.googleusercontent.com/-NVekFX42y9E/ThgeFNkIbvI/AAAAAAAAHgM/r_r--YJdVco/controllerbuilder-1.png" alt="controller builder" />
+</a>
+<p>
+Method itself is fairly simple, it just ask service resolver to get current instance of controller factory. 
+</p>
+<p>
+Setter method allows you to change default controller factory with custom one. This an extremely useful then you want to change the way of Controller creation. The most useful case is delegate the controller creation to some DI container (Ninject, Unity, StructureMap) to allowing your application to get benefits of using IoC principles.
+</p>
+<p>
+Basically, IControllerFactory is a strategy of controller creation. Depending of implementation it might use different techniques, later on we will see how <code>DefaultControllerFactory</code> works.
+</p>
+<p>As and additional option, it is possible to supply custom controller factory just from the specific type</p>
+<a href="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png">
+<img src="https://lh3.googleusercontent.com/-5z7-swBhCaI/ThgeFWwleXI/AAAAAAAAHgQ/En6NIHHkYWY/controllerbuilder-2.png" alt="controller builder" />
+</a>
+<h2>Substitute default controller factory</h2>
+<p>
+As you see, we have to options of substitution default factory: 
+</p>
+<ol>
+<li>Call SetControllerFactory method and pass custom object into.</li>
+<li>Implementing new IDependencyResolver.</li>
+</ol>
+<p>
+Here is an example of how that could be done (please note, it is just demostartion.. you typically should not use both approaches in the same type).
+</p>
+<a href="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png">
+<img src="https://lh3.googleusercontent.com/-wolhzYhyE1w/ThgeFF2OawI/AAAAAAAAHgI/fLPsMlTuAzQ/controllerbuilder-3.png" alt="controller builder" />
+</a>
+<h2>Conclusions</h2>
+<p>
+<code>ControllerBuilder</code> is simple class that delegates responsibility to <code>IResolver</code> which is responsible to resolve <code>IControllerFactory</code> instance. <code>IControllerFactory</code> is a strategy of controllers creation. <code>ControllerBuilder</code> is designed in a way of chaning this strategy easily, either by using custom <code>IControllerFactory</code> or by custom <code>IDependencyResolver</code>.
+</p>
+<h2>What is next?</h2>
+<p>
+Next we are going to look closer into <code>SingleServiceResolver</code> and see how it actually acts for resolving types.
+</p>
+<p>
+Previous: <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">Inside ASP.NET MVC: All begins here - MvcHanlder</a>
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/15/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/13/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

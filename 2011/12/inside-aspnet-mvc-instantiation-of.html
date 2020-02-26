@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inside ASP.NET MVC: Instantiation of Controller</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Inside ASP.NET MVC: Instantiation of Controller Dec 5th, 2011 InsideMVC, MVC, asp.net Controller are being created by ControllerFactory, by default &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Inside ASP.NET MVC: Instantiation of Controller</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-05T20:05:00+01:00" pubdate data-updated="true">Dec 5<span>th</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/insidemvc/'>InsideMVC</a>, <a class='category' href='/blog/categories/mvc/'>MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>Controller are being created by <code>ControllerFactory</code>, by default <code>IControllerFactory</code> type is being resolved to <code>DefaultControllerFactory</code>. Today&#8217;s post is dedicated to some details of how actually <code>DefaultControllerFactory</code> works and creates instance of required controller. Let&#8217;s go from the beginning!<br />
+</p><h2>Request for controller instance</h2><p>Initially, we are at <a href="http://www.beletsky.net/2011/06/inside-aspnet-mvc-all-begins-here.html">MvcHandler</a>&#8217;s <code>ProcessRequestInit</code> method, where we extract controllers name from RouteData and request controller factory to create corresponding controller.<br />
+</p><pre class="brush: csharp">private void ProcessRequestInit(HttpContextBase httpContext, out IController controller, out IControllerFactory factory) {
+ // If request validation has already been enabled, make it lazy. This allows attributes like [HttpPost] (which looks
+ // at Request.Form) to work correctly without triggering full validation.
+ bool? isRequestValidationEnabled = ValidationUtility.IsValidationEnabled(HttpContext.Current);
+ if (isRequestValidationEnabled == true) {
+  ValidationUtility.EnableDynamicValidation(HttpContext.Current);
+ }
+
+ AddVersionHeader(httpContext);
+ RemoveOptionalRoutingParameters();
+
+ // Get the controller type
+ string controllerName = RequestContext.RouteData.GetRequiredString(&quot;controller&quot;);
+
+ // Instantiate the controller and call Execute
+ factory = ControllerBuilder.GetControllerFactory();
+ controller = factory.CreateController(RequestContext, controllerName);
+ if (controller == null) {
+  throw new InvalidOperationException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.ControllerBuilder_FactoryReturnedNull,
+    factory.GetType(),
+    controllerName));
+ }
+}
+</pre><h2>DefaultControllerBuilder internals<br />
+</h2><p><code>CreateController</code> is rather elegant method, basically it does some arguments check&#8217;s, resolve the controller type by it&#8217;s name and then call to <code>GetControllerIntance</code> to instantiate that type.<br />
+</p><pre class="brush: csharp">public virtual IController CreateController(RequestContext requestContext, string controllerName) {
+ if (requestContext == null) {
+  throw new ArgumentNullException(&quot;requestContext&quot;);
+ }
+ if (String.IsNullOrEmpty(controllerName)) {
+  throw new ArgumentException(MvcResources.Common_NullOrEmpty, &quot;controllerName&quot;);
+ }
+ Type controllerType = GetControllerType(requestContext, controllerName);
+ IController controller = GetControllerInstance(requestContext, controllerType);
+ return controller;
+}
+</pre><h2>Getting the controller type</h2><p><code>GetControllerType</code> is delegating it&#8217;s call to internal <code>GetControllerTypeWithinNamespaces</code>. It receives Route, Controller&#8217;s name and Namespaces.  <br />
+</p><pre class="brush: csharp">private Type GetControllerTypeWithinNamespaces(RouteBase route, string controllerName, HashSet&lt;string&gt; namespaces) {
+ // Once the master list of controllers has been created we can quickly index into it
+ ControllerTypeCache.EnsureInitialized(BuildManager);
+
+ ICollection&lt;Type&gt; matchingTypes = ControllerTypeCache.GetControllerTypes(controllerName, namespaces);
+ switch (matchingTypes.Count) {
+  case 0:
+   // no matching types
+   return null;
+
+  case 1:
+   // single matching type
+   return matchingTypes.First();
+
+  default:
+   // multiple matching types
+   throw CreateAmbiguousControllerException(route, controllerName, matchingTypes);
+ }
+}
+</pre><p>The namespaces parameter are quite important. If you remember, you can explicitly mention the namespace during the route definition, with overloaded MapRoute method:<br />
+</p><pre class="brush: csharp">public static Route MapRoute(this RouteCollection routes, string name, string url, string[] namespaces) {
+ return MapRoute(routes, name, url, null /* defaults */, null /* constraints */, namespaces);
+}
+</pre><p>Namespaces parameter then being stored to Route.DataTokens[&#8220;Namespaces&#8221;]. Namespaces parameter matters, then you have controllers with same names. This is in particular makes sense then you have different areas.<br />
+</p><h2>Caching Controller Types</h2><p>The interesting thing is that framework not re-reads types for each request, that would be just to expesive, but instead it uses a cache which is initialized at the very first request and used at the life time of application. The call <code>ControllerTypeCache.EnsureInitialized(BuildManager);</code> makes sure that cache is in actual state. How does MVC caching the types?<br />
+</p><p>Very simple and straight forward solution - in .XML file.<br />
+</p><pre class="brush:csharp">public static List&lt;Type&gt; GetFilteredTypesFromAssemblies(string cacheName, Predicate&lt;Type&gt; predicate, IBuildManager buildManager) {
+ TypeCacheSerializer serializer = new TypeCacheSerializer();
+
+ // first, try reading from the cache on disk
+ List&lt;Type&gt; matchingTypes = ReadTypesFromCache(cacheName, predicate, buildManager, serializer);
+ if (matchingTypes != null) {
+  return matchingTypes;
+ }
+
+ // if reading from the cache failed, enumerate over every assembly looking for a matching type
+ matchingTypes = FilterTypesInAssemblies(buildManager, predicate).ToList();
+
+ // finally, save the cache back to disk
+ SaveTypesToCache(cacheName, matchingTypes, buildManager, serializer);
+
+ return matchingTypes;
+}
+</pre><p>It try&#8217;s read cache from file, if there are not matching types there it would try to read assemblies and then store it to cache. You might be interested where this file is actually located, so take a look:<br />
+</p><a href="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg"><br />
+<img src="https://lh4.googleusercontent.com/-UkykIJvxzV8/Tt0WMwVDXsI/AAAAAAAAH0o/hgnCXDEYvmY/s848/code_1.jpg" alt="cache file name" /><br />
+</a><br />
+<p>And for the most curious guys, here is the content:<br />
+</p><pre class="brush: xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!--This file is automatically generated. Please do not modify the contents of this file.--&gt;
+&lt;typeCache lastModified=&quot;14.10.2011 19:33:03&quot; mvcVersionId=&quot;aa5414f4-4d8e-4f2a-a98b-7334bf15d104&quot;&gt;
+  &lt;assembly name=&quot;MvcForDebug2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;&gt;
+    &lt;module versionId=&quot;1ad99820-dc17-4be0-9f56-6dd2bdcd7950&quot;&gt;
+      &lt;type&gt;MvcForDebug2.Controllers.HomeController&lt;/type&gt;
+    &lt;/module&gt;
+  &lt;/assembly&gt;
+&lt;/typeCache&gt;
+</pre><p><code>FilterTypesInAssemblies</code> method tries to get all controllers it can. What it does, it goes throught all referenced assemblies and using special predicate class matching the types. <br />
+</p><pre class="brush:csharp">private static IEnumerable&lt;Type&gt; FilterTypesInAssemblies(IBuildManager buildManager, Predicate&lt;Type&gt; predicate) {
+ // Go through all assemblies referenced by the application and search for types matching a predicate
+ IEnumerable&lt;Type&gt; typesSoFar = Type.EmptyTypes;
+
+ ICollection assemblies = buildManager.GetReferencedAssemblies();
+ foreach (Assembly assembly in assemblies) {
+  Type[] typesInAsm;
+  try {
+   typesInAsm = assembly.GetTypes();
+  }
+  catch (ReflectionTypeLoadException ex) {
+   typesInAsm = ex.Types;
+  }
+  typesSoFar = typesSoFar.Concat(typesInAsm);
+ }
+ return typesSoFar.Where(type =&gt; TypeIsPublicClass(type) &amp;&amp; predicate(type));
+}
+</pre><p>So, the last interesting thing here is the predicate that actually used:<br />
+</p><pre class="brush:csharp">internal static bool IsControllerType(Type t) {
+ return
+  t != null &amp;&amp;
+  t.IsPublic &amp;&amp;
+  t.Name.EndsWith(&quot;Controller&quot;, StringComparison.OrdinalIgnoreCase) &amp;&amp;
+  !t.IsAbstract &amp;&amp;
+  typeof(IController).IsAssignableFrom(t);
+}
+</pre><p>You can see, it tries to match any public, ends with &#8220;Controller&#8221; not abstract and implementing <code>IController</code> interface. That&#8217;s why important do not forget to call all your controller with &#8220;Controller&#8221; suffix (yes, I did that mistake several times in the beginning of my MVC journey).<br />
+</p><p>Note, that if you have 2 controllers with same names in different namespaces, but did not provide namespace constraint you will have several <code>matchingTypes</code>, so the <code>CreateAmbiguousControllerException</code> will be thrown. I believe each of us seen that kind of exception at least once.<br />
+</p><h2>Instantiating the Type</h2><p>As we go a little back and check the code of <code>CreateController</code>: now, we&#8217;ve got the type (or null if type has not been resolved). Next thing is to instantiate it. Nothing really fancy here:<br />
+</p><pre class="brush:csharp">protected internal virtual IController GetControllerInstance(RequestContext requestContext, Type controllerType) {
+ if (controllerType == null) {
+  throw new HttpException(404,
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_NoControllerFound,
+    requestContext.HttpContext.Request.Path));
+ }
+ if (!typeof(IController).IsAssignableFrom(controllerType)) {
+  throw new ArgumentException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_TypeDoesNotSubclassControllerBase,
+    controllerType),
+   &quot;controllerType&quot;);
+ }
+ return ControllerActivator.Create(requestContext, controllerType);
+}
+</pre><p>If everything is all right with controller type it ask ControllerActivator to create the instance. In default case, ControllerActivator is <code>DefaultControllerActivator</code>:<br />
+</p><pre class="brush:csharp">public IController Create(RequestContext requestContext, Type controllerType) {
+ try {
+  return (IController)(_resolverThunk().GetService(controllerType) ?? Activator.CreateInstance(controllerType));
+ }
+ catch (Exception ex) {
+  throw new InvalidOperationException(
+   String.Format(
+    CultureInfo.CurrentCulture,
+    MvcResources.DefaultControllerFactory_ErrorCreatingController,
+    controllerType),
+   ex);
+ }
+}
+</pre><p>As for the rest of MVC entities it would use <code>IDependencyResolver</code> to resolve that type. <code>IDependecyResolved</code> is detailed <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">here</a>, but as you remember by default at the very end it calls <code>Activator.CreateInstance(type)</code> method.<br />
+</p><h2>Conclusions</h2><p>New controller is instantiated on each HTTP request. The instantiation is in-directed, means first we retrieve Type, after creating Instance. The type is being searched dynamically by getting out reflection information from assemblies. To optimize the performance of ASP.NET MVC application, the internal cache of types is used. The cache is stored in file in &#8220;Temporary ASP.NET Files\root\cdd53039\36a27802\UserCache\MVC-ControllerTypeCache.xml&#8221; folder. Namespaces of controllers are matters, in case of two or more controllers has the same name but different namespaces the exception would be thrown. In case of controller type could not be resolved, the HTTP 404 response is generated. Otherwise, the controller instance would be created by <code>IControllerActivator</code> instance.<br />
+</p><p>Previous post: <a href="http://www.beletsky.net/2011/10/inside-aspnet-mvc-idependencyresolver.html">Inside ASP.NET MVC: IDependencyResolver - Service locator in MVC</a><br />
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/12/inside-aspnet-mvc-instantiation-of.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

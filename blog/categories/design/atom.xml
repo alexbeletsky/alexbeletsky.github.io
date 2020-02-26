@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Design | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/design/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Foundstyles.com - Ready to use styles based on Foundation]]></title>
+    <link href="http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles.html"/>
+    <updated>2012-03-07T13:54:00+01:00</updated>
+    <id>http://beletsky.net/2012/03/foundstylescom-ready-to-use-styles</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p><a href="http://foundstyles.com/">Foundstyles.com</a> is a little project I've been working for last week. The idea is very simple. Remember, I blogged about <a href="http://www.beletsky.net/2012/02/foundation-framework-for-web-sites.html">Foundation Framework</a> that works pretty nice for me. So, I've decided to do something similar that exist for twitter bootstrap framework - <a href="http://bootswatch.com/">bootswatch</a> ready to pickup .css that could be easily integrated to your site. Today the site is available!<br />
+</p><a href="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png"><br />
+    <img src="https://lh5.googleusercontent.com/-U17a7t15HJI/T1dZpe6E4gI/AAAAAAAAIBQ/82EugHUbFLI/s1024/image-1.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>Unfortunately Foundation does not support LESS from the package, so I need to move colors and layout into corresponding .LESS files, so after it's just possible to have a basic <a href="https://github.com/alexbeletsky/foundstyles/tree/master/default">template</a> which is possible to customize with own colors.  <br />
+</p><p>As for now, I've created only 3 templates: <a href="http://foundstyles.com/bladesofsteel/">Blades Of Steel</a>, <a href="http://foundstyles.com/evergreen/">Evergreen Tree</a> and <a href="http://foundstyles.com/coffeenmilk/">Coffee and Milk</a>.<br />
+</p><a href="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png"><br />
+    <img src="https://lh5.googleusercontent.com/-y-jpR-k1dJ8/T1dZpkgbnDI/AAAAAAAAIBU/0GzBc1l-vWE/s1089/image-2.png" alt="foundstyles.com" style="width: 620px" /><br />
+</a><br />
+<p>I had a lot of joy making those styles. Making web designs and playing with colors is my next hobby, I think. Through, those styles are really simple ones, I'm going to add more eventually. Since the project is just hosted on <a href="https://github.com/alexbeletsky/foundstyles">github</a> you are able to push you own styles. If you feel inspired, I would be really happy for submissions.<br />
+</p><p>Nearest plans are apply some fixes for IE (both site and styles) and just go ahead and produce some more. Hope it could be useful for you guys.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My application for 10KAppart competition]]></title>
+    <link href="http://beletsky.net/2011/08/my-application-for-10kappart.html"/>
+    <updated>2011-08-24T09:37:00+02:00</updated>
+    <id>http://beletsky.net/2011/08/my-application-for-10kappart</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Recently, I've met really interesting competition by <a href="https://twitter.com/#!/mixonline">@mixonline</a> called <a href="http://10k.aneventapart.com/">10K Appart</a>. Due to the rules, you have to create an application total size of which should not be more than 10K zipped content. Moreover, it have to be pure client-side application, utilizing HTML5/CSS3 features for responsible design and open API for gathering data. No frameworks, no 3rd parties. I decided to participate.
+</p>
+<p>
+I've spent several hours to catch up idea. I was thinking about some application for twitter or gmail, but finally I stopped on github. First of all, github is my favorite service, it has clear and open API. Last year I contributed to javascript <a href="https://github.com/alexbeletsky/github-api">github-api</a>, so I knew how to start. Application idea is simple: analyze github account and based on actual achievements (number of repos, forks, issues etc.) assign corresponding badge.
+</p>
+<p>
+I did it a style of weekend project, started up Friday evening, I've spend 3 hours to complete github API adapter and application logic. As always, hard part was - design.
+</p>
+<p>
+Even I a bit improved my design skill through this year.. still it is big challenge. I choose light blue color for main color and dark blue as auxiliary. I went with <a href="http://www.google.com/webfonts#ChoosePlace:select">Google Web Fonts</a> that I used before and was happy with results. Playing out with colors and gradients, I came up with such front page:
+</p>
+<a href="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg">
+<img src="https://lh6.googleusercontent.com/-fglVyq8l120/TlSplwzu6mI/AAAAAAAAHkY/G76H-cvX2Eo/front.jpg" alt="code" />
+</a>
+<p>
+With much help of <a href="http://twitter.com/#!/Porosyaka">Sasha</a> we have designed badges part of application. I still not 100% happy, but at least it was quite fast.
+</p>
+<a href="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg">
+<img src="https://lh5.googleusercontent.com/-gNn28suZBsU/TlSoOYQP5qI/AAAAAAAAHkI/T7eLlx4I3c0/badges.jpg" alt="code" />
+<p>
+</a>
+After application were more or less ready, I put it on temporary hosting asking my dear <a href="http://twitter.com/#!/alexbeletsky">twitter</a> help me to validate it. I received a lot of great feedback (thanks a lot, guys). After all bugs were fixed, I posted my entry to 10K appart.
+</p>
+<p>
+I've been waiting about 4 days, to receive an answer. Meanwhile, I've seen that new application are being posted.. but not mine. Finally, they responded to me saying "Sorry, but Google Web Fonts are not allowed". That was actually my bad, but I haven't thought that are treated as 3rd party. Anyway, I had to switch to <a href="http://typekit.com/">TypeKit</a> very fast. I didn't get same results as with Web Fonts, but I had no time for finding perfect match and reapplied again.
+</p>
+<p>
+It finally available here - <a href="http://10k.aneventapart.com/Entry/Details/512">http://10k.aneventapart.com/Entry/Details/512</a>
+</p>
+<p>
+I would be happy if you try it, tweet it, comment on site. Sources are placed on <a href="https://github.com/alexbeletsky/10k">github</a>, so If you think to improve design or create new type of badge, you are welcome!
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject provider as factory method]]></title>
+    <link href="http://beletsky.net/2011/02/ninject-provider-as-factory-method.html"/>
+    <updated>2011-02-13T18:22:00+01:00</updated>
+    <id>http://beletsky.net/2011/02/ninject-provider-as-factory-method</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+<a href="http://ninject.org/">Ninject</a> is a very nice and easy to use, open source dependency injection framework. It is very popular within ASP.net MVC developers community and de-facto framework of choice for MVC applications.
+</p>
+<p>
+I was implementing small feature recently. As user registered on site, he receives confirmation email and registration details. Pretty common functionality along the sites. So, I add next application service <code>INotificationService</code> that took responsibility of sending email message to user. Nothing special, nothing complex. 
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationService : INotificationService
+    {
+        private IEMailService _emailService;
+
+        public NotificationService(IEMailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        public void NotifyUserOnRegistration(string usersEmail, string password)
+        {
+            var emailMessage = CreateEmailMessageForUser(usersEmail, password);
+            _emailService.SendEmail(emailMessage, "support");
+        }
+
+        //...
+</pre>
+<p>
+As I've tested and integrated it to application, everything were just fine. Till the time I reset database and re-run tests. The problem, that <code>INotificationService</code> itself depends on <code>IEmailService</code> that uses <code>ICredentialsRepository</code> to extract email server credentials (account, password, settings) from database. After database is reset, <code>Credentials</code> table is just empty and <code>IEmailService</code> throws exception that there are no credentials, so send email is impossible. I could not add credentials as SQL to database script, since it depend on configuration and exposes private password. Do it manually after each reset of database is boring task. Furthermore, I don't want my application to send any emails as I just do some development testing.
+</p>
+<p>
+The obvious design workaround is - define <code>INotificationServiceFactory</code> that responsible for <code>NotificationService</code> instantiation. Factory decides, if application run in <code>debug</code> mode, just stub of <code>NotificationService</code> is used, otherwise real implementation is used.
+</p>
+<pre class="brush: csharp">
+namespace Trackyt.Core.Services
+{
+    public class NotificationServiceFactory : INotificationServiceFactory
+    {
+        public INotificationService GetService()
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                // just stub..
+                return new NotificationServiceForDebug();
+            }
+
+            // here I need to pass EmailService to constructor
+            return new NotificationService ( // ??? );
+        }
+
+        // ...
+</pre>
+<p>
+But it is not so easy as it seems to.. Here the problem: <code>NotificationService</code> have to accept <code>EmailService</code>, that have to be created created by DI framework (I could not create it by <code>new</code> since I loose all benefits of inversion of control). So, in factory I need to have a <code>IKernel</code> object - Ninject core object, for instantiating of objects from Inversion of Control container. It should be extended with constructor taking <code>IKernel</code> as argument.
+</p>
+<p>Issues:</p>
+<ul>
+<li><strong>Circular dependency</strong> - factory is defined in Core assembly, kernel is defined in Web application.. Web application references Core, to make it work now Core need to reference Web (it is actually possible, but very ugly.. I try to avoid such things).</li>
+<li><strong>Additional references</strong> - now Core also need to reference Ninject, to make it compliable.</li>
+<li><strong>Violation of Dependency inversion principle</strong> - <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">one</a> of the <a href="http://en.wikipedia.org/wiki/Solid_(object-oriented_design)">SOLID</a> principles of object oriented systems. Model must not depend on infrastructure.</li>
+</ul>
+<p>
+Fortunately Ninject provides functionality to avoid issues mentioned above! Instead of binding to exact type, like
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationServiceFactory&gt;().To&lt;NotificationServiceFactory&gt;();
+
+</pre>
+<p>
+I can bind creation of type to Provider:
+</p>
+<pre class="brush: csharp">
+
+    Bind&lt;INotificationService&gt;().ToProvider&lt;TrackyNotificationServiceProvider&gt;();
+
+</pre>
+<p>
+Provider is class that implement <a href="https://github.com/ninject/ninject/wiki/Providers,-Factory-Methods-and-the-Activation-Context">IProvider</a> interface, which is actually just one method <code>CreateInstance</code>. CreateInstance, receives <code>IContext</code> object as parameter that contains <code>IKernel</code>. <code>TrackyNotificationServiceProvider</code> is placed on same level as the rest of Ninject infrastructure code is placed. Model remains clear and exact and do not mess up with infrastructure code.
+</p>
+<pre class="brush: csharp">
+namespace Web.Infrastructure
+{
+    public class TrackyNotificationServiceProvider : Provider&lt;INotificationService&gt; 
+    {
+        protected override INotificationService CreateInstance(IContext context)
+        {
+            if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                return new NotificationServiceForDebug();
+            }
+
+            return new NotificationService(context.Kernel.Get&lt;IEMailService&gt;());
+        }
+    }
+}
+</pre>
+<p>
+Now, in case of <code>INotificationService</code> object need to be instantiated (in my case it is injected to <code>RegistrationController</code> as constructor parameter), <code>CreateInstance</code> is called. If web.config contains <code>&lt;compilation debug="true" targetFramework="4.0"&gt;</code> the stub of service is created. On production, where <code>&lt;compilation debug="false" targetFramework="4.0"&gt;</code>, real instance of NotificationService is put to work.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Let's take a REST]]></title>
+    <link href="http://beletsky.net/2010/12/lets-take-rest.html"/>
+    <updated>2010-12-23T06:28:00+01:00</updated>
+    <id>http://beletsky.net/2010/12/lets-take-rest</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Nowadays, REST is becoming so popular, that any web developer must take it into consideration while architecting new application.  REST is acronym for Representational State Transfer and being formulized first by <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> in his PhD dissertation.   
+</p>
+<h2>What is REST?</h2>
+<p>
+It is rather style or pattern of development resource-oriented web applications. Beauty of REST is that its really easy to understand and basically you are using REST everyday but may not noticing that. REST works on top of HTTP protocol, but is is not protocol itself. It seems to me that it actually appears with HTTP/1.1 but only with <a href="http://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a> work it became well understood, defined and attractive.
+</p>
+<p>
+REST popularized by such applications as twitter, flickr, bloglines, technorati etc. And of cause, by <a href="http://rubyonrails.org/">Ruby On Rails</a> framework.
+</p>
+<h2>Unique ID</h2>
+<p>
+Unique ID is key concept in REST. Everything in Web is resource, every resource must be addressed, each address is unique.
+</p>
+<p>
+Here are examples of ID. Of cause in a world of HTTP ID's are URI's (Unified Recourse Identifiers):
+</p>
+<p>
+<code>
+http://mysite.com/blog/page/1<br />
+http://mysite.com/blop/post/my-first-post
+</code>
+</p>
+<h2>What is representation and state transfer?</h2>
+<p>
+Let's see the first URI, it point for first page on some blog. As a client I ask for resource, <strong>representation</strong> of resource is returned back to client. By receiving the representation client <strong>transfers</strong> (changes) to particular <strong>state</strong>. As I ask for next resource, next representation of resource is back. The new representation changes the client application into yet another state. Between previous and next state, client stays is <strong>rest</strong> mode. Thus, the client application transfers state with each resource representation. That forms concept of - Representational State Transfer.
+</p>
+<p>
+It doesn't depend what exact representation is, it could be: HTML, XML, JSON, RSS etc. 
+</p>
+<h2>Recourses and actions</h2>
+<p>
+You can do a different actions to resources. REST achitecture maps CRUD (Create, Read, Update, Delete) to the set of operations supported by the web service using HTTP methods (e.g., POST, GET, PUT or DELETE). 
+</p>
+<table>
+        <tr>
+            <th>URI</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/page/1</td>
+            <td>GET</td>
+            <td>
+            Gets the representation of resouce. Get request does not change the state of server.
+            Typically you do not submit any data in GET request. 
+            You can read the URL like, "get page 1 from blog located at http://mysite.com"
+            </td>
+
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry</td>
+            <td>POST</td>
+            <td>
+            Posts the changed state of resouce. With post you can change the state of server.
+            Post contains data in POST body. It is up to web server how to treat and use this data.
+            You can read URI like, "post an entry to entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/changename/211</td>
+            <td>PUT</td>
+            <td>
+            Updates some existing resouces. PUT is similar to POST, since it changes web server state and contains data in body. You can do different change actions that would update resource. Typically recourse identified by ID, like 211.
+            You can read URI like, "update an entry with Id 211, by changing its name, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>        
+        <tr>
+            <td>http://mysite.com/blog/entries/entry/211</td>
+            <td>DELETE</td>
+            <td>
+            Deletes some existing resouces. DELETE changes web server state but typically contains no data in body.
+            You can read URI like, "delete an entry with Id 211, in entries collection in blog located at http://mysite.com"
+            </td>
+        </tr>
+</table>
+<h2>Logical and Physical URL's</h2>
+<p>
+If you do a lot of classic ASP.net programming you probably get used that URL reflects physical structure of application. For instance, <code>http://mysite.com/index.aspx</code> corresponds to <code>c:\inetpub\wwwroot\mysite\index.aspx</code>. In REST style URL stand not for physical, but logical URL. It means, <code>http://mysite.com/blog/post/1</code> doesn't have to have <code>c:\inetpub\wwwroot\mysite\blog\post\1</code> file with static content. 
+</p>
+<p>
+Clean and logical URL's one of the attractive points of REST. It moves away from ugly URL's like <code>http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?s=books&ie=UTF8&qid=1293077887&sr=1-1</code>.
+</p>
+<p>
+From implementation point of view: to allow REST style URL for ASP.net applications you should either create your own <a href="http://intertwingly.net/wiki/pie/RestAspNetExample">HttpHandler</a> or use already created start-kits and frameworks, like <a href="http://aspnet.codeplex.com/releases/view/24644">WCF REST starter kit</a>, <a href="http://trac.caffeine-it.com/openrasta/">OpenRasta</a>.
+</p>
+<h2>REST vs. SOAP</h2>
+<p>
+Sure, REST is not first who approaches issue of using recourses in Web, it rather trendier new kind in a block. We know bunch of web technologies, SOAP, WSDL, ATOM, WS-*, WCF, ODATA and many many more.. So, what are the difference?  
+</p>
+<p>
+Major difference is that all above are <strong>protocols</strong>, but REST is <strong>style</strong>. This has pros and cons. Protocol's are more strict and heavyweight, with a number of rules, formats etc. SOAP is using XML as data exchange format, REST could work any format depending on client needs. SOAP is using its own security model, REST relies on HTTP and web server security. SOAP requires tools, REST learning curve is small and less less reliance on tools. SOAP designed to handle distributed computing environments, REST assumes a point-to-point communication model. 
+</p>
+<p>
+But my opinion is simplicity always win against complexity. Key popularity of REST is because is simple, easy understand by developers and as a result - implemented in applications. My believe that SOAP and other heavyweight protocols will slightly die more and applications will be using REST. 
+</p>
+<h2>ASP.net MVC and REST</h2>
+<p>
+Developers of ASP.net MVC framework designed it to be REST compatible. In the level of framework, there is an URL routing system (<code>System.Web.Routing</code>) that allows you easily follow REST design principles. It gives you total control over your URL schema and its mapping to your controllers and actions, with no need to conform to any predefined pattern.
+</p>
+<p>
+So, basically ASP.net MVC web applications development is: create a controller class (<code>LoginController</code> for instance), implement number of actions (<code>Index</code>, <code>CheckCredentials</code>) and map those actions to particular URL. For instance <code>http://mysite.com/login</code> mapped to <code>LoginController.Index</code> method, that handles GET request from server and return View, containing Login form. <code>http://mysite.com/login/check</code> mapped to <code>LoginController.CheckCredentials</code> method, that handles POST and checks users credentials.
+</p>
+<p>
+It is much more easier to create web applications API's with MVC framework. The <code>ActionResult</code> is polymorphic, so it could return HTML, JSON, XML results (and you are free to implement own ActionResult, for any format you might need).
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Regex to match a words in dictionary on page body]]></title>
+    <link href="http://beletsky.net/2010/09/regex-to-match-words-in-dictionary-on.html"/>
+    <updated>2010-09-23T13:52:00+02:00</updated>
+    <id>http://beletsky.net/2010/09/regex-to-match-words-in-dictionary-on</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+Using a Regex is pretty easy in .NET applications. All you have to use is <a href="http://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.aspx">Regex</a> object and have basic understanding of regular expression patterns.
+</p>
+<p>
+My goal was to create a code, that would give an answer: does this particular text contain some words from dictionary or not? Using a regular expressions is an obvious choice then you do such type of operation. So, I was trying to understand what technology is demanded by job offer (Cpp, Java or .NET) and is TDD skill demanded. To archive that I created a set of "matchers" small classes each of its own area. Crawler just used those matchers to get actual data.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToTdd(<font color="#0000ff">string</font> description)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> TddMatcher().Match(description);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToJava(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> JavaMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToCpp(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> CppMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">bool</font> MatchToDotNet(<font color="#0000ff">string</font> desciption)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">new</font> DotNetMatcher().Match(desciption);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+As you see, I have 4 matchers to cover my requirements: <em>CppMatcher</em>, <em>DotNetMatcher</em>, <em>JavaMatcher</em>, <em>TddMatcher</em>. All of them implements simple <em>IMatcher</em> interface.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">interface</font> IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input);<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Now, let's review the matcher. Because all the matchers do basically the same operations and differ only but its dictionary contents, they contain a dictionary of target words and delegates matching functionality to <em>MatchUtil</em> class. Let's see C++ matcher for instance.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> CppMatcher : IMatcher<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">static</font> IList&#60;<font color="#0000ff">string</font>&#62; _patterns = <font color="#0000ff">new</font> <font color="#2B91AF">List</font>&#60;<font color="#0000ff">string</font>&#62;()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"c\\+\\+"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cpp"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"stl"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A31515">"cppunit"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> MatchUtil.Match(input, _patterns);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+I wanted to design <em>MatchUtil.Match</em> to be universal, as much as possible and to do not depend on kind of input words. Matching words with boundaries "\b" works perfecly, as soon as you have a simple words, like 'java', 'nunit', 'tests' and so on, but my tests stated to fail as soon as I tried 'c++' or '.net'. Because of '\b' matches boudary between 2 alphanumeric symbols, in my case '+' or '.' is not alphanumeric. That made a problem to me and asked <a href="http://stackoverflow.com/questions/3641985/regex-to-match-a-word-with-plus-signs">StackOverflow</a> for help. I finished up with such implementation, that I hope could be useful if you do similar stuff.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Crawler.Core.Matchers<br>{<br>&nbsp;&nbsp;<font color="#0000ff">class</font> MatchUtil<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> Match(<font color="#0000ff">string</font> input, IList&#60;<font color="#0000ff">string</font>&#62; patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> lower = input.ToLower();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">foreach</font> (<font color="#0000ff">var</font> pattern <font color="#0000ff">in</font> patterns)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> start = pattern.StartsWith(<font color="#A31515">"\\."</font>) ? <font color="#A31515">"(?!\\w)"</font> : <font color="#A31515">"\\b"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (Regex.IsMatch(lower, start + pattern + <font color="#A31515">"(?!\\w)"</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">true</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+So, <em>Regex.IsMatch</em> static method is used to perform match.
+</p>
+<p>
+This is it. If you see some issues or improvements, please let me know. <a href="http://github.com/alexbeletsky/TddDemand">http://github.com/alexbeletsky/TddDemand</a>
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

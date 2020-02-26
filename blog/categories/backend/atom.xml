@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: backend | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/backend/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[NPM for Everything]]></title>
+    <link href="http://beletsky.net/2015/04/npm-for-everything.html"/>
+    <updated>2015-04-02T15:26:00+02:00</updated>
+    <id>http://beletsky.net/2015/04/npm-for-everything</id>
+    <content type="html"><![CDATA[<p>JS ecosystem is famous for it&rsquo;s wide range of packages and tools. Besides the default package manager, which comes with Node.js &ndash; NPM (node package manager), there are Bower.js, Jam.js and many more.</p>
+
+<p>For a quite long period, my default setup was like &ndash; NPM for all server-side components and Bower.js for client-side stuff. It worked quite good together, especially in conjunction with Require.js.</p>
+
+<p>But recently, I switched to <em>NPM only</em> setup. That allowed me to use CommonJS style both front and back ends and got rid of task runners as Grunt and Gulp.</p>
+
+<!-- MORE -->
+
+
+<h1>CommonJS</h1>
+
+<p>Doing a lot of back-end coding I really get used to <code>CommonJS</code> style, which is simple, practical and powerful. CommonJS modularization is plain as,</p>
+
+<p>```js
+var module = {
+};</p>
+
+<p>// export the module
+module.exports = module;
+```</p>
+
+<p>and</p>
+
+<p><code>js
+// use the module
+var module = require('./module');
+</code></p>
+
+<p>Node.js highly popularized Common.js approach. And NPM appeared to be one of the best package managers ever developed.</p>
+
+<p>But for front-end, NPM was not that suitable. First of all, because of browsers do not understand Common.js style of modules. Second, <code>npm</code> modules are being placed to <code>./node_modules</code> folder, with is typically the root of project, that made things complicated to refer those scripts from <code>index.html</code> and configure server to server static resources from <code>./node_modules</code> folder.</p>
+
+<p>Browserify came to change this.</p>
+
+<h1>Browserify</h1>
+
+<p>Browserify is JavaScript transpiling tool, with allows to:</p>
+
+<ol>
+<li>Use Common.js style for front-end applications.</li>
+<li>Allowed to use various <code>npm</code> packages directly in a browser.</li>
+</ol>
+
+
+<p>A lot of pure front-end frameworks and libraries were published to <code>npm</code>. In fact, it&rsquo;s more and more used for front-end libraries as <a href="http://blog.npmjs.org/post/101775448305/npm-and-front-end-packaging">according to</a> NPM developers.</p>
+
+<p>Of cause, nothing comes for free. The cost of Browserify is a <em>build step</em>. You have to introduce to transform Common.js application into a <em>bundle</em> which is loaded and executed by a browser.</p>
+
+<p>Moreover, some packages are still being hosted on Bower. Even, it&rsquo;s possible to use Bower packages together with NPM packages (by means of debowerify transformation) I quickly realized, that this approach is very unpractical.</p>
+
+<p>So, during the last few months my main <a href="https://github.com/pulls?q=is%3Apr+author%3Aalexbeletsky+is%3Aclosed">contributions</a> on GitHub was adopting of some front-end packages, to be conformant to Common.js and publishing them on NPM after.</p>
+
+<h1>The setup</h1>
+
+<p>The NPM now is the only one package manager to use, both for front-end and backend.</p>
+
+<p>All dependencies are mentioned on one file <code>package.json</code> instead of several files.. and you will never forget to run <code>bower install</code>, since <code>npm install</code> will do install everything.</p>
+
+<p>```js
+  &ldquo;dependencies&rdquo;: {</p>
+
+<pre><code>"async": "^0.9.0",
+"babelify": "^5.0.4",
+"body-parser": "^1.9.0",
+"colors": "^1.0.2",
+"cors": "^2.4.2",
+"envify": "^3.4.0",
+"express": "^4.9.5",
+"method-override": "^2.2.0",
+"moment": "^2.8.3",
+"morgan": "^1.3.2",
+"node-logentries": "^0.1.4",
+"react": "^0.13.1",
+"respawn": "^1.0.1"
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>The server side code,</p>
+
+<p>```js
+var express = require(&lsquo;express&rsquo;);</p>
+
+<p>// configurations&hellip;</p>
+
+<p>app.listen(port, function () {</p>
+
+<pre><code>logger.info('editor-app listening on port ' + port + ' ' + env);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>The client side code,</p>
+
+<p>```js
+var React = require(&lsquo;react&rsquo;);</p>
+
+<p>var Component = React.create({</p>
+
+<p>});</p>
+
+<p>module.exports  = Component;
+```</p>
+
+<p>The same style, feels nice and clean.</p>
+
+<h1>No task runners</h1>
+
+<p>NPM is not only package manager. It&rsquo;s also very simple task runner (or scripts runner). There is a special section, called <code>scripts</code> responsible for that. Originally it&rsquo;s been used to run some package related tasks (run tests, perform pre/post install configurations).</p>
+
+<p>Traditionally Grunt.js and Gulp.js are ones that used dealing with compiling static assests. But CLI interface of many tools and stream piping could replace them.</p>
+
+<p>As example, I&rsquo;ll show pretty typical setup:</p>
+
+<ul>
+<li>build JavaScript with <code>browserify</code> and apply minification</li>
+<li>build Sass with <code>node-sass</code> and apply minification</li>
+<li>run watcher and rebuild changed assets</li>
+</ul>
+
+
+<h2>Building JavaScript</h2>
+
+<p>The <code>browserify</code> need to be installed globally,</p>
+
+<p><code>bash
+$ npm install -g browserify
+</code></p>
+
+<p>In <code>package.json</code>, in <code>scripts</code> section, will add such script,</p>
+
+<p>```js
+  &ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"build-js": "browserify public/js/app.js -o public/build/app.js",
+</code></pre>
+
+<p>```</p>
+
+<p>Since I also use several transformations in my applications, the Browserify have to properly configured for that. It check&rsquo;s if <code>package.json</code> contains <code>browserify</code> section, and if it does &ndash; will use it contents as own options.</p>
+
+<p>```js
+  &ldquo;browserify&rdquo;: {</p>
+
+<pre><code>"transform": [
+  "babelify",
+  "envify"
+]
+</code></pre>
+
+<p>  },
+```</p>
+
+<h2>Building Sass</h2>
+
+<p>As with Browserify, <code>node-sass</code> need to be installed globally,</p>
+
+<p><code>bash
+$ npm install -g node-sass
+</code></p>
+
+<p>Then <code>package.json</code> changes,</p>
+
+<p>```js
+  &ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"build-js": "browserify public/js/app.js -o public/build/app.js",
+"build-sass": "node-sass public/sass/main.scss public/build/main.css",
+</code></pre>
+
+<p>```</p>
+
+<h2>Minification</h2>
+
+<p>Now, let&rsquo;s minify both assets using one of the best concepts ever &ndash; Unix pipes.</p>
+
+<p>We need two packages additionally, <code>uglifyjs</code> and <code>cleancss</code>.</p>
+
+<p><code>bash
+$ npm install -g uglifyjs clean-css
+</code>
+And corresponding scripts,</p>
+
+<p>```js
+  &ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"build-js": "browserify public/js/app.js -o public/build/app.js",
+"build-sass": "node-sass public/sass/main.scss public/build/main.css",
+// minifying
+"build-min-js": "browserify public/js/app.js | uglifyjs -o public/build/app.min.js",
+"build-min-sass": "node-sass public/sass/main.scss | cleancss -o public/build/main.min.css",
+</code></pre>
+
+<p>```</p>
+
+<h2>Watching</h2>
+
+<p>Now, let&rsquo;s apply watching. One of the watchers I use for several years already, that works best for me is <code>nodemon</code>.</p>
+
+<p><code>nodemon</code> is not only able to watch file changes and restart node processes if necessary, but also running custom commands.</p>
+
+<p>```js
+  &ldquo;scripts&rdquo;: {</p>
+
+<pre><code>"build-js": "browserify public/js/app.js -o public/build/app.js",
+"build-sass": "node-sass public/sass/main.scss public/build/main.css",
+"build-min-js": "browserify public/js/app.js | uglifyjs -o public/build/app.min.js",
+"build-min-sass": "node-sass public/sass/main.scss | cleancss -o public/build/main.min.css",
+// watching
+"watch-js": "nodemon -e js -w public/js -x 'npm run build-js'",
+"watch-sass": "nodemon -e scss -w public/sass -x 'npm run build-sass'",
+</code></pre>
+
+<p>```</p>
+
+<h2>Complex tasks</h2>
+
+<p>Typically, you need to run few tasks simultaneously, e.g. build all scripts or watch all application. We can combine commands, by running background tasks,</p>
+
+<p>```js</p>
+
+<pre><code>"build": "npm run build-js &amp; npm run build-sass",
+"watch": "npm run watch-js &amp; npm run watch-sass",
+</code></pre>
+
+<p>```</p>
+
+<p>To build full app,</p>
+
+<p><code>bash
+$ npm run build
+</code></p>
+
+<p>or to <em>watch</em> it,</p>
+
+<p><code>bash
+$ npm run watch
+</code></p>
+
+<h2>Using dev-dependencies</h2>
+
+<p>Global packages are not cool, cause they might be missing on developers box there application is cloned. Moreover, dependency management becomes a bit more complex, if you need to work on different projects depending on different tools versions. As <a href="https://github.com/bcomnes">@bcomnes</a> very correctly noticed, all tools as <code>browserify</code>, <code>uglify</code> etc. can be installed as local <code>dev-dependency</code>, which are fetched during <code>npm install</code> and will be available to call inside project folder as global commands,</p>
+
+<p><code>bash
+$ npm install --save-dev browserify uglifyjs node-sass clean-css
+</code></p>
+
+<p>So, the <code>package.json</code> got such update,</p>
+
+<p>```json
+&ldquo;devDependencies&rdquo;: {
+  &ldquo;browserify&rdquo;: &ldquo;^9.0.7&rdquo;,
+  &ldquo;clean-css&rdquo;: &ldquo;^3.1.9&rdquo;,
+  &ldquo;node-sass&rdquo;: &ldquo;^2.1.1&rdquo;,
+  &ldquo;uglifyjs&rdquo;: &ldquo;^2.4.10&rdquo;
+},</p>
+
+<p>```</p>
+
+<h1>Takeaways</h1>
+
+<ul>
+<li>Once you implement front end library, consider <a href="https://github.com/umdjs/umd">UMD</a> so your modules are reusable in any environment.</li>
+<li>Embrace CommonJS, use Browserify/Webpack/Whatever to use CommonJS (or ES6) on client.</li>
+<li>For many cases, you really don&rsquo;t need Grunt or Gulp, all is easily doable with NPM scripts.</li>
+</ul>
+
+
+<p>As example, please refer to <a href="https://github.com/alexbeletsky/brick">brick</a>, the project I currently use as boilerplate for new applications.</p>
+]]></content>
+  </entry>
+  
+</feed>

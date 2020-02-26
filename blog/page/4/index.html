@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Playing with Dokku on Vagrant Sep 3rd, 2013 docker, dokku, nodejs, vagrant As I said previously, it&rsquo;s very easy to turn Linux machine into &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/4/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/09/playing-with-dokku-on-vagrant.html">
+    
+      Playing with Dokku on Vagrant</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-03T19:57:00+02:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>As I said <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">previously</a>, it&rsquo;s very easy to turn Linux machine into Heroku-like server. But, before setting up paying account on Amazon or Digital Ocean, it&rsquo;s nice to just play it locally. Will do that, running a Dokku on virtual machine. Will setup development environment and do first local deployment, just to see some real features.</p>
+
+<p>It does not require complex environment to run Dokku locally. All you need is <code>git</code> and <code>Vagrant</code>.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/09/playing-with-dokku-on-vagrant.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">
+    
+      Digital Ocean + Dokku = 10$ Heroku</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T22:00:00+02:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digitalocean/'>digitalocean</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>My last infrastructure related <a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">post</a> was about an experience of using AppFog and switching to Nodejitsu eventually. But that was not the end. In short: for <a href="https://likeastore.com/">Likeastore</a> we needed SSL support, it happed that SSL is only available for Nodejitsu business plan, which price is 120 USD. That was simply to much for our small venture.</p>
+
+<p>Long time ago, I realized &ndash; constrains are good. This case just proved that. Looking for alternative options, gave really nice results, which I easily could be re-used if you looking for simple deployment solutions.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/08/first-week-in-the-air.html">
+    
+      First Week in The Air</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-06T05:40:00+02:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>applications</a>, <a class='category' href='/blog/categories/likeastore/'>likeastore</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>It&rsquo;s been a week how <a href="https://likeastore.com/">Likeastore</a> application went public. I was amazed with initial reaction and feedback. Right now, we have 730 sign-ups, 844 social networks connected and 117950 likes collected. That mean, we had ~100 signups per day and it&rsquo;s growing.</p>
+
+<p>Here is a little retrospective on the things happened through that seven days.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/08/first-week-in-the-air.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/07/likeastore-app-goes-to-public.html">
+    
+      Likeastore App Goes to Public</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-28T09:30:00+02:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>applications</a>, <a class='category' href='/blog/categories/likeastore/'>likeastore</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>About 4 month the project <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">started</a> on hackathon and called <a href="https://likeastore.com/">Likeastore</a>. Yesterday, it&rsquo;s been pushed out to public and I feel really great about that. Started out as quick hack, it eventually became a real product.</p>
+
+<p>Bootstrapping is always hard, despite of the actual product size. Finishing something that other people will see, just doubles the stake &ndash; you could not fail, wish to do best of the best. It&rsquo;s been really breathtaking journey (or I would call it beginning of the path), so if you are interested I&rsquo;ll share some details of product and it&rsquo;s development.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/07/likeastore-app-goes-to-public.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">
+    
+      Why We Moved From AppFog to Nodejitsu</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-19T19:36:00+02:00" pubdate data-updated="true">Jul 19<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/likeastore/'>likeastore</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/paas/'>paas</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p><a href="http://likeastore.com/">Likeastore</a> started to use <a href="https://www.appfog.com/">AppFog</a> as PaaS during private beta campaign. That was great idea initially since AppFog offers really nice conditions: 8 running instances with 256MB or RAM, custom domain names, support and all relative services. I have to say, it did work fine at the beginning, allowing us to push product forward and show it to our subscribers.</p>
+
+<p>But very fast we realized that AppFog does not suite us at lot.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/07/think-ahead-think-logging.html">
+    
+      Think Ahead, Think Logging</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-04T09:02:00+02:00" pubdate data-updated="true">Jul 4<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/expressjs/'>expressjs</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
+
+<p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
+
+<p>Prepare application to production, means prepare good error logging. I&rsquo;m going to show how to extend your Express.js with proper logs.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/07/think-ahead-think-logging.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/06/we-were-wrong-10-years-ago.html">
+    
+      We Were Wrong 10 Years Ago</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-20T23:43:00+02:00" pubdate data-updated="true">Jun 20<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mind/'>mind</a>, <a class='category' href='/blog/categories/technologies/'>technologies</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
+
+<p>Early 2000&rsquo;s I was programming C/C++ and the best way of passing some data from one machine to another, was &ndash; <em>socket</em>. The time took understanding of sockets, I clearly saw it&rsquo;s the best solution for that task.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/06/we-were-wrong-10-years-ago.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/06/moved-from-blogger-to-octopress.html">
+    
+      Moved from Blogger to Octopress</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-15T16:18:00+02:00" pubdate data-updated="true">Jun 15<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/life-mind-open/'>life,mind,open</a>, <a class='category' href='/blog/categories/source-github/'>source,github</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>I actively started to blog almost 3 years ago. Before that, far away 2008 I created blogger account and had few posts there about TDD and ASP.NET development. So, after some pause I just picked up existing one and jumped in in blogging community.</p>
+
+<p>That time, blogger was quite obvious choice. Google powered, editor and plain HTML support, templates etc. I used to use Visual Studio to create posts, then pasted that to blogger, posting images on Picassa and code on Github. That worked for quite while, but now I consider that is very heavyweight approach.</p>
+
+<p>Now this site is running <a href="http://octopress.org/">Octopress</a> and hosted on <a href="https://github.com/">Github</a> and that&rsquo;s totally reflects my current tools of choice.</p>
+
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/06/moved-from-blogger-to-octopress.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/05/github-as-blogging-platform.html">
+    
+      Github as blogging platform</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-16T17:55:00+02:00" pubdate data-updated="true">May 16<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>GitHub</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        No, I&#8217;m not going to talk about creation some <a href="https://github.com/alexbeletsky/wonka">github-backed</a> blogging system. I would like to talk on some blogging style I tried to apply recently.<br />
+    </p>    <p>        The problem is, technical blogging is difficult. I usually have a lot of ideas or know-how&#8217;s while I create some code. It&#8217;s just hard to blog about. As you didn&#8217;t do the blog post during coding, you might forget some details or simply loose the encouragement to blog about it.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/05/github-as-blogging-platform.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/04/building-single-pages-applications.html">
+    
+      Building Single Pages Applications</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T19:26:00+02:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/spa/'>SPA</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        This is transcript of talk I gave on <a href="http://www.msswit.in.ua/">#msswit</a> conference 25 April 2013.<br />
+    </p>
+    <h2>        What is SPA?<br />
+    </h2>    <p>        If you just imagined the pools and saunas and massage rooms, this is, unfortunately, not the thing that I going to talk about. We&#8217;ll check out new concept of web applications, that are called - Single Page Applications.<br />
+    </p>    <p>        From technical perspective SPA means the web application, that being loaded as one HTML page and redraws it&#8217;s UI without round trip to server. That sounds not so exiting, but we can see that SPA is much more than that.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/04/building-single-pages-applications.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/5/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/3/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

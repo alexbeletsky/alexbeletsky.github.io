@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Secure Deployment of ElasticSearch</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Secure Deployment of ElasticSearch Jul 18th, 2014 digitalocean, docker, dokku, elastic, nodejs, security Remember my success story of moving from &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Secure Deployment of ElasticSearch</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-18T12:34:00+02:00" pubdate data-updated="true">Jul 18<span>th</span>, 2014</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digitalocean/'>digitalocean</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/dokku/'>dokku</a>, <a class='category' href='/blog/categories/elastic/'>elastic</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/security/'>security</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>Remember my success <a href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html">story</a> of moving from MongoDB full text search index to <a href="http://www.elasticsearch.com">ElasticSearch</a>? After about one month of work our search service unexpectedly stopped. I received a bunch of emails from <a href="http://logentiries.com">Logentries</a> and <a href="http://newrelic.com">NewRelic</a> that server is no longer responsive.</p>
+
+<p>Once I logged on to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> account, I&rsquo;ve seen message from administrators that server is sending a lot of traffic (UDP Flood), very likely compromised and therefore stopped. The link they give as <a href="https://www.digitalocean.com/community/questions/my-droplet-is-locked-by-support-staff-because-because-of-an-outgoing-flood-or-ddos-what-do-i-do">instructions</a> to fix the problem was quite comprehensive, but the most important info was in comments. A lot of people who were hit by problem had ElasticSearch deployed on their machines.</p>
+
+<!-- MORE -->
+
+
+<p>It appeared, if ES is left on default configuration with port opened outside, it will be easy target for bad guys, both of Java and ES vulnerability. Basically, I had to restore server from scratch, but this time I&rsquo;m not goint to be naive, server have to be properly secured.</p>
+
+<p>I&rsquo;ll describe my setup that involves: Node.js, Dokku / Docker, SSL.</p>
+
+<h2>Clean DigitalOcean image</h2>
+
+<p>I had to reinstall my machine from scratch, so instead of creating plain Ubuntu 14 server, but I decided to go dokku/docker path. Something that I tried <a href="http://beletsky.net/2013/09/paas-in-your-pocket-with-dokku.html">before</a> and very happy with the <a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">results</a>. <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> offers pre-packed image with dokku/docker already on board. As usually it takes just a few seconds to spin up machine on DO.</p>
+
+<p>The plan was the following: deploy ElasticSearch instance inside Docker container, disable dynamic script features of Elastic, deploy Node.js based proxy server with custom authentication by Dokku and link those containers, so only Node.js proxy will have access to Elastic. Finally, all traffic between will by crypted by SSL.</p>
+
+<p>The benefits are obvious, no more <code>:9200</code> is outside the machine, one potential vulnerability with dynamic script feature is disabled, only authenticated client could access Elastic server.</p>
+
+<h2>Deployment of ElasticSearch in Docker</h2>
+
+<p>First we need to have Docker image of ElasticSearch. There few ES plugging for Dokku, I decided to install one by myself, since I thought it is easier to configure. There is a great instruction from Docker <a href="https://registry.hub.docker.com/u/dockerfile/elasticsearch/">here</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker pull docker pull dockerfile/elasticsearch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once the image is there, we need to prepare volume there Elastic stores data and configuration.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /
+</span><span class='line'><span class="nv">$ </span>mkdir elastic
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Elastic folder should contain <code>elasticsearch.yml</code> file, with all required configurations. My case is very simple, I have a cluster of one machine, so default configuration applies to me. One thing, that I mentioned above &ndash; I need to disable dynamic scripting features.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nano elasticsearch.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The content of the file is just one string,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>script.disable_dynamic: true</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once it&rsquo;s done, we are ready to launch the server inside Docker container. Since, it could be done few times (during configuration and debugging), I&rsquo;ve created a small shell script,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run --name elastic -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -v /elastic:/data dockerfile/elasticsearch /elasticsearch/bin/elasticsearch -Des.config<span class="o">=</span>/data/elasticsearch.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please note the important thing, <code>-p 127.0.0.1:9200:9200</code> &ndash; here we are binding <code>:9200</code> to be only accessible on <code>localhost</code>. I&rsquo;ve spend some hours to close <code>:9200</code> by <code>iptables</code> without any success, but that thing works as expected. Thanks a lot to <a href="https://twitter.com/darkproger">@darkproger</a> and <a href="https://twitter.com/kkdoo">@kkdoo</a> for great help.</p>
+
+<p><code>-v /elastic:/data</code> will map the containers volume <code>/data</code> to local one <code>/elastic</code>.</p>
+
+<h2>Front-end Node.js server</h2>
+
+<p>Now, we need to deploy front-end proxy server. It would proxy all traffic from <code>http://localhost:9200</code> into outside world, securely. I&rsquo;ve created small project, based on <a href="https://github.com/nodejitsu/node-http-proxy">http-proxy</a> called <a href="https://github.com/likeastore/elastic-proxy">elastic-proxy</a>. It&rsquo;s very simple one and can be easily re-used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/likeastore/elastic-proxy
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>elastic-proxy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The server itself,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./config&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./source/utils/logger&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">3010</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">proxy</span> <span class="o">=</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">parseAccessToken</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">referer</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">referer</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">access_token</span> <span class="o">||</span> <span class="nx">referer</span><span class="p">.</span><span class="nx">access_token</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">accessToken</span> <span class="o">=</span> <span class="nx">parseAccessToken</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;request: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">&#39; accessToken: &#39;</span> <span class="o">+</span> <span class="nx">accessToken</span> <span class="o">+</span> <span class="s1">&#39; referer: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">referer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">accessToken</span> <span class="o">||</span> <span class="nx">accessToken</span> <span class="o">!==</span> <span class="nx">config</span><span class="p">.</span><span class="nx">accessToken</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">401</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Missing access_token query parameter&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">proxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span><span class="nx">target</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">false</span><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Likeastore Elastic-Proxy started at: &#39;</span> <span class="o">+</span> <span class="nx">port</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It proxies all the requests and only by-pass ones, who provide <code>access_token</code> as query parameter. The <code>access_token</code> value is <a href="https://github.com/likeastore/elastic-proxy/blob/master/config/production.config.js">configured</a> on server, by applications environment variable <code>PROXY_ACCESS_TOKEN</code>.</p>
+
+<p>As you already <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-dokku-one-click-digitalocean-image-to-deploy-a-python-flask-app">prepared</a> Dokku all you need to do is to push application to your server.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push master production
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After the deployment, you should go to server to configure applications environment,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config proxy <span class="nb">set </span><span class="nv">PROXY_ACCESS_TOKEN</span><span class="o">=</span><span class="s2">&quot;your_secret_value&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I wanted to have SSL and it&rsquo;s very easy to configure with Dokku. Just place your <code>server.crt</code> and <code>server.key</code> to <code>/home/dokku/proxy/tls</code> folder.</p>
+
+<p>Proxy have to be <a href="https://github.com/scottatron/dokku-rebuild">redeployed</a> afterward, to apply configuration changes. Try proxy by hitting it&rsquo;s URL, in my case <a href="https://search.likeastore.com">https://search.likeastore.com</a>. If everything is good, it will reply,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Missing access_token query parameter</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Link containers</h2>
+
+<p>We need to link both containers, so Node.js application is able to access ElasticSeach container. I really liked <a href="https://github.com/rlaneve/dokku-link">dokku-link</a> plugin, that does exactly that&rsquo;s required in very easy way. So, will install it</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /var/lib/dokku/plugins
+</span><span class='line'><span class="nv">$ </span>git clone https://github.com/rlaneve/dokku-link
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we need to link containers,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku link proxy elastic
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And application have to be redeployed again. If everything is good, you will be able to access the server by <code>https://proxy.yourserver.com?access_token=your_secret_value</code> and see the response from ElasticSearch,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nx">status</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Tundra&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">version</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">number</span><span class="o">:</span> <span class="s2">&quot;1.2.1&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_hash</span><span class="o">:</span> <span class="s2">&quot;6c95b759f9e7ef0f8e17f77d850da43ce8a4b364&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_timestamp</span><span class="o">:</span> <span class="s2">&quot;2014-06-03T15:02:52Z&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">build_snapshot</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">lucene_version</span><span class="o">:</span> <span class="s2">&quot;4.8&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">tagline</span><span class="o">:</span> <span class="s2">&quot;You Know, for Search&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reconfigure the client</h2>
+
+<p>Depending on a client you use, you need to apply a little tweak to configuration. Basically, we need to use <code>access_token</code> for all our request. For Node.js applications,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="nx">elasticsearch</span><span class="p">.</span><span class="nx">Client</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">host</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">protocol</span><span class="o">:</span> <span class="s1">&#39;https&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;search.likeastore.com&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">access_token</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ELASTIC_ACCESS_TOKEN</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">requestTimeout</span><span class="o">:</span> <span class="mi">5000</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, <code>ELASTIC_ACCESS_TOKEN</code> is env variable to hold <code>your_secret_value</code> token.</p>
+
+<p>Now, restart the application, make sure everything is running and exhale.</p>
+
+<p><strong>PS</strong>. I would like to say thank to <a href="https://www.digitalocean.com/?refcode=de56d081b272">DigitalOcean</a> for support and a little credit I received as downtime compensation. Thats awesome.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2014/07/secure-deployment-of-elasticsearch.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

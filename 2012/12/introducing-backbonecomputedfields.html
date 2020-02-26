@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introducing Backbone.ComputedFields</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Introducing Backbone.ComputedFields Dec 25th, 2012 Backbone.js, JavaScript Recently, I&#8217;ve been working on small project which I want to share &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Introducing Backbone.ComputedFields</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-25T21:28:00+01:00" pubdate data-updated="true">Dec 25<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
+    </p>    <p>        I needed to have a model with &#8216;virtual&#8217; fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
+    <!-- more -->
+    </p>    <p>        The easiest solution would be simply introduce some model methods, say <code>model.getComputedField() / model.setComputedField()</code> and store the value inside the model object. But that turns out to be bad idea, for several reasons. First, we are breaking usual Backbone interface for getting and setting values - <code>model.get('computed') / model.set('computed', 100)</code>. Also, if model is binded to a view, we are responsible for raising events manually, in case of computed or depended field changing.<br />
+    </p>    <p>        So, after few iterations <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> was born. The design goals: to be simple, to be declarative, to be friendly to model binding (read, respect the events).<br />
+    </p>    <h2>Use cases</h2>    <p>        Typical use cases for <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> are: calculating the prices; concatenating several fields; encapsulating the logic of retrieving object by reference.<br />
+    </p>    <p>        It&#8217;s fairly important, that computed field could change. Based on it&#8217;s value, dependent fields should be updated.<br />
+    </p>    <h2>Examples</h2>    <p>        Let&#8217;s take a look on few examples. The models here are very simplified. But, it shows the main application of <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a>.<br />
+    </p>    <h3>Calculating prices</h3>    <p>        The model represents the product, which contains net price and VAT rate.<br />
+    </p>    <pre class="brush: js">var Produc = Backbone.Model.extend({
+    initialize: function () {
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        grossPrice: {
+            depends: ['netPrice', 'vatRate'],
+            get: function (fields) {
+                return fields.netPrice * (1 + fields.vatRate / 100);
+            },
+            set: function (value, fields) {
+                fields.netPrice = value / (1 + fields.vatRate / 100);
+            }
+        }
+    }
+});
+</pre>    <p>        So, we have <code>grossPrice</code> as computed field. That field depends on &#8216;netPrice&#8217; and &#8216;vatRate&#8217; and being calculated by simple formulas.<br />
+    </p>    <pre class="brush: js">var product = new Product({ netPrice: 100, vatRate: 20 });
+var grossPrice = product.get('grossPrice');
+    </pre>    <p>        In this case, gross price would be 120.<br />
+    </p>    <pre class="brush: js">product.set({grossPrice: 300});
+var netPrice = product.get('netPrice');
+</pre>    <p>        After gross price is update, netPrice will be recalculated and netPrice will be 250.<br />
+    </p>    <h3>Concatenating fields</h3>    <p>        Let&#8217;s have a model to represent the person with first name and last name.<br />
+    </p>    <pre class="brush: js">var Person = Backbone.Model.extend({
+    initialize: function () {
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        fullName: {
+            depends: ['firstName', 'lastName'],
+            get: function (fields) {
+                return fields.firstName + ' ' + fields.lastName;
+            }
+        }
+    }
+});
+</pre>    <p>        I&#8217;m skipping the setter cause we don&#8217;t need to set full name here.<br />
+    </p>    <pre class="brush: js">var person = new Person({firstName: 'Alexander', lastName: 'Beletsky'});
+var fullName = person.get('fullName');
+</pre>    <p>        Full name &#8216;Alexander Beletsky&#8217; is returned here.<br />
+    </p>    <h3>Referenced objects</h3>    <p>        Sometimes we have a models that only contains a reference to another model. All the time, we need to get referenced object we have to create some piece of code, which it typically copy-n-pasted thought the code base. Computed field could be a good idea to encapsulate that.<br />
+    </p>    <pre class="brush: js">var Invoice = Backbone.Model.extend({
+    initialize: function (attrs, options) {
+        this.customers = options.customers;
+        this.computedFields = new Backbone.ComputedFields(this);
+    },
+
+    computed: {
+        customer: {
+            depends: ['customerId'],
+            get: function (fields) {
+                return fields.customerId && this.customers.get(fields.customerId);
+            },
+            set: function(customer, fields) {
+                fields.customerId = customer.get('id');
+            }
+        }
+    }
+});
+</pre>    <p>        Here we have customer field, which is computed. <br />
+    </p>    <pre class="brush: js">var invoice = new Invoice({}, { customers: collectionOfCustomers });
+var customer = invoice.get('customer');
+</pre>    <p>        So, I&#8217;m able to get customer model even if invoice is just holding the invoice Id. <br />
+    </p>    <pre class="brush: js">invoice.set({customer: anotherCustomer});
+var customerId = invoice.get('customerId');
+    </pre>    <p>        If I&#8217;m changing the customer of invoice, the &#8216;customerId&#8217; would be initialized with id of &#8216;anotherCustomer&#8217;.<br />
+    </p>    <h2>Conclusions</h2>    <p>        <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> is still pre-mature, but I already successfully used that in one of projects. The github page contains pretty much documentation, so you should have to problems of adopting it for personal needs.<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/12/introducing-backbonecomputedfields.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

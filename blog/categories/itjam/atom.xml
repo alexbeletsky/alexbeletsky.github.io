@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ITJam | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/itjam/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IT Jam 2012 in Kiev]]></title>
+    <link href="http://beletsky.net/2012/09/it-jam-2012-in-kiev.html"/>
+    <updated>2012-09-03T09:11:00+02:00</updated>
+    <id>http://beletsky.net/2012/09/it-jam-2012-in-kiev</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        It's been my <a href="http://www.beletsky.net/2011/08/it-jam-2011-in-odessa_23.html">second time</a> I attended IT Jam, the biggest IT gathering in Ukraine. This time, the rules has been completely changed. Instead of traditional speeches, the organizers decided to make <a href="http://www.it-jam.ciklum.net/community_spot">community spots</a>, there people might have a chance to group and discuss different issues. There were number of spots there: .NET, JavaScript, iOS, UX etc.<br />
+    </p>    <a href="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg"><br />
+        <img src="https://lh4.googleusercontent.com/-PXtIUYdVpXk/UERVoHU_CJI/AAAAAAAAJBA/xq8Nq_PIPJ4/s720/551981_10151051085473549_2145381509_n.jpg" style="width:620px" /><br />
+    </a><br />
+    <p>        Besides the community spots, there was several stages where <a href="http://www.it-jam.ciklum.net/visionary_speakers">visionary speakers</a> did their presentations. I had a chance to listen Christopher Marsh, and really enjoyed his vision of lean product development. At 13.00 community spots started to operate, to I went there.<br />
+    </p>    <p>        .NET spot is a closest to me, since it's lead by guys whom I personally know and number of participants are well known guys from local .NET community. <a href="http://twitter.com/chaliy">Mike Chaliy</a> asked me to give a brief talk on.. Node.js. So, together with <a href="http://twitter.com/dmytromindra">Dmytro Mindra</a> we did kind of introduction to Node.js to .NET developers, introducing to the history of this rather new technology, it's main features and showing some real code. Planned for 15 minutes, we've spend about hour talking about it. Besides of pure technology talk, I shared some experience of <a href="http://debitoor.de">e-conomic</a> switch from .NET to Node.js stack for the latest products and how it worked for us (mainly my message was, throw away your boring C# and switch to JS.. so I had a chance to been kicked off the spot, but everything were fine at the very end). .NET spot was very active, attracted many many participants. People were talking about newest .NET framework features, like Async, Azure, Kinect etc.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg"><br />
+        <img src="https://lh6.googleusercontent.com/-m8E-81DXCZI/UERVoMXNaII/AAAAAAAAJA8/NZSQvx7otfo/s512/375872_10151051090393549_448366005_n.jpg" /><br />
+    </a><br />
+    <p>        JavaScript spot leaded by my team mate <a href="http://ua.linkedin.com/in/edjafarov">Eldar Djafarov</a> was also very exiting. Guys did a very nice job, preparing some cool JavaScript applications, that people might play with. I joined it, having a quite interesting discussion of front end development issues with different JavaScript MVC frameworks. Again, the experience we've got in company regarding Backbone.js, unit testing and tools was very interesting to developers.<br />
+    </p>    <p>        Almost 4 hours on community spots were like one minute to me.<br />
+    </p>    <p>        I really liked how the things went. From my perspective the idea of community spots was really cool. Probably, it's to difficult for introverts, to feel them self comfortable with this environment, so mix up of formal speeches and spots could be a good idea for future conferences.<br />
+    </p>    <p>        I wish to say thanks for organizers of this event for everybody involved, great effort guys. As always, it was so great to meet with colleagues from other cities and shake the hand for guys, whom I knew only virtually before. See you next year!<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IT Jam 2011 in Odessa]]></title>
+    <link href="http://beletsky.net/2011/08/it-jam-2011-in-odessa_23.html"/>
+    <updated>2011-08-23T16:45:00+02:00</updated>
+    <id>http://beletsky.net/2011/08/it-jam-2011-in-odessa_23</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>IT Jam is a conference for developers in Ukraine. Highly popularized through the last years now it became the most popular IT events in Ukraine. The slogan of conference is "Meet & Mix" saying it's primary goal is to create good conditions for networking and experience sharing. </p><p>I've never been visiting IT Jam before. But this time, I not only visited but have a speech there. Moreover, the <a href="http://www.e-conomic.co.uk/">company</a> I work to was sponsoring .NET section.. and I got a honor to be a representative there. I've started to prepare on a very short notice, just 5 days before conference.. all of these facts let me a little nervous. </p><p>We decieded to go by car, with my great colleagues <a href="http://twitter.com/#!/korneliuk">@korneliuk</a> and <a href="http://twitter.com/#!/VladAlieks">@VladAlieks</a>. Having a good company is a key for any trip. I haven't noticed how fast we came to Odessa. We stopped in Odessa's <a href="http://skalodrom.od.ua/">Alpine club</a> where I used to spent great summer days during my rollerblading <a href="http://www.youtube.com/watch?v=TzrXoYSzT4Q&feature=channel_video_title">career</a>. We've got there late evening, so had a time only to install our tent, say hello to the sea and fall asleep.  </p><p>Next morning we have a breakfast and moved to the place. IT Jam took biggest area in Odessa, <a href="http://lifeglobe.net/blogs/details?id=313">Odessa's See Terminal</a>. That was really cool, since there you definitely could feel the spirit of Odessa - sea breeze, sun, ships. <a href="http://www.linkedin.com/pub/marina-vyshegorodskikh/0/571/70b">Marina Vyshegorodskikh</a> and <a href="http://twitter.com/#!/Emfimbria">Alexandra Chudner</a> who opened the event, energized the crowd for the rest of the day. </p><p>I've spent most my time mostly in .NET section. IT Jam format of speeches are supposed to be short. That was something that I didn't expect at the begining, so after the schedule been published I realized - it is just impossible to fit everything I want to say in such short period of time. Anyway, I had no option and have to start my speech.  </p><a href=""><br />
+<img src="https://lh4.googleusercontent.com/-EJAqkayO9xo/TpZxh5beACI/AAAAAAAAHlE/EMWhdFsyfx0/s800/288852_188885197848166_100001800609058_414130_6492032_o.jpg" style="width: 620px" alt="Alexander Beletsky on IT Jam" /><br />
+</a><br />
+<br />
+<p><a href="http://www.linkedin.com/pub/olga-didich-dio-ciklum-net/8/689/600">Olga Didich</a> did a great job helping out all speakers and timekeeping. So, I just step by on scene and started up. As always it's quite hard to describe and show the code for such big crowd, but I tried the best. Of cause, I haven't managed to accomplish all my speech.. but I was really happy that people were contacting me a lot of questions, just after it. We were sitting together with one guy after and I was showing the rest of my presentation just for him :). </p><p>As "Meet & Mix" format supposed, I had really nice talks with other developers. Ones, that I worked many years ago.. or ones we've met just recently.. or one's we following each other in tweeter but had no chance to meet offline :). So, <a href="http://twitter.com/#!/dimapasko">@dimapasko</a>, <a href="http://twitter.com/#!/ChuniMuni">@ChuniMuni</a>, <a href="http://twitter.com/#!/xpinjection">@xpinjection</a>, <a href="http://twitter.com/#!/chaliy">@chaliy</a>, <a href="http://twitter.com/#!/antonvidishchev">@antonvidishchev</a>, <a href="http://www.linkedin.com/pub/dmitriy-davydov/4/8a2/b59">Dmitry Davydov</a> - guys, it very nice to see you there.. Thanks for your company and great beer-n-talks we had together. </p><p>At the evening I've met my old friends from Odessa and all our company moved back to Alpine club, to have a swim, drink and guitar playing on beach for all night. That was just amazing conclusion of that day. </p><p>I want to say big thanks, for everyone who involved in organization. Keep doing great job and improve from year to year. And for my friends who were always nearby, supported me and didn't allow to be bored. </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

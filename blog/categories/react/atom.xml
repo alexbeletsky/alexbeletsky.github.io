@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: react, | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/react/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Jumpstart to React+Redux Development]]></title>
+    <link href="http://beletsky.net/2016/02/jumpstart-to-react-plus-redux-development.html"/>
+    <updated>2016-02-10T14:35:00+01:00</updated>
+    <id>http://beletsky.net/2016/02/jumpstart-to-react-plus-redux-development</id>
+    <content type="html"><![CDATA[<p>Somewhere November 2015, we realized that our existing product requires a proper update since it remained in a beta phase, for quite some time. We were thinking, what would be the best approach to take?</p>
+
+<p>There are many things you need to consider, but primarily &ndash; business and technological risks. For companies, with an established customers base, value proposition and product, taking a risk of a massive rewrite is always very high. For startups, speed to market and responsiveness to change is a priority, so they are pivoting and rewriting products from scratch.</p>
+
+<!-- MORE -->
+
+
+<h2>Our approach</h2>
+
+<p>At <a href="http://www.blogfoster.com/">blogfoster</a>, we are kind of in the middle. The young company, hitting product-market fit, having customers and making revenues. We thought about a combined approach. Enhance our existing front-end application, by substituting some pieces of it, using a technological stack for further growth and development speed.</p>
+
+<p>We had a common opinion about the technology that we would like to pick up. Having a good awareness of which technologies are taking off now, we had the confidence to bet on them.</p>
+
+<p>We agreed on the following: <a href="https://facebook.github.io/react/">React</a> for handling UI, <a href="https://github.com/rackt/redux">Redux</a> for managing state, <a href="https://github.com/webpack/webpack">Webpack</a> as bundler, and ES2015 with <a href="https://babeljs.io/">Babel</a>, as programming language. On the server side, <a href="http://hapijs.com/">Hapi.js</a> for the REST API, MySQL and <a href="http://docs.sequelizejs.com/en/latest/">Sequilize</a> as a data storage and access.</p>
+
+<p>Since almost all of libraries and tools, mainly a front-end ones, mentioned above were new to us, our CTO <a href="https://github.com/dominicumbeer">Dominic</a>, proposed an approach of starting up with developing of boilerplates both for new server and client, so we build our applications based on them.</p>
+
+<p>The goal was to build some simple application, which would involve quite typical web applications operations, e.g. routing, rendering, fetching and sending data to a REST API. Since signin/signup is the entrance of all applications, it makes sense to implement it as a first prototype.</p>
+
+<p>I was pretty sure, I need about two days on that.</p>
+
+<p>It took me a week to get it in shape so that we&rsquo;re confident to continue with it. React, Redux, Webpack, Babel are quite hard to combine, if you are doing it at the first time.</p>
+
+<p>Honestly, I had a lot of frustration with the <a href="https://github.com/blogfoster/front-stack-boilerplate">boilerplate</a> implementation. On the way, I seriously thought a few times if it is the right approach we are going to take.</p>
+
+<h2>Webpack</h2>
+
+<p><a href="https://github.com/webpack/webpack">Webpack</a> appeared to be a huge piece of software, with very unintuitive API. A configuration of Webpack is more difficult, comparing to grunt/gulp + browserify + tools setup. I started to see Webpack as huge kitchen sink. Transpiring, bundling, optimizing, hot-reloading, server deployment &ndash; all is in the box.</p>
+
+<p>But once it’s configured, you realize it is worth.</p>
+
+<p><img width="1171" alt="screenshot 2016-01-30 13 25 31" src="https://cloud.githubusercontent.com/assets/304929/12695647/182e7662-c755-11e5-9216-f2c50d18d169.png"></p>
+
+<p>First of all, it works quite fast. Our application is still small, but it takes only 1.6s to fully rebuild it. Secondly, Webpack is much more than simple a build tool. It introduces you to another way of working with web resources such as sources, styles and images.</p>
+
+<p>Finally, Hot Reload is something that makes development with Webpack really fun. Having the experience of updating a portion of the applications without refreshing the page is totally awesome.</p>
+
+<h2>Babel and ES2015</h2>
+
+<p>Babel 6 has been released at the end of October. I started to use it from the very beginning, but it was quite a mistake. A lot of libraries still had dependencies on Babel 5 and refused to work properly. I had a bunch of cryptic error messages in a console, read a bunch of GitHub issues before I realized that. That forced me to step back for <a href="https://github.com/gaearon/react-hot-loader">react-hot-reloader</a>, instead of <a href="https://github.com/gaearon/react-transform-boilerplate">react-transform</a> since it wasn’t yet ported to Babel 6 and we still have some small <a href="https://github.com/feross/standard/issues/372">issues</a> after Babel updates.</p>
+
+<p>But now, if you ask me &ndash; would you like to switch back to ES5, I would likely say no. I wasn’t happy when I heard the first time that ES6 will have classes. But, implementing React components as classes, makes a lot of sense.</p>
+
+<p>Moreover, spread operator, fat arrow functions, and new scoping rules make programming with ES2015 as a much more pleasant process.</p>
+
+<h2>Redux</h2>
+
+<p><a href="https://github.com/rackt/redux">Redux</a> is one of the most popular JavaScript libraries ever. Taking the functional programming approach, combined with a nice API and a great timing of the release, Redux is de-facto default Flux implementation for React-based applications.</p>
+
+<p>It requires a lot of paradigm shifts, cause it’s very different from MVC/MVVM libraries I used to work with.</p>
+
+<p>Redux philosophy is based on the fact, that the whole application state is represented as <em>one big object</em>. The application’s UI, becomes a <em>function of this</em> state object. The only way to change the state, is to <em>dispatch</em> an action. An action contains it’s type and some payload, which is passed to a reducer function. The reducer function produces a new instance of the state. Based on the updated state, the application re-renders their UI.</p>
+
+<p>As you see, all that approach is pretty much synchronous. It was quite hard for me to understand how to introduce asynchronous behavior there. I was very happy once my <a href="https://github.com/gaearon/redux-thunk">redux-thunk</a> implementation started to work.</p>
+
+<p>Besides, hooking up Redux to React the application was not super straightforward. I spent some time with an understanding of the configuration of the storages, connected components, etc.</p>
+
+<p>I’m still having a lot of questions. I not really happy with all the code you need to write if you want to introduce new actions. And I don’t know yet how to test <a href="http://stackoverflow.com/questions/33997081/react-redux-loading-application-state-in-component-constructor">properly</a> all that stuff.</p>
+
+<p>But Redux gives a nice tooling around, plus better confidence of what’s going on in the application. Since all actions could be logged, and state never overwrote it’s much more easy to debug and introduce new functionality.</p>
+
+<h2>React</h2>
+
+<p>0.14 is the latest React release, released in October.</p>
+
+<p>First of all, it <em>just works</em>. I feel so great dealing with React, since it brings so less surprises. The concept of a component is simple and very native.</p>
+
+<p>I’m not sure yet if I use everything right. Designing the component hierarchy is still a question, that requires a bit more practice.</p>
+
+<p>I’m happy with the error messages that React provides. The messages pointing you directly to the exact problem. Compared to other libraries, which produce nothing more as encrypted error messages (yes, <a href="https://daveceddia.com/angular-2-errors/">angular</a>). Making UI&rsquo;s with React feels great.</p>
+
+<p>Currently, we started to involve our designers to work directly with JSX instead of HTML and we are looking forward to see the impact there.</p>
+
+<p><img width="1287" alt="screenshot 2016-01-30 13 37 55" src="https://cloud.githubusercontent.com/assets/304929/12695696/b561681c-c756-11e5-99e6-0c73627720f9.png"></p>
+
+<p>Second, React is likely the biggest change to front-end development in the last 5 years. Virtual DOM, diff tree and partial re-rendering &ndash; quite a masterpiece library. I can’t say it feels totally perfect for me, but it feels really good.</p>
+
+<h2>ESLint</h2>
+
+<p>I have to mention ESLint. Previously, I used JSHint, but unfortunately, they decided not to support latest language features until official support.</p>
+
+<p>But ESLint actually becomes so much nicer. It so simple to configure and it’s so helpful, that I can not imagine to develop without it anymore.</p>
+
+<p><img width="975" alt="screenshot 2016-01-30 13 41 17" src="https://cloud.githubusercontent.com/assets/304929/12695714/2d8eca14-c757-11e5-905f-a66065111587.png"></p>
+
+<p>Both Atom and Sublime have ESLint support, and it will be the only choice if you want to go the ES6/React/Webpack way with linting.</p>
+
+<h2>Conclusions</h2>
+
+<p>After the <a href="https://github.com/blogfoster/front-stack-boilerplate">boilerplate</a> has been concluded, we started with the implementation of our new application based on that. It works fine so far, not ideally, but good enough. During the flight, we skipped our idea of changing pieces of existing app and started new project from scratch.</p>
+
+<p>Greenfield development + latest libraries and tools make whole development process nice and fun.</p>
+
+<p><em>Originally published at <a href="http://engineering.blogfoster.com/jumpstart-to-react-redux-development/">blogfoster Engineering</a>.</em></p>
+]]></content>
+  </entry>
+  
+</feed>

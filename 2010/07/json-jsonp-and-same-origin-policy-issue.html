@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JSON / JSONP and Same Origin policy issue</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="JSON / JSONP and Same Origin policy issue Jul 22nd, 2010 AJAX, Tips, Tools First of all, what the JSON is? It is very, very simple! JSON acronym of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2010/07/json-jsonp-and-same-origin-policy-issue.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">JSON / JSONP and Same Origin policy issue</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-22T16:17:00+02:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>AJAX</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+First of all, what the JSON is? It is very, very simple! JSON  acronym of a JavaScript Object Notation. It is a data interchange format, analog of XML. It became very popular because of AJAX applications, which receive a data from web services called from a javascript. Web services typically use XML as format of exchanging data, that works great because of SOAP standard and so on.. But in javascript client application you had to put additional effort of parsing XML data, and create an XML to post to web service. JSON simplifies it, because it is native to javascript.
+</p>
+<p>
+JSON is a serialization of javascript object to string. It based on javascript basic types as Number, String, Boolean, Array, Object and null and looks like that:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">{<br>&nbsp;&nbsp; <font color="#A31515">"id"</font>: 1023,<br>&nbsp;&nbsp; <font color="#A31515">"description"</font>: <font color="#A31515">"new assigment"</font>,<br>&nbsp;&nbsp; <font color="#A31515">"data"</font>: {<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"size"</font>: 117,<br>&nbsp;&nbsp;&nbsp;&nbsp; <font color="#A31515">"url"</font>: <font color="#A31515">"/local/data/jhsr2kk"</font><br>&nbsp;&nbsp; }<br> }</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+As you receive such string from web service (for instance) you can just evaluate it (with eval() function) and use as javascipt object. (I have to mention that direct using of eval() is not recommended way since security issues, all modern browsers have built-in JSON parsers and you can use that. Best way is to use a libraries, like <a href="http://jquery.com/">jQuery</a> or <a href="http://www.prototypejs.org/">Prototype</a> and hides such details from you).
+</p>
+<p>
+JSON exchanging of data works great as soon as your application and data source service are in one domain. As you want to receive some data outside of your domain, it simply won&#8217;t work (it actually works, with IE but it gives security notification and does not work in Chrome at all). This because of <a href="http://en.wikipedia.org/wiki/Same_origin_policy">Same origin policy</a>, security concept that disallow such operations. So, as you considered to do something like,
+<blockquote><code><font size="2" face="Courier New" color="black">$.getJSON(<font color="#A31515">"http://external.com/json"</font>, <font color="#0000ff">function</font>(data) { });</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+you will not get any result. There are a different approaches of workaround of same policy origin (please check nice <a href="http://www.wait-till-i.com/2010/01/10/loading-external-content-with-ajax-using-jquery-and-yql/">article</a> on that), but as you know that web service supports JSON, JSONP comes to help.
+</p>
+<p>
+JSONP is a JSON with padding (or it also called JSON with prefix). With JSONP you are specifying URL and callback function, like http://external.com/json?callback=f. This must be put into script tag.
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="http://external.com/json?callback=f"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">function</font> f(data) {<br><br>}<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+It is allowed and works perfectly fine.
+</p>
+<p>
+But what if you need a dynamic calls? It is also not a problem, it is possible to create script tag dynamically and attach it to DOM. A nice way of doing that. I&#8217;ve seen in <a href="http://github.com/alexbeletsky/github-api/blob/master/github.js">github-api</a> project. Original code is from here, I just removed some details and made it more reusable.
+<blockquote><code><font size="2" face="Courier New" color="black">(<font color="#0000ff">function</font> (globals) {<br>&nbsp;&nbsp;<font color="#0000ff">var</font> json = {<br>&nbsp;&nbsp;&nbsp;&nbsp;__jsonp_callbacks: {},<br>&nbsp;&nbsp;&nbsp;&nbsp;call: <font color="#0000ff">function</font> (url, callback, context) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> id = +<font color="#0000ff">new</font> Date;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> script = <font color="#0000ff">document</font>.createElement(<font color="#A31515">"script"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json.__jsonp_callbacks[id] = <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete json.__jsonp_callbacks[id];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback.apply(context, arguments);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> prefix = <font color="#A31515">"?"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (url.indexOf(<font color="#A31515">"?"</font>) &#62;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix = <font color="#A31515">"&#38;"</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url += prefix + <font color="#A31515">"callback="</font> + encodeURIComponent(<font color="#A31515">"json.__jsonp_callbacks["</font> + id + <font color="#A31515">"]"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;script.setAttribute(<font color="#A31515">"src"</font>, url);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">document</font>.getElementsByTagName(<font color="#A31515">'head'</font>)[0].appendChild(script);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;globals.json = json;<br>})(window);<br>&nbsp;&nbsp;</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+Example of usage:
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;!</font><font color="#800000">DOCTYPE</font> <font color="#ff0000">html</font> <font color="#ff0000">PUBLIC</font> <font color="#0000ff">"-//W3C//DTD XHTML 1.0 Transitional//EN"</font> <font color="#0000ff">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</font><font color="#0000ff">&#62;</font><br><br><font color="#0000ff">&#60;</font><font color="#800000">html</font> <font color="#ff0000">xmlns</font><font color="#0000ff">="http://www.w3.org/1999/xhtml"</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">head</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">title</font><font color="#0000ff">&#62;</font>Test page<font color="#0000ff">&#60;/</font><font color="#800000">title</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font><font color="#0000ff">="json.js"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br>&#60;/head&#62;<br>&#60;body&#62;<br>&#60;script type=<font color="#A31515">"text/javascript"</font>&#62;<br>&nbsp;&nbsp;json.call(<font color="#A31515">"http://ws.geonames.org/citiesJSON?north=44.1&#38;south=-9.9&#38;east=-22.4&#38;west=55.2&#38;lang=de"</font>, <font color="#0000ff">function</font> (data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> d = data;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">body</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">html</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+</p>
+<p>
+This code very useful for small &#8220;depends-on-nothing&#8221; applications. Of cause jQuery has its own support of JSONP, so as soon as you already using jQuery you should consider <a href="http://api.jquery.com/jQuery.getJSON/">$.getJSON</a> for your needs.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/07/json-jsonp-and-same-origin-policy-issue.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/07/json-jsonp-and-same-origin-policy-issue.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

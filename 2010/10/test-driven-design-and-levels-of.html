@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Test Driven Design and levels of testing</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Test Driven Design and levels of testing Oct 19th, 2010 TDD, Tips Major benefit of TDD is not coverage, regression stability, test problem solving &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2010/10/test-driven-design-and-levels-of.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Test Driven Design and levels of testing</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-19T18:26:00+02:00" pubdate data-updated="true">Oct 19<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Major benefit of TDD is not coverage, 
+    regression stability, test problem solving - NO. It is - Test Driven Design 
+    (Architecture). Test Driven Design is something that is being born of writing 
+    tests before code, writing tests before functionality started to work, 
+    writing the tests before you really clear about the rest of system (data 
+    flow, integration etc.). Test Driven Design forces you to use old good patterns 
+    as Factories, Template Methods.. it forces you to hide implementation behind 
+    interface.. it forces you to separate concerns and divide functionality on small objects, each of it responsible for its small function 
+    and could be tested exactly for its function. Instead of increase functionality by appending some code to already big function, you encapsulate new functionality to new object, test it in isolation and then easily integrate it to the place where it have to start work on. 
+</p>
+<p>
+The reason why Test Driven Design works is that doing a tests make you a class user, make you focus on its primary goal and interface and just make it impossible (or difficult and annoying) to make a class with multiple responsibilities. 
+</p>
+<p>
+How to get practical benefits of TDD, what level of testing should I consider to be sure I following the plan of TDD? 
+</p>
+<p>
+<small>
+<b>Disclaimer:</b> all code samples are created very quickly, just to demonstrate ideas, should not be considered as working examples.
+</small>
+</p>
+<h2>Level 1 - Unit tests</h2>
+<p>
+Here it all begins. Unit tests are kind of testing of really small parts of objects, like method properties and so on. This is there the actual requirements for the object is 
+    created and verified. The major point of unit tests is - they have to be isolated! That means, all object(s), data, view etc. that tested object is 
+    depend on, must be hidden behind corresponding interfaces. Please note, that at initial state those interface could not be defined at all (contains no methods) and its actual form will be dictated by actual object needs. 
+    Object needs will be clarified on a way of applying next test cases to testable object.  
+</p>
+<p>
+    You have to be always focus on business object or primary object. This is the one that you have to test first. If you are doing registration functionality on site, <code>Registration</code> is class to start. If you are doing calculation application <code>Calculate</code> is class to start. If you are doing web crawling application, <code>Crawler</code> is class to start.
+</p>
+<p>
+It is always like that - business object typically requires 2 things, data and view. In some particular case BO could depend on some external services, that would mean that interface to the service should pass to constructor as well. Also, in some cases it doesn&#8217;t require a view, just returns some data to outside consumer.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> Some<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> Some(IData data, IView view)<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;}<br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IData<br>{<br>&nbsp;&nbsp;<font color="#008000">//empty</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IView<br>{<br>&nbsp;&nbsp;<font color="#008000">//empty</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Then tests are being created:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> SomeTests<br>{<br>&nbsp; <font color="#008000">//create method</font><br>&nbsp; <font color="#0000ff">public</font> Some CreateSome()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> Some(<font color="#0000ff">new</font> DataMock(), <font color="#0000ff">new</font> ViewMock());<br>&nbsp; }<br>&nbsp; <br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioOne() { }<br>&nbsp; <br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioTwo() { }<br><br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> SomeInScenarioThree() { }<br><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataMock : IData<br>{<br>&nbsp;&nbsp;<font color="#008000">//some methods here</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> View :&nbsp;IView<br>{<br>&nbsp;&nbsp;<font color="#008000">//some methods here</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+It is good design that constructor receives the interfaces only, the rest of parameters required supplied by corresponding methods arguments.
+</p>
+<p>
+Once again, business object <strong>asks</strong> interfaces for required data or methods for displaying data. What exact data and methods are required, could be unknown at the beginning, it only depends on current business object needs. So, in a way of implementation goes interfaces of IData and IView started to form its shape. So, at the end they could look like this:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IData <br>{<br>&nbsp; IQueryable&#60;Columns&#62; GetColumns();<br>&nbsp; <font color="#0000ff">void</font> UpdateColumn(<font color="#0000ff">int</font> id, <font color="#0000ff">string</font> name, Column column);<br>&nbsp; <font color="#0000ff">void</font> DeleteColumn(Column column);<br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">interface</font> IView<br>{<br>&nbsp; <font color="#0000ff">void</font> ShowSuccessMessage(<font color="#0000ff">string</font> message);<br>&nbsp; <font color="#0000ff">void</font> ShowFailMessage(<font color="#0000ff">string</font> fail);<br><br>&nbsp; <font color="#0000ff">void</font> DisplayResults(IQueryable&#60;Column&#62; columns);<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Note, that we are absolutely don&#8217;t care about actual implementation of both interfaces at the current moment. For instance <code>Data</code> could use SQL database for columns, <code>View</code> could call some Win32 API functions for displaying results. Doesn&#8217;t matter - forget about this at all, just continue with primary object and its functionality and tests.
+</p>
+<p>
+Mock objects should provide required methods in most simple way, like:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataMock : IData <br>{<br>&nbsp; <font color="#0000ff">public</font> IQueryable&#60;Column&#62; GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> list = <font color="#0000ff">new</font> <font color="#2B91AF">List</font>&#60;Column&#62; { <font color="#0000ff">new</font> Column(1), <font color="#0000ff">new</font> Column(2) };<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> list.AsQuearyable();<br>&nbsp; }<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+For the different type of test data you could have a different mocks. Also, it is better to use some existing <a href="http://code.google.com/p/moq/">mock frameworks</a>.
+</p>
+<h2>Level 2 - Data/View tests</h2>
+<p>
+As interfaces of Data/View granulated after level 1 testing, it is time to implement them. At this time we are really clear of what exactly we are going to implement, since there is already defined contract between client (primary object) and supplier (data/view classes). 
+</p>
+<p>
+Data/View implementation have to be tested also. There are more difficulties in testing them: data depends on SQL Server, that must be up and running, some test data have to be prepared before. View could not be tested in many cases. Netherless, why are implemented in same test before style and finally we have <code>Impl</code> classes implementation. Ones that would be used with primary object after its integration to application.   
+</p>
+<p>Implementation</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataImpl : IData <br>{<br>&nbsp; <font color="#0000ff">private</font> DataContext _context;<br><br>&nbsp; <font color="#0000ff">public</font> DataImpl(DataContext context)<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;_context = context;<br>&nbsp; }<br><br>&nbsp; <font color="#0000ff">public</font> IQueryable&#60;Column&#62; GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _context.Exec(<font color="#A31515">"SELECT * FROM COLUMNS"</font>).AsQueryable();<br>&nbsp; }<br> <br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}<br><br><font color="#0000ff">public</font> <font color="#0000ff">class</font> ViewImpl : IView<br>{<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> ShowSuccessMessage(<font color="#0000ff">string</font> message)<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;MessageBox(message);<br>&nbsp; }<br><br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Tests:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> DataImplTest : IData <br>{<br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> GetColumns();<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">new</font> DataImpl(<font color="#0000ff">new</font> DataContext());<br>&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> columns = data.GetColumns();<br><br>&nbsp;&nbsp;&nbsp;Assert.That(columns.Count,Is.EqualTo(10));<br>&nbsp; }<br> <br>&nbsp; <font color="#008000">//rest of method implementation</font><br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Level 3 - Integration tests</h2>
+<p>
+Integration tests are considered to be <a href="http://blog.jbrains.ca/integrated_tests_are_a_scam">evil</a>. I also think so, but I don&#8217;t think that it is possible to completely to avoid them. They are difficult to support and difficult to maintain them, but I think some number of integration tests have to be present to cover some typical scenarios of bugfix test cases.
+</p>
+<p>
+In general, integration would mean - test the primary objects with concrete instances of dependent objects. Integration tests would cover a place where primary object is going to be integrated to. So, if we plan to use <code>Some</code> in <code>SomeAnother</code> you have to test the impact of this class after integration.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">[TestFixture]<br><font color="#0000ff">public</font> <font color="#0000ff">class</font> SomeIntegrationTests<br>{<br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> IntegrationScenario()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//arrange</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> some = <font color="#0000ff">new</font> Some(<font color="#0000ff">new</font> DataImpl(), <font color="#0000ff">new</font> ViewImpl());<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//act</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> results = some.Act(param1, param2);<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//post</font><br>&nbsp;&nbsp;&nbsp; <font color="#008000">//do assert</font><br>&nbsp; }<br><br>&nbsp; [Test]<br>&nbsp; <font color="#0000ff">public</font> <font color="#0000ff">void</font> IntegrationScenarioTwo()<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//arrange (some is integrated to SomeAnother)</font><br>&nbsp;&nbsp;&nbsp; <font color="#0000ff">var</font> someAnother = <font color="#0000ff">new</font> SomeAnother(<font color="#0000ff">new</font> DataImpl(), <font color="#0000ff">new</font> ViewImpl());<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//act</font><br>&nbsp;&nbsp;&nbsp; someAnother.Act();<br>&nbsp;&nbsp;&nbsp; <font color="#008000">//post</font><br>&nbsp;&nbsp;&nbsp; <font color="#008000">//assert on actual influence of Some class on SomeAnother class</font><br>&nbsp; }<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Level 4 - Spec tests</h2>
+<p>
+The final level is Spec tests. BDD (Behavior Driven Development) is next generation of TDD, focusing on user acceptance criteria&#8217;s as development driver. There are quite good tools for that already like, <a href="http://specflow.org/">SpecFlow</a> or <a href="http://storyq.codeplex.com/">StoryQ</a>.
+</p>
+<p>
+Having those type of testing on Level 4, doesn&#8217;t mean that they are created after functionality is ready. It is recommended to create such tests first working with product owner and defining a test stories. 
+</p>
+<p>
+Personally I have no rich experience in BDD, but ideas and success stories with Cucumber (Ruby) makes them worth to look at.
+</p>
+<h2>Conclusion</h2>
+<p>
+Testing is important. But testing to create tests are pointless. Tests have to be created to create good design, easy to read and maintain code.   
+</p>
+<p>
+By doing tests right, they won&#8217;t complicate your life but make it easier.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/10/test-driven-design-and-levels-of.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/10/test-driven-design-and-levels-of.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

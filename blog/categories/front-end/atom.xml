@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: front-end, | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/front-end/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Your First Steps in a Front-end Developer Career]]></title>
+    <link href="http://beletsky.net/2018/10/your-first-steps-in-a-front-end-developer-career.html"/>
+    <updated>2018-10-05T14:50:00+02:00</updated>
+    <id>http://beletsky.net/2018/10/your-first-steps-in-a-front-end-developer-career</id>
+    <content type="html"><![CDATA[<p>A couple of weeks ago, I’ve been contacted by a friend of mine, who is just starting his career as a front-end developer.</p>
+
+<p>It’s very typical when a start of the journey is <em>frustrating</em>, and there is nothing better than the advice from the people who already <strong>been there</strong>.</p>
+
+<p>I never thought about that question carefully, but I formulated something quick for him. But later I decided to elaborate on it and share it with a bigger audience.</p>
+
+<!-- MORE -->
+
+
+<h2>There Is No Recipe</h2>
+
+<p>The thing is &ndash; there is <strong>no just simple recipe</strong>. If there is, I guess it would sound like that &ndash; <em>&ldquo;practice, practice, practice&rdquo;</em>.</p>
+
+<p>It’s not a secret that you have to dedicate much time to your craft. And I really mean a lot.</p>
+
+<p>If you are starting your career and be lucky enough to have a job, you have to come back home and work on side projects. If you are a student, you come back after the school and work on side projects, watch courses and read good books.</p>
+
+<p>Through my career, I realized, it were the side projects which contributed to my experience <strong>the most</strong>.</p>
+
+<p>Here is the thing, at the workplace you have to perform. At the work, you have a lot of constraints &ndash; existing codebase, architecture, set of libraries and frameworks, the team rules, etc.</p>
+
+<p>It’s not always an educational environment at the workplace. You have to solve business goals, not primarily to educate yourself. Rarely, both things are coming in parallel, but it’s rather an exceptional case.</p>
+
+<p>So, prepare yourself mentally <strong>to work a lot</strong> and spend evenings with your IDE opened, instead of watching a favorite series on Netflix or going out (even thought, it&rsquo;s also very important to do from time to time).</p>
+
+<h2>JavaScript Foundation</h2>
+
+<p>JavaScript is the <strong>assembly language</strong> of the web. Without a proper understanding of the language, you have nothing to do in the front-end world.</p>
+
+<p>The good news is, you don’t have to be <em>Douglas Crockford</em> to be a successful developer. I’ll tell you what &ndash; I’ve spent quite sometime in the profession, but details of language opened up to me <strong>way later</strong>. It&rsquo;s totally normal if you don&rsquo;t understand the depths of language. It will come.</p>
+
+<p>However, there a <strong>fundamental parts</strong> that you have to be very comfortable with:</p>
+
+<ul>
+<li>Data types</li>
+<li>Arithmetic operations</li>
+<li>Boolean and conditional operators</li>
+<li>Understanding of OOP paradigm (prototypical inheritance)</li>
+<li>Understanding of functional paradigm (functors, applicators, immutability)</li>
+</ul>
+
+
+<p>I also recommend, to start learning Node.js directly.</p>
+
+<p>All modern tools for front-end require Node.js. Developing simple applications and running than from command line is way more convenient comparing of dealing with the browser.</p>
+
+<h2>Browsers and DOM</h2>
+
+<p>Besides that, you should be able to understand how <strong>browsers work</strong> and in particular understand the concept of the DOM.</p>
+
+<ul>
+<li>How DOM functions and it’s basic components</li>
+<li>Events, events propagation, and handlers</li>
+<li>DOM API, window object</li>
+<li>DOM selectors</li>
+</ul>
+
+
+<p>Here you should be able to write simple, pure JavaScript applications by listens to controls and perform simple DOM manipulations, as setting values, classes, properties.</p>
+
+<h2>UI Development</h2>
+
+<p>In my career, I came from backend and desktop applications UI and the first sight HTML, and CSS seems to be easy. It&rsquo;s not even a real programming language, just a set of declarations, right? Not really.</p>
+
+<p>Even if your goal is not to be a designer, you should develop useful skills and a taste for <strong>good design</strong>. So the best thing to do is to steal cool ideas.</p>
+
+<p>No kidding, just pick up the site you like the most and try to copy it. Remember, the famous guy said &ndash; «Un artista copia, un gran artista roba» (Good artists copy, great artists steal).</p>
+
+<p>Make your hands dirty with HTML &amp; CSS.</p>
+
+<p>Be fluent in creating, simple and good looking interfaces. Find a freelance job of turning PSD or Sketch into HTML / CSS. You will get exceptionally important skills.</p>
+
+<h2>Client / Server Communication</h2>
+
+<p>Browser applications don’t exist in isolation. They do talk to servers to get the data and push data back.</p>
+
+<p>Without going too crazy, you will hugely benefit from understanding the following things:</p>
+
+<ul>
+<li>Basics of the HTTP protocol</li>
+<li>The concept of REST (HTTP verbs and resources)</li>
+<li><code>fetch</code> API</li>
+<li>Optionally: the concept of GraphQL and how it differs from REST</li>
+</ul>
+
+
+<p>There are tons of open API’s you can do <strong>cool stuff</strong> with. Pick one and build the simple application against it.</p>
+
+<p>I remember one of the projects I did <a href="https://github.com/alexbeletsky/github-commits-widget">alexbeletsky/github-commits-widget</a>. A simple app that connects to Github API and makes a widget of contributions to a project. I had a lot of fun with it.</p>
+
+<h2>Development Frameworks</h2>
+
+<p>And only after the first three parts, which on its own might take a year, or even more I would suggest you take a look at some UI development framework.</p>
+
+<p>The JS ecosystem is famous to create <em>“fatigue”</em>. Tools are complex, configurations are confusing, don’t start with React or Angular, just because you heard that they are cool.</p>
+
+<p>Maybe till the time you are comfortable with JS/HTML/CSS those things are dead already (front-end development framework has a tendency to survive for 3-5 years and then entirely overtaken by competitors.. don’t bother with that race).</p>
+
+<p>However, if you are reading the article 2018, I would recommend you to focus on React.js. The ecosystem is stable, million of tutorials, open source projects, meetups. You won’t feel the lack of information, that’s for sure.</p>
+
+<p>Having all three parts behind your shoulders will make you <strong>confident</strong> with any front-end frameworks because all of them are designed to simplify complicated things or making things more performant. The foundation of development, as DOM manipulations, HTML/CSS would remain the same.</p>
+
+<p>Even if the framework could encapsulate any particular detail, you will be confident enough to understand, what’s <strong>actually going</strong> on there.</p>
+
+<p>At the end I would just share the list of resources that helped or influenced me during my own journey:</p>
+
+<ul>
+<li><a href="https://devchat.tv/js-jabber/">JavaScript Jabber Podcast</a></li>
+<li><a href="https://eloquentjavascript.net/">Eloquent JavaScript Book</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a></li>
+<li><a href="https://reactpodcast.simplecast.fm/">React Podcast</a></li>
+<li><a href="https://egghead.io/">EggHead Video Courses</a></li>
+</ul>
+
+
+<p>Hope you find that helpful and I wish you the best in this interesting and exciting journey!</p>
+
+<p>Enjoy the ride.</p>
+
+<p><small>
+<em>Originally published on <a href="https://medium.com/blogfoster-engineering/your-first-steps-in-a-front-end-developer-career-8b792771c857">Medium</a> in <a href="https://medium.com/blogfoster-engineering">Product &amp; Engineering blogfoster blog</a></em>
+</small></p>
+]]></content>
+  </entry>
+  
+</feed>

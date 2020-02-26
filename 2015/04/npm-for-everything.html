@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>NPM for Everything</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="NPM as dependency manager, task runner both for front and back end.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2015/04/npm-for-everything.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">NPM for Everything</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-02T15:26:00+02:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2015</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backend/'>backend</a>, <a class='category' href='/blog/categories/frontend/'>frontend</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/npm/'>npm</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>JS ecosystem is famous for it&rsquo;s wide range of packages and tools. Besides the default package manager, which comes with Node.js &ndash; NPM (node package manager), there are Bower.js, Jam.js and many more.</p>
+
+<p>For a quite long period, my default setup was like &ndash; NPM for all server-side components and Bower.js for client-side stuff. It worked quite good together, especially in conjunction with Require.js.</p>
+
+<p>But recently, I switched to <em>NPM only</em> setup. That allowed me to use CommonJS style both front and back ends and got rid of task runners as Grunt and Gulp.</p>
+
+<!-- MORE -->
+
+
+<h1>CommonJS</h1>
+
+<p>Doing a lot of back-end coding I really get used to <code>CommonJS</code> style, which is simple, practical and powerful. CommonJS modularization is plain as,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// export the module</span>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">module</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// use the module</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./module&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Node.js highly popularized Common.js approach. And NPM appeared to be one of the best package managers ever developed.</p>
+
+<p>But for front-end, NPM was not that suitable. First of all, because of browsers do not understand Common.js style of modules. Second, <code>npm</code> modules are being placed to <code>./node_modules</code> folder, with is typically the root of project, that made things complicated to refer those scripts from <code>index.html</code> and configure server to server static resources from <code>./node_modules</code> folder.</p>
+
+<p>Browserify came to change this.</p>
+
+<h1>Browserify</h1>
+
+<p>Browserify is JavaScript transpiling tool, with allows to:</p>
+
+<ol>
+<li>Use Common.js style for front-end applications.</li>
+<li>Allowed to use various <code>npm</code> packages directly in a browser.</li>
+</ol>
+
+
+<p>A lot of pure front-end frameworks and libraries were published to <code>npm</code>. In fact, it&rsquo;s more and more used for front-end libraries as <a href="http://blog.npmjs.org/post/101775448305/npm-and-front-end-packaging">according to</a> NPM developers.</p>
+
+<p>Of cause, nothing comes for free. The cost of Browserify is a <em>build step</em>. You have to introduce to transform Common.js application into a <em>bundle</em> which is loaded and executed by a browser.</p>
+
+<p>Moreover, some packages are still being hosted on Bower. Even, it&rsquo;s possible to use Bower packages together with NPM packages (by means of debowerify transformation) I quickly realized, that this approach is very unpractical.</p>
+
+<p>So, during the last few months my main <a href="https://github.com/pulls?q=is%3Apr+author%3Aalexbeletsky+is%3Aclosed">contributions</a> on GitHub was adopting of some front-end packages, to be conformant to Common.js and publishing them on NPM after.</p>
+
+<h1>The setup</h1>
+
+<p>The NPM now is the only one package manager to use, both for front-end and backend.</p>
+
+<p>All dependencies are mentioned on one file <code>package.json</code> instead of several files.. and you will never forget to run <code>bower install</code>, since <code>npm install</code> will do install everything.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;async&quot;</span><span class="o">:</span> <span class="s2">&quot;^0.9.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;babelify&quot;</span><span class="o">:</span> <span class="s2">&quot;^5.0.4&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;body-parser&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.9.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;colors&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cors&quot;</span><span class="o">:</span> <span class="s2">&quot;^2.4.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;envify&quot;</span><span class="o">:</span> <span class="s2">&quot;^3.4.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;express&quot;</span><span class="o">:</span> <span class="s2">&quot;^4.9.5&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;method-override&quot;</span><span class="o">:</span> <span class="s2">&quot;^2.2.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;moment&quot;</span><span class="o">:</span> <span class="s2">&quot;^2.8.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;morgan&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.3.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;node-logentries&quot;</span><span class="o">:</span> <span class="s2">&quot;^0.1.4&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;react&quot;</span><span class="o">:</span> <span class="s2">&quot;^0.13.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;respawn&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0.1&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The server side code,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// configurations...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;editor-app listening on port &#39;</span> <span class="o">+</span> <span class="nx">port</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">env</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The client side code,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">Component</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span>  <span class="o">=</span> <span class="nx">Component</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The same style, feels nice and clean.</p>
+
+<h1>No task runners</h1>
+
+<p>NPM is not only package manager. It&rsquo;s also very simple task runner (or scripts runner). There is a special section, called <code>scripts</code> responsible for that. Originally it&rsquo;s been used to run some package related tasks (run tests, perform pre/post install configurations).</p>
+
+<p>Traditionally Grunt.js and Gulp.js are ones that used dealing with compiling static assests. But CLI interface of many tools and stream piping could replace them.</p>
+
+<p>As example, I&rsquo;ll show pretty typical setup:</p>
+
+<ul>
+<li>build JavaScript with <code>browserify</code> and apply minification</li>
+<li>build Sass with <code>node-sass</code> and apply minification</li>
+<li>run watcher and rebuild changed assets</li>
+</ul>
+
+
+<h2>Building JavaScript</h2>
+
+<p>The <code>browserify</code> need to be installed globally,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g browserify
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In <code>package.json</code>, in <code>scripts</code> section, will add such script,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;build-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js -o public/build/app.js&quot;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Since I also use several transformations in my applications, the Browserify have to properly configured for that. It check&rsquo;s if <code>package.json</code> contains <code>browserify</code> section, and if it does &ndash; will use it contents as own options.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;browserify&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;transform&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="s2">&quot;babelify&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;envify&quot;</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>  <span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Building Sass</h2>
+
+<p>As with Browserify, <code>node-sass</code> need to be installed globally,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g node-sass
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then <code>package.json</code> changes,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;build-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js -o public/build/app.js&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;node-sass public/sass/main.scss public/build/main.css&quot;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Minification</h2>
+
+<p>Now, let&rsquo;s minify both assets using one of the best concepts ever &ndash; Unix pipes.</p>
+
+<p>We need two packages additionally, <code>uglifyjs</code> and <code>cleancss</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g uglifyjs clean-css
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And corresponding scripts,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;build-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js -o public/build/app.js&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;node-sass public/sass/main.scss public/build/main.css&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="c1">// minifying</span>
+</span><span class='line'>    <span class="s2">&quot;build-min-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js | uglifyjs -o public/build/app.min.js&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-min-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;node-sass public/sass/main.scss | cleancss -o public/build/main.min.css&quot;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Watching</h2>
+
+<p>Now, let&rsquo;s apply watching. One of the watchers I use for several years already, that works best for me is <code>nodemon</code>.</p>
+
+<p><code>nodemon</code> is not only able to watch file changes and restart node processes if necessary, but also running custom commands.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;build-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js -o public/build/app.js&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;node-sass public/sass/main.scss public/build/main.css&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-min-js&quot;</span><span class="o">:</span> <span class="s2">&quot;browserify public/js/app.js | uglifyjs -o public/build/app.min.js&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;build-min-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;node-sass public/sass/main.scss | cleancss -o public/build/main.min.css&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="c1">// watching</span>
+</span><span class='line'>    <span class="s2">&quot;watch-js&quot;</span><span class="o">:</span> <span class="s2">&quot;nodemon -e js -w public/js -x &#39;npm run build-js&#39;&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;watch-sass&quot;</span><span class="o">:</span> <span class="s2">&quot;nodemon -e scss -w public/sass -x &#39;npm run build-sass&#39;&quot;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Complex tasks</h2>
+
+<p>Typically, you need to run few tasks simultaneously, e.g. build all scripts or watch all application. We can combine commands, by running background tasks,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;npm run build-js &amp; npm run build-sass&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="s2">&quot;watch&quot;</span><span class="o">:</span> <span class="s2">&quot;npm run watch-js &amp; npm run watch-sass&quot;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To build full app,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm run build
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or to <em>watch</em> it,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm run watch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Using dev-dependencies</h2>
+
+<p>Global packages are not cool, cause they might be missing on developers box there application is cloned. Moreover, dependency management becomes a bit more complex, if you need to work on different projects depending on different tools versions. As <a href="https://github.com/bcomnes">@bcomnes</a> very correctly noticed, all tools as <code>browserify</code>, <code>uglify</code> etc. can be installed as local <code>dev-dependency</code>, which are fetched during <code>npm install</code> and will be available to call inside project folder as global commands,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install --save-dev browserify uglifyjs node-sass clean-css
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, the <code>package.json</code> got such update,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;browserify&quot;</span><span class="p">:</span> <span class="s2">&quot;^9.0.7&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nt">&quot;clean-css&quot;</span><span class="p">:</span> <span class="s2">&quot;^3.1.9&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nt">&quot;node-sass&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.1.1&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nt">&quot;uglifyjs&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.4.10&quot;</span>
+</span><span class='line'><span class="p">}</span><span class="err">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Takeaways</h1>
+
+<ul>
+<li>Once you implement front end library, consider <a href="https://github.com/umdjs/umd">UMD</a> so your modules are reusable in any environment.</li>
+<li>Embrace CommonJS, use Browserify/Webpack/Whatever to use CommonJS (or ES6) on client.</li>
+<li>For many cases, you really don&rsquo;t need Grunt or Gulp, all is easily doable with NPM scripts.</li>
+</ul>
+
+
+<p>As example, please refer to <a href="https://github.com/alexbeletsky/brick">brick</a>, the project I currently use as boilerplate for new applications.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2015/04/npm-for-everything.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2015/04/npm-for-everything.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: authorization | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/authorization/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
+    <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
+    <updated>2013-10-15T21:54:00+02:00</updated>
+    <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
+    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
+
+<p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
+
+<!-- More -->
+
+
+<h2>Middleware</h2>
+
+<p>Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization:</p>
+
+<p>```js
+function access(req, res, next) {</p>
+
+<pre><code>checkAuthorization(req, function (err, authorized) {
+    if (err || !authorized) {
+        res.send({message: 'Unauthorized', status: 401});
+    }
+
+    next();
+});
+
+function checkAuthorization(req, callback) {
+    // actual auth strategy goes here..
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of cause, it&rsquo;s simply possible to apply this function to each HTTP method in application, like</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    middleware.access,
+    getPeople);
+
+app.get('/api/people/:id',
+    middleware.access,
+    getPerson);
+
+app.post('/api/people',
+    middleware.access,
+    postPerson);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<p>but, it&rsquo;s really get annoying to do that all the time.. and it&rsquo;s easy to just forgot to secure endpoint. So, it&rsquo;s better to keep the code as clean as possible.</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    getPeople);
+
+app.get('/api/people/:id',
+    getPerson);
+
+app.post('/api/people',
+    postPerson);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<p>That seems to be like <code>app.use()</code> is good candidate to place <code>access</code> function into, but it&rsquo;s not. <code>app.use()</code> is global apply of middleware function, so if applications serves static resources, that does not need authentication, or simply you want to expose some <strong>guest</strong> endpoints.</p>
+
+<h2>Guest or not?</h2>
+
+<p>Guest endpoints are ones, that can be accessed without authentication. That&rsquo;s a kind of special case, but typically required on any HTTP API projects I worked.</p>
+
+<p>We need to distinguish between <strong>secure</strong> and <strong>guest</strong> endpoints. We&rsquo;ll introduce special middleware function, for guest access.</p>
+
+<p>```js
+function guest(req, res, next) {</p>
+
+<pre><code>req.guestAccess = true;
+next();
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Now, assume that all endpoints are require authentication by default (which is good assumption), but ones that don&rsquo;t need to have <code>guest()</code> middleware be used.</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    getPeople);
+
+app.get('/api/people/:id',
+    getPerson);
+
+app.post('/api/people',
+    postPerson);
+
+app.get('/api/people/meta',
+    middleware.guest,               // no authentication required!
+    getPeopleMeta);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<h2>Patch the routes</h2>
+
+<p>After I got a bit deeper with structure of Express.js <code>application</code> I came up to one idea that helped to solve the problem.</p>
+
+<p>Then all endpoints are defined, <code>application</code> would contain initialized <a href="http://expressjs.com/api.html#app.routes">routes</a> object. If you look closer, then you&rsquo;ll see, besides of path and method data it also contains an array of <code>callbacks</code> applied to route. That&rsquo;s exactly middleware functions, so we can simply patch that array with authentication function we want.</p>
+
+<p>The authentication function have to be called first, so it&rsquo;s need to be placed at first position of array.</p>
+
+<p>Right after application configured and all routes are defined, call <code>applyAuthentication()</code> function.</p>
+
+<p>```js
+var app = express();</p>
+
+<p>app.configure(function(){</p>
+
+<pre><code>// configure
+</code></pre>
+
+<p>});</p>
+
+<p>app.configure(&lsquo;development&rsquo;, function() {</p>
+
+<pre><code>// configure for development
+</code></pre>
+
+<p>});</p>
+
+<p>app.configure(&lsquo;production&rsquo;, function() {</p>
+
+<pre><code>// configure for production
+</code></pre>
+
+<p>});</p>
+
+<p>require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>applyAuthentication(app, [&lsquo;/api&rsquo;]);     // apply authentication here</p>
+
+<p>http.createServer(app).listen(app.get(&lsquo;port&rsquo;), function() {</p>
+
+<pre><code>console.log('app listening on port ' + app.get('port'));
+</code></pre>
+
+<p>});
+```</p>
+
+<p>And finally, <code>applyAuthentication</code> function,</p>
+
+<p>```js
+var _ = require(&lsquo;underscore&rsquo;);
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyAuthentication(app, routesToSecure) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
+}
+
+function patchRoute (route) {
+    var apply = _.any(routesToSecure, function (r) {
+        return route.path.indexOf(r) === 0;
+    });
+
+    var guestAccess = _.any(route.callbacks, function (r) {
+        return r.name === 'guest';
+    });
+
+    if (apply &amp;&amp; !guestAccess) {
+        route.callbacks.splice(0, 0, middleware.access.authenticatedAccess());
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = applyAuthentication;
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

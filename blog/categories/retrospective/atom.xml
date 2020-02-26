@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: retrospective | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/retrospective/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Looking Back to 2013]]></title>
+    <link href="http://beletsky.net/2014/01/looking-back-to-2013.html"/>
+    <updated>2014-01-04T11:05:00+01:00</updated>
+    <id>http://beletsky.net/2014/01/looking-back-to-2013</id>
+    <content type="html"><![CDATA[<p>Traditionally, first Saturday of New Year &ndash; time look back for year that passed. As usually, I do analisys throught a several aspects. Primary job, blogging and speaking, communities and side projects.</p>
+
+<!-- More -->
+
+
+<h2>Starting up company</h2>
+
+<p>I no longer work for <a href="">e-conomic</a> where I spent almost 4 years. I have extended <a href="http://beletsky.net/2013/12/i-quit-my-job.html">explanation</a> for the reasons I did so. But in short, my current primarily goal is build my own company, something meaningful and remarkable.</p>
+
+<p>I joined <em>funemployment</em> mode, changing my vision of building products. I treated startups as venture of several people, who just decided to build something cool. Reality if much more tough. Coding eventually becomes less priority thing in startup, but seeking for a sustainable business model become first one.</p>
+
+<p>As passioned developer, it&rsquo;s really hard to change your mind. Instead of coding new features, you have to build a set of hypotheses and try to validate them as soon as possible. You have to find your target audience, valuable proposition and best user experience. Startup is all about uncertainty and <a href="https://likeastore.com">Likeastore</a> is currently in the most uncertain position.</p>
+
+<p>I&rsquo;m really happy that now I can spend full-time effort for company. We&rsquo;ve joined <a href="http://eastlabs.co/">EastLabs</a> business accelerator program as most efficient way to gather required skills and experience.</p>
+
+<h2>Speaking and blogging</h2>
+
+<p>Comparing to 2012, I both speak and blog less. I don&rsquo;t think it&rsquo;s bad sign, but it&rsquo;s more a way of finding some balance.</p>
+
+<p>I&rsquo;ve produced 27 blog post, against 63 of 2012. I covered various topics, I would say less specific that I did previously. I <a href="http://beletsky.net/2013/06/moved-from-blogger-to-octopress.html">switched</a> from blogger to github + octopress, feel great about so far.</p>
+
+<p>As for stats, last year <a href="http://beletsky.net">beletsky.net</a> got: 68,182 visits, 53,248 unique visitors. That&rsquo;s much less than year <a href="http://beletsky.net/2013/01/looking-back-to-2012.html">before</a>, quite expected in the same time.</p>
+
+<p>Top read content of 2013:</p>
+
+<ul>
+<li><a href="http://beletsky.net/2013/08/digitalocean-plus-dokku-equals-10-heroku.html">Digital Ocean + Dokku = 10$ Heroku</a> describing experience of building micro PaaS for internal needs on top of Dokku.</li>
+<li><a href="http://beletsky.net/2013/09/playing-with-dokku-on-vagrant.html">Playing with Dokku on Vagrant</a> easy playground for Dokku based on Vagrant virtual environment.</li>
+<li><a href="http://beletsky.net/2013/07/why-we-moved-from-appfog-to-nodejitsu.html">Why We Moved From AppFog to Nodejitsu</a> just my rant about AppFog quality of service.</li>
+</ul>
+
+
+<p>As for talks, I&rsquo;ve prepared 5 <a href="https://speakerdeck.com/alexbeletsky">presentations</a>. As achievement of 2013 I see my talk on <a href="https://www.youtube.com/watch?feature=player_embedded&amp;v=EaoRDrdqm-E">RejectJS</a> conference. It was so cool and I really liked Berlin.</p>
+
+<h2>Communities</h2>
+
+<p><a href="https://www.facebook.com/groups/574355212591240/">Kyiv Beer'N'Code</a> &ndash; still small, but it exists. We&rsquo;ve concluded season 2012-2013 very nicely. And season 2013-2014 is on it&rsquo;s way, but I have to admit we are now less active. Hope that after all Christmas and New Year holidays we will go back to nice discussions and coding together.</p>
+
+<p><a href="http://kievalt.net/">Kyiv ALT.NET</a> &ndash; being not involved to .NET development for several years I could not contribute to that community anyhow. Unfortunately it&rsquo;s slowly dying now. Only had 3 meetups in 2013.</p>
+
+<p>Being full-stack JS development I didn&rsquo;t participate in any Kyiv JS communities. I don&rsquo;t see much activity in those communities as well.</p>
+
+<h2>Technologies</h2>
+
+<p>As for technologies, 2013 for me was: Express.js, MongoDB, Angular.js, Docker, Dokku, Ubuntu, DigitalOcean.</p>
+
+<h2>Side projects and contributions</h2>
+
+<p>As for contributions I&rsquo;ve participated such projects:</p>
+
+<ul>
+<li><a href="https://github.com/progrium/dokku">Dokku</a> &ndash; Docker powered mini-Heroku in less than 100 lines of Bash.</li>
+<li><a href="rockbot/vektor">vektor</a> &ndash; A robotics-focused linear algebra module.</li>
+<li><a href="https://github.com/alexbeletsky/24pullrequests">24PullRequest</a> &ndash; Giving back little gifts of code for Christmas.</li>
+<li><a href="https://github.com/alexbeletsky/grunt-hashres">grunt-hashres</a> &ndash; Grunt task for hashing js and css files.</li>
+<li><a href="https://github.com/alexbeletsky/edge">edge</a> &ndash; Run .NET and node.js code in-process.</li>
+<li><a href="https://github.com/alexbeletsky/flight">flight</a> &ndash; A lightweight, component-based JavaScript framework.</li>
+</ul>
+
+
+<p>For side projects, of cause it&rsquo;s <a href="https://likeastore.com">Likeastore</a> which started as side project, but became a platform of starting business with.</p>
+
+<ul>
+<li><a href="https://github.com/alexbeletsky/dokku-bower-install">dokku-bower-install</a> &ndash; Plugin for Dokku that installs bower dependecies, if needed.</li>
+<li><a href="https://github.com/alexbeletsky/backbone-express-spa">backbone-express-spa</a> &ndash; Boilerplate + documentation of best practicies for Backbone.js + Express SPA development.</li>
+<li><a href="https://github.com/alexbeletsky/jshint-run">jshint-run</a> &ndash; Tiny tool for running jshint, then you don&rsquo;t use grunt.</li>
+<li><a href="https://github.com/alexbeletsky/toml-js">toml-js</a> &ndash; TOML parser implementation (node.js + browser).</li>
+</ul>
+
+
+<h2>Conclusions</h2>
+
+<p>2013 was amazing in many aspects. 2014 will be year of Likeastore, <a href="http://beletsky.net/2013/12/open-source.html">open source</a> and experiments.</p>
+
+<p>I wish to try some alternative technologies, like Go, Rust.</p>
+]]></content>
+  </entry>
+  
+</feed>

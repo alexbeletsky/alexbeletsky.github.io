@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: analytics | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/analytics/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Redux For Better in-App Analytics]]></title>
+    <link href="http://beletsky.net/2016/07/redux-for-better-in-app-analytics.html"/>
+    <updated>2016-07-01T14:50:00+02:00</updated>
+    <id>http://beletsky.net/2016/07/redux-for-better-in-app-analytics</id>
+    <content type="html"><![CDATA[<p>Lean startup, the term coined by Eric Ries, affected the way we build new products and services. Essentially, it says that every business idea has to be turned to a series of testable <em>hypotheses</em>. Based on these hypotheses we <strong>build</strong> or introduce the changes to existing products. Those changes have to be <strong>measurable</strong>, so we collect the results of actions we did. Based on results we prove or disapprove particular hypothesis. During the cycle, we derive <strong>learnings</strong>, these learnings give a foundation for a next <em>Build-Measure-Learn</em> cycle.</p>
+
+<!-- MORE -->
+
+
+<p>For web-based products, measurements typically mean collecting of different user behavior metrics. Based on these metrics we can see, what users are <em>doing</em> in the application, their behavior has a direct influence on a product.</p>
+
+<p>Many projects I participated, had &ldquo;Add Analytics&rdquo; as a bottom-most task in development backlog. Ignoring the task, made it hard to implement later stages. You need something like <code>analytics.trackEvent('something happened', { data: 123 });</code> in many places, making code looks ugly and quite easy to miss some important details.</p>
+
+<h2>Redux</h2>
+
+<p>In my <a href="http://engineering.blogfoster.com/the-functional-approach-to-ui/">previous</a> article, I already mentioned the Redux similarities to <a href="http://martinfowler.com/eaaDev/EventSourcing.html">Event Sourcing</a> architecture paradigm. One of the most interesting side-effects of Event Sourcing is <code>Audit Log</code>.</p>
+
+<p>Audit Log gives you an ability to look back and see what happened. As the original idea of Redux, it allows you travel back in time.</p>
+
+<p>If you follow Redux rules, everything that happens in your application is represented as an <code>action</code>. In terms of analytics, it means you <em>already</em> have all events defined, you don&rsquo;t need to find the place where to inject <code>analytics.trackEvent()</code> code.</p>
+
+<p>Take a look into this code,</p>
+
+<p>```js
+import { createConstants } from &lsquo;../utils&rsquo;;</p>
+
+<p>const constants = createConstants(
+  // account actions
+  &lsquo;ACCOUNT_FORM_RESET&rsquo;,
+  &lsquo;ACCOUNT_FORM_CHANGE&rsquo;,
+  &lsquo;ACCOUNT_FORM_ERRORS&rsquo;,
+  &lsquo;ACCOUNT_FORM_ERRORS_CLEAN&rsquo;,
+  &lsquo;ACCOUNT_ACCESS_TOKEN_FETCHING&rsquo;,
+  &lsquo;ACCOUNT_ACCESS_TOKEN_FETCHED&rsquo;,
+  &lsquo;ACCOUNT_ACCESS_TOKEN_FETCH_FAILED&rsquo;,
+  &lsquo;ACCOUNT_EMAIL_CONFIRMED&rsquo;,
+  &lsquo;ACCOUNT_EMAIL_CONFIRMATION_FAILED&rsquo;,</p>
+
+<p>  // create website actions
+  &lsquo;CREATE_WEBSITE_BLOG_URL_CHANGED&rsquo;,
+  &lsquo;CREATE_WEBSITE_BLOG_TITLE_CHANGED&rsquo;,
+  &lsquo;CREATE_WEBSITE_BLOG_TITLE_RESOLVE_FAILED&rsquo;,
+  &lsquo;CREATE_WEBSITE_STATE_LOADING&rsquo;,
+  &lsquo;CREATE_WEBSITE_STATE_LOADED&rsquo;,
+  &lsquo;CREATE_WEBSITE_WIZARD_STEP_NEXT&rsquo;,
+  &lsquo;CREATE_WEBSITE_WIZARD_STEP_PREV&rsquo;,</p>
+
+<p>  // &hellip;
+```</p>
+
+<p>Those are constants for action types. Our goal is to turn those action types, into meaningful analytics events.</p>
+
+<h2>Analytics Server</h2>
+
+<p>At blogfoster, we are using custom analytics solution. Essentially it&rsquo;s an HTTP API, which receives an event and stores and distributes it for further processing. It makes it easy from integration perspective both for the web and mobile clients.</p>
+
+<p>Even the back-end is quite complex there, the interface is rather simple,</p>
+
+<p>```
+HTTP POST /v1/event</p>
+
+<p>{
+  eventType,
+  payload
+}
+```</p>
+
+<h2>Middleware</h2>
+
+<p>If you have worked with <a href="http://expressjs.com/">Express.js</a> or <a href="http://koajs.com/">Koa.js</a> frameworks, then you should already be familiar with a <em>middleware</em> concept. Middlewares are functions that could be injected into response-request pipeline and designed to produce different side-effects (e.g. request modification, logging, redirections, performance measurements, etc.)</p>
+
+<p>Redux introduces the concept of middleware as well, which makes library not only flexible but applicable for <em>real-world</em> applications. We know that Redux is essentially all about synchronous workflow, but the nature of web applications is asynchronous (events, client/server communications) and this is where middleware shines.</p>
+
+<p>The API of Redux middleware is pretty elegant; it&rsquo;s not hard to implement own functions. If we inject the function, that can analyze the action and send data to analytics server, we will reach our goal, without touching any application logic.</p>
+
+<p>```js
+import { client } from &lsquo;../analytics&rsquo;;</p>
+
+<p>const handleAction = (store, next, action, options) => {
+  if (!action.meta || !action.meta.analytics) {</p>
+
+<pre><code>return next(action);
+</code></pre>
+
+<p>  }</p>
+
+<p>  const { eventType, eventPayload } = action.meta.analytics;</p>
+
+<p>  client(options).track(eventType, eventPayload);</p>
+
+<p>  return next(action);
+};</p>
+
+<p>export function createAnalytics(options = {}) {
+  return store => next => action => handleAction(store, next, action, options);
+}
+```</p>
+
+<p>As you can see, the <code>handleAction()</code> function checks, if there is <code>meta</code> data related to <code>analytics</code> exists in action, it will pass it to <code>client</code> that would when to make HTTP request to analytics server.</p>
+
+<h2>Configuring store</h2>
+
+<p>We need to apply middleware function now, it&rsquo;s done via <code>applyMiddleware()</code> Redux helper,</p>
+
+<p>```js
+import { createStore, applyMiddleware } from &lsquo;redux&rsquo;;
+import { createAnalytics } from &lsquo;../middleware&rsquo;;</p>
+
+<p>const middlewares = [
+  thunk,
+  createLogger(),
+  createAnalytics({ host: &lsquo;ANALYTICS_HOST&rsquo;, token: &lsquo;ANALYTICS_TOKEN&rsquo; })
+];</p>
+
+<p>const enchancer = applyMiddleware(&hellip;middlewares);</p>
+
+<p>export default function configureStore(rootReducer, initialState) {
+  return createStore(rootReducer, initialState, enchancer)
+}
+```</p>
+
+<h2>Augmenting Actions</h2>
+
+<p>I came up with a small utility function, to minimize modification of existing action creators as much as possible,</p>
+
+<p>```js
+import constants from &lsquo;../../constants&rsquo;;</p>
+
+<p>export function loadedDashboardState(website, status, news, revenues) {
+  return trackable({</p>
+
+<pre><code>  type: constants.DASHBOARD_STATE_LOADED,
+  payload: { website, status, news, revenues }
+},
+  'Dashboard opened',      // &lt;- event name
+  { name: website.name }   // &lt;- additional event data
+);
+</code></pre>
+
+<p>}</p>
+
+<p>export function loadingDashboardStateFailed(err, resp) {
+  return trackable({</p>
+
+<pre><code>  type: constants.DASHBOARD_STATE_LOADING_FAILED,
+  payload: { err, resp }
+},
+  'Dashboard loading failed',
+  { error: resp.text }
+);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Where <code>trackable()</code>,</p>
+
+<p>```js
+export function trackable(action, event, properties = {}) {
+  const analytics = {</p>
+
+<pre><code>eventType: event,
+eventPayload: properties
+</code></pre>
+
+<p>  };</p>
+
+<p>  return { &hellip;action, meta: { analytics } };
+}
+```</p>
+
+<p>That&rsquo;s it. Now go through all action creators and wrap actions you need to log into <code>trackable()</code> function, so they became trackable, and middleware would send them to the analitycs server.</p>
+
+<h2>Recap</h2>
+
+<p>Even if you don&rsquo;t think about analytics from the very beginning, Redux architecture allows you to plug it in whenever you want (or need it). Based on <code>Audit Log</code> you can watch and turn actions into corresponding analytics events. Middleware functions would allow to hook all actions and turn them into analytical events.</p>
+
+<p><strong>PS</strong>. During my writing time, developers from <a href="https://github.com/rangle">Rangle.io</a> participated <em>React-Europe</em> conference and gave a nice talk about the topic above. So, I would recommend you to <a href="https://www.youtube.com/watch?v=MBTgiMLujek">check it out</a> for further details.</p>
+
+<p><em>Originally published at <a href="http://engineering.blogfoster.com/redux-for-better-in-app-analytics/">blogfoster Engineering</a>.</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Mixpanel from Chrome Extensions]]></title>
+    <link href="http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions.html"/>
+    <updated>2014-05-22T11:15:00+02:00</updated>
+    <id>http://beletsky.net/2014/05/using-mixpanel-analytics-from-chrome-extensions</id>
+    <content type="html"><![CDATA[<p>Recently we&rsquo;ve released Google Chrome <a href="https://chrome.google.com/webstore/detail/likeastore/einhadilfmpdfmmjnnppomcccmlohjad?hl=en-US&amp;utm_source=chrome-ntp-launcher">extension</a> for <a href="https://likeastore.com">Likeastore</a> that allows to extend your Google search results with relevant information from your likes. Development of Chrome extensions appeared to be interesting process, but essentially it&rsquo;s nothing more as web development, since primary technologies are still HTML/CSS/JS.</p>
+
+<p>The most important thing for every startup are metrics. In web application we use <a href="https://mixpanel.com">Mixpanel</a> together with <a href="https://www.google.com.ua/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CCkQFjAA&amp;url=http%3A%2F%2Fwww.google.com%2Fanalytics%2F&amp;ei=0sB9U_OyJMvc4QSYsYCoDA&amp;usg=AFQjCNFz3Lrd3h9xlat60IUur_H8rmADdw&amp;sig2=3VSXbRKyt9hgF6viPp2ahA&amp;bvm=bv.67229260,d.bGE">Google Analytics</a> and <a href="https://github.com/seismolabs">Seismo</a>. For browser extension I also needed some simple metrics, like &ldquo;usage&rdquo;, &ldquo;clicks&rdquo;, &ldquo;shares&rdquo; etc. Unfortunately, if you just try to reference <code>mixpanel-2.2.min.js</code> it won&rsquo;t work.</p>
+
+<!-- MORE -->
+
+
+<p>Instead, you will see error message in console,</p>
+
+<p><code>plain
+Mixpanel error: 'mixpanel' object not initialized. Ensure you are using the latest version of the Mixpanel JS Library along with the snippet we provide.
+</code></p>
+
+<p>There are few reasons for that. One is described in SO <a href="http://stackoverflow.com/questions/15837450/content-security-policy-cannot-load-mixpanel-in-chrome-extension">question</a>. But after I did same manipulations as answer mentioned it still didn&rsquo;t work. For extension I only have content script, there is no place there I can put <code>&lt;script&gt;&lt;/script&gt;</code> tag with markup. It seems like <code>mixpanel-2.2.min.js</code> have some dependencies that just prevents it to start normally inside extension, not usual web application.</p>
+
+<p>I had no time to investigate the problem deeply, but instead found workaround that works.</p>
+
+<h2>Mixpanel HTTP API</h2>
+
+<p>Besides platform-dependent libraries, Mixpanel provides access to <a href="https://mixpanel.com/help/reference/http">HTTP API</a>. This is the most &ldquo;pure&rdquo; way of communication between services, so I decided to try it.</p>
+
+<p>Since, I already used <code>jQuery</code> in my application, I ended-up with such module,</p>
+
+<p>```js
+;(function (window) {</p>
+
+<pre><code>var api = 'https://api.mixpanel.com';
+var app = window.app = window.app || {};
+
+var mixpanel = {};
+
+function init(token, user) {
+    mixpanel.token = token;
+    mixpanel.distinct_id = user.email;
+}
+
+function track(event) {
+    var payload = {
+        event: event,
+        properties: {
+            distinct_id: mixpanel.distinct_id,
+            token: mixpanel.token,
+            browser: app.browser.name
+        }
+    };
+
+    var data = window.base64(JSON.stringify(payload));
+    var url = api + '/track?data=' + data;
+
+    $.get(url);
+}
+
+app.analytics = {
+    init: init,
+    track: track
+};
+</code></pre>
+
+<p>})(window);
+```</p>
+
+<p>Here, I&rsquo;m using <a href="https://gist.github.com/alexbeletsky/3f850467bc23d40ef51e">this</a> implementation of <code>base64</code> (copied from <code>mixpanel-2.2.js</code>). So, to track the <code>event</code> you just HTTP GET to Mixpanel API, with a payload of base64'ed JSON string of <code>event</code> and <code>properties</code>.</p>
+
+<h2>Initialization</h2>
+
+<p>To init <code>mixpanel</code> you need both <code>token</code> and <code>distinct_id</code>. The <code>distinct_id</code> is unique value, that Mixpanel generates itself and stores the value to cookie, to identify the user. If you send events from different applications, say web app, mobile web extension etc. &ndash; I would recommend to user <code>mixpanel.alias()</code> call, so you &ldquo;link&rdquo; unknown <code>distinct_id</code> with some user&rsquo;s attribute (<code>id</code> from database or <code>email</code> would work).</p>
+
+<p>On our web application, once user logged on we call <code>mixpanel.alias()</code> with email of user, so all other applications could use that as <code>distinct_id</code> of user.</p>
+
+<p>The entry point of content script is <code>run()</code> method, where user is fetched from server and initialize <code>mixpanel</code> module,</p>
+
+<p>```js
+var ready = function (user) {</p>
+
+<pre><code>app.analytics.init('[MIXPANEL_TOKEN_HERE]', user);
+</code></pre>
+
+<p>};</p>
+
+<p>return {</p>
+
+<pre><code>run: function () {
+    $.get(api + '/users/me')
+        .done(ready)
+        .done(search)
+        .fail(login);
+}
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Tracking</h2>
+
+<p>Once content script injects it&rsquo;s HTML into target page DOM, it&rsquo;s possible to listen to DOM events and call <code>.track()</code> function.</p>
+
+<p>```js
+self.bindEvents = function () {</p>
+
+<pre><code>self.$.find('.item a').click(function () {
+    app.analytics.track('search extension results clicked');
+});
+
+self.$.find('.ls-more a').click(function () {
+    app.analytics.track('search extension more clicked');
+});
+
+app.analytics.track('search extension');
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Conclusions</h2>
+
+<p>I consider Mixpanel HTTP API as very nice substitution of library, in those rare cases when library is not applicable. This would work perfectly if you need simple events tracking. If you interested, feel free to check <a href="https://github.com/likeastore/browser-extension">sources</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Seismo - Analytics For Your Startup]]></title>
+    <link href="http://beletsky.net/2013/12/analytics-for-your-startup.html"/>
+    <updated>2013-12-05T15:32:00+01:00</updated>
+    <id>http://beletsky.net/2013/12/analytics-for-your-startup</id>
+    <content type="html"><![CDATA[<p>Sometimes ago I <a href="http://beletsky.net/2013/07/think-ahead-think-logging.html">wrote the post</a>, where was thinking about importance of logging of application state to clearly see what&rsquo;s going on inside and react accordingly. Logging is vital for any reliable system.</p>
+
+<p>If <em>logging</em> is a must from development point of view, <em>analytics</em> is a must from business point of view. You would like to see, how many users signs-in and signs-up during the day, what actions they do inside the app, what issues they use all the time, what issues they never touch.</p>
+
+<p>Following &ldquo;Invent Own Bicycle&rdquo; principle, I&rsquo;ve created small project to attack the problem &ndash; <a href="https://github.com/likeastore/seismo">Seismo</a>.</p>
+
+<!-- More -->
+
+
+<h2>Overview</h2>
+
+<p>Right now, <a href="https://github.com/likeastore/seismo">seismo</a> repository is a bunch of javascript files and I&rsquo;m going to decouple project a bit to have it in more structured way. But in essence, there is REST API, with token-based authentication model, which allows you to push application events, store them to MongoDB and then build reports on those events.</p>
+
+<p>To simplify the integration, there are <a href="https://github.com/likeastore/seismo-node-client">seismo-node-client</a>. It&rsquo;s <a href="https://github.com/mikeal/request">request</a>-based application, ready to use from Node.js backends. Very soon, I&rsquo;m going to add <a href="https://github.com/likeastore/seismo-browser-client">seismo-browser-client</a> to be used in browser.</p>
+
+<p>To allow the deployment be as easy as possible, I want to pack seismo server as <a href="http://www.docker.io/">docker</a> image and put it to public <a href="https://index.docker.io/">index</a>, so it could be deployed on any Linux machine with few seconds.</p>
+
+<h2>Other languages support</h2>
+
+<p>For now, it has good support for JavaScript and Express.js platform. I wish to have support for other platforms like, Ruby, Python, .NET and Java. It&rsquo;s important not only to support particular languages, but support particular platform &ndash; so, we have good examples and reusable components for RoR, ASP.NET MVC or Spring.</p>
+
+<h2>Dashboard</h2>
+
+<p>Data is useless without visualization. Seismo project includes <a href="https://github.com/likeastore/seismo-dashboard">seismo-dashboard</a>.</p>
+
+<p>It&rsquo;s pure client side application, build with Yeoman/Angular.js and could be deployed to any static server, it works great on <a href="http://pages.github.com/">gh-pages</a> as well.</p>
+
+<p><img src="http://beletsky.net/images/blog/seismo-dashboard.png" alt="seismo dashboard" class="no-shadow" /></p>
+
+<p>At the moment, the dashboard is not flexible at all. But I wish to create it fully customizable and widget based.</p>
+
+<h2>Conclusion</h2>
+
+<p>Even if we already used that for <a href="https://likeastore.com/">Likeastore</a> the project is far away from being generally used. The project currently is nothing more as prototype now, but I would like to improve it in nearest future, so I hope something interesting might came out.</p>
+]]></content>
+  </entry>
+  
+</feed>

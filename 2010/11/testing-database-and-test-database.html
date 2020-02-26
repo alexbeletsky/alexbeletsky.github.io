@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing database and Test database</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Testing database and Test database Nov 5th, 2010 DAL, Linq, TDD, Tips Testing the database is important. It is absolutely required then your DAL is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2010/11/testing-database-and-test-database.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Testing database and Test database</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-05T07:43:00+01:00" pubdate data-updated="true">Nov 5<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dal/'>DAL</a>, <a class='category' href='/blog/categories/linq/'>Linq</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Testing the database is important. It is absolutely required then your DAL is simply a bunch of methods that do SQL against the DB. It still required to be done then you rely on some ORM (like Linq to SQL, NHibernate etc).
+</p>
+<h2>Testing database</h2>
+<p>
+By testing the database I mean unit tests that runs database operation tasks (create, update, delete, stored procedures calls) and test asserts that operation is being completed successfully.
+</p>
+<p>
+Even the SQL is simple enough (like a <code>SELECT</code> or <code>UPDATE</code>) it have to be tested. More complex stuff, like <code>JOIN</code>, <code>UNION</code> etc. have to tested with much more care (meaning different scenarios, different input set etc.). As more complex query you have, as more complex test you should do. I personally trying to avoid complex SQL queries, because they difficult to read and support, but in many cases is the only way you can do.
+</p>
+<p>
+Example of test case of DAL methods that runs <code>SELECT</code> statement:
+</p>
+<a href="https://gist.github.com/662906">https://gist.github.com/662906</a>
+<script src="https://gist.github.com/662906.js?file=gistfile1.cs"></script>
+<p>
+Using ORM simplifies life a bit. You are working with objects, creation of new record in DB is just creation of new object and call <code>InsertOnSubmit()</code> method. In many cases you have to trust that framework does its job correctly and do not write the tests for framework, that is simple waste of time. But what usually happens is that you have a wrappers against ORM <code>DataContext</code>, like a <code>Repository</code> and the behavior of <code>Repository</code> have to be validated with tests (check out about repositories <a href="http://www.beletsky.net/2010/06/ddd-implementation-of-repository.html">here</a>). Typically repositories interface looks like that:
+</p>
+<a href="https://gist.github.com/662918">https://gist.github.com/662918</a>
+<script src="https://gist.github.com/662918.js?file=gistfile1.cs"></script>
+<p>
+All interface methods and properties are covered by tests. Moreover, if you have repositories <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Core/DAL/Extensions/BlogPostsExtensions.cs">extensions</a> that helps you to select record by Id, or do paging they are also part of testing. Please check how this <code>IBlogPostsRepostitory</code> is tested by this example - <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/src/Trackyourtasks.Database.Tests/Tests/DAL/BlogPostsRepositoryTests.cs">example</a>.
+</p>
+<p>
+What else about testing database you should know?
+</p>
+<p>
+First of all, database tests might required some initial data to be put in database before each test start. It could be easily solved by using <code>[TestSetup]</code> and <code>[TestTearDown]</code> methods of Fixture. Bad side of this that you could not customize the data for particular test, because Setup/TearDown runs the same code that you could not parameterize. I prefer to use a static method (or methods) that is placed in <code>TestFixture</code> and called at the beginning of unit test. Please see <code>SubmitTenBlogpostsToRepository</code> from previous example.
+</p>
+<p>
+Second at all, you have to care about test isolation some how. It means that previous tests results should not affect next test cases, each tests case have to leave the database in the same state as it enters it. There are different approaches how to do that, I like something like this. I&#8217;m having <code>FixtureInit</code> that does kind of initialization for any test case and it contains <code>DbSetup</code> instance in it. <code>DbSetup</code> itself holds <code>DataContext</code> as well as <code>TransactionScope</code> object. <code>TransactionScope</code> is a very nice way of handling <a href="http://msdn.microsoft.com/en-us/library/ms172152(VS.90).aspx">implicit transactions</a>. Inside <code>DbSetup</code> constructor we also could put some test data initialization, as it would be shared thought all tests. <code>Dispose</code> methods of the <code>DbSetup</code> disposes a transaction without committing it. Each test case body is placed in <code>using (var fixture = new FixtureInit("http://localhost"))</code>,
+    so any data that is placed (or deleted) from database during the tests would not
+    affect the database then test is finished. It is simple and works good, please
+    check out for implementation <a href="https://github.com/alexbeletsky/Trackyourtasks.net/tree/master/src/Trackyourtasks.Database.Tests/Framework">here</a>.
+</p>
+<p>
+The last thing - layout and naming of database tests. Database tests have to be separated from application unit tests. It a good way of doing the testing. Database tests are usually too slow and you do not need to re-run them after minor changes (except changes in DAL). That&#8217;s why it is better to place DB tests to separate assembly. The name of assembly should contain <code>*Database.Tests</code>. It gives a clear understanding of assembly goal, as well as it will not be re-runned every time as you do <code>build.bat</code> by <a href="http://www.beletsky.net/2010/10/uppercut-your-builds.html">UppercuT</a>
+</p>
+<h2>Test database</h2>
+<p>
+Test database is database against that database tests are running.. and typically <code>Test Database == Developer Database</code>, meaning the same database as developer tests the application is used for database unit tests.
+</p>
+<p>
+It it bad in several reasons.
+</p>
+<p>
+By doing developers testing you make database really &#8220;dirty&#8221;. Putting new records in DB or deleting existing ones, doesn&#8217;t matter. I usually do a small test that if I put new object(s) I check the count of objects in table after, like <code>Assert.That(foundTasks.Count(), Is.EqualTo(2));</code>. But if I <code>Tasks</code> table will have some data before, I&#8217;m not guaranteed that count will be 2, but <code>Assert.That(foundTasks.Count(), Is.EqualTo(countOfObjectBeforeInsert + 2));</code> will be running OK. It works, but I don&#8217;t really like it, because it mess up test with some not required details.
+</p>
+<p>
+It is possible that some complex database tests, could leave database in inconsistency state
+    during its failure (that is actually bad and you have to design the tests to prevent this happening.. but it is happening especially with no-ORM, no-Transactions DAL). Also, one bad surpise could be if database tests deletes some data required for development testing.
+</p>
+<p>
+So, it should be <code>Test Database != Developer Database</code>, test database and developer database are different instances actually. Test database must be restored with save version of developers database, but in general it is empty and its state is not changed after testing complete.
+</p>
+<p>
+I&#8217;m using <a href="http://www.beletsky.net/2010/10/roundhouse-your-database.html">RoundhousE</a> to deploy database. As I was describing in previous post I use <code>initdb.bat</code> and <code>resetdb.bat</code> to initialize and reset developer database. I&#8217;ve just created 2 others that do exactly the same but for <code>trackytest</code> database, <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/inittestdb.bat">inittestdb.bat</a>, <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/master/resettestdb.bat">resettestdb.bat</a>. In the same time, <code>app.confing</code> of test project is pointed to <code>trackytest</code> (instead of <code>trackydb</code> before). So now tests are running on <code>trackytest</code>, but the application itself on <code>trackydb</code>.
+</p>
+<p>
+It is very convenient to work like that.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/11/testing-database-and-test-database.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/11/testing-database-and-test-database.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mind | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/mind/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Side-Project to Startup in One Year]]></title>
+    <link href="http://beletsky.net/2014/03/from-side-project-to-start.html"/>
+    <updated>2014-03-31T13:09:00+02:00</updated>
+    <id>http://beletsky.net/2014/03/from-side-project-to-start</id>
+    <content type="html"><![CDATA[<p>Today is exactly <a href="http://beletsky.net/2013/03/likeastore-application-built-on.html">one year</a> as we started <a href="https://likeastore.com">Likeastore</a> project. It went through a different stages, from hack to side-project and finally transformed to real <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">startup</a>.</p>
+
+<p>The year, seems to be a huge period of time. It is, but I have to say it&rsquo;s only few last months (from the middle of December till today), we are fully dedicated to project. It&rsquo;s been great ride so far, so I wish to share some interesting moments.</p>
+
+<!--More-->
+
+
+<h2>What we started with</h2>
+
+<p>Let me remind you, <a href="https://likeastore.com">Likeastore</a> is a web application that allow users to connect their social accounts and collect all their favorite items from them. We are 2 founders, me and <a href="https://twitter.com/voronianski">Dima</a> who committed themselves to build product that matters.</p>
+
+<p>As founders we felt that &ldquo;likes&rdquo; are kind of new way of bookmarking. Then you favorite something on social network you do 2 things &ndash; you send appreciate to author content, as well as marking the content as interesting to you.</p>
+
+<p>The problem that we try to solve. First, there are too many sources of information (social networks) where we spend time and receive content from, so tracking all social likes is extremely difficult. And second, it&rsquo;s very hard to find exact favorite item since social networks provide poor search functionality.</p>
+
+<p>So, our initial hypothesis for application was &ndash; <em>people want to collect their likes in one place and be able to search them</em>.</p>
+
+<h2>Where are we now</h2>
+
+<p>After successful demonstration on hackathon, we&rsquo;ve reimplemented application from scratch and did first private beta in May 2013. It was pretty painful, since after 10 minutes of fly my inbox was full of error messages. But, general impression of people we spoken was positive. We&rsquo;ve crossed the line from hack to side project.</p>
+
+<p>Our public beta released at July 2013. All major issues were solved, the infrastructure established and UI/UX of product were done. We were lucky enough to be featured by Codrops and after by SmashingMagazine twitter, which gave us first 500 beta users.</p>
+
+<p>At the end of 2013 we&rsquo;ve dropped our full time jobs, joined business accelerator and totally focused on a product. I would say, that was the point then we crossed the next line, from side-project to startup.</p>
+
+<p>We are at the full speed, full time, 2 people dedicated to Likeastore. And since then, we did major step forward. Let me share some of current statistics:</p>
+
+<ul>
+<li>6.370 <strong>signups</strong> (+ ~4.000 from January till today)</li>
+<li>2.700.000 <strong>likes collected</strong> (+ ~1.500.00 from January till today)</li>
+<li>~200 <strong>active users</strong> (+185 from January till today)</li>
+<li>~600 <strong>feedback emails received</strong></li>
+<li>452 <strong>collections created</strong></li>
+</ul>
+
+
+<h2>How does it feel like</h2>
+
+<p>First of all, time flows 2x faster compare to anything I was involved before. You put yourself in a very constraint environment: lack of money, lack of time, not clear whats happens tomorrow. Multitasking is second name of startup, you don&rsquo;t have time to be focused on one task during the day.</p>
+
+<p>Every day you feel ups and downs. The mood is changing constantly. You have growth and receive users feedback &ndash; it feels great. You talk to investors or mentors that find weaks and leaks of idea &ndash; it feels bad. And it&rsquo;s all the time like that.</p>
+
+<p>Founders job here is to supporters to each other, motivate for further wins.</p>
+
+<h2>What we learned so far</h2>
+
+<p><strong> Product / Market Fit </strong> &ndash; basically all you do in startup is finding a balance between value you can propose and market that meets that value. It doesn&rsquo;t matter what the initial idea is, more important is to be able to change direction and put maximum efforts to find the fit. The search could be blind or educated, educated search is probably more successful.</p>
+
+<p>You will never know about that fit, before you try. Almost no idea will survive after it hits the customers. Steve Blanks calls that as &ldquo;getting out of the building&rdquo;, talk to people and show your product before you even built it and spend a lot of money for it.</p>
+
+<p>The product have to solve real customer pain or need to survive.</p>
+
+<p><strong> Metrics are important </strong> &ndash; all decisions have to be taken on metrics. Retention, Cohort analysis, Viral coefficients &ndash; that was all new words for me and only now I realize how metrics are important.</p>
+
+<p>Startup dashboard that aggregates major metrics and KPI&rsquo;s is something that founders spend a lot of time with, finding new strategies and forecasting startup future. Measure everything.</p>
+
+<p><strong> Marketing and Growth </strong> &ndash; current market is already very tight. People are constantly releasing new web and mobile applications, solving different problems, targeting different customer groups. You are a drop of water in the ocean and you have to be noticed to have growth.</p>
+
+<p>I see marketing as car&rsquo;s engine starter &ndash; you built the car, put powerful engine, comfortable chairs and high quality audio system. But without starter, engine won&rsquo;t start and car won&rsquo;t move.</p>
+
+<p>At least basic marketing skills are vital for startup. If founders are more technically oriented (as we are) someone either have to learn it, or you have to hire specialist to help.</p>
+
+<h2>Smooth pivot</h2>
+
+<p>We are growing, average 10% per week. In the same time, we have quite low retention coefficient. People are quite excited about idea of application, but very fast they simply forget about and don&rsquo;t come back.</p>
+
+<p>To be successful on B2C segment, you have to have hundred thousands of users to be sustainable. Likeastore is very far from sustain state as for now.</p>
+
+<p>In the other hand, startup is great place to change your mind. I change my mind all the time. The change of mind in startup have a fancy word for it &ndash; pivot. Pivot is the change of direction that startup does, to find it&rsquo;s product / market fit.</p>
+
+<p>We are going to pivot Likeastore in a very smooth way. As we previously was &ldquo;Dropbox of Likes&rdquo;, just allowing to collect and search.. we now want to try something like &ldquo;Pinterest of Likes&rdquo;, allowing people to collect best content into sharable collections, following that collections and collaborating on them.</p>
+
+<h2>Ultimate goal</h2>
+
+<p>We are putting our bar much higher. Our ultimate goal now is to gather 20.000 users at the end of the May 2014. If it happens, that would mean the idea of Likeastore is alive, otherwise the chances it survives are very low.</p>
+
+<p>Both me and Dima really believe in what we do. We have the vision, will try to turn it to reality and either pivot or try something completely new.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Open Source]]></title>
+    <link href="http://beletsky.net/2013/12/open-source.html"/>
+    <updated>2013-12-31T12:00:00+01:00</updated>
+    <id>http://beletsky.net/2013/12/open-source</id>
+    <content type="html"><![CDATA[<p>I heard about open source probably the first year I started programming. I liked the idea of software to be not only presented as a final product, but with ability to see how things are done and change something if you want. For me, open source was really related to operational systems and drivers, Linux as great example.</p>
+
+<p>A bit later I realised that open source is also about contribution. If you have a certain skills, you can join the project you interested in and try to help. I&rsquo;ve seen some nice open source examples &ndash; tiny operational systems, drivers, music players. Almost everything was C++. The problem with C++, it&rsquo;s hard to build something from sources. You typically missing some binaries, headers or SDK&rsquo;s you don&rsquo;t have on your machine.</p>
+
+<!-- More -->
+
+
+<p>When, I saw the change after Java and .NET after appeared. A lot of great things just became available in open source. Not only operation systems or drivers.. But rather tools. Like NUnit, Ninject, Moq etc. That you are using more as developer. Both .NET and Java unifies build process, so it&rsquo;s easy to deal with projects. Like compile version with debug info inside and play around with a debbuger.</p>
+
+<p>Being involved to .NET development, I definitely saw the affect of open source. Community had informal competition between official Microsoft&rsquo;s frameworks and open source analogs. I would not say those analogs were perfectly good, but they were good enough to use it in real projects. But more important, you can join the project by submitting bug reports, fixing docs or send a patch.</p>
+
+<p>The situation changed when first Git and GitHub after appeared. Git solved major open source problem, being easy to contribute back (distributed system and forks) and GitHub implemented pull request idea, that simplified code contribution a lot.</p>
+
+<p>There are different opinions, but as for me GitHub really influenced open source world in a good way. Apparently, if you have GitHub account, you are a closer to open source as possible. First, you create you own repositories and trying to show the world something that you think matters, second you see a lot of other people project and could join anytime you want.</p>
+
+<p>A lot of great examples of open source products appeared &ndash; MongoDB, Nginx, Docker, Redis, Node.js, NPM etc. That was my huge impression after I switched from .NET to JavaScript development.</p>
+
+<p>Not only as a developer, but also as entrepreneur I see open source is great. The full stack for your product, could be open source.. from top to down. For <a href="https://likeastore.com/">Likeastore</a> we use something like: Ubuntu, Docker, Dokku, Git, Node.js, MondoDB, Express.js and hundreds others open source libraries. The costs of running on open source stack, significatly lower then licensed software. You still paying the money, but amount are really affordable for small companies.</p>
+
+<p>Open Source is awesome.</p>
+
+<p>I wish next year I can participate more open source projects, I&rsquo;ll create some useful projects and open source will became a culture of <a href="https://likeastore.com/">Likeastore</a> as well.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[We Were Wrong 10 Years Ago]]></title>
+    <link href="http://beletsky.net/2013/06/we-were-wrong-10-years-ago.html"/>
+    <updated>2013-06-20T23:43:00+02:00</updated>
+    <id>http://beletsky.net/2013/06/we-were-wrong-10-years-ago</id>
+    <content type="html"><![CDATA[<p>The way we build distributed systems and platforms is changing through the the last 10 years. Recently, I was thinking myself about different technological options I used so far and came for some conclusions.</p>
+
+<p>Early 2000&rsquo;s I was programming C/C++ and the best way of passing some data from one machine to another, was &ndash; <em>socket</em>. The time took understanding of sockets, I clearly saw it&rsquo;s the best solution for that task.</p>
+
+<!-- more -->
+
+
+<p>Sending and receiving strings and binary structures was very nice comparing to using C or assembler to directly talk to network driver. Sockets allowed to build server-client architectures, in theory allowing application written in different languages to communicate each other.</p>
+
+<p>But time passed and COM / DCOM technologies appeared. Data transport operations was completely hidden, a lot of abstraction put above objects and marshaling. Again, that technology was massively adopted by developers, many projects were created based on COM / DCOM (or similar technology called CORBA).</p>
+
+<p>Marshaling, IDL, ATL and other stuff was very difficult to understand and to use. But still there was much better than implement something similar on raw sockets.</p>
+
+<p>Era of Web Services has begun. Web Services indeed allowed build highly distributed systems based on reliable HTTP protocol. Data transport mechanisms appeared to be transparent and very clear. Data transfered back and forth as XML payloads. Almost all web service technologies were build in concept on <a href="http://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> was primary payload format, formalized XML with metadata inside. Again, previous DCOM / COBRA things looked very ugly, Web services looked very promising.</p>
+
+<p>Web Services, definitely affected the way we architecture distributed systems now. It formalized a lot, <code>WS-*</code> set of standards came out. Many vendors like Microsoft or Sun created bunch of frameworks to support it. Many books, many blog posts and speaks issued on that topic.</p>
+
+<p>Nowadays, <code>RPC-based</code> services completely substituted with <code>REST-style</code>. XML as payload, seems to be awful, cause its verbose, requires more bandwidth comparing to <code>JSON</code>. <code>JSON</code> in conjunction with dynamic languages gives great framework of building distributed systems. We are currently in era of <em>API oriented</em> systems and as soon as you adopted that, SOAP and RPC makes no sense to you.</p>
+
+<p>What I&rsquo;m telling is, technologies are improving very fast. What was great today, will appear awful tomorrow.</p>
+
+<p>We were wrong 10 years ago that some particular technology is cool. So now, than I see some new and shinny thing I&rsquo;m no longer blindly excited about that. It will gone&hellip; and substituted with something better.</p>
+
+<p>Developers ultimate goal remains to <em>influence</em> that process. And make influence is easy &ndash; share your thoughts, implement prototypes, talk to people.</p>
+
+<p>Make things simpler, make things better.</p>
+]]></content>
+  </entry>
+  
+</feed>

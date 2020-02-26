@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ELMAH.MVC v.2.0.0 - Release Candidate</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="ELMAH.MVC v.2.0.0 - Release Candidate Jun 13th, 2012 ELMAH.MVC, asp.net I&#8217;ve just pushed new Elmah.MVC package. It contains several changes &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/06/elmahmvc-v200-release-candidate.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">ELMAH.MVC v.2.0.0 - Release Candidate</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T17:42:00+02:00" pubdate data-updated="true">Jun 13<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elmah-dot-mvc/'>ELMAH.MVC</a>, <a class='category' href='/blog/categories/asp-dot-net/'>asp.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>        I&#8217;ve just pushed new <a href="https://nuget.org/packages/Elmah.MVC">Elmah.MVC</a> package. It contains several changes that I described on my <a href="http://www.beletsky.net/2012/06/elmahmvc-v20-is-coming.html">previous</a> post. Current version is v.2.0.0-rc, release candidate that I&#8217;m about to spent sometime with testing and collecting feedback before it&#8217;s availability.<br />
+    </p>    <p>        I think ELMAH.MVC is getting it&#8217;s shape. Hopefully it will be as easy to use as indented.<br />
+    </p>    <h2>Changes highlights</h2>    <p>        Quickly recap the major and breaking changes of ELMAH.MVC 2.0.<br />
+    </p>    <h3>Deployed as class library</h3>    <p>        First noticeable change is that ELMAH.MVC is no longer deployed as several source files, having new Area and Elmah controller inside. The the sake of compatibility and reach functionality it is now deployed as <code>Elmah.Mvc.dll</code>. It&#8217;s using David&#8217;s Ebbo <a href="https://nuget.org/packages/WebActivator">WebActivator</a> project to bootstrap itself, registering routes and global filters.<br />
+    </p>    <h3>New URL to access ELMAH dashboard</h3>    <p>        In 2.0 ELMAH is accessed by <code>/elmah</code> route (not <code>/admin/elmah</code> as it was in previous versions). There are several reasons for that. First one is because of new &#8216;Admin&#8217; area is not created anymore, second is the really strange behavior is ASP.NET MVC default routing rules. <br />
+    </p>    <h3>HandleErrorAttribute inside</h3>    <p>        If you tried to use ELMAH in ASP.NET MVC, you are probably implemented your own HandleErrorAttribute, as it&#8217;s shown in this <a href="http://stackoverflow.com/questions/766610/how-to-get-elmah-to-work-with-asp-net-mvc-handleerror-attribute">example</a>. You no longer need to apply this custom code with Elmah.MVC. As soon you installed package, so can safely remove your HandleError attribute, since it&#8217;s already included into package.<br />
+    </p>    <h3>No more /elmah.axd</h3>    <p>        In previous Elmah.MVC version, you have to go to <code>web.config</code> file and remove all handlers manually. Elmah.MVC 2.0 is now having <code>elmah.corelibrary</code> as dependency and provides it&#8217;s own web.config.transform that excludes all legacy stuff. In short, no more <code>/elmah.axd</code> to remove.<br />
+    </p>    <h3>Configurable authorization rules</h3>    <p>        Now, you are very flexible with authorization rules of <code>ElmahController</code>. web.config contains several <code>elmah.mvc.*</code> app keys you can tweak it. Disable or apply authentication based on roles, no problem. <br />
+    </p>    <h3>Logging with customError=&#8221;On&#8221;</h3>    <p>        Something that <a href="http://www.troyhunt.com/">Troy Hunt</a> noticed and <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/13">registered</a>. Now, you should not have any problems with logging unhandled exceptions, even if customErrors is enabled.<br />
+    </p>    <h2>Trying it out!</h2>    <p>        I would be really happy if you help me to test it. You are welcome to try it out. Please install new package and let me know your opinion or bugs you might find. To install preliminary version, just do.<br />
+    </p>    <div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC -Pre<br />
+            </p>        </div>    </div></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/06/elmahmvc-v200-release-candidate.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/06/elmahmvc-v200-release-candidate.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

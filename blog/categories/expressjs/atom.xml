@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: expressjs | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/expressjs/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Integration or Unit Tests Trade-Off]]></title>
+    <link href="http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware.html"/>
+    <updated>2014-04-23T11:19:00+02:00</updated>
+    <id>http://beletsky.net/2014/04/integration-tests-for-express-dot-js-middleware</id>
+    <content type="html"><![CDATA[<p>Recently, I&rsquo;ve released small Express.js extension for easy switching application to <code>maintenance</code> mode. Sometimes, you just want to run patch against database or change the infrastructure of product, but instead of showing blank <code>nginx</code> 503 error page, you want to have nice looking HTML, saying will be back soon.</p>
+
+<p>The <code>maintenance</code> package is now available on <a href="https://www.npmjs.org/package/maintenance">npm</a> and you welcome to use it. But I would like to share the way I developed and test it.</p>
+
+<!-- More -->
+
+
+<p>So, <code>maintenance</code> is a function that takes <code>app</code> instance and <code>options</code> as a parameters. Then it augments <code>app</code> with additional endpoint (if there is such preference) and injects middleware function that would render maintenance page in case of mode is set to <code>true</code>.</p>
+
+<p>It&rsquo;s really small piece functionality, but still I wanted to make sure, it&rsquo;s gonna work in my application without annoying restarts of servers and debugging the stuff. And TDD is right approach to solve the pain.</p>
+
+<p>TDD is quite commonly trade-off of <code>unit tests</code> and <code>integration tests</code>. And it&rsquo;s always up to developer which direction go in particular case. Let&rsquo;s take a look on my case:</p>
+
+<p>If you go <code>unit test</code> way, it would be something like that:</p>
+
+<ul>
+<li>call <code>maintenance</code> function, pass mock of <code>express</code> instance
+
+<ul>
+<li>verify that new <code>route</code> is added after function completes</li>
+<li>verify that all <code>route.callbacks</code> now have callback to check the mode</li>
+<li>verify that <code>route.callbacks[0]</code> contains mode check function</li>
+</ul>
+</li>
+<li>call <code>route.callbacks[0]</code>, mock <code>req</code> and <code>res</code> object
+
+<ul>
+<li>verify that <code>res.render</code> called with <code>maintanance.html</code> argument</li>
+<li>etc..</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Is all of that kind of <strong>suck</strong>? It is, since it would take too much effort for mocking the stuff.. But more important, all of that is nothing more as just testing of <strong>implementation details</strong> of Express.js, but not <strong>behavior details</strong> of application.</p>
+
+<p>Now, let&rsquo;s consider <code>integration tests</code> way for same stuff:</p>
+
+<ul>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+</ul>
+</li>
+<li>run application is maintenance mode
+
+<ul>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+<li>run application in normal mode
+
+<ul>
+<li>send HTTP GET and make sure that response is fine</li>
+<li>sent HTTP POST to maintenance endpoint</li>
+<li>send HTTP GET and make sure that response contains maintenance page</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Does it look like real <strong>behavior</strong> testing? Indeed, test acts as <code>user</code> and checks that application actually behaves right, doesn&rsquo;t matter of implementation details.</p>
+
+<p>With spending more time with Express.js and Node.js I see much <a href="http://beletsky.net/2014/03/testable-apis-with-node-dot-js.html">more value</a> in integration way of testing. It&rsquo;s very easy to spin-up a server and send HTTP requests and check responses.</p>
+
+<p>If you are interested, check out <a href="https://github.com/likeastore/maintenance/blob/master/test/spec/maintenence.spec.js">specification</a> and <a href="https://github.com/likeastore/maintenance/blob/master/test/app/app.js">test application</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Catch Errors in Express.js Application]]></title>
+    <link href="http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application.html"/>
+    <updated>2013-10-18T09:56:00+02:00</updated>
+    <id>http://beletsky.net/2013/10/catch-errors-in-express-dot-js-application</id>
+    <content type="html"><![CDATA[<p>This is a small follow up for my <a href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html">previous post</a>, using the same technique not for authorization, but rather for error handling.</p>
+
+<p>Let&rsquo;s go back, to the problem. I want to handle all errors in my application. Instead of <code>res.send()</code> or <code>res.json()</code>, I want to have a middleware that handles everything by itself. It can be flexible, so I can put any kind of logic there, like logging etc.</p>
+
+<p>It&rsquo;s very easy to archive with <em>patch the middleware</em> method.</p>
+
+<!-- More -->
+
+
+<p>Just like in previous case, <code>app.use()</code> won&rsquo;t work here. First, it would apply to every request. Second, error handling middleware have to placed last, <code>app.use()</code> won&rsquo;t guarantee that.</p>
+
+<h2>Follow the style</h2>
+
+<p>To get benefits of common error handling/logging code, you have to follow particular style. It&rsquo;s very simple, though.</p>
+
+<p>Your last endpoint (middleware) function have to always receive <code>next()</code> callback parameter, all logs have to pass as first argument to that function. You should not send errors directly as <code>res.send(500, 'Error')</code>.</p>
+
+<p>```js
+app.get(&lsquo;/api/users/:id&rsquo;, function (req, res, next) {</p>
+
+<pre><code>db.users.find({id: req.params.id}, function (err, user) {
+    if (err) {
+        return next({message: 'failed to query db', status: 500});
+    }
+
+    if (!user) {
+        return next({message: 'user not found', status: 404});
+    }
+
+    res.json(user);
+});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Please note, that it receives first argument.. and the function is only called, the we call <code>next()</code> with first parameter.</p>
+
+<h2>Error handler middleware</h2>
+
+<p>Let&rsquo;s define the function. Since HTTP API&rsquo;s are JSON based, it would just return the JSON response and status.</p>
+
+<p>```js
+function logErrors(err, req, res, next) {</p>
+
+<pre><code>req.unhandledError = err;
+
+var message = err.message;
+var error = err.error || err;
+var status = err.status || 500;
+
+res.json({message: message, error: error}, status);
+</code></pre>
+
+<p>};
+```</p>
+
+<h2>Apply the patch</h2>
+
+<p>Again, right after all routes are already defined, let&rsquo;s call <code>applyErrorLogging()</code>.</p>
+
+<p>```js
+// &hellip;</p>
+
+<p>require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>applyAuthentication(app, [&lsquo;/api&rsquo;]);
+applyErrorLogging(app);                 // apply error handling here</p>
+
+<p>// &hellip;
+```</p>
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<p>```js
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyErrorLogging(app) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
+}
+
+function patchRoute (route) {
+    route.callbacks.push(middleware.errors.logErrors);
+}
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = applyErrorLogging;
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Securing Express.js HTTP Endpoints]]></title>
+    <link href="http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints.html"/>
+    <updated>2013-10-15T21:54:00+02:00</updated>
+    <id>http://beletsky.net/2013/10/securing-express-dot-js-http-endpoints</id>
+    <content type="html"><![CDATA[<p>Once you implement HTTP API using Express.js, the security became the concern. There are a lot of different options and strategies, implementing security for API&rsquo;s. One of the latest I prefer is described <a href="https://github.com/alexbeletsky/backbone-express-spa#authorization-cors">here</a>.</p>
+
+<p>Doesn&rsquo;t matter what the actual strategy is, you have to apply it somehow in your application. In general, HTTP API security goes down to authorization. Having a piece of information in HTTP request (either field in header or value in cookie), by checking one you can say, is this HTTP request authorized or not.</p>
+
+<!-- More -->
+
+
+<h2>Middleware</h2>
+
+<p>Such type of job is ideal for middleware. In fact, you might have middleware function, that does authorization:</p>
+
+<p>```js
+function access(req, res, next) {</p>
+
+<pre><code>checkAuthorization(req, function (err, authorized) {
+    if (err || !authorized) {
+        res.send({message: 'Unauthorized', status: 401});
+    }
+
+    next();
+});
+
+function checkAuthorization(req, callback) {
+    // actual auth strategy goes here..
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of cause, it&rsquo;s simply possible to apply this function to each HTTP method in application, like</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    middleware.access,
+    getPeople);
+
+app.get('/api/people/:id',
+    middleware.access,
+    getPerson);
+
+app.post('/api/people',
+    middleware.access,
+    postPerson);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<p>but, it&rsquo;s really get annoying to do that all the time.. and it&rsquo;s easy to just forgot to secure endpoint. So, it&rsquo;s better to keep the code as clean as possible.</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    getPeople);
+
+app.get('/api/people/:id',
+    getPerson);
+
+app.post('/api/people',
+    postPerson);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<p>That seems to be like <code>app.use()</code> is good candidate to place <code>access</code> function into, but it&rsquo;s not. <code>app.use()</code> is global apply of middleware function, so if applications serves static resources, that does not need authentication, or simply you want to expose some <strong>guest</strong> endpoints.</p>
+
+<h2>Guest or not?</h2>
+
+<p>Guest endpoints are ones, that can be accessed without authentication. That&rsquo;s a kind of special case, but typically required on any HTTP API projects I worked.</p>
+
+<p>We need to distinguish between <strong>secure</strong> and <strong>guest</strong> endpoints. We&rsquo;ll introduce special middleware function, for guest access.</p>
+
+<p>```js
+function guest(req, res, next) {</p>
+
+<pre><code>req.guestAccess = true;
+next();
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Now, assume that all endpoints are require authentication by default (which is good assumption), but ones that don&rsquo;t need to have <code>guest()</code> middleware be used.</p>
+
+<p>```js
+function peopleApi(app) {</p>
+
+<pre><code>app.get('/api/people',
+    getPeople);
+
+app.get('/api/people/:id',
+    getPerson);
+
+app.post('/api/people',
+    postPerson);
+
+app.get('/api/people/meta',
+    middleware.guest,               // no authentication required!
+    getPeopleMeta);
+
+// ...
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = peopleApi;
+```</p>
+
+<h2>Patch the routes</h2>
+
+<p>After I got a bit deeper with structure of Express.js <code>application</code> I came up to one idea that helped to solve the problem.</p>
+
+<p>Then all endpoints are defined, <code>application</code> would contain initialized <a href="http://expressjs.com/api.html#app.routes">routes</a> object. If you look closer, then you&rsquo;ll see, besides of path and method data it also contains an array of <code>callbacks</code> applied to route. That&rsquo;s exactly middleware functions, so we can simply patch that array with authentication function we want.</p>
+
+<p>The authentication function have to be called first, so it&rsquo;s need to be placed at first position of array.</p>
+
+<p>Right after application configured and all routes are defined, call <code>applyAuthentication()</code> function.</p>
+
+<p>```js
+var app = express();</p>
+
+<p>app.configure(function(){</p>
+
+<pre><code>// configure
+</code></pre>
+
+<p>});</p>
+
+<p>app.configure(&lsquo;development&rsquo;, function() {</p>
+
+<pre><code>// configure for development
+</code></pre>
+
+<p>});</p>
+
+<p>app.configure(&lsquo;production&rsquo;, function() {</p>
+
+<pre><code>// configure for production
+</code></pre>
+
+<p>});</p>
+
+<p>require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>applyAuthentication(app, [&lsquo;/api&rsquo;]);     // apply authentication here</p>
+
+<p>http.createServer(app).listen(app.get(&lsquo;port&rsquo;), function() {</p>
+
+<pre><code>console.log('app listening on port ' + app.get('port'));
+</code></pre>
+
+<p>});
+```</p>
+
+<p>And finally, <code>applyAuthentication</code> function,</p>
+
+<p>```js
+var _ = require(&lsquo;underscore&rsquo;);
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyAuthentication(app, routesToSecure) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
+}
+
+function patchRoute (route) {
+    var apply = _.any(routesToSecure, function (r) {
+        return route.path.indexOf(r) === 0;
+    });
+
+    var guestAccess = _.any(route.callbacks, function (r) {
+        return r.name === 'guest';
+    });
+
+    if (apply &amp;&amp; !guestAccess) {
+        route.callbacks.splice(0, 0, middleware.access.authenticatedAccess());
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = applyAuthentication;
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Think Ahead, Think Logging]]></title>
+    <link href="http://beletsky.net/2013/07/think-ahead-think-logging.html"/>
+    <updated>2013-07-04T09:02:00+02:00</updated>
+    <id>http://beletsky.net/2013/07/think-ahead-think-logging</id>
+    <content type="html"><![CDATA[<p>When we develop application, we have everything to understand applications behavior. Debugger, traces, tests &ndash; all information just in hands. If something goes wrong, it&rsquo;s not so hard to track the problem.</p>
+
+<p>Situation is completely different then app leaves development box and goes to production. In best case, we&rsquo;ll receive email or tweet from user, but typically problem remains on production <em>silently</em>, while customers just <em>silently</em> leave.</p>
+
+<p>Prepare application to production, means prepare good error logging. I&rsquo;m going to show how to extend your Express.js with proper logs.</p>
+
+<!-- More -->
+
+
+<h2>What it means to have good logs?</h2>
+
+<p>In my perspective good logs are ones satisfying following criterias:</p>
+
+<ul>
+<li>All unhandled errors are logged</li>
+<li>Log records are comprehensive and clear</li>
+<li>Logs are easily accessible</li>
+<li>If critical error logged, developers have to be notified</li>
+</ul>
+
+
+<h2>Logger</h2>
+
+<p>Logger is object responsible to take some message or object and log it. The example of one,</p>
+
+<p>```js
+var util = require(&lsquo;util&rsquo;);
+var colors = require(&lsquo;colors&rsquo;);
+var moment = require(&lsquo;moment&rsquo;);</p>
+
+<p>var logger = {</p>
+
+<pre><code>colorsMap: {
+    'success': 'green',
+    'warning': 'yellow',
+    'err': 'red',
+    'info': 'grey'
+},
+
+success: function (message) {
+    this.log('success', message);
+},
+
+warning: function (message) {
+    this.log('warning', message);
+},
+
+error: function (message) {
+    this.log('err', message);
+},
+
+info: function (message) {
+    this.log('info', message);
+},
+
+log: function (type, message) {
+    var record = this.timestamptMessage(util.format('%s: %s', type.toUpperCase(), this.formatMessage(message)));
+    console.log(record[this.colorsMap[type]]);
+},
+
+formatMessage: function (message) {
+    return typeof message === 'string' ? message : JSON.stringify(message);
+},
+
+timestamptMessage: function (message) {
+    return util.format('[%s] %s', moment(), message);
+}
+</code></pre>
+
+<p>};</p>
+
+<p>module.exports = logger;
+```</p>
+
+<p><code>Logger</code> could be used everywhere you need to get some info. But our ultimate goal is to be aware of all errors might appear in application.</p>
+
+<h2>Augmenting Express.js application with logs</h2>
+
+<p>We never know then error might appear. But, we can catch all unhandled errors + if some web request failed to complete with success code, we have to log that as well.</p>
+
+<h3>Handling &ldquo;unhandled&rdquo; errors</h3>
+
+<p>We can listen to process &lsquo;uncaughtException&rsquo; event. It just placed in <code>app.js</code> file. The best place is just after require section and before any object is used.</p>
+
+<p>```js
+process.on(&lsquo;uncaughtException&rsquo;, function (err) {</p>
+
+<pre><code>logger.error({msg:'Uncaught exception', error:err, stack:err.stack});
+</code></pre>
+
+<p>});
+```</p>
+
+<p>From official docs,</p>
+
+<blockquote><p>Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.</p></blockquote>
+
+<p>So, we just redirecting that error to logger. Also, docs say following:</p>
+
+<blockquote><p>Don&rsquo;t use it, use <a href="http://nodejs.org/api/domain.html">domains</a> instead. If you do use it, restart your application after every unhandled exception!</p></blockquote>
+
+<p>I still not switched to domain version for that, need to consider that advice.</p>
+
+<p>Anyway, this <code>uncaughtException</code> will give us only information typically about <code>undefined</code> variables used, that&rsquo;s pretty simple to caught during development testing. More interesting stuff is what&rsquo;s actually happening on runtime, while application handling HTTP requests.</p>
+
+<h3>Logging failing HTTP requests</h3>
+
+<p>Express.js power feature is <em>middleware</em>. It&rsquo;s possible to do a lot of cool stuff based on middleware functions. We&rsquo;ll utilize that feature to create a few middleware function that would allow to log all failed HTTP requests.</p>
+
+<p>First one,</p>
+
+<p>```js
+// have to be injected as last middlware function for all routes
+function logErrors () {</p>
+
+<pre><code>return function logErrors(err, req, res, next) {
+    req.unhandledError = err;
+
+    next(err);
+};
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Second one,</p>
+
+<p>```js
+function logHttpErrors () {</p>
+
+<pre><code>return function logHttpErrors (req, res, next) {
+    var end = res.end;
+    res.end = function (data, encoding) {
+        var status = res.statusCode;
+        var message = {
+            url: res.req.url,
+            headers: res.req.headers,
+            status: status,
+            body: req.body,
+            params: req.params
+        };
+
+        if (req.unhandledError) {
+            message.error = req.unhandledError;
+        }
+
+        if (warning(status)) {
+            logger.warning(message);
+        }
+
+        if (error(status)) {
+            logger.error(message);
+        }
+
+        end.call (res, data, encoding);
+    };
+
+    next();
+};
+
+function warning (status) {
+    return status &gt;= 400 &amp;&amp; status &lt; 500;
+}
+
+function error (status) {
+    return status &gt;= 500;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Look a bit closer: <code>logError()</code> produces middleware function that expected to be the last in chain, and if previous function retured an error, it stores that error object in in requests. <code>logHttpErrors()</code> produces middleware function that would override response <code>.end()</code> function and logs warning or error, depending on response status code.</p>
+
+<p>Let&rsquo;s integrate to app.</p>
+
+<p><code>logHttpErrors()</code> could be put into <code>app.configure()</code> function,</p>
+
+<p>```js
+app.configure(function(){</p>
+
+<pre><code>app.set('port', process.env.VCAP_APP_PORT || 3001);
+// ...
+app.use(middleware.errors.logHttpErrors());
+// ...
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>It&rsquo;s a bit more trickier with <code>logError()</code> function. As I said above, it have to be <strong>last</strong> callback in chain.</p>
+
+<p>So, it&rsquo;s only possible to apply it in <code>app.configure()</code> since the routes are not defined yet. Even it&rsquo;s possible to manually add it to each endpoint manually, I don&rsquo;t think it&rsquo;s good idea, because it&rsquo;s easy to forgot do that.</p>
+
+<p>I came up to following solution,</p>
+
+<p>```js
+require(&lsquo;./source/api&rsquo;)(app);
+require(&lsquo;./source/router&rsquo;)(app);</p>
+
+<p>// here .logError() will be added to end of chain
+applyErrorLogging(app);</p>
+
+<p>http.createServer(app).listen(app.get(&lsquo;port&rsquo;), function() {</p>
+
+<pre><code>var env = process.env.NODE_ENV || 'development';
+logger.info('Likeastore app listening on port ' + app.get('port') + ' ' + env + ' mongo: ' + config.connection);
+</code></pre>
+
+<p>});
+```</p>
+
+<p>And <code>applyErrorLogging()</code> function,</p>
+
+<p>```js
+var middleware = require(&lsquo;../middleware&rsquo;);</p>
+
+<p>function applyErrorLogging(app) {</p>
+
+<pre><code>for (var verb in app.routes) {
+    var routes = app.routes[verb];
+    routes.forEach(patchRoute);
+}
+
+function patchRoute (route) {
+    route.callbacks.push(middleware.errors.logErrors());
+}
+</code></pre>
+
+<p>}</p>
+
+<p>module.exports = applyErrorLogging;
+```</p>
+
+<p>Now, it&rsquo;s everything in place, so all <code>4xx</code> are logged as warnings, all <code>5xx</code> are logged as errors.</p>
+
+<h2>Move your logs to cloud</h2>
+
+<p>Simply logging information is not enough. While your application writes info to console on production machine, this information worthless to you. You have to put you logs to the place where is easily accessible.</p>
+
+<p>There are few services like that. One of I recently hooked with in <a href="https://logentries.com/">Logentries</a>.</p>
+
+<p>Logentries gives you API to submit information there + Dashboard, there logs can be viewed, search and analyzed.</p>
+
+<p><img src="/images/blog/logentries-screen.png" alt="logentries dashboard" /></p>
+
+<p>Install <code>node-logentries</code> client,</p>
+
+<p><code>bash
+$ npm install node-logentries --save
+</code></p>
+
+<p>And now, we need to update logger, to not only <code>console.log</code> but send it to Logentries.</p>
+
+<p>Will create Logentries client,</p>
+
+<p>```js
+var log = logentries.logger({</p>
+
+<pre><code>token:process.env.LOGENTRIES_TOKEN
+</code></pre>
+
+<p>});
+log.level(&lsquo;info&rsquo;);</p>
+
+<p>```</p>
+
+<p>Will extend existing logger and override current <code>.log()</code> function:</p>
+
+<p>```js
+var logentriesLogger = (function (_super) {</p>
+
+<pre><code>var child = {
+    log: function (type, message) {
+        _super.log(type, message);
+        log.log(type, message);
+    }
+};
+
+return _.extend(Object.create(_super), child);
+</code></pre>
+
+<p>})(logger);</p>
+
+<p>module.exports = logentriesLogger;
+```</p>
+
+<p>Checkout this <a href="https://gist.github.com/alexbeletsky/5921464">gist</a> where you can see all things put together.</p>
+
+<p>So, now wherever <code>logger</code> is used, logs will both shown to screen (which is cool for development) and submitted to Logentries (which is cool for production).</p>
+
+<h2>Setup notification on critical errors</h2>
+
+<p>If error appeared on production, developers attention should be there. Without good notification system, is too easy to skip the moment then error arises.</p>
+
+<p>Again, it&rsquo;s easy to do with Logentries. Just go to <code>Alerts</code> section and setup patterns of errors you interested and email addresses for notifications.</p>
+
+<p><img src="/images/blog/logentries-alerts.png" alt="logentries alerts setup" /></p>
+
+<p>Email is not only one option, you can setup for SMS or webhook for your app. So, anytime error or warning appeared you will be notified and take action on it.</p>
+
+<h2>Conclusions</h2>
+
+<p>I&rsquo;ve used that for <a href="http://likeastore.com">likeastore</a> app I currently working on and it works just fine. Having such logs gave a lot of information after we went to private-beta phase. When you see how application behaves then real users start to use, it gives you good insights about fixes and improvements to apply.</p>
+
+<p>Taking into account that approach above is very universal and easy to adopt, to it today.</p>
+]]></content>
+  </entry>
+  
+</feed>

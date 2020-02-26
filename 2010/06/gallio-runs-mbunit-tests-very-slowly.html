@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Gallio runs MbUnit tests very slowly?</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Gallio runs MbUnit tests very slowly? Jun 18th, 2010 TDD, Tools Currently I&#8217;m looking close to one interesting project called Subtext. It &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2010/06/gallio-runs-mbunit-tests-very-slowly.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Gallio runs MbUnit tests very slowly?</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-18T17:28:00+02:00" pubdate data-updated="true">Jun 18<span>th</span>, 2010</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tdd/'>TDD</a>, <a class='category' href='/blog/categories/tools/'>Tools</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+Currently I&#8217;m looking close to one interesting project called <a href="http://subtextproject.com/default.aspx?AspxAutoDetectCookieSupport=1">Subtext</a>. It being developed and managed by <a href="http://haacked.com/">Phil Haack</a> and recently he <a href="http://haacked.com/archive/2010/06/06/subtext-2-5-released.aspx">announced</a> release of version 2.5. It open-souce so anyone is able to get SVN snapshot and digg into code and 
+    even to contribute to this project. I would like to do a separate blog post on Subtext, but now I want to touch another topic.
+<br />
+<br />
+Subtext project uses <a href="http://www.mbunit.com/">MbUnit</a> test framework, that I have no chance to work before. So as my first goal I started to look for tools to work with MbUnit and ways of its integration to Visual Studio. Obvious choice was a <a href="http://www.gallio.org/">Gallio</a>. Gallio is open-source automation test framework, a bundle contains *maybe* all known unit-test systems (NUnit, MbUnit, NCover, TypeMock etc.) as well as add-on to Visual Studio that allows to run MbUnit tests by <a href="http://testdriven.net/">Testdriven.net</a> runner. 
+<br />
+<br />
+I was preatty happy to find that one exists. I&#8217;ve installed the version that official page refered to Gallio v3.1 Update 2 build 397 - x86. Installed on VS 2008 no problem and I&#8217;ve started to play with Subtext tests. But I&#8217;ve noticed that it works very slow, namely run of particular test takes about 20 sec on my machine. That is too much time for ordinar test. At first I blamed Subtext that it performs test database initialization in [SetUp] function of test assembly. But I just commented out this initialization I saw that situation has not changed.
+<br />
+<br />
+I googled a bit I found that Oliver Sturm also experienced same problem and did a post on his <a href="http://www.sturmnet.org/blog/2010/03/11/gallio-mbunit-very-slow">blog.</a> He did a great job and noticed that reason for such slow down was gallio.utility.exe application that hangs for about 20 sec on each start. Tests are using that for initialization so it slows down each start of tests. He had created a <a href="http://code.google.com/p/mb-unit/issues/detail?id=634">bug report</a> and as <a href="http://code.google.com/u/jeff.brown/">Jeff Brown</a> the problem was fixed for v3.2.380. I went to a <a href="http://ccnet.gallio.org/Distributables/">distribution site</a> and downloaded latest 3.2 vesrion. I&#8217;ve installed it and try to run test. Woow, it was run for 
+    just a second! Good news I thought! But when I tried to run all tests from a test assembly I was disappointed that it simply does not work. It says about exception during initialization of Gallio. I reported on that with <a href="http://code.google.com/p/mb-unit/issues/detail?id=673">new issue</a> to Gallio.
+<br />
+<br />
+I&#8217;ve decied to try earlier verions of 3.2.. But still had the same problem. So, 3.2 realease does not work on my machine at all and do not know the reason. My only choice was to back to 3.1 but try some more recent daily builds. I&#8217;ve got Version 3.1 build 514 and finally it started to work as expected. Test case run took about 4 seconds, slower that 3.2 456 but anyway, not so bad as for 3.1 397. 
+<br />
+<br />
+Gallio is preatty good software, so I really recommed to to check it out. 3.1 514 works fine on Visual Studio 2008.  
+<br />
+<br />
+Hope this one will be useful to one who is going to start with Gallio or met same problem as me.</div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2010/06/gallio-runs-mbunit-tests-very-slowly.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2010/06/gallio-runs-mbunit-tests-very-slowly.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

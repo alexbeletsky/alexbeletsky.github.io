@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Refactoring to testability</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Refactoring to testability Feb 21st, 2011 Refactoring, TDD Suppose you are working on some web REST API adapter. It would be basically one class &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2011/02/refactoring-to-testability.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Refactoring to testability</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-21T09:33:00+01:00" pubdate data-updated="true">Feb 21<span>st</span>, 2011</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/refactoring/'>Refactoring</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>
+Suppose you are working on some web <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">REST</a> API adapter. It would be basically one class with bunch of methods. Each method would represent each supported API call. Through the implementation you would probably landed with something like this,
+</p>
+<pre class="brush: csharp">
+public class ApiAdapter
+{
+    private HttpClient _client;
+    private RequestFormatHelper _requestFormatHelper;
+    private ResponseFormatHelper _responseFormatHelper;
+
+    // ...
+    
+    public ApiAdapter()
+    {
+        _client = new HttpClient(/* ... */);
+        _requestFormatHelper = RequestFormatHelper(/* ... */);
+        _responseFormatHelper = ResponseFormatHelper(/* ... */);
+    }
+
+    void CreateNewTask(Task task)
+    {
+        // implementation
+    }
+
+    void DeleteTask(Task task)
+    {
+        // implementation
+    }
+
+    // rest of methods...
+}
+</pre>
+<p>
+Nevertheless, the code works it has several code smells: 
+</p>
+<ul>
+<li>
+<strong>High cohesion</strong> - the relation between objects are really strong. Objects are aggregated and aggregation is the one of strongest types of links between objects. 
+</li>
+<li>
+<strong>Violation of <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/Closed principle</a></strong> - one of the SOLID object oriented design principles.
+</li>
+<li>
+<strong>Lack of testability</strong> - if you decide to unit test this code, you will be in problem. Unit testing is supposed to be done in <a href="http://c2.com/cgi/wiki?UnitTestIsolation">isolation</a>. Having high cohesion code you can&#8217;t get required level of isolation. Moreover it is not possible to substitute concrete class with <a href="http://en.wikipedia.org/wiki/Mock_object">mock object</a> by using some famous JMock, RhinoMocks or Moq.
+</li>
+<li>
+<strong>Lack of flexibility</strong> - if you decide to change implementation of some of depended objects, say <code>ResponseFormatHelper</code> you would probably change the implementation of <code>ApiAdapter</code> as well.
+</li>
+</ul>
+<p>
+If you think that you code is not testable or flexible, don&#8217;t waste your time.. apply the power of refactoring.
+</p>
+<p>
+What to do? It is basically very simple to correct such code, you just need to follow this:
+</p>
+<ul>
+<li>
+<strong>Always hide the details behind the interface</strong> - all behavior objects must conform to particular interface. Other objects must refer to another object only with knowledge of the interface. In terms of programming languages, if you pass object to client code you must always pass it by interface (e.g <code>public SomeAction(IHttpClient client, Type type, Data data);</code>.
+</li>
+<li>
+<strong>Use dependency injection for louse coupled code</strong> - try to avoid to create depended object by <code>new</code>, inject the dependency by constructor of public property. (e.g <code>public ApiAdapter(IHttpClient client, IRequestFormatHelper requestHelper, IResponseFormatHelper responseHelper)</code>.
+</li>
+</ul>
+<p>
+How the code might look after refactoring:
+</p>
+<pre class="brush: csharp">
+public interface IHttpClient
+{
+    void WebCall(/*...*/);
+}
+
+public interface IRequestFormatHelper
+{
+    string Format(/*...*/);
+}
+
+public interface IResponseFormatHelper
+{
+    string Format(/*...*/);
+}
+
+
+public class ApiAdapter
+{
+    private IHttpClient _client;
+    private IRequestFormatHelper _requestFormatHelper;
+    private IResponseFormatHelper _responseFormatHelper;
+
+    // ...
+
+    public ApiAdapter(IHttpClient client, IRequestFormatHelper requestFormatHelper, IResponseFormatHelper responseFormatHelper)
+    {
+        _client = client;
+        _requestFormatHelper = requestFormatHelper;
+        _responseFormatHelper = requestFormatHelper;
+    }
+</pre>
+<p>
+Now, you can easily test this code using mocks, like this simple test:
+</p>
+<pre class="brush: csharp">
+[Test]
+public void CreateNewTask_SendPutRequest_WithJson()
+{
+    // arrange
+    var client = new Mock&lt;IHttpClient&gt;();
+    var requestFormatter = new Mock&lt;IRequestFormatHelper&gt;();
+    var responseFormater = new Mock&lt;responseFormatHelper&gt;();
+
+    // act 
+    var api = new ApiAdapter(client, requestFormatter, responseFormater);
+    api.CreateTask (new Task());
+
+    // arrange
+    client.Verify(client.WebCall(/*...*/)).Called().WithArguments(/*...*/;
+}
+</pre>
+<p>
+And change any details of injected objects, without any changes in <code>ApiAdapter</code>. Refactoring to testablity is important, as much testable code you got as much flexible code you got.
+</p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2011/02/refactoring-to-testability.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2011/02/refactoring-to-testability.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

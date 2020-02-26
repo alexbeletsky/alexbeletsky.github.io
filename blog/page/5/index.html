@@ -1,0 +1,863 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Alexander Beletsky's development blog</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Building Single Page Applications with Backbone.js and Express.js Apr 24th, 2013 Backbone.js, Node.js, Open source This Saturday I was doing my &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/blog/page/5/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><div class="blog-index">
+  
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/04/building-single-page-applications-with.html">
+    
+      Building Single Page Applications with Backbone.js and Express.js</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-24T05:11:00+02:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/node-dot-js/'>Node.js</a>, <a class='category' href='/blog/categories/open-source/'>Open source</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>This Saturday I was doing my first Backbone.js class. It went really fine, except one fact.<br />
+</p><p>I wanted to show the aspects of creating Single Pages Application running on Backbone. Started the application from scratch, we had to spend a lot of time writing some infrastructure code before we even jump to Backbone. So, after the class I decided to create some boilerplate project, so next time we would just clone it from github and start to work.<br />
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/04/building-single-page-applications-with.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/04/net-developer-in-javascript-world.html">
+    
+      .NET Developer in JavaScript World</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-14T13:35:00+02:00" pubdate data-updated="true">Apr 14<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/conference/'>Conference</a>, <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/mind/'>Mind</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+        <p>This is a subscript of lighting talk I did on <a href="http://www.odessajs.org.ua/">#odessajs</a> conference that took place 13 April in Odessa.<br />
+</p><h2>The story</h2><p>Thinking about the things going on inside and around me I realized - I don&#8217;t do .NET development more than 1.5 years for now. It&#8217;s not the <a href="http://www.beletsky.net/2012/07/three-month-without-net-code.html">first time</a> I was thinking about that, but now it has a bit different perspective.<br />
+</p><h2>WTH?</h2><p>I work in E-conomic company and about 2 years ago we decided to build new product. <br />
+</p><p>Till that time we&#8217;ve learned hard few things: plain jQuery applications is mess, building new shinny product on out-dated infrastructure is bad idea.<br />
+</p><p>So, we&#8217;ve started with front-end by choosing Backbone.js as our foundation, later on we&#8217;ve decided to switch our API server from .NET to Node.js.<br />
+</p><p>It appears we got full JavaScript stack on that product and I involved in JavaScript more and more each day.<br />
+
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/04/net-developer-in-javascript-world.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/04/baby-steps-to-backbonejs-exploring.html">
+    
+      Baby steps to Backbone.js: Exploring collections. Part 2.</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-10T19:53:00+02:00" pubdate data-updated="true">Apr 10<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Backbone.js is event-driven framework. All Backbone entities are extended from <a href="http://backbonejs.org/#Events">Backbone.Event</a> object. That means, they are able to raise events, subscribers are able to listen to that events and act accordingly. Let&#8217;s take a look what type of event does Backbone.Collection have.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/04/baby-steps-to-backbonejs-exploring.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/03/likeastore-application-built-on.html">
+    
+      Likeastore, Application Built on Hackathone</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-31T17:52:00+02:00" pubdate data-updated="true">Mar 31<span>st</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/applications/'>Applications</a>, <a class='category' href='/blog/categories/hackatone/'>Hackatone</a>, <a class='category' href='/blog/categories/likeastore/'>Likeastore</a>, <a class='category' href='/blog/categories/social/'>Social</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        It&#8217;s my <a href="http://www.beletsky.net/2011/06/hackatone-in-kiev-11-12-june.html">second time</a> I attended hackatone. As last time, it took place in Ciklum, the best office in Kiev, so I had very strong wish to visit it. My previous experience showed several things: hacktone is absolutely unpredicable thing, you can&#8217;t guess which projects will be popular or not.. and the second, that it&#8217;s hard to do something valuable alone.<br />
+    </p>    <p>        So, this time I decided to build a team of guys I know and trust, so we can do something together. Those two guys appeared to be my colleagues, in @debitoor project <a href="https://github.com/voronianski">@voronianski</a> and <a href="https://github.com/mamant">@mamant</a>. We gathered together, to build a product which was called - &#8220;Likeastore&#8221;<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/03/likeastore-application-built-on.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/03/baby-steps-to-backbonejs-exploring.html">
+    
+      Baby steps to Backbone.js: Exploring collections</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-27T16:51:00+01:00" pubdate data-updated="true">Mar 27<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        After initial introduction to Backbone&#8217;s <a href="http://www.beletsky.net/2012/12/baby-steps-to-backbonejs-unit-testing.html">views</a> and <a href="http://www.beletsky.net/2012/11/baby-steps-to-backbonejs-unit-testing.html">models</a>, we going to look on next Backbone.js fundamental entity - <a href="http://backbonejs.org/#Collection">Collection</a>. Collections represents the ordered set of models and became very handy for any type of applications. Consider that, we almost always operate with set of different models: posts, tweets, news etc. all of that are collections, typically rendered as lists or grids.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/03/baby-steps-to-backbonejs-exploring.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/03/third-year-of-e-conomic.html">
+    
+      Third Year of E-conomic</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-13T19:29:00+01:00" pubdate data-updated="true">Mar 13<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/e-conomic/'>E-conomic</a>, <a class='category' href='/blog/categories/life/'>Life</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+<p>That&#8217;s my traditional post on yet another anniversary in <a href="http://www.e-conomic.com/">E-conomic</a> company. Even thought, I still work there, this year I&#8217;ve heard a bit less of <a href="http://www.e-conomic.com/">E-conomic</a> but more about <a href="https://debitoor.com/">Debitoor</a> instead. Debitoor is very cool product me and <a href="https://debitoor.com/about/the-team">my team</a> is working on and I was totally focused on that during this year.<br />
+	
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/03/third-year-of-e-conomic.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2013/01/looking-back-to-2012.html">
+    
+      Looking back to 2012</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T16:25:00+01:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/retrospective/'>Retrospective</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        It&#8217;s the first Saturday of New Year, so it would be good idea to spend some time thinking of year that passed.<br />
+    </p>    <h2>Work in e-conomic</h2>    <p>        That was yet another great year in e-conomic. We have build great app - <a href="https://debitoor.com/">Debitoor</a>. Along the way, we were trying different approaches, re-writing things from scratch, designing and re-designing again and again. Finally we got very solid application built upon Node.js, MongoDB and Backbone.js. Debitoor has been created with scalability in mind, we started with Heroku cloud service, eventually moved to Amazon EC for back-end and Amazon Cloud Front for front-end. Now, it&#8217;s working amazingly fast and for 8 month we gathered ~20,000 signups, launched service for many countries.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2013/01/looking-back-to-2012.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/12/introducing-backbonecomputedfields.html">
+    
+      Introducing Backbone.ComputedFields</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-25T21:28:00+01:00" pubdate data-updated="true">Dec 25<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Recently, I&#8217;ve been working on small project which I want to share here. It&#8217;s called <a href="https://github.com/alexbeletsky/backbone.computedfields">Backbone.ComputedFields</a> and it&#8217;s small plugin that extends Backbone.Model functionality a bit.<br />
+    </p>    <p>        I needed to have a model with &#8216;virtual&#8217; fields. Namely, fields that does not belong to model directly, but being computed based on some other fields values.<br />
+    
+      
+      
+        <div class="show-more pure-u-1">
+          <a href="/2012/12/introducing-backbonecomputedfields.html">Continue reading &rarr;</a>
+        </div>
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/12/baby-steps-to-backbonejs-unit-testing.html">
+    
+      Baby steps to Backbone.js: Unit testing of views</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-19T20:52:00+01:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>Previous time, we&#8217;ve implemented a Backbone model and wrote some meaningful tests for it.<br />
+</p><p>Next very important Backbone&#8217;s entry to test is View.<br />
+</p><p>Views are central concept in framework. Views are actually ones who do stuff. We don&#8217;t have Controller in Backbone, but according to Controller <a href="http://www.itu.dk/courses/VOP/E2005/VOP2005E/8_mvc_krasner_and_pope.pdf">initial idea</a> as user input handler, Backbone views following exactly the same architectural goal, so they could be treaded as controllers in some way. <br />
+</p><h2>What to test?</h2><p>You should focus on such things: <br />
+</p><ul><li><strong>Initialization</strong> - test that view is provided with all required inputs like: model or collection, localization texts, different options. If view is not able, say, render without some option, you should test that exception is thrown.</li>
+<li><strong>Rendering </strong> - test that required html appeared in view. I do not create those very strict, since they would be to fragile in case of markup changes, but still I check for major DOM elements are present and have right styles.</li>
+<li><strong>Events</strong> - test that view is correctly handle DOM events.</li>
+<li><strong>Model changes and persistence</strong> - test that changes in view are correctly propagated in model. If view is about to persist the model, that could tested as well.</li>
+</ul><p>I see tests of views as kind of integration test. You communicate to DOM, listening to events, updating models or changing DOM elements state. It&#8217;s typically that view tests are catching most regression issues.<br />
+</p><h2>How to test?</h2><p>Fortunately, the Backbone views are designed in very testable way. You don&#8217;t need any special HTML on test page, since view holding all it&#8217;s DOM structure inside <code>this.el</code>. By means of jQuery, it&#8217;s easy to change DOM values or trigger events.<br />
+</p><p>Since view also holds reference to model, it&#8217;s easy to check model&#8217;s attributes changes or spying on particular models methods.<br />
+</p><p>First red test,<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView();
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Here we basically testing, that FeedbackFormView should exist, so as soon as function is in place, test should be green.<br />
+</p><p>FeedbackFormView could not exist without a model as well as default feedback text, that should be used as initial value of textbox. In the language of TDD, that means:<br />
+</p><pre class="brush: js">describe('when view is initialized', function () {
+
+    describe('without model', function () {
+
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView();
+            }).toThrow(new Error('model is required'));
+        });
+
+    });
+
+    describe('without default feedback', function () {
+            
+        it('should throw exception', function () {
+            expect(function () {
+                new FeedbackFormView({model: new Backbone.Model() });
+            }).toThrow(new Error('feedback is required'));
+        });
+    });
+
+});
+    </pre><p>To turn from Red to Green, let&#8217;s add <code>initialize</code> function to view,<br />
+</p><pre class="brush: js">initialize: function (options) {
+
+    if (!this.model) {
+        throw new Error('model is required');
+    }
+
+    if (!(options && options.feedback)) {
+        throw new Error('feedback is required');
+    }
+
+    this.feedback = options.feedback;
+},
+    </pre><p>Btw, after that change it&#8217;s required to fix previous test, since it start to fail.<br />
+</p><pre class="brush: js">describe('FeedbackFormView.js spec', function () {
+    var view, model;
+
+    beforeEach(function () {
+        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
+    });
+
+    describe('when view is constructing', function () {
+
+        it ('should exist', function () {
+            expect(view).toBeDefined();
+        });
+
+    });
+    </pre><p>Now, let&#8217;s test how rendering works.<br />
+</p><pre class="brush: js">describe('when view is rendered', function () {
+
+    beforeEach(function () {
+        view.render();
+    });
+
+    it ('should email field be empty', function () {
+        expect(view.$el.find('input#email')).toHaveValue('');
+    });
+
+    it ('should website field be empty', function () {
+        expect(view.$el.find('input#website')).toHaveValue('');
+    });
+
+    it ('should feedback field with default feedback', function () {
+        expect(view.$el.find('textarea#feedback')).toHaveValue('TDD is awesome..');
+    });
+
+});
+</pre><p>Here and after I&#8217;m using very nice Jasmine plugin, called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a>. It adds a number of matchers, very useful for testing jQuery objects.<br />
+</p><p>We&#8217;ve tested initialization and rendering, now let&#8217;s test last aspect, model changes and persistence.<br />
+</p><p>Suppose a user inputs nothing, erases default feedback and presses submit button. Expected behavior is expressed with this test:<br />
+</p><pre class="brush: js">describe('when form is submitted', function () {
+
+    describe('no inputs are filled', function () {
+
+        beforeEach(function () {
+            view.$el.find('#email').val('').trigger('change');
+            view.$el.find('#feedback').val('').trigger('change');
+        });
+
+        beforeEach(function () {
+            view.$el.find('#submit').trigger('click');
+        });
+
+        it('email field should be invalidated', function () {
+            expect(view.$el.find('.control-group.email')).toHaveClass('error');
+        });
+
+        it('feedback field should be invalidated', function () {
+            expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+        });
+
+        it('website field should be valid', function () {
+            expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+        });
+
+    });
+</pre><p>That&#8217;s cool. After those tests are passing, we can test that if only email is filled, but feedback is still empty, we are not able to submit the form. By analogy of previous test,<br />
+</p><pre class="brush: js">describe('only email field filled', function () {
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('email field should be valid', function () {
+        expect(view.$el.find('.control-group.email')).not.toHaveClass('error');
+    });
+
+    it('feedback field should be invalidated', function () {
+        expect(view.$el.find('.control-group.feedback')).toHaveClass('error');
+    });
+
+    it('website field should be valid', function () {
+        expect(view.$el.find('.control-group.website')).not.toHaveClass('error');
+    });
+
+});
+</pre><p>And finally, if view is filled correctly,<br />
+</p><pre class="brush: js">describe('email and feedback filled', function () {
+
+    beforeEach(function () {
+        spyOn(view.model, 'save').andCallThrough();
+    });
+
+    beforeEach(function () {
+        view.$el.find('#email').val('a@a.com').trigger('change');
+        view.$el.find('#feedback').val('some feedback').trigger('change');
+    });
+
+    beforeEach(function () {
+        view.$el.find('#submit').trigger('click');
+    });
+
+    it('should show no errors', function () {
+        expect(view.$el.find('.error').length).toBe(0);
+    });
+
+    it('should save model', function () {
+        expect(view.model.save).toHaveBeenCalled();
+    });
+
+});
+</pre><p>Here, we test 2 things: first, that no validation errors appeared on form and second that <code>save</code> method of model is called. Jasmine built-in spy framework is used here. You can setup on any function of any object and then verify that function has (or has not) been called.<br />
+</p><p>I&#8217;m skipping the implementation of that view, but you can find the code of application in <a href="https://gist.github.com/4330928">gist</a>.<br />
+</p><h2>Conclusions</h2><p>While you typically start with defining and testing models in your application, view is integration test that helps to test actual behavior of application, depending on model states and events. You should define how &#8220;deep&#8221; you want to test the view, but my proposal is to focus on initialization, rendering, changes (validation) and persistence.<br />
+</p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  
+    <article>
+        
+  <h1 class="title pure-u-1">
+    
+    <a href="/2012/12/retrospective-of-trackytnet-or-best.html">
+    
+      Retrospective of Trackyt.net or Best Project I Ever Accomplished</a>
+  </h1>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-01T15:11:00+01:00" pubdate data-updated="true">Dec 1<span>st</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/trackyt-dot-net/'>Trackyt.net</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        It&#8217;s been to years ago, I&#8217;ve <a href="http://www.beletsky.net/2010/11/ive-release-my-own-product-trackytnet.html">released</a> my own project - Trackyt.net. Month ago I&#8217;ve cancelled my VPS lease contract, so your would not see it available at <a href="http://trackyt.net">http://trackyt.net</a> anymore.<br />
+    </p>    <p>        This project is first attempt to release something. I had some pet projects before, but never ever made them done. Trackyt.net started as simple application to learn some JavaScript programming and HTML. It turns out to be much, much, much more. Even it seems to be very simple, but I&#8217;ve spent a lot of energy on it.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png"><br />
+        <img src="https://lh6.googleusercontent.com/-C1oDnTeZXIY/ULoMUOx3XPI/AAAAAAAAMuc/3GuIq-ra1UI/s1366/image-1.png" style="width: 620px"/><br />
+    </a><br />
+    <p>        The product did not gather any meaningful amount of users neither good amount of traffic. For almost 2 years I was investing money/time on it. So, from the first sight it might appear as failed project.<br />
+    </p>    <p>        Any kind of business should be evaluated in terms of assets. It&#8217;s not necessarily means money. Or more correctly, it does not meant &#8220;direct&#8221; money. I had no paying customers and I actually never thought to sell the product. But, I can prove it - every hour I spent on the project got back to me as value. And the most valuable asset for developer is skill, of cause.<br />
+    </p>    <a href="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png"><br />
+        <img src="https://lh6.googleusercontent.com/-OLeITq9xGf4/ULoMUBovQkI/AAAAAAAAMuU/lk7SvXWvvFc/s1086/image-2.png" style="width: 620px"/><br />
+    </a><br />
+    <p>        I&#8217;ll try to analyze what actually happened:<br />
+    </p>    <ul>        <li><strong>Web development and design:</strong> even my professional involvement into web applications, did not give me a feeling of web development. I <a href="http://www.beletsky.net/2011/03/aspnet-developers-disease.html">blame</a> ASP.NET Web Forms for that, but I realized that I lack that kind of skill. That was my first project were I did everything by myself, all HTML/CSS/JS were handmade, not stupid WebControls. My eyes opened on how many things I did not understand, how difficult the front-end might be. Crafting of UI is a huge pleasure for me, I simply like beautiful things. 2 years after I will never call Trackyt.net beautiful, but it was a great point to start.<br />
+            <p>                <i>Outcome</i>: I overstepped the uncertainty and fears of front-end. During the JavaScript programming. I&#8217;ve seen a lot of value in front-end MVC frameworks, so I had no doubts of moving from jQuery based apps to Backbone.js (or other MV*) frameworks. I did a <a href="https://speakerdeck.com/alexbeletsky">several speeches</a> of JavaScript applications development and got really cool feedback on it.<br />
+            </p>        </li>
+        <li><strong>Test driven development:</strong> practicing TDD for quite long years already, so Trackyt.net was not my first project were I applied the technique. The difference was that usually the we work with some legacy code at work, so TDD could be difficult to apply. Starting that project I had strong opinion on TDD and literally TDD&#8217;ed everything. UI, Controllers, Repositories.. JavaScript and C#. That was so great experience, I never felt on any other projects. During Trackyt.net I think I moved from <a href="http://martinfowler.com/bliki/ShuHaRi.html">Shu</a> to <a href="</a>&#8220;>Ha</a> level of testing. Now, I <a href="http://www.beletsky.net/2011/11/develop-with-tests.html">more clearly</a> see what and when should I test to stay in good shape of application.<br />
+        </li>
+        <p>            <i>Outcome</i>: currently I&#8217;m professional TDD trainer at <a href="http://xpinjection.com/">XP Injection</a> and Trackyt.net much influenced that it happened. I share my experience with guys I show some examples of code there. I <a href="http://www.beletsky.net/search/label/TDD">wrote</a> a bunch of blog posts on TDD and it&#8217;s Trackyt.net who gave most inputs and insights. I&#8217;ve <a href="http://www.beletsky.net/2010/12/testing-rest-services-with-javascript.html">implemented</a> integration tests for my API based FuncUnit and that blog post became the part of <a href="http://javascriptweekly.com/">JavaScript Weekly</a> and still remains one of the best reads in my blog. I&#8217;ve learned UI testing and <a href="http://www.beletsky.net/2011/04/functional-tests-must-not-be-done-first.html">formed</a> my opinion on that.
+        </p>        <li><strong>ASP.NET MVC:</strong> Never used ASP.NET MVC before, I armed with <a href="http://books.google.com.ua/books/about/Pro_ASP_NET_MVC_2_Framework.html?hl=uk&id=lFSPoYt9deAC">great book</a> by Steven Sanderson I&#8217;ve started to learn new framework. And Trackyt.net was main playground. Starting up with MVC2 and lately ported it to MVC3 I had a chance to play different aspects of framework. ASP.NET MVC was my first serious step into web development world.<br />
+        </li>
+        <p>            <i>Outcome:</i> I became a huge fan of this technology, learning it from deep and <a href="http://www.beletsky.net/search/label/InsideMVC">posting</a> information on it. I had a few speeches about ASP.NET MVC.. and the biggest one on MS SWIT 2012, there ~300 persons were listened to me. Then the company I worked to were deciding about back-end technology for API of new product I helped to integrate ASP.NET MVC into existing web site and we successfully built API on it. I assisted my team mates to understand the framework, it was not difficult at all, since I knew the stuff. Currently I have a <a href="http://xpinjection.com/trainings/mvc-net-development/">training course</a> on ASP.NET MVC as well and already conducted some.
+        </p>        <li><strong>API oriented architecture:</strong> popularized by Twitter and GMail, the architecture and having RESTfull JSON based service behind and the JavaScript-driven application on front-end, was my high-level architecture for Trackyt.net. <br />
+            <p>                <i>Outcome:</i> I successfully used the same ideas on other projects and it worked really well. For now I&#8217;m consulting few companies that tries to adopt same ideas. The most popular <a href="http://www.beletsky.net/2011/01/implementation-of-rest-service-with.html">post</a> in my blog is about build REST(like) services with ASP.NET MVC. <br />
+            </p>        </li>
+        <li><strong>Continuous Delivery:</strong> being annoyed by manual update of production environment I&#8217;ve <a href="http://www.beletsky.net/2011/05/continuous-production-make-it-work.html">built</a> simple continuous delivery pipeline that worked really great for me. During the way I&#8217;ve met such great tools as Jenkins, UppercuT, RoundhousE etc. That was my first try of this approach and I felt huge power and advantages of Continuous Delivery. Slightly it became one of the professional areas of interests for me.<br />
+        </li>
+        <p>            <i>Outcome:</i> Continuous Delivery and <a href="https://github.com/chucknorris">Chuck Norris</a> tools was the topic of my first talk on <a href="http://kievalt.net/">KievALT.NET</a>. Since then I became an active participant of community and I really like it. Also, I&#8217;m talking about things like RoundhousE on my other speeches and trainings and I got a lot of pleasure than people stand by saying: &#8220;You know, we&#8217;ve tried that and it worked so nice, thanks a lot&#8221;.
+        </p>        <li><strong>Code base:</strong> the code base of application is rather small. There is C#, JavaScript, SQL and some NAnt scripts. A lot of things I used there I still copy and paste (or at least taking a look) from Trackyt.net to my current projects. It became a kind of cook book, from there I could quickly pick up some recipe. <br />
+        </li>
+        <p>            <i>Outcome:</i> I didn&#8217;t thought above that initially, but Trackyt.net codebase also helping me to see what improvements I&#8217;ve made so far. For instance, I reviewed the API controllers recently and realized that I would never write anything like that. Having some code that you produced year or two ago you peer and compare gives some really interesting insights. Besides of application code itself, I&#8217;ve made an C# API adapter and the most significant outcome is <a href="https://github.com/alexbeletsky/elmah.mvc">ELMAH.MVC</a>.
+        </p>    </ul>    <p>        Concluding this, I would say - Trackyt.net changed the things radically. I&#8217;ve became a speaker on <a href="http://kievalt.net/">KievALT.NET</a> and <a href="http://xpinjection.com/uadevclub/">UADevClub</a> communities, my blog received an <a href="http://java.dzone.com/users/alexanderb">MVB</a> status, I improved my skills and knowledge and I do trainings and consulting. Basically, I&#8217;ve &#8220;rebooted&#8221; developer inside me and saw my way of constant learning and improving.<br />
+    </p>    <p>        Looking back I definitely say - it was only possible because of Trackyt.net.<br />
+    </p>    <p>        Without any doubts, that was the most successful project to me!<br />
+    </p></div>
+
+      
+      
+    </div>
+  </div>
+
+    </article>
+  
+  <div class="pagination inner pure-u-1">
+    
+      <a class="prev" href="/blog/page/6/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
+    
+  </div>
+</div></div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

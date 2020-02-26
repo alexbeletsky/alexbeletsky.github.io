@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Baby steps to Backbone.js: Model Validation</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Baby steps to Backbone.js: Model Validation Nov 8th, 2012 BabyStepsBackbone, Backbone.js, JavaScript Let&#8217;s go back for a moment for previous &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Baby steps to Backbone.js: Model Validation</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-08T08:42:00+01:00" pubdate data-updated="true">Nov 8<span>th</span>, 2012</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/babystepsbackbone/'>BabyStepsBackbone</a>, <a class='category' href='/blog/categories/backbone-dot-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript/'>JavaScript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <div class='post'>
+    <p>        Let&#8217;s go back for a moment for <a href="http://www.beletsky.net/2012/10/baby-steps-to-backbonejs-starting-up.html">previous</a> post where we started to bootstrap some basic Backbone.js application. It&#8217;s very simple now, just gathering all data and posting those data to server.<br />
+    </p>    <p>        Any reliable system is almost impossible without validation. If some field is required or must conform to some particular rule, it should be validated as soon as possible and validation information should be displayed to user. User then applies corrections and re-submit data.<br />
+    </p>    <p>        In case of `Feedback` model, we are interested that user always input her email and feedback message. Backbone.js provides very straight forward for models validation. If model requires validation, it should implement <a href="http://backbonejs.org/#Model-validate">validate</a> method.<br />
+    </p>    <p>        So, let&#8217;s extend our model with validate method.<br />
+    </p>    <pre class="brush: js">var Feedback = Backbone.Model.extend({
+    url: '/feedback',
+
+    defaults: {
+        'email': '',
+        'website': '',
+        'feedback': ''
+    },
+
+    validate: function (attrs) {
+        if (!attrs.email) {
+            return 'Please fill email field.';
+        }
+        if (!attrs.feedback) {
+            return 'Please fill feedback field.';
+        }
+    }
+});
+    </pre>    <p>        As you can see, in case of email or feedback is missing, we just simply return string with error message.<br />
+    </p>    <p>        To better understand what&#8217;s going on, let&#8217;s look on some piece of the code from Backbone.js framework. Namely, to `_validate` method of `Backbone.Model`, which is actually responsible for validation.<br />
+    </p>    <pre class="brush: js">_validate: function(attrs, options) {
+    if (options.silent || !this.validate) return true;
+    attrs = _.extend({}, this.attributes, attrs);
+    var error = this.validate(attrs, options);
+    if (!error) return true;
+    if (options && options.error) {
+       options.error(this, error, options);
+    } else {
+        this.trigger('error', this, error, options);
+    }
+    return false;
+}
+</pre>    <p>        You can see, if `validate` returns either undefined or null or false, `_validate` just returns true - meaning the model is valid. Otherwise, it would check if `options.error` function initialized and call it, if not model event `error` is triggered.<br />
+    </p>    <p>        During the model saving, we typically provide both success and error callbacks. It means, that error callback will be called, if model does not pass validation requirements. Inside the callback, we might decided what to do with errors. Right now, let&#8217;s just do alert.<br />
+    </p>    <pre class="brush: js">var options = {
+    success: function () {
+        alert('Thanks for the feedback!');
+    },
+    error: function (model, error) {
+        alert(error);
+    }
+};
+
+var feedback = {
+    email: this.$('#email').val(),
+    website:  this.$('#website').val(),
+    feedback: this.$('#feedback').val()
+};
+
+this.model.save(feedback, options);
+    </pre>    <p>        Notice that `error` callback receiving model itself as first argument and error object (one returned from `validate` method) as second argument. Let&#8217;s try this code: leave email and feedback fields empty and press submit button.<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"><br />
+        <img src="https://lh3.googleusercontent.com/-BtV9yCmh3T8/UJtgc5Nk4CI/AAAAAAAALnQ/d671woxZwrE/s621/image-1.png"/><br />
+    </a><br />
+    <p>        There are several drawback of such implementation, though. First of all, `alert` windows are awful, second if user corrects email, next time she presses the submit button next alert with another message appears. This is terrible UX, so let&#8217;s fix it.<br />
+    </p>    <p>        So, we should basically do 2 things: aggregate all errors during validation and apply some nice styles to errors.<br />
+    </p>    <p>        Instead of returning simple strings, we&#8217;ll return an array of objects, containing name of failed and field and message.<br />
+    </p>    <pre class="brush: js">validate: function (attrs) {
+    var errors = [];
+
+    if (!attrs.email) {
+        errors.push({name: 'email', message: 'Please fill email field.'});
+    }
+    if (!attrs.feedback) {
+        errors.push({name: 'feedback', message: 'Please fill feedback field.'});
+    }
+
+    return errors.length > 0 ? errors : false;
+}
+</pre>    <p>        Change the `save` method options, to show errors if any error appeared and hide errors if save was successful. <br />
+    </p>    <pre class="brush: js">var me = this;
+var options = {
+    success: function () {
+        me.hideErrors();
+    },
+    error: function (model, errors) {
+        me.showErrors(errors);
+    }
+};
+</pre>    <p>        And implement 2 simple methods:<br />
+    </p>    <pre class="brush: js">showErrors: function(errors) {
+    _.each(errors, function (error) {
+        var controlGroup = this.$('.' + error.name);
+        controlGroup.addClass('error');
+        controlGroup.find('.help-inline').text(error.message);
+    }, this);
+},
+
+hideErrors: function () {
+    this.$('.control-group').removeClass('error');
+    this.$('.help-inline').text('');
+}
+</pre>    <p>        Let&#8217;s test the code. As all fields are left empty, it will look like,<br />
+    </p>    <a href="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"><br />
+        <img src="https://lh3.googleusercontent.com/-qPbTz5Cl0N4/UJtgc8JU-1I/AAAAAAAALnU/ru1sJb6j6V4/s717/image-2.png"></img><br />
+    </a><br />
+    <p>        As fields are filled and form submitted, all errors are cleared from form.<br />
+    </p>    <h2>Conclusions</h2>    <p>        That was very simple &#8220;baby-step&#8221; style of approaching model validation. I would could it, validation &#8220;from the box&#8221;. Even if it&#8217;s very useful there are a lot of different approaches of making even things better. The source code is availble on <a href="https://gist.github.com/4037415">github</a>.<br />
+    </p>    <p>        Stay tuned for next Backbone.js baby steps soon.<br />
+    </p></div>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

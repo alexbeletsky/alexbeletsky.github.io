@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: AJAX | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/ajax/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to run multiple AJAX requests]]></title>
+    <link href="http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests.html"/>
+    <updated>2012-10-31T20:12:00+01:00</updated>
+    <id>http://beletsky.net/2012/10/how-to-run-multiple-ajax-requests</id>
+    <content type="html"><![CDATA[<div class='post'>
+    <p>        Suppose you have a list of resources that you would like to retrieve by means of AJAX. `$.ajax()` (or it's short variants like `$.get()` or `$.post`) is usual way of making AJAX calls, it works great than you need to fetch one.<br />
+    </p>    <pre class="brush: js">var url = '/api/resource/1';
+$.get(url, function (r) {
+    // use response
+});
+    </pre>    <p>        Even in case of several it might be still usable,<br />
+    </p>    <pre class="brush: js">var url1 = '/api/resource/1';
+var url2 = '/api/resource/2'
+$.get(url1, function (r) {
+    // use response from url1
+
+    $.get(url1, function (r) {
+        // use response from url2
+    });
+});
+    </pre>    <p>        You can easily see, if you have more than 3 you are trapping into "callback hell". Furthermore, if you have a list of url's to fetch and the size of that list is dynamic, it's not even possible to build structure like that.<br />
+    </p>    <p>        Not long time a ago, I've been exactly into this situation. So, I have a list of resources to fetch, I need to issue them one-by-one and I want to have only one callback, that would pass all fetched resources in one object. Initially I thought it's not even possible, at least with-out creation of some ugly code. But with great help of my colleagues the problem been solved. <br />
+    </p>    <p>        jQuery <a href="http://api.jquery.com/category/deferred-object/">Deferred Object</a> is something I've head about, but never got a change to play with. It turn's out to be very nice and simple idea. Deferred allows you to build chainable constructions. Actually, `$.ajax()` always returns deferred object, so you can apply `.done()`, `.fail()` functions on it.<br />
+    </p>    <p>        Here is the code, that you could be re-usable in the same situation;<br />
+    </p>    <pre class="brush: js">var pipedAjaxRequests = function (urls, callback) {
+ var responses = {};
+
+ var promise = $.Deferred().resolve();
+ _.each(urls, function (url) {
+  promise = promise.pipe(function () {
+   return $.get(url);
+  }).done(function (response) {
+   responses[url] = response;
+  });
+ });
+
+ promise.done(function () {
+  callback(responses);
+ }).fail(function (err) {
+  callback(responses, err);
+ });
+};
+</pre>    <p>        It does create the pipe of `$.get()` calls and place the responses in one response object. At the time then all resources are fetched, the callback is called. In case of errors, second parameter of callback will have error info.<br />
+    </p>    <p>        Thanks a lot to <a href="http://twitter.com/antsamar">@antsamar</a> and <a href="http://twitter.com/alex_gonchar">@alex_gonchar</a> for helping me out.<br />
+    </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testing REST services with javascript]]></title>
+    <link href="http://beletsky.net/2010/12/testing-rest-services-with-javascript.html"/>
+    <updated>2010-12-30T07:28:00+01:00</updated>
+    <id>http://beletsky.net/2010/12/testing-rest-services-with-javascript</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+In previous <a href="http://www.beletsky.net/2010/12/lets-take-rest.html">article</a> we've reviewed general concept of REST. Now we will implement some basic REST service. And our approach will be - test methods before, implement them later. I'm talking about kind <strong>integration</strong> tests, the tests that would act exactly as your client, making real calls to storage and return real results. I will use jQuery and qUnit as my weapon of choice. Like in case of <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">FuncUnit</a> it is easy and fun to create those tests.
+</p>
+<p>
+Why should I start from tests? Pretty simple, by implementing tests before you are looking on your service as client<, not as a developer. When I was working to version 1 of my <a href="http://www.trackyt.net/Home/Api">REST API</a> I didn't do any tests, basically because I didn't know how to do them. When I was ready and started implementation of the client code and documentation, I found out major API issues that I had no time to solve. Those issues were related to: design, security, formats and convenience of usage. TDD principles works the same here: clear and simple design through series of tests.
+</p>
+<h2>Simple framework</h2>
+<p>
+I rely of jQuery and qUnit. jQuery <code>$.ajax</code> method is used to send and receive data. All tests are done in qUnit fashion. What is good to have more: small wrapper function for doing API calls, that would do initial verification of results and work <strong>synchronously</strong>. Why is it synchronous? Because tests are not application and you do not need all benefits of async calls. Asynchronous behavior requires additional effort for synchronization of results. Even if qUnit supports <a href="http://docs.jquery.com/QUnit">asynchronous testing</a>, it should be avoided as possible since it makes test code harder to write and read. So, I came up with such implementation:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">function</font> api_test(url, type, data, callback) {<br>&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processData: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: <font color="#A31515">'application/json; charset=utf-8'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: JSON.stringify(data),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: <font color="#A31515">'json'</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complete: <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (result.status == 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'0 status - browser could be on offline mode'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> <font color="#0000ff">if</font> (result.status == 404) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(<font color="#0000ff">false</font>, <font color="#A31515">'404 error'</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <font color="#0000ff">else</font> {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback($.parseJSON(result.responseText));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Internal If/else statement could be extended with some specific result codes you might expect. If API call has been finished successfully, result JSON object will be parsed and submitted to a test callback.
+</p>
+<p>
+Also, I found useful to create a small helper function that would construct API call signature, based on URL, method and parameters:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;<font color="#008000">// helper</font><br>&nbsp;&nbsp;<font color="#0000ff">function</font> createCallUrl(url, apiToken, method, <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> callUrl = url + apiToken + <font color="#A31515">"/"</font> + method;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> p <font color="#0000ff">in</font> <font color="#0000ff">params</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callUrl += <font color="#A31515">"/"</font> + <font color="#0000ff">params</font>[p];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> callUrl;<br>&nbsp;&nbsp;}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Setup the environment</h2>
+<p>
+All tests requires a setup. In integration testing we basically rely on existing environment (the same that will be used by real application).
+</p>
+<p>
+Due to security reasons all API calls receive an <code>api token</code> as first argument for any call. Api token is received after successful authentication, so a <code>StartUp</code> for each test we need to login, receive <code>api token</code> and only then proceed with method tests. For qUnit is is natural to place this code to <code>module</code> setup.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;module(<font color="#A31515">"v11 api tests"</font>, {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// setup method will authenticate to v.1.1. API by calling 'authenticate'</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// it will store apiToken, so rest of tests could reuse that</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;setup: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.url = <font color="#A31515">'api/v1.1/'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">this</font>.apiToken = <font color="#0000ff">null</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">// authenticate</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'authenticate'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { email: <font color="#A31515">'tracky@tracky.net'</font>, password: <font color="#A31515">'111111'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(<font color="#0000ff">this</font>.url + method, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me.apiToken = result.data.apiToken;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(me.apiToken.length == 32, <font color="#A31515">"invalid api token"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;);</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Module holds <code>API URL</code> and <code>token</code>, so they are reusable through the rest of tests. If setup failed to authenticate, all tests would be failed because they could not use any call without <code>token</code>.
+</p>
+<h2>Testing methods</h2>
+<p>
+I have a number of REST style methods in my API:
+</p>
+<p>
+<code>
+http://trackyt.net/api/v1.1/token/tasks/all <br />
+http://trackyt.net/api/v1.1/token/tasks/add <br />
+http://trackyt.net/api/v1.1/token/tasks/delete/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/start/112 <br />
+http://trackyt.net/api/v1.1/token/tasks/stop/112 <br />
+</code>
+</p>
+<p>
+and so on..
+</p>
+<p>
+I'll give some examples of tests, so you will be able to follow main idea:
+</p>
+<p>
+Get all task call test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Get all task call receives deterministic response test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"get all tasks returns all required fields"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> tasks = result.data.tasks;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(tasks.length &#62;= 1, <font color="#A31515">"tasks has not been returned"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> task = result.data.tasks[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.id !== undefined, <font color="#A31515">"Id field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.description !== undefined, <font color="#A31515">"Description field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.status !== undefined, <font color="#A31515">"Status field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.createdDate !== undefined, <font color="#A31515">"CreatedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.startedDate !== undefined, <font color="#A31515">"StartedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(task.stoppedDate !== undefined, <font color="#A31515">"StoppedDate field is absent"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Add new task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"task add method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/add'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = { description: <font color="#A31515">'new task 1'</font> };<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'POST'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.task.id &#62; 0, <font color="#A31515">"id for first item is wrong"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Delete task method test:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black">&nbsp;&nbsp;test(<font color="#A31515">"delete task method"</font>, <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> me = <font color="#0000ff">this</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/all'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'GET'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(<font color="#0000ff">this</font>.url, <font color="#0000ff">this</font>.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> taskId = result.data.tasks[0].id;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(taskId &#62;= 1, <font color="#A31515">"could not get task for deletion"</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> method = <font color="#A31515">'tasks/delete/'</font> + taskId;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> data = <font color="#0000ff">null</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> type = <font color="#A31515">'DELETE'</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> <font color="#0000ff">params</font> = [];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> call = createCallUrl(me.url, me.apiToken, method, <font color="#0000ff">params</font>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_test(call, type, data, <font color="#0000ff">function</font> (result) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.success, method + <font color="#A31515">" method call failed"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok(result.data.id != <font color="#0000ff">null</font>, <font color="#A31515">"data is null"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;});</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Rest of tests are available on <a href="https://github.com/alexbeletsky/Trackyourtasks.net/blob/patch/v.1.0.2/src/Web/Scripts/Tests/api/tests.api.v11.js">github</a>, check it out to get additional ideas.
+</p>
+<h2>Running tests</h2>
+<p>
+As any kind of qUnit tests they could be easily run in browser.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s1600/testsrun.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 225px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TRwm4YXHNCI/AAAAAAAAHAw/R1to-ys1c38/s400/testsrun.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5556358790322271266" /></a>
+<p>
+For continues integration system, they have to be run from command-line. It is easily possible using FuncUnit + Selemium Server and described  <a href="http://www.beletsky.net/2010/12/functional-testing-by-javascript-with.html">here</a>.
+</p>
+<h2>Debugging the tests</h2>
+<p>
+Sure, you need to be able to run tests under debugger to see what might went wrong. For debuging test code, there is nothing better than <a href="http://getfirebug.com/">FireBug</a>. Just place the breakpoint on a line you need, press F5 to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s1600/firebugdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 129px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TRwnDCIt2MI/AAAAAAAAHA4/XXCq-07NqPQ/s400/firebugdebug.png" border="0" alt=""id="Img1" /></a>
+<p>
+ If you need to debug actual API implementation code (which in my case is C#/ASP.net MVC application), I start the web site under debugger (F5 in VS2010), place breakpoint in corresponding method and press F5 in browser to to restart tests.
+</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s1600/vsdebug.png"><img style="cursor:pointer; cursor:hand;width: 400px; height: 154px;" src="http://2.bp.blogspot.com/_stL4bIIuRUs/TRwnL7ncAAI/AAAAAAAAHBA/wLXSQlJfk6s/s400/vsdebug.png" border="0" alt=""id="Img2" /></a>
+<h2>Conclusions</h2>
+<p>
+I liked the idea of those integration tests by means of javascript. I was happy to get final results: the interface is more strict and more corresponds to REST principles. It is much more faster to write tests with javascript instead of C# or Java. Just compare <a href="https://gist.github.com/b0a261d6c88fafe5afeb">this</a> and <a href="https://gist.github.com/759517">this</a> and feel the difference. Write less, get more.
+</p>
+<p>
+As javascript could be treated as "pseudo language", since it is easy to read it - API test suite could be used as a developers documentation. If you need to do a call, check the corresponding test, everything there.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Switching from ASP.NET development server (Cassini) to IIS with MVC applications]]></title>
+    <link href="http://beletsky.net/2010/10/switching-from-aspnet-development.html"/>
+    <updated>2010-10-15T11:11:00+02:00</updated>
+    <id>http://beletsky.net/2010/10/switching-from-aspnet-development</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>Start developing new applications on IIS already is probably good idea, since it is IIS where you application is finally landed to. Working with Cassini is great, cause it fast, requires no maintenance, very easy to start. But it could hide some issues that would surprise you during deployment. </p><p>Recently I've decided to switch my current Asp.net MVC application from Cassini to IIS. It is done very easy, just go to project, Web tab -> Use local IIS Web Server. Select the option and then click on "Create a virtual directory", to create a virtual directory for application.  </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s1600/projproperties.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 122px;" src="http://1.bp.blogspot.com/_stL4bIIuRUs/TLga9AQeq6I/AAAAAAAAG-g/dRc-bMB-Yzc/s400/projproperties.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5528198177940745122" /></a> <p>But after I started, application just failed. I'll share the problems I met and how I fix them. </p><h2>IIS identity impersonation and path credentials</h2><p>To make sure your SQL database works fine, you have to configure identity impersonation for application pool and path credentials for folder. </p><p>Go to ISS Management, Application Pools, DefaulAppPool, (you could you another app pool for you application), Advanced Settings, Process Model, Identity and set it for your account (you should have admin permissions on this machine). </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s1600/processidentity.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 338px;" src="http://4.bp.blogspot.com/_stL4bIIuRUs/TLgbJbY04VI/AAAAAAAAG-o/qhDRoBlKCng/s400/processidentity.png" border="0" alt=""id="Img1" /></a> <p>Go to Virtual folder, Basic Setting, Connect As..., use you credentials. </p><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s1600/pathcredentials.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 281px;" src="http://3.bp.blogspot.com/_stL4bIIuRUs/TLgbRJAUThI/AAAAAAAAG-w/ssQc42zjtgw/s400/pathcredentials.png" border="0" alt=""id="Img2" /></a> <h2>JavaScript references from Master page </h2><p>On my master page I've referenced number of javascript files, as jQuery, jPost etc. I did it like that, </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">src</font><font color="#0000ff">="/Scripts/jquery-1.4.1.min.js"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&#60;script src=<font color="#A31515">"/Scripts/jquery.blockUI.js"</font> type=<font color="#A31515">"text/javascript"</font>&#62;&#60;/script&#62;<br />
+&#60;script src=<font color="#A31515">"/Scripts/json2.js"</font> type=<font color="#A31515">"text/javascript"</font>&#62;&#60;/script&#62;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&#60;script src=<font color="#A31515">"/Scripts/jquery.postJson.js"</font> type=<font color="#A31515">"text/javascript"</font>&#62;<font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br />
+</font><br />
+<font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote><p>That worked fine on Cassini, because virtual is "/", but as on IIS if you use code like that, it would have some unexpected behavior. Namely, on each view that uses this Master script reference will be mapped differently. For http://localhost/Tracky/Home, it would be be searching for javascript by such URL http://localhost/Tracky/Home/Scripts/jquery-1.4.1.min. And failed to load that. Fortunately there is a way to fix that. Instead of, </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">src</font><font color="#0000ff">="/Scripts/jquery-1.4.1.min.js"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br />
+</font></code></blockquote><p>Use </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">src</font><font color="#0000ff">="&#60;%: Url.Content("</font>~/<font color="#ff0000">Scripts</font>/<font color="#ff0000">jquery-1</font>.<font color="#ff0000">4</font>.<font color="#ff0000">1</font>.<font color="#ff0000">min</font>.<font color="#ff0000">js</font><font color="#0000ff">") %&#62;"</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br />
+</font></code></blockquote><p>Url.Content method will properly create a absolute path to script file. </p><p>Please make sure, that your Master page is inherited from System.Web.Mvc.ViewMasterPage. </p><blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Web.Areas.Public<br />
+{<br />
+&nbsp;&nbsp;[CoverageExcludeAttribute]<br />
+&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">partial</font> <font color="#0000ff">class</font> Public : System.Web.Mvc.ViewMasterPage <br />
+&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">protected</font> <font color="#0000ff">void</font> Page_Load(<font color="#0000ff">object</font> sender, <font color="#2B91AF">EventArgs</font> e)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;}<br />
+}</font><br />
+<br />
+<font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote><p>I've spend some time, trying to understand why <a href="http://stackoverflow.com/questions/3912508/using-url-content-in-asp-net-mvc-2-0">Url.Content does not work for me</a>, thanks to <a href="http://twitter.com/#!/erikzaadi">erikzaadi</a>. </p><h2>All redirected URL have to prefixed with ~/</h2><p>If you have Redirection somewhere, make sure that redirect URL is prefixed with ~/ (except you explicitly mean it). If you do <code>Redirect("/Pubic/Home")</code> from /Public/Registration, for instance, absolute URL will be http://localhost/Tracky/Public/Registration/Public/Home, something not expected. With ~/ it will be correctly redirected to http://localhost/Tracky/Public/Home. </p><h2>Use absolute path for AJAX posts</h2><p>If you somewhere have a javascript code like this: </p><blockquote><code><font size="2" face="Courier New" color="black">$.post('/GetAllTasks/' + userId, null, callback, 'json'); </font></code></blockquote><p>It won't work either, you have to provide absolute path for resource. </p><blockquote><code><font size="2" face="Courier New" color="black">$.post(api + '/GetAllTasks/' + userId, null, callback, 'json'); </font></code></blockquote><p>I receive the API folder from a hidden input on page, initialized with a value from ViewData, which in its turn intialized in controller, using <code>VirtualPathUtility</code> class. </p><h2>Conclusions</h2><p>These are just some issues I met during my switching after I done all above application started to work fine. If you had some other issues during transition to IIS, please make you comments. </p><p>You can review changes I did for my project in this <a href="http://github.com/alexbeletsky/Trackyourtasks.net/commit/0ddbfb2df4a0148a3d4133e033ec0e084a066bc9">commit</a>. </p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Web development: Lightweight AJAX thought jQuery, JSon.net and HttpHandlers]]></title>
+    <link href="http://beletsky.net/2010/08/web-development-lightweight-ajax.html"/>
+    <updated>2010-08-09T08:43:00+02:00</updated>
+    <id>http://beletsky.net/2010/08/web-development-lightweight-ajax</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+If you are about to start using AJAX in your ASP.net application, you will be pointed to some existing frameworks, like: <a href="http://www.asp.net/ajax">ASP.net AJAX</a>, <a href="http://anthem-dot-net.sourceforge.net/">Anthem.net</a> or something else. That is a probably a good idea to use time-proven things, but you also might have a reasons not do that. First of all, if you are new to AJAX and you need to educate yourself with it, using frameworks in not good, because it hides a lot of details of "how it works". Second reason, that you might not want to overhead with additional frameworks, to make it as lightweight as possible. If you are about to implement some simple AJAX operations, then jQuery for client code, Json.net to handle JSON on server side and ASP.net HttpHandler is all that you need!
+</p>
+<p>
+Let's briefly review each of these components:
+<ul>
+<li>
+<a href="http://jquery.com/">jQuery</a> - everybody knows jQuery, it is the best javascript framework, created by <a href="http://ejohn.org/">John Resig</a>.
+</li>
+<li>
+<a href="http://james.newtonking.com/pages/json-net.aspx">Json.net</a> - just create and easy to use framework of serialize/deserialize .net objects to JSON, created by <a hreaf="http://james.newtonking.com/">James Newton-King</a>.
+</li>
+<li>
+<a href="http://msdn.microsoft.com/en-us/library/5c67a8bd(VS.71).aspx">Generic Handlers</a> - part of ASP.net framework. With some level of simplicity HttpHanlers could be called a page without any overhead (like a Page with no HTML code and only Page_Load method), that is ideally serves as a handler for AJAX calls.
+</li>
+</ul>
+</p>
+<h2>Preparation</h2>
+<p>
+    We going to create a simple admin page that could: get list of all users
+    registered in system and quick new user. I&#39;ll use the same project that I used
+    in my previous web development articles, called Concept, so as always you could
+    get a source code on github.
+</p>
+<h2>Generic Handler implementation</h2>
+<p>
+I web project I've added new folder, called handlers that would contain all handlers code we wish to have. Add new
+    &quot;Generic Handker&quot; item into this folder, and call it users.ashx.
+<!-- userhandler.png -->
+</p>
+<p>
+The skeleton code of handler will look like that:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">using</font> System;<br><font color="#0000ff">using</font> System.Collections.<font color="#2B91AF">Generic</font>;<br><font color="#0000ff">using</font> System.Linq;<br><font color="#0000ff">using</font> System.Web;<br><font color="#0000ff">using</font> Company.Product.DAL;<br><font color="#0000ff">using</font> Company.Product.BLL;<br><br><font color="#0000ff">namespace</font> WebApplication.handlers<br>{<br>&nbsp;&nbsp;<font color="#008000">/// &#60;summary&#62;</font><br>&nbsp;&nbsp;<font color="#008000">/// Summary description for users</font><br>&nbsp;&nbsp;<font color="#008000">/// &#60;/summary&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> users : IHttpHandler<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> UsersOperations _operations = <font color="#0000ff">new</font> UsersOperations(<font color="#0000ff">new</font> UsersRepository());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">void</font> ProcessRequest(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context.Response.ContentType = <font color="#A31515">"application/json"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> respose = <font color="#0000ff">string</font>.Empty;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> function = context.Request[<font color="#A31515">"function"</font>];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">switch</font> (function)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">case</font> <font color="#A31515">"list"</font>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;respose = CreateListReponse(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">break</font>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">case</font> <font color="#A31515">"add"</font>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;respose = CreateAddUserResponse(context);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">break</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context.Response.Write(respose);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> CreateAddUserResponse(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _operations.InsertUser(context.Request[<font color="#A31515">"Email"</font>], context.Request[<font color="#A31515">"SecretPhrase"</font>], context.Request[<font color="#A31515">"Password"</font>]);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> <font color="#0000ff">string</font> CreateListReponse(<font color="#2B91AF">HttpContext</font> context)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> _operations.GetAllUsers();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">bool</font> IsReusable<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">get</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</font><br><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Two important thing here: first, we declare context.Response.ContentType = "application/json"; meaning that body response will contain json code.
+    Second, request will contain a <i>function</i> parameter, that would contain exact function
+    name we want to call. It our case it will be just 2 functions, list and add.
+</p>
+<h2>Serialization of data</h2>
+<p>
+Json.net made a serialization of .NET objects to Json very easy. It supports all main types and collections, it also extendable for your custom needs. Code that returns the list of all users:
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">namespace</font> Company.Product.BLL<br>{<br>&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">class</font> UsersOperations<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">private</font> IUsersRepository _data;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> UsersOperations(IUsersRepository data)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_data = data;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> GetAllUsers()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> JsonConvert.SerializeObject(<font color="#0000ff">new</font> { status = <font color="#A31515">"success"</font>, data = _data.GetAll() });<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">public</font> <font color="#0000ff">string</font> InsertUser(<font color="#0000ff">string</font> email, <font color="#0000ff">string</font> secret, <font color="#0000ff">string</font> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = <font color="#0000ff">new</font> User { Email = email, SecretPhrase = secret, Password = password };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_data.InsertUser(user);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> JsonConvert.SerializeObject(<font color="#0000ff">new</font> { status = <font color="#A31515">"success"</font>, data = user.Id });<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Users repository GetAll() method returns IEnumerable of User. JsonConvert understands such data types, so able to perform serialization not problem.
+</p>
+<h2>Aspx code</h2>
+<p>
+In aspx I utilize functionality of $.ajax call, as well as very nice component called <a href="http://jquery.malsup.com/block/">blockUI</a>, that works upon jQuery and helping to block interaction during AJAX calls, as well as creation of simple modal dialogs.
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font>&#60;%@ Page Title="" Language="C#" MasterPageFile="~/Concept.Master" AutoEventWireup="true"<br>&nbsp;&nbsp;CodeBehind="UserOperations.aspx.cs" Inherits="WebApplication.UserOperationsView" %&#62;</font><br><br><font color="#0000ff">&#60;</font><font color="#800000">asp:Content</font> <font color="#ff0000">ID</font><font color="#0000ff">="Content1"</font> <font color="#ff0000">ContentPlaceHolderID</font><font color="#0000ff">="head"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> listOfUsers() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: <font color="#A31515">"/handlers/users.ashx?function=list"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeSend: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).slideUp();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache: <font color="#0000ff">false</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success: <font color="#0000ff">function</font> (response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (response.status == <font color="#A31515">"success"</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listOfUserCallback(response);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> listOfUserCallback(response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> html = <font color="#A31515">"&#60;ul&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">for</font> (<font color="#0000ff">var</font> key <font color="#0000ff">in</font> response.data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html += <font color="#A31515">"&#60;li&#62;"</font> + response.data[key].Id + <font color="#A31515">": "</font> + response.data[key].Email + <font color="#A31515">"&#60;/li&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html += <font color="#A31515">"&#60;/ul&#62;"</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).html(html);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).slideDown();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> showDialog() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI({ message: $(<font color="#A31515">"#adduserdialog"</font>) });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> closeDialog() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> addUser() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">var</font> user = {};<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.Email = $(<font color="#A31515">"input#email"</font>).val();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.Password = $(<font color="#A31515">"input#password"</font>).val();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user.SecretPhrase = $(<font color="#A31515">"input#phrase"</font>).val();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.ajax(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: <font color="#A31515">"/handlers/users.ashx?function=add"</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeSend: <font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.blockUI({ message: <font color="#A31515">"&#60;h1&#62;Adding new user, please wait...&#60;/h1&#62;"</font> });<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: user,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success: <font color="#0000ff">function</font> (response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.unblockUI();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">if</font> (response.status == <font color="#A31515">"success"</font>) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addUserCallback(response);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">function</font> addUserCallback(response) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//renew list of user:</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listOfUsers();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;$().ready(<font color="#0000ff">function</font> () {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"#results"</font>).hide();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//setup handlers</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"a#list"</font>).click(listOfUsers);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"a#add"</font>).click(showDialog);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#008000">//setup dialog</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"input#adduser"</font>).click(addUser);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(<font color="#A31515">"input#cancel"</font>).click(closeDialog);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">asp:Content</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">asp:Content</font> <font color="#ff0000">ID</font><font color="#0000ff">="Content2"</font> <font color="#ff0000">ContentPlaceHolderID</font><font color="#0000ff">="ContentPlaceHolder1"</font> <font color="#ff0000">runat</font><font color="#0000ff">="server"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="adduserdialog"</font> <font color="#ff0000">style</font><font color="#0000ff">="display: none; cursor: default"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="email"</font> <font color="#ff0000">type</font><font color="#0000ff">="text"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secret phrase:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="phrase"</font> <font color="#ff0000">type</font><font color="#0000ff">="text"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password:<font color="#0000ff">&#60;/</font><font color="#800000">label</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">id</font><font color="#0000ff">="password"</font> <font color="#ff0000">type</font><font color="#0000ff">="password"</font> <font color="#0000ff">/&#62;</font><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">type</font><font color="#0000ff">="button"</font> <font color="#ff0000">id</font><font color="#0000ff">="adduser"</font> <font color="#ff0000">value</font><font color="#0000ff">="Add user"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">input</font> <font color="#ff0000">type</font><font color="#0000ff">="button"</font> <font color="#ff0000">id</font><font color="#0000ff">="cancel"</font> <font color="#ff0000">value</font><font color="#0000ff">="Cancel"</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="left"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="box"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">p</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Admin operations:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">p</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">a</font> <font color="#ff0000">id</font><font color="#0000ff">="list"</font> <font color="#ff0000">href</font><font color="#0000ff">="#"</font><font color="#0000ff">&#62;</font>List of users<font color="#0000ff">&#60;/</font><font color="#800000">a</font><font color="#0000ff">&#62;&#60;</font><font color="#800000">br</font> <font color="#0000ff">/&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">a</font> <font color="#ff0000">id</font><font color="#0000ff">="add"</font> <font color="#ff0000">href</font><font color="#0000ff">="#"</font><font color="#0000ff">&#62;</font>Add new user<font color="#0000ff">&#60;/</font><font color="#800000">a</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="right"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="results"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">asp:Content</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<h2>Putting all together</h2>
+<p>
+Now let's review everything in conjuction. We have generic handler, that receives http request. It uses request "function" to understand what function is requested by user. Based on function type it delegates the call to business object, called UsersOperations. UserOperations relies on UserRepository to work with data, so it get or insert the data and return results as JSON strings. JSON is created by serialization of .NET objects into JSON objects by means of Json.net library. Client receives the output in asynchronous callbacks, checks the status of operation and dynamically creates HTML code. blockUI component help to block user interaction with UI during asynchronous calls, also "create new user" modal dialog is created by means of blockUI.
+</p>
+<p>
+Such approach serves really great for simple AJAX applications, on pure ASP.net, jQuery. Check out sources on <a href="http://github.com/alexbeletsky/Concept">Github</a>.
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blogging with a GitHub and Blogspot? Ideas?]]></title>
+    <link href="http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas.html"/>
+    <updated>2010-07-27T21:54:00+02:00</updated>
+    <id>http://beletsky.net/2010/07/blogging-with-github-and-blogspot-ideas</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>
+I do use Blogger as my blog engine and really like it. Right, as soon as you create your blog posts in
+    HTML and do not use embedded editor it is perfectly fine! So, when I do new post I create a plain
+    HTML in VS and after it is ready I copy paste it to blogspot and publish. Original
+    HTML I commit special repository on github.
+</p>
+<p>
+I liked that style of work as far I as I change nothing in posts. As I need change, I have to change original
+    HTML, re-publish it on blogspot and commit again to github. After I did it
+    several times, I started to think how to automate this? I came up this a simple
+    idea, why do not load the content of post dynamically, by using a javascript?
+</p>
+<p>
+It is no problem to do that, and I implemented a small script that performs exactly what I needed. I called this project <a href="http://github.com/alexbeletsky/GithubToBlogspot">GithubToBlogspot</a>. Its description:
+</p>
+<p>
+GithubToBlogspot is used for people who stores they blog article sources in HTML.
+Instead copy pasting HTML between blogspot and github, it should be possible to paste a simple script on a page and that
+script would load a content.
+</p>
+<p>
+It utilized javascript GitHub API by: http://github.com/fitzgen/github-api
+</p>
+<p>
+First draft example looks like this,
+</p>
+<blockquote><code><font size="2" face="Courier New" color="black"><font color="#0000ff">&#60;</font><font color="#800000">div</font> <font color="#ff0000">id</font><font color="#0000ff">="content1"</font> <font color="#ff0000">class</font><font color="#0000ff">="load"</font> <font color="#0000ff">&#62;</font><br>Loading your content, please wait...<br><font color="#0000ff">&#60;</font><font color="#800000">img</font> <font color="#ff0000">src</font><font color="#0000ff">="http://www.sanbaldo.com/wordpress/wp-content/mozilla_giallo.gif"</font> <font color="#0000ff">/&#62;</font><br><font color="#0000ff">&#60;/</font><font color="#800000">div</font><font color="#0000ff">&#62;</font><br><font color="#0000ff">&#60;</font><font color="#800000">script</font> <font color="#ff0000">type</font><font color="#0000ff">="text/javascript"</font><font color="#0000ff">&#62;</font><br>&nbsp;&nbsp;<font color="#0000ff">var</font> __user = <font color="#A31515">"alexanderbeletsky"</font>; <font color="#0000ff">var</font> __repo = <font color="#A31515">"Blog"</font>; <font color="#0000ff">var</font> __sha = <font color="#A31515">"16fe3ddf21925508490d91978cf581a13bc37b6c"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __path = <font color="#A31515">"07112010/GitHubSocialCoding.htm"</font>;<br>&nbsp;&nbsp;<font color="#0000ff">var</font> __div = <font color="#A31515">"content1"</font>;<br>&nbsp;&nbsp;githubToBlogspot(__user, __repo, __path, __sha, __div);<br><font color="#0000ff">&#60;/</font><font color="#800000">script</font><font color="#0000ff">&#62;</font><br></font><br><font size="1" color="gray">* This source code was highlighted with <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"><font size="1" color="gray">Source Code Highlighter</font></a>.</font></code></blockquote>
+<p>
+Code itself is also really simple: it opens the blob, reads its data as HTML, extracts the body and put body to target div. That's it. All this done asynchronously, so as you open the blog you see progress image.. after data loaded it appears on screen.
+</p>
+<p>
+But I haven't taken into account several major considerations:
+<ul>
+<li>First, AJAX content is not crawlable by Google. It <a href="http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html">actually is</a>, but requires a changes that could not be done, since you are on 3rd party blog engine.</li>
+<li>
+Second, is with that dynamic loading RSS feed of blog will also be empty.
+</li>
+</ul>
+</p>
+<p>
+I still want to accomplish this. I was thinking about different solutions, but have no solid one.. Do you know is it possible to accomplish something similar with no drawbacks I mentioned above. It would be great if you share you ideas!
+</p></div>
+
+]]></content>
+  </entry>
+  
+</feed>

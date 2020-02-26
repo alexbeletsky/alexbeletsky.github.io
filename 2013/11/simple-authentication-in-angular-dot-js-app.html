@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Simple Authentication for Angular.js App</title>
+  <meta name="author" content="Alexander Beletsky">
+
+  
+  <meta name="description" content="Simple Authentication for Angular.js App Nov 22nd, 2013 angularjs, frontend, javascript So, you are building pure client side application that works &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/fontello.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/style.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Alexander Beletsky's development blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16388698-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<header class="pure-g-r"><div class="pure-g-r">
+	<div class="inner pure-u-1">
+		<h4 class="light">Alexander Beletsky's development blog</h4>
+		<h1><a href="/">My profession is engineering</a></h1>
+		<nav role="navigation" class="pure-menu pure-menu-open pure-menu-horizontal light"><ul>
+	<li><a href="/projects">Projects</a></li>
+	<li><a href="/talks">Talks</a></li>
+	<li><a href="/medium">Medium</a></li>
+	<li><a href="/blog/archives">Archive</a></li>
+	<li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+	</div>
+</div>
+
+</header>
+	<div class="social inner pure-menu-horizontal"><ul>
+	<li><a class="twitter icon-twitter" href="http://twitter.com/alexbeletsky"></a></li>
+	<li><a class="github icon-github-circled" href="https://github.com/alexanderbeletsky"></a></li>
+	<li><a class="stackoverflow icon-stackoverflow" href="http://stackoverflow.com/users/386751/alexanderb"></a></li>
+	<li><a class="rss icon-rss" href="http://feeds.feedburner.com/abeletskyblog"></a></li>
+</ul>
+</div>
+	<div id="content" class="inner pure-g-r"><article class="post">
+	  
+  <h1 class="title pure-u-1">Simple Authentication for Angular.js App</h2>
+
+  <div class="meta pure-u-1-5">
+    <div class="date icon-calendar">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-22T13:51:00+01:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2013</time></div>
+    <div class="tags icon-tag-2">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/frontend/'>frontend</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+</div>
+  </div>
+
+  <div class="entry-content pure-u-4-5">
+    <div class="content">
+      <p>So, you are building pure client side application that works against REST API. The client and server are completely decoupled and typically deployed separately of each other.</p>
+
+<p>API&rsquo;s have one or another way of authenticating it&rsquo;s users. It could be some simple flows, like basic authorization or more complex ones as OAuth/OAuth2. But at the very end you have <code>token</code> that placed either as cookie value or HTTP request header parameter. API is then responsible to check the token for validity and if it&rsquo;s not valid respond with 401.</p>
+
+<!-- More -->
+
+
+<h2>Configure the Routes</h2>
+
+<p>First we need to have <code>/login</code> router where user is redirected in case of unauthorized access.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;dashboardApp&#39;</span><span class="p">,</span> <span class="p">[</span>
+</span><span class='line'>  <span class="s1">&#39;ngCookies&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ngResource&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;ngSanitize&#39;</span>
+</span><span class='line'><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$routeProvider</span><span class="p">,</span> <span class="nx">$locationProvider</span><span class="p">,</span> <span class="nx">$httpProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$httpProvider</span><span class="p">.</span><span class="nx">responseInterceptors</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;httpInterceptor&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$routeProvider</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;views/dashboard.html&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;dashboard&#39;</span> <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;views/auth.html&#39;</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">&#39;auth&#39;</span> <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span> <span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">api</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">api</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Authentication Controller and View</h2>
+
+<p>The authentication controller is simple module. It&rsquo;s responsible for sending user credentials to server and handle the response. If server authenticates user, it would return the value of access token in <code>.token</code> attribute. Otherwise, user have to be notified that something went wrong.</p>
+
+<p>Btw, in <a href="https://github.com/likeastore/seismo-dashboard">likeastore/seismo-dashboard</a> I&rsquo;ve tried to use the model based on <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">GitHub personal tokens</a> instead of passwords, that simplifies server a bit allowing it to do not store and sessions, hashed passwords etc. If you interested, take a look at <a href="https://github.com/likeastore/seismo/blob/master/source/server.js#L40">likeastore/seismo/source/server.js</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;dashboardApp&#39;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">$cookieStore</span><span class="p">,</span> <span class="nx">authorization</span><span class="p">,</span> <span class="nx">api</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">&#39;Likeastore. Analytics&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">username</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">token</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">token</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">token</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">api</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="nx">$cookieStore</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">// TODO: apply user notification here..</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">authorization</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">credentials</span><span class="p">).</span><span class="nx">success</span><span class="p">(</span><span class="nx">success</span><span class="p">).</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, it just delegates the call to <code>authorizationn</code> service, which is very simple wrap of <code>$http</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;dashboardApp&#39;</span><span class="p">).</span><span class="nx">factory</span><span class="p">(</span><span class="s1">&#39;authorization&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$http</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">login</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">credentials</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">&#39;/auth&#39;</span><span class="p">,</span> <span class="nx">credentials</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ones server responds with success, controller will place the token to cookie.</p>
+
+<p>The view is just a <code>form</code> with binded <code>ng-submit</code> event to call <code>auth.login()</code> function of controller.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;login-panel&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>Welcome to Analytics.<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;p&gt;</span>We are using GitHub for authorization. Please obtain your personal token and use it to sign in.<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;pure-form&quot;</span> <span class="na">ng-submit=</span><span class="s">&quot;login()&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">class=</span><span class="s">&quot;pure-input-1-3&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;Personal Token...&quot;</span> <span class="na">name=</span><span class="s">&quot;token&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;token&quot;</span> <span class="na">required</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;pure-button pure-button-primary&quot;</span><span class="nt">&gt;</span>Sign in<span class="nt">&lt;/button&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/form&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>HTTP Interceptor</h2>
+
+<p>In case of any API call returns <code>401</code> we have to redirect user to login page. Angular&rsquo;s HTTP interceptor is great for that job. As you can see from <code>app.js</code> above, it&rsquo;s been pushed to pipe here:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$httpProvider</span><span class="p">.</span><span class="nx">responseInterceptors</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;httpInterceptor&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The interceptor implementation itself,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;dashboardApp&#39;</span><span class="p">).</span><span class="nx">factory</span><span class="p">(</span><span class="s1">&#39;httpInterceptor&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">httpInterceptor</span> <span class="p">(</span><span class="nx">$q</span><span class="p">,</span> <span class="nx">$window</span><span class="p">,</span> <span class="nx">$location</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">promise</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">response</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">401</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">$location</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">success</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Placing Token to HTTP Headers</h2>
+
+<p>Finally, we need to supply that token as HTTP header parameter to all API calls that client issues. Again, you might notice in <code>app.js</code> there is an API initialization call.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">api</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">api</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>API initialization services looks like that,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;dashboardApp&#39;</span><span class="p">).</span><span class="nx">factory</span><span class="p">(</span><span class="s1">&#39;api&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$http</span><span class="p">,</span> <span class="nx">$cookies</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">$http</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">common</span><span class="p">[</span><span class="s1">&#39;X-Access-Token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">token</span> <span class="o">||</span> <span class="nx">$cookies</span><span class="p">.</span><span class="nx">token</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This authentication model is very easy to integrate into any existing apps and just keep in mind while creating new ones.</p>
+
+      <div class="post sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html" data-via="alexbeletsky" data-counturl="http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-layout="button_count" data-show-faces="false" data-height="20"></div>
+  
+</div>
+
+      <p class="post byline author vcard">
+	Posted by <a href="/about">Alexander Beletsky</a>. If you liked that material, please consider to follow my <a href="http://twitter.com/alexbeletsky">twitter</a> account for further updates. If you have comments or questions, do not hesitate to contact my <a href="mailto:alexander.beletsky@gmail.com">email</a> or raise issue on <a href="https://github.com/alexbeletsky/alexanderbeletsky.github.io/issues">github</a>.
+</p>
+    </div>
+  </div>
+
+</article>
+</div>
+	<footer class="pure-g-r"><div class="inner pure-u-1">
+	<p>
+		Theme by <a href="https://twitter.com/alexbeletsky">@alexbeletsky</a> | Fonts by <a href="http://www.google.com/fonts/">Google Fonts</a> | Icons by <a href="http://fontello.com/">Fontello</a> | Hosted on <a href="http://github.com">github</a> | Powered by <a href="http://octopress.org/">Octopress</a>
+	</p>
+	<p>
+		Copyright © 2010 - 2018 beletsky.net
+	</p>
+</div>
+
+</footer>
+	<div class="buttons">
+	
+
+
+	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+	
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+	
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+	
+
+</div>
+</body>
+</html>

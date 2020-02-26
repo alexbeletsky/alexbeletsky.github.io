@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: retro | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/retro/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Lessons Learned Working On Startup]]></title>
+    <link href="http://beletsky.net/2014/07/working-on-startup.html"/>
+    <updated>2014-07-03T10:41:00+02:00</updated>
+    <id>http://beletsky.net/2014/07/working-on-startup</id>
+    <content type="html"><![CDATA[<p>Last year, July 2013 public version of Likeastore been <a href="http://beletsky.net/2013/07/likeastore-app-goes-to-public.html">released</a>. It gave momentum to change the mind, went out of comfort zone, reconsider priorities and literally change my life. Earlier I <a href="http://beletsky.net/2014/03/from-side-project-to-start.html">blogged</a> about transformation of Likeastore from side project to startup.</p>
+
+<p>Today, I want to share some info on where are we now and lessons I learned so far.</p>
+
+<!-- MORE -->
+
+
+<h2>Focus on search</h2>
+
+<p>One of the most significant <a href="http://www.amazon.com/The-Startup-Owners-Manual-Step-By-Step/dp/0984999302">books</a> on startups, defines startup as temporary organization aims to find sustainable business idea. It&rsquo;s not about coding, testing or anything related to development. It&rsquo;s all about the search.</p>
+
+<p>The biggest mistake of Likeastore, we never did any kind of search before the project started. It was a cool idea that made sense to me and I wanted to make it happen. Development is very expensive process. It&rsquo;s not possible to do good looking and well functioning product without long hours of work. And we worked hard.</p>
+
+<p>Many times I heard opinion <em>&ldquo;work smarter, not harder&rdquo;</em>. That principle transformed to something we know now as <a href="http://theleanstartup.com/">Lean Startup</a>, that basically says <em>&ldquo;do as less as possible before your idea is validated&rdquo;</em>. The only way to validate it is to show it to people and talk to that people after. There is no truth inside the organization, founders might have vision but that vision could be wrong.</p>
+
+<p>Engaging with users, processing the feedback and correction of idea is something that called is Customer Development. Customer Development is vital part of search. Unfortunately, we never accomplish any kind of customer development and currently we suffer that. &ldquo;Likeastore is so cool idea&rdquo; &ndash; we still receiving that kind of emails from our users, that stays for 3 weeks and then slipping away.</p>
+
+<p>Working smarter is hard. For me, that&rsquo;s completely different set of skills and habits. The founder is the one who is able to tweak himself for new conditions and focus on search.</p>
+
+<h2>Coding is easy part</h2>
+
+<p>Being the programmer and spent over 10 years in software development I was sure that I&rsquo;m doing the most complex part of work. All those business guys, product owners and so on, seemed to be auxiliary people, sometimes ones who are just interfere the work.</p>
+
+<p>Working in the company, together with business people, your area of responsibility is primarily the code. But at the end of the day, you don&rsquo;t know what&rsquo;s happening after deployment. How customers work with your code, are they happy.. are they ready to pay the money? Business people care about it and plan on what exactly need to be done further. You turning their ideas into code and get salary not because your code is good, but because business works.</p>
+
+<p>Working in startup is different. No more product owner who says what to do next. You are the product owner. And generating ideas is hard. Talking to customers is hard. Search of product/market fit is hard.</p>
+
+<p>Being able to sit and spend 10 hours for programming is fun for me, but it turned out it&rsquo;s the most easiest part of journey.</p>
+
+<h2>Measure everything</h2>
+
+<p>The code is deployed, some traffic lead to site &ndash; now what? In Likeastore we were blind for quite long time without good understanding of what actually happening inside the application.</p>
+
+<p>The truth is, without data it&rsquo;s not possible to make decisions. We are now utilize <a href="http://mixpanel.com">Mixpanel</a>, <a href="http://www.google.com/analytics/">Google Analytics</a>, <a href="https://github.com/seismolabs/seismo">Seismo</a> custom dashboards etc. in order to understand what&rsquo;s works or not.</p>
+
+<p><em>Build, Measure, Learn</em> &ndash; the mantra of Lean Startup. What we focused on previously is <em>Build</em> part only and that&rsquo;s not right. Startup is ability to make educated guesses, guesses should be based on learnings, learnings are based on measurements.</p>
+
+<p>We are at very stage, but now working hard to create good framework for analytics and measurements.</p>
+
+<h2>Build your own culture</h2>
+
+<p>Even if your are very small, culture plays major role. At the early stage you affect the culture, later stages culture affects you. At Likeastore, we care about marketing and development culture much.</p>
+
+<p>Being based on <a href="http://beletsky.net/2013/12/open-source.html">open source</a> we try to contribute back to open source. I&rsquo;m really happy with our <a href="https://github.com/likeastore">github</a> profile and only predict it&rsquo;s going to grow. We try to open source as much as possible, sometimes even solutions that quite specific to Likeastore.</p>
+
+<p>Our later obsession with metrics and numbers will be part of culture as well. As founder you should see where you want to be in 2-3 years, not only in terms of product, but the way other people know about the company. For me, saying &ldquo;I work on Likeastore&rdquo; means a lot and I want it mean a lot for everyone works here.</p>
+
+<h2>Listen what they say</h2>
+
+<p>It&rsquo;s a common practice for business accelerators accepts teams with at least 2-3 founders. I didn&rsquo;t really understand why.</p>
+
+<p>There are few things here. First of all, if you are not able to inspire at least one person with your idea it&rsquo;s likely going to fail. Second, founders should complement each others skills. There are <a href="http://www.marsdd.com/news-and-insights/hacker-hustler-and-designer-building-the-tech-team/">rule of 3</a> that ideal startup team should consists of hacker, hustler, designer.</p>
+
+<p>But there is more important aspect. Founders have to talk all the time, brainstorm and share ideas, discuss competitors etc. You need at least 2 people for discussion. More importantly, you should be able to share your idea with other people. Once we&rsquo;ve <a href="http://beletsky.net/2013/12/likeastore-is-becoming-a-company.html">joined</a> business accelerator, first advice that I received &ndash; &ldquo;talk to other teams, they will help you&rdquo;. I didn&rsquo;t take that advice seriously and I was really wrong. Startups are huge community and you either part of that community or out.</p>
+
+<p>You have to both talk a lot and listen what they say. Co-founders, users, colleagues &ndash; they know something you don&rsquo;t. It doesn&rsquo;t mean you have to do everything they say, but definitely <a href="http://dcurt.is/there-is-no-solution-to-this-problem">listen</a> and analyze.</p>
+
+<p>We are now team of 3 and it feels really good. Each of us have own experience, so we need to combine and make something real out of it. Don&rsquo;t keep secrets, share the stuff. Doesn&rsquo;t matter what exactly your role is, talk to the team, talk to other guys, feel the influence.</p>
+
+<p>Don&rsquo;t close the door of your garage.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: data | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/data/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Got Tired of MongoDB Full Text Index]]></title>
+    <link href="http://beletsky.net/2014/05/got-tired-of-mongodb-full-text.html"/>
+    <updated>2014-05-15T11:29:00+02:00</updated>
+    <id>http://beletsky.net/2014/05/got-tired-of-mongodb-full-text</id>
+    <content type="html"><![CDATA[<p>We use MongoDB as our primary data source in <a href="https://likeastore.com">Likeastore</a> and went the way of MongoDB Full Text Search. Everything were fine initially, but after a while it became obvious that MongoDB FTS could not satisfy me any more.</p>
+
+<p>I knew about search oriented storages as <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://sphinxsearch.com/">Sphinx</a>, <a href="http://lucene.apache.org/solr/">Solr</a>, etc. but the migration process always seemed a bit scary to me. After a bit of elaboration I decided to go with Elastic and the migration was quite fun and not so difficult as I initially expected.</p>
+
+<!-- MORE -->
+
+
+<h2>What&rsquo;s wrong with MongoDB?</h2>
+
+<p>We are using MongoDB 2.4 and full text search is experimental feature there. By default, it&rsquo;s turned off on production instances of MongoHQ. Anyway, it&rsquo;s very easy to turn it on and run <code>text</code> commands against it. But we met it&rsquo;s bottleneck when indexed collection start to grow (>3M documents).</p>
+
+<p>We are doing a lot of <code>inserts</code> and if you have full text index, each <code>insert</code> triggers index re-calculation. Few weeks ago I&rsquo;ve noticed huge performance issues of our DB. After first glance of monitoring information it&rsquo;s was pretty clear that <code>Locked</code> index is >110% and a lot requests got timed-out. Application became low responsive.</p>
+
+<p>It could be potentially solved by moving on more powerful server (more CPU and RAM) or by sharding database into few instances. Both costs money. Costs are something that I would like to avoid, if possible. It was time to move to specialized solution.</p>
+
+<p>This is the reason to deploy ElasticSearch &ndash; put less strain on MongoDB and to use as an asynchronous index.</p>
+
+<h2>Migration plan</h2>
+
+<p>Before starting out, I&rsquo;ve consulted with my guru <a href="http://www.vinaysahni.com/">Vinay Sahni</a> and his experience of ElasticSeach in <a href="http://www.supportfu.com/">SupportFu</a>. The general feedback on ElasticSeach was really nice. They don&rsquo;t use any <a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">rivers</a> instead use <code>after_save</code> hook of their ORM, so each time new document is created it&rsquo;s pushed to ElasticSearch index.</p>
+
+<p>I decided to go similar way, so my migration plan was:</p>
+
+<ol>
+<li>Export all existing documents to ElasticSearch.</li>
+<li>Correct the code and after each new insert send update to ElasticSearch.</li>
+</ol>
+
+
+<p>In my situation it&rsquo;s a bit simpler, by the fact, I have only one collection to index and major part of DB operations are <code>inserts</code> not <code>updates</code>, otherwise I believe using of <code>river</code> has more sense (and a more effort to setup).</p>
+
+<h2>Deploy instance on Digital Ocean</h2>
+
+<p>I&rsquo;ve spin-up <a href="https://www.digitalocean.com/?refcode=de56d081b272">Digital Ocean</a> droplet and used that great <a href="https://www.digitalocean.com/community/articles/how-to-install-elasticsearch-on-an-ubuntu-vps">instructions</a> for installation (btw, I recommend to install from Debian package, since it&rsquo;s easier to run elastic as <code>init.d</code> service).</p>
+
+<p>Just in 10 minutes you have working ElasticSeach cluster, ready to rock.</p>
+
+<h2>Migrate MongoDB data to ElasticSearch index</h2>
+
+<p>Then I needed to move about 12GB of data from my production MongoDB instance to Elastic. To accomplish that, I&rsquo;ve created really simple tool &ndash; <a href="https://github.com/likeastore/elaster">elaster</a>. Elaster streams MongoDB collection into ElasticSearch index, based on <a href="https://github.com/likeastore/elaster/blob/master/config/index.js">configuration</a> you provide.</p>
+
+<p>I&rsquo;ve installed <code>nodejs</code> on ElasticSeach server, cloned elaster there and run,</p>
+
+<p><img src="https://pbs.twimg.com/media/Bmpa3QGCcAAOHSZ.png:large" alt="elaster" /></p>
+
+<p>Both elaster and application code use <a href="https://www.npmjs.org/package/elasticsearch">elasticsearch</a> npm package.</p>
+
+<p>The whole process took ~2 hours.</p>
+
+<h2>Update the application code</h2>
+
+<p>Right after documents are inserted to MongoDB and initialized with <code>_id</code>, they are ready to be saved to index. I use bulk operation for that,</p>
+
+<p>```js
+index: function (items, state, callback) {</p>
+
+<pre><code>if (!items || items.length === 0) {
+    return callback(null, items);
+}
+
+var commands = [];
+items.forEach(function (item) {
+    commands.push({'index': {'_index': 'items', '_type': 'item', '_id': item._id.toString()}});
+    commands.push(item);
+});
+
+elastic.bulk({body: commands}, callback);
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Simple search query</h2>
+
+<p>ElasticSearch comes with very nice <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html">Query DSL</a>. I&rsquo;m very new to the technology, so I&rsquo;ve managed to create really simple query, which already gives quite nice results.</p>
+
+<p>```js
+function fullTextItemSearch (user, query, paging, callback) {</p>
+
+<pre><code>if (!query) {
+    return callback(null, { data: [], nextPage: false });
+}
+
+var page = paging.page || 1;
+
+elastic.search({
+    index: 'items',
+    from: (page - 1) * paging.pageSize,
+    size: paging.pageSize,
+    body: {
+        query: {
+            filtered: {
+                query: {
+                    'query_string': {
+                        query: query
+                    },
+                },
+                filter: {
+                    term: {
+                        user: user.email
+                    }
+                }
+            }
+        }
+    }
+}, function (err, resp) {
+    if (err) {
+        return callback(err);
+    }
+
+    var items = resp.hits.hits.map(function (hit) {
+        return hit._source;
+    });
+
+    callback(null, {data: items, nextPage: items.length === paging.pageSize});
+});
+</code></pre>
+
+<p>}
+```</p>
+
+<p>It just uses <code>query_string</code> and <code>filter</code> term, to filter out results for given user. The interface of Search API remained the same, just instead of querying MongoDB, now we query ElasticSearch.</p>
+
+<h2>Summary</h2>
+
+<p>The main conclusion is &ndash; ElasticSearch is kind of technology that works out of the box. It&rsquo;s very complex inside, but have great interface that hides all the complexity. First and good enough results can be archived very quickly.</p>
+
+<p>In the same time, the technology requires time and effort to understand it and to use it right. I have absolutely no experience with full text search, so it&rsquo;s really journey for me.</p>
+]]></content>
+  </entry>
+  
+</feed>

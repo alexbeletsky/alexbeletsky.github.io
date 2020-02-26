@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: NuGet | Alexander Beletsky's development blog]]></title>
+  <link href="http://beletsky.net/blog/categories/nuget/atom.xml" rel="self"/>
+  <link href="http://beletsky.net/"/>
+  <updated>2020-02-26T11:29:57+01:00</updated>
+  <id>http://beletsky.net/</id>
+  <author>
+    <name><![CDATA[Alexander Beletsky]]></name>
+    <email><![CDATA[alexander.beletsky@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH MVC: Answering questions]]></title>
+    <link href="http://beletsky.net/2011/12/elmah-mvc-answering-questions.html"/>
+    <updated>2011-12-11T11:25:00+01:00</updated>
+    <id>http://beletsky.net/2011/12/elmah-mvc-answering-questions</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>I've received some questions recently regarding <a href="https://nuget.org/packages/Elmah.MVC">ELMAH.MVC</a> nuget package. Here is the summary blog post and I hope it is helpful.<br />
+</p><h2>How to change that to log it into a database?</h2><p>Indeed, the demo project on a <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/src/Web.config">github</a> uses simple <code>Elmah.MemoryErrorLog</code> just holding all errors in session. That works great for small application or just to try out things. In reallity you need some persistant storage, like files or database. And this is extreamly easy to do. Take a look at this section of web.config:<br />
+</p><pre class="brush: xml">&lt;elmah&gt;
+    &lt;security allowRemoteAccess=&quot;yes&quot; /&gt;
+    &lt;errorLog type=&quot;Elmah.MemoryErrorLog, Elmah&quot;/&gt;
+    &lt;!--&lt;errorLog type=&quot;Elmah.SqlErrorLog, Elmah&quot; connectionStringName=&quot;elmah&quot; /&gt;--&gt;
+    &lt;!--&lt;errorLog type=&quot;Elmah.XmlFileErrorLog, Elmah&quot; logPath=&quot;~/App_Data/Elmah.Errors&quot; /&gt;--&gt;
+&lt;/elmah&gt;
+</pre><p>Just comment out <code>Elmah.MemoryErrorLog</code> and de-comment <code>Elmah.SqlErrorLog</code> (will store errors to SQL database) or <code>Elmah.XmlFileErrorLog</code> (will store errors to XML files). XML logger, just requires a virtual path to folder there files will be stored. Sql logger, requires a connection string name for ELMAH database. The same web.config contains:<br />
+</p><pre class="brush: xml">&lt;connectionStrings&gt;
+    &lt;add name=&quot;elmah&quot; connectionString=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=elmah;Integrated Security=True&quot; providerName=&quot;System.Data.SqlClient&quot; /&gt;
+&lt;/connectionStrings&gt;
+</pre><p>The database have to have ELMAH schema inside. It is very easy to prepare that schema, just run <a href="https://github.com/alexbeletsky/elmah.mvc.controller/blob/master/db/database.sql">this</a> SQL script against database you want to keep errors to.<br />
+</p><h2>Does ELMAH.MVC handle custom error pages?</h2><p>This is a misconception. ELMAH.MVC is not about custom pages, at all. This is good answer on <a href="http://stackoverflow.com/a/1288819/386751">stackoverflow</a> on that. For a code example, you can refer to something I did for before my projects just <a href="https://github.com/alexbeletsky/trackyt.net/blob/master/src/Web/Controllers/ErrorController.cs">here</a><br />
+</p><h2>ELMAH.MVC gives me FxCop/StyleCop issues?</h2><p>I've received <a href="https://github.com/alexbeletsky/elmah.mvc.controller/issues/4">that</a> kind report on github issues. Initially I thought to do something about it but then I left that idea. The explanation is inside the ticket.<br />
+</p><p>Short answer is, ELMAH.MVC is nothing more that boilerplate code. As soon as you can see it work and it works OK for you, adopt it for your custom needs. That's it.<br />
+</p></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ELMAH MVC controller released on NuGet]]></title>
+    <link href="http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget.html"/>
+    <updated>2011-08-29T20:20:00+02:00</updated>
+    <id>http://beletsky.net/2011/08/elmah-mvc-controller-released-on-nuget</id>
+    <content type="html"><![CDATA[<div class='post'>
+<p>        I dedicated some time for that and happy to announce - ELMAH MVC controller released         on NuGet.     </p><p>        Due to the latest interest, feedback and changes - it has no sense         at all to keep that code just in blog post. In my <a href="http://www.beletsky.net/2011/08/latest-version-of-elmah-mvc-controller.html">previous</a> post I promised to create NuGet package for that, so here we are:     </p><div class="commandWrapper">        <div class="commandPrompt">            <p class="command">                PM&gt; Install-Package Elmah.MVC</p></div></div><p>        I simplified code even a little more to avoid changing in routes (in case of Admin area already exists in project).     </p><p>        So just grab it from NuGet now.     </p></div>
+
+]]></content>
+  </entry>
+  
+</feed>
