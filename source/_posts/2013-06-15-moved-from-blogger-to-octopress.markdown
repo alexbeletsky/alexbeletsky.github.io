@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Moved from Blogger to Octopress"
+title: 'Moved from Blogger to Octopress'
 date: 2013-06-15 16:18
 comments: true
 categories: life,mind,open source,github
@@ -18,15 +18,15 @@ Now this site is running [Octopress](http://octopress.org/) and hosted on [Githu
 
 My primary concern was up to blog design. The time I started to blog I had almost zero skill to HTML/CSS, so picking up some existing theme was best option. In 2010 [beletsky.net](http://beletsky.net) looked pretty fine for me. But time has passed, my vision of design has changed, requirements for blog UI has changed (consider mobile devices), the way I blog has changed.
 
-I tried to tweak blogger theme and tried to create new one, but that appeared a *bloody* mess.
+I tried to tweak blogger theme and tried to create new one, but that appeared a _bloody_ mess.
 
 Besides the design, the recent Google actions like closing up Picassa, Reader - are quite obvious signs that Blogger days are counted. They would probably try to integrate it to Google+ services and I'm literally sick of Google+.
 
-Finally, with much of Github influence, I [realized](http://alexanderbeletsky.github.io/2013/05/github-as-blogging-platform.html) Markdown is awesome, blogging in plain HTML sucks hard. I wanted to have nice and easy platform for handling my blog and personal page.. I wanted to blog like [hackers](http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html) do.
+Finally, with much of Github influence, I [realized](http://alexbeletsky.github.io/2013/05/github-as-blogging-platform.html) Markdown is awesome, blogging in plain HTML sucks hard. I wanted to have nice and easy platform for handling my blog and personal page.. I wanted to blog like [hackers](http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html) do.
 
 ## How to move, easy way
 
-I was really *afraid* of difficulties related to moving to other platform, that's why I procrastinated that so long.
+I was really _afraid_ of difficulties related to moving to other platform, that's why I procrastinated that so long.
 
 That lead to the point then I wanted to blog about something, but running up VS, starting HTML coding and uploading images somewhere simply prevented me to do that. Blogging should be as easy as writing to notepad, in that way you will do that with pleasure.
 
@@ -36,7 +36,7 @@ But I didn't want to have default theme of Octopress, I didn't want to pick up [
 
 ## Custom theme for Octopress
 
-I've picked up just released [Pure CSS](http://purecss.io/) framework, since I *promised* myself never ever create my custom grids and layouts, since it works really bad. I basically use only grid system from there.
+I've picked up just released [Pure CSS](http://purecss.io/) framework, since I _promised_ myself never ever create my custom grids and layouts, since it works really bad. I basically use only grid system from there.
 
 I wanted to have something clean, minimal, black & white theme. My inspiration was primarily from [zachholman.com](http://zachholman.com/), [blog.brunoscopelliti.com](http://blog.brunoscopelliti.com/), [carmo.org.uk](http://carmo.org.uk/).
 
@@ -78,7 +78,7 @@ Nevertheless, hosting Octopress blog on Github is best option. And Octopress has
 
 So, the experience is different now. No more HTML, only clean and nice Markdown.
 
-I do everything in [Sublime Text 2]() (wring post in *distraction free* mode is great) that has good syntax highlighting for Markdown and spell checker, from the box.
+I do everything in [Sublime Text 2]() (wring post in _distraction free_ mode is great) that has good syntax highlighting for Markdown and spell checker, from the box.
 
 Octopress running preview mode, so with each save of file you can check out the results on locally run web server. No more uploads of images to Google+, simple placing on file system.
 

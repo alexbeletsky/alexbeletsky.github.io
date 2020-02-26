@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Playing with Dokku on Vagrant"
+title: 'Playing with Dokku on Vagrant'
 date: 2013-09-03 19:57
 comments: true
 categories: dokku docker nodejs vagrant
@@ -87,7 +87,7 @@ It would took about up to 20 minutes, to fire up virtual machine, install git th
 Last thing you need to do, is to upload your `ssh` key to Dokku server, so you will be to `git push` code there.
 
 ```bash
-> cat ~/.ssh/id_rsa.pub | ssh root@dokku.me "sudo gitreceive upload-key alexanderbeletsky"
+> cat ~/.ssh/id_rsa.pub | ssh root@dokku.me "sudo gitreceive upload-key alexbeletsky"
 ```
 
 You can use default vagrant root password, which is `vagrant`.
@@ -173,4 +173,3 @@ You can play a bit further, by just changing some Node.js code of end-points and
 Just looking on logs while new application is deployed, would give pretty much idea of what's going on there.
 
 So, your local Vagrant image will good start place, before you ready to use Dokku on cloud.
-

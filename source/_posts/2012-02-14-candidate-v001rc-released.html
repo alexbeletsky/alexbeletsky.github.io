@@ -1,33 +1,100 @@
 ---
 layout: post
-title: "Candidate v.0.0.1rc - Released"
+title: 'Candidate v.0.0.1rc - Released'
 date: 2012-02-14T07:37:00+02:00
 comments: false
 categories:
- - Continuous
- - Candidate
- - Open source
+  - Continuous
+  - Candidate
+  - Open source
 ---
 
-<div class='post'>
-<p>  You may notice that I stick to original project name at the end of the day, even thought I wish to change it. That happened for 2 reasons: first, I really get used to candidate and it's good enough project name.. second, I spent some hours of brainstorming but found out nothing better that existing.<br />
- </p> <p>  This weekend I also finally concluded project web site and hosted it as github pages - <a href="http://alexanderbeletsky.github.com/candidate/">http://alexanderbeletsky.github.com/candidate/</a>. So, ladies and gentlemen - please welcome, <a href="https://github.com/downloads/alexanderbeletsky/candidate/candidate-v.0.0.1rc.zip">Candidate v0.0.1rc</a> is ready to be shown to the world. <br />
- </p> <a href="http://alexanderbeletsky.github.com/candidate/"><br />
-  <img src="https://lh5.googleusercontent.com/-WIUMqyz3naI/TznyBp-dQbI/AAAAAAAAH4A/exqlfJUQr8o/s1024/screenshot-1.jpg" alt="candidate web site" style="width: 620px;" /><br />
- </a><br />
- <h2>  What's the goal?<br />
- </h2> <p>  Thinking about nearest "competitors" in this area I would re-call <a href="http://www.paulstovell.com/octopus/intro">Octopus</a> by <a href="https://twitter.com/#!/paulstovell">Paul Stovell</a>. Octopus uses Build Server / Tentacle (Agent) architecture principal, while Candidate is simple Agent architecture - you host it the same machine as your environment is (stage, production) providing both integration and deployment functionality.<br />
- </p> <p>  My goal is stabilize and improve Candidate through this year, so it fulfill different requirements including performance and scalability. I switched all my projects to use Candidate now, so it would give me some initial feedback.<br />
- </p> <p>  Nevertheless, Candidate may turn out to be a powerful deployment application I'm still thinking about "Deployement as Service" product like <a href="https://appharbor.com/">AppHabor</a> and <a href="http://www.heroku.com/">Heroku</a> or <a href="http://travis-ci.org/">Travis-CI</a> as it was <a href=
-  "http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html">original</a> idea.<br />
- </p> <h2>  What's next?<br />
- </h2> <p>  Following the principle "Build product X to learn technology Y" I'm going to proceed with Candidate to shape following areas that I wish to improve now:<br />
- </p> <ul>  <li>Processes, threads, synchronization in .NET</li>
-  <li>Async, Tasks library</li>
-  <li>Robust applications architecture</li>
-  <li>Different deployment scenarios for .NET platform</li>
- </ul> <p>  Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently application requires to be hosted on IIS, with application pool Process Identity equals to Admin. This does not suite all users. So, I'm looking forward to create self-hosted version using <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
- </p> <p>  I also try to target UI / UX issues as much as possible.<br />
- </p> <h2>Wanna join?</h2> <p>  I would be happy to. I'll much encourage you to download application, install it, perform simple testing (scenario could be found <a href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions">here</a>). Let me know what you think, that would be great initial contribution. As for any github hosted project, you are absolutely free to fork, hack it out and send pull request.<br />
- </p> <p>  Thanks for you help.<br />
- </p></div>
+<div class="post">
+  <p>
+    You may notice that I stick to original project name at the end of the day,
+    even thought I wish to change it. That happened for 2 reasons: first, I
+    really get used to candidate and it's good enough project name.. second, I
+    spent some hours of brainstorming but found out nothing better that
+    existing.<br />
+  </p>
+  <p>
+    This weekend I also finally concluded project web site and hosted it as
+    github pages -
+    <a href="http://alexbeletsky.github.com/candidate/"
+      >http://alexbeletsky.github.com/candidate/</a
+    >. So, ladies and gentlemen - please welcome,
+    <a
+      href="https://github.com/downloads/alexbeletsky/candidate/candidate-v.0.0.1rc.zip"
+      >Candidate v0.0.1rc</a
+    >
+    is ready to be shown to the world. <br />
+  </p>
+  <a href="http://alexbeletsky.github.com/candidate/"
+    ><br />
+    <img
+      src="https://lh5.googleusercontent.com/-WIUMqyz3naI/TznyBp-dQbI/AAAAAAAAH4A/exqlfJUQr8o/s1024/screenshot-1.jpg"
+      alt="candidate web site"
+      style="width: 620px;"
+    /><br /> </a
+  ><br />
+  <h2>What's the goal?<br /></h2>
+  <p>
+    Thinking about nearest "competitors" in this area I would re-call
+    <a href="http://www.paulstovell.com/octopus/intro">Octopus</a> by
+    <a href="https://twitter.com/#!/paulstovell">Paul Stovell</a>. Octopus uses
+    Build Server / Tentacle (Agent) architecture principal, while Candidate is
+    simple Agent architecture - you host it the same machine as your environment
+    is (stage, production) providing both integration and deployment
+    functionality.<br />
+  </p>
+  <p>
+    My goal is stabilize and improve Candidate through this year, so it fulfill
+    different requirements including performance and scalability. I switched all
+    my projects to use Candidate now, so it would give me some initial
+    feedback.<br />
+  </p>
+  <p>
+    Nevertheless, Candidate may turn out to be a powerful deployment application
+    I'm still thinking about "Deployement as Service" product like
+    <a href="https://appharbor.com/">AppHabor</a> and
+    <a href="http://www.heroku.com/">Heroku</a> or
+    <a href="http://travis-ci.org/">Travis-CI</a> as it was
+    <a
+      href="http://www.beletsky.net/2011/06/candidatenet-application-i-made-on.html"
+      >original</a
+    >
+    idea.<br />
+  </p>
+  <h2>What's next?<br /></h2>
+  <p>
+    Following the principle "Build product X to learn technology Y" I'm going to
+    proceed with Candidate to shape following areas that I wish to improve
+    now:<br />
+  </p>
+  <ul>
+    <li>Processes, threads, synchronization in .NET</li>
+    <li>Async, Tasks library</li>
+    <li>Robust applications architecture</li>
+    <li>Different deployment scenarios for .NET platform</li>
+  </ul>
+  <p>
+    Technological stack is still ASP.NET MVC3 / C#/ jQuery. Currently
+    application requires to be hosted on IIS, with application pool Process
+    Identity equals to Admin. This does not suite all users. So, I'm looking
+    forward to create self-hosted version using
+    <a href="https://github.com/NancyFx/Nancy">NancyFX</a>. <br />
+  </p>
+  <p>I also try to target UI / UX issues as much as possible.<br /></p>
+  <h2>Wanna join?</h2>
+  <p>
+    I would be happy to. I'll much encourage you to download application,
+    install it, perform simple testing (scenario could be found
+    <a
+      href="https://github.com/alexbeletsky/candidate/wiki/Quick-start-instructions"
+      >here</a
+    >). Let me know what you think, that would be great initial contribution. As
+    for any github hosted project, you are absolutely free to fork, hack it out
+    and send pull request.<br />
+  </p>
+  <p>Thanks for you help.<br /></p>
+</div>
